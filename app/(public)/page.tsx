@@ -1,4 +1,5 @@
 import { getActiveDeals } from "@/lib/queries"
+import { getIsAdmin } from "@/lib/is-admin"
 import { DealGrid } from "@/components/deal-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
@@ -10,7 +11,7 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  const deals = await getActiveDeals()
+  const [deals, isAdmin] = await Promise.all([getActiveDeals(), getIsAdmin()])
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-8">
@@ -28,7 +29,7 @@ export default async function HomePage() {
 
       <section>
         <h2 className="mb-4 text-xl font-semibold">Latest deals</h2>
-        <DealGrid deals={deals} />
+        <DealGrid deals={deals} isAdmin={isAdmin} />
       </section>
     </div>
   )

@@ -2,6 +2,8 @@ import Link from "next/link"
 import { formatDistanceToNowStrict } from "date-fns"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { adminSoftDeleteDealAction } from "@/lib/admin-actions"
 import type { DealCardData } from "@/lib/queries"
 
 const typeLabel: Record<DealCardData["type"], string> = {
@@ -10,7 +12,13 @@ const typeLabel: Record<DealCardData["type"], string> = {
   announcement: "News",
 }
 
-export function DealCard({ deal }: { deal: DealCardData }) {
+export function DealCard({
+  deal,
+  isAdmin = false,
+}: {
+  deal: DealCardData
+  isAdmin?: boolean
+}) {
   return (
     <Card className="flex h-full flex-col overflow-hidden">
       {deal.imageUrl && (
@@ -24,9 +32,7 @@ export function DealCard({ deal }: { deal: DealCardData }) {
       <CardHeader className="space-y-2">
         <div className="flex items-center gap-2">
           <Badge variant="secondary">{typeLabel[deal.type]}</Badge>
-          {deal.discountText && (
-            <Badge>{deal.discountText}</Badge>
-          )}
+          {deal.discountText && <Badge>{deal.discountText}</Badge>}
         </div>
         <h3 className="text-lg font-semibold leading-tight">{deal.title}</h3>
         <Link
@@ -53,11 +59,32 @@ export function DealCard({ deal }: { deal: DealCardData }) {
           </Link>
         )}
       </CardFooter>
+      {isAdmin && (
+        <div className="border-t bg-muted/40 px-4 py-2">
+          <form action={adminSoftDeleteDealAction}>
+            <input type="hidden" name="dealId" value={deal.id} />
+            <Button
+              type="submit"
+              variant="destructive"
+              size="sm"
+              className="w-full"
+            >
+              Admin: soft-delete
+            </Button>
+          </form>
+        </div>
+      )}
     </Card>
   )
 }
 
-export function DealGrid({ deals }: { deals: DealCardData[] }) {
+export function DealGrid({
+  deals,
+  isAdmin = false,
+}: {
+  deals: DealCardData[]
+  isAdmin?: boolean
+}) {
   if (deals.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
@@ -68,7 +95,7 @@ export function DealGrid({ deals }: { deals: DealCardData[] }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {deals.map((d) => (
-        <DealCard key={d.id} deal={d} />
+        <DealCard key={d.id} deal={d} isAdmin={isAdmin} />
       ))}
     </div>
   )
