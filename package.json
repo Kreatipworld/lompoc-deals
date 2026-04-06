@@ -1,5 +1,5 @@
 {
-  "name": "lompoc-deals-tmp",
+  "name": "lompoc-deals",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
+    "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.0.2",
     "@vercel/blob": "^2.3.3",
     "bcryptjs": "^3.0.3",
@@ -21,12 +22,15 @@
     "lucide-react": "^1.7.0",
     "next": "14.2.35",
     "next-auth": "^5.0.0-beta.30",
+    "next-themes": "^0.4.6",
     "react": "^18",
+    "react-day-picker": "^9.14.0",
     "react-dom": "^18",
     "react-hook-form": "^7.72.1",
     "react-leaflet": "^4.2.1",
     "resend": "^6.10.0",
     "shadcn": "^4.1.2",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tw-animate-css": "^1.4.0",
     "zod": "^4.3.6"
