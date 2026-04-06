@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { MapPin } from "lucide-react"
+import { UserMenu } from "@/components/user-menu"
 
 export function SiteHeader() {
   return (
@@ -19,9 +20,7 @@ export function SiteHeader() {
           <Link href="/subscribe" className="hover:underline">
             Subscribe
           </Link>
-          <Link href="/login" className="hover:underline">
-            Sign in
-          </Link>
+          <UserMenu />
         </nav>
       </div>
     </header>
