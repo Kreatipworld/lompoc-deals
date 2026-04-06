@@ -1,15 +1,6 @@
 import Link from "next/link"
 import { auth } from "@/auth"
 import { logoutAction } from "@/lib/auth-actions"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 export async function UserMenu() {
   const session = await auth()
@@ -25,41 +16,49 @@ export async function UserMenu() {
   const { email, role } = session.user
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          {email}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel className="text-xs text-muted-foreground">
+    <details className="relative">
+      <summary className="cursor-pointer list-none rounded-md border px-3 py-1 text-sm hover:bg-accent">
+        {email}
+      </summary>
+      <div className="absolute right-0 z-50 mt-1 w-56 rounded-md border bg-background py-1 shadow-lg">
+        <div className="px-3 py-1.5 text-xs text-muted-foreground">
           Signed in as {role}
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        </div>
+        <div className="my-1 border-t" />
         {role === "business" && (
-          <DropdownMenuItem asChild>
-            <Link href="/dashboard/profile">Business dashboard</Link>
-          </DropdownMenuItem>
+          <Link
+            href="/dashboard/profile"
+            className="block px-3 py-1.5 text-sm hover:bg-accent"
+          >
+            Business dashboard
+          </Link>
         )}
         {role === "admin" && (
-          <DropdownMenuItem asChild>
-            <Link href="/admin">Admin</Link>
-          </DropdownMenuItem>
+          <Link
+            href="/admin"
+            className="block px-3 py-1.5 text-sm hover:bg-accent"
+          >
+            Admin
+          </Link>
         )}
         {role === "local" && (
-          <DropdownMenuItem asChild>
-            <Link href="/favorites">My favorites</Link>
-          </DropdownMenuItem>
+          <Link
+            href="/favorites"
+            className="block px-3 py-1.5 text-sm hover:bg-accent"
+          >
+            My favorites
+          </Link>
         )}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <form action={logoutAction}>
-            <button type="submit" className="w-full text-left">
-              Sign out
-            </button>
-          </form>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <div className="my-1 border-t" />
+        <form action={logoutAction}>
+          <button
+            type="submit"
+            className="block w-full px-3 py-1.5 text-left text-sm hover:bg-accent"
+          >
+            Sign out
+          </button>
+        </form>
+      </div>
+    </details>
   )
 }
