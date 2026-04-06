@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories } from "@/db/schema"
+import { deals, businesses, categories, favorites } from "@/db/schema"
 
 export type DealCardData = {
   id: number
@@ -158,6 +158,20 @@ export async function getAllCategories() {
   return db.query.categories.findMany({
     orderBy: (c, { asc }) => [asc(c.name)],
   })
+}
+
+export async function getFavoritedDeals(
+  userId: number
+): Promise<DealCardData[]> {
+  const rows = await db
+    .select(baseDealSelect)
+    .from(favorites)
+    .innerJoin(deals, eq(favorites.dealId, deals.id))
+    .innerJoin(businesses, eq(deals.businessId, businesses.id))
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .where(and(eq(favorites.userId, userId), activeAndApproved))
+    .orderBy(desc(deals.createdAt))
+  return rows.map(rowToCard)
 }
 
 export async function getBusinessBySlug(slug: string) {

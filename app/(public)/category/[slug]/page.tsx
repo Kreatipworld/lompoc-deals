@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { db } from "@/db/client"
 import { getDealsByCategorySlug } from "@/lib/queries"
-import { getIsAdmin } from "@/lib/is-admin"
+import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
@@ -29,9 +29,9 @@ export default async function CategoryPage({
   })
   if (!cat) notFound()
 
-  const [deals, isAdmin] = await Promise.all([
+  const [deals, viewer] = await Promise.all([
     getDealsByCategorySlug(params.slug),
-    getIsAdmin(),
+    getViewer(),
   ])
 
   return (
@@ -47,7 +47,11 @@ export default async function CategoryPage({
       <CategoryChips activeSlug={params.slug} />
 
       <section>
-        <DealGrid deals={deals} isAdmin={isAdmin} />
+        <DealGrid
+          deals={deals}
+          viewer={viewer}
+          fromPath={`/category/${params.slug}`}
+        />
       </section>
     </div>
   )

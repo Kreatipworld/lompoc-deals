@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { MapPin, Phone, Globe } from "lucide-react"
 import { getBusinessBySlug } from "@/lib/queries"
-import { getIsAdmin } from "@/lib/is-admin"
+import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
 import { Badge } from "@/components/ui/badge"
 
@@ -24,9 +24,9 @@ export default async function BusinessPage({
 }: {
   params: { slug: string }
 }) {
-  const [data, isAdmin] = await Promise.all([
+  const [data, viewer] = await Promise.all([
     getBusinessBySlug(params.slug),
-    getIsAdmin(),
+    getViewer(),
   ])
   if (!data) notFound()
   const { business, deals } = data
@@ -91,7 +91,11 @@ export default async function BusinessPage({
 
       <section>
         <h2 className="mb-4 text-xl font-semibold">Active deals</h2>
-        <DealGrid deals={deals} isAdmin={isAdmin} />
+        <DealGrid
+          deals={deals}
+          viewer={viewer}
+          fromPath={`/biz/${params.slug}`}
+        />
       </section>
     </div>
   )

@@ -1,10 +1,13 @@
 import Link from "next/link"
+import { Heart } from "lucide-react"
 import { formatDistanceToNowStrict } from "date-fns"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { adminSoftDeleteDealAction } from "@/lib/admin-actions"
+import { toggleFavoriteAction } from "@/lib/favorite-actions"
 import type { DealCardData } from "@/lib/queries"
+import type { Viewer } from "@/lib/viewer"
 
 const typeLabel: Record<DealCardData["type"], string> = {
   coupon: "Coupon",
@@ -14,11 +17,15 @@ const typeLabel: Record<DealCardData["type"], string> = {
 
 export function DealCard({
   deal,
-  isAdmin = false,
+  viewer,
+  fromPath,
 }: {
   deal: DealCardData
-  isAdmin?: boolean
+  viewer: Viewer
+  fromPath?: string
 }) {
+  const isFavorited = viewer.favoritedDealIds.has(deal.id)
+
   return (
     <Card className="flex h-full flex-col overflow-hidden">
       {deal.imageUrl && (
@@ -30,9 +37,32 @@ export function DealCard({
         />
       )}
       <CardHeader className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary">{typeLabel[deal.type]}</Badge>
-          {deal.discountText && <Badge>{deal.discountText}</Badge>}
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">{typeLabel[deal.type]}</Badge>
+            {deal.discountText && <Badge>{deal.discountText}</Badge>}
+          </div>
+          {viewer.isLocal && (
+            <form action={toggleFavoriteAction}>
+              <input type="hidden" name="dealId" value={deal.id} />
+              {fromPath && (
+                <input type="hidden" name="from" value={fromPath} />
+              )}
+              <button
+                type="submit"
+                aria-label={isFavorited ? "Unsave deal" : "Save deal"}
+                className="rounded-full p-1 hover:bg-accent"
+              >
+                <Heart
+                  className={
+                    isFavorited
+                      ? "h-5 w-5 fill-red-500 text-red-500"
+                      : "h-5 w-5 text-muted-foreground"
+                  }
+                />
+              </button>
+            </form>
+          )}
         </div>
         <h3 className="text-lg font-semibold leading-tight">{deal.title}</h3>
         <Link
@@ -59,7 +89,7 @@ export function DealCard({
           </Link>
         )}
       </CardFooter>
-      {isAdmin && (
+      {viewer.isAdmin && (
         <div className="border-t bg-muted/40 px-4 py-2">
           <form action={adminSoftDeleteDealAction}>
             <input type="hidden" name="dealId" value={deal.id} />
@@ -80,10 +110,12 @@ export function DealCard({
 
 export function DealGrid({
   deals,
-  isAdmin = false,
+  viewer,
+  fromPath,
 }: {
   deals: DealCardData[]
-  isAdmin?: boolean
+  viewer: Viewer
+  fromPath?: string
 }) {
   if (deals.length === 0) {
     return (
@@ -95,7 +127,7 @@ export function DealGrid({
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {deals.map((d) => (
-        <DealCard key={d.id} deal={d} isAdmin={isAdmin} />
+        <DealCard key={d.id} deal={d} viewer={viewer} fromPath={fromPath} />
       ))}
     </div>
   )

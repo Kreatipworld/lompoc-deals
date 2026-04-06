@@ -1,5 +1,5 @@
 import { searchDeals } from "@/lib/queries"
-import { getIsAdmin } from "@/lib/is-admin"
+import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
 import { SearchBar } from "@/components/search-bar"
 
@@ -11,9 +11,9 @@ export default async function SearchPage({
   searchParams: { q?: string }
 }) {
   const q = (searchParams.q ?? "").trim()
-  const [deals, isAdmin] = await Promise.all([
+  const [deals, viewer] = await Promise.all([
     q ? searchDeals(q) : Promise.resolve([]),
-    getIsAdmin(),
+    getViewer(),
   ])
 
   return (
@@ -30,7 +30,11 @@ export default async function SearchPage({
               {deals.length} {deals.length === 1 ? "result" : "results"} for{" "}
               <span className="font-medium text-foreground">&ldquo;{q}&rdquo;</span>
             </p>
-            <DealGrid deals={deals} isAdmin={isAdmin} />
+            <DealGrid
+              deals={deals}
+              viewer={viewer}
+              fromPath={`/search?q=${encodeURIComponent(q)}`}
+            />
           </>
         ) : (
           <p className="text-sm text-muted-foreground">
