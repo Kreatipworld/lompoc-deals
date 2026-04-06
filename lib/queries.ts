@@ -113,6 +113,47 @@ export async function searchDeals(
   return rows.map(rowToCard)
 }
 
+export type MapBusiness = {
+  id: number
+  name: string
+  slug: string
+  lat: number
+  lng: number
+  activeDealCount: number
+}
+
+export async function getMapBusinesses(): Promise<MapBusiness[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      lat: businesses.lat,
+      lng: businesses.lng,
+      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+    })
+    .from(businesses)
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .where(
+      and(
+        eq(businesses.status, "approved"),
+        sql`${businesses.lat} is not null and ${businesses.lng} is not null`
+      )
+    )
+    .groupBy(businesses.id)
+
+  return rows
+    .filter((r) => r.lat !== null && r.lng !== null)
+    .map((r) => ({
+      id: r.id,
+      name: r.name,
+      slug: r.slug,
+      lat: r.lat as number,
+      lng: r.lng as number,
+      activeDealCount: r.activeDealCount,
+    }))
+}
+
 export async function getAllCategories() {
   return db.query.categories.findMany({
     orderBy: (c, { asc }) => [asc(c.name)],
