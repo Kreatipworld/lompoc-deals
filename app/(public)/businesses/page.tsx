@@ -7,7 +7,12 @@ import {
   ArrowRight,
   Tag,
 } from "lucide-react"
-import { getDirectoryBusinesses, getAllCategories } from "@/lib/queries"
+import {
+  getDirectoryBusinesses,
+  getAllCategories,
+  getSiteStats,
+} from "@/lib/queries"
+import { SearchBar } from "@/components/search-bar"
 
 export const metadata = {
   title: "Business directory — Lompoc Deals",
@@ -16,9 +21,10 @@ export const metadata = {
 }
 
 export default async function BusinessesPage() {
-  const [businesses, cats] = await Promise.all([
+  const [businesses, cats, stats] = await Promise.all([
     getDirectoryBusinesses(),
     getAllCategories(),
+    getSiteStats(),
   ])
 
   // Group by category
@@ -41,47 +47,139 @@ export default async function BusinessesPage() {
 
   return (
     <>
-      {/* HEADER */}
-      <section className="border-b bg-gradient-to-b from-accent via-background to-background">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <Flower2 className="h-3.5 w-3.5" />
-              Lompoc, California
+      {/* ─────────────────────────────────────────────────
+          HERO — Editorial / Lompoc-in-bloom
+         ───────────────────────────────────────────────── */}
+      <section className="relative isolate overflow-hidden border-b">
+        {/* Cream gradient background */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-20 bg-gradient-to-b from-[hsl(40_38%_97%)] via-background to-background"
+        />
+
+        {/* Subtle paper-grain noise overlay */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 opacity-[0.035] mix-blend-multiply"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+          }}
+        />
+
+        {/* Coral glow blob (top-left) */}
+        <div
+          aria-hidden
+          className="absolute -left-32 top-0 -z-10 h-[480px] w-[480px] rounded-full bg-primary/15 blur-3xl"
+        />
+
+        {/* Big decorative flower silhouette (top-right, partially clipped) */}
+        <svg
+          aria-hidden
+          viewBox="0 0 600 600"
+          className="pointer-events-none absolute -right-24 -top-32 -z-10 h-[640px] w-[640px] text-primary/20 sm:-right-16 sm:-top-20"
+          fill="currentColor"
+        >
+          {/* 8-petal stylized poppy/flower */}
+          <g transform="translate(300 300)">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <ellipse
+                key={i}
+                cx="0"
+                cy="-160"
+                rx="90"
+                ry="180"
+                transform={`rotate(${i * 45})`}
+                opacity="0.55"
+              />
+            ))}
+            <circle r="80" fill="currentColor" opacity="0.9" />
+          </g>
+        </svg>
+
+        <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-16 sm:pb-28 sm:pt-24 lg:pb-32 lg:pt-32">
+          {/* Eyebrow */}
+          <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            <span className="h-px w-8 bg-foreground/30" />
+            <span>Directory</span>
+            <span className="text-foreground/30">·</span>
+            <span>Lompoc, California</span>
+            <span className="text-foreground/30">·</span>
+            <span>est. 2026</span>
+          </div>
+
+          {/* MASSIVE display headline */}
+          <h1 className="relative mt-6 font-display text-[clamp(3.5rem,12vw,9rem)] font-semibold leading-[0.92] tracking-[-0.04em]">
+            <span className="block">Lompoc,</span>
+            <span className="mt-1 block italic text-primary">
+              in full bloom.
             </span>
-            <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-              Business directory
-            </h1>
-            <p className="mt-3 text-base text-muted-foreground sm:text-lg">
-              {businesses.length} local{" "}
-              {businesses.length === 1 ? "business" : "businesses"} on Lompoc
-              Deals, organized by category. Tap any name for their profile and
-              active deals.
+          </h1>
+
+          {/* Description + meta */}
+          <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              The Flower Capital&apos;s complete index of local businesses —
+              restaurants, retail, services, and the spots only the locals
+              know. Browse by category, search by name, and find your next
+              favorite shop on H Street.
             </p>
+
+            {/* Floating count badge */}
+            <div className="hidden lg:block">
+              <div className="text-right">
+                <div className="font-display text-7xl font-semibold leading-none tracking-tight">
+                  {stats.businesses}
+                </div>
+                <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Local
+                  <br />
+                  businesses
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Big search bar */}
+          <div className="mt-10 max-w-2xl">
+            <SearchBar size="lg" />
+          </div>
+
+          {/* Quick category jump chips */}
+          <nav className="mt-6 flex flex-wrap gap-2">
+            {populatedCategories.map((g) => (
+              <a
+                key={g.slug}
+                href={`#${g.slug}`}
+                className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-background/70 px-3.5 py-1.5 text-sm font-medium backdrop-blur transition hover:border-primary/40 hover:bg-accent"
+              >
+                {g.name}
+                <span className="text-xs text-muted-foreground">
+                  · {g.items.length}
+                </span>
+              </a>
+            ))}
+          </nav>
+
+          {/* Editorial stat row */}
+          <div className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-foreground/10 pt-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <span>{stats.businesses} Businesses</span>
+            <span className="text-foreground/30">·</span>
+            <span>{stats.activeDeals} Active Deals</span>
+            <span className="text-foreground/30">·</span>
+            <span>{stats.categories} Categories</span>
+            <span className="text-foreground/30">·</span>
+            <span>Updated daily</span>
           </div>
         </div>
       </section>
 
-      {/* CATEGORIES + LISTINGS */}
-      <div className="mx-auto max-w-6xl px-4 py-12 space-y-12">
-        {/* Quick category jump */}
-        <nav className="flex flex-wrap gap-2">
-          {populatedCategories.map((g) => (
-            <a
-              key={g.slug}
-              href={`#${g.slug}`}
-              className="inline-flex items-center gap-1.5 rounded-full border bg-background px-3.5 py-1.5 text-sm font-medium hover:border-primary/40 hover:bg-accent"
-            >
-              {g.name}
-              <span className="text-xs text-muted-foreground">
-                · {g.items.length}
-              </span>
-            </a>
-          ))}
-        </nav>
-
+      {/* ─────────────────────────────────────────────────
+          DIRECTORY LISTINGS (unchanged from before)
+         ───────────────────────────────────────────────── */}
+      <div className="mx-auto max-w-6xl space-y-12 px-4 py-16">
         {populatedCategories.map((g) => (
-          <section key={g.slug} id={g.slug} className="scroll-mt-20">
+          <section key={g.slug} id={g.slug} className="scroll-mt-24">
             <div className="mb-5 flex items-end justify-between border-b pb-2">
               <h2 className="font-display text-2xl font-semibold tracking-tight">
                 {g.name}
