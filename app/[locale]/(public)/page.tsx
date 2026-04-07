@@ -5,6 +5,7 @@ import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
 import { CategoryStrip } from "@/components/category-strip"
 import { SearchBar } from "@/components/search-bar"
+import { WeatherWidget } from "@/components/weather-widget"
 
 export const metadata = {
   title: "Lompoc Deals — local coupons, specials, and announcements",
@@ -79,6 +80,11 @@ export default async function HomePage() {
           STICKY CATEGORY STRIP (Airbnb-style icon stacks)
          ───────────────────────────────────────────────── */}
       <CategoryStrip />
+
+      {/* ─────────────────────────────────────────────────
+          WEATHER WIDGET
+         ───────────────────────────────────────────────── */}
+      <WeatherWidget />
 
       {/* ─────────────────────────────────────────────────
           DEAL GRID
