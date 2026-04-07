@@ -176,6 +176,10 @@ export type MapBusiness = {
   lat: number
   lng: number
   activeDealCount: number
+  categoryName: string | null
+  categorySlug: string | null
+  hoursJson: unknown
+  address: string | null
 }
 
 export async function getMapBusinesses(): Promise<MapBusiness[]> {
@@ -186,17 +190,22 @@ export async function getMapBusinesses(): Promise<MapBusiness[]> {
       slug: businesses.slug,
       lat: businesses.lat,
       lng: businesses.lng,
+      address: businesses.address,
+      hoursJson: businesses.hoursJson,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
     })
     .from(businesses)
     .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .where(
       and(
         eq(businesses.status, "approved"),
         sql`${businesses.lat} is not null and ${businesses.lng} is not null`
       )
     )
-    .groupBy(businesses.id)
+    .groupBy(businesses.id, categories.id)
 
   return rows
     .filter((r) => r.lat !== null && r.lng !== null)
@@ -206,6 +215,10 @@ export async function getMapBusinesses(): Promise<MapBusiness[]> {
       slug: r.slug,
       lat: r.lat as number,
       lng: r.lng as number,
+      address: r.address,
+      hoursJson: r.hoursJson,
+      categoryName: r.categoryName,
+      categorySlug: r.categorySlug,
       activeDealCount: r.activeDealCount,
     }))
 }
