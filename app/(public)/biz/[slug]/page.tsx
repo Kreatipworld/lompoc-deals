@@ -66,37 +66,51 @@ export default async function BusinessPage({
 
   return (
     <>
-      {/* COVER */}
-      <section className="relative">
-        <div className="relative h-56 sm:h-72">
-          {business.coverUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={business.coverUrl}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="h-full w-full bg-gradient-to-br from-primary/20 via-accent to-background" />
-          )}
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"
-          />
-        </div>
+      {/* ─────────────────────────────────────────────────
+          HEADER — soft gradient hero, no cover photo,
+          card sits in normal document flow (no overlap)
+         ───────────────────────────────────────────────── */}
+      <section className="relative isolate overflow-hidden border-b">
+        {/* Backdrop gradient */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-20 bg-gradient-to-b from-accent via-background to-background"
+        />
+        <div
+          aria-hidden
+          className="absolute -left-32 -top-20 -z-10 h-[420px] w-[420px] rounded-full bg-primary/15 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="absolute -right-20 top-10 -z-10 h-[300px] w-[300px] rounded-full bg-primary/10 blur-3xl"
+        />
 
-        {/* HEADER CARD */}
-        <div className="mx-auto -mt-20 max-w-6xl px-4">
-          <div className="rounded-3xl border bg-card p-6 shadow-lg sm:p-8">
-            <Link
-              href="/"
-              className="mb-4 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
-            >
-              <ArrowLeft className="h-3 w-3" />
-              Back to all deals
-            </Link>
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
+          {/* Back link */}
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-3 w-3" />
+            Back to all deals
+          </Link>
 
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+          {/* Eyebrow */}
+          <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <span>Business</span>
+            <span className="text-foreground/30">·</span>
+            <span>Lompoc, California</span>
+            {business.category && (
+              <>
+                <span className="text-foreground/30">·</span>
+                <span>{business.category.name}</span>
+              </>
+            )}
+          </div>
+
+          {/* HEADER CARD */}
+          <div className="mt-4 rounded-3xl border bg-card p-6 shadow-lg sm:p-8">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
               {/* Logo */}
               <div className="flex-shrink-0">
                 {business.logoUrl ? (
@@ -113,10 +127,10 @@ export default async function BusinessPage({
                 )}
               </div>
 
-              {/* Name + meta */}
+              {/* Title block */}
               <div className="flex-1 space-y-3">
                 <div>
-                  <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                  <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
                     {business.name}
                   </h1>
                   {business.category && (
@@ -130,7 +144,7 @@ export default async function BusinessPage({
                 </div>
 
                 {business.description && (
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
                     {business.description}
                   </p>
                 )}
@@ -142,10 +156,11 @@ export default async function BusinessPage({
                     {activeDeals.length} active{" "}
                     {activeDeals.length === 1 ? "deal" : "deals"}
                   </span>
-                  <span className="text-muted-foreground/40">·</span>
+                  <span className="text-foreground/30">·</span>
                   <span className="inline-flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
-                    Listed since {format(new Date(business.createdAt), "MMM yyyy")}
+                    Listed since{" "}
+                    {format(new Date(business.createdAt), "MMM yyyy")}
                   </span>
                 </div>
 
@@ -163,20 +178,14 @@ export default async function BusinessPage({
                 />
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* 2-COLUMN BODY */}
-      <section className="mx-auto max-w-6xl px-4 py-10">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
-          {/* Main column */}
-          <div className="space-y-8">
-            {/* Contact chips */}
-            <div className="flex flex-wrap gap-2">
+            {/* Contact chips inside the header card */}
+            <div className="mt-6 flex flex-wrap gap-2 border-t pt-5">
               {business.address && (
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    business.address
+                  )}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
@@ -206,22 +215,34 @@ export default async function BusinessPage({
                 </a>
               )}
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Active deals */}
-            <div>
-              <h2 className="mb-4 font-display text-2xl font-semibold tracking-tight">
+      {/* ─────────────────────────────────────────────────
+          2-COLUMN BODY
+         ───────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+          {/* MAIN — active deals */}
+          <div>
+            <div className="mb-6 flex items-end justify-between">
+              <h2 className="font-display text-2xl font-semibold tracking-tight">
                 Active deals
               </h2>
-              <DealGrid
-                deals={deals}
-                viewer={viewer}
-                fromPath={`/biz/${params.slug}`}
-              />
+              <p className="text-sm text-muted-foreground">
+                from {business.name}
+              </p>
             </div>
+            <DealGrid
+              deals={deals}
+              viewer={viewer}
+              fromPath={`/biz/${params.slug}`}
+            />
           </div>
 
-          {/* Sidebar */}
-          <aside className="space-y-4">
+          {/* SIDEBAR — map + hours */}
+          <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
             {business.lat != null && business.lng != null && (
               <div className="overflow-hidden rounded-2xl border shadow-sm">
                 <div className="h-64">
@@ -231,6 +252,12 @@ export default async function BusinessPage({
                     name={business.name}
                   />
                 </div>
+                {business.address && (
+                  <div className="border-t bg-card px-4 py-3 text-xs text-muted-foreground">
+                    <MapPin className="mr-1 inline h-3 w-3 text-primary" />
+                    {business.address}
+                  </div>
+                )}
               </div>
             )}
             <BusinessHours hoursJson={business.hoursJson} />
@@ -238,7 +265,9 @@ export default async function BusinessPage({
         </div>
       </section>
 
-      {/* CLAIM CTA */}
+      {/* ─────────────────────────────────────────────────
+          CLAIM CTA (only when business is owned by system@)
+         ───────────────────────────────────────────────── */}
       {isUnclaimed && (
         <section className="mx-auto mb-16 max-w-6xl px-4">
           <BusinessClaimCta slug={params.slug} />
