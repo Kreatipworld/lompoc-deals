@@ -8,6 +8,7 @@ import {
   Ticket,
   MoreHorizontal,
   Sparkles,
+  Home,
   type LucideIcon,
 } from "lucide-react"
 import { getAllCategories } from "@/lib/queries"
@@ -20,6 +21,7 @@ const ICONS: Record<string, LucideIcon> = {
   car: Car,
   ticket: Ticket,
   "more-horizontal": MoreHorizontal,
+  home: Home,
 }
 
 export async function CategoryChips({

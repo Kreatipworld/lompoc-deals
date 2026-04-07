@@ -10,6 +10,7 @@ import {
   MoreHorizontal,
   ArrowLeft,
   Sparkles,
+  Home,
   type LucideIcon,
 } from "lucide-react"
 import { db } from "@/db/client"
@@ -27,6 +28,7 @@ const ICONS: Record<string, LucideIcon> = {
   car: Car,
   ticket: Ticket,
   "more-horizontal": MoreHorizontal,
+  home: Home,
 }
 
 export async function generateMetadata({

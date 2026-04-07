@@ -8,6 +8,7 @@ import {
   Ticket,
   MoreHorizontal,
   Sparkles,
+  Home,
   type LucideIcon,
 } from "lucide-react"
 import { getAllCategories } from "@/lib/queries"
@@ -20,6 +21,7 @@ const ICONS: Record<string, LucideIcon> = {
   car: Car,
   ticket: Ticket,
   "more-horizontal": MoreHorizontal,
+  home: Home,
 }
 
 export async function CategoryStrip({
@@ -47,7 +49,7 @@ export async function CategoryStrip({
   return (
     <div className="sticky top-16 z-30 -mx-4 border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="scrollbar-none flex items-stretch gap-1 overflow-x-auto py-3 sm:gap-2">
+        <div className="scrollbar-none flex items-stretch justify-center gap-1 overflow-x-auto py-3 sm:gap-2">
           {items.map(({ slug, name, Icon, href }) => {
             const active = slug === (activeSlug ?? null)
             return (
