@@ -5,6 +5,7 @@ import { getBusinessBySlug } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { bumpViewCounts } from "@/lib/tracking"
 import { DealGrid } from "@/components/deal-card"
+import { DealsGate } from "@/components/deals-gate"
 import { Badge } from "@/components/ui/badge"
 
 export async function generateMetadata({
@@ -32,8 +33,8 @@ export default async function BusinessPage({
   if (!data) notFound()
   const { business, deals } = data
 
-  // Fire-and-forget view tracking — don't await, don't block render
-  if (deals.length > 0) {
+  // Fire-and-forget view tracking — only count for authed viewers
+  if (viewer.isAuthed && deals.length > 0) {
     void bumpViewCounts(deals.map((d) => d.id))
   }
 
@@ -96,12 +97,18 @@ export default async function BusinessPage({
       </header>
 
       <section>
-        <h2 className="mb-4 text-xl font-semibold">Active deals</h2>
-        <DealGrid
-          deals={deals}
-          viewer={viewer}
-          fromPath={`/biz/${params.slug}`}
-        />
+        <h2 className="mb-4 font-display text-2xl font-semibold tracking-tight">
+          Active deals
+        </h2>
+        {viewer.isAuthed ? (
+          <DealGrid
+            deals={deals}
+            viewer={viewer}
+            fromPath={`/biz/${params.slug}`}
+          />
+        ) : (
+          <DealsGate count={deals.length} fromPath={`/biz/${params.slug}`} />
+        )}
       </section>
     </div>
   )

@@ -3,6 +3,7 @@ import { db } from "@/db/client"
 import { getDealsByCategorySlug } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
+import { DealsGate } from "@/components/deals-gate"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 
@@ -47,11 +48,18 @@ export default async function CategoryPage({
       <CategoryChips activeSlug={params.slug} />
 
       <section>
-        <DealGrid
-          deals={deals}
-          viewer={viewer}
-          fromPath={`/category/${params.slug}`}
-        />
+        {viewer.isAuthed ? (
+          <DealGrid
+            deals={deals}
+            viewer={viewer}
+            fromPath={`/category/${params.slug}`}
+          />
+        ) : (
+          <DealsGate
+            count={deals.length}
+            fromPath={`/category/${params.slug}`}
+          />
+        )}
       </section>
     </div>
   )

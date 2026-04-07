@@ -1,6 +1,7 @@
 import { searchDeals } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
+import { DealsGate } from "@/components/deals-gate"
 import { SearchBar } from "@/components/search-bar"
 
 export const metadata = { title: "Search — Lompoc Deals" }
@@ -24,7 +25,12 @@ export default async function SearchPage({
       </section>
 
       <section>
-        {q ? (
+        {!viewer.isAuthed ? (
+          <DealsGate
+            count={deals.length}
+            fromPath={`/search${q ? `?q=${encodeURIComponent(q)}` : ""}`}
+          />
+        ) : q ? (
           <>
             <p className="mb-4 text-sm text-muted-foreground">
               {deals.length} {deals.length === 1 ? "result" : "results"} for{" "}

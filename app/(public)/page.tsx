@@ -3,6 +3,7 @@ import { Flower2, ArrowRight, Mail } from "lucide-react"
 import { getActiveDeals, getSiteStats } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
+import { DealsGate } from "@/components/deals-gate"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 
@@ -104,7 +105,11 @@ export default async function HomePage() {
             Updated continuously
           </p>
         </div>
-        <DealGrid deals={deals} viewer={viewer} fromPath="/" />
+        {viewer.isAuthed ? (
+          <DealGrid deals={deals} viewer={viewer} fromPath="/" />
+        ) : (
+          <DealsGate count={stats.activeDeals} fromPath="/" />
+        )}
       </section>
 
       {/* CTA — for businesses */}
