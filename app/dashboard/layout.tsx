@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { Store, Tag, BarChart3 } from "lucide-react"
+import { Store, Tag, BarChart3, CreditCard } from "lucide-react"
 import { auth } from "@/auth"
 
 export default async function DashboardLayout({
@@ -36,6 +36,11 @@ export default async function DashboardLayout({
             href="/dashboard/stats"
             icon={<BarChart3 className="h-4 w-4" />}
             label="Stats"
+          />
+          <NavLink
+            href="/dashboard/billing"
+            icon={<CreditCard className="h-4 w-4" />}
+            label="Billing"
           />
         </nav>
       </aside>

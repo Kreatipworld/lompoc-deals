@@ -182,8 +182,8 @@ export default async function ForBusinessesPage() {
           />
           <Benefit
             icon={<Tag className="h-5 w-5" />}
-            title="Unlimited deals"
-            body="Post coupons, specials, and announcements. No limits, no per-deal fees, no 'premium tier' upsells."
+            title="Deals that get noticed"
+            body="Post coupons, specials, and announcements. One flat monthly fee — no per-deal charges, no pay-to-win tricks."
           />
           <Benefit
             icon={<Eye className="h-5 w-5" />}
@@ -209,64 +209,119 @@ export default async function ForBusinessesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────
-          PRICING — single tier, free
+          PRICING — three subscription tiers
          ───────────────────────────────────────────────── */}
       <section className="border-y bg-secondary/30">
-        <div className="mx-auto max-w-3xl px-4 py-20">
+        <div className="mx-auto max-w-5xl px-4 py-20">
           <div className="text-center">
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Pricing
             </div>
             <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              <span className="italic text-primary">$0.</span> Forever.
+              Simple, local-first pricing.
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              The basics will always be free. We make money later by offering
-              optional featured spots — never by burying your listing.
+              Pay one flat monthly fee. No per-deal fees, no hidden charges, no ads on your profile.
             </p>
           </div>
 
-          <div className="mt-10 rounded-3xl border bg-card p-8 shadow-sm sm:p-10">
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-5xl font-semibold tracking-tight">
-                Free
-              </span>
-              <span className="text-sm text-muted-foreground">/ forever</span>
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {/* Basic */}
+            <div className="flex flex-col rounded-3xl border bg-card p-7 shadow-sm">
+              <div className="font-display text-xl font-semibold">Basic</div>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="font-display text-4xl font-bold">$49</span>
+                <span className="text-sm text-muted-foreground">/mo</span>
+              </div>
+              <ul className="mt-5 flex-1 space-y-2.5">
+                {[
+                  "Up to 5 active deals",
+                  "Business profile page",
+                  "Logo + cover image",
+                  "Map pin + directory listing",
+                  "View & click analytics",
+                  "Weekly digest inclusion",
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/signup"
+                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-xl border text-sm font-semibold transition hover:bg-accent"
+              >
+                Get started
+              </Link>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Everything you need to reach Lompoc locals.
-            </p>
-            <ul className="mt-6 space-y-3">
-              {[
-                "Unlimited business profile edits",
-                "Unlimited deals (coupons, specials, announcements)",
-                "Logo + cover image upload",
-                "Hours, social links, Google reviews link",
-                "Map pin + directory listing",
-                "View & click stats per deal",
-                "Weekly digest distribution",
-                "No ads on your profile",
-                "No credit card required",
-              ].map((line) => (
-                <li
-                  key={line}
-                  className="flex items-start gap-2.5 text-sm text-foreground"
-                >
-                  <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Check className="h-3 w-3" />
-                  </span>
-                  {line}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/signup"
-              className="mt-8 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground transition hover:bg-primary/90"
-            >
-              Get started — it&apos;s free
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+
+            {/* Pro — highlighted */}
+            <div className="relative flex flex-col rounded-3xl border-2 border-primary bg-card p-7 shadow-lg ring-1 ring-primary/20">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-primary-foreground">
+                Most popular
+              </div>
+              <div className="font-display text-xl font-semibold">Pro</div>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="font-display text-4xl font-bold">$99</span>
+                <span className="text-sm text-muted-foreground">/mo</span>
+              </div>
+              <ul className="mt-5 flex-1 space-y-2.5">
+                {[
+                  "Up to 20 active deals",
+                  "Everything in Basic",
+                  "Priority listing in search results",
+                  "Social media links on profile",
+                  "Hours + Google reviews link",
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/signup"
+                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+              >
+                Get started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </div>
+
+            {/* Premium */}
+            <div className="flex flex-col rounded-3xl border bg-card p-7 shadow-sm">
+              <div className="font-display text-xl font-semibold">Premium</div>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="font-display text-4xl font-bold">$199</span>
+                <span className="text-sm text-muted-foreground">/mo</span>
+              </div>
+              <ul className="mt-5 flex-1 space-y-2.5">
+                {[
+                  "Unlimited deals",
+                  "Everything in Pro",
+                  "Featured placement on homepage",
+                  "Real estate listings module",
+                  "Dedicated support",
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/signup"
+                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-xl border text-sm font-semibold transition hover:bg-accent"
+              >
+                Get started
+              </Link>
+            </div>
           </div>
+
+          <p className="mt-8 text-center text-xs text-muted-foreground">
+            All plans include a free trial. Cancel anytime.
+          </p>
         </div>
       </section>
 

@@ -3,13 +3,14 @@
 import { z } from "zod"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { and, eq } from "drizzle-orm"
+import { and, eq, gt, sql } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses, deals } from "@/db/schema"
+import { businesses, deals, subscriptions } from "@/db/schema"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
+import { TIERS } from "@/lib/stripe"
 
 function slugify(s: string) {
   return s
@@ -235,6 +236,38 @@ export async function saveDealAction(
   }
 
   const dealId = formData.get("dealId")
+
+  // Subscription tier gating for new deals only
+  if (!dealId) {
+    const sub = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.userId, userId),
+    })
+    const isActive = sub?.status === "active" || sub?.status === "trialing"
+    const tierKey = sub?.tier ?? "basic"
+    const limit = isActive ? TIERS[tierKey].dealLimit : 0
+
+    if (limit !== Infinity) {
+      const now = new Date()
+      const activeCount = await db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(deals)
+        .where(and(eq(deals.businessId, biz.id), gt(deals.expiresAt, now)))
+        .then((r) => r[0]?.count ?? 0)
+
+      if (activeCount >= limit) {
+        if (!isActive) {
+          return {
+            error:
+              "You need an active subscription to post deals. Visit Billing to subscribe.",
+          }
+        }
+        return {
+          error: `Your ${TIERS[tierKey].name} plan allows up to ${limit} active deals. Upgrade your plan to post more.`,
+        }
+      }
+    }
+  }
+
   if (dealId) {
     // Edit existing — verify ownership via biz
     const id = parseInt(dealId.toString(), 10)

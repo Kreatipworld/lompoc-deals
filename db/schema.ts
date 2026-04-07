@@ -169,6 +169,41 @@ export const businessClaims = pgTable("business_claims", {
     .defaultNow(),
 })
 
+// ---------- subscriptions ----------
+export const subscriptionTier = pgEnum("subscription_tier", [
+  "basic",
+  "pro",
+  "premium",
+])
+export const subscriptionStatus = pgEnum("subscription_status", [
+  "active",
+  "past_due",
+  "canceled",
+  "trialing",
+])
+
+export const subscriptions = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" })
+    .unique(),
+  stripeCustomerId: varchar("stripe_customer_id", { length: 200 })
+    .notNull()
+    .unique(),
+  stripeSubscriptionId: varchar("stripe_subscription_id", { length: 200 }).unique(),
+  tier: subscriptionTier("tier").notNull().default("basic"),
+  status: subscriptionStatus("status").notNull().default("trialing"),
+  currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+  cancelAtPeriodEnd: integer("cancel_at_period_end").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+})
+
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),
