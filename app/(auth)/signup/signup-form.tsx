@@ -2,17 +2,19 @@
 
 import { useFormState, useFormStatus } from "react-dom"
 import Link from "next/link"
+import { Mail, Lock, Heart, Store } from "lucide-react"
 import { signupAction, type FormState } from "@/lib/auth-actions"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" disabled={pending} className="w-full">
-      {pending ? "Creating account…" : "Sign up"}
-    </Button>
+    <button
+      type="submit"
+      disabled={pending}
+      className="inline-flex h-11 w-full items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
+    >
+      {pending ? "Creating account…" : "Create account"}
+    </button>
   )
 }
 
@@ -24,7 +26,8 @@ export function SignupForm() {
 
   return (
     <form action={action} className="space-y-5">
-      <div className="grid grid-cols-2 gap-2 rounded-lg border p-1">
+      {/* Role toggle — visual cards */}
+      <div className="grid grid-cols-2 gap-3">
         <label className="cursor-pointer">
           <input
             type="radio"
@@ -33,8 +36,12 @@ export function SignupForm() {
             defaultChecked
             className="peer sr-only"
           />
-          <div className="rounded-md px-3 py-2 text-center text-sm font-medium peer-checked:bg-primary peer-checked:text-primary-foreground">
-            I&apos;m a local
+          <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-4 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">
+            <Heart className="h-5 w-5 text-primary" />
+            <div className="text-sm font-semibold">I&apos;m a local</div>
+            <div className="text-[11px] text-muted-foreground">
+              Save favorites
+            </div>
           </div>
         </label>
         <label className="cursor-pointer">
@@ -44,44 +51,64 @@ export function SignupForm() {
             value="business"
             className="peer sr-only"
           />
-          <div className="rounded-md px-3 py-2 text-center text-sm font-medium peer-checked:bg-primary peer-checked:text-primary-foreground">
-            I own a business
+          <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-4 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">
+            <Store className="h-5 w-5 text-primary" />
+            <div className="text-sm font-semibold">I own a business</div>
+            <div className="text-[11px] text-muted-foreground">
+              Post your deals
+            </div>
           </div>
         </label>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          required
-        />
+        <label htmlFor="email" className="text-sm font-medium text-foreground">
+          Email
+        </label>
+        <div className="relative">
+          <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            placeholder="you@example.com"
+            className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
+          />
+        </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="new-password"
-          minLength={6}
-          required
-        />
+        <label htmlFor="password" className="text-sm font-medium text-foreground">
+          Password
+        </label>
+        <div className="relative">
+          <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            minLength={6}
+            required
+            placeholder="At least 6 characters"
+            className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
+          />
+        </div>
       </div>
 
       {state?.error && (
-        <p className="text-sm text-destructive">{state.error}</p>
+        <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {state.error}
+        </p>
       )}
 
       <SubmitButton />
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link href="/login" className="underline">
+        <Link href="/login" className="font-medium text-primary hover:underline">
           Sign in
         </Link>
       </p>

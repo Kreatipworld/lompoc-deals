@@ -2,17 +2,19 @@
 
 import { useFormState, useFormStatus } from "react-dom"
 import Link from "next/link"
+import { Mail, Lock } from "lucide-react"
 import { loginAction, type FormState } from "@/lib/auth-actions"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" disabled={pending} className="w-full">
+    <button
+      type="submit"
+      disabled={pending}
+      className="inline-flex h-11 w-full items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
+    >
       {pending ? "Signing in…" : "Sign in"}
-    </Button>
+    </button>
   )
 }
 
@@ -27,36 +29,55 @@ export function LoginForm({ from }: { from?: string }) {
       {from && <input type="hidden" name="from" value={from} />}
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          required
-        />
+        <label htmlFor="email" className="text-sm font-medium text-foreground">
+          Email
+        </label>
+        <div className="relative">
+          <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            placeholder="you@example.com"
+            className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
+          />
+        </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          required
-        />
+        <label htmlFor="password" className="text-sm font-medium text-foreground">
+          Password
+        </label>
+        <div className="relative">
+          <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            placeholder="••••••••"
+            className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
+          />
+        </div>
       </div>
 
       {state?.error && (
-        <p className="text-sm text-destructive">{state.error}</p>
+        <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {state.error}
+        </p>
       )}
 
       <SubmitButton />
 
       <p className="text-center text-sm text-muted-foreground">
         New here?{" "}
-        <Link href="/signup" className="underline">
+        <Link
+          href="/signup"
+          className="font-medium text-primary hover:underline"
+        >
           Create an account
         </Link>
       </p>
