@@ -1,108 +1,41 @@
 // Zillow listing sync via Apify's maxcopell/zillow-detail-scraper.
 // Used by both the manual import script and the daily cron route.
+//
+// Auto-attributes each listing to its REAL brokerage from Zillow's
+// `brokerageName` field. Creates new brokerage businesses on the fly
+// when Zillow returns a brokerage we haven't seen before.
 
 import { sql, eq, and, inArray } from "drizzle-orm"
 import { db } from "@/db/client"
-import { propertyListings, businesses } from "@/db/schema"
+import { propertyListings, businesses, categories, users } from "@/db/schema"
 
 const ACTOR_ID = "ENK9p4RZHg0iVso52" // maxcopell/zillow-detail-scraper
 
-// Lompoc addresses to track + which brokerage to assign them to.
-// Brokerage assignment is arbitrary — Zillow doesn't expose listing-agent
-// per address consistently.
+// Lompoc addresses we track. Brokerage assignment is now AUTOMATIC —
+// we read it from Zillow's response. The bizSlug field below is only used
+// as a FALLBACK if Zillow doesn't return a brokerageName.
 export const TRACKED: Array<{
   address: string
-  bizSlug: string
+  fallbackBizSlug: string
   status: "FOR_SALE" | "FOR_RENT"
 }> = [
-  // FOR SALE — 11 verified Lompoc Zillow addresses
-  {
-    address: "933 Bellflower Ln, Lompoc, CA 93436",
-    bizSlug: "coldwell-banker-select-realty",
-    status: "FOR_SALE",
-  },
-  {
-    address: "516 N 2nd St, Lompoc, CA 93436",
-    bizSlug: "century-21-hometown-realty",
-    status: "FOR_SALE",
-  },
-  {
-    address: "426 S K St, Lompoc, CA 93436",
-    bizSlug: "coldwell-banker-select-realty",
-    status: "FOR_SALE",
-  },
-  {
-    address: "538 Andromeda Dr, Lompoc, CA 93436",
-    bizSlug: "hinkens-group",
-    status: "FOR_SALE",
-  },
-  {
-    address: "1350 Purisima Rd, Lompoc, CA 93436",
-    bizSlug: "century-21-hometown-realty",
-    status: "FOR_SALE",
-  },
-  {
-    address: "3890 Via Mondo, Lompoc, CA 93436",
-    bizSlug: "coldwell-banker-select-realty",
-    status: "FOR_SALE",
-  },
-  {
-    address: "4182 Sirius Ave, Lompoc, CA 93436",
-    bizSlug: "hinkens-group",
-    status: "FOR_SALE",
-  },
-  {
-    address: "1221 Westbrook Dr, Lompoc, CA 93436",
-    bizSlug: "century-21-hometown-realty",
-    status: "FOR_SALE",
-  },
-  {
-    address: "1505 E Cherry Ave, Lompoc, CA 93436",
-    bizSlug: "coldwell-banker-select-realty",
-    status: "FOR_SALE",
-  },
-  {
-    address: "1317 N V St SPACE 127, Lompoc, CA 93436",
-    bizSlug: "hinkens-group",
-    status: "FOR_SALE",
-  },
-  {
-    address: "825 E Ocean Ave SPACE 24B, Lompoc, CA 93436",
-    bizSlug: "century-21-hometown-realty",
-    status: "FOR_SALE",
-  },
-
-  // FOR RENT — 6 verified Lompoc Zillow rental addresses
-  {
-    address: "1376 Village Meadows Dr, Lompoc, CA 93436",
-    bizSlug: "century-21-hometown-realty",
-    status: "FOR_RENT",
-  },
-  {
-    address: "1445 Calle Marana, Lompoc, CA 93436",
-    bizSlug: "hinkens-group",
-    status: "FOR_RENT",
-  },
-  {
-    address: "217 Amherst Pl, Lompoc, CA 93436",
-    bizSlug: "hinkens-group",
-    status: "FOR_RENT",
-  },
-  {
-    address: "3526 Constellation Rd, Lompoc, CA 93436",
-    bizSlug: "century-21-hometown-realty",
-    status: "FOR_RENT",
-  },
-  {
-    address: "401 N Lupine St #C, Lompoc, CA 93436",
-    bizSlug: "coldwell-banker-select-realty",
-    status: "FOR_RENT",
-  },
-  {
-    address: "1493 Calle Segunda, Lompoc, CA 93436",
-    bizSlug: "hinkens-group",
-    status: "FOR_RENT",
-  },
+  { address: "933 Bellflower Ln, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_SALE" },
+  { address: "516 N 2nd St, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "426 S K St, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_SALE" },
+  { address: "538 Andromeda Dr, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_SALE" },
+  { address: "1350 Purisima Rd, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "3890 Via Mondo, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_SALE" },
+  { address: "4182 Sirius Ave, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_SALE" },
+  { address: "1221 Westbrook Dr, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "1505 E Cherry Ave, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_SALE" },
+  { address: "1317 N V St SPACE 127, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_SALE" },
+  { address: "825 E Ocean Ave SPACE 24B, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "1376 Village Meadows Dr, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_RENT" },
+  { address: "1445 Calle Marana, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_RENT" },
+  { address: "217 Amherst Pl, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_RENT" },
+  { address: "3526 Constellation Rd, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_RENT" },
+  { address: "401 N Lupine St #C, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_RENT" },
+  { address: "1493 Calle Segunda, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_RENT" },
 ]
 
 type ZillowItem = {
@@ -121,11 +54,21 @@ type ZillowItem = {
   longitude?: number
   latitude?: number
   hdpUrl?: string
+  brokerageName?: string
+  attributionInfo?: { agentName?: string; mlsName?: string; agentPhoneNumber?: string }
   responsivePhotos?: Array<{
     mixedSources?: { jpeg?: Array<{ url: string; width: number }> }
   }>
   hiResImageLink?: string
   imgSrc?: string
+}
+
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 100)
 }
 
 function bestPhotoUrl(item: ZillowItem): string | null {
@@ -178,17 +121,89 @@ async function callApify(addresses: string[], status: "FOR_SALE" | "FOR_RENT") {
   return (await res.json()) as ZillowItem[]
 }
 
+/**
+ * Find an existing real estate business by name (fuzzy slug match) OR
+ * create a new one with sensible defaults. Used for auto-attribution.
+ */
+async function findOrCreateBrokerage(
+  brokerageName: string,
+  ownerId: number,
+  realEstateCatId: number
+): Promise<{ id: number; created: boolean }> {
+  const slug = slugify(brokerageName)
+  // Try exact slug match first
+  const existing = await db.query.businesses.findFirst({
+    where: (b, { eq: e }) => e(b.slug, slug),
+  })
+  if (existing) return { id: existing.id, created: false }
+
+  // Try a fuzzy match: any real-estate business whose slug starts with first 3 words
+  const first3 = slug.split("-").slice(0, 3).join("-")
+  if (first3.length >= 5) {
+    const fuzzy = await db
+      .select({ id: businesses.id })
+      .from(businesses)
+      .innerJoin(categories, eq(businesses.categoryId, categories.id))
+      .where(
+        and(
+          eq(categories.slug, "real-estate"),
+          sql`${businesses.slug} like ${first3 + "%"}`
+        )
+      )
+      .limit(1)
+    if (fuzzy.length) return { id: fuzzy[0].id, created: false }
+  }
+
+  // Create a new brokerage
+  const inserted = await db
+    .insert(businesses)
+    .values({
+      ownerUserId: ownerId,
+      name: brokerageName,
+      slug,
+      description: `Lompoc-area real estate brokerage. Listing data sourced from Zillow.`,
+      categoryId: realEstateCatId,
+      address: "Lompoc, CA 93436",
+      lat: 34.6391,
+      lng: -120.4579,
+      coverUrl: `https://picsum.photos/seed/${slug}/1200/600`,
+      status: "approved",
+    })
+    .returning({ id: businesses.id })
+  return { id: inserted[0].id, created: true }
+}
+
 export type SyncReport = {
   fetched: number
   upserted: number
   skipped: number
+  newBrokerages: string[]
   errors: string[]
 }
 
 export async function syncZillowListings(): Promise<SyncReport> {
-  const report: SyncReport = { fetched: 0, upserted: 0, skipped: 0, errors: [] }
+  const report: SyncReport = {
+    fetched: 0,
+    upserted: 0,
+    skipped: 0,
+    newBrokerages: [],
+    errors: [],
+  }
 
-  // Group by status to minimize Apify calls
+  // Resolve owner + category once
+  const ownerRow = await db.query.users.findFirst({
+    where: (u, { eq: e }) => e(u.email, "system@lompocdeals.test"),
+    columns: { id: true },
+  })
+  if (!ownerRow) throw new Error("system owner missing")
+  const ownerId = ownerRow.id
+  const catRow = await db.query.categories.findFirst({
+    where: (c, { eq: e }) => e(c.slug, "real-estate"),
+    columns: { id: true },
+  })
+  if (!catRow) throw new Error("real-estate category missing")
+  const realEstateCatId = catRow.id
+
   const byStatus: Record<string, typeof TRACKED> = {}
   for (const t of TRACKED) {
     byStatus[t.status] = byStatus[t.status] || []
@@ -211,21 +226,42 @@ export async function syncZillowListings(): Promise<SyncReport> {
     for (const item of items) {
       try {
         const street = item.streetAddress || item.address?.streetAddress || ""
-        const target = targets.find((t) =>
-          t.address.toLowerCase().startsWith(street.toLowerCase())
-        )
-        if (!target) {
+        if (!street) {
           report.skipped++
           continue
         }
-        const biz = await db
-          .select({ id: businesses.id })
-          .from(businesses)
-          .where(eq(businesses.slug, target.bizSlug))
-          .limit(1)
-        if (!biz.length) {
-          report.skipped++
-          continue
+
+        // Determine the brokerage. Prefer Zillow's brokerageName, fall back
+        // to the TRACKED entry's mapping.
+        let businessId: number
+        if (item.brokerageName) {
+          const result = await findOrCreateBrokerage(
+            item.brokerageName,
+            ownerId,
+            realEstateCatId
+          )
+          businessId = result.id
+          if (result.created && !report.newBrokerages.includes(item.brokerageName)) {
+            report.newBrokerages.push(item.brokerageName)
+          }
+        } else {
+          const target = targets.find((t) =>
+            t.address.toLowerCase().startsWith(street.toLowerCase())
+          )
+          if (!target) {
+            report.skipped++
+            continue
+          }
+          const biz = await db
+            .select({ id: businesses.id })
+            .from(businesses)
+            .where(eq(businesses.slug, target.fallbackBizSlug))
+            .limit(1)
+          if (!biz.length) {
+            report.skipped++
+            continue
+          }
+          businessId = biz[0].id
         }
 
         const type = status === "FOR_RENT" ? "for-rent" : "for-sale"
@@ -252,7 +288,6 @@ export async function syncZillowListings(): Promise<SyncReport> {
           ? `https://www.zillow.com${item.hdpUrl}`
           : null
 
-        // Upsert by zpid if available, else by (business + address)
         if (zpid) {
           const existing = await db.query.propertyListings.findFirst({
             where: (l, { eq: e }) => e(l.zpid, zpid),
@@ -261,7 +296,7 @@ export async function syncZillowListings(): Promise<SyncReport> {
             await db
               .update(propertyListings)
               .set({
-                businessId: biz[0].id,
+                businessId,
                 type,
                 title: buildTitle(item),
                 description: (item.description ?? "").slice(0, 800) || null,
@@ -282,7 +317,7 @@ export async function syncZillowListings(): Promise<SyncReport> {
               .where(eq(propertyListings.id, existing.id))
           } else {
             await db.insert(propertyListings).values({
-              businessId: biz[0].id,
+              businessId,
               type,
               title: buildTitle(item),
               description: (item.description ?? "").slice(0, 800) || null,
@@ -311,7 +346,6 @@ export async function syncZillowListings(): Promise<SyncReport> {
   }
 
   // Mark any tracked listings that didn't come back as inactive
-  // (i.e., the listing was removed from Zillow)
   const trackedZpids = await db
     .select({ zpid: propertyListings.zpid })
     .from(propertyListings)

@@ -11,6 +11,10 @@ async function main() {
   console.log(`  fetched: ${report.fetched}`)
   console.log(`  upserted: ${report.upserted}`)
   console.log(`  skipped: ${report.skipped}`)
+  if (report.newBrokerages?.length) {
+    console.log("\n  new brokerages auto-created:")
+    report.newBrokerages.forEach((b) => console.log("    +", b))
+  }
   if (report.errors.length) {
     console.log("\n  errors:")
     report.errors.forEach((e) => console.log("    -", e))
