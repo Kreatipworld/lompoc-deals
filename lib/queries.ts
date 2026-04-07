@@ -226,7 +226,16 @@ export async function getListingsByBusinessId(
   }))
 }
 
-export async function getAllRealEstateListings(): Promise<PropertyListing[]> {
+export async function getAllRealEstateListings(
+  type?: "for-sale" | "for-rent"
+): Promise<PropertyListing[]> {
+  const conditions = [
+    eq(propertyListings.status, "active"),
+    eq(categories.slug, "real-estate"),
+    eq(businesses.status, "approved"),
+  ]
+  if (type) conditions.push(eq(propertyListings.type, type))
+
   const rows = await db
     .select({
       id: propertyListings.id,
@@ -246,13 +255,7 @@ export async function getAllRealEstateListings(): Promise<PropertyListing[]> {
     .from(propertyListings)
     .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
     .innerJoin(categories, eq(businesses.categoryId, categories.id))
-    .where(
-      and(
-        eq(propertyListings.status, "active"),
-        eq(categories.slug, "real-estate"),
-        eq(businesses.status, "approved")
-      )
-    )
+    .where(and(...conditions))
     .orderBy(desc(propertyListings.createdAt))
   return rows.map((r) => ({
     id: r.id,
@@ -267,6 +270,34 @@ export async function getAllRealEstateListings(): Promise<PropertyListing[]> {
     imageUrl: r.imageUrl,
     business: { id: r.bizId, name: r.bizName, slug: r.bizSlug },
   }))
+}
+
+export async function getListingById(id: number) {
+  const rows = await db
+    .select({
+      listing: propertyListings,
+      bizId: businesses.id,
+      bizName: businesses.name,
+      bizSlug: businesses.slug,
+      bizPhone: businesses.phone,
+      bizWebsite: businesses.website,
+    })
+    .from(propertyListings)
+    .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
+    .where(eq(propertyListings.id, id))
+    .limit(1)
+  if (!rows.length) return null
+  const r = rows[0]
+  return {
+    ...r.listing,
+    business: {
+      id: r.bizId,
+      name: r.bizName,
+      slug: r.bizSlug,
+      phone: r.bizPhone,
+      website: r.bizWebsite,
+    },
+  }
 }
 
 export type MapBusiness = {

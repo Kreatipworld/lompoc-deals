@@ -142,6 +142,13 @@ export const propertyListings = pgTable("property_listings", {
   address: text("address"),
   imageUrl: varchar("image_url", { length: 1000 }),
   status: varchar("status", { length: 20 }).notNull().default("active"),
+  zpid: varchar("zpid", { length: 50 }).unique(),
+  detailUrl: varchar("detail_url", { length: 1000 }),
+  lat: doublePrecision("lat"),
+  lng: doublePrecision("lng"),
+  photosJson: jsonb("photos_json"),
+  yearBuilt: integer("year_built"),
+  lastSyncedAt: timestamp("last_synced_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

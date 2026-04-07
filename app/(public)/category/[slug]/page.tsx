@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
+export const dynamic = "force-dynamic"
 import {
   Utensils,
   ShoppingBag,
@@ -53,8 +54,10 @@ export async function generateMetadata({
 
 export default async function CategoryPage({
   params,
+  searchParams,
 }: {
   params: { slug: string }
+  searchParams?: { tab?: string }
 }) {
   const cat = await db.query.categories.findFirst({
     where: (c, { eq }) => eq(c.slug, params.slug),
@@ -62,9 +65,17 @@ export default async function CategoryPage({
   if (!cat) notFound()
 
   const isRealEstate = params.slug === "real-estate"
+  const tab =
+    searchParams?.tab === "rent"
+      ? "for-rent"
+      : searchParams?.tab === "sale"
+        ? "for-sale"
+        : null
   const [deals, listings, viewer] = await Promise.all([
     isRealEstate ? Promise.resolve([]) : getDealsByCategorySlug(params.slug),
-    isRealEstate ? getAllRealEstateListings() : Promise.resolve([]),
+    isRealEstate
+      ? getAllRealEstateListings(tab ?? undefined)
+      : Promise.resolve([]),
     getViewer(),
   ])
   const itemCount = isRealEstate ? listings.length : deals.length
@@ -124,6 +135,40 @@ export default async function CategoryPage({
 
       {/* DEALS or LISTINGS */}
       <section className="mx-auto max-w-6xl px-4 py-10 pb-16">
+        {isRealEstate && (
+          <div className="mb-6 flex items-center gap-2 border-b">
+            <Link
+              href={`/category/${params.slug}`}
+              className={`relative -mb-px border-b-2 px-4 pb-3 pt-1 text-sm font-medium transition ${
+                !tab
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              All
+            </Link>
+            <Link
+              href={`/category/${params.slug}?tab=sale`}
+              className={`relative -mb-px border-b-2 px-4 pb-3 pt-1 text-sm font-medium transition ${
+                tab === "for-sale"
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              For sale
+            </Link>
+            <Link
+              href={`/category/${params.slug}?tab=rent`}
+              className={`relative -mb-px border-b-2 px-4 pb-3 pt-1 text-sm font-medium transition ${
+                tab === "for-rent"
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              For rent
+            </Link>
+          </div>
+        )}
         {isRealEstate ? (
           <PropertyListingGrid listings={listings} />
         ) : (

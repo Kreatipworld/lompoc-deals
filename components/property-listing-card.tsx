@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Bed, Bath, Maximize, MapPin, ArrowRight } from "lucide-react"
+import { Bed, Bath, Maximize, MapPin } from "lucide-react"
 import type { PropertyListing } from "@/lib/queries"
 
 function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
@@ -15,7 +15,10 @@ export function PropertyListingCard({
 }) {
   const isForSale = listing.type === "for-sale"
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+    <Link
+      href={`/listings/${listing.id}`}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+    >
       {/* Image */}
       <div className="relative h-52 overflow-hidden">
         {listing.imageUrl && (
@@ -87,17 +90,11 @@ export function PropertyListingCard({
           </p>
         )}
 
-        <div className="mt-auto pt-2">
-          <Link
-            href={`/biz/${listing.business.slug}`}
-            className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-          >
-            Listed by {listing.business.name}
-            <ArrowRight className="h-3 w-3" />
-          </Link>
+        <div className="mt-auto pt-2 text-xs font-medium text-primary">
+          Listed by {listing.business.name}
         </div>
       </div>
-    </article>
+    </Link>
   )
 }
 
