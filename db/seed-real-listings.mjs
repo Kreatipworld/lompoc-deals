@@ -95,8 +95,13 @@ const LISTINGS = {
   ],
 }
 
-function unsplashUrl(query, seed) {
-  return `https://source.unsplash.com/1200x800/?${query}&sig=${seed}`
+// loremflickr: themed Flickr CC photos with deterministic seeds
+// Format: https://loremflickr.com/1200/800/<tags>?lock=<n>
+function photoUrl(query, seed) {
+  // Convert seed string to a stable numeric lock value
+  let n = 0
+  for (const ch of seed) n = (n * 31 + ch.charCodeAt(0)) >>> 0
+  return `https://loremflickr.com/1200/800/${query}?lock=${n}`
 }
 
 async function main() {
@@ -117,7 +122,7 @@ async function main() {
     const businessId = biz[0].id
 
     for (const l of listings) {
-      const imageUrl = unsplashUrl(l.photoQuery, l.photoSeed)
+      const imageUrl = photoUrl(l.photoQuery, l.photoSeed)
       await sql`
         insert into property_listings (
           business_id, type, title, description, price_cents,
