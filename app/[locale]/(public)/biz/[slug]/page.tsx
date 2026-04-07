@@ -96,14 +96,25 @@ export default async function BusinessPage({
         />
 
         <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
-          {/* Back link */}
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-3 w-3" />
-            Back to all deals
-          </Link>
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
+            <Link href="/" className="transition hover:text-foreground">
+              Deals
+            </Link>
+            {business.category && (
+              <>
+                <ArrowLeft className="h-3 w-3 rotate-180" aria-hidden />
+                <Link
+                  href={`/category/${business.category.slug}`}
+                  className="transition hover:text-foreground"
+                >
+                  {business.category.name}
+                </Link>
+              </>
+            )}
+            <ArrowLeft className="h-3 w-3 rotate-180" aria-hidden />
+            <span className="font-medium text-foreground">{business.name}</span>
+          </nav>
 
           {/* Eyebrow */}
           <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">

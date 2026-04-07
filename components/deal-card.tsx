@@ -8,7 +8,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react"
-import { formatDistanceToNowStrict, isPast } from "date-fns"
+import { formatDistanceToNowStrict, isPast, differenceInHours } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { adminSoftDeleteDealAction } from "@/lib/admin-actions"
 import { toggleFavoriteAction } from "@/lib/favorite-actions"
@@ -49,6 +49,8 @@ export function DealCard({
 }) {
   const isFavorited = viewer.favoritedDealIds.has(deal.id)
   const expired = isPast(deal.expiresAt)
+  const hoursLeft = differenceInHours(deal.expiresAt, new Date())
+  const expiresSoon = !expired && hoursLeft < 72
   const TypeIcon = TYPE_META[deal.type].icon
 
   return (
@@ -91,6 +93,14 @@ export function DealCard({
             <span className="rounded-full bg-foreground/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-background">
               Expired
             </span>
+          </div>
+        )}
+
+        {/* Expires-soon amber ribbon (< 3 days) */}
+        {expiresSoon && (
+          <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm">
+            <Clock className="h-3 w-3" />
+            Ends soon
           </div>
         )}
 
