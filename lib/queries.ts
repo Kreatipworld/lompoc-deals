@@ -36,7 +36,23 @@ const baseDealSelect = {
   catSlug: categories.slug,
 }
 
-function rowToCard(r: typeof baseDealSelect extends infer _ ? any : never): DealCardData {
+type DealRow = {
+  id: number
+  type: "coupon" | "special" | "announcement"
+  title: string
+  description: string | null
+  imageUrl: string | null
+  discountText: string | null
+  expiresAt: Date
+  bizId: number
+  bizName: string
+  bizSlug: string
+  bizLogoUrl: string | null
+  catName: string | null
+  catSlug: string | null
+}
+
+function rowToCard(r: DealRow): DealCardData {
   return {
     id: r.id,
     type: r.type,

@@ -6,7 +6,7 @@ import { redirect } from "next/navigation"
 import { and, eq } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses, deals, categories } from "@/db/schema"
+import { businesses, deals } from "@/db/schema"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 
