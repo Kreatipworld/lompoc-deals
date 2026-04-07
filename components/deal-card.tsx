@@ -75,19 +75,27 @@ export function DealCard({
       <CardContent className="flex-1 text-sm text-muted-foreground">
         {deal.description}
       </CardContent>
-      <CardFooter className="flex items-center justify-between text-xs text-muted-foreground">
-        <span>
-          Expires in{" "}
-          {formatDistanceToNowStrict(deal.expiresAt, { addSuffix: false })}
-        </span>
-        {deal.business.categorySlug && (
-          <Link
-            href={`/category/${deal.business.categorySlug}`}
-            className="hover:underline"
-          >
-            {deal.business.categoryName}
-          </Link>
-        )}
+      <CardFooter className="flex flex-col items-stretch gap-2 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between">
+          <span>
+            Expires in{" "}
+            {formatDistanceToNowStrict(deal.expiresAt, { addSuffix: false })}
+          </span>
+          {deal.business.categorySlug && (
+            <Link
+              href={`/category/${deal.business.categorySlug}`}
+              className="hover:underline"
+            >
+              {deal.business.categoryName}
+            </Link>
+          )}
+        </div>
+        <Link
+          href={`/api/track/click?dealId=${deal.id}&to=/biz/${deal.business.slug}`}
+          className="inline-flex h-8 items-center justify-center rounded-md border bg-background px-3 text-sm font-medium hover:bg-accent"
+        >
+          View deal
+        </Link>
       </CardFooter>
       {viewer.isAdmin && (
         <div className="border-t bg-muted/40 px-4 py-2">

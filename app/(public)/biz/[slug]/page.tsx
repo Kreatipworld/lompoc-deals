@@ -3,6 +3,7 @@ import Link from "next/link"
 import { MapPin, Phone, Globe } from "lucide-react"
 import { getBusinessBySlug } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
+import { bumpViewCounts } from "@/lib/tracking"
 import { DealGrid } from "@/components/deal-card"
 import { Badge } from "@/components/ui/badge"
 
@@ -30,6 +31,11 @@ export default async function BusinessPage({
   ])
   if (!data) notFound()
   const { business, deals } = data
+
+  // Fire-and-forget view tracking — don't await, don't block render
+  if (deals.length > 0) {
+    void bumpViewCounts(deals.map((d) => d.id))
+  }
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-8">
