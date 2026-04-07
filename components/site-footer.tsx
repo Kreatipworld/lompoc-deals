@@ -60,6 +60,11 @@ export function SiteFooter() {
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
+                <Link href="/for-businesses" className="hover:text-foreground">
+                  Why list with us
+                </Link>
+              </li>
+              <li>
                 <Link href="/signup" className="hover:text-foreground">
                   List your business
                 </Link>

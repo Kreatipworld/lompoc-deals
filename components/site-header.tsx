@@ -44,6 +44,12 @@ export function SiteHeader() {
           >
             Subscribe
           </Link>
+          <Link
+            href="/for-businesses"
+            className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+          >
+            For businesses
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3">

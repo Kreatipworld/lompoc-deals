@@ -131,7 +131,7 @@ export default async function HomePage() {
             </div>
             <div className="flex flex-col gap-2 sm:flex-row md:flex-col">
               <Link
-                href="/signup"
+                href="/for-businesses"
                 className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
                 List your business
