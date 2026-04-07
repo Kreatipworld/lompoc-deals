@@ -1,18 +1,41 @@
 import Link from "next/link"
-import { Heart } from "lucide-react"
-import { formatDistanceToNowStrict } from "date-fns"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import {
+  Heart,
+  ArrowRight,
+  Clock,
+  Tag,
+  Megaphone,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react"
+import { formatDistanceToNowStrict, isPast } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { adminSoftDeleteDealAction } from "@/lib/admin-actions"
 import { toggleFavoriteAction } from "@/lib/favorite-actions"
 import type { DealCardData } from "@/lib/queries"
 import type { Viewer } from "@/lib/viewer"
 
-const typeLabel: Record<DealCardData["type"], string> = {
-  coupon: "Coupon",
-  special: "Special",
-  announcement: "News",
+const TYPE_META: Record<
+  DealCardData["type"],
+  { label: string; icon: LucideIcon }
+> = {
+  coupon: { label: "Coupon", icon: Tag },
+  special: { label: "Special", icon: Sparkles },
+  announcement: { label: "News", icon: Megaphone },
+}
+
+// 6 deterministic gradient palettes — picked by deal id so each card looks
+// distinct but stable across renders.
+const GRADIENTS = [
+  "from-orange-200 via-rose-100 to-amber-100",
+  "from-rose-200 via-orange-100 to-yellow-100",
+  "from-amber-200 via-pink-100 to-orange-100",
+  "from-pink-200 via-rose-100 to-red-100",
+  "from-yellow-200 via-amber-100 to-orange-100",
+  "from-red-100 via-orange-200 to-amber-100",
+]
+function gradientFor(id: number) {
+  return GRADIENTS[id % GRADIENTS.length]
 }
 
 export function DealCard({
@@ -25,78 +48,122 @@ export function DealCard({
   fromPath?: string
 }) {
   const isFavorited = viewer.favoritedDealIds.has(deal.id)
+  const expired = isPast(deal.expiresAt)
+  const TypeIcon = TYPE_META[deal.type].icon
 
   return (
-    <Card className="flex h-full flex-col overflow-hidden">
-      {deal.imageUrl && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={deal.imageUrl}
-          alt={deal.title}
-          className="h-40 w-full object-cover"
-        />
-      )}
-      <CardHeader className="space-y-2">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{typeLabel[deal.type]}</Badge>
-            {deal.discountText && <Badge>{deal.discountText}</Badge>}
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+      {/* MEDIA */}
+      <div className="relative h-48 overflow-hidden">
+        {deal.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={deal.imageUrl}
+            alt={deal.title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div
+            className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradientFor(
+              deal.id
+            )}`}
+          >
+            <TypeIcon className="h-14 w-14 text-foreground/20" strokeWidth={1.25} />
           </div>
-          {viewer.isLocal && (
-            <form action={toggleFavoriteAction}>
-              <input type="hidden" name="dealId" value={deal.id} />
-              {fromPath && (
-                <input type="hidden" name="from" value={fromPath} />
-              )}
-              <button
-                type="submit"
-                aria-label={isFavorited ? "Unsave deal" : "Save deal"}
-                className="rounded-full p-1 hover:bg-accent"
-              >
-                <Heart
-                  className={
-                    isFavorited
-                      ? "h-5 w-5 fill-red-500 text-red-500"
-                      : "h-5 w-5 text-muted-foreground"
-                  }
-                />
-              </button>
-            </form>
-          )}
+        )}
+
+        {/* Discount badge (top-left, big and bold) */}
+        {deal.discountText && (
+          <div className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-foreground shadow-md">
+            {deal.discountText}
+          </div>
+        )}
+
+        {/* Type badge (bottom-left, subtle) */}
+        <div className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-medium text-foreground shadow-sm backdrop-blur">
+          <TypeIcon className="h-3 w-3" />
+          {TYPE_META[deal.type].label}
         </div>
-        <h3 className="text-lg font-semibold leading-tight">{deal.title}</h3>
-        <Link
-          href={`/biz/${deal.business.slug}`}
-          className="text-sm text-muted-foreground hover:underline"
-        >
-          {deal.business.name}
-        </Link>
-      </CardHeader>
-      <CardContent className="flex-1 text-sm text-muted-foreground">
-        {deal.description}
-      </CardContent>
-      <CardFooter className="flex flex-col items-stretch gap-2 text-xs text-muted-foreground">
-        <div className="flex items-center justify-between">
-          <span>
-            Expires in{" "}
-            {formatDistanceToNowStrict(deal.expiresAt, { addSuffix: false })}
+
+        {/* Expired overlay */}
+        {expired && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <span className="rounded-full bg-foreground/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-background">
+              Expired
+            </span>
+          </div>
+        )}
+
+        {/* Heart (top-right, circular white) */}
+        {viewer.isLocal && !expired && (
+          <form action={toggleFavoriteAction} className="absolute right-3 top-3">
+            <input type="hidden" name="dealId" value={deal.id} />
+            {fromPath && <input type="hidden" name="from" value={fromPath} />}
+            <button
+              type="submit"
+              aria-label={isFavorited ? "Unsave deal" : "Save deal"}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-background/95 shadow-md transition hover:scale-110 hover:bg-background"
+            >
+              <Heart
+                className={
+                  isFavorited
+                    ? "h-4 w-4 fill-primary text-primary"
+                    : "h-4 w-4 text-muted-foreground"
+                }
+              />
+            </button>
+          </form>
+        )}
+      </div>
+
+      {/* BODY */}
+      <div className="flex flex-1 flex-col gap-3 p-5">
+        <div className="space-y-1">
+          <h3 className="font-display text-lg font-semibold leading-snug tracking-tight line-clamp-2">
+            {deal.title}
+          </h3>
+          <Link
+            href={`/biz/${deal.business.slug}`}
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            {deal.business.name}
+          </Link>
+        </div>
+
+        {deal.description && (
+          <p className="line-clamp-2 text-sm text-muted-foreground">
+            {deal.description}
+          </p>
+        )}
+
+        <div className="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+          <span className="inline-flex items-center gap-1">
+            <Clock className="h-3 w-3" />
+            {expired
+              ? "Expired"
+              : `Expires in ${formatDistanceToNowStrict(deal.expiresAt)}`}
           </span>
           {deal.business.categorySlug && (
             <Link
               href={`/category/${deal.business.categorySlug}`}
-              className="hover:underline"
+              className="hover:text-foreground hover:underline"
             >
               {deal.business.categoryName}
             </Link>
           )}
         </div>
-        <Link
-          href={`/api/track/click?dealId=${deal.id}&to=/biz/${deal.business.slug}`}
-          className="inline-flex h-8 items-center justify-center rounded-md border bg-background px-3 text-sm font-medium hover:bg-accent"
-        >
-          View deal
-        </Link>
-      </CardFooter>
+
+        {!expired && (
+          <Link
+            href={`/api/track/click?dealId=${deal.id}&to=/biz/${deal.business.slug}`}
+            className="mt-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-foreground px-4 text-sm font-medium text-background transition hover:bg-foreground/90"
+          >
+            View deal
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        )}
+      </div>
+
       {viewer.isAdmin && (
         <div className="border-t bg-muted/40 px-4 py-2">
           <form action={adminSoftDeleteDealAction}>
@@ -112,7 +179,7 @@ export function DealCard({
           </form>
         </div>
       )}
-    </Card>
+    </article>
   )
 }
 
@@ -127,13 +194,19 @@ export function DealGrid({
 }) {
   if (deals.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
-        No deals match yet. Check back soon.
-      </p>
+      <div className="rounded-2xl border border-dashed bg-muted/30 px-6 py-16 text-center">
+        <Sparkles className="mx-auto h-10 w-10 text-muted-foreground/60" />
+        <h3 className="mt-4 font-display text-xl font-semibold">
+          No deals yet
+        </h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Check back soon — new offers drop every day from local businesses.
+        </p>
+      </div>
     )
   }
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {deals.map((d) => (
         <DealCard key={d.id} deal={d} viewer={viewer} fromPath={fromPath} />
       ))}
