@@ -15,7 +15,7 @@ export const TRACKED: Array<{
   bizSlug: string
   status: "FOR_SALE" | "FOR_RENT"
 }> = [
-  // FOR SALE
+  // FOR SALE — 11 verified Lompoc Zillow addresses
   {
     address: "933 Bellflower Ln, Lompoc, CA 93436",
     bizSlug: "coldwell-banker-select-realty",
@@ -36,7 +36,43 @@ export const TRACKED: Array<{
     bizSlug: "hinkens-group",
     status: "FOR_SALE",
   },
-  // FOR RENT
+  {
+    address: "1350 Purisima Rd, Lompoc, CA 93436",
+    bizSlug: "century-21-hometown-realty",
+    status: "FOR_SALE",
+  },
+  {
+    address: "3890 Via Mondo, Lompoc, CA 93436",
+    bizSlug: "coldwell-banker-select-realty",
+    status: "FOR_SALE",
+  },
+  {
+    address: "4182 Sirius Ave, Lompoc, CA 93436",
+    bizSlug: "hinkens-group",
+    status: "FOR_SALE",
+  },
+  {
+    address: "1221 Westbrook Dr, Lompoc, CA 93436",
+    bizSlug: "century-21-hometown-realty",
+    status: "FOR_SALE",
+  },
+  {
+    address: "1505 E Cherry Ave, Lompoc, CA 93436",
+    bizSlug: "coldwell-banker-select-realty",
+    status: "FOR_SALE",
+  },
+  {
+    address: "1317 N V St SPACE 127, Lompoc, CA 93436",
+    bizSlug: "hinkens-group",
+    status: "FOR_SALE",
+  },
+  {
+    address: "825 E Ocean Ave SPACE 24B, Lompoc, CA 93436",
+    bizSlug: "century-21-hometown-realty",
+    status: "FOR_SALE",
+  },
+
+  // FOR RENT — 6 verified Lompoc Zillow rental addresses
   {
     address: "1376 Village Meadows Dr, Lompoc, CA 93436",
     bizSlug: "century-21-hometown-realty",
@@ -60,6 +96,11 @@ export const TRACKED: Array<{
   {
     address: "401 N Lupine St #C, Lompoc, CA 93436",
     bizSlug: "coldwell-banker-select-realty",
+    status: "FOR_RENT",
+  },
+  {
+    address: "1493 Calle Segunda, Lompoc, CA 93436",
+    bizSlug: "hinkens-group",
     status: "FOR_RENT",
   },
 ]
