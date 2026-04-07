@@ -1,15 +1,19 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { Flower2 } from "lucide-react"
 import { UserMenu } from "@/components/user-menu"
+import { LanguageSwitcher } from "@/components/language-switcher"
+import { getTranslations } from "next-intl/server"
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const t = await getTranslations("nav")
+
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link
           href="/"
           className="group flex items-center gap-2"
-          aria-label="Lompoc Deals home"
+          aria-label={t("home")}
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition group-hover:scale-105">
             <Flower2 className="h-5 w-5" />
@@ -24,35 +28,36 @@ export function SiteHeader() {
             href="/"
             className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
-            Feed
+            {t("feed")}
           </Link>
           <Link
             href="/businesses"
             className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
-            Directory
+            {t("directory")}
           </Link>
           <Link
             href="/map"
             className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
-            Map
+            {t("map")}
           </Link>
           <Link
             href="/subscribe"
             className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
-            Subscribe
+            {t("subscribe")}
           </Link>
           <Link
             href="/for-businesses"
             className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
-            For businesses
+            {t("forBusinesses")}
           </Link>
         </nav>
 
         <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           <UserMenu />
         </div>
       </div>
@@ -62,25 +67,25 @@ export function SiteHeader() {
           href="/"
           className="text-xs font-medium text-muted-foreground hover:text-foreground"
         >
-          Feed
+          {t("feed")}
         </Link>
         <Link
           href="/businesses"
           className="text-xs font-medium text-muted-foreground hover:text-foreground"
         >
-          Directory
+          {t("directory")}
         </Link>
         <Link
           href="/map"
           className="text-xs font-medium text-muted-foreground hover:text-foreground"
         >
-          Map
+          {t("map")}
         </Link>
         <Link
           href="/subscribe"
           className="text-xs font-medium text-muted-foreground hover:text-foreground"
         >
-          Subscribe
+          {t("subscribe")}
         </Link>
       </nav>
     </header>

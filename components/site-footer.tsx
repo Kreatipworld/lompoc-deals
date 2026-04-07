@@ -1,7 +1,11 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { Flower2 } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const t = await getTranslations("footer")
+  const year = new Date().getFullYear()
+
   return (
     <footer className="mt-16 border-t bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-12">
@@ -15,40 +19,40 @@ export function SiteFooter() {
                 Lompoc Deals
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground">
-              Local coupons, specials, and announcements from the Flower
-              Capital of America.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("tagline")}</p>
           </div>
 
           <div className="space-y-3">
             <h3 className="font-display text-sm font-semibold tracking-tight">
-              Browse
+              {t("browse")}
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/" className="hover:text-foreground">
-                  Latest deals
+                  {t("latestDeals")}
                 </Link>
               </li>
               <li>
                 <Link href="/businesses" className="hover:text-foreground">
-                  Business directory
+                  {t("businessDirectory")}
                 </Link>
               </li>
               <li>
                 <Link href="/map" className="hover:text-foreground">
-                  Map view
+                  {t("mapView")}
                 </Link>
               </li>
               <li>
                 <Link href="/search" className="hover:text-foreground">
-                  Search
+                  {t("search")}
                 </Link>
               </li>
               <li>
-                <Link href="/category/food-drink" className="hover:text-foreground">
-                  Food &amp; Drink
+                <Link
+                  href="/category/food-drink"
+                  className="hover:text-foreground"
+                >
+                  {t("foodDrink")}
                 </Link>
               </li>
             </ul>
@@ -56,27 +60,30 @@ export function SiteFooter() {
 
           <div className="space-y-3">
             <h3 className="font-display text-sm font-semibold tracking-tight">
-              For businesses
+              {t("forBusinesses")}
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/for-businesses" className="hover:text-foreground">
-                  Why list with us
+                  {t("whyList")}
                 </Link>
               </li>
               <li>
                 <Link href="/signup" className="hover:text-foreground">
-                  List your business
+                  {t("listYourBusiness")}
                 </Link>
               </li>
               <li>
                 <Link href="/login" className="hover:text-foreground">
-                  Sign in
+                  {t("signIn")}
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard/profile" className="hover:text-foreground">
-                  Dashboard
+                <Link
+                  href="/dashboard/profile"
+                  className="hover:text-foreground"
+                >
+                  {t("dashboard")}
                 </Link>
               </li>
             </ul>
@@ -84,12 +91,12 @@ export function SiteFooter() {
 
           <div className="space-y-3">
             <h3 className="font-display text-sm font-semibold tracking-tight">
-              Stay in touch
+              {t("stayInTouch")}
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/subscribe" className="hover:text-foreground">
-                  Weekly digest
+                  {t("weeklyDigest")}
                 </Link>
               </li>
             </ul>
@@ -97,8 +104,8 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t pt-6 text-xs text-muted-foreground sm:flex-row">
-          <p>© {new Date().getFullYear()} Lompoc Deals · Lompoc, CA</p>
-          <p>Made with care for the Flower Capital.</p>
+          <p>{t("copyright", { year })}</p>
+          <p>{t("madeWith")}</p>
         </div>
       </div>
     </footer>

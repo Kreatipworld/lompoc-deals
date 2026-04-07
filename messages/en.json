@@ -1,0 +1,172 @@
+{
+  "nav": {
+    "feed": "Feed",
+    "directory": "Directory",
+    "map": "Map",
+    "subscribe": "Subscribe",
+    "forBusinesses": "For businesses",
+    "home": "Lompoc Deals home"
+  },
+  "footer": {
+    "tagline": "Local coupons, specials, and announcements from the Flower Capital of America.",
+    "browse": "Browse",
+    "latestDeals": "Latest deals",
+    "businessDirectory": "Business directory",
+    "mapView": "Map view",
+    "search": "Search",
+    "foodDrink": "Food & Drink",
+    "forBusinesses": "For businesses",
+    "whyList": "Why list with us",
+    "listYourBusiness": "List your business",
+    "signIn": "Sign in",
+    "dashboard": "Dashboard",
+    "stayInTouch": "Stay in touch",
+    "weeklyDigest": "Weekly digest",
+    "copyright": "© {year} Lompoc Deals · Lompoc, CA",
+    "madeWith": "Made with care for the Flower Capital."
+  },
+  "home": {
+    "location": "Lompoc, California",
+    "headline": "Where to next in Lompoc?",
+    "headlineHighlight": "in Lompoc?",
+    "subheadline": "Coupons, specials, and announcements from the local businesses you already love.",
+    "activeDeals": "{count} active deals",
+    "localBusinesses": "{count} local businesses",
+    "updatedDaily": "Updated daily",
+    "latestDeals": "Latest deals",
+    "showingDeals": "Showing all {count} {dealWord} · sorted by newest",
+    "deal": "deal",
+    "deals": "deals",
+    "browseDirectory": "Browse directory",
+    "forBusinessOwners": "For business owners",
+    "ownABusiness": "Own a Lompoc business?",
+    "businessCta": "List your business, post your own coupons, and reach locals actively looking to spend at home. Free forever for the basics.",
+    "listYourBusiness": "List your business",
+    "weeklyDigest": "Weekly digest"
+  },
+  "auth": {
+    "login": "Sign in",
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Sign in to your Lompoc Deals account",
+    "signup": "Sign up",
+    "signupTitle": "Create an account",
+    "signupSubtitle": "Join Lompoc Deals",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "logout": "Sign out",
+    "continueWith": "Continue as {name}",
+    "businessSignup": "Sign up as a business",
+    "localSignup": "Sign up as a local"
+  },
+  "userMenu": {
+    "dashboard": "Dashboard",
+    "favorites": "Favorites",
+    "settings": "Settings",
+    "signOut": "Sign out",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "admin": "Admin"
+  },
+  "deals": {
+    "expires": "Expires {date}",
+    "expired": "Expired",
+    "new": "New",
+    "redeemNow": "Redeem now",
+    "viewDeal": "View deal",
+    "save": "Save",
+    "saved": "Saved",
+    "noDeals": "No deals yet",
+    "noDealsSubtitle": "Check back soon for new deals from local businesses.",
+    "categories": {
+      "food-drink": "Food & Drink",
+      "retail": "Retail",
+      "services": "Services",
+      "health-beauty": "Health & Beauty",
+      "entertainment": "Entertainment",
+      "home-garden": "Home & Garden",
+      "automotive": "Automotive",
+      "other": "Other"
+    }
+  },
+  "business": {
+    "website": "Website",
+    "phone": "Phone",
+    "address": "Address",
+    "hours": "Hours",
+    "deals": "Deals",
+    "about": "About",
+    "claimBusiness": "Is this your business?",
+    "viewAll": "View all businesses"
+  },
+  "subscribe": {
+    "title": "Get the weekly digest",
+    "subtitle": "Every Sunday, the best deals from Lompoc delivered to your inbox.",
+    "emailPlaceholder": "your@email.com",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing…",
+    "successTitle": "You're subscribed!",
+    "successSubtitle": "Look for your first digest next Sunday.",
+    "unsubscribe": "Unsubscribe",
+    "unsubscribeSuccess": "You've been unsubscribed."
+  },
+  "search": {
+    "placeholder": "Search deals, businesses…",
+    "results": "{count} results for \"{query}\"",
+    "noResults": "No results for \"{query}\"",
+    "tryAgain": "Try a different search term."
+  },
+  "map": {
+    "title": "Businesses on the map",
+    "subtitle": "Explore local businesses in Lompoc, CA",
+    "viewDeal": "View deal"
+  },
+  "forBusinesses": {
+    "title": "Grow your Lompoc business",
+    "subtitle": "Reach locals actively looking to discover and support businesses in their community.",
+    "getStarted": "Get started free",
+    "learnMore": "See pricing"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "deals": "Deals",
+    "newDeal": "New deal",
+    "editDeal": "Edit deal",
+    "deleteDeal": "Delete deal",
+    "profile": "Profile",
+    "stats": "Analytics",
+    "billing": "Billing",
+    "plan": "Plan",
+    "upgrade": "Upgrade",
+    "currentPlan": "Current plan",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "expired": "Expired"
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "pendingBusinesses": "Pending businesses",
+    "approve": "Approve",
+    "reject": "Reject",
+    "noNewBusinesses": "No new businesses awaiting approval."
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "tryAgain": "Try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "required": "Required",
+    "optional": "Optional"
+  }
+}

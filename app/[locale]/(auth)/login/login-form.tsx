@@ -1,7 +1,7 @@
 "use client"
 
 import { useFormState, useFormStatus } from "react-dom"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { Mail, Lock } from "lucide-react"
 import { loginAction, type FormState } from "@/lib/auth-actions"
 

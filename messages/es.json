@@ -1,0 +1,172 @@
+{
+  "nav": {
+    "feed": "Ofertas",
+    "directory": "Directorio",
+    "map": "Mapa",
+    "subscribe": "Suscribirse",
+    "forBusinesses": "Para negocios",
+    "home": "Inicio de Lompoc Deals"
+  },
+  "footer": {
+    "tagline": "Cupones, especiales y anuncios locales de la Capital de las Flores de América.",
+    "browse": "Explorar",
+    "latestDeals": "Últimas ofertas",
+    "businessDirectory": "Directorio de negocios",
+    "mapView": "Ver en mapa",
+    "search": "Buscar",
+    "foodDrink": "Comida y bebida",
+    "forBusinesses": "Para negocios",
+    "whyList": "Por qué publicar con nosotros",
+    "listYourBusiness": "Publica tu negocio",
+    "signIn": "Iniciar sesión",
+    "dashboard": "Panel",
+    "stayInTouch": "Mantente informado",
+    "weeklyDigest": "Resumen semanal",
+    "copyright": "© {year} Lompoc Deals · Lompoc, CA",
+    "madeWith": "Hecho con cariño para la Capital de las Flores."
+  },
+  "home": {
+    "location": "Lompoc, California",
+    "headline": "¿A dónde ir en Lompoc?",
+    "headlineHighlight": "en Lompoc?",
+    "subheadline": "Cupones, especiales y anuncios de los negocios locales que ya conoces.",
+    "activeDeals": "{count} ofertas activas",
+    "localBusinesses": "{count} negocios locales",
+    "updatedDaily": "Actualizado diariamente",
+    "latestDeals": "Últimas ofertas",
+    "showingDeals": "Mostrando {count} {dealWord} · más recientes primero",
+    "deal": "oferta",
+    "deals": "ofertas",
+    "browseDirectory": "Ver directorio",
+    "forBusinessOwners": "Para dueños de negocios",
+    "ownABusiness": "¿Tienes un negocio en Lompoc?",
+    "businessCta": "Publica tu negocio, ofrece cupones y llega a los locales que buscan apoyar a los comercios de su comunidad. Gratis para lo básico.",
+    "listYourBusiness": "Publica tu negocio",
+    "weeklyDigest": "Resumen semanal"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "loginTitle": "Bienvenido de nuevo",
+    "loginSubtitle": "Inicia sesión en tu cuenta de Lompoc Deals",
+    "signup": "Registrarse",
+    "signupTitle": "Crear una cuenta",
+    "signupSubtitle": "Únete a Lompoc Deals",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes una cuenta?",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "logout": "Cerrar sesión",
+    "continueWith": "Continuar como {name}",
+    "businessSignup": "Registrarse como negocio",
+    "localSignup": "Registrarse como local"
+  },
+  "userMenu": {
+    "dashboard": "Panel",
+    "favorites": "Favoritos",
+    "settings": "Configuración",
+    "signOut": "Cerrar sesión",
+    "signIn": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
+    "admin": "Administración"
+  },
+  "deals": {
+    "expires": "Vence el {date}",
+    "expired": "Vencido",
+    "new": "Nuevo",
+    "redeemNow": "Canjear ahora",
+    "viewDeal": "Ver oferta",
+    "save": "Guardar",
+    "saved": "Guardado",
+    "noDeals": "Sin ofertas aún",
+    "noDealsSubtitle": "Vuelve pronto para ver nuevas ofertas de negocios locales.",
+    "categories": {
+      "food-drink": "Comida y bebida",
+      "retail": "Tiendas",
+      "services": "Servicios",
+      "health-beauty": "Salud y belleza",
+      "entertainment": "Entretenimiento",
+      "home-garden": "Hogar y jardín",
+      "automotive": "Automotriz",
+      "other": "Otros"
+    }
+  },
+  "business": {
+    "website": "Sitio web",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "hours": "Horario",
+    "deals": "Ofertas",
+    "about": "Acerca de",
+    "claimBusiness": "¿Es tu negocio?",
+    "viewAll": "Ver todos los negocios"
+  },
+  "subscribe": {
+    "title": "Recibe el resumen semanal",
+    "subtitle": "Cada domingo, las mejores ofertas de Lompoc directamente en tu correo.",
+    "emailPlaceholder": "tu@correo.com",
+    "subscribe": "Suscribirme",
+    "subscribing": "Suscribiendo…",
+    "successTitle": "¡Ya estás suscrito!",
+    "successSubtitle": "Recibirás tu primer resumen el próximo domingo.",
+    "unsubscribe": "Cancelar suscripción",
+    "unsubscribeSuccess": "Tu suscripción fue cancelada."
+  },
+  "search": {
+    "placeholder": "Buscar ofertas, negocios…",
+    "results": "{count} resultados para \"{query}\"",
+    "noResults": "Sin resultados para \"{query}\"",
+    "tryAgain": "Prueba con otro término de búsqueda."
+  },
+  "map": {
+    "title": "Negocios en el mapa",
+    "subtitle": "Explora negocios locales en Lompoc, CA",
+    "viewDeal": "Ver oferta"
+  },
+  "forBusinesses": {
+    "title": "Haz crecer tu negocio en Lompoc",
+    "subtitle": "Llega a los locales que buscan activamente descubrir y apoyar los negocios de su comunidad.",
+    "getStarted": "Empieza gratis",
+    "learnMore": "Ver precios"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "deals": "Ofertas",
+    "newDeal": "Nueva oferta",
+    "editDeal": "Editar oferta",
+    "deleteDeal": "Eliminar oferta",
+    "profile": "Perfil",
+    "stats": "Estadísticas",
+    "billing": "Facturación",
+    "plan": "Plan",
+    "upgrade": "Mejorar plan",
+    "currentPlan": "Plan actual",
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "expired": "Vencido"
+    }
+  },
+  "admin": {
+    "title": "Administración",
+    "pendingBusinesses": "Negocios pendientes",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "noNewBusinesses": "No hay negocios nuevos esperando aprobación."
+  },
+  "common": {
+    "loading": "Cargando…",
+    "error": "Algo salió mal",
+    "tryAgain": "Intentar de nuevo",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "required": "Obligatorio",
+    "optional": "Opcional"
+  }
+}

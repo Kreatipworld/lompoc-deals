@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { redirect } from "next/navigation"
+import { Link } from "@/i18n/navigation"
 import { Store, Tag, BarChart3, CreditCard } from "lucide-react"
 import { auth } from "@/auth"
 
@@ -10,7 +10,7 @@ export default async function DashboardLayout({
 }) {
   const session = await auth()
   if (!session?.user || session.user.role !== "business") {
-    redirect("/login?from=/dashboard/profile")
+    redirect("/login")
   }
 
   return (

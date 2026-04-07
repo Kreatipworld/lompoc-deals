@@ -1,10 +1,8 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { Fraunces } from "next/font/google"
+import { getLocale } from "next-intl/server"
 import "./globals.css"
-import { Toaster } from "@/components/ui/sonner"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -62,20 +60,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getLocale()
+
   return (
-    <html lang="en">
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} flex min-h-screen flex-col antialiased`}
       >
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-        <Toaster />
+        {children}
       </body>
     </html>
   )

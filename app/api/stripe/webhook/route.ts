@@ -6,8 +6,8 @@ import { eq } from "drizzle-orm"
 import type { TierKey } from "@/lib/stripe"
 import type Stripe from "stripe"
 
-// Stripe requires raw body for signature verification — disable body parsing
-export const config = { api: { bodyParser: false } }
+// Stripe requires raw body — disable Next.js body parsing
+export const dynamic = "force-dynamic"
 
 /** In Stripe's basil API, current_period_end moved to subscription items. */
 function getPeriodEnd(sub: Stripe.Subscription): Date | null {

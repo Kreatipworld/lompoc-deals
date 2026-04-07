@@ -1,14 +1,15 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { auth } from "@/auth"
 import { logoutAction } from "@/lib/auth-actions"
+import { getTranslations } from "next-intl/server"
 
 export async function UserMenu() {
-  const session = await auth()
+  const [session, t] = await Promise.all([auth(), getTranslations("userMenu")])
 
   if (!session?.user) {
     return (
       <Link href="/login" className="text-sm hover:underline">
-        Sign in
+        {t("signIn")}
       </Link>
     )
   }
@@ -22,7 +23,7 @@ export async function UserMenu() {
       </summary>
       <div className="absolute right-0 z-50 mt-1 w-56 rounded-md border bg-background py-1 shadow-lg">
         <div className="px-3 py-1.5 text-xs text-muted-foreground">
-          Signed in as {role}
+          {email} · {role}
         </div>
         <div className="my-1 border-t" />
         {role === "business" && (
@@ -30,7 +31,7 @@ export async function UserMenu() {
             href="/dashboard/profile"
             className="block px-3 py-1.5 text-sm hover:bg-accent"
           >
-            Business dashboard
+            {t("dashboard")}
           </Link>
         )}
         {role === "admin" && (
@@ -38,7 +39,7 @@ export async function UserMenu() {
             href="/admin"
             className="block px-3 py-1.5 text-sm hover:bg-accent"
           >
-            Admin
+            {t("admin")}
           </Link>
         )}
         {role === "local" && (
@@ -46,7 +47,7 @@ export async function UserMenu() {
             href="/favorites"
             className="block px-3 py-1.5 text-sm hover:bg-accent"
           >
-            My favorites
+            {t("favorites")}
           </Link>
         )}
         <div className="my-1 border-t" />
@@ -55,7 +56,7 @@ export async function UserMenu() {
             type="submit"
             className="block w-full px-3 py-1.5 text-left text-sm hover:bg-accent"
           >
-            Sign out
+            {t("signOut")}
           </button>
         </form>
       </div>
