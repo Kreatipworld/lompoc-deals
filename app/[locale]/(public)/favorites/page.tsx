@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { getViewer } from "@/lib/viewer"
 import { getFavoritedDeals } from "@/lib/queries"
 import { DealGrid } from "@/components/deal-card"

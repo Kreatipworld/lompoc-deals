@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { ArrowRight, MapPin, Mail, Sparkles } from "lucide-react"
 import { getActiveDeals, getSiteStats } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"

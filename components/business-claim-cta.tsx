@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { Lock, ArrowRight } from "lucide-react"
 
 export function BusinessClaimCta({ slug }: { slug: string }) {

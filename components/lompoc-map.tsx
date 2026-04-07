@@ -3,7 +3,7 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import type { MapBusiness } from "@/lib/queries"
 
 // Custom coral teardrop pin (SVG inside a divIcon).

@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { confirmSubscriptionByToken } from "@/lib/subscribe-actions"
 
 export const metadata = { title: "Confirm subscription — Lompoc Deals" }

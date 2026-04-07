@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { format, isPast } from "date-fns"
 import { Plus, Eye, MousePointerClick, Tag } from "lucide-react"
 import { getMyBusiness, getMyDeals, deleteDealAction } from "@/lib/biz-actions"

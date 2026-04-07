@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { unsubscribeByToken } from "@/lib/subscribe-actions"
 
 export const metadata = { title: "Unsubscribe — Lompoc Deals" }
