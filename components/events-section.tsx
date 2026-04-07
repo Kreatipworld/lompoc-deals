@@ -37,14 +37,6 @@ function categoryMeta(cat: string) {
 // ─── Date formatting ──────────────────────────────────────────────────────────
 
 function formatEventDate(startsAt: Date, endsAt: Date | null) {
-  const opts: Intl.DateTimeFormatOptions = {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    timeZoneName: "short",
-    timeZone: "America/Los_Angeles",
-  }
   const start = startsAt.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
