@@ -93,6 +93,11 @@ export default async function HomePage() {
       <EventsSection />
 
       {/* ─────────────────────────────────────────────────
+          WEATHER FORECAST
+         ───────────────────────────────────────────────── */}
+      <WeatherWidget />
+
+      {/* ─────────────────────────────────────────────────
           DEAL GRID
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-10">

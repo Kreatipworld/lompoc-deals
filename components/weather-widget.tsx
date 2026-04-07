@@ -120,7 +120,7 @@ export async function WeatherWidget() {
 
         {/* Scrollable day strip */}
         <div className="flex gap-0.5 overflow-x-auto px-3 py-3 scrollbar-none">
-          {forecast.days.map((day, i) => (
+          {forecast.days.map((day) => (
             <DayCell
               key={day.date.toISOString()}
               day={day}
