@@ -63,6 +63,15 @@
   }
 }
 
+/* Hide scrollbars on horizontal scroll containers */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* Custom Leaflet popup styling — branded card look */
 .leaflet-popup.lompoc-popup .leaflet-popup-content-wrapper {
   background: hsl(var(--card));
