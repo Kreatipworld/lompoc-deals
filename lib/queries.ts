@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories, favorites } from "@/db/schema"
+import { deals, businesses, categories, favorites, propertyListings } from "@/db/schema"
 
 export type DealCardData = {
   id: number
@@ -167,6 +167,106 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
     .groupBy(businesses.id, categories.id)
     .orderBy(businesses.name)
   return rows
+}
+
+export type PropertyListing = {
+  id: number
+  type: "for-sale" | "for-rent"
+  title: string
+  description: string | null
+  priceCents: number
+  beds: number | null
+  baths: number | null
+  sqft: number | null
+  address: string | null
+  imageUrl: string | null
+  business: { id: number; name: string; slug: string }
+}
+
+export async function getListingsByBusinessId(
+  businessId: number
+): Promise<PropertyListing[]> {
+  const rows = await db
+    .select({
+      id: propertyListings.id,
+      type: propertyListings.type,
+      title: propertyListings.title,
+      description: propertyListings.description,
+      priceCents: propertyListings.priceCents,
+      beds: propertyListings.beds,
+      baths: propertyListings.baths,
+      sqft: propertyListings.sqft,
+      address: propertyListings.address,
+      imageUrl: propertyListings.imageUrl,
+      bizId: businesses.id,
+      bizName: businesses.name,
+      bizSlug: businesses.slug,
+    })
+    .from(propertyListings)
+    .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
+    .where(
+      and(
+        eq(propertyListings.businessId, businessId),
+        eq(propertyListings.status, "active")
+      )
+    )
+    .orderBy(desc(propertyListings.createdAt))
+  return rows.map((r) => ({
+    id: r.id,
+    type: r.type,
+    title: r.title,
+    description: r.description,
+    priceCents: r.priceCents,
+    beds: r.beds,
+    baths: r.baths,
+    sqft: r.sqft,
+    address: r.address,
+    imageUrl: r.imageUrl,
+    business: { id: r.bizId, name: r.bizName, slug: r.bizSlug },
+  }))
+}
+
+export async function getAllRealEstateListings(): Promise<PropertyListing[]> {
+  const rows = await db
+    .select({
+      id: propertyListings.id,
+      type: propertyListings.type,
+      title: propertyListings.title,
+      description: propertyListings.description,
+      priceCents: propertyListings.priceCents,
+      beds: propertyListings.beds,
+      baths: propertyListings.baths,
+      sqft: propertyListings.sqft,
+      address: propertyListings.address,
+      imageUrl: propertyListings.imageUrl,
+      bizId: businesses.id,
+      bizName: businesses.name,
+      bizSlug: businesses.slug,
+    })
+    .from(propertyListings)
+    .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
+    .innerJoin(categories, eq(businesses.categoryId, categories.id))
+    .where(
+      and(
+        eq(propertyListings.status, "active"),
+        eq(categories.slug, "real-estate"),
+        eq(businesses.status, "approved")
+      )
+    )
+    .orderBy(desc(propertyListings.createdAt))
+  return rows.map((r) => ({
+    id: r.id,
+    type: r.type,
+    title: r.title,
+    description: r.description,
+    priceCents: r.priceCents,
+    beds: r.beds,
+    baths: r.baths,
+    sqft: r.sqft,
+    address: r.address,
+    imageUrl: r.imageUrl,
+    business: { id: r.bizId, name: r.bizName, slug: r.bizSlug },
+  }))
 }
 
 export type MapBusiness = {

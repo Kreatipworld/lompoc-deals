@@ -10,10 +10,11 @@ import {
   Sparkles,
   Calendar,
 } from "lucide-react"
-import { getBusinessBySlug } from "@/lib/queries"
+import { getBusinessBySlug, getListingsByBusinessId } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { bumpViewCounts } from "@/lib/tracking"
 import { DealGrid } from "@/components/deal-card"
+import { PropertyListingGrid } from "@/components/property-listing-card"
 import { BusinessSocialLinks } from "@/components/business-social-links"
 import { BusinessHours } from "@/components/business-hours"
 import { BusinessMapLoader } from "@/components/business-map-loader"
@@ -55,9 +56,18 @@ export default async function BusinessPage({
   ])
   if (!data) notFound()
   const { business, deals } = data
-  const activeDeals = deals.filter((d) => new Date(d.expiresAt) > new Date())
+  const isRealEstate = business.category?.slug === "real-estate"
 
-  if (deals.length > 0) {
+  // For real estate businesses, fetch property listings instead
+  const listings = isRealEstate
+    ? await getListingsByBusinessId(business.id)
+    : []
+
+  const activeDeals = deals.filter((d) => new Date(d.expiresAt) > new Date())
+  const itemCount = isRealEstate ? listings.length : activeDeals.length
+  const itemLabel = isRealEstate ? "listing" : "deal"
+
+  if (!isRealEstate && deals.length > 0) {
     void bumpViewCounts(deals.map((d) => d.id))
   }
 
@@ -153,8 +163,8 @@ export default async function BusinessPage({
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-1">
                     <Sparkles className="h-3 w-3 text-primary" />
-                    {activeDeals.length} active{" "}
-                    {activeDeals.length === 1 ? "deal" : "deals"}
+                    {itemCount} active{" "}
+                    {itemCount === 1 ? itemLabel : `${itemLabel}s`}
                   </span>
                   <span className="text-foreground/30">·</span>
                   <span className="inline-flex items-center gap-1">
@@ -224,21 +234,25 @@ export default async function BusinessPage({
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-10">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
-          {/* MAIN — active deals */}
+          {/* MAIN — active deals OR listings depending on category */}
           <div>
             <div className="mb-6 flex items-end justify-between">
               <h2 className="font-display text-2xl font-semibold tracking-tight">
-                Active deals
+                {isRealEstate ? "Active listings" : "Active deals"}
               </h2>
               <p className="text-sm text-muted-foreground">
                 from {business.name}
               </p>
             </div>
-            <DealGrid
-              deals={deals}
-              viewer={viewer}
-              fromPath={`/biz/${params.slug}`}
-            />
+            {isRealEstate ? (
+              <PropertyListingGrid listings={listings} />
+            ) : (
+              <DealGrid
+                deals={deals}
+                viewer={viewer}
+                fromPath={`/biz/${params.slug}`}
+              />
+            )}
           </div>
 
           {/* SIDEBAR — map + hours */}

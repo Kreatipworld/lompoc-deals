@@ -14,9 +14,13 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { db } from "@/db/client"
-import { getDealsByCategorySlug } from "@/lib/queries"
+import {
+  getDealsByCategorySlug,
+  getAllRealEstateListings,
+} from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
+import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 
@@ -57,10 +61,14 @@ export default async function CategoryPage({
   })
   if (!cat) notFound()
 
-  const [deals, viewer] = await Promise.all([
-    getDealsByCategorySlug(params.slug),
+  const isRealEstate = params.slug === "real-estate"
+  const [deals, listings, viewer] = await Promise.all([
+    isRealEstate ? Promise.resolve([]) : getDealsByCategorySlug(params.slug),
+    isRealEstate ? getAllRealEstateListings() : Promise.resolve([]),
     getViewer(),
   ])
+  const itemCount = isRealEstate ? listings.length : deals.length
+  const itemLabel = isRealEstate ? "listing" : "deal"
 
   const Icon = ICONS[cat.icon ?? ""] ?? Sparkles
 
@@ -95,8 +103,7 @@ export default async function CategoryPage({
                 {cat.name}
               </h1>
               <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-                {deals.length} active{" "}
-                {deals.length === 1 ? "deal" : "deals"} in {cat.name.toLowerCase()}
+                {itemCount} active {itemCount === 1 ? itemLabel : `${itemLabel}s`} in {cat.name.toLowerCase()}
                 .
               </p>
             </div>
@@ -115,13 +122,17 @@ export default async function CategoryPage({
         </div>
       </section>
 
-      {/* DEALS */}
+      {/* DEALS or LISTINGS */}
       <section className="mx-auto max-w-6xl px-4 py-10 pb-16">
-        <DealGrid
-          deals={deals}
-          viewer={viewer}
-          fromPath={`/category/${params.slug}`}
-        />
+        {isRealEstate ? (
+          <PropertyListingGrid listings={listings} />
+        ) : (
+          <DealGrid
+            deals={deals}
+            viewer={viewer}
+            fromPath={`/category/${params.slug}`}
+          />
+        )}
       </section>
     </>
   )

@@ -124,6 +124,29 @@ export const favorites = pgTable(
   })
 )
 
+// ---------- property listings (real estate) ----------
+export const listingType = pgEnum("listing_type", ["for-sale", "for-rent"])
+
+export const propertyListings = pgTable("property_listings", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id")
+    .notNull()
+    .references(() => businesses.id, { onDelete: "cascade" }),
+  type: listingType("type").notNull(),
+  title: varchar("title", { length: 300 }).notNull(),
+  description: text("description"),
+  priceCents: integer("price_cents").notNull(),
+  beds: integer("beds"),
+  baths: doublePrecision("baths"),
+  sqft: integer("sqft"),
+  address: text("address"),
+  imageUrl: varchar("image_url", { length: 1000 }),
+  status: varchar("status", { length: 20 }).notNull().default("active"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+})
+
 // ---------- business claims ----------
 export const businessClaims = pgTable("business_claims", {
   id: serial("id").primaryKey(),
