@@ -1,6 +1,7 @@
 import Link from "next/link"
-import { auth } from "@/auth"
 import { redirect } from "next/navigation"
+import { Store, Tag, BarChart3 } from "lucide-react"
+import { auth } from "@/auth"
 
 export default async function DashboardLayout({
   children,
@@ -13,33 +14,52 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 sm:flex-row">
-      <aside className="sm:w-48">
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Business
-        </h2>
-        <nav className="flex flex-row gap-1 sm:flex-col">
-          <Link
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 lg:flex-row">
+      <aside className="lg:w-60">
+        <div className="mb-4 px-3">
+          <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Business
+          </h2>
+        </div>
+        <nav className="flex flex-row gap-1 lg:flex-col">
+          <NavLink
             href="/dashboard/profile"
-            className="rounded-md px-3 py-2 text-sm hover:bg-accent"
-          >
-            Profile
-          </Link>
-          <Link
+            icon={<Store className="h-4 w-4" />}
+            label="Profile"
+          />
+          <NavLink
             href="/dashboard/deals"
-            className="rounded-md px-3 py-2 text-sm hover:bg-accent"
-          >
-            Deals
-          </Link>
-          <Link
+            icon={<Tag className="h-4 w-4" />}
+            label="Deals"
+          />
+          <NavLink
             href="/dashboard/stats"
-            className="rounded-md px-3 py-2 text-sm hover:bg-accent"
-          >
-            Stats
-          </Link>
+            icon={<BarChart3 className="h-4 w-4" />}
+            label="Stats"
+          />
         </nav>
       </aside>
       <main className="flex-1 space-y-6">{children}</main>
     </div>
+  )
+}
+
+function NavLink({
+  href,
+  icon,
+  label,
+}: {
+  href: string
+  icon: React.ReactNode
+  label: string
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex flex-1 items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground lg:flex-initial"
+    >
+      <span className="text-primary">{icon}</span>
+      {label}
+    </Link>
   )
 }
