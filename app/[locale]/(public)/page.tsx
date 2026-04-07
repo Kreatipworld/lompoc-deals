@@ -6,6 +6,7 @@ import { DealGrid } from "@/components/deal-card"
 import { CategoryStrip } from "@/components/category-strip"
 import { SearchBar } from "@/components/search-bar"
 import { WeatherWidget } from "@/components/weather-widget"
+import { EventsSection } from "@/components/events-section"
 
 export const metadata = {
   title: "Lompoc Deals — local coupons, specials, and announcements",
@@ -85,6 +86,11 @@ export default async function HomePage() {
           WEATHER WIDGET
          ───────────────────────────────────────────────── */}
       <WeatherWidget />
+
+      {/* ─────────────────────────────────────────────────
+          EVENTS CALENDAR
+         ───────────────────────────────────────────────── */}
+      <EventsSection />
 
       {/* ─────────────────────────────────────────────────
           DEAL GRID

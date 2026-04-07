@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import { eq, sql, and } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses, deals, users, businessClaims } from "@/db/schema"
+import { businesses, deals, users, businessClaims, events } from "@/db/schema"
 
 async function requireAdmin() {
   const session = await auth()
@@ -155,4 +155,41 @@ export async function rejectClaimAction(formData: FormData) {
     .set({ status: "rejected" })
     .where(eq(businessClaims.id, id))
   revalidatePath("/admin")
+}
+
+// ─── Events ───────────────────────────────────────────────────────────────────
+
+export async function getPendingEvents() {
+  await requireAdmin()
+  return db
+    .select({
+      id: events.id,
+      title: events.title,
+      description: events.description,
+      location: events.location,
+      category: events.category,
+      startsAt: events.startsAt,
+      endsAt: events.endsAt,
+      createdAt: events.createdAt,
+    })
+    .from(events)
+    .where(eq(events.status, "pending"))
+    .orderBy(events.createdAt)
+}
+
+export async function approveEventAction(formData: FormData) {
+  await requireAdmin()
+  const id = parseInt(formData.get("eventId")?.toString() ?? "0", 10)
+  if (!id) return
+  await db.update(events).set({ status: "approved" }).where(eq(events.id, id))
+  revalidatePath("/admin/events")
+  revalidatePath("/")
+}
+
+export async function rejectEventAction(formData: FormData) {
+  await requireAdmin()
+  const id = parseInt(formData.get("eventId")?.toString() ?? "0", 10)
+  if (!id) return
+  await db.update(events).set({ status: "cancelled" }).where(eq(events.id, id))
+  revalidatePath("/admin/events")
 }

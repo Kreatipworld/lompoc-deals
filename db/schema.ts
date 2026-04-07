@@ -206,6 +206,45 @@ export const subscriptions = pgTable("subscriptions", {
     .defaultNow(),
 })
 
+// ---------- events ----------
+export const eventCategory = pgEnum("event_category", [
+  "community",
+  "business-launch",
+  "festival",
+  "arts",
+  "food",
+  "sports",
+  "market",
+  "other",
+])
+export const eventStatus = pgEnum("event_status", [
+  "pending",
+  "approved",
+  "cancelled",
+])
+
+export const events = pgTable("events", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 300 }).notNull(),
+  description: text("description"),
+  location: varchar("location", { length: 500 }),
+  imageUrl: varchar("image_url", { length: 1000 }),
+  category: eventCategory("category").notNull().default("other"),
+  startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
+  endsAt: timestamp("ends_at", { withTimezone: true }),
+  businessId: integer("business_id").references(() => businesses.id, {
+    onDelete: "set null",
+  }),
+  submittedByUserId: integer("submitted_by_user_id").references(
+    () => users.id,
+    { onDelete: "set null" }
+  ),
+  status: eventStatus("status").notNull().default("pending"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+})
+
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),

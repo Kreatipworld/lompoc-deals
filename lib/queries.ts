@@ -1,6 +1,6 @@
-import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm"
+import { and, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories, favorites, propertyListings } from "@/db/schema"
+import { deals, businesses, categories, favorites, propertyListings, events } from "@/db/schema"
 
 export type DealCardData = {
   id: number
@@ -431,4 +431,68 @@ export async function getBusinessBySlug(slug: string) {
     business: { ...biz, category, ownerEmail },
     deals: bizDeals.map(rowToCard),
   }
+}
+
+// ─── Events ──────────────────────────────────────────────────────────────────
+
+export type EventCardData = {
+  id: number
+  title: string
+  description: string | null
+  location: string | null
+  imageUrl: string | null
+  category: string
+  startsAt: Date
+  endsAt: Date | null
+  business: { id: number; name: string; slug: string } | null
+}
+
+export async function getUpcomingEvents(
+  category?: string,
+  limit = 8
+): Promise<EventCardData[]> {
+  const now = sql`now()`
+
+  const rows = await db
+    .select({
+      id: events.id,
+      title: events.title,
+      description: events.description,
+      location: events.location,
+      imageUrl: events.imageUrl,
+      category: events.category,
+      startsAt: events.startsAt,
+      endsAt: events.endsAt,
+      bizId: businesses.id,
+      bizName: businesses.name,
+      bizSlug: businesses.slug,
+    })
+    .from(events)
+    .leftJoin(businesses, eq(events.businessId, businesses.id))
+    .where(
+      and(
+        eq(events.status, "approved"),
+        gte(events.startsAt, now),
+        category
+          ? eq(events.category, category as typeof events.category._.data)
+          : undefined
+      )
+    )
+    .orderBy(events.startsAt)
+    .limit(limit)
+
+  return rows.map((r) => ({
+    id: r.id,
+    title: r.title,
+    description: r.description,
+    location: r.location,
+    imageUrl: r.imageUrl,
+    category: r.category,
+    startsAt: r.startsAt,
+    endsAt: r.endsAt,
+    business:
+      r.bizId && r.bizName && r.bizSlug
+        ? { id: r.bizId, name: r.bizName, slug: r.bizSlug }
+        : null,
+  }))
 }
