@@ -36,6 +36,25 @@ export const TRACKED: Array<{
   { address: "3526 Constellation Rd, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_RENT" },
   { address: "401 N Lupine St #C, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_RENT" },
   { address: "1493 Calle Segunda, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_RENT" },
+
+  // ── More for-sale (10) ──
+  { address: "1324 Sunnybrook Ct, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "243 Gardengate Ln, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_SALE" },
+  { address: "1479 Calle Segunda, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_SALE" },
+  { address: "1536 Sheffield Dr, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "1601 Barrington Court, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_SALE" },
+  { address: "4241 Sirius Ave, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_SALE" },
+  { address: "6888 Highway 246, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_SALE" },
+  { address: "415 River Terrace Dr, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "416 River Terrace Dr, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+  { address: "419 River Terrace Dr, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_SALE" },
+
+  // ── More for-rent (5) ──
+  { address: "309 N K St APT F, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_RENT" },
+  { address: "215 N K St #215B, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_RENT" },
+  { address: "117-121 S K St APT B, Lompoc, CA 93436", fallbackBizSlug: "hinkens-group", status: "FOR_RENT" },
+  { address: "118 N J St #118A, Lompoc, CA 93436", fallbackBizSlug: "coldwell-banker-select-realty", status: "FOR_RENT" },
+  { address: "306 N L St #306C, Lompoc, CA 93436", fallbackBizSlug: "century-21-hometown-realty", status: "FOR_RENT" },
 ]
 
 type ZillowItem = {
@@ -69,6 +88,49 @@ function slugify(s: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 100)
+}
+
+// Stopwords to strip when computing the canonical brokerage key.
+// Leading stopwords (articles + connectors).
+const LEADING_STOPWORDS = new Set([
+  "the", "a", "an", "and", "of", "for", "&",
+])
+// Generic real estate words to ignore for matching purposes.
+const NOISE_WORDS = new Set([
+  "realty", "real", "estate", "estates", "estatae", "group", "properties",
+  "property", "homes", "homeservices", "services", "inc", "llc", "associates",
+  "partners", "team", "pro", "professional", "international", "company",
+  "co", "ltd",
+])
+
+/**
+ * Compute a canonical key for fuzzy matching brokerage names.
+ * Examples:
+ *   "The Hinkens Group" → "hinkens"
+ *   "The Hinkens Group Realty Pro" → "hinkens"
+ *   "Berkshire Hathaway HomeServices - Santa Barbara" → "berkshire-hathaway"
+ *   "Coldwell Banker Select Realty" → "coldwell-banker"
+ *   "Century 21 Hometown Realty" → "century-21"
+ */
+function brokerageKey(name: string): string {
+  const cleaned = name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+
+  // Strip leading stopwords
+  let i = 0
+  while (i < cleaned.length && LEADING_STOPWORDS.has(cleaned[i])) i++
+  const significant = cleaned.slice(i).filter((w) => !NOISE_WORDS.has(w))
+
+  // Take first 2 significant words; fall back to whatever remains
+  const keyWords = significant.length >= 2
+    ? significant.slice(0, 2)
+    : significant.length
+      ? significant
+      : cleaned.slice(0, 1)
+  return keyWords.join("-")
 }
 
 function bestPhotoUrl(item: ZillowItem): string | null {
@@ -131,27 +193,27 @@ async function findOrCreateBrokerage(
   realEstateCatId: number
 ): Promise<{ id: number; created: boolean }> {
   const slug = slugify(brokerageName)
-  // Try exact slug match first
-  const existing = await db.query.businesses.findFirst({
+  const key = brokerageKey(brokerageName)
+
+  // Pass 1 — exact slug match
+  const exact = await db.query.businesses.findFirst({
     where: (b, { eq: e }) => e(b.slug, slug),
   })
-  if (existing) return { id: existing.id, created: false }
+  if (exact) return { id: exact.id, created: false }
 
-  // Try a fuzzy match: any real-estate business whose slug starts with first 3 words
-  const first3 = slug.split("-").slice(0, 3).join("-")
-  if (first3.length >= 5) {
-    const fuzzy = await db
-      .select({ id: businesses.id })
+  // Pass 2 — canonical brokerage key match. Compute key for every existing
+  // real-estate business and look for an exact key collision.
+  if (key.length >= 3) {
+    const allRealEstate = await db
+      .select({ id: businesses.id, name: businesses.name })
       .from(businesses)
       .innerJoin(categories, eq(businesses.categoryId, categories.id))
-      .where(
-        and(
-          eq(categories.slug, "real-estate"),
-          sql`${businesses.slug} like ${first3 + "%"}`
-        )
-      )
-      .limit(1)
-    if (fuzzy.length) return { id: fuzzy[0].id, created: false }
+      .where(eq(categories.slug, "real-estate"))
+    for (const biz of allRealEstate) {
+      if (brokerageKey(biz.name) === key) {
+        return { id: biz.id, created: false }
+      }
+    }
   }
 
   // Create a new brokerage
