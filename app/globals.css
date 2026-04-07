@@ -4,48 +4,62 @@
 
 @layer base {
   :root {
-    --background: 40 33% 99%;
-    --foreground: 222 47% 11%;
+    /* Iris + Forest brand palette */
+    --background: 45 20% 98%;
+    --foreground: 220 15% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 220 15% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 14 84% 56%;
+    --popover-foreground: 220 15% 12%;
+
+    /* Primary — iris violet */
+    --primary: 258 65% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 40 18% 94%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 40 18% 94%;
+
+    /* Brand green — forest sage (used as the secondary brand color) */
+    --brand-green: 150 40% 38%;
+    --brand-green-foreground: 0 0% 100%;
+
+    /* Neutral secondary / muted — cool light gray */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 15% 25%;
+    --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
-    --accent: 14 84% 96%;
-    --accent-foreground: 14 84% 30%;
+
+    /* Accent — light iris tint */
+    --accent: 258 65% 96%;
+    --accent-foreground: 258 65% 30%;
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 40 14% 88%;
-    --input: 40 14% 88%;
-    --ring: 14 84% 56%;
+    --border: 220 14% 91%;
+    --input: 220 14% 91%;
+    --ring: 258 65% 55%;
     --radius: 0.625rem;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 40 33% 96%;
-    --card: 222 47% 8%;
-    --card-foreground: 40 33% 96%;
-    --popover: 222 47% 8%;
-    --popover-foreground: 40 33% 96%;
-    --primary: 14 84% 56%;
+    --background: 258 30% 6%;
+    --foreground: 45 20% 96%;
+    --card: 258 30% 9%;
+    --card-foreground: 45 20% 96%;
+    --popover: 258 30% 9%;
+    --popover-foreground: 45 20% 96%;
+    --primary: 258 70% 65%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 40 33% 96%;
-    --muted: 222 30% 14%;
+    --brand-green: 150 45% 50%;
+    --brand-green-foreground: 0 0% 100%;
+    --secondary: 258 25% 14%;
+    --secondary-foreground: 45 20% 96%;
+    --muted: 258 25% 14%;
     --muted-foreground: 220 9% 65%;
-    --accent: 14 84% 16%;
-    --accent-foreground: 14 84% 92%;
+    --accent: 258 50% 18%;
+    --accent-foreground: 258 70% 92%;
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
-    --ring: 14 84% 56%;
+    --border: 258 25% 18%;
+    --input: 258 25% 18%;
+    --ring: 258 70% 65%;
   }
 }
 
@@ -141,7 +155,6 @@
   padding: 6px 8px 0 0;
   font-size: 18px;
 }
-/* Pin wrapper — remove leaflet's default background */
 .lompoc-pin-wrapper {
   background: transparent !important;
   border: none !important;

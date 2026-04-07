@@ -25,14 +25,14 @@ const TYPE_META: Record<
 }
 
 // 6 deterministic gradient palettes — picked by deal id so each card looks
-// distinct but stable across renders.
+// distinct but stable across renders. Iris + Forest brand palette.
 const GRADIENTS = [
-  "from-orange-200 via-rose-100 to-amber-100",
-  "from-rose-200 via-orange-100 to-yellow-100",
-  "from-amber-200 via-pink-100 to-orange-100",
-  "from-pink-200 via-rose-100 to-red-100",
-  "from-yellow-200 via-amber-100 to-orange-100",
-  "from-red-100 via-orange-200 to-amber-100",
+  "from-violet-200 via-purple-100 to-fuchsia-100",
+  "from-emerald-200 via-teal-100 to-violet-100",
+  "from-purple-200 via-pink-100 to-violet-100",
+  "from-green-200 via-emerald-100 to-teal-100",
+  "from-fuchsia-200 via-violet-100 to-purple-100",
+  "from-teal-100 via-violet-200 to-indigo-100",
 ]
 function gradientFor(id: number) {
   return GRADIENTS[id % GRADIENTS.length]

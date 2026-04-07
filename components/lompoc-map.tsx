@@ -21,13 +21,13 @@ function coralPin(activeDealCount: number): L.DivIcon {
           </defs>
           <path
             d="M16 0 C7 0 0 7 0 16 C0 27 16 44 16 44 C16 44 32 27 32 16 C32 7 25 0 16 0 Z"
-            fill="hsl(14 84% 56%)"
+            fill="hsl(258 65% 55%)"
             filter="url(#pin-shadow)"
           />
           <circle cx="16" cy="16" r="7" fill="white"/>
           ${
             hasDeals
-              ? `<circle cx="16" cy="16" r="3" fill="hsl(14 84% 56%)"/>`
+              ? `<circle cx="16" cy="16" r="3" fill="hsl(258 65% 55%)"/>`
               : ""
           }
         </svg>
