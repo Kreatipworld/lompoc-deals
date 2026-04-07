@@ -176,6 +176,28 @@ export async function getAllCategories() {
   })
 }
 
+export async function getSiteStats() {
+  const [bizRow, dealRow, catRow] = await Promise.all([
+    db
+      .select({ n: sql<number>`count(*)::int` })
+      .from(businesses)
+      .where(eq(businesses.status, "approved")),
+    db
+      .select({ n: sql<number>`count(*)::int` })
+      .from(deals)
+      .innerJoin(businesses, eq(deals.businessId, businesses.id))
+      .where(activeAndApproved),
+    db
+      .select({ n: sql<number>`count(*)::int` })
+      .from(categories),
+  ])
+  return {
+    businesses: bizRow[0]?.n ?? 0,
+    activeDeals: dealRow[0]?.n ?? 0,
+    categories: catRow[0]?.n ?? 0,
+  }
+}
+
 export async function getFavoritedDeals(
   userId: number
 ): Promise<DealCardData[]> {
