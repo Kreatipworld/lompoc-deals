@@ -7,7 +7,7 @@
 
 import { sql, eq, and, inArray } from "drizzle-orm"
 import { db } from "@/db/client"
-import { propertyListings, businesses, categories, users } from "@/db/schema"
+import { propertyListings, businesses, categories } from "@/db/schema"
 
 const ACTOR_ID = "ENK9p4RZHg0iVso52" // maxcopell/zillow-detail-scraper
 
