@@ -32,6 +32,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/businesses" className="hover:text-foreground">
+                  Business directory
+                </Link>
+              </li>
+              <li>
                 <Link href="/map" className="hover:text-foreground">
                   Map view
                 </Link>

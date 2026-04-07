@@ -27,6 +27,12 @@ export function SiteHeader() {
             Feed
           </Link>
           <Link
+            href="/businesses"
+            className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+          >
+            Directory
+          </Link>
+          <Link
             href="/map"
             className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
@@ -51,6 +57,12 @@ export function SiteHeader() {
           className="text-xs font-medium text-muted-foreground hover:text-foreground"
         >
           Feed
+        </Link>
+        <Link
+          href="/businesses"
+          className="text-xs font-medium text-muted-foreground hover:text-foreground"
+        >
+          Directory
         </Link>
         <Link
           href="/map"

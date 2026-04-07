@@ -129,6 +129,46 @@ export async function searchDeals(
   return rows.map(rowToCard)
 }
 
+export type DirectoryBusiness = {
+  id: number
+  name: string
+  slug: string
+  description: string | null
+  address: string | null
+  phone: string | null
+  website: string | null
+  logoUrl: string | null
+  categoryId: number | null
+  categoryName: string | null
+  categorySlug: string | null
+  activeDealCount: number
+}
+
+export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      description: businesses.description,
+      address: businesses.address,
+      phone: businesses.phone,
+      website: businesses.website,
+      logoUrl: businesses.logoUrl,
+      categoryId: businesses.categoryId,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .where(eq(businesses.status, "approved"))
+    .groupBy(businesses.id, categories.id)
+    .orderBy(businesses.name)
+  return rows
+}
+
 export type MapBusiness = {
   id: number
   name: string
