@@ -6,13 +6,14 @@ import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
 import { db } from "@/db/client"
-import { users } from "@/db/schema"
+import { users, businessClaims } from "@/db/schema"
 import { signIn, signOut } from "@/auth"
 
 const signupSchema = z.object({
   email: z.string().email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   role: z.enum(["local", "business"]),
+  claimSlug: z.string().optional(),
 })
 
 export type FormState = { error?: string } | undefined
@@ -25,13 +26,16 @@ export async function signupAction(
     email: formData.get("email"),
     password: formData.get("password"),
     role: formData.get("role"),
+    claimSlug: formData.get("claimSlug") || undefined,
   })
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
   }
 
-  const { email, password, role } = parsed.data
+  const { email, password, claimSlug } = parsed.data
+  // If claiming a business, force role=business regardless of toggle
+  const role = claimSlug ? "business" : parsed.data.role
 
   const existing = await db.query.users.findFirst({
     where: eq(users.email, email),
@@ -41,7 +45,26 @@ export async function signupAction(
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
-  await db.insert(users).values({ email, passwordHash, role })
+  const inserted = await db
+    .insert(users)
+    .values({ email, passwordHash, role })
+    .returning({ id: users.id })
+  const newUserId = inserted[0]?.id
+
+  // If claiming, find the business and create a pending claim
+  if (claimSlug && newUserId) {
+    const biz = await db.query.businesses.findFirst({
+      where: (b, { eq: e }) => e(b.slug, claimSlug),
+      columns: { id: true },
+    })
+    if (biz) {
+      await db.insert(businessClaims).values({
+        businessId: biz.id,
+        userId: newUserId,
+        status: "pending",
+      })
+    }
+  }
 
   try {
     await signIn("credentials", {
@@ -56,6 +79,9 @@ export async function signupAction(
     throw err
   }
 
+  if (claimSlug) {
+    redirect(`/dashboard/profile?claimed=${encodeURIComponent(claimSlug)}`)
+  }
   redirect(role === "business" ? "/dashboard/profile" : "/")
 }
 

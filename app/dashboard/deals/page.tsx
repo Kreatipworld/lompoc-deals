@@ -3,6 +3,7 @@ import { format, isPast } from "date-fns"
 import { Plus, Eye, MousePointerClick, Tag } from "lucide-react"
 import { getMyBusiness, getMyDeals, deleteDealAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { StatCard } from "@/components/stat-card"
 
 export const metadata = { title: "My deals — Lompoc Deals" }
 
@@ -153,26 +154,3 @@ export default async function MyDealsPage() {
   )
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: number
-}) {
-  return (
-    <div className="rounded-2xl border bg-card p-5 shadow-sm">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <span className="text-primary">{icon}</span>
-        <span className="text-xs font-medium uppercase tracking-wider">
-          {label}
-        </span>
-      </div>
-      <div className="mt-2 font-display text-3xl font-semibold tracking-tight">
-        {value}
-      </div>
-    </div>
-  )
-}

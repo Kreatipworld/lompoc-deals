@@ -18,7 +18,11 @@ function SubmitButton() {
   )
 }
 
-export function SignupForm() {
+export function SignupForm({
+  claimSlug,
+}: {
+  claimSlug?: string | null
+} = {}) {
   const [state, action] = useFormState<FormState, FormData>(
     signupAction,
     undefined
@@ -26,40 +30,47 @@ export function SignupForm() {
 
   return (
     <form action={action} className="space-y-5">
-      {/* Role toggle — visual cards */}
-      <div className="grid grid-cols-2 gap-3">
-        <label className="cursor-pointer">
-          <input
-            type="radio"
-            name="role"
-            value="local"
-            defaultChecked
-            className="peer sr-only"
-          />
-          <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-4 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">
-            <Heart className="h-5 w-5 text-primary" />
-            <div className="text-sm font-semibold">I&apos;m a local</div>
-            <div className="text-[11px] text-muted-foreground">
-              Save favorites
+      {claimSlug && <input type="hidden" name="claimSlug" value={claimSlug} />}
+
+      {/* Role toggle — hidden when claiming (claim forces business role) */}
+      {!claimSlug && (
+        <div className="grid grid-cols-2 gap-3">
+          <label className="cursor-pointer">
+            <input
+              type="radio"
+              name="role"
+              value="local"
+              defaultChecked
+              className="peer sr-only"
+            />
+            <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-4 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">
+              <Heart className="h-5 w-5 text-primary" />
+              <div className="text-sm font-semibold">I&apos;m a local</div>
+              <div className="text-[11px] text-muted-foreground">
+                Save favorites
+              </div>
             </div>
-          </div>
-        </label>
-        <label className="cursor-pointer">
-          <input
-            type="radio"
-            name="role"
-            value="business"
-            className="peer sr-only"
-          />
-          <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-4 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">
-            <Store className="h-5 w-5 text-primary" />
-            <div className="text-sm font-semibold">I own a business</div>
-            <div className="text-[11px] text-muted-foreground">
-              Post your deals
+          </label>
+          <label className="cursor-pointer">
+            <input
+              type="radio"
+              name="role"
+              value="business"
+              className="peer sr-only"
+            />
+            <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-4 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">
+              <Store className="h-5 w-5 text-primary" />
+              <div className="text-sm font-semibold">I own a business</div>
+              <div className="text-[11px] text-muted-foreground">
+                Post your deals
+              </div>
             </div>
-          </div>
-        </label>
-      </div>
+          </label>
+        </div>
+      )}
+      {claimSlug && (
+        <input type="hidden" name="role" value="business" />
+      )}
 
       <div className="space-y-2">
         <label htmlFor="email" className="text-sm font-medium text-foreground">
