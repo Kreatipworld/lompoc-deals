@@ -9,6 +9,7 @@ import { db } from "@/db/client"
 import { businesses, deals } from "@/db/schema"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
+import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
 
 function slugify(s: string) {
   return s
@@ -112,6 +113,29 @@ export async function saveProfileAction(
     googleBusinessUrl: data.googleBusinessUrl || null,
   }
 
+  // Build hours object from form fields. Each day has hours_<day>_open,
+  // hours_<day>_close, and hours_<day>_closed (checkbox).
+  const hours: Hours = {
+    mon: null,
+    tue: null,
+    wed: null,
+    thu: null,
+    fri: null,
+    sat: null,
+    sun: null,
+  }
+  for (const day of DAY_KEYS) {
+    const closed = formData.get(`hours_${day}_closed`) === "on"
+    if (closed) continue
+    const open = formData.get(`hours_${day}_open`)?.toString().trim()
+    const close = formData.get(`hours_${day}_close`)?.toString().trim()
+    if (open && close) {
+      hours[day] = { open, close } satisfies DayHours
+    }
+  }
+  const anyHours = DAY_KEYS.some((k) => hours[k] !== null)
+  const hoursPayload = anyHours ? hours : null
+
   const existing = await ownedBusiness(userId)
   if (existing) {
     await db
@@ -124,6 +148,7 @@ export async function saveProfileAction(
         address: data.address ?? null,
         phone: data.phone ?? null,
         website: data.website || null,
+        hoursJson: hoursPayload,
         ...socialFields,
         ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
         ...(logoUrl ? { logoUrl } : {}),
@@ -142,6 +167,7 @@ export async function saveProfileAction(
       lng: coords?.lng,
       phone: data.phone ?? null,
       website: data.website || null,
+      hoursJson: hoursPayload,
       ...socialFields,
       logoUrl,
       coverUrl,

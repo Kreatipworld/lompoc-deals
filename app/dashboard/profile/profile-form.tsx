@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import {
+  DAY_KEYS,
+  DAY_LABELS,
+  parseHours,
+  type Hours,
+} from "@/lib/hours"
 
 type Biz = {
   name: string
@@ -16,6 +22,7 @@ type Biz = {
   website: string | null
   logoUrl: string | null
   coverUrl: string | null
+  hoursJson: unknown
   instagramUrl: string | null
   facebookUrl: string | null
   tiktokUrl: string | null
@@ -23,6 +30,57 @@ type Biz = {
   yelpUrl: string | null
   googleBusinessUrl: string | null
 } | null
+
+function HoursEditor({ initial }: { initial: Hours }) {
+  return (
+    <div className="space-y-2">
+      {DAY_KEYS.map((day) => {
+        const d = initial[day]
+        const isClosed = d === null
+        return (
+          <div
+            key={day}
+            className="flex items-center gap-3 rounded-lg border p-2"
+          >
+            <span className="w-10 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {DAY_LABELS[day]}
+            </span>
+            <Input
+              type="time"
+              name={`hours_${day}_open`}
+              defaultValue={d?.open ?? "09:00"}
+              className="h-8 max-w-[110px]"
+              disabled={isClosed}
+            />
+            <span className="text-xs text-muted-foreground">to</span>
+            <Input
+              type="time"
+              name={`hours_${day}_close`}
+              defaultValue={d?.close ?? "17:00"}
+              className="h-8 max-w-[110px]"
+              disabled={isClosed}
+            />
+            <label className="ml-auto flex items-center gap-1.5 text-xs text-muted-foreground">
+              <input
+                type="checkbox"
+                name={`hours_${day}_closed`}
+                defaultChecked={isClosed}
+                onChange={(e) => {
+                  const row = e.currentTarget.closest("div")
+                  if (!row) return
+                  const inputs =
+                    row.querySelectorAll<HTMLInputElement>("input[type=time]")
+                  inputs.forEach((i) => (i.disabled = e.currentTarget.checked))
+                }}
+              />
+              Closed
+            </label>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 
 type Category = { id: number; name: string }
 
@@ -136,6 +194,19 @@ export function ProfileForm({
           )}
           <Input id="cover" name="cover" type="file" accept="image/*" />
         </div>
+      </div>
+
+      <div className="space-y-4 border-t pt-6">
+        <div>
+          <h3 className="font-display text-base font-semibold tracking-tight">
+            Hours
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Set your weekly hours. Check &ldquo;Closed&rdquo; for days
+            you&apos;re not open.
+          </p>
+        </div>
+        <HoursEditor initial={parseHours(biz?.hoursJson)} />
       </div>
 
       <div className="space-y-4 border-t pt-6">
