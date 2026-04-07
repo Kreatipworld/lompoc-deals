@@ -66,6 +66,12 @@ export const businesses = pgTable(
     hoursJson: jsonb("hours_json"),
     logoUrl: varchar("logo_url", { length: 1000 }),
     coverUrl: varchar("cover_url", { length: 1000 }),
+    instagramUrl: varchar("instagram_url", { length: 500 }),
+    facebookUrl: varchar("facebook_url", { length: 500 }),
+    tiktokUrl: varchar("tiktok_url", { length: 500 }),
+    youtubeUrl: varchar("youtube_url", { length: 500 }),
+    yelpUrl: varchar("yelp_url", { length: 500 }),
+    googleBusinessUrl: varchar("google_business_url", { length: 500 }),
     status: businessStatus("status").notNull().default("pending"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()

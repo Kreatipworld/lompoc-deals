@@ -267,6 +267,14 @@ export async function getBusinessBySlug(slug: string) {
     if (c) category = { name: c.name, slug: c.slug }
   }
 
+  // Fetch owner email so we can detect the system placeholder for the claim CTA
+  let ownerEmail: string | null = null
+  const ownerRow = await db.query.users.findFirst({
+    where: (u, { eq: e }) => e(u.id, biz.ownerUserId),
+    columns: { email: true },
+  })
+  if (ownerRow) ownerEmail = ownerRow.email
+
   const bizDeals = await db
     .select(baseDealSelect)
     .from(deals)
@@ -276,7 +284,7 @@ export async function getBusinessBySlug(slug: string) {
     .orderBy(desc(deals.createdAt))
 
   return {
-    business: { ...biz, category },
+    business: { ...biz, category, ownerEmail },
     deals: bizDeals.map(rowToCard),
   }
 }

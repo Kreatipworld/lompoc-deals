@@ -1,10 +1,25 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { MapPin, Phone, Globe, ArrowLeft, Flower2 } from "lucide-react"
+import { format } from "date-fns"
+import {
+  MapPin,
+  Phone,
+  Globe,
+  ArrowLeft,
+  Flower2,
+  Sparkles,
+  Calendar,
+} from "lucide-react"
 import { getBusinessBySlug } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { bumpViewCounts } from "@/lib/tracking"
 import { DealGrid } from "@/components/deal-card"
+import { BusinessSocialLinks } from "@/components/business-social-links"
+import { BusinessHours } from "@/components/business-hours"
+import { BusinessMapLoader } from "@/components/business-map-loader"
+import { BusinessClaimCta } from "@/components/business-claim-cta"
+
+const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
 export async function generateMetadata({
   params,
@@ -17,6 +32,16 @@ export async function generateMetadata({
     title: `${data.business.name} — Lompoc Deals`,
     description: data.business.description ?? undefined,
   }
+}
+
+function googleReviewsUrl(business: {
+  googleBusinessUrl: string | null
+  address: string | null
+  name: string
+}): string | null {
+  if (business.googleBusinessUrl) return business.googleBusinessUrl
+  const q = business.address ?? `${business.name}, Lompoc, CA`
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`
 }
 
 export default async function BusinessPage({
@@ -36,11 +61,13 @@ export default async function BusinessPage({
     void bumpViewCounts(deals.map((d) => d.id))
   }
 
+  const isUnclaimed = business.ownerEmail === SYSTEM_OWNER_EMAIL
+  const reviewsUrl = googleReviewsUrl(business)
+
   return (
     <>
-      {/* COVER + HEADER */}
+      {/* COVER */}
       <section className="relative">
-        {/* Cover image or gradient fallback */}
         <div className="relative h-56 sm:h-72">
           {business.coverUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -58,7 +85,7 @@ export default async function BusinessPage({
           />
         </div>
 
-        {/* Floating header card */}
+        {/* HEADER CARD */}
         <div className="mx-auto -mt-20 max-w-6xl px-4">
           <div className="rounded-3xl border bg-card p-6 shadow-lg sm:p-8">
             <Link
@@ -108,74 +135,115 @@ export default async function BusinessPage({
                   </p>
                 )}
 
-                {/* Info chips */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {business.address && (
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        business.address
-                      )}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
-                    >
-                      <MapPin className="h-3.5 w-3.5 text-primary" />
-                      {business.address}
-                    </a>
-                  )}
-                  {business.phone && (
-                    <a
-                      href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
-                      className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
-                    >
-                      <Phone className="h-3.5 w-3.5 text-primary" />
-                      {business.phone}
-                    </a>
-                  )}
-                  {business.website && (
-                    <a
-                      href={business.website}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
-                    >
-                      <Globe className="h-3.5 w-3.5 text-primary" />
-                      {business.website.replace(/^https?:\/\//, "")}
-                    </a>
-                  )}
+                {/* Trust strip */}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                  <span className="inline-flex items-center gap-1">
+                    <Sparkles className="h-3 w-3 text-primary" />
+                    {activeDeals.length} active{" "}
+                    {activeDeals.length === 1 ? "deal" : "deals"}
+                  </span>
+                  <span className="text-muted-foreground/40">·</span>
+                  <span className="inline-flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    Listed since {format(new Date(business.createdAt), "MMM yyyy")}
+                  </span>
                 </div>
-              </div>
 
-              {/* Stat */}
-              <div className="hidden flex-shrink-0 text-center sm:block">
-                <div className="font-display text-3xl font-semibold text-primary">
-                  {activeDeals.length}
-                </div>
-                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                  Active {activeDeals.length === 1 ? "deal" : "deals"}
-                </div>
+                {/* Social links + Google reviews */}
+                <BusinessSocialLinks
+                  links={{
+                    instagramUrl: business.instagramUrl,
+                    facebookUrl: business.facebookUrl,
+                    tiktokUrl: business.tiktokUrl,
+                    youtubeUrl: business.youtubeUrl,
+                    yelpUrl: business.yelpUrl,
+                    googleBusinessUrl: business.googleBusinessUrl,
+                  }}
+                  reviewUrl={reviewsUrl}
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* DEALS */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="mb-6 flex items-end justify-between">
-          <h2 className="font-display text-2xl font-semibold tracking-tight">
-            Active deals
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            from {business.name}
-          </p>
+      {/* 2-COLUMN BODY */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+          {/* Main column */}
+          <div className="space-y-8">
+            {/* Contact chips */}
+            <div className="flex flex-wrap gap-2">
+              {business.address && (
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
+                >
+                  <MapPin className="h-3.5 w-3.5 text-primary" />
+                  {business.address}
+                </a>
+              )}
+              {business.phone && (
+                <a
+                  href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
+                >
+                  <Phone className="h-3.5 w-3.5 text-primary" />
+                  {business.phone}
+                </a>
+              )}
+              {business.website && (
+                <a
+                  href={business.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
+                >
+                  <Globe className="h-3.5 w-3.5 text-primary" />
+                  {business.website.replace(/^https?:\/\//, "")}
+                </a>
+              )}
+            </div>
+
+            {/* Active deals */}
+            <div>
+              <h2 className="mb-4 font-display text-2xl font-semibold tracking-tight">
+                Active deals
+              </h2>
+              <DealGrid
+                deals={deals}
+                viewer={viewer}
+                fromPath={`/biz/${params.slug}`}
+              />
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <aside className="space-y-4">
+            {business.lat != null && business.lng != null && (
+              <div className="overflow-hidden rounded-2xl border shadow-sm">
+                <div className="h-64">
+                  <BusinessMapLoader
+                    lat={business.lat}
+                    lng={business.lng}
+                    name={business.name}
+                  />
+                </div>
+              </div>
+            )}
+            <BusinessHours hoursJson={business.hoursJson} />
+          </aside>
         </div>
-        <DealGrid
-          deals={deals}
-          viewer={viewer}
-          fromPath={`/biz/${params.slug}`}
-        />
       </section>
+
+      {/* CLAIM CTA */}
+      {isUnclaimed && (
+        <section className="mx-auto mb-16 max-w-6xl px-4">
+          <BusinessClaimCta slug={params.slug} />
+        </section>
+      )}
     </>
   )
 }

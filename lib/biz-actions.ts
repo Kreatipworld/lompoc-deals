@@ -33,13 +33,25 @@ async function ownedBusiness(userId: number) {
 
 // ============ profile ============
 
+const optionalUrl = z
+  .string()
+  .url("Must be a valid URL")
+  .optional()
+  .or(z.literal(""))
+
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   description: z.string().optional(),
   categoryId: z.coerce.number().int().positive().optional(),
   address: z.string().optional(),
   phone: z.string().optional(),
-  website: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  website: optionalUrl,
+  instagramUrl: optionalUrl,
+  facebookUrl: optionalUrl,
+  tiktokUrl: optionalUrl,
+  youtubeUrl: optionalUrl,
+  yelpUrl: optionalUrl,
+  googleBusinessUrl: optionalUrl,
 })
 
 export type ProfileState = { error?: string; success?: string } | undefined
@@ -57,6 +69,12 @@ export async function saveProfileAction(
     address: formData.get("address") || undefined,
     phone: formData.get("phone") || undefined,
     website: formData.get("website") || undefined,
+    instagramUrl: formData.get("instagramUrl") || undefined,
+    facebookUrl: formData.get("facebookUrl") || undefined,
+    tiktokUrl: formData.get("tiktokUrl") || undefined,
+    youtubeUrl: formData.get("youtubeUrl") || undefined,
+    yelpUrl: formData.get("yelpUrl") || undefined,
+    googleBusinessUrl: formData.get("googleBusinessUrl") || undefined,
   })
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
@@ -85,6 +103,15 @@ export async function saveProfileAction(
     coords = await geocodeAddress(data.address)
   }
 
+  const socialFields = {
+    instagramUrl: data.instagramUrl || null,
+    facebookUrl: data.facebookUrl || null,
+    tiktokUrl: data.tiktokUrl || null,
+    youtubeUrl: data.youtubeUrl || null,
+    yelpUrl: data.yelpUrl || null,
+    googleBusinessUrl: data.googleBusinessUrl || null,
+  }
+
   const existing = await ownedBusiness(userId)
   if (existing) {
     await db
@@ -97,6 +124,7 @@ export async function saveProfileAction(
         address: data.address ?? null,
         phone: data.phone ?? null,
         website: data.website || null,
+        ...socialFields,
         ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
         ...(logoUrl ? { logoUrl } : {}),
         ...(coverUrl ? { coverUrl } : {}),
@@ -114,6 +142,7 @@ export async function saveProfileAction(
       lng: coords?.lng,
       phone: data.phone ?? null,
       website: data.website || null,
+      ...socialFields,
       logoUrl,
       coverUrl,
       status: "pending",
