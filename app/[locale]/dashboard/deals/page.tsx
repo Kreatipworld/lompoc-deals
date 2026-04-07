@@ -1,11 +1,32 @@
 import { Link } from "@/i18n/navigation"
-import { format, isPast } from "date-fns"
-import { Plus, Eye, MousePointerClick, Tag } from "lucide-react"
-import { getMyBusiness, getMyDeals, deleteDealAction } from "@/lib/biz-actions"
+import { differenceInDays, format, isPast } from "date-fns"
+import { Plus, Eye, MousePointerClick, Tag, Pause, Play } from "lucide-react"
+import { getMyBusiness, getMyDeals, deleteDealAction, toggleDealPausedAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { StatCard } from "@/components/stat-card"
 
 export const metadata = { title: "My deals — Lompoc Deals" }
+
+function ExpiryLabel({ expiresAt }: { expiresAt: Date }) {
+  const expired = isPast(expiresAt)
+  if (expired) {
+    return (
+      <span className="font-medium text-muted-foreground">
+        Expired {format(new Date(expiresAt), "MMM d, yyyy")}
+      </span>
+    )
+  }
+  const days = differenceInDays(new Date(expiresAt), new Date())
+  const label =
+    days === 0 ? "Expires today" : days === 1 ? "Expires tomorrow" : `Expires in ${days} days`
+  const colorClass =
+    days <= 2
+      ? "text-destructive font-semibold"
+      : days <= 7
+      ? "text-amber-600 font-medium dark:text-amber-400"
+      : "text-muted-foreground"
+  return <span className={colorClass}>{label}</span>
+}
 
 export default async function MyDealsPage() {
   const [biz, deals] = await Promise.all([getMyBusiness(), getMyDeals()])
@@ -30,7 +51,7 @@ export default async function MyDealsPage() {
     )
   }
 
-  const active = deals.filter((d) => !isPast(d.expiresAt))
+  const active = deals.filter((d) => !isPast(d.expiresAt) && !d.paused)
   const totalViews = deals.reduce((s, d) => s + (d.viewCount ?? 0), 0)
   const totalClicks = deals.reduce((s, d) => s + (d.clickCount ?? 0), 0)
 
@@ -86,15 +107,15 @@ export default async function MyDealsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
           {deals.map((d) => {
             const expired = isPast(d.expiresAt)
             return (
               <article
                 key={d.id}
-                className="flex flex-col rounded-2xl border bg-card p-5 shadow-sm transition hover:shadow-md"
+                className={`flex flex-col rounded-2xl border bg-card p-5 shadow-sm transition hover:shadow-md ${d.paused ? "opacity-60" : ""}`}
               >
-                <div className="mb-3 flex items-center gap-2">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
                   <span className="rounded-full bg-secondary px-2.5 py-0.5 text-[11px] font-medium capitalize">
                     {d.type}
                   </span>
@@ -103,7 +124,12 @@ export default async function MyDealsPage() {
                       {d.discountText}
                     </span>
                   )}
-                  {expired && (
+                  {d.paused && (
+                    <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      paused
+                    </span>
+                  )}
+                  {expired && !d.paused && (
                     <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
                       expired
                     </span>
@@ -117,18 +143,18 @@ export default async function MyDealsPage() {
                     {d.description}
                   </p>
                 )}
-                <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span>Expires {format(new Date(d.expiresAt), "MMM d, yyyy")}</span>
-                  <span className="inline-flex items-center gap-1">
+                <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+                  <ExpiryLabel expiresAt={new Date(d.expiresAt)} />
+                  <span className="inline-flex items-center gap-1 text-muted-foreground">
                     <Eye className="h-3 w-3" />
                     {d.viewCount}
                   </span>
-                  <span className="inline-flex items-center gap-1">
+                  <span className="inline-flex items-center gap-1 text-muted-foreground">
                     <MousePointerClick className="h-3 w-3" />
                     {d.clickCount}
                   </span>
                 </div>
-                <div className="mt-4 flex items-center gap-2 border-t pt-4">
+                <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4">
                   <Link
                     href={`/dashboard/deals/edit/${d.id}`}
                     className={buttonVariants({
@@ -138,10 +164,30 @@ export default async function MyDealsPage() {
                   >
                     Edit
                   </Link>
+                  {/* Pause/activate toggle — only shown for non-expired deals */}
+                  {!expired && (
+                    <form action={toggleDealPausedAction}>
+                      <input type="hidden" name="dealId" value={d.id} />
+                      <input type="hidden" name="paused" value={String(d.paused)} />
+                      <Button variant="outline" size="sm" type="submit">
+                        {d.paused ? (
+                          <>
+                            <Play className="mr-1 h-3 w-3" />
+                            Activate
+                          </>
+                        ) : (
+                          <>
+                            <Pause className="mr-1 h-3 w-3" />
+                            Pause
+                          </>
+                        )}
+                      </Button>
+                    </form>
+                  )}
                   <form action={deleteDealAction}>
                     <input type="hidden" name="dealId" value={d.id} />
                     <Button variant="ghost" size="sm" type="submit">
-                      {expired ? "Hide" : "Soft-delete"}
+                      {expired ? "Hide" : "Remove"}
                     </Button>
                   </form>
                 </div>
@@ -153,4 +199,3 @@ export default async function MyDealsPage() {
     </div>
   )
 }
-

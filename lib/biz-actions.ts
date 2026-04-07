@@ -193,7 +193,7 @@ const dealSchema = z.object({
   expiresAt: z.string().min(1, "Expiration date required"),
 })
 
-export type DealState = { error?: string; success?: string } | undefined
+export type DealState = { error?: string; success?: string; fieldErrors?: Record<string, string> } | undefined
 
 export async function saveDealAction(
   _prev: DealState,
@@ -307,6 +307,24 @@ export async function saveDealAction(
   revalidatePath("/dashboard/deals")
   revalidatePath("/")
   redirect("/dashboard/deals")
+}
+
+export async function toggleDealPausedAction(formData: FormData) {
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) return
+
+  const dealId = parseInt(formData.get("dealId")?.toString() ?? "0", 10)
+  const paused = formData.get("paused") === "true"
+  if (!dealId) return
+
+  await db
+    .update(deals)
+    .set({ paused: !paused })
+    .where(and(eq(deals.id, dealId), eq(deals.businessId, biz.id)))
+
+  revalidatePath("/dashboard/deals")
+  revalidatePath("/")
 }
 
 export async function deleteDealAction(formData: FormData) {

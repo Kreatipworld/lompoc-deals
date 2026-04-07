@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation"
-import { Link } from "@/i18n/navigation"
 import { Store, Tag, BarChart3, CreditCard } from "lucide-react"
 import { auth } from "@/auth"
+import { getMyDeals } from "@/lib/biz-actions"
+import { DashboardNav } from "@/components/dashboard-nav"
+import { isPast } from "date-fns"
 
 export default async function DashboardLayout({
   children,
@@ -13,6 +15,22 @@ export default async function DashboardLayout({
     redirect("/login")
   }
 
+  // Fetch active deal count for the badge (best-effort — won't crash the layout)
+  let activeDealCount = 0
+  try {
+    const deals = await getMyDeals()
+    activeDealCount = deals.filter((d) => !isPast(d.expiresAt)).length
+  } catch {
+    // silently ignore — layout must not hard-fail
+  }
+
+  const links = [
+    { href: "/dashboard/profile", icon: <Store className="h-4 w-4" />, label: "Profile" },
+    { href: "/dashboard/deals", icon: <Tag className="h-4 w-4" />, label: "Deals", badge: activeDealCount },
+    { href: "/dashboard/stats", icon: <BarChart3 className="h-4 w-4" />, label: "Stats" },
+    { href: "/dashboard/billing", icon: <CreditCard className="h-4 w-4" />, label: "Billing" },
+  ]
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 lg:flex-row">
       <aside className="lg:w-60">
@@ -21,50 +39,9 @@ export default async function DashboardLayout({
             Business
           </h2>
         </div>
-        <nav className="flex flex-row gap-1 lg:flex-col">
-          <NavLink
-            href="/dashboard/profile"
-            icon={<Store className="h-4 w-4" />}
-            label="Profile"
-          />
-          <NavLink
-            href="/dashboard/deals"
-            icon={<Tag className="h-4 w-4" />}
-            label="Deals"
-          />
-          <NavLink
-            href="/dashboard/stats"
-            icon={<BarChart3 className="h-4 w-4" />}
-            label="Stats"
-          />
-          <NavLink
-            href="/dashboard/billing"
-            icon={<CreditCard className="h-4 w-4" />}
-            label="Billing"
-          />
-        </nav>
+        <DashboardNav links={links} />
       </aside>
       <main className="flex-1 space-y-6">{children}</main>
     </div>
-  )
-}
-
-function NavLink({
-  href,
-  icon,
-  label,
-}: {
-  href: string
-  icon: React.ReactNode
-  label: string
-}) {
-  return (
-    <Link
-      href={href}
-      className="flex flex-1 items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground lg:flex-initial"
-    >
-      <span className="text-primary">{icon}</span>
-      {label}
-    </Link>
   )
 }

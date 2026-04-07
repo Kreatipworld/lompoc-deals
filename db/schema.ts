@@ -5,6 +5,7 @@ import {
   text,
   varchar,
   integer,
+  boolean,
   timestamp,
   doublePrecision,
   jsonb,
@@ -100,6 +101,7 @@ export const deals = pgTable("deals", {
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   viewCount: integer("view_count").notNull().default(0),
   clickCount: integer("click_count").notNull().default(0),
+  paused: boolean("paused").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
