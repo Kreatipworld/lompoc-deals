@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses } from "@/db/schema"
 import { getDealFunnel, type FunnelWindow } from "@/lib/funnel-queries"
 
 export async function GET(request: Request) {

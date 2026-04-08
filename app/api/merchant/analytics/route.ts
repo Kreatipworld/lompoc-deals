@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { getDealFunnel, type FunnelWindow } from "@/lib/funnel-queries"
 

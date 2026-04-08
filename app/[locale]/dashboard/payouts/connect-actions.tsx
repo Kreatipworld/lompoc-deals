@@ -39,7 +39,11 @@ export function StripeExpressDashboardButton({ accountId }: { accountId: string 
 
   async function openDashboard() {
     setLoading(true)
-    const res = await fetch("/api/stripe/connect/dashboard-link", { method: "POST" })
+    const res = await fetch("/api/stripe/connect/dashboard-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ accountId }),
+    })
     const data = await res.json()
     if (data.url) {
       window.open(data.url, "_blank")
