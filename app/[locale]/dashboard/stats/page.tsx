@@ -8,29 +8,36 @@ import {
   ShoppingBag,
   CheckCircle2,
 } from "lucide-react"
-import { getMyBusiness, getMyDeals } from "@/lib/biz-actions"
-import { getDealFunnel } from "@/lib/funnel-queries"
+import { getMyBusiness } from "@/lib/biz-actions"
+import { getDealFunnel, type FunnelWindow } from "@/lib/funnel-queries"
 import { Link } from "@/i18n/navigation"
 
 export const metadata = { title: "Stats — Lompoc Deals" }
 
-export default async function StatsPage() {
-  const [biz, deals] = await Promise.all([getMyBusiness(), getMyDeals()])
+export default async function StatsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ window?: string }>
+}) {
+  const params = await searchParams
+  const window: FunnelWindow =
+    params.window === "7d" || params.window === "all" ? params.window : "30d"
 
-  const totalViews = deals.reduce((s, d) => s + (d.viewCount ?? 0), 0)
-  const totalClicks = deals.reduce((s, d) => s + (d.clickCount ?? 0), 0)
+  const biz = await getMyBusiness()
+  const funnelRows = biz ? await getDealFunnel(biz.id, window) : []
+
+  const totalViews = funnelRows.reduce((s, r) => s + r.views, 0)
+  const totalClicks = funnelRows.reduce((s, r) => s + r.clicks, 0)
+  const totalClaims = funnelRows.reduce((s, r) => s + r.claims, 0)
+  const totalRedeems = funnelRows.reduce((s, r) => s + r.redeems, 0)
   const ctr = totalViews > 0 ? Math.round((totalClicks / totalViews) * 100) : 0
 
   const bestDeal =
-    deals.length > 0
-      ? deals.reduce((best, d) =>
-          (d.viewCount ?? 0) > (best.viewCount ?? 0) ? d : best
-        )
+    funnelRows.length > 0
+      ? funnelRows.reduce((best, r) => (r.views > best.views ? r : best))
       : null
 
-  const funnelRows = biz ? await getDealFunnel(biz.id, "30d") : []
-  const totalClaims = funnelRows.reduce((s, r) => s + r.claims, 0)
-  const totalRedeems = funnelRows.reduce((s, r) => s + r.redeems, 0)
+  const windowLabel = window === "7d" ? "7 days" : window === "30d" ? "30 days" : "all time"
 
   return (
     <div className="space-y-6">
@@ -39,7 +46,7 @@ export default async function StatsPage() {
           Stats
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Lifetime views and clicks across your deals.
+          Deal performance metrics across your business.
         </p>
       </header>
 
@@ -57,7 +64,7 @@ export default async function StatsPage() {
             to start tracking stats.
           </p>
         </div>
-      ) : deals.length === 0 ? (
+      ) : funnelRows.length === 0 ? (
         <div className="rounded-3xl border border-dashed bg-muted/30 px-6 py-16 text-center">
           <TrendingUp className="mx-auto h-10 w-10 text-muted-foreground/60" />
           <h3 className="mt-4 font-display text-xl font-semibold">No data yet</h3>
@@ -73,29 +80,46 @@ export default async function StatsPage() {
         </div>
       ) : (
         <>
+          {/* Time window selector */}
+          <div className="flex gap-2">
+            {(["7d", "30d", "all"] as const).map((w) => (
+              <Link
+                key={w}
+                href={`?window=${w}`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  window === w
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                {w === "7d" ? "7 days" : w === "30d" ? "30 days" : "All time"}
+              </Link>
+            ))}
+          </div>
+
           {/* Summary stats */}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <BigStat
               icon={<Eye className="h-5 w-5" />}
-              label="Total views"
+              label={`Views (${windowLabel})`}
               value={totalViews}
               trend={totalViews > 0 ? "up" : "neutral"}
             />
             <BigStat
               icon={<MousePointerClick className="h-5 w-5" />}
-              label="Total clicks"
+              label={`Clicks (${windowLabel})`}
               value={totalClicks}
               trend={totalClicks > 0 ? "up" : "neutral"}
             />
             <BigStat
               icon={<ShoppingBag className="h-5 w-5" />}
-              label="Claims (30d)"
+              label={`Claims (${windowLabel})`}
               value={totalClaims}
               trend={totalClaims > 0 ? "up" : "neutral"}
             />
             <BigStat
               icon={<CheckCircle2 className="h-5 w-5" />}
-              label="Redeems (30d)"
+              label={`Redeems (${windowLabel})`}
               value={totalRedeems}
               trend={totalRedeems > 0 ? "up" : "neutral"}
             />
@@ -109,7 +133,7 @@ export default async function StatsPage() {
           />
 
           {/* Best performing deal */}
-          {bestDeal && (bestDeal.viewCount ?? 0) > 0 && (
+          {bestDeal && bestDeal.views > 0 && (
             <div className="flex items-start gap-4 rounded-3xl border bg-gradient-to-br from-amber-50 to-card p-5 shadow-sm dark:from-amber-950/20">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400">
                 <Trophy className="h-5 w-5" />
@@ -119,24 +143,25 @@ export default async function StatsPage() {
                   Best performing deal
                 </p>
                 <p className="mt-0.5 truncate font-display text-lg font-semibold">
-                  {bestDeal.title}
+                  {bestDeal.dealTitle}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {bestDeal.viewCount?.toLocaleString()} views &middot;{" "}
-                  {bestDeal.clickCount?.toLocaleString()} clicks
+                  {bestDeal.views.toLocaleString()} views &middot;{" "}
+                  {bestDeal.clicks.toLocaleString()} clicks &middot;{" "}
+                  {bestDeal.claims.toLocaleString()} claims
                 </p>
               </div>
             </div>
           )}
 
-          {/* Funnel visualization */}
+          {/* Funnel analytics */}
           <div className="overflow-hidden rounded-3xl border bg-card shadow-sm">
             <div className="border-b px-6 py-4">
               <h2 className="font-display text-lg font-semibold">
                 Funnel analytics
               </h2>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                Visit → Click → Claim → Redeem · last 30 days
+                Visit → Click → Claim → Redeem · {windowLabel}
               </p>
             </div>
             <div className="overflow-x-auto">
@@ -180,42 +205,6 @@ export default async function StatsPage() {
                       <td className="px-6 py-3 text-right text-muted-foreground">
                         {row.redeemRate}%
                       </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Per-deal performance (lifetime) */}
-          <div className="overflow-hidden rounded-3xl border bg-card shadow-sm">
-            <div className="border-b px-6 py-4">
-              <h2 className="font-display text-lg font-semibold">
-                Per-deal performance
-              </h2>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Lifetime views and clicks
-              </p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <tr>
-                    <th className="px-6 py-3">Deal</th>
-                    <th className="px-6 py-3">Type</th>
-                    <th className="px-6 py-3 text-right">Views</th>
-                    <th className="px-6 py-3 text-right">Clicks</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  {deals.map((d) => (
-                    <tr key={d.id} className="hover:bg-accent/40">
-                      <td className="px-6 py-3 font-medium">{d.title}</td>
-                      <td className="px-6 py-3 capitalize text-muted-foreground">
-                        {d.type}
-                      </td>
-                      <td className="px-6 py-3 text-right">{d.viewCount ?? 0}</td>
-                      <td className="px-6 py-3 text-right">{d.clickCount ?? 0}</td>
                     </tr>
                   ))}
                 </tbody>

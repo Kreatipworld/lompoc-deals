@@ -43,6 +43,13 @@
       "when": 1744063200000,
       "tag": "0005_add_deal_paused",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1775608360962,
+      "tag": "0006_add_deal_events",
+      "breakpoints": true
     }
   ]
 }
