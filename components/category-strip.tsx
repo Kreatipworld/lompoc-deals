@@ -61,26 +61,19 @@ export async function CategoryStrip({
               <Link
                 key={href}
                 href={href}
-                className={`group relative flex min-w-[78px] flex-shrink-0 flex-col items-center gap-1.5 rounded-lg px-3 py-2 transition ${
+                className={`group flex min-w-[82px] flex-shrink-0 flex-col items-center gap-1.5 rounded-full px-3 py-2 transition-all ${
                   active
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-primary/10 text-primary ring-1 ring-primary/20"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
                 <Icon
-                  className={`h-5 w-5 transition ${
-                    active ? "text-primary" : "group-hover:text-foreground"
-                  }`}
-                  strokeWidth={1.75}
+                  className="h-[22px] w-[22px] transition"
+                  strokeWidth={active ? 2.25 : 1.75}
                 />
                 <span className="whitespace-nowrap text-[11px] font-medium tracking-wide">
                   {name}
                 </span>
-                <span
-                  className={`absolute inset-x-2 -bottom-[1px] h-0.5 rounded-full transition ${
-                    active ? "bg-foreground" : "bg-transparent"
-                  }`}
-                />
               </Link>
             )
           })}
