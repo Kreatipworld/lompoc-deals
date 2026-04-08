@@ -55,9 +55,9 @@ export function DealCard({
   const TypeIcon = TYPE_META[deal.type].icon
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-2 hover:shadow-xl">
       {/* MEDIA */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-52 overflow-hidden">
         {deal.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -75,9 +75,9 @@ export function DealCard({
           </div>
         )}
 
-        {/* Discount badge (top-left, big and bold) */}
+        {/* Discount badge (top-left, amber California gold) */}
         {deal.discountText && (
-          <div className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-foreground shadow-md">
+          <div className="absolute left-3 top-3 rounded-full bg-amber px-3 py-1.5 text-sm font-bold text-amber-foreground shadow-md">
             {deal.discountText}
           </div>
         )}
@@ -130,15 +130,15 @@ export function DealCard({
       {/* BODY */}
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="space-y-1">
-          <h3 className="font-display text-lg font-semibold leading-snug tracking-tight line-clamp-2">
-            {deal.title}
-          </h3>
           <Link
             href={`/biz/${deal.business.slug}`}
-            className="text-sm font-medium text-primary hover:underline"
+            className="text-xs font-semibold uppercase tracking-widest text-primary hover:underline"
           >
             {deal.business.name}
           </Link>
+          <h3 className="font-display text-lg font-semibold leading-snug tracking-tight line-clamp-2">
+            {deal.title}
+          </h3>
         </div>
 
         {deal.description && (
@@ -175,7 +175,7 @@ export function DealCard({
               />
               <button
                 type="submit"
-                className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-foreground px-4 text-sm font-medium text-background transition hover:bg-foreground/90"
+                className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 active:scale-[0.98]"
               >
                 Get Deal
                 <ArrowRight className="h-3.5 w-3.5" />
