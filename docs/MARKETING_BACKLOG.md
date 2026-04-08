@@ -55,8 +55,9 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A bilingual (EN/ES) Instagram account posting 3x/week (1 deal highlight, 1 merchant story, 1 community post) will reach 500 followers in 60 days and drive 100 profile-link clicks/month.  
 **Target KPI:** 500 followers by day 60, 100 link clicks/month  
 **Effort:** M  
-**Status:** backlog  
-**Notes:** 63% of Lompoc is Hispanic — post in both languages, tag local businesses. Use Canva templates in `/marketing/brand/templates/`.
+**Status:** copy_done — calendar + templates ready, human to create account and post  
+**Assets:** `/marketing/social/instagram-content-calendar.md` — 3 post templates (EN/ES), 4-week content calendar, account setup checklist, engagement tactics, weekly metrics tracker  
+**Notes:** 63% of Lompoc is Hispanic — post in both languages, tag local businesses.
 
 ---
 
@@ -112,7 +113,8 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A weekly 15-second TikTok showing the best local deal (with merchant interview clip) will reach 1,000+ views/video within 60 days and drive 25 signups/week.  
 **Target KPI:** 1,000 avg views/video, 25 signups/week from TikTok  
 **Effort:** M  
-**Status:** backlog  
+**Status:** copy_done — scripts + format guide ready, human to film and post  
+**Assets:** `/marketing/social/tiktok-script-templates.md` — 4 script templates (EN/ES), 15-sec and 30-sec formats, 4-week content calendar, creator partnership brief + outreach message  
 **Notes:** EN/ES captions. Partner with 1 Lompoc creator with 2k+ followers for amplification.
 
 ---
@@ -143,8 +145,9 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A story pitch to The Lompoc Record ("free tool for local businesses to share deals") will generate a feature article that drives 200 one-time signups and ongoing brand awareness.  
 **Target KPI:** 1 press mention, 200 attributed signups  
 **Effort:** S  
-**Status:** backlog  
-**Notes:** Angle: "Lompoc-built tech helping local businesses compete with big-box." Ready to pitch after 50 merchants milestone.
+**Status:** copy_done — pitch templates ready, hold until 50-merchant milestone  
+**Assets:** `/marketing/sales/press-pitch-lompoc-record.md` — pitches for Lompoc Record, SYV News, 805 Living, KSBY; founder talking points; post-coverage playbook  
+**Notes:** Angle: "Lompoc-built tech helping local businesses compete with big-box." Send after M-003 sprint delivers 50 merchants milestone.
 
 ---
 
