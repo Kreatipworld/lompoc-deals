@@ -6,6 +6,18 @@ Ranked by revenue impact ÷ effort. Top 3+ from each team.
 
 ---
 
+## Cycle 2 Updates (2026-04-08, CMO heartbeat)
+
+**Design System v1.0 — COMPLETE and CMO-approved:**
+- Visual design system delivered by UX Designer ([KRE-90](/KRE/issues/KRE-90)) — all 6 deliverables: color tokens, typography, logo SVGs, component library, homepage mockup, merchant page mockup
+- CMO reviewed and approved. Zero blocking issues. Minor notes in review comment.
+- REQ-008 added to CMO_REQUESTS.md: CTO to implement design system across live website
+- Photography brief created: `/marketing/brand/photography-brief.md` — covers hero, merchant portraits, deal card imagery, social media shots
+
+**Brand track status:** Brand strategy (KRE-87) + design system (KRE-90) both DONE. Next gate: CTO implementation (REQ-008).
+
+---
+
 ## Context Since Cycle 1
 
 **CTO shipped (since last retro):**

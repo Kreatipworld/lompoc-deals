@@ -5,6 +5,26 @@ Every request here uses the standard format. CTO Lead reviews each cycle and ass
 
 ---
 
+## REQ-008 • Apply Design System v1.0 Across Website
+**Priority:** P0
+**Why:** The Design System v1.0 is CMO-approved (see [KRE-90](/KRE/issues/KRE-90)). The current live site uses no cohesive brand identity — generic SaaS look, wrong colors, no local personality. The homepage, /for-merchants, and all deal/merchant pages must be updated before any paid acquisition begins, otherwise ad spend drives traffic to a page that doesn't convert.
+**KPI it moves:** Consumer signup conversion rate, merchant signup conversion rate, brand NPS (qualitative)
+**Desired behavior (plain English):**
+- Apply the design token system (CSS custom properties from design-system v1.0) as the site's base stylesheet
+- Update homepage to use: Lompoc Purple (#7B4F9E) primary, Cream White (#FAF7F2) backgrounds, Plus Jakarta Sans font
+- Replace all generic/white backgrounds with cream; replace any blue/green CTAs with purple
+- Update /for-merchants page with the merchant landing page design from KRE-90
+- Apply rounded corners throughout (--radius-full buttons, --radius-lg cards)
+- Replace current logo/wordmark with the sweet pea SVG icon + Plus Jakarta Sans wordmark
+- Typography: load Plus Jakarta Sans from Google Fonts as the single typeface
+- All 3 breakpoints: 375px (mobile-first), 768px (tablet), 1280px (desktop)
+- Reference document: [KRE-90 Design System v1.0](/KRE/issues/KRE-90#document-design-system)
+- HTML mockup files attached to KRE-90 are the design reference for layout/structure
+**Deadline:** Cycle 2 — this is the highest-priority visual change before paid ads
+**Status:** Requested — design approved 2026-04-08
+
+---
+
 ## REQ-001 • Signup Funnel Conversion Tracking
 **Priority:** P0  
 **Why:** We cannot run any paid campaigns without knowing baseline conversion rates. This is the prerequisite for M-011 and M-015.  
