@@ -5,20 +5,21 @@ import type { NextRequest } from "next/server"
 
 const intlMiddleware = createMiddleware(routing)
 
-// Paths that require auth checks (without locale prefix)
+// Paths that require auth checks. With localePrefix: "never" the URLs no
+// longer have /en or /es prefixes, so we match against the raw pathname.
 const protectedPaths = ["/dashboard", "/admin"]
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Strip locale prefix to check underlying path
-  const pathnameWithoutLocale = pathname.replace(/^\/(en|es)/, "") || "/"
+  // Also tolerate legacy /en/* and /es/* URLs that may be cached or
+  // bookmarked. Strip the prefix so the auth check still works.
+  const pathnameWithoutLocale = pathname.replace(/^\/(en|es)(\/|$)/, "/") || "/"
 
   const isProtected = protectedPaths.some((p) =>
     pathnameWithoutLocale.startsWith(p)
   )
 
-  // Run i18n routing first (locale detection + redirect)
   const intlResponse = intlMiddleware(req)
 
   if (isProtected) {
@@ -28,17 +29,15 @@ export default async function middleware(req: NextRequest) {
 
     if (pathnameWithoutLocale.startsWith("/dashboard") && role !== "business") {
       const url = req.nextUrl.clone()
-      const locale = pathname.match(/^\/(en|es)/)?.[1] ?? "en"
-      url.pathname = `/${locale}/login`
-      url.searchParams.set("from", pathname)
+      url.pathname = "/login"
+      url.searchParams.set("from", pathnameWithoutLocale)
       return Response.redirect(url)
     }
 
     if (pathnameWithoutLocale.startsWith("/admin") && role !== "admin") {
       const url = req.nextUrl.clone()
-      const locale = pathname.match(/^\/(en|es)/)?.[1] ?? "en"
-      url.pathname = `/${locale}/login`
-      url.searchParams.set("from", pathname)
+      url.pathname = "/login"
+      url.searchParams.set("from", pathnameWithoutLocale)
       return Response.redirect(url)
     }
   }
