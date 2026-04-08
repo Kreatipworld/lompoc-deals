@@ -10,6 +10,7 @@ import {
   Sparkles,
   Home,
   Wine,
+  Leaf,
   type LucideIcon,
 } from "lucide-react"
 import { getAllCategories } from "@/lib/queries"
@@ -24,6 +25,8 @@ const ICONS: Record<string, LucideIcon> = {
   "more-horizontal": MoreHorizontal,
   home: Home,
   wine: Wine,
+  leaf: Leaf,
+  cannabis: Leaf,
 }
 
 export async function CategoryStrip({
