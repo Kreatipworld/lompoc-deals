@@ -1,5 +1,5 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-07 | Owner: CMO*
+*Last updated: 2026-04-08 | Owner: CMO*
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
 
@@ -60,13 +60,27 @@ Every request here uses the standard format. CTO Lead reviews each cycle and ass
 ---
 
 ## REQ-005 • SEO Landing Pages — City + Category Routes
-**Priority:** P2  
-**Why:** Programmatic SEO is our highest-leverage long-term growth channel. We need dynamic routes for city/category combinations with proper meta tags and schema markup.  
+**Priority:** P1 *(upgraded from P2 — Vercel Pro is now active as of 2026-04-08, removing all deployment constraints)*  
+**Why:** Programmatic SEO is our highest-leverage long-term growth channel. We need dynamic routes for city/category combinations with proper meta tags and schema markup. With Vercel Pro now live, there is no deployment bottleneck — CTO can ship these pages freely.  
 **KPI it moves:** Organic search traffic (target: 200 sessions/month from category pages by day 90)  
 **Desired behavior:**
 - Route: `/lompoc/[category-slug]` → renders filtered deals for that category in Lompoc
 - Route: `/lompoc` → hub page listing all categories with deal counts
 - Each page needs: `<title>`, `<meta description>`, Open Graph tags, LocalBusiness schema markup
-- CMO team will write the copy for each page (see `/marketing/seo/` for drafts)  
+- CMO team will write the copy for each page (see `/marketing/seo/` for complete drafts)  
+**Deadline:** Cycle 2 *(moved up from Cycle 3)*  
+**Status:** Requested — priority bumped, Vercel deployment unblocked
+
+---
+
+## REQ-006 • Merchant Referral System ("Refer a Neighbor")
+**Priority:** P2  
+**Why:** Word-of-mouth is the lowest-CAC acquisition channel. A simple referral program turns happy merchants into salespeople. Target: 20% of new merchants acquired via referral by month 3.  
+**KPI it moves:** Merchant CAC, merchant acquisition velocity  
+**Desired behavior:**
+- Each merchant gets a unique referral code / link (`lompoc-deals.vercel.app/join?ref=CODE`)
+- When a referred merchant signs up and posts their first deal, both parties get 1 month of subscription credit
+- Dashboard tab shows: referral link, # sent, # activated, credits earned
+- See full spec: `/marketing/sales/referral-program-design.md`  
 **Deadline:** Cycle 3  
 **Status:** Requested

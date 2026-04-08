@@ -184,13 +184,14 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 ---
 
 ## Backlog Health
-*Last updated: 2026-04-08*
+*Last updated: 2026-04-08 (Cycle 1 complete — all 15 items have content/strategy docs)*
 - **Total experiments:** 15
 - **This cycle (Cycle 1):** 3 active (M-001, M-002, M-003)
-- **Copy done — human execution pending:** 6 (M-001, M-003, M-004, M-007, M-009, M-013)
+- **Copy done — human execution pending:** 7 (M-001, M-002, M-003, M-004, M-007, M-009, M-013)
 - **Copy done — blocked on CTO infra:** 4 (M-005, M-006, M-008, M-012)
-- **Blocked on CTO (REQ-001 tracking):** 2 (M-011, M-015)
-- **Blocked on CTO (REQ-004 digest cron):** 1 (M-014)
-- **Needs CTO new ticket (referral system):** 1 (M-010)
-- **Human action only (GBP claim):** 1 (M-002)
-- **Total assets produced:** 10 files across `/marketing/` directory  
+- **Brief done — blocked on CTO (REQ-001 tracking):** 2 (M-011, M-015)
+- **Template done — blocked on CTO (REQ-004 digest cron):** 1 (M-014)
+- **Design doc done — REQ-006 needed:** 1 (M-010)
+- **Total assets produced:** 15/15 — all backlog items have strategy/copy/brief files
+- **Vercel Pro active (2026-04-08):** M-008 SEO pages now unblocked for deployment; REQ-005 promoted to P1 Cycle 2
+- **New engineering requests added:** REQ-006 (Referral System) filed  
