@@ -225,23 +225,57 @@ export const eventStatus = pgEnum("event_status", [
   "cancelled",
 ])
 
-export const events = pgTable("events", {
+export const events = pgTable(
+  "events",
+  {
+    id: serial("id").primaryKey(),
+    title: varchar("title", { length: 300 }).notNull(),
+    description: text("description"),
+    location: varchar("location", { length: 500 }),
+    imageUrl: varchar("image_url", { length: 1000 }),
+    category: eventCategory("category").notNull().default("other"),
+    startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
+    endsAt: timestamp("ends_at", { withTimezone: true }),
+    businessId: integer("business_id").references(() => businesses.id, {
+      onDelete: "set null",
+    }),
+    submittedByUserId: integer("submitted_by_user_id").references(
+      () => users.id,
+      { onDelete: "set null" }
+    ),
+    status: eventStatus("status").notNull().default("pending"),
+    source: varchar("source", { length: 50 }).notNull().default("user"),
+    externalId: varchar("external_id", { length: 255 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    sourceExternalIdx: uniqueIndex("events_source_external_id_idx").on(
+      t.source,
+      t.externalId
+    ),
+  })
+)
+
+// ---------- deal events ----------
+export const dealEventType = pgEnum("deal_event_type", [
+  "view",
+  "click",
+  "claim",
+  "redeem",
+])
+
+export const dealEvents = pgTable("deal_events", {
   id: serial("id").primaryKey(),
-  title: varchar("title", { length: 300 }).notNull(),
-  description: text("description"),
-  location: varchar("location", { length: 500 }),
-  imageUrl: varchar("image_url", { length: 1000 }),
-  category: eventCategory("category").notNull().default("other"),
-  startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
-  endsAt: timestamp("ends_at", { withTimezone: true }),
-  businessId: integer("business_id").references(() => businesses.id, {
+  dealId: integer("deal_id")
+    .notNull()
+    .references(() => deals.id, { onDelete: "cascade" }),
+  userId: integer("user_id").references(() => users.id, {
     onDelete: "set null",
   }),
-  submittedByUserId: integer("submitted_by_user_id").references(
-    () => users.id,
-    { onDelete: "set null" }
-  ),
-  status: eventStatus("status").notNull().default("pending"),
+  eventType: dealEventType("event_type").notNull(),
+  sessionId: varchar("session_id", { length: 100 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

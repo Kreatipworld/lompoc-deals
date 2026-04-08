@@ -12,6 +12,7 @@ import { formatDistanceToNowStrict, isPast, differenceInHours } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { adminSoftDeleteDealAction } from "@/lib/admin-actions"
 import { toggleFavoriteAction } from "@/lib/favorite-actions"
+import { trackClaimAction, trackRedeemAction } from "@/lib/tracking-actions"
 import type { DealCardData } from "@/lib/queries"
 import type { Viewer } from "@/lib/viewer"
 
@@ -164,13 +165,32 @@ export function DealCard({
         </div>
 
         {!expired && (
-          <Link
-            href={`/api/track/click?dealId=${deal.id}&to=/biz/${deal.business.slug}`}
-            className="mt-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-foreground px-4 text-sm font-medium text-background transition hover:bg-foreground/90"
-          >
-            View deal
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+          <div className="mt-1 flex flex-col gap-2">
+            <form action={trackClaimAction}>
+              <input type="hidden" name="dealId" value={deal.id} />
+              <input
+                type="hidden"
+                name="redirectTo"
+                value={`/api/track/click?dealId=${deal.id}&to=/biz/${deal.business.slug}`}
+              />
+              <button
+                type="submit"
+                className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-foreground px-4 text-sm font-medium text-background transition hover:bg-foreground/90"
+              >
+                Get Deal
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </form>
+            <form action={trackRedeemAction}>
+              <input type="hidden" name="dealId" value={deal.id} />
+              <button
+                type="submit"
+                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full border px-4 text-xs font-medium text-muted-foreground transition hover:border-foreground/30 hover:text-foreground"
+              >
+                Mark as Redeemed
+              </button>
+            </form>
+          </div>
         )}
       </div>
 

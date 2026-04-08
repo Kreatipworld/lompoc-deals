@@ -1,5 +1,15 @@
-import { Eye, MousePointerClick, Tag, TrendingUp, Trophy, BarChart3 } from "lucide-react"
+import {
+  Eye,
+  MousePointerClick,
+  Tag,
+  TrendingUp,
+  Trophy,
+  BarChart3,
+  ShoppingBag,
+  CheckCircle2,
+} from "lucide-react"
 import { getMyBusiness, getMyDeals } from "@/lib/biz-actions"
+import { getDealFunnel } from "@/lib/funnel-queries"
 import { Link } from "@/i18n/navigation"
 
 export const metadata = { title: "Stats — Lompoc Deals" }
@@ -11,11 +21,16 @@ export default async function StatsPage() {
   const totalClicks = deals.reduce((s, d) => s + (d.clickCount ?? 0), 0)
   const ctr = totalViews > 0 ? Math.round((totalClicks / totalViews) * 100) : 0
 
-  const bestDeal = deals.length > 0
-    ? deals.reduce((best, d) =>
-        (d.viewCount ?? 0) > (best.viewCount ?? 0) ? d : best
-      )
-    : null
+  const bestDeal =
+    deals.length > 0
+      ? deals.reduce((best, d) =>
+          (d.viewCount ?? 0) > (best.viewCount ?? 0) ? d : best
+        )
+      : null
+
+  const funnelRows = biz ? await getDealFunnel(biz.id, "30d") : []
+  const totalClaims = funnelRows.reduce((s, r) => s + r.claims, 0)
+  const totalRedeems = funnelRows.reduce((s, r) => s + r.redeems, 0)
 
   return (
     <div className="space-y-6">
@@ -33,7 +48,10 @@ export default async function StatsPage() {
           <BarChart3 className="mx-auto h-10 w-10 text-muted-foreground/60" />
           <p className="mt-3 text-sm text-muted-foreground">
             Create a{" "}
-            <Link href="/dashboard/profile" className="font-medium text-primary underline underline-offset-4">
+            <Link
+              href="/dashboard/profile"
+              className="font-medium text-primary underline underline-offset-4"
+            >
               business profile
             </Link>{" "}
             to start tracking stats.
@@ -55,7 +73,8 @@ export default async function StatsPage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {/* Summary stats */}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <BigStat
               icon={<Eye className="h-5 w-5" />}
               label="Total views"
@@ -69,14 +88,27 @@ export default async function StatsPage() {
               trend={totalClicks > 0 ? "up" : "neutral"}
             />
             <BigStat
-              icon={<Tag className="h-5 w-5" />}
-              label="Click-through rate"
-              value={`${ctr}%`}
-              trend={ctr >= 5 ? "up" : ctr > 0 ? "neutral" : "neutral"}
+              icon={<ShoppingBag className="h-5 w-5" />}
+              label="Claims (30d)"
+              value={totalClaims}
+              trend={totalClaims > 0 ? "up" : "neutral"}
+            />
+            <BigStat
+              icon={<CheckCircle2 className="h-5 w-5" />}
+              label="Redeems (30d)"
+              value={totalRedeems}
+              trend={totalRedeems > 0 ? "up" : "neutral"}
             />
           </div>
 
-          {/* Best performing deal highlight */}
+          <BigStat
+            icon={<Tag className="h-5 w-5" />}
+            label="Click-through rate"
+            value={`${ctr}%`}
+            trend={ctr >= 5 ? "up" : "neutral"}
+          />
+
+          {/* Best performing deal */}
           {bestDeal && (bestDeal.viewCount ?? 0) > 0 && (
             <div className="flex items-start gap-4 rounded-3xl border bg-gradient-to-br from-amber-50 to-card p-5 shadow-sm dark:from-amber-950/20">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400">
@@ -97,11 +129,73 @@ export default async function StatsPage() {
             </div>
           )}
 
+          {/* Funnel visualization */}
+          <div className="overflow-hidden rounded-3xl border bg-card shadow-sm">
+            <div className="border-b px-6 py-4">
+              <h2 className="font-display text-lg font-semibold">
+                Funnel analytics
+              </h2>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Visit → Click → Claim → Redeem · last 30 days
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="border-b text-left text-xs uppercase tracking-wider text-muted-foreground">
+                  <tr>
+                    <th className="px-6 py-3">Deal</th>
+                    <th className="px-6 py-3 text-right">Views</th>
+                    <th className="px-6 py-3 text-right">Clicks</th>
+                    <th className="px-6 py-3 text-right">CTR</th>
+                    <th className="px-6 py-3 text-right">Claims</th>
+                    <th className="px-6 py-3 text-right">Claim%</th>
+                    <th className="px-6 py-3 text-right">Redeems</th>
+                    <th className="px-6 py-3 text-right">Redeem%</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {funnelRows.map((row) => (
+                    <tr key={row.dealId} className="hover:bg-accent/40">
+                      <td className="max-w-[200px] truncate px-6 py-3 font-medium">
+                        {row.dealTitle}
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        {row.views.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        {row.clicks.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-3 text-right text-muted-foreground">
+                        {row.ctr}%
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        {row.claims.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-3 text-right text-muted-foreground">
+                        {row.claimRate}%
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        {row.redeems.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-3 text-right text-muted-foreground">
+                        {row.redeemRate}%
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Per-deal performance (lifetime) */}
           <div className="overflow-hidden rounded-3xl border bg-card shadow-sm">
             <div className="border-b px-6 py-4">
               <h2 className="font-display text-lg font-semibold">
                 Per-deal performance
               </h2>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Lifetime views and clicks
+              </p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -167,4 +261,3 @@ function BigStat({
     </div>
   )
 }
-

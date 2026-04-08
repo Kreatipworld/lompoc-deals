@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation"
 import { Flower2, LayoutGrid, Map, Building2, Mail } from "lucide-react"
 import { UserMenu } from "@/components/user-menu"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { WeatherBadge } from "@/components/weather-badge"
 import { getTranslations } from "next-intl/server"
 
 export async function SiteHeader() {
@@ -57,6 +58,7 @@ export async function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <WeatherBadge />
           <LanguageSwitcher />
           <UserMenu />
         </div>

@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, MapPin, Mail, Sparkles } from "lucide-react"
+import { ArrowRight, MapPin, Mail, Sparkles, Tag, CalendarDays } from "lucide-react"
 import { getActiveDeals, getSiteStats } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
@@ -14,7 +14,14 @@ export const metadata = {
     "The latest deals from Lompoc, California businesses. Updated daily.",
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>
+}) {
+  const params = await searchParams
+  const activeTab = params.tab === "events" ? "events" : "deals"
+
   const [deals, viewer, stats] = await Promise.all([
     getActiveDeals(),
     getViewer(),
@@ -83,45 +90,69 @@ export default async function HomePage() {
       <CategoryStrip />
 
       {/* ─────────────────────────────────────────────────
-          WEATHER WIDGET
+          WEATHER WIDGET — single instance, top of content
          ───────────────────────────────────────────────── */}
       <WeatherWidget />
 
       {/* ─────────────────────────────────────────────────
-          EVENTS CALENDAR
+          TAB STRIP — Deals | Events
          ───────────────────────────────────────────────── */}
-      <EventsSection />
-
-      {/* ─────────────────────────────────────────────────
-          WEATHER FORECAST
-         ───────────────────────────────────────────────── */}
-      <WeatherWidget />
-
-      {/* ─────────────────────────────────────────────────
-          DEAL GRID
-         ───────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-10">
-        <div className="mb-6 flex items-end justify-between">
-          <div>
-            <h2 className="font-display text-2xl font-semibold tracking-tight">
-              Latest deals
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Showing all {deals.length}{" "}
-              {deals.length === 1 ? "deal" : "deals"} · sorted by newest
-            </p>
-          </div>
+      <div className="mx-auto max-w-6xl px-4 pt-6">
+        <div className="flex gap-1 rounded-xl border bg-muted/40 p-1 w-fit">
           <Link
-            href="/businesses"
-            className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
+            href="/?tab=deals"
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === "deals"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
           >
-            Browse directory
-            <ArrowRight className="h-4 w-4" />
+            <Tag className="h-4 w-4" />
+            Deals
+          </Link>
+          <Link
+            href="/?tab=events"
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === "events"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <CalendarDays className="h-4 w-4" />
+            Events
           </Link>
         </div>
+      </div>
 
-        <DealGrid deals={deals} viewer={viewer} fromPath="/" />
-      </section>
+      {/* ─────────────────────────────────────────────────
+          TAB CONTENT
+         ───────────────────────────────────────────────── */}
+      {activeTab === "events" ? (
+        <EventsSection />
+      ) : (
+        <section className="mx-auto max-w-6xl px-4 py-10">
+          <div className="mb-6 flex items-end justify-between">
+            <div>
+              <h2 className="font-display text-2xl font-semibold tracking-tight">
+                Latest deals
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Showing all {deals.length}{" "}
+                {deals.length === 1 ? "deal" : "deals"} · sorted by newest
+              </p>
+            </div>
+            <Link
+              href="/businesses"
+              className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
+            >
+              Browse directory
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <DealGrid deals={deals} viewer={viewer} fromPath="/" />
+        </section>
+      )}
 
       {/* ─────────────────────────────────────────────────
           BUSINESS CTA (kept from earlier)
