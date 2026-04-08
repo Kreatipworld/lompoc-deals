@@ -1,5 +1,5 @@
 # Lompoc Deals — Marketing Backlog
-*Last updated: 2026-04-07 | Owner: CMO | Sorted by: revenue impact ÷ effort*
+*Last updated: 2026-04-08 | Owner: CMO | Sorted by: revenue impact ÷ effort*
 
 ---
 
@@ -65,9 +65,9 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A 3-email welcome sequence for new consumer signups (deal highlights + how to save favorites + how to get weekly digest) will lift 30-day retention by 20%.  
 **Target KPI:** 30-day retention rate (visits 2+ times in 30 days) from 15% → 18%  
 **Effort:** M  
-**Status:** backlog  
+**Status:** copy_done — awaiting REQ-002 (email infra)  
 **Blocker:** Needs REQ-002 (email sequence infra) from CTO — see CMO_REQUESTS.md  
-**Notes:** Plain-text friendly, bilingual option in footer.
+**Copy:** `/marketing/email/consumer-welcome-sequence.md` (3 emails, bilingual EN/ES, A/B variants included)
 
 ---
 
@@ -76,8 +76,9 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A guided 5-email onboarding sequence for new merchants (profile tips, first deal walkthrough, redemption how-to, performance stats, upgrade CTA) will reduce 30-day churn from ~40% to ~20%.  
 **Target KPI:** Merchant 30-day retention 60% → 80%  
 **Effort:** M  
-**Status:** backlog  
-**Blocker:** Needs REQ-002 (email sequence infra)
+**Status:** copy_done — awaiting REQ-002 (email infra)  
+**Blocker:** Needs REQ-002 (email sequence infra)  
+**Copy:** `/marketing/email/merchant-onboarding-drip.md` (5 emails, bilingual EN/ES, conditional branching + upsell logic included)
 
 ---
 
@@ -179,5 +180,6 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 ## Backlog Health
 - **Total experiments:** 15  
 - **This cycle:** 3 (M-001, M-002, M-003)  
-- **Blocked on CTO:** 4 (M-005, M-006, M-008, M-014)  
+- **Copy ready, blocked on CTO infra:** 2 (M-005, M-006 — email sequences written, awaiting REQ-002)
+- **Blocked on CTO (no copy yet):** 2 (M-008, M-014)  
 - **Ready to activate (cycle 2+):** 8  
