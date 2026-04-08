@@ -1,5 +1,5 @@
 # Lompoc Deals — Engineering Backlog
-*Last updated: 2026-04-07 | Sorted by: revenue impact ÷ effort*
+*Last updated: 2026-04-08 | Sorted by: revenue impact ÷ effort*
 
 ---
 
@@ -21,10 +21,10 @@ ID • Title • Owner • Why (metric) • Acceptance Criteria • Files • Ef
 **Owner:** PAY  
 **Why:** Zero subscription revenue until keys are set. Every day delayed = lost MRR.  
 **Acceptance Criteria:**
-- [ ] Stripe account created with 3 products (Basic $49, Pro $99, Premium $199)
+- [ ] Stripe account created with 2 paid products (Standard $19.99/mo, Premium $39.99/mo)
 - [ ] Price IDs added to `.env.local` and Vercel environment
 - [ ] Stripe webhook configured and `STRIPE_WEBHOOK_SECRET` set
-- [ ] End-to-end test: sign up as business → upgrade to Basic → deal limit enforced  
+- [ ] End-to-end test: sign up as business → upgrade to Standard → deal limit enforced  
 **Files:** `.env.local`, Vercel env vars, `lib/stripe.ts` (verify price IDs match)  
 **Effort:** S  
 **Deps:** None — code is ready  

@@ -1,5 +1,5 @@
 # Lompoc Deals — Tech Audit
-*Generated: 2026-04-07 | Auditor: CTO Agent*
+*Generated: 2026-04-08 | Auditor: CTO Agent*
 
 ---
 
@@ -24,17 +24,19 @@
 
 ---
 
-## Database Schema (9 tables)
+## Database Schema (10 tables)
 
 ```
-users → businesses → deals → favorites
-                           → property_listings
-                  → business_claims
+users → businesses → deals → dealEvents
+                           → propertyListings
+                  → businessClaims
 users → subscriptions
-      → favorites
-subscribers (standalone)
+      → favorites → deals
+subscribers (standalone, decoupled from users)
 categories (referenced by businesses)
+events (community/business events, optional businessId)
 ```
+**Enums:** user_role, business_status, deal_type, listing_type, subscription_tier, subscription_status, event_category, event_status, deal_event_type
 
 All tables use Drizzle schema in `db/schema.ts`. Migrations in `db/migrations/`.
 
@@ -52,8 +54,8 @@ All tables use Drizzle schema in `db/schema.ts`. Migrations in `db/migrations/`.
 - Admin approval queue
 
 ### Monetization ✅ (partially)
-- Stripe subscription billing (3 tiers: Basic $49, Pro $99, Premium $199)
-- Deal limits enforced by tier (5/20/unlimited)
+- Stripe subscription billing (3 tiers: Free 0 deals cap 3, Standard $19.99/mo 15 deals, Premium $39.99/mo unlimited)
+- Deal limits enforced by tier (3/15/unlimited)
 - Billing dashboard + Stripe Customer Portal
 - Webhook handler for subscription lifecycle events
 
