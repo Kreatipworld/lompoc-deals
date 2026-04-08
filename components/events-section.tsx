@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { getUpcomingEvents } from "@/lib/queries"
 import { Link } from "@/i18n/navigation"
 import {
@@ -79,10 +80,12 @@ function EventCard({
       {/* Image or placeholder */}
       {event.imageUrl ? (
         <div className="relative h-36 overflow-hidden bg-muted">
-          <img
+          <Image
             src={event.imageUrl}
             alt={event.title}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>
       ) : (
