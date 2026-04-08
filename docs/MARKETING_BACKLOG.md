@@ -207,8 +207,11 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A "Lompoc Wine Country Deals" content series (winery tasting deals, Santa Rita Hills guides, seasonal posts) will reach wine-tourism audiences who share high-value shareable content, driving 100+ site visits/week and positioning Lompoc Deals as the guide to Lompoc Wine Country.  
 **Target KPI:** 100 site visits/week from wine content, 5 winery merchants upgraded to Standard/Premium  
 **Effort:** M  
-**Status:** backlog (start Cycle 2)  
-**Assets needed:** Wine content calendar, winery partnership pitch, SEO page spec for `/lompoc/wine-deals` and `/lompoc/wineries`  
+**Status:** copy_done — all assets ready, pending human execution + CTO SEO routes
+**Assets:**
+- `/marketing/social/wine-content-calendar.md` — 3 post templates (EN/ES), seasonal calendar (spring through harvest), Pinterest strategy, metrics tracker
+- `/marketing/sales/winery-partnership-pitch.md` — outreach email sequence, talking points, objection handling, deal type ideas, 5 target winery targeting guide
+- `/marketing/seo/wine-seo-page-spec.md` — full copy spec for `/lompoc/wine-deals` and `/lompoc/wineries` (H1s, intros EN/ES, meta, JSON-LD, CTO implementation notes)
 **Notes:**
 - Wineries tab now live on homepage — content can drive to it directly
 - Santa Rita Hills + Wine Ghetto are established tourist draws — align with that identity
