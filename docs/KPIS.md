@@ -97,4 +97,49 @@
 
 **KPI baselines — still unknown (need REQ-001):** sessions, signup conversion rate, claim rate.
 
+### Cycle 2 Kickoff — 2026-04-08
+**CMO update:**
+
+**New engineering context received (3 CTO commits):**
+- Free/Standard/Premium pricing live (was Basic/$49, Pro/$99, Premium/$199) — see ENG_HANDOFFS.md
+- Dispensaries category + 5 verified Lompoc dispensaries
+- Wineries tab + 20 wineries + 30+ other businesses
+
+**Updated baselines (approximate, pending REQ-001 for exact data):**
+
+| KPI | Previous Baseline | Cycle 2 Baseline | Notes |
+|-----|-------------------|------------------|-------|
+| Total businesses listed | 104 | ~155+ | Wineries + dispensaries + others seeded |
+| Active deals | 89 | ~120+ | New category deals added |
+| Pricing tiers | Basic/$49 / Pro/$99 / Premium/$199 | **Free/$0 / Standard/$19.99 / Premium/$39.99** | MAJOR CHANGE — see below |
+| Consumer signups | ~0 unknown | ~0 unknown | Still needs REQ-001 |
+| MRR | $0 | $0 | Stripe B-001 still needed |
+| New merchants (this cycle) | 0 | 0 → target: 4+ | Outreach ready |
+
+**Free tier impact on marketing strategy:**
+The Free/$0 tier is the single biggest marketing lever shift since launch. Previous pitch: "it's worth $49." New pitch: "nothing to lose, start free." This changes:
+- All outreach copy: lead with "free to get started, no credit card" instead of "low cost"
+- Facebook/Nextdoor posts: "List your business FREE" as the hook
+- Upsell sequence: trigger at deal #3 → Standard/$19.99
+- Merchant close rate expected to increase materially (removing price objection entirely for first 3 deals)
+
+**Dispensary niche opportunity:**
+5 dispensaries now listed. Cannabis businesses cannot advertise on Google/Meta — Lompoc Deals is one of their only marketing channels. CMO adding dedicated dispensary outreach track (see MARKETING_BACKLOG.md M-016).
+
+**Wine/tourism opportunity:**
+20 wineries listed + dedicated Wineries tab. Shareable content potential. SEO: Santa Rita Hills wine deals long-tail. Adding M-017 (wine tourism content series) to backlog.
+
+**CMO Cycle 2 blockers remain:**
+- Funnel tracking (REQ-001) — zero baseline data on sessions/conversion
+- Stripe activation (B-001) — zero MRR even if merchants upgrade
+- All social/outreach execution blocked on human action
+
+**CTO update:**
+*(CTO to fill in)*
+
+**What moved:** Pricing restructured, inventory expanded significantly.
+**What we're changing:** Lead all outreach and social copy with Free tier messaging.
+
+---
+
 *Both teams: append a new weekly entry above this line every Monday.*

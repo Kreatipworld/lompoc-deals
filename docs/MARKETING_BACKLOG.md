@@ -183,15 +183,49 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ---
 
+---
+
+## 🔴 NEW — Cycle 2 Additions (from CTO commits 2026-04-08)
+
+### M-016 • Dispensary Merchant Acquisition Campaign
+**Channel:** Sales / Direct  
+**Hypothesis:** Cannabis businesses CANNOT advertise on Google Ads or Meta/Instagram. Lompoc Deals is one of their only legal digital marketing channels. A targeted outreach to all 5 Lompoc dispensaries (+ any unlisted ones) with this unique angle will close 3–5 dispensary merchants at Standard/Premium tier.  
+**Target KPI:** 3 dispensary merchants signed up (Standard or Premium tier), within Cycle 2  
+**Effort:** S  
+**Status:** this_cycle (Cycle 2)  
+**Assets needed:** Dispensary-specific outreach script (see `/marketing/sales/dispensary-outreach-script.md` — to be created)  
+**Notes:**
+- Lead with "we're one of very few platforms where you can actually advertise deals legally"
+- Dispensaries often have $$$ marketing budgets stuck with no good options — high willingness to pay
+- Compliance note: no health claims, ensure site has age-gate or disclaimer before running paid ads in this category
+- Targets: Leaf Dispensary, Elevate, Oceans, TRD, One Plant (all now listed)
+
+---
+
+### M-017 • Wine Tourism Content Series
+**Channel:** Social (Instagram/TikTok) + SEO  
+**Hypothesis:** A "Lompoc Wine Country Deals" content series (winery tasting deals, Santa Rita Hills guides, seasonal posts) will reach wine-tourism audiences who share high-value shareable content, driving 100+ site visits/week and positioning Lompoc Deals as the guide to Lompoc Wine Country.  
+**Target KPI:** 100 site visits/week from wine content, 5 winery merchants upgraded to Standard/Premium  
+**Effort:** M  
+**Status:** backlog (start Cycle 2)  
+**Assets needed:** Wine content calendar, winery partnership pitch, SEO page spec for `/lompoc/wine-deals` and `/lompoc/wineries`  
+**Notes:**
+- Wineries tab now live on homepage — content can drive to it directly
+- Santa Rita Hills + Wine Ghetto are established tourist draws — align with that identity
+- Best timing: harvest season (Aug–Oct), Valentine's Day, Mother's Day — plan ahead
+- Seasonal tasting deals are visually excellent for Instagram/TikTok
+
+---
+
 ## Backlog Health
-*Last updated: 2026-04-08 (Cycle 1 complete — all 15 items have content/strategy docs)*
-- **Total experiments:** 15
-- **This cycle (Cycle 1):** 3 active (M-001, M-002, M-003)
+*Last updated: 2026-04-08 (Cycle 2 kickoff — 17 items total)*
+- **Total experiments:** 17
+- **This cycle (Cycle 2):** M-001, M-002, M-003, M-C2-1, M-C2-2, M-C2-3, **M-016**
 - **Copy done — human execution pending:** 7 (M-001, M-002, M-003, M-004, M-007, M-009, M-013)
 - **Copy done — blocked on CTO infra:** 4 (M-005, M-006, M-008, M-012)
 - **Brief done — blocked on CTO (REQ-001 tracking):** 2 (M-011, M-015)
 - **Template done — blocked on CTO (REQ-004 digest cron):** 1 (M-014)
 - **Design doc done — REQ-006 needed:** 1 (M-010)
-- **Total assets produced:** 15/15 — all backlog items have strategy/copy/brief files
-- **Vercel Pro active (2026-04-08):** M-008 SEO pages now unblocked for deployment; REQ-005 promoted to P1 Cycle 2
-- **New engineering requests added:** REQ-006 (Referral System) filed  
+- **New Cycle 2 additions:** M-016 (dispensary outreach), M-017 (wine tourism content)
+- **Key strategy shift (Cycle 2):** All outreach/social copy updated to lead with Free/$0 tier — removes merchant price objection entirely. Previous pitch: "worth $49." New pitch: "nothing to lose."
+- **New engineering requests added this cycle:** None yet — existing REQ-001 through REQ-006 cover current gaps
