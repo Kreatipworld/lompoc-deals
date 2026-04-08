@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { Flower2, LayoutGrid, Map, Building2, Mail } from "lucide-react"
+import { Flower2 } from "lucide-react"
 import { UserMenu } from "@/components/user-menu"
 import { WeatherBadge } from "@/components/weather-badge"
 import { getTranslations } from "next-intl/server"
@@ -57,28 +57,13 @@ export async function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <WeatherBadge />
+          {/* Weather badge — desktop only, too noisy on mobile */}
+          <span className="hidden sm:block">
+            <WeatherBadge />
+          </span>
           <UserMenu />
         </div>
       </div>
-
-      <nav className="flex items-center justify-around border-t px-2 sm:hidden">
-        {[
-          { href: "/", label: t("feed"), Icon: LayoutGrid },
-          { href: "/businesses", label: t("directory"), Icon: Building2 },
-          { href: "/map", label: t("map"), Icon: Map },
-          { href: "/subscribe", label: t("subscribe"), Icon: Mail },
-        ].map(({ href, label, Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            className="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-0.5 px-3 py-2 text-muted-foreground transition hover:text-foreground"
-          >
-            <Icon className="h-5 w-5" strokeWidth={1.75} />
-            <span className="text-[10px] font-medium">{label}</span>
-          </Link>
-        ))}
-      </nav>
     </header>
   )
 }
