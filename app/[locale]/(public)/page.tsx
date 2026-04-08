@@ -56,15 +56,15 @@ export default async function HomePage({
           className="absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/40 to-black/60"
         />
 
-        <div className="mx-auto max-w-3xl px-4 py-14 text-center sm:py-20">
+        <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
           {/* Eyebrow */}
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             <MapPin className="h-3 w-3" />
             Lompoc, California
           </div>
 
-          {/* Headline — medium, not massive (search-first) */}
-          <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+          {/* Headline */}
+          <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
             Where to next <br className="sm:hidden" />
             <span className="italic text-yellow-300">in Lompoc?</span>
           </h1>
@@ -79,7 +79,7 @@ export default async function HomePage({
           </div>
 
           {/* Quick stats inline */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs font-medium text-white/70">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
               {stats.activeDeals} active deals
@@ -87,7 +87,9 @@ export default async function HomePage({
             <span className="text-white/30">·</span>
             <span>{stats.businesses} local businesses</span>
             <span className="text-white/30">·</span>
-            <span>Updated daily</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber/25 px-2.5 py-0.5 text-[10px] font-semibold text-yellow-200 ring-1 ring-yellow-300/30">
+              ✦ Updated daily
+            </span>
           </div>
         </div>
       </section>
