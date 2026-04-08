@@ -3,6 +3,7 @@ import { getMessages } from "next-intl/server"
 import { Toaster } from "@/components/ui/sonner"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { BottomNav } from "@/components/bottom-nav"
 import { routing } from "@/i18n/routing"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
@@ -28,8 +29,9 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <SiteHeader />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-16 sm:pb-0">{children}</main>
       <SiteFooter />
+      <BottomNav />
       <Toaster />
     </NextIntlClientProvider>
   )

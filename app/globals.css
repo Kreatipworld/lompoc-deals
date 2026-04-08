@@ -94,6 +94,13 @@
   }
 }
 
+/* Safe-area padding for mobile bottom navigation */
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
 /* Hide scrollbars on horizontal scroll containers */
 .scrollbar-none {
   scrollbar-width: none;
