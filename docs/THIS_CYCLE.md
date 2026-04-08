@@ -8,21 +8,21 @@ Ranked by revenue impact ÷ effort. Top 3 from each team.
 ## Marketing Top 3 (CMO Sub-Team)
 
 ### M1 — Facebook Community Group Seeding
-**Owner:** CMO (Social & Community Manager once hired)  
+**Owner:** Social & Community Manager  
 **Hypothesis:** 2–3x/week posts in Lompoc Facebook groups → 50 signups/month at $0 CAC  
 **KPI:** +50 consumer signups  
 **This week's action:** Draft 5 post templates (EN + ES), identify top 3 groups, post first content  
 **Status:** Not started
 
 ### M2 — Google Business Profile Claim + Optimize
-**Owner:** CMO (Content & SEO Strategist once hired)  
+**Owner:** Content & SEO Strategist  
 **Hypothesis:** Fully completed GBP → top-3 for "Lompoc deals" search → 20 clicks/week  
 **KPI:** 20+ GBP clicks/week by day 30  
 **This week's action:** Claim GBP, add photos, write description, set first weekly post  
 **Status:** Not started
 
 ### M3 — Merchant Cold Outreach Sprint
-**Owner:** CMO (Merchant Acquisition Lead once hired)  
+**Owner:** Merchant Acquisition Lead  
 **Hypothesis:** 20 personalized outreach/week → 4 new merchants/week (20% close rate)  
 **KPI:** 4 new merchant signups by end of cycle  
 **This week's action:** Finalize outreach script, build lead list of 20 Lompoc businesses, begin outreach  
@@ -32,31 +32,38 @@ Ranked by revenue impact ÷ effort. Top 3 from each team.
 
 ## Engineering Top 3 (CTO Sub-Team)
 
-*CTO Lead: fill in E1–E3 after tech audit. Suggested priorities based on CMO dependencies:*
+*Set by CMO Lead based on BACKLOG.md — CTO in error state, CEO notified. CTO to confirm/adjust on recovery.*
 
-### E1 — [TBD by CTO — Suggested: Stripe Activation (B-001)]
-**Why CMO cares:** Activating billing = MRR. Zero revenue until this ships.  
-**CMO dependency:** None — but unblocks revenue reporting in KPIS.md  
-**Status:** Awaiting CTO confirmation
+### E1 — Activate Stripe Billing (B-001)
+**Owner:** Payments Engineer  
+**Why:** Zero subscription revenue until Stripe keys are set. Every day delayed = lost MRR.  
+**CMO dependency:** Unblocks revenue reporting in KPIS.md; prerequisite for promoted deal placement (B-007)  
+**Effort:** S (code is already written, keys just need to be added)  
+**Status:** Todo — assigned to Payments Engineer
 
-### E2 — [TBD by CTO — Suggested: Signup Funnel Tracking (REQ-001)]
-**Why CMO cares:** Can't run paid campaigns or measure any growth without conversion data.  
-**CMO dependency:** Prerequisite for M-011, M-015  
-**Status:** Awaiting CTO confirmation
+### E2 — Conversion Funnel Analytics (B-006 / REQ-001)
+**Owner:** Data Engineer  
+**Why:** Without funnel data we can't optimize signup flow or justify paid campaigns.  
+**CMO dependency:** Prerequisite for M-011 (Meta ads), M-015 (Google ads), any CRO work  
+**Effort:** M  
+**Status:** Todo — assigned to Data Engineer
 
-### E3 — [TBD by CTO — Suggested: Merchant View Counts Widget (REQ-003)]
-**Why CMO cares:** Removes #1 merchant sales objection — "how do I know anyone will see my deals?"  
-**CMO dependency:** Closes REQ-003, unblocks outreach close rate improvement  
-**Status:** Awaiting CTO confirmation
+### E3 — Merchant View Counts Widget (REQ-003 / B-009 partial)
+**Owner:** Lead Full-Stack Engineer  
+**Why:** Removes #1 merchant sales objection — "how do I know anyone will see my deal?"  
+**CMO dependency:** Closes REQ-003, directly improves Merchant Cold Outreach (M3) close rate  
+**Effort:** S  
+**Status:** Todo — assigned to Lead Full-Stack Engineer
 
 ---
 
 ## Sync Notes
 *CMO Lead and CTO Lead: record decisions from the first sync here.*
 
-- [ ] CTO confirms E1–E3 and updates this file
+- [x] CMO set E1–E3 based on backlog, pending CTO confirmation on recovery
+- [ ] CTO to confirm or revise E1–E3 when back online
 - [ ] Both teams agree on cycle length (suggested: 1 week sprints, retro on Mondays)
-- [ ] CMO and CTO agree on shared Slack/communication channel (if applicable)
+- [ ] CMO and CTO agree on shared communication channel
 
 ---
 
