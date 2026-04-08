@@ -360,6 +360,36 @@ export async function getAllCategories() {
   })
 }
 
+export type WineryBusiness = {
+  id: number
+  name: string
+  slug: string
+  description: string | null
+  address: string | null
+  phone: string | null
+  website: string | null
+  logoUrl: string | null
+}
+
+export async function getWineryBusinesses(): Promise<WineryBusiness[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      description: businesses.description,
+      address: businesses.address,
+      phone: businesses.phone,
+      website: businesses.website,
+      logoUrl: businesses.logoUrl,
+    })
+    .from(businesses)
+    .innerJoin(categories, eq(businesses.categoryId, categories.id))
+    .where(and(eq(businesses.status, "approved"), eq(categories.slug, "wineries")))
+    .orderBy(businesses.name)
+  return rows
+}
+
 export async function getSiteStats() {
   const [bizRow, dealRow, catRow] = await Promise.all([
     db

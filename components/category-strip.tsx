@@ -9,6 +9,7 @@ import {
   MoreHorizontal,
   Sparkles,
   Home,
+  Wine,
   type LucideIcon,
 } from "lucide-react"
 import { getAllCategories } from "@/lib/queries"
@@ -22,6 +23,7 @@ const ICONS: Record<string, LucideIcon> = {
   ticket: Ticket,
   "more-horizontal": MoreHorizontal,
   home: Home,
+  wine: Wine,
 }
 
 export async function CategoryStrip({

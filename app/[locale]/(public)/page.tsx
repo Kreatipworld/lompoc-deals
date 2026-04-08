@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, MapPin, Mail, Sparkles, Tag, CalendarDays } from "lucide-react"
+import { ArrowRight, MapPin, Mail, Sparkles, Tag, CalendarDays, Wine } from "lucide-react"
 import { getActiveDeals, getSiteStats } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
@@ -7,6 +7,7 @@ import { CategoryStrip } from "@/components/category-strip"
 import { SearchBar } from "@/components/search-bar"
 import { WeatherWidget } from "@/components/weather-widget"
 import { EventsSection } from "@/components/events-section"
+import { WineriesSection } from "@/components/wineries-section"
 
 export const metadata = {
   title: "Lompoc Deals — local coupons, specials, and announcements",
@@ -20,7 +21,12 @@ export default async function HomePage({
   searchParams: Promise<{ tab?: string }>
 }) {
   const params = await searchParams
-  const activeTab = params.tab === "events" ? "events" : "deals"
+  const activeTab =
+    params.tab === "events"
+      ? "events"
+      : params.tab === "wineries"
+        ? "wineries"
+        : "deals"
 
   const [deals, viewer, stats] = await Promise.all([
     getActiveDeals(),
@@ -123,6 +129,17 @@ export default async function HomePage({
             <CalendarDays className="h-4 w-4" />
             Events
           </Link>
+          <Link
+            href="/?tab=wineries"
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === "wineries"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Wine className="h-4 w-4" />
+            Wineries
+          </Link>
         </div>
       </div>
 
@@ -131,6 +148,8 @@ export default async function HomePage({
          ───────────────────────────────────────────────── */}
       {activeTab === "events" ? (
         <EventsSection />
+      ) : activeTab === "wineries" ? (
+        <WineriesSection />
       ) : (
         <section className="mx-auto max-w-6xl px-4 py-10">
           <div className="mb-6 flex items-end justify-between">
