@@ -156,7 +156,8 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A formal partnership with the Lompoc Valley Chamber of Commerce (cross-promotion to all members) will add 15+ new merchant signups and instant credibility for outreach.  
 **Target KPI:** 15 new merchants from Chamber referral  
 **Effort:** M  
-**Status:** backlog  
+**Status:** copy_done — outreach materials ready, human to send email  
+**Assets:** `/marketing/sales/chamber-outreach-script.md` — email sequence (initial + follow-up), talking points, partnership agreement template, co-branded newsletter announcement (EN/ES), social post templates for Chamber channels  
 **Notes:** Offer Chamber members a free 3-month Pro trial. Budget: $0 cash.
 
 ---
@@ -183,8 +184,13 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 ---
 
 ## Backlog Health
-- **Total experiments:** 15  
-- **This cycle:** 3 (M-001, M-002, M-003)  
-- **Copy ready, blocked on CTO infra:** 2 (M-005, M-006 — email sequences written, awaiting REQ-002)
-- **Blocked on CTO (no copy yet):** 2 (M-008, M-014)  
-- **Ready to activate (cycle 2+):** 8  
+*Last updated: 2026-04-08*
+- **Total experiments:** 15
+- **This cycle (Cycle 1):** 3 active (M-001, M-002, M-003)
+- **Copy done — human execution pending:** 6 (M-001, M-003, M-004, M-007, M-009, M-013)
+- **Copy done — blocked on CTO infra:** 4 (M-005, M-006, M-008, M-012)
+- **Blocked on CTO (REQ-001 tracking):** 2 (M-011, M-015)
+- **Blocked on CTO (REQ-004 digest cron):** 1 (M-014)
+- **Needs CTO new ticket (referral system):** 1 (M-010)
+- **Human action only (GBP claim):** 1 (M-002)
+- **Total assets produced:** 10 files across `/marketing/` directory  
