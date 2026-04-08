@@ -243,8 +243,8 @@ export async function saveDealAction(
       where: eq(subscriptions.userId, userId),
     })
     const isActive = sub?.status === "active" || sub?.status === "trialing"
-    const tierKey = sub?.tier ?? "basic"
-    const limit = isActive ? TIERS[tierKey].dealLimit : 0
+    const tierKey = sub?.tier ?? "free"
+    const limit = isActive ? TIERS[tierKey].dealLimit : TIERS.free.dealLimit
 
     if (limit !== Infinity) {
       const now = new Date()
@@ -255,12 +255,6 @@ export async function saveDealAction(
         .then((r) => r[0]?.count ?? 0)
 
       if (activeCount >= limit) {
-        if (!isActive) {
-          return {
-            error:
-              "You need an active subscription to post deals. Visit Billing to subscribe.",
-          }
-        }
         return {
           error: `Your ${TIERS[tierKey].name} plan allows up to ${limit} active deals. Upgrade your plan to post more.`,
         }

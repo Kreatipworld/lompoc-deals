@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       if (session.mode !== "subscription") break
 
       const userId = Number(session.metadata?.userId)
-      const tier = (session.metadata?.tier ?? "basic") as TierKey
+      const tier = (session.metadata?.tier ?? "free") as TierKey
       const stripeCustomerId = session.customer as string
       const stripeSubscriptionId = session.subscription as string
 
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
       const userId = Number(sub.metadata?.userId)
       if (!userId) break
 
-      const tier = (sub.metadata?.tier ?? "basic") as TierKey
+      const tier = (sub.metadata?.tier ?? "free") as TierKey
       const periodEnd = getPeriodEnd(sub)
 
       await db.update(subscriptions)

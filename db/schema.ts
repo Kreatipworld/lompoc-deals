@@ -175,8 +175,8 @@ export const businessClaims = pgTable("business_claims", {
 
 // ---------- subscriptions ----------
 export const subscriptionTier = pgEnum("subscription_tier", [
-  "basic",
-  "pro",
+  "free",
+  "standard",
   "premium",
 ])
 export const subscriptionStatus = pgEnum("subscription_status", [
@@ -192,11 +192,9 @@ export const subscriptions = pgTable("subscriptions", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" })
     .unique(),
-  stripeCustomerId: varchar("stripe_customer_id", { length: 200 })
-    .notNull()
-    .unique(),
+  stripeCustomerId: varchar("stripe_customer_id", { length: 200 }).unique(),
   stripeSubscriptionId: varchar("stripe_subscription_id", { length: 200 }).unique(),
-  tier: subscriptionTier("tier").notNull().default("basic"),
+  tier: subscriptionTier("tier").notNull().default("free"),
   status: subscriptionStatus("status").notNull().default("trialing"),
   currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
   cancelAtPeriodEnd: integer("cancel_at_period_end").notNull().default(0),

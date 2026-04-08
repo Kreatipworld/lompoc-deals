@@ -13,40 +13,43 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "sk_test_place
 
 // Subscription tier config
 export const TIERS = {
-  basic: {
-    name: "Basic",
-    priceId: process.env.STRIPE_PRICE_BASIC ?? "",
-    price: 49,
-    dealLimit: 5,
+  free: {
+    name: "Free",
+    priceId: process.env.STRIPE_PRICE_FREE ?? "",
+    price: 0,
+    dealLimit: 3,
     features: [
-      "Up to 5 active deals",
+      "Up to 3 active deals",
       "Business profile page",
-      "Basic analytics",
-      "Email digest inclusion",
+      "Logo + cover image",
+      "Map pin + directory listing",
+      "Weekly digest inclusion",
     ],
   },
-  pro: {
-    name: "Pro",
-    priceId: process.env.STRIPE_PRICE_PRO ?? "",
-    price: 99,
-    dealLimit: 20,
+  standard: {
+    name: "Standard",
+    priceId: process.env.STRIPE_PRICE_STANDARD ?? "",
+    price: 19.99,
+    dealLimit: 15,
     features: [
-      "Up to 20 active deals",
-      "Everything in Basic",
-      "Priority listing in search",
-      "Social media links",
+      "Up to 15 active deals",
+      "Everything in Free",
+      "View & click analytics",
+      "Social media links on profile",
+      "Hours + Google reviews link",
     ],
   },
   premium: {
     name: "Premium",
     priceId: process.env.STRIPE_PRICE_PREMIUM ?? "",
-    price: 199,
+    price: 39.99,
     dealLimit: Infinity,
     features: [
       "Unlimited deals",
-      "Everything in Pro",
+      "Everything in Standard",
+      "Priority listing in search results",
       "Featured placement on homepage",
-      "Real estate listings",
+      "Real estate listings module",
     ],
   },
 } as const

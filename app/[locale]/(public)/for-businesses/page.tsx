@@ -226,20 +226,19 @@ export default async function ForBusinessesPage() {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {/* Basic */}
+            {/* Free */}
             <div className="flex flex-col rounded-3xl border bg-card p-7 shadow-sm">
-              <div className="font-display text-xl font-semibold">Basic</div>
+              <div className="font-display text-xl font-semibold">Free</div>
               <div className="mt-2 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-bold">$49</span>
+                <span className="font-display text-4xl font-bold">$0</span>
                 <span className="text-sm text-muted-foreground">/mo</span>
               </div>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {[
-                  "Up to 5 active deals",
+                  "Up to 3 active deals",
                   "Business profile page",
                   "Logo + cover image",
                   "Map pin + directory listing",
-                  "View & click analytics",
                   "Weekly digest inclusion",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2 text-sm">
@@ -252,25 +251,25 @@ export default async function ForBusinessesPage() {
                 href="/signup"
                 className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-xl border text-sm font-semibold transition hover:bg-accent"
               >
-                Get started
+                Get started free
               </Link>
             </div>
 
-            {/* Pro — highlighted */}
+            {/* Standard — highlighted */}
             <div className="relative flex flex-col rounded-3xl border-2 border-primary bg-card p-7 shadow-lg ring-1 ring-primary/20">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-primary-foreground">
                 Most popular
               </div>
-              <div className="font-display text-xl font-semibold">Pro</div>
+              <div className="font-display text-xl font-semibold">Standard</div>
               <div className="mt-2 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-bold">$99</span>
+                <span className="font-display text-4xl font-bold">$19.99</span>
                 <span className="text-sm text-muted-foreground">/mo</span>
               </div>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {[
-                  "Up to 20 active deals",
-                  "Everything in Basic",
-                  "Priority listing in search results",
+                  "Up to 15 active deals",
+                  "Everything in Free",
+                  "View & click analytics",
                   "Social media links on profile",
                   "Hours + Google reviews link",
                 ].map((f) => (
@@ -293,16 +292,16 @@ export default async function ForBusinessesPage() {
             <div className="flex flex-col rounded-3xl border bg-card p-7 shadow-sm">
               <div className="font-display text-xl font-semibold">Premium</div>
               <div className="mt-2 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-bold">$199</span>
+                <span className="font-display text-4xl font-bold">$39.99</span>
                 <span className="text-sm text-muted-foreground">/mo</span>
               </div>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {[
                   "Unlimited deals",
-                  "Everything in Pro",
+                  "Everything in Standard",
+                  "Priority listing in search results",
                   "Featured placement on homepage",
                   "Real estate listings module",
-                  "Dedicated support",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2 text-sm">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -320,7 +319,7 @@ export default async function ForBusinessesPage() {
           </div>
 
           <p className="mt-8 text-center text-xs text-muted-foreground">
-            All plans include a free trial. Cancel anytime.
+            No credit card required for the Free plan. Cancel paid plans anytime.
           </p>
         </div>
       </section>

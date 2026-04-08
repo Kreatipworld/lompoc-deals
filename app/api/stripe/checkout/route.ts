@@ -19,6 +19,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 })
   }
 
+  // Free tier requires no Stripe checkout — just create/update the subscription record
+  if (tier === "free") {
+    const userId = Number(session.user.id)
+    const existing = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.userId, userId),
+    })
+    if (existing) {
+      await db.update(subscriptions)
+        .set({ tier: "free", status: "active", stripeSubscriptionId: null, cancelAtPeriodEnd: 0, updatedAt: new Date() })
+        .where(eq(subscriptions.userId, userId))
+    } else {
+      await db.insert(subscriptions).values({
+        userId,
+        tier: "free",
+        status: "active",
+        cancelAtPeriodEnd: 0,
+      })
+    }
+    const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+    return NextResponse.json({ url: `${baseUrl}/dashboard/billing?success=1` })
+  }
+
   const priceId = TIERS[tier].priceId
   if (!priceId) {
     return NextResponse.json({ error: "Stripe price not configured for this tier" }, { status: 503 })

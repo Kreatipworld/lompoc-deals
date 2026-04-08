@@ -60,7 +60,7 @@ export default async function BillingPage({
               <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
                 {TIERS[sub.tier].name}
                 <span className="ml-2 text-base font-normal text-muted-foreground">
-                  ${TIERS[sub.tier].price}/mo
+                  {TIERS[sub.tier].price === 0 ? "Free" : `$${TIERS[sub.tier].price}/mo`}
                 </span>
               </h2>
               {sub.currentPeriodEnd && (
@@ -105,7 +105,7 @@ export default async function BillingPage({
                 currentTier === key ? "border-primary ring-1 ring-primary/30" : ""
               }`}
             >
-              {key === "pro" && (
+              {key === "standard" && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-primary/30 bg-primary px-3 py-0.5 text-xs font-semibold text-primary-foreground">
                   Most popular
                 </div>
@@ -113,8 +113,14 @@ export default async function BillingPage({
               <div className="flex-1">
                 <div className="font-display text-lg font-semibold">{tier.name}</div>
                 <div className="mt-1">
-                  <span className="font-display text-3xl font-bold">${tier.price}</span>
-                  <span className="text-sm text-muted-foreground">/mo</span>
+                  {tier.price === 0 ? (
+                    <span className="font-display text-3xl font-bold">Free</span>
+                  ) : (
+                    <>
+                      <span className="font-display text-3xl font-bold">${tier.price}</span>
+                      <span className="text-sm text-muted-foreground">/mo</span>
+                    </>
+                  )}
                 </div>
                 <ul className="mt-4 space-y-2">
                   {tier.features.map((f) => (
