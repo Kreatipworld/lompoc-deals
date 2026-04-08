@@ -1,5 +1,5 @@
 # Lompoc Deals — Marketing Backlog
-*Last updated: 2026-04-08 | Owner: CMO | Sorted by: revenue impact ÷ effort*
+*Last updated: 2026-04-08 (Cycle 1, heartbeat 4) | Owner: CMO | Sorted by: revenue impact ÷ effort*
 
 ---
 
@@ -87,7 +87,8 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** Weekly "deals near you" posts on Nextdoor targeted to Lompoc neighborhoods will add 30+ signups/month (skews older, higher intent local audience).  
 **Target KPI:** 30 signups/month attributable to Nextdoor  
 **Effort:** S  
-**Status:** backlog  
+**Status:** copy_done — templates ready, human to post  
+**Templates:** `/marketing/social/nextdoor-post-templates.md` (3 templates EN/ES + posting schedule + neighborhood list)  
 **Notes:** Nextdoor has high trust, lower noise. Post as a local business.
 
 ---
@@ -97,8 +98,9 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** Creating optimized landing pages for `/lompoc/food-deals`, `/lompoc/salon-deals`, `/lompoc/services-deals` will capture mid-funnel search traffic and generate 200 organic sessions/month within 90 days.  
 **Target KPI:** 200 organic sessions/month from these pages by day 90  
 **Effort:** L  
-**Status:** backlog  
-**Blocker:** Needs CTO to implement dynamic route `/lompoc/[category]` with schema markup (REQ-005)  
+**Status:** copy_done — awaiting REQ-005 (CTO to build routes)  
+**Blocker:** CTO must implement dynamic routes `/lompoc/[category]` with schema markup (REQ-005)  
+**Copy:** `/marketing/seo/seo-page-copy-spec.md` — 5 pages: /lompoc, /lompoc/food-deals, /lompoc/salon-deals, /lompoc/services-deals, /lompoc/deals-today. Includes H1s, intro copy (EN+ES), meta tags, JSON-LD schemas, sitemap specs, and implementation notes for CTO.  
 **Notes:** See keyword map in `/marketing/seo/keyword-map.md`
 
 ---
