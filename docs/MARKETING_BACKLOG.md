@@ -220,15 +220,35 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ---
 
+### M-018 • Free-to-Paid Upgrade Campaign (Lifecycle)
+**Channel:** Email (Lifecycle)
+**Hypothesis:** An automated email sequence triggered at deal #3 (Free tier limit) will convert 25%+ of active free merchants to Standard ($19.99/mo) within 30 days — the highest-leverage MRR lever once Stripe (B-001) is live.
+**Target KPI:** 25% of active free merchants → Standard/Premium within 30 days of hitting deal #3; secondary: reactivate dormant merchants (0 deals posted at day 30)
+**Effort:** S (copy done) + M (CTO implementation)
+**Status:** copy_done — awaiting REQ-002 (email infra) + B-001 (Stripe activation)
+**Assets:** `/marketing/email/merchant-upgrade-sequence.md` — 5 emails total:
+  - Email 1: Immediate send at deal #3 (limit hit)
+  - Email 2: +3 day follow-up (no upgrade)
+  - Email 3: +7 day final nudge (no upgrade)
+  - Email A: Day-7 nurture for active merchants with <3 deals
+  - Email B: Day-30 win-back for merchants who never posted
+**Notes:**
+- Revenue unlock: every 1 merchant converted = $19.99–$39.99/mo MRR
+- 155+ businesses listed, most on Free — large potential conversion pool
+- Sequence suppresses automatically when merchant upgrades
+- CTO implementation notes included in asset file
+
+---
+
 ## Backlog Health
-*Last updated: 2026-04-08 (Cycle 2 kickoff — 17 items total)*
-- **Total experiments:** 17
-- **This cycle (Cycle 2):** M-001, M-002, M-003, M-C2-1, M-C2-2, M-C2-3, **M-016**
+*Last updated: 2026-04-08 (Cycle 2, heartbeat 5 — 18 items total)*
+- **Total experiments:** 18
+- **This cycle (Cycle 2):** M-001, M-002, M-003, M-C2-1, M-C2-2, M-C2-3, **M-016**, **M-018**
 - **Copy done — human execution pending:** 7 (M-001, M-002, M-003, M-004, M-007, M-009, M-013)
-- **Copy done — blocked on CTO infra:** 4 (M-005, M-006, M-008, M-012)
+- **Copy done — blocked on CTO infra:** 5 (M-005, M-006, M-008, M-012, **M-018**)
 - **Brief done — blocked on CTO (REQ-001 tracking):** 2 (M-011, M-015)
 - **Template done — blocked on CTO (REQ-004 digest cron):** 1 (M-014)
 - **Design doc done — REQ-006 needed:** 1 (M-010)
-- **New Cycle 2 additions:** M-016 (dispensary outreach), M-017 (wine tourism content)
+- **New Cycle 2 additions:** M-016 (dispensary outreach), M-017 (wine tourism content), **M-018 (upgrade lifecycle)**
 - **Key strategy shift (Cycle 2):** All outreach/social copy updated to lead with Free/$0 tier — removes merchant price objection entirely. Previous pitch: "worth $49." New pitch: "nothing to lose."
-- **New engineering requests added this cycle:** None yet — existing REQ-001 through REQ-006 cover current gaps
+- **New engineering requests added this cycle:** None — M-018 uses existing REQ-002 + B-001
