@@ -82,3 +82,35 @@ This prevents the Cycle 1 failure mode where E1–E3 were never confirmed becaus
 *CTO Lead to fill in when back online.*
 
 ---
+
+## Design Pod Sprint Retro — 2026-04-08
+*KRE-77: Landing Page Design Pod — Homepage Redesign*
+
+### What worked
+
+- **Phased frontend redesign was the right call.** Pre-existing plan (KRE frontend redesign) handled tokens, deal cards, hero, category strip, header, business profile, and bottom nav before this sprint started. Design Pod picked up where it left off.
+- **Copy doc (HOMEPAGE_COPY.md) was already complete** from CMO — no back-and-forth needed. Front-end could implement directly from structured copy spec.
+- **Native `<details>/<summary>` for FAQ** avoided adding an Accordion dependency. Zero new packages, accessible by default, styled cleanly with Tailwind `group-open:` modifier.
+- **UX Audit as a forcing function** surfaced 3 missing sections immediately and scored the current site at 27/40. Gave concrete prioritization (not guesswork).
+
+### What didn't work
+
+- **Bilingual strings are still hardcoded in page.tsx.** UX Audit scored this 2/5 — all user-visible strings need `t()` wrappers. This is a known debt, not yet tackled.
+- **Testimonials are placeholders.** Real Lompoc resident quotes are needed. No mechanism exists yet to collect them.
+
+### What was slower than expected
+
+- Nothing blocked or slow. Straightforward implementation sprint.
+
+### A/B testing ideas for next iteration
+
+1. **Hero headline:** "Lompoc's Best Deals — All in One Place" vs "Save Money at Your Favorite Lompoc Spots"
+2. **Primary CTA:** "See Today's Deals" vs "Browse Free Deals"
+3. **Testimonials section:** With photos (if real) vs without
+4. **FAQ placement:** Before vs after the Business CTA
+
+### CTO workflow improvement proposal
+
+**Add a "section health" check to homepage:** A small server component that warns (admin-only) when the deal grid has 0 active deals, so we never ship an empty homepage to locals. Prevents the empty-state bug flagged in the UX Audit.
+
+---
