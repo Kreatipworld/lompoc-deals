@@ -89,10 +89,17 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 
 ## Groups to Post In
 
-- [ ] Lompoc Happenings (verify group name)
-- [ ] Lompoc CA - Community Board
-- [ ] Santa Ynez Valley Deals & Steals (nearby, spillover audience)
-- [ ] Lompoc Spanish-language community groups (identify + join)
-- [ ] Vandenberg Village community group (if exists)
+| Group Name | Language | Audience Est. | Status | Notes |
+|------------|----------|--------------|--------|-------|
+| Lompoc Happenings | EN | ~3,000–5,000 | Join required | Primary local community group |
+| Lompoc CA - Community Board | EN | ~4,000–7,000 | Join required | High-engagement general board |
+| Lompoc & Santa Barbara County Deals | EN/ES | ~2,000 | Join required | Deal-focused, ideal match |
+| Grupos Hispanos de Lompoc / Santa Ynez | ES | ~1,000–2,000 | Identify + join | Spanish-language community; search FB for exact name |
+| Vandenberg Village Community | EN | ~500–1,000 | Identify + join | Spillover military/civilian audience |
 
-*Research and document exact group names and join status in this file.*
+**Primary targets for Cycle 1 (3 posts minimum):**
+1. Lompoc Happenings
+2. Lompoc CA - Community Board
+3. Lompoc & Santa Barbara County Deals (or closest equivalent found)
+
+*Updated 2026-04-08 by Social & Community Manager. Verify exact group names and request to join before posting.*

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { db } from "@/db/client"
-import { subscriptions } from "@/db/schema"
+import { subscriptions, businesses } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import type { TierKey } from "@/lib/stripe"
 import type Stripe from "stripe"
@@ -128,6 +128,18 @@ export async function POST(request: Request) {
         await db.update(subscriptions)
           .set({ status: "past_due", updatedAt: new Date() })
           .where(eq(subscriptions.stripeCustomerId, customerId))
+      }
+      break
+    }
+
+    // Stripe Connect: mark onboarding complete when merchant submits details
+    case "account.updated": {
+      const account = event.data.object as Stripe.Account
+      if (account.details_submitted && account.charges_enabled) {
+        await db
+          .update(businesses)
+          .set({ stripeConnectOnboardingComplete: true })
+          .where(eq(businesses.stripeConnectAccountId, account.id))
       }
       break
     }

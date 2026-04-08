@@ -74,6 +74,8 @@ export const businesses = pgTable(
     yelpUrl: varchar("yelp_url", { length: 500 }),
     googleBusinessUrl: varchar("google_business_url", { length: 500 }),
     status: businessStatus("status").notNull().default("pending"),
+    stripeConnectAccountId: varchar("stripe_connect_account_id", { length: 200 }),
+    stripeConnectOnboardingComplete: boolean("stripe_connect_onboarding_complete").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
