@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, MapPin, Mail, Sparkles, Tag, CalendarDays, Wine } from "lucide-react"
+import { ArrowRight, MapPin, Mail, Sparkles, Tag, CalendarDays, Wine, Search, Heart, Quote, ChevronDown } from "lucide-react"
 import { getActiveDeals, getSiteStats } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
@@ -176,6 +176,178 @@ export default async function HomePage({
           <DealGrid deals={deals} viewer={viewer} fromPath="/" />
         </section>
       )}
+
+      {/* ─────────────────────────────────────────────────
+          HOW IT WORKS — 3-step explainer
+         ───────────────────────────────────────────────── */}
+      <section className="border-t bg-accent/30 py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-10 text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight">
+              How It Works
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Connecting Lompoc locals with businesses since day one.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+            {[
+              {
+                icon: Search,
+                title: "Browse local deals",
+                body: "Find coupons and specials from restaurants, shops, salons, and more — all in one place, all in Lompoc.",
+                step: "01",
+              },
+              {
+                icon: Tag,
+                title: "Claim your deal",
+                body: "Tap Claim, show your phone at the register, and save. No printing, no apps to download.",
+                step: "02",
+              },
+              {
+                icon: Heart,
+                title: "Support local",
+                body: "Every deal claimed is a sale made in Lompoc. Keep your dollars here.",
+                step: "03",
+              },
+            ].map(({ icon: Icon, title, body, step }) => (
+              <div
+                key={step}
+                className="relative flex flex-col items-center rounded-2xl border bg-background p-8 text-center shadow-sm"
+              >
+                <span className="absolute right-4 top-4 font-display text-5xl font-bold text-muted/30 select-none">
+                  {step}
+                </span>
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="font-display text-lg font-semibold">{title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────
+          TESTIMONIALS — What Lompoc Says
+         ───────────────────────────────────────────────── */}
+      <section className="py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-10 text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight">
+              What Lompoc Says
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Real people. Real savings. Real Lompoc.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {[
+              {
+                quote:
+                  "I found a deal for my favorite spot on H Street — saved $12 on my first visit. Now I check every week.",
+                name: "Maria R.",
+                neighborhood: "Old Town",
+              },
+              {
+                quote:
+                  "As a veteran at Vandenberg, this is the easiest way to find what's close by without driving to Santa Maria.",
+                name: "James T.",
+                neighborhood: "Vandenberg Village",
+              },
+              {
+                quote:
+                  "Tres meses usándolo — ya ahorré más de $80. Se lo recomiendo a toda mi familia.",
+                name: "Ana L.",
+                neighborhood: "Mission Hills",
+              },
+            ].map(({ quote, name, neighborhood }) => (
+              <figure
+                key={name}
+                className="flex flex-col rounded-2xl border bg-accent/40 p-6"
+              >
+                <Quote className="mb-3 h-5 w-5 text-primary/40" />
+                <blockquote className="flex-1 text-sm leading-relaxed text-foreground">
+                  &ldquo;{quote}&rdquo;
+                </blockquote>
+                <figcaption className="mt-4 flex items-center gap-2 border-t pt-4">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                    {name[0]}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {neighborhood}
+                    </p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            {/* REPLACE WITH REAL LOMPOC TESTIMONIALS */}
+            Placeholder quotes — real testimonials coming soon.
+          </p>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────
+          FAQ — 6 questions
+         ───────────────────────────────────────────────── */}
+      <section className="border-t bg-accent/20 py-16">
+        <div className="mx-auto max-w-3xl px-4">
+          <div className="mb-10 text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight">
+              Questions?
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Everything you need to know about Lompoc Deals.
+            </p>
+          </div>
+          <div className="space-y-3">
+            {[
+              {
+                q: "Is Lompoc Deals free to use?",
+                a: "Yes, completely. Browsing deals and claiming them is always free for Lompoc residents. No account required to browse.",
+              },
+              {
+                q: "How do I claim a deal?",
+                a: 'Click "Claim Deal" on any offer. If it requires an account, sign up in 30 seconds — just your email. Then show your phone at the business.',
+              },
+              {
+                q: "How do businesses post deals?",
+                a: "Sign up as a business (free), create your profile, and post your first deal in under 5 minutes. The free plan includes 3 active deals.",
+              },
+              {
+                q: "What does it cost to list my business?",
+                a: "Our Free plan is $0 forever — 3 deals, basic profile. Standard is $19.99/month for unlimited deals and priority placement.",
+              },
+              {
+                q: "Is this only for Lompoc?",
+                a: "For now, yes. We're 100% focused on Lompoc. That's what makes it work — every deal is from someone local, for someone local.",
+              },
+              {
+                q: "How do I get the weekly deals email?",
+                a: "Create a free account and subscribe to the weekly digest. Every Tuesday morning, the top 5 deals go straight to your inbox.",
+              },
+            ].map(({ q, a }) => (
+              <details
+                key={q}
+                className="group rounded-xl border bg-background open:shadow-sm"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-medium hover:bg-accent/50 rounded-xl group-open:rounded-b-none transition-colors">
+                  {q}
+                  <ChevronDown className="h-4 w-4 flex-shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                </summary>
+                <div className="border-t px-5 py-4 text-sm text-muted-foreground leading-relaxed">
+                  {a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ─────────────────────────────────────────────────
           BUSINESS CTA (kept from earlier)
