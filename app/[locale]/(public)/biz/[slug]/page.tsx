@@ -77,25 +77,32 @@ export default async function BusinessPage({
   return (
     <>
       {/* ─────────────────────────────────────────────────
-          HEADER — soft gradient hero, no cover photo,
-          card sits in normal document flow (no overlap)
+          COVER IMAGE BANNER (full-width, above header card)
+         ───────────────────────────────────────────────── */}
+      {business.coverUrl ? (
+        <div className="relative h-44 w-full overflow-hidden sm:h-60">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={business.coverUrl}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+        </div>
+      ) : (
+        <div className="h-24 w-full bg-gradient-to-r from-primary/20 via-accent to-primary/10 sm:h-36" />
+      )}
+
+      {/* ─────────────────────────────────────────────────
+          HEADER CARD — logo + name + meta
          ───────────────────────────────────────────────── */}
       <section className="relative isolate overflow-hidden border-b">
-        {/* Backdrop gradient */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-b from-accent via-background to-background"
-        />
-        <div
-          aria-hidden
-          className="absolute -left-32 -top-20 -z-10 h-[420px] w-[420px] rounded-full bg-primary/15 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="absolute -right-20 top-10 -z-10 h-[300px] w-[300px] rounded-full bg-primary/10 blur-3xl"
+          className="absolute inset-0 -z-20 bg-gradient-to-b from-background via-background to-background"
         />
 
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
+        <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
             <Link href="/" className="transition hover:text-foreground">
@@ -129,8 +136,8 @@ export default async function BusinessPage({
             )}
           </div>
 
-          {/* HEADER CARD */}
-          <div className="mt-4 rounded-3xl border bg-card p-6 shadow-lg sm:p-8">
+          {/* HEADER CARD — logo overlaps cover when present */}
+          <div className={`rounded-3xl border bg-card p-6 shadow-lg sm:p-8 ${business.coverUrl ? "-mt-10 sm:-mt-14" : "mt-4"}`}>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
               {/* Logo */}
               <div className="flex-shrink-0">
@@ -139,11 +146,11 @@ export default async function BusinessPage({
                   <img
                     src={business.logoUrl}
                     alt={`${business.name} logo`}
-                    className="h-24 w-24 rounded-2xl border bg-background object-cover shadow-sm"
+                    className="h-20 w-20 rounded-2xl border-2 border-background bg-background object-cover shadow-md sm:h-24 sm:w-24"
                   />
                 ) : (
-                  <div className="flex h-24 w-24 items-center justify-center rounded-2xl border bg-gradient-to-br from-primary/15 to-accent shadow-sm">
-                    <Flower2 className="h-10 w-10 text-primary/60" />
+                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-background bg-gradient-to-br from-primary/15 to-accent shadow-md sm:h-24 sm:w-24">
+                    <Flower2 className="h-9 w-9 text-primary/60" />
                   </div>
                 )}
               </div>
