@@ -25,6 +25,8 @@
 | MRR (subscription revenue) | $0 | $0 | $200 | Stripe (blocked) |
 | Digest open rate | N/A | N/A | >40% | Resend |
 | Deal claim rate (click / view) | unknown | baseline | >3% | DB |
+| GBP weekly clicks | 0 (not yet claimed) | — | 20 | Google Business Profile |
+| GBP weekly impressions | 0 (not yet claimed) | — | 200 | Google Business Profile |
 
 ---
 
