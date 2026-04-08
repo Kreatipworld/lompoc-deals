@@ -34,10 +34,20 @@
 
 ### Week of 2026-04-07 (Cycle 1 Start)
 **CMO update:**
-- M-001 (Facebook seeding): Not yet started — template in progress
+- M-001 (Facebook seeding): Content prepared — 3 posts (EN+ES) written and ready in `/marketing/social/facebook-campaign-log.md`. Top 3 groups identified. **Blocked on human to join groups + manually post** (no Facebook API access). Posting schedule: Tue 4/8, Thu 4/10, Sat 4/12.
 - M-002 (Google Business Profile): Not yet started
-- M-003 (Merchant outreach): Not yet started — script in progress
+- M-003 (Merchant outreach): Pipeline built — 20 targets identified across 5 categories (restaurants, salons, auto repair, body shops, café). Personalized scripts ready (EN + ES). CRM tracker live at `/marketing/sales/pipeline-cycle1.md`. Outreach pending human execution via Google Maps msg, Instagram DM, and phone calls.
 - Blocker: Funnel tracking (REQ-001) not yet shipped — baseline for paid channels unknown
+
+**Facebook Campaign Tracking (M-001) — fill in after each post:**
+
+| Date | Group | Post Type | Reach | Reactions | Comments | Link Clicks | Signups |
+|------|-------|-----------|-------|-----------|----------|-------------|---------|
+| 2026-04-08 | Lompoc Happenings | Launch (EN+ES) | — | — | — | — | — |
+| 2026-04-10 | Lompoc CA Community Board | Deal Spotlight (EN+ES) | — | — | — | — | — |
+| 2026-04-12 | SBC Deals Group | Weekly Roundup (EN+ES) | — | — | — | — | — |
+
+*Target: 50 consumer signups by end of Cycle 1.*
 
 **CTO update:**
 - B-001 (Stripe activation): Pending Stripe account creation
