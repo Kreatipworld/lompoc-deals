@@ -52,6 +52,16 @@ const config: Config = {
           green: "hsl(var(--brand-green))",
           "green-foreground": "hsl(var(--brand-green-foreground))",
         },
+        amber: {
+          DEFAULT: "hsl(var(--amber))",
+          foreground: "hsl(var(--amber-foreground))",
+          muted: "hsl(var(--amber-muted))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+          muted: "hsl(var(--success-muted))",
+        },
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],

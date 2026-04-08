@@ -30,6 +30,16 @@
     --accent: 258 65% 96%;
     --accent-foreground: 258 65% 30%;
 
+    /* Warm amber — California gold: highlights, discount badges */
+    --amber: 38 90% 52%;
+    --amber-foreground: 30 50% 12%;
+    --amber-muted: 38 90% 95%;
+
+    /* Success — forest sage (verified, active states) */
+    --success: 150 40% 38%;
+    --success-foreground: 0 0% 100%;
+    --success-muted: 150 40% 95%;
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 14% 91%;
@@ -55,6 +65,13 @@
     --muted-foreground: 220 9% 65%;
     --accent: 258 50% 18%;
     --accent-foreground: 258 70% 92%;
+    --amber: 38 85% 58%;
+    --amber-foreground: 30 50% 10%;
+    --amber-muted: 38 50% 15%;
+    --success: 150 45% 50%;
+    --success-foreground: 0 0% 100%;
+    --success-muted: 150 30% 12%;
+
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 258 25% 18%;
