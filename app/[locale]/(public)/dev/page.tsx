@@ -16,10 +16,8 @@ function Separator() {
 import {
   Tag,
   MapPin,
-  Star,
   Heart,
   Sparkles,
-  Wine,
   CalendarDays,
   Search,
   ChevronRight,
