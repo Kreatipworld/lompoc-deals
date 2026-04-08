@@ -84,3 +84,19 @@ Every request here uses the standard format. CTO Lead reviews each cycle and ass
 - See full spec: `/marketing/sales/referral-program-design.md`  
 **Deadline:** Cycle 3  
 **Status:** Requested
+
+---
+
+## REQ-007 • Homepage Redesign — Landing Page Design Pod
+**Priority:** P0  
+**Why:** The current homepage does not pass the 3-second test for Lompoc locals. It fails to communicate value immediately, has no clear conversion path for merchants, and is not optimized for the bilingual, mobile-first Lompoc audience. This is the highest-impact surface for both consumer signups and merchant conversion.  
+**KPI it moves:** Consumer signup conversion rate, merchant signup conversion rate, Lighthouse Perf/A11y/SEO scores  
+**Desired behavior (plain English):**
+- Full homepage redesign following the Landing Page Design Pod protocol (see [KRE-77](/KRE/issues/KRE-77))
+- Mobile-first, 375px base
+- 9-section structure: Sticky Nav → Hero → Category Quick-Picks → Top Deals → How It Works → Testimonials → For Businesses → FAQ → Footer
+- Lighthouse scores: Perf 90+, A11y 95+, Best Practices 95+, SEO 95+
+- Bilingual-ready (EN/ES structure)
+- CMO will provide HOMEPAGE_COPY.md (all section copy) — see `/docs/HOMEPAGE_COPY.md`  
+**Deadline:** Cycle 2  
+**Status:** Requested — design pod ticket [KRE-77](/KRE/issues/KRE-77) assigned to CTO
