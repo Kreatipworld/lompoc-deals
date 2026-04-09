@@ -1,6 +1,6 @@
 # M-002 • Google Business Profile (GBP) — Setup Checklist
 *Status: Checklist complete — action required by board (human)*  
-*Owner: Content & SEO Strategist | Updated: 2026-04-08*
+*Owner: Content & SEO Strategist | Updated: 2026-04-09 (directory-first pivot)*
 
 ---
 
@@ -18,7 +18,7 @@ A fully optimized GBP listing is the fastest way to appear in Google's local pac
 1. Go to: business.google.com
 2. Sign in with the Lompoc Deals Google account (create one if needed — use `hello@lompoc-deals.com` or a board-controlled Gmail)
 3. Search for "Lompoc Deals" — claim if it exists, create new if not
-4. Business category: **Internet company** (primary) + **Coupons & deals** (secondary)
+4. Business category: **Internet company** (primary) + **Local business directory** or **Business networking company** (secondary — pick whichever Google offers; avoid "Coupons & deals" which undersells the directory value prop)
 5. Service area: Lompoc, CA (do NOT enter a physical address if you don't have a storefront)
 6. Phone: Optional — add if there's a contact number
 7. Website: https://lompoc-deals.vercel.app
@@ -32,18 +32,20 @@ A fully optimized GBP listing is the fastest way to appear in Google's local pac
 
 #### Business Description (copy-paste ready)
 ```
-Lompoc Deals is a free local deals platform for Lompoc, California. Browse 
-coupons, specials, and announcements from local restaurants, salons, retail 
-stores, and service businesses. New deals posted weekly. Free to join — no 
-app required. Bilingual (English / Spanish). Support local, save money.
+Lompoc Deals is Lompoc's free local business directory — discover local 
+restaurants, shops, salons, wineries, services, and more, all in one place. 
+Businesses list for free; residents browse and claim deals at no cost. 
+Bilingual (English / Spanish). Built for the Flower Capital. 
+lompoc-deals.vercel.app
 ```
 
 **Spanish description (add in "Additional info" field):**
 ```
-Lompoc Deals es una plataforma gratuita de ofertas locales para Lompoc, 
-California. Explora cupones, especiales y anuncios de restaurantes, salones, 
-tiendas y negocios de servicio locales. Nuevas ofertas cada semana. Gratis — 
-sin necesidad de app. Bilingüe (inglés / español). Apoya lo local, ahorra dinero.
+Lompoc Deals es el directorio gratuito de negocios locales de Lompoc — 
+descubre restaurantes, tiendas, salones, bodegas, servicios y más, todo en 
+un solo lugar. Los negocios se publican gratis; los residentes exploran y 
+reclaman ofertas sin costo. Bilingüe (inglés / español). Construido para la 
+Capital de las Flores. lompoc-deals.vercel.app
 ```
 
 #### Hours
@@ -67,9 +69,9 @@ sin necesidad de app. Bilingüe (inglés / español). Apoya lo local, ahorra din
 
 **Post type:** What's New  
 **Post copy:**
-> Lompoc Deals is live! Browse free coupons and specials from local restaurants, salons, shops, and services in Lompoc. New deals added every week — all 100% local. Sign up free at lompoc-deals.vercel.app 🎉
+> Lompoc Deals is live — Lompoc's free local business directory! Discover restaurants, shops, salons, wineries, and more in one place. Businesses list free; residents browse free. Bilingual EN/ES. Visit lompoc-deals.vercel.app 🌸
 > 
-> ¡Lompoc Deals ya está disponible! Explora cupones y ofertas de negocios locales en Lompoc. Visita lompoc-deals.vercel.app — gratis para todos. 🎉
+> ¡Lompoc Deals ya está disponible! El directorio gratuito de negocios locales de Lompoc: restaurantes, tiendas, salones, bodegas y más. Explora gratis en lompoc-deals.vercel.app 🌸
 
 **Photo:** Use the banner image  
 **CTA button:** Sign Up → https://lompoc-deals.vercel.app/en/sign-up
@@ -77,7 +79,7 @@ sin necesidad de app. Bilingüe (inglés / español). Apoya lo local, ahorra din
 ### Step 5 — Ongoing GBP Maintenance (weekly)
 
 Every Tuesday (or whenever digest sends):
-- Add a new "What's New" post highlighting the week's top deal
+- Add a new "What's New" post — alternate between top deal of the week and a Business Spotlight (highlight a newly listed business, no deal required)
 - Respond to any reviews within 24 hours
 - Check "Questions & Answers" section — answer promptly
 

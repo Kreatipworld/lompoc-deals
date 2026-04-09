@@ -1,6 +1,7 @@
-# TikTok "Best Deal of the Week" — Script Templates
+# TikTok Scripts — Deal of the Week + Business Discovery
 *Owner: CMO / Social & Community Manager*
-*Created: 2026-04-08 | KPI: 1,000 avg views/video, 25 signups/week from TikTok*
+*Created: 2026-04-08 | Updated: 2026-04-09 (directory-first: added Business Discovery series)*
+*KPI: 1,000 avg views/video, 25 signups/week from TikTok*
 
 ---
 
@@ -117,6 +118,50 @@ When reaching out to Lompoc TikTok creators (target: 2k–20k followers, local c
 
 ---
 
+---
+
+## Series 2 — "Hidden Gem in Lompoc" (Business Discovery)
+
+*Purpose: showcase a local business without requiring an active deal. Builds directory brand and drives category browsing.*
+
+### Standard Structure (20–30 sec)
+```
+0:00–0:03  HOOK — text overlay on business photo/storefront: "Did you know Lompoc has a [type of business]?"
+0:03–0:10  SHOW THE BUSINESS — screen record the business profile on lompoc-deals.vercel.app
+0:10–0:20  TELL THE STORY — voiceover: what they do, what makes them local/unique
+0:20–0:27  DIRECTORY CTA — "Find them + 150 more Lompoc businesses free at lompoc-deals.vercel.app"
+0:27–0:30  Text overlay: "Lompoc's local business directory • link in bio"
+```
+
+### Script Template 5 — Business Discovery (EN)
+
+**Hook text overlay:** "Lompoc actually has a [business type] and it's 🔥"
+
+**Voiceover script:**
+> "Okay I had no idea Lompoc had a [business type] — it's called [Business Name] and they're on [street/neighborhood]. [One sentence about what makes them special — a signature dish, the owner's story, how long they've been there.] You can find their hours, photos, and contact info at Lompoc Deals — it's a free local directory for all of Lompoc's businesses. Over 150 listed. Link in bio."
+
+**Caption (EN):**
+> Hidden gem alert 🚨 [Business Name] in Lompoc is [what they do]. Find them at lompoc-deals.vercel.app — Lompoc's free local business directory. 155+ businesses listed. #LompocDeals #Lompoc #HiddenGem #ShopLocal #LompocCA
+
+**Caption (ES):**
+> Joya escondida 🚨 [Nombre del negocio] en Lompoc [qué hacen]. Encuéntralos en lompoc-deals.vercel.app — el directorio gratuito de negocios locales de Lompoc. #LompocDeals #Lompoc #NegociosLocales #LompocCA
+
+---
+
+### Script Template 6 — "Things To Do in Lompoc" Roundup (EN)
+
+*High shareability. Targets tourists and new residents. Repurposable as Pinterest content.*
+
+**Hook text overlay:** "Things to do in Lompoc this weekend 📍"
+
+**Voiceover script:**
+> "If you're in Lompoc this weekend, here are three things you can do that most people don't know about. [#1: local activity/business with deal or event.] [#2: another business.] [#3: a third option — mix food, wine, or local service.] Find all of these plus over 150 more Lompoc businesses at lompoc-deals.vercel.app — link in bio, it's free."
+
+**Caption (EN):**
+> Things to do in Lompoc this weekend 🌸 [Brief list]. More at lompoc-deals.vercel.app — Lompoc's free local directory. #Lompoc #ThingsToDoInLompoc #LompocCA #LompocDeals #VisitLompoc
+
+---
+
 ## Video Production Checklist
 
 - [ ] Pick deal of the week from lompoc-deals.vercel.app (look for visual product, strong discount)
@@ -132,9 +177,11 @@ When reaching out to Lompoc TikTok creators (target: 2k–20k followers, local c
 
 ## Content Calendar (Weeks 1–4)
 
+*Mix: 1 Business Discovery (Series 2) + 1 Deal of the Week (Series 1) + 1 wildcard per week.*
+
 | Week | Post 1 (Tue) | Post 2 (Thu) | Post 3 (Sat) |
 |------|-------------|-------------|-------------|
-| 1 | Template 3 "Did you know" (EN) | Template 1 — best restaurant deal | Template 2 — best salon deal |
-| 2 | Template 4 — merchant story (find creator) | Template 1 — new deal highlight | Template 3 "Did you know" (ES) |
-| 3 | Template 2 — beauty deal (ES primary) | Template 1 — food deal | Community response / duet |
-| 4 | Creator collab post (if secured) | Template 3 — any category | Weekly roundup: top 3 deals |
+| 1 | **Template 5 "Hidden Gem"** (EN) — launch week, directory-first | Template 1 — best restaurant deal | Template 3 "Did you know" (ES) |
+| 2 | **Template 6 "Things To Do" roundup** | Template 1 — new deal highlight | Template 2 — best salon deal |
+| 3 | Template 4 — merchant story (find creator) | **Template 5 "Hidden Gem"** (ES primary) | Template 1 — food deal |
+| 4 | Creator collab post (if secured) | **Template 6 "Things To Do"** (ES) | Weekly roundup: top 3 deals |
