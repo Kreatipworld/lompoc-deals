@@ -137,6 +137,23 @@ async function main() {
     "retail shops Lompoc CA",
     "services Lompoc CA",
     "entertainment Lompoc CA",
+    // Extended queries for broader coverage
+    "winery wine tasting Lompoc CA",
+    "bakery dessert Lompoc CA",
+    "dentist dental Lompoc CA",
+    "gym fitness yoga Lompoc CA",
+    "grocery supermarket Lompoc CA",
+    "hotel motel lodging Lompoc CA",
+    "pet store veterinarian Lompoc CA",
+    "florist flowers Lompoc CA",
+    "pharmacy drug store Lompoc CA",
+    "pizza Lompoc CA",
+    "mexican food taco Lompoc CA",
+    "fast food burger Lompoc CA",
+    "clothing boutique Lompoc CA",
+    "tattoo Lompoc CA",
+    "plumber electrician Lompoc CA",
+    "real estate Lompoc CA",
   ]
 
   console.log(`\n🔍 Running compass/crawler-google-places actor for ${searchQueries.length} queries…`)
