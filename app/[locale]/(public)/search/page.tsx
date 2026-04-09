@@ -26,7 +26,7 @@ export default async function SearchPage({
           aria-hidden
           className="absolute inset-0 -z-20"
           style={{
-            backgroundImage: "url('/hero-lompoc.jpg')",
+            backgroundImage: "url('/lompoc-flowers-4.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center 40%",
           }}
@@ -55,7 +55,7 @@ export default async function SearchPage({
       </section>
 
       {/* ─── Results ─── */}
-      <section className="mx-auto max-w-6xl px-4 py-8">
+      <section className="mx-auto max-w-7xl px-4 py-8">
         {q ? (
           <>
             <p className="mb-6 text-sm text-muted-foreground">
@@ -66,6 +66,7 @@ export default async function SearchPage({
               deals={deals}
               viewer={viewer}
               fromPath={`/search?q=${encodeURIComponent(q)}`}
+              variant="tripadvisor"
             />
           </>
         ) : (

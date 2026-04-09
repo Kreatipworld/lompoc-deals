@@ -45,7 +45,7 @@ export default async function HomePage({
           aria-hidden
           className="absolute inset-0 -z-20"
           style={{
-            backgroundImage: "url('/hero-lompoc.jpg')",
+            backgroundImage: "url('/lompoc-flowers-4.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center 40%",
           }}
@@ -107,7 +107,7 @@ export default async function HomePage({
       {/* ─────────────────────────────────────────────────
           TAB STRIP — Deals | Events
          ───────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-6xl px-4 pt-6">
+      <div className="mx-auto max-w-7xl px-4 pt-6">
         <div className="flex gap-1 rounded-xl border bg-muted/40 p-1 w-fit">
           <Link
             href="/?tab=deals"
@@ -153,15 +153,14 @@ export default async function HomePage({
       ) : activeTab === "wineries" ? (
         <WineriesSection />
       ) : (
-        <section className="mx-auto max-w-6xl px-4 py-10">
+        <section className="mx-auto max-w-7xl px-4 py-10">
           <div className="mb-6 flex items-end justify-between">
             <div>
-              <h2 className="font-display text-2xl font-semibold tracking-tight">
-                Latest deals
+              <h2 className="font-display text-2xl font-bold tracking-tight">
+                Find deals in Lompoc
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Showing all {deals.length}{" "}
-                {deals.length === 1 ? "deal" : "deals"} · sorted by newest
+                {deals.length} {deals.length === 1 ? "deal" : "deals"} available · updated daily
               </p>
             </div>
             <Link
@@ -173,7 +172,7 @@ export default async function HomePage({
             </Link>
           </div>
 
-          <DealGrid deals={deals} viewer={viewer} fromPath="/" />
+          <DealGrid deals={deals} viewer={viewer} fromPath="/" variant="tripadvisor" />
         </section>
       )}
 
