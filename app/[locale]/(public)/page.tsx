@@ -1,40 +1,53 @@
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown } from "lucide-react"
-import { getDealsGroupedByCategory, getSiteStats } from "@/lib/queries"
-import { getViewer } from "@/lib/viewer"
-import { DealCard } from "@/components/deal-card"
-import { CategoryStrip } from "@/components/category-strip"
+import {
+  ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown,
+  Utensils, ShoppingBag, Wrench, Car, Ticket, Home, Wine, Leaf, MoreHorizontal,
+  Building2, ExternalLink
+} from "lucide-react"
+import { getFeaturedBusinesses, getAllCategories, getSiteStats } from "@/lib/queries"
 import { SearchBar } from "@/components/search-bar"
-import { WeatherWidget } from "@/components/weather-widget"
 
 export const metadata = {
   title: "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
   description:
-    "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more. Browse by category, discover deals, and support local. Directorio local de negocios en Lompoc, CA.",
+    "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more. Browse by category, discover deals, and support local.",
   keywords: [
-    "lompoc local directory",
+    "lompoc directory",
     "lompoc businesses",
     "things to do in lompoc",
-    "lompoc restaurants",
-    "lompoc shops",
-    "lompoc services",
-    "lompoc deals",
-    "directorio lompoc",
-    "negocios lompoc",
+    "lompoc local businesses",
     "lompoc ca",
+    "lompoc deals",
   ],
   openGraph: {
     title: "Lompoc Local Directory — Businesses, Deals & Things To Do",
     description:
-      "Discover Lompoc, CA by category — restaurants, boutiques, services, health & beauty, and more. All local, all free to browse.",
-    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California — local business directory" }],
+      "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more.",
+    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
   },
 }
 
+// Category gradient + icon mapping by slug
+const CATEGORY_STYLES: Record<string, { gradient: string; Icon: React.ElementType }> = {
+  "food-drink":    { gradient: "from-orange-400 to-red-500",    Icon: Utensils },
+  "retail":        { gradient: "from-pink-400 to-purple-500",   Icon: ShoppingBag },
+  "services":      { gradient: "from-blue-400 to-cyan-500",     Icon: Wrench },
+  "health-beauty": { gradient: "from-rose-400 to-pink-500",     Icon: Heart },
+  "auto":          { gradient: "from-slate-500 to-gray-700",    Icon: Car },
+  "entertainment": { gradient: "from-violet-500 to-purple-600", Icon: Ticket },
+  "real-estate":   { gradient: "from-green-400 to-emerald-600", Icon: Home },
+  "wineries":      { gradient: "from-purple-500 to-red-600",    Icon: Wine },
+  "cannabis":      { gradient: "from-green-500 to-teal-600",    Icon: Leaf },
+}
+
+function getCategoryStyle(slug: string) {
+  return CATEGORY_STYLES[slug] ?? { gradient: "from-gray-400 to-gray-600", Icon: MoreHorizontal }
+}
+
 export default async function HomePage() {
-  const [categorizedDeals, viewer, stats] = await Promise.all([
-    getDealsGroupedByCategory(6),
-    getViewer(),
+  const [categories, featuredBusinesses, stats] = await Promise.all([
+    getAllCategories(),
+    getFeaturedBusinesses(6),
     getSiteStats(),
   ])
 
@@ -44,7 +57,6 @@ export default async function HomePage() {
           HERO — Search-first with Lompoc image background
          ───────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b">
-        {/* Lompoc background image */}
         <div
           aria-hidden
           className="absolute inset-0 -z-20"
@@ -54,35 +66,29 @@ export default async function HomePage() {
             backgroundPosition: "center 40%",
           }}
         />
-        {/* Dark overlay for text readability */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/40 to-black/60"
         />
 
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
-          {/* Eyebrow */}
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             <MapPin className="h-3 w-3" />
             Lompoc, California
           </div>
 
-          {/* Headline */}
           <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
-            Where to next <br className="sm:hidden" />
-            <span className="italic text-yellow-300">in Lompoc?</span>
+            Explore Lompoc <br className="sm:hidden" />
+            <span className="italic text-yellow-300">by category</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
-            Coupons, specials, and announcements from the local businesses you
-            already love.
+            Discover local restaurants, shops, services, and more — all in one place.
           </p>
 
-          {/* BIG search bar — the centerpiece */}
           <div className="mx-auto mt-8 max-w-xl">
             <SearchBar size="lg" />
           </div>
 
-          {/* Quick stats inline */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
@@ -91,65 +97,139 @@ export default async function HomePage() {
             <span className="text-white/30">·</span>
             <span>{stats.businesses} local businesses</span>
             <span className="text-white/30">·</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber/25 px-2.5 py-0.5 text-[10px] font-semibold text-yellow-200 ring-1 ring-yellow-300/30">
-              ✦ Updated daily
-            </span>
+            <span>{stats.categories} categories</span>
           </div>
         </div>
       </section>
 
       {/* ─────────────────────────────────────────────────
-          STICKY CATEGORY STRIP (Airbnb-style icon stacks)
+          EXPLORE BY CATEGORY — Image card grid
          ───────────────────────────────────────────────── */}
-      <CategoryStrip />
-
-      {/* ─────────────────────────────────────────────────
-          WEATHER WIDGET — single instance, top of content
-         ───────────────────────────────────────────────── */}
-      <WeatherWidget />
-
-      {/* ─────────────────────────────────────────────────
-          CATEGORY LISTING SECTIONS
-         ───────────────────────────────────────────────── */}
-      {categorizedDeals.length === 0 ? (
-        <section className="mx-auto max-w-7xl px-4 py-16 text-center text-muted-foreground">
-          <p>No active deals right now — check back soon!</p>
-        </section>
-      ) : (
-        <div className="mx-auto max-w-7xl px-4 py-10 space-y-14">
-          {categorizedDeals.map((cat) => (
-            <section key={cat.slug}>
-              <div className="mb-5 flex items-end justify-between">
-                <div>
-                  <h2 className="font-display text-2xl font-bold tracking-tight">
-                    {cat.name}
-                  </h2>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {cat.deals.length} {cat.deals.length === 1 ? "deal" : "deals"} available
-                  </p>
-                </div>
-                <Link
-                  href={`/category/${cat.slug}`}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                >
-                  See all
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {cat.deals.map((deal) => (
-                  <DealCard
-                    key={deal.id}
-                    deal={deal}
-                    viewer={viewer}
-                    fromPath="/"
-                    variant="tripadvisor"
-                  />
-                ))}
-              </div>
-            </section>
-          ))}
+      <section className="mx-auto max-w-7xl px-4 py-14">
+        <div className="mb-8">
+          <h2 className="font-display text-3xl font-bold tracking-tight">
+            Explore by category
+          </h2>
+          <p className="mt-1 text-muted-foreground">
+            Find things to do, eat, and discover in Lompoc
+          </p>
         </div>
+
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {categories.map((cat) => {
+            const { gradient, Icon } = getCategoryStyle(cat.slug)
+            return (
+              <Link
+                key={cat.slug}
+                href={`/category/${cat.slug}`}
+                className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col items-center justify-center text-white shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+              >
+                {/* Gradient background */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
+                {/* Subtle highlight overlay */}
+                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_20%,white,transparent_60%)]" />
+                {/* Dark bottom gradient for text */}
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/40 to-transparent" />
+
+                <div className="relative flex flex-col items-center gap-2 px-4 text-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-white/30 transition-colors">
+                    <Icon className="h-7 w-7 drop-shadow" />
+                  </div>
+                  <span className="font-display text-base font-semibold leading-tight drop-shadow-sm">
+                    {cat.name}
+                  </span>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────
+          FEATURED BUSINESSES — "Popular in Lompoc"
+         ───────────────────────────────────────────────── */}
+      {featuredBusinesses.length > 0 && (
+        <section className="border-t bg-accent/20 py-14">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <h2 className="font-display text-3xl font-bold tracking-tight">
+                  Popular in Lompoc
+                </h2>
+                <p className="mt-1 text-muted-foreground">
+                  Local businesses with active offers right now
+                </p>
+              </div>
+              <Link
+                href="/businesses"
+                className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
+              >
+                View all businesses
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredBusinesses.map((biz) => (
+                <Link
+                  key={biz.id}
+                  href={`/biz/${biz.slug}`}
+                  className="group flex gap-4 rounded-2xl border bg-background p-4 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+                >
+                  {/* Logo / placeholder */}
+                  <div className="flex-shrink-0">
+                    {biz.logoUrl ? (
+                      <img
+                        src={biz.logoUrl}
+                        alt={biz.name}
+                        className="h-14 w-14 rounded-xl object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <Building2 className="h-7 w-7" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="truncate font-semibold leading-tight group-hover:text-primary transition-colors">
+                        {biz.name}
+                      </h3>
+                      <ExternalLink className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground/50 mt-0.5 group-hover:text-primary transition-colors" />
+                    </div>
+                    {biz.categoryName && (
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        {biz.categoryName}
+                      </p>
+                    )}
+                    {biz.description && (
+                      <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
+                        {biz.description}
+                      </p>
+                    )}
+                    {biz.activeDealCount > 0 && (
+                      <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
+                        <Tag className="h-2.5 w-2.5" />
+                        {biz.activeDealCount} {biz.activeDealCount === 1 ? "deal" : "deals"}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center sm:hidden">
+              <Link
+                href="/businesses"
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+              >
+                View all businesses
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
       )}
 
       {/* ─────────────────────────────────────────────────
@@ -252,9 +332,7 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold">{name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {neighborhood}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{neighborhood}</p>
                   </div>
                 </figcaption>
               </figure>
@@ -325,7 +403,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─────────────────────────────────────────────────
-          BUSINESS CTA (kept from earlier)
+          BUSINESS CTA
          ───────────────────────────────────────────────── */}
       <section className="mx-auto mb-16 max-w-6xl px-4">
         <div className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/10 via-accent to-background p-8 sm:p-12">

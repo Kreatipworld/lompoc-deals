@@ -2,12 +2,12 @@
 
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-import { Home, Map, Search, LayoutGrid, User } from "lucide-react"
+import { Home, Map, Search, LayoutGrid, User, Tag } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
   { href: "/", icon: Home, label: "Home" },
-  { href: "/map", icon: Map, label: "Map" },
+  { href: "/deals", icon: Tag, label: "Deals" },
   { href: "/search", icon: Search, label: "Search" },
   { href: "/businesses", icon: LayoutGrid, label: "Directory" },
   { href: "/dashboard", icon: User, label: "Account" },

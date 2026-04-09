@@ -169,6 +169,32 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
   return rows
 }
 
+export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusiness[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      description: businesses.description,
+      address: businesses.address,
+      phone: businesses.phone,
+      website: businesses.website,
+      logoUrl: businesses.logoUrl,
+      categoryId: businesses.categoryId,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .where(eq(businesses.status, "approved"))
+    .groupBy(businesses.id, categories.id)
+    .orderBy(sql`count(${deals.id}) filter (where ${deals.expiresAt} > now()) desc`, businesses.name)
+    .limit(limit)
+  return rows
+}
+
 export type PropertyListing = {
   id: number
   type: "for-sale" | "for-rent"

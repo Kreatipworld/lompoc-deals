@@ -30,10 +30,10 @@ export async function SiteHeader() {
 
         <nav className="hidden items-center gap-6 sm:flex">
           <Link
-            href="/"
+            href="/deals"
             className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
-            {t("feed")}
+            {t("deals")}
           </Link>
           <Link
             href="/businesses"
