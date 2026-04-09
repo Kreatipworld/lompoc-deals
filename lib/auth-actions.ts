@@ -82,7 +82,22 @@ export async function signupAction(
   if (claimSlug) {
     redirect(`/dashboard/profile?claimed=${encodeURIComponent(claimSlug)}`)
   }
-  redirect(role === "business" ? "/dashboard/profile" : "/")
+  redirect(role === "business" ? "/dashboard/profile" : "/account")
+}
+
+/** Return a redirect destination that the given role is actually allowed to visit. */
+function safeDestination(from: string | null, role: string): string {
+  if (from) {
+    const isMerchantOnly = from.startsWith("/dashboard")
+    const isAdminOnly = from.startsWith("/admin")
+    if (isMerchantOnly && role === "business") return from
+    if (isAdminOnly && role === "admin") return from
+    // `from` leads somewhere the user can't access — fall through to default
+    if (!isMerchantOnly && !isAdminOnly) return from
+  }
+  if (role === "business") return "/dashboard/profile"
+  if (role === "admin") return "/admin"
+  return "/account"
 }
 
 const loginSchema = z.object({
@@ -123,9 +138,8 @@ export async function loginAction(
   })
 
   const from = formData.get("from") as string | null
-  const destination =
-    from ||
-    (user?.role === "business" ? "/dashboard/profile" : user?.role === "admin" ? "/admin" : "/")
+  const role = user?.role ?? "local"
+  const destination = safeDestination(from, role)
   redirect(destination)
 }
 

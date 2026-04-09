@@ -11,9 +11,22 @@ export default async function LoginPage({
 }) {
   const session = await auth()
   if (session?.user) {
-    const destination =
-      searchParams.from ??
-      (session.user.role === "business" ? "/dashboard" : "/")
+    const role = session.user.role as string
+    const from = searchParams.from ?? null
+    let destination: string
+    if (from && from.startsWith("/dashboard") && role === "business") {
+      destination = from
+    } else if (from && from.startsWith("/admin") && role === "admin") {
+      destination = from
+    } else if (from && !from.startsWith("/dashboard") && !from.startsWith("/admin")) {
+      destination = from
+    } else if (role === "business") {
+      destination = "/dashboard"
+    } else if (role === "admin") {
+      destination = "/admin"
+    } else {
+      destination = "/account"
+    }
     redirect(destination)
   }
 
