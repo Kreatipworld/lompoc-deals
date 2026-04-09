@@ -1,13 +1,14 @@
 # Merchant Cold Outreach Script
-*Owner: CMO / Merchant Acquisition Lead | Last updated: 2026-04-07*
+*Owner: CMO / Merchant Acquisition Lead | Last updated: 2026-04-09*
+*Updated for directory-first positioning (KRE-117) — leads with "be found" before "post deals"*
 
 ---
 
 ## Cold Email — Subject Line Options (A/B test)
 
 **A:** "Free way to reach more Lompoc customers"  
-**B:** "Post your deals for free — Lompoc Deals"  
-**C (ES):** "Llegue a más clientes en Lompoc — gratis"
+**B:** "Get [Business Name] listed in Lompoc's local directory — free"  
+**C (ES):** "Aparezca en el directorio local de Lompoc — gratis"
 
 ---
 
@@ -15,15 +16,15 @@
 
 > Hi [First Name],
 >
-> I'm reaching out because [Business Name] is exactly the kind of local gem that Lompoc residents are looking for.
+> I'm reaching out because [Business Name] is exactly the kind of local gem that Lompoc residents are looking for — and right now, too many people can't find you.
 >
-> I'm building **Lompoc Deals** (lompoc-deals.vercel.app) — a free platform where Lompoc businesses post coupons, specials, and announcements that locals browse in one place. Think of it as a local deals feed built just for our community.
+> **Lompoc Deals** (lompoc-deals.vercel.app) is Lompoc's free local directory — the place locals go to discover restaurants, shops, services, and more, all in one place. Think of it as a mini Yelp, built just for the Flower Capital.
 >
-> It's **100% free** to list your business and post deals. No commission, no tricks.
+> Getting listed takes **5 minutes and costs nothing**. Your profile includes your hours, photos, contact info, and a link to your website. Once you're on, locals searching for [category] businesses in Lompoc will find you.
 >
-> Takes about 5 minutes to set up. I can even help you create your first deal if you'd like.
+> Bonus: you can also post deals and specials any time — free on the basic plan, no commission ever.
 >
-> Interested? Just reply to this email or sign up directly: [link]
+> Interested? Just reply or sign up directly: [link]
 >
 > Best,  
 > [Name]  
@@ -35,15 +36,15 @@
 
 > Hola [Nombre],
 >
-> Me comunico porque [Nombre del Negocio] es exactamente el tipo de negocio local que los residentes de Lompoc están buscando.
+> Me comunico porque [Nombre del Negocio] es exactamente el tipo de negocio local que los residentes de Lompoc están buscando — y hoy en día, muchos no lo pueden encontrar fácilmente.
 >
-> Estoy construyendo **Lompoc Deals** (lompoc-deals.vercel.app) — una plataforma gratuita donde los negocios de Lompoc publican cupones, especiales y anuncios que los residentes pueden ver en un solo lugar.
+> **Lompoc Deals** (lompoc-deals.vercel.app) es el directorio local gratuito de Lompoc — el lugar al que los residentes van para descubrir restaurantes, tiendas, servicios y más, todo en un solo lugar. Como un mini Yelp hecho para la Capital de las Flores.
 >
-> Es **100% gratis** listar su negocio y publicar ofertas. Sin comisiones ni contratos.
+> Aparecer en el directorio toma **5 minutos y no cuesta nada**. Su perfil incluye horarios, fotos, información de contacto y un enlace a su sitio web. Una vez publicado, los residentes que busquen negocios de [categoría] en Lompoc lo encontrarán.
 >
-> Toma solo 5 minutos configurar su perfil. Con gusto le ayudo a crear su primera oferta.
+> Además: puede publicar ofertas y especiales en cualquier momento — gratis en el plan básico, sin comisiones.
 >
-> ¿Le interesa? Simplemente responda a este correo o regístrese directamente: [link]
+> ¿Le interesa? Responda a este correo o regístrese directamente: [link]
 >
 > Saludos,  
 > [Nombre]  

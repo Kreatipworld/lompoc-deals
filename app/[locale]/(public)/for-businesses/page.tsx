@@ -14,15 +14,16 @@ import {
 import { getSiteStats } from "@/lib/queries"
 
 export const metadata = {
-  title: "List Your Lompoc Business Free — Reach Local Customers | Lompoc Deals",
+  title: "Get Your Lompoc Business Listed Free — Be Found by Locals | Lompoc Deals",
   description:
-    "Post coupons and deals to Lompoc locals for free — no commission, no credit card. 155+ businesses already listed. Start in 2 minutes.",
+    "List your Lompoc business in the local directory for free — photos, hours, deals, and more. 155+ businesses already discovered here by locals. No commission, no credit card.",
   keywords: [
     "list business lompoc",
     "lompoc business directory",
-    "post deals lompoc",
-    "lompoc small business marketing",
+    "lompoc business listing",
     "free business listing lompoc ca",
+    "lompoc small business marketing",
+    "get found lompoc",
   ],
 }
 
