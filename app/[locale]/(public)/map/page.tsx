@@ -5,7 +5,7 @@ import {
   Compass,
   Sparkles,
 } from "lucide-react"
-import { getMapBusinesses, getAllCategories } from "@/lib/queries"
+import { getMapBusinesses, getAllCategories, getMapActivities } from "@/lib/queries"
 import { LompocMapLoader } from "@/components/lompoc-map-loader"
 import { isOpenNow, parseHours } from "@/lib/hours"
 
@@ -20,9 +20,10 @@ export default async function MapPage({
 }: {
   searchParams: { cat?: string }
 }) {
-  const [allBusinesses, cats] = await Promise.all([
+  const [allBusinesses, cats, mapActivities] = await Promise.all([
     getMapBusinesses(),
     getAllCategories(),
+    getMapActivities(),
   ])
 
   const activeCat = searchParams.cat
@@ -261,7 +262,7 @@ export default async function MapPage({
           {/* Map */}
           <div className="overflow-hidden rounded-3xl border shadow-sm">
             <div className="h-[60vh] lg:h-[680px]">
-              <LompocMapLoader businesses={businesses} />
+              <LompocMapLoader businesses={businesses} activities={mapActivities} />
             </div>
           </div>
         </div>

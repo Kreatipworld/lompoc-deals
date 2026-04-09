@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import type { MapBusiness } from "@/lib/queries"
+import type { MapBusiness, MapActivity } from "@/lib/queries"
 
 const LompocMap = dynamic(
   () => import("@/components/lompoc-map").then((m) => m.LompocMap),
@@ -17,8 +17,10 @@ const LompocMap = dynamic(
 
 export function LompocMapLoader({
   businesses,
+  activities = [],
 }: {
   businesses: MapBusiness[]
+  activities?: MapActivity[]
 }) {
-  return <LompocMap businesses={businesses} />
+  return <LompocMap businesses={businesses} activities={activities} />
 }

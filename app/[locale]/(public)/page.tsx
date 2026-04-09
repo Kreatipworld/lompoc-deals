@@ -1,9 +1,9 @@
 import { Link } from "@/i18n/navigation"
 import {
   ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown,
-  Building2, ExternalLink
+  Building2, ExternalLink, Compass
 } from "lucide-react"
-import { getFeaturedBusinesses, getAllCategories, getSiteStats } from "@/lib/queries"
+import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities } from "@/lib/queries"
 import { SearchBar } from "@/components/search-bar"
 
 export const metadata = {
@@ -45,10 +45,11 @@ function getCategoryImage(slug: string): string | null {
 }
 
 export default async function HomePage() {
-  const [categories, featuredBusinesses, stats] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
+    getFeaturedActivities(6),
   ])
 
   return (
@@ -237,6 +238,94 @@ export default async function HomePage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* ─────────────────────────────────────────────────
+          THINGS TO DO — Featured activities
+         ───────────────────────────────────────────────── */}
+      {featuredActivities.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-14">
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <h2 className="font-display text-3xl font-bold tracking-tight">
+                Things to Do in Lompoc
+              </h2>
+              <p className="mt-1 text-muted-foreground">
+                Adventures, history, and hidden gems — all within reach
+              </p>
+            </div>
+            <Link
+              href="/activities"
+              className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
+            >
+              See all activities
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredActivities.map((activity, i) => (
+              <Link
+                key={activity.id}
+                href={`/activities/${activity.slug}`}
+                style={{ animationDelay: `${i * 70}ms` }}
+                className="group relative overflow-hidden rounded-2xl border bg-background shadow-sm animate-fade-up card-lift hover:shadow-lg hover:-translate-y-1"
+              >
+                <div className="relative aspect-[16/9] overflow-hidden bg-accent">
+                  {activity.imageUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={activity.imageUrl}
+                      alt={activity.title}
+                      className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  {activity.seasonality && (
+                    <div className="absolute right-3 top-3 rounded-full bg-black/50 px-2.5 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
+                      {activity.seasonality}
+                    </div>
+                  )}
+                </div>
+                <div className="p-4">
+                  <h3 className="font-display font-semibold leading-snug group-hover:text-primary transition-colors">
+                    {activity.title}
+                  </h3>
+                  {activity.description && (
+                    <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+                      {activity.description}
+                    </p>
+                  )}
+                  {activity.address && (
+                    <span className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
+                      <MapPin className="h-3 w-3 flex-shrink-0" />
+                      {activity.address.split(",")[0]}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-6 flex items-center justify-between">
+            <div className="sm:hidden">
+              <Link
+                href="/activities"
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+              >
+                See all activities
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <Link
+              href="/map"
+              className="ml-auto inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
+            >
+              <Compass className="h-4 w-4 text-primary" />
+              Explore the map
+            </Link>
           </div>
         </section>
       )}

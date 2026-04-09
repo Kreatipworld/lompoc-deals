@@ -279,6 +279,35 @@ export const dealEvents = pgTable("deal_events", {
     .defaultNow(),
 })
 
+// ---------- activities ----------
+export const activities = pgTable(
+  "activities",
+  {
+    id: serial("id").primaryKey(),
+    title: varchar("title", { length: 300 }).notNull(),
+    slug: varchar("slug", { length: 300 }).notNull(),
+    category: varchar("category", { length: 100 }).notNull(),
+    description: text("description"),
+    address: varchar("address", { length: 500 }),
+    lat: doublePrecision("lat"),
+    lng: doublePrecision("lng"),
+    imageUrl: varchar("image_url", { length: 1000 }),
+    tips: text("tips"),
+    seasonality: varchar("seasonality", { length: 200 }),
+    sourceUrl: varchar("source_url", { length: 1000 }),
+    featured: boolean("featured").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    slugIdx: uniqueIndex("activities_slug_idx").on(t.slug),
+  })
+)
+
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),

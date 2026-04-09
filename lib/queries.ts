@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories, favorites, propertyListings, events, dealEvents } from "@/db/schema"
+import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities } from "@/db/schema"
 
 export type DealCardData = {
   id: number
@@ -664,4 +664,134 @@ export async function getUpcomingEvents(
         ? { id: r.bizId, name: r.bizName, slug: r.bizSlug }
         : null,
   }))
+}
+
+// ─── Activities ───────────────────────────────────────────────────────────────
+
+export type ActivityData = {
+  id: number
+  title: string
+  slug: string
+  category: string
+  description: string | null
+  address: string | null
+  lat: number | null
+  lng: number | null
+  imageUrl: string | null
+  tips: string | null
+  seasonality: string | null
+  sourceUrl: string | null
+  featured: boolean
+}
+
+export async function getActivities(category?: string, limit = 50): Promise<ActivityData[]> {
+  const rows = await db
+    .select({
+      id: activities.id,
+      title: activities.title,
+      slug: activities.slug,
+      category: activities.category,
+      description: activities.description,
+      address: activities.address,
+      lat: activities.lat,
+      lng: activities.lng,
+      imageUrl: activities.imageUrl,
+      tips: activities.tips,
+      seasonality: activities.seasonality,
+      sourceUrl: activities.sourceUrl,
+      featured: activities.featured,
+    })
+    .from(activities)
+    .where(category ? eq(activities.category, category) : undefined)
+    .orderBy(desc(activities.featured), activities.title)
+    .limit(limit)
+  return rows
+}
+
+export async function getFeaturedActivities(limit = 6): Promise<ActivityData[]> {
+  const rows = await db
+    .select({
+      id: activities.id,
+      title: activities.title,
+      slug: activities.slug,
+      category: activities.category,
+      description: activities.description,
+      address: activities.address,
+      lat: activities.lat,
+      lng: activities.lng,
+      imageUrl: activities.imageUrl,
+      tips: activities.tips,
+      seasonality: activities.seasonality,
+      sourceUrl: activities.sourceUrl,
+      featured: activities.featured,
+    })
+    .from(activities)
+    .where(eq(activities.featured, true))
+    .orderBy(activities.title)
+    .limit(limit)
+  return rows
+}
+
+export async function getActivityBySlug(slug: string): Promise<ActivityData | null> {
+  const rows = await db
+    .select({
+      id: activities.id,
+      title: activities.title,
+      slug: activities.slug,
+      category: activities.category,
+      description: activities.description,
+      address: activities.address,
+      lat: activities.lat,
+      lng: activities.lng,
+      imageUrl: activities.imageUrl,
+      tips: activities.tips,
+      seasonality: activities.seasonality,
+      sourceUrl: activities.sourceUrl,
+      featured: activities.featured,
+    })
+    .from(activities)
+    .where(eq(activities.slug, slug))
+    .limit(1)
+  return rows[0] ?? null
+}
+
+export async function getActivityCategories(): Promise<string[]> {
+  const rows = await db
+    .selectDistinct({ category: activities.category })
+    .from(activities)
+    .orderBy(activities.category)
+  return rows.map((r) => r.category)
+}
+
+export type MapActivity = {
+  id: number
+  title: string
+  slug: string
+  lat: number
+  lng: number
+  category: string
+}
+
+export async function getMapActivities(): Promise<MapActivity[]> {
+  const rows = await db
+    .select({
+      id: activities.id,
+      title: activities.title,
+      slug: activities.slug,
+      lat: activities.lat,
+      lng: activities.lng,
+      category: activities.category,
+    })
+    .from(activities)
+    .where(sql`${activities.lat} is not null and ${activities.lng} is not null`)
+  return rows
+    .filter((r) => r.lat !== null && r.lng !== null)
+    .map((r) => ({
+      id: r.id,
+      title: r.title,
+      slug: r.slug,
+      lat: r.lat as number,
+      lng: r.lng as number,
+      category: r.category,
+    }))
 }
