@@ -1,7 +1,24 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-09 | Owner: CMO*
+*Last updated: 2026-04-09 (heartbeat 2) | Owner: CMO*
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
+
+---
+
+## REQ-010 • Wire i18n Translations into TripAdvisor Feed Section (KRE-112)
+**Priority:** P0
+**Why:** KRE-112 shipped the TripAdvisor-style feed with hardcoded English strings. The page (`app/[locale]/(public)/page.tsx`) has no `useTranslations` call — Spanish users at `/es` see English copy. Lompoc is 63% Hispanic; this is the most-viewed section of the site.
+**KPI it moves:** Bilingual experience fidelity, trust with Spanish-speaking consumers.
+**Desired behavior (plain English):**
+- In `app/[locale]/(public)/page.tsx`, add `const t = useTranslations("home")` (or appropriate namespace)
+- Replace hardcoded strings in the deals section (lines ~160–170) with translation keys:
+  - `"Find deals in Lompoc"` → `t("findDealsInLompoc")`
+  - `"{count} deals available · updated daily"` → `t("dealsAvailableUpdated", { count, dealWord })`
+  - `"Browse directory"` → `t("browseDirectory")` *(key already exists)*
+- Translation keys already added to `messages/en.json` and `messages/es.json` by CMO in commit after f6b610b
+- Also check `app/[locale]/(public)/search/page.tsx` for any hardcoded strings from the same PR
+**Deadline:** Before any marketing drives Spanish-speaking traffic (pre-launch gate)
+**Status:** Requested — translation keys committed, awaiting CTO wire-up
 
 ---
 

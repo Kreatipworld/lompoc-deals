@@ -42,7 +42,9 @@
     "ownABusiness": "¿Tienes un negocio en Lompoc?",
     "businessCta": "Publica tu negocio, ofrece cupones y llega a los locales que buscan apoyar a los comercios de su comunidad. Gratis para lo básico.",
     "listYourBusiness": "Publica tu negocio",
-    "weeklyDigest": "Resumen semanal"
+    "weeklyDigest": "Resumen semanal",
+    "findDealsInLompoc": "Encuentra ofertas en Lompoc",
+    "dealsAvailableUpdated": "{count} {dealWord} disponibles · actualizadas diariamente"
   },
   "auth": {
     "login": "Iniciar sesión",

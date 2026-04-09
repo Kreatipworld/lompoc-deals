@@ -42,7 +42,9 @@
     "ownABusiness": "Own a Lompoc business?",
     "businessCta": "List your business, post your own coupons, and reach locals actively looking to spend at home. Free forever for the basics.",
     "listYourBusiness": "List your business",
-    "weeklyDigest": "Weekly digest"
+    "weeklyDigest": "Weekly digest",
+    "findDealsInLompoc": "Find deals in Lompoc",
+    "dealsAvailableUpdated": "{count} {dealWord} available · updated daily"
   },
   "auth": {
     "login": "Sign in",
