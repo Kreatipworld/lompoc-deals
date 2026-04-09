@@ -1,8 +1,10 @@
 # Facebook Community Post Templates
-*Owner: CMO / Social & Community Manager | Last updated: 2026-04-07*
+*Owner: CMO / Social & Community Manager | Last updated: 2026-04-09 (directory-first pivot)*
 
 Post 2–3x per week in: Lompoc Happenings, Lompoc CA Community, Santa Ynez Valley groups.
 Always post in both EN and ES versions. Pin top comment with signup link.
+
+**Post mix (directory-first):** 1 Business Spotlight + 1 Deal Spotlight + 1 Weekly Roundup per week.
 
 ---
 
@@ -36,15 +38,39 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 
 ---
 
-## Template 2 — New Business Welcome (EN)
+## Template 2 — Business Spotlight / Directory Discovery (EN)
 
-> 👏 Welcome to Lompoc Deals — [Business Name]!
+*Use when: a business is newly listed, worth highlighting, or there's no active deal to feature. Works without a deal.*
+
+> 🗺️ **Did you know [Business Name] is in Lompoc?**
 >
-> [Business Name] just joined and they're offering: [deal headline]
+> [1–2 sentences about what they do / what makes them worth visiting — no deal required]
 >
-> Support local at lompoc-deals.vercel.app
+> 📍 [Address or neighborhood, e.g. "Old Town on H Street"]
+> 🕐 [Hours if known, e.g. "Open Tue–Sun 10am–6pm"]
 >
-> #NewOnLompocDeals #ShopLocal #Lompoc
+> They're listed on Lompoc Deals — Lompoc's free local business directory. Find their contact info, photos, and any current deals at 👉 lompoc-deals.vercel.app
+>
+> Know a local Lompoc business that should be listed? Drop it below 👇
+>
+> #LompocDeals #LompocBusiness #ShopLocal #Lompoc
+
+---
+
+## Template 2 — Business Spotlight / Directory Discovery (ES)
+
+> 🗺️ **¿Sabías que [Nombre del Negocio] está en Lompoc?**
+>
+> [1–2 oraciones sobre lo que ofrecen o por qué vale la pena visitarlos]
+>
+> 📍 [Dirección o vecindario]
+> 🕐 [Horarios si se conocen]
+>
+> Están en Lompoc Deals — el directorio gratuito de negocios locales de Lompoc. Encuentra su información, fotos y ofertas actuales en 👉 lompoc-deals.vercel.app
+>
+> ¿Conoces un negocio local de Lompoc que debería estar en el directorio? ¡Déjalo en los comentarios! 👇
+>
+> #LompocDeals #NegociosLompoc #CompraLocal #Lompoc
 
 ---
 
@@ -78,12 +104,14 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 
 ## Posting Schedule
 
-| Day | Content Type | Language | Group |
-|-----|-------------|----------|-------|
-| Monday | New business welcome | EN + ES | Lompoc Happenings |
-| Wednesday | Deal spotlight | EN | Lompoc CA Community |
-| Wednesday | Deal spotlight | ES | Lompoc Hispanic community groups |
-| Friday | Weekly roundup | EN + ES | All groups |
+| Day | Content Type | Template | Language | Group |
+|-----|-------------|----------|----------|-------|
+| Monday | Business Spotlight | Template 2 | EN + ES | Lompoc Happenings |
+| Wednesday | Deal Spotlight | Template 1 | EN | Lompoc CA Community |
+| Wednesday | Deal Spotlight | Template 1 | ES | Lompoc Hispanic community groups |
+| Friday | Weekly Roundup | Template 3 | EN + ES | All groups |
+
+*If no new deals to feature on Wednesday, substitute a second Business Spotlight (Template 2) to keep posting rhythm without going silent.*
 
 ---
 
