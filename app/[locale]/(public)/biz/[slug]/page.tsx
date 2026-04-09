@@ -29,9 +29,16 @@ export async function generateMetadata({
 }) {
   const data = await getBusinessBySlug(params.slug)
   if (!data) return { title: "Business not found — Lompoc Deals" }
+  const { name, description } = data.business
+  const catLabel = data.category?.name ?? "local business"
+  const fallbackDescription = `Browse current deals and coupons from ${name}, a ${catLabel} in Lompoc, CA. Free to claim — updated directly by the business.`
   return {
-    title: `${data.business.name} — Lompoc Deals`,
-    description: data.business.description ?? undefined,
+    title: `${name} — Deals & Coupons in Lompoc, CA | Lompoc Deals`,
+    description: description ?? fallbackDescription,
+    openGraph: {
+      title: `${name} | Lompoc Deals`,
+      description: description ?? `Current deals from ${name} in Lompoc, CA. Free to claim.`,
+    },
   }
 }
 

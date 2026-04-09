@@ -44,11 +44,12 @@ export async function generateMetadata({
   const cat = await db.query.categories.findFirst({
     where: (c, { eq }) => eq(c.slug, params.slug),
   })
+  if (!cat) return { title: "Category — Lompoc Deals" }
+  const catLower = cat.name.toLowerCase()
   return {
-    title: cat ? `${cat.name} — Lompoc Deals` : "Category — Lompoc Deals",
-    description: cat
-      ? `Browse all ${cat.name.toLowerCase()} coupons and specials from Lompoc, California businesses.`
-      : undefined,
+    title: `Lompoc ${cat.name} Deals & Coupons — Local Discounts | Lompoc Deals`,
+    description: `Browse current ${catLower} deals and coupons from Lompoc, CA businesses. Free to claim, updated daily — no credit card needed.`,
+    keywords: [`lompoc ${catLower} deals`, `lompoc ${catLower} coupons`, `lompoc ${catLower}`, "lompoc ca deals"],
   }
 }
 
