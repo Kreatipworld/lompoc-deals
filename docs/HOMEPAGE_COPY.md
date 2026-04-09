@@ -1,6 +1,6 @@
 # Homepage Copy — Lompoc Deals
-*Owner: CMO | Version: 1.0 | Date: 2026-04-08*
-*Status: Draft — 3 headline variants + 2 CTA variants per section. Ready for Design Pod Step 3.*
+*Owner: CMO | Version: 1.1 | Date: 2026-04-09 | Updated: directory-first pivot (KRE-117)*
+*Status: Updated — hero rewritten for directory-first. Remaining sections TBD.*
 
 ---
 
@@ -34,37 +34,39 @@ Each section lists:
 
 ### Headline Variants
 
-**A (Primary):** "Lompoc's Best Deals — All in One Place"  
-**[ES]:** "Las Mejores Ofertas de Lompoc — En Un Solo Lugar"
+**A (Primary):** "Explore Lompoc, your way."  
+**[ES]:** "Explora Lompoc, a tu manera."
 
-**B:** "Save Money at Your Favorite Lompoc Spots"  
-**[ES]:** "Ahorra en Tus Lugares Favoritos de Lompoc"
+**B:** "Lompoc's local business directory — restaurants, shops, services & more"  
+**[ES]:** "El directorio local de negocios de Lompoc — restaurantes, tiendas, servicios y más"
 
-**C:** "Real Deals. Real Lompoc. Right Now."  
-**[ES]:** "Ofertas Reales. Lompoc de Verdad. Ahora Mismo."
+**C:** "Discover Lompoc. Support local."  
+**[ES]:** "Descubre Lompoc. Apoya lo local."
+
+*Note: A is live on site as of 2026-04-09 (KRE-117 pivot). B and C are A/B test candidates.*
 
 ### Subheadline
 
-**A (Primary):** "Discover coupons and specials from restaurants, salons, shops, and more — all local, all free to browse."  
-**[ES]:** "Descubre cupones y ofertas especiales de restaurantes, salones, tiendas y más — todo local, todo gratis."
+**A (Primary):** "Discover local restaurants, shops, services, and more — all in one place."  
+**[ES]:** "Descubre restaurantes, tiendas, servicios y más — todo en un solo lugar."
 
-**B:** "Updated daily with deals from Old Town, H Street, Vandenberg Village, and everywhere in between."  
-**[ES]:** "Actualizado diariamente con ofertas del Old Town, H Street, Vandenberg Village y todo Lompoc."
+**B:** "Browse Lompoc's local businesses by category. Find deals, hours, and contact info — free."  
+**[ES]:** "Explora los negocios locales de Lompoc por categoría. Encuentra ofertas, horarios e información de contacto — gratis."
 
 ### Primary CTA Variants
 
-**A:** See Today's Deals / Ver Ofertas de Hoy  
-**B:** Browse Free Deals / Ver Ofertas Gratis
+**A:** Browse the directory / Explorar el directorio  
+**B:** Explore Lompoc / Explorar Lompoc
 
 ### Secondary CTA Variants
 
-**A:** List Your Business Free / Publica Tu Negocio Gratis  
-**B:** Add Your Business / Agrega Tu Negocio
+**A:** List Your Business Free / Publicar Tu Negocio Gratis  
+**B:** See deals / Ver ofertas
 
 ### Trust Strip (below CTAs)
 
 "155+ local businesses · Free to browse · Updated daily"  
-**[ES]:** "155+ negocios locales · Gratis para explorar · Actualizado diario"
+**[ES]:** "155+ negocios locales · Gratis para explorar · Actualizado diariamente"
 
 ### Hero Image
 
