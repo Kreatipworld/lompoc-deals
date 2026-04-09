@@ -360,6 +360,28 @@ export async function getAllCategories() {
   })
 }
 
+export type CategoryWithDeals = {
+  id: number
+  name: string
+  slug: string
+  icon: string | null
+  deals: DealCardData[]
+}
+
+export async function getDealsGroupedByCategory(
+  perCategory = 6
+): Promise<CategoryWithDeals[]> {
+  const cats = await getAllCategories()
+  const results = await Promise.all(
+    cats.map(async (cat) => {
+      const catDeals = await getDealsByCategorySlug(cat.slug, perCategory)
+      return { ...cat, deals: catDeals }
+    })
+  )
+  // Only return categories that have at least one active deal
+  return results.filter((c) => c.deals.length > 0)
+}
+
 export type WineryBusiness = {
   id: number
   name: string
