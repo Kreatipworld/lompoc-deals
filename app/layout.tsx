@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: "Lompoc Deals",
     locale: "en_US",
     type: "website",
-    images: [{ url: "/lompoc-flowers-4.jpg", width: 1200, height: 630, alt: "Lompoc, California flower fields" }],
+    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
   },
   twitter: {
     card: "summary_large_image",

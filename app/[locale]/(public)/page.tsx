@@ -23,7 +23,7 @@ export const metadata = {
     title: "Lompoc Deals — Local Coupons & Things To Do",
     description:
       "Browse 155+ deals from Lompoc, CA businesses — restaurants, salons, services, and more. Free to claim.",
-    images: [{ url: "/lompoc-flowers-4.jpg", width: 1200, height: 630, alt: "Lompoc, California — flower fields" }],
+    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
   },
 }
 

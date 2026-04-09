@@ -44,7 +44,13 @@
     "listYourBusiness": "Publica tu negocio",
     "weeklyDigest": "Resumen semanal",
     "findDealsInLompoc": "Encuentra ofertas en Lompoc",
-    "dealsAvailableUpdated": "{count} {dealWord} disponibles · actualizadas diariamente"
+    "dealsAvailableUpdated": "{count} {dealWord} disponibles · actualizadas diariamente",
+    "seeAll": "Ver todas",
+    "dealsAvailable": "{count} {dealWord} disponibles",
+    "noDealsActive": "Sin ofertas activas por ahora — ¡vuelve pronto!",
+    "activeDeals": "{count} ofertas activas",
+    "localBusinesses": "{count} negocios locales",
+    "updatedDaily": "Actualizado diariamente"
   },
   "auth": {
     "login": "Iniciar sesión",

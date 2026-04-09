@@ -44,7 +44,13 @@
     "listYourBusiness": "List your business",
     "weeklyDigest": "Weekly digest",
     "findDealsInLompoc": "Find deals in Lompoc",
-    "dealsAvailableUpdated": "{count} {dealWord} available · updated daily"
+    "dealsAvailableUpdated": "{count} {dealWord} available · updated daily",
+    "seeAll": "See all",
+    "dealsAvailable": "{count} {dealWord} available",
+    "noDealsActive": "No active deals right now — check back soon!",
+    "activeDeals": "{count} active deals",
+    "localBusinesses": "{count} local businesses",
+    "updatedDaily": "Updated daily"
   },
   "auth": {
     "login": "Sign in",
