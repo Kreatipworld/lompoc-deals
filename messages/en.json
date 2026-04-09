@@ -48,9 +48,46 @@
     "seeAll": "See all",
     "dealsAvailable": "{count} {dealWord} available",
     "noDealsActive": "No active deals right now — check back soon!",
-    "activeDeals": "{count} active deals",
-    "localBusinesses": "{count} local businesses",
-    "updatedDaily": "Updated daily"
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Connecting Lompoc locals with businesses since day one.",
+      "step1Title": "Browse local deals",
+      "step1Body": "Find coupons and specials from restaurants, shops, salons, and more — all in one place, all in Lompoc.",
+      "step2Title": "Claim your deal",
+      "step2Body": "Tap Claim, show your phone at the register, and save. No printing, no apps to download.",
+      "step3Title": "Support local",
+      "step3Body": "Every deal claimed is a sale made in Lompoc. Keep your dollars here."
+    },
+    "testimonials": {
+      "title": "What Lompoc Says",
+      "subtitle": "Real people. Real savings. Real Lompoc.",
+      "placeholder": "Placeholder quotes — real testimonials coming soon.",
+      "quote1": "I found a deal for my favorite spot on H Street — saved $12 on my first visit. Now I check every week.",
+      "name1": "Maria R.",
+      "neighborhood1": "Old Town",
+      "quote2": "As a veteran at Vandenberg, this is the easiest way to find what's close by without driving to Santa Maria.",
+      "name2": "James T.",
+      "neighborhood2": "Vandenberg Village",
+      "quote3": "Tres meses usándolo — ya ahorré más de $80. Se lo recomiendo a toda mi familia.",
+      "name3": "Ana L.",
+      "neighborhood3": "Mission Hills"
+    },
+    "faq": {
+      "title": "Questions?",
+      "subtitle": "Everything you need to know about Lompoc Deals.",
+      "q1": "Is Lompoc Deals free to use?",
+      "a1": "Yes, completely. Browsing deals and claiming them is always free for Lompoc residents. No account required to browse.",
+      "q2": "How do I claim a deal?",
+      "a2": "Click \"Claim Deal\" on any offer. If it requires an account, sign up in 30 seconds — just your email. Then show your phone at the business.",
+      "q3": "How do businesses post deals?",
+      "a3": "Sign up as a business (free), create your profile, and post your first deal in under 5 minutes. The free plan includes 3 active deals.",
+      "q4": "What does it cost to list my business?",
+      "a4": "Our Free plan is $0 forever — 3 deals, basic profile. Standard is $19.99/month for unlimited deals and priority placement.",
+      "q5": "Is this only for Lompoc?",
+      "a5": "For now, yes. We're 100% focused on Lompoc. That's what makes it work — every deal is from someone local, for someone local.",
+      "q6": "How do I get the weekly deals email?",
+      "a6": "Create a free account and subscribe to the weekly digest. Every Tuesday morning, the top 5 deals go straight to your inbox."
+    }
   },
   "auth": {
     "login": "Sign in",

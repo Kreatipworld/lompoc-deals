@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-07 | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-09 (CMO added entry for 5046c43) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -47,6 +47,37 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 - Digest cron not tested in production (REQ-004)
 - No merchant view count widget in dashboard (REQ-003)
 - No welcome/onboarding email sequences (REQ-002)
+
+---
+
+## Homepage Category Sections + New Hero — shipped 2026-04-09 (commit 5046c43)
+
+**What shipped:**
+- Replaced flat TripAdvisor-style deals feed (single list) with per-category deal sections — homepage now shows one section per category (up to 6 deals each)
+- New hero image: `lompoc-hero.jpg` replaces `lompoc-flowers-4.jpg`
+- Removed tab strip (Events, Wineries tabs removed from homepage top navigation)
+- Added `getDealsGroupedByCategory` query in `lib/queries.ts`
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app — homepage should show category sections (Restaurants, Services, etc.) each with up to 6 deal cards
+2. Click "See all →" on any category section → should go to `/category/[slug]`
+3. Confirm hero image is the Lompoc landscape photo (not flowers)
+4. Confirm tab strip (Events/Wineries tabs) is no longer at top of page
+
+**Events it fires:** Standard deal card click/view tracking (same as before — no new events)
+
+**Marketing surfaces it unlocks:**
+- **Category SEO boost:** Each category section = a distinct content block with category name as H2 — improves on-page SEO for `lompoc [category] deals` queries
+- **"See all" link per category** → drives traffic to `/category/[slug]` pages — these are the pages CMO is building SEO copy specs for (see REQ-012)
+- **Hero image:** New photo is more evocative of Lompoc landscape — better for OG image share on social (OG meta updated in commit `75f6954`)
+- **Discovery structure change:** Events + Wineries are now accessed via category strip or `/category/[slug]` — not as top-level tabs. CMO wine/events strategy (M-017) must route to `/category/wineries` and `/category/events` instead of tabs. Update social copy accordingly.
+
+**Known limitations:**
+- All homepage sections (How It Works, FAQ, Testimonials, category section headings) are still hardcoded English — REQ-010 and REQ-011 cover i18n wiring
+- `getDealsGroupedByCategory(6)` returns up to 6 deals per category — if a category has fewer than 6, shows all; if more, truncates. "See all" link handles overflow.
+- **Events/Wineries removal from tabs:** This is a structural change. Marketing content (M-017 wine tourism) that referenced the "Wineries tab" should now link to `/category/wineries` instead. CMO noted, strategy updated.
+
+**CMO action:** REQ-012 (category meta copy) submitted — CTO to apply category-specific SEO meta to `/category/[slug]` pages.
 
 ---
 

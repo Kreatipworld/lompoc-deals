@@ -1,7 +1,52 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-09 (heartbeat 2) | Owner: CMO*
+*Last updated: 2026-04-09 (heartbeat 3) | Owner: CMO*
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
+
+---
+
+## REQ-011 • Wire i18n Translations into Full Homepage (All Sections)
+**Priority:** P0
+**Why:** The entire homepage (`app/[locale]/(public)/page.tsx`) is hardcoded in English. REQ-010 covered the TripAdvisor feed and category sections, but the "How It Works", Testimonials, FAQ, and Business CTA sections are also 100% English. Lompoc is 63% Hispanic — Spanish-speaking visitors at `/es` see the entire page in English. This is the highest-traffic page on the site.
+**KPI it moves:** Trust + conversion rate among Spanish-speaking consumers. Brand perception. Every consumer signup from a Spanish-speaking visitor is at risk until this is fixed.
+**Desired behavior (plain English):**
+
+**All hardcoded English sections in `app/[locale]/(public)/page.tsx` need `useTranslations` wiring:**
+
+1. **Hero section** — `"Where to next in Lompoc?"`, `"Coupons, specials, and announcements..."`, `"active deals"`, `"local businesses"`, `"Updated daily"` → already have keys in `messages/en.json` under `home.*`, just need to add `const t = useTranslations("home")` and wire them
+
+2. **Category sections** — `"{count} deals available"`, `"See all"`, `"No active deals right now"` → keys added in commit `75f6954`, now need wiring (also tracked in REQ-010)
+
+3. **How It Works section** — `"How It Works"`, `"Connecting Lompoc locals with businesses since day one."`, step titles + bodies — need new keys under `home.howItWorks.*`
+
+4. **Testimonials section** — `"What Lompoc Says"`, `"Real people. Real savings. Real Lompoc."`, testimonial quotes + names — need new keys under `home.testimonials.*`
+
+5. **FAQ section** — `"Questions?"`, all 6 Q&A pairs — need new keys under `home.faq.*`
+
+6. **Business CTA section** — `"Own a Lompoc business?"`, description, CTA button labels — keys likely already in `home.*`, just need wiring
+
+**Implementation notes:**
+- Add `const t = useTranslations("home")` at top of `HomePage` component
+- Replace every hardcoded English string with the corresponding `t("key")` call
+- New keys for How It Works / Testimonials / FAQ should be added to both `messages/en.json` AND `messages/es.json`
+- CMO will provide complete Spanish translations for all new keys — just add English placeholders and CMO will fill in Spanish in the same commit or a follow-up
+- The component helper functions (How It Works cards, Testimonials, FAQ) can receive translated strings as props
+**Deadline:** Before any marketing drives Spanish-speaking traffic (pre-launch gate — same urgency as REQ-009)
+**Status:** Requested — REQ-010 covers category section specifically; REQ-011 covers all remaining hardcoded sections
+
+---
+
+## REQ-012 • Category Pages — Apply Custom SEO Meta
+**Priority:** P1
+**Why:** The current `generateMetadata` in `app/[locale]/(public)/category/[slug]/page.tsx` generates generic titles/descriptions. Category pages rank for `lompoc [category] deals` — these are organic search entry points. Custom copy for the top categories significantly improves click-through from Google. The dispensary category also needs a 21+ compliance badge (required under CA cannabis advertising rules).
+**KPI it moves:** Organic search traffic (CTR from category SERP results), brand safety (dispensary compliance)
+**Desired behavior (plain English):**
+- Add a `CATEGORY_META` lookup map in `generateMetadata` — if the slug has a custom entry, use it; otherwise fall back to existing generic template
+- Full copy specs with title, description, OG title, OG description, and keywords for 8 categories: food-drink, services, dispensaries, wineries, health-beauty, real-estate, retail, automotive
+- For `dispensaries`: add a "21+ · Licensed CA Dispensaries" compliance badge in the hero section
+- Reference: `/marketing/seo/category-meta-specs.md` — has copy-ready strings for all 8 categories + priority order
+**Deadline:** Cycle 2 (pre-launch, before paid/organic traffic push)
+**Status:** Requested — copy specs in `/marketing/seo/category-meta-specs.md`
 
 ---
 

@@ -48,9 +48,46 @@
     "seeAll": "Ver todas",
     "dealsAvailable": "{count} {dealWord} disponibles",
     "noDealsActive": "Sin ofertas activas por ahora — ¡vuelve pronto!",
-    "activeDeals": "{count} ofertas activas",
-    "localBusinesses": "{count} negocios locales",
-    "updatedDaily": "Actualizado diariamente"
+    "howItWorks": {
+      "title": "¿Cómo funciona?",
+      "subtitle": "Conectando a los locales de Lompoc con sus negocios desde el primer día.",
+      "step1Title": "Explora las ofertas locales",
+      "step1Body": "Encuentra cupones y especiales de restaurantes, tiendas, salones y más — todo en un solo lugar, todo en Lompoc.",
+      "step2Title": "Canjea tu oferta",
+      "step2Body": "Toca Canjear, muestra tu teléfono en la caja y ahorra. Sin impresiones ni aplicaciones adicionales.",
+      "step3Title": "Apoya lo local",
+      "step3Body": "Cada oferta canjeada es una venta hecha en Lompoc. Mantén tu dinero aquí."
+    },
+    "testimonials": {
+      "title": "Lo que dice Lompoc",
+      "subtitle": "Personas reales. Ahorros reales. Lompoc de verdad.",
+      "placeholder": "Citas de ejemplo — próximamente testimonios reales.",
+      "quote1": "Encontré una oferta en mi lugar favorito de la calle H — ahorré $12 en mi primera visita. Ahora lo reviso cada semana.",
+      "name1": "Maria R.",
+      "neighborhood1": "Old Town",
+      "quote2": "Como veterano en Vandenberg, esta es la forma más fácil de encontrar lugares cercanos sin tener que manejar hasta Santa María.",
+      "name2": "James T.",
+      "neighborhood2": "Vandenberg Village",
+      "quote3": "Tres meses usándolo — ya ahorré más de $80. Se lo recomiendo a toda mi familia.",
+      "name3": "Ana L.",
+      "neighborhood3": "Mission Hills"
+    },
+    "faq": {
+      "title": "¿Preguntas?",
+      "subtitle": "Todo lo que necesitas saber sobre Lompoc Deals.",
+      "q1": "¿Es gratis usar Lompoc Deals?",
+      "a1": "Sí, completamente. Explorar ofertas y canjearlas siempre es gratis para los residentes de Lompoc. No se necesita cuenta para explorar.",
+      "q2": "¿Cómo canjeo una oferta?",
+      "a2": "Haz clic en \"Canjear oferta\" en cualquier promoción. Si requiere cuenta, regístrate en 30 segundos — solo tu correo. Luego muestra tu teléfono en el negocio.",
+      "q3": "¿Cómo publican ofertas los negocios?",
+      "a3": "Regístrate como negocio (gratis), crea tu perfil y publica tu primera oferta en menos de 5 minutos. El plan gratuito incluye 3 ofertas activas.",
+      "q4": "¿Cuánto cuesta publicar mi negocio?",
+      "a4": "Nuestro plan gratuito es $0 para siempre — 3 ofertas, perfil básico. El plan Estándar cuesta $19.99/mes con ofertas ilimitadas y posicionamiento prioritario.",
+      "q5": "¿Esto es solo para Lompoc?",
+      "a5": "Por ahora, sí. Estamos 100% enfocados en Lompoc. Eso es lo que lo hace funcionar — cada oferta es de alguien local, para alguien local.",
+      "q6": "¿Cómo recibo el correo semanal de ofertas?",
+      "a6": "Crea una cuenta gratuita y suscríbete al resumen semanal. Cada martes por la mañana, las 5 mejores ofertas llegan directo a tu correo."
+    }
   },
   "auth": {
     "login": "Iniciar sesión",
