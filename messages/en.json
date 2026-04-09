@@ -27,9 +27,13 @@
   },
   "home": {
     "location": "Lompoc, California",
-    "headline": "Where to next in Lompoc?",
-    "headlineHighlight": "in Lompoc?",
-    "subheadline": "Coupons, specials, and announcements from the local businesses you already love.",
+    "headline": "Explore Lompoc,",
+    "headlineHighlight": "your way.",
+    "subheadline": "Discover local businesses, deals, and things to do — all in one place.",
+    "directorySubheadline": "Browse Lompoc by category — restaurants, shops, services, and more.",
+    "exploreCategories": "Explore by category",
+    "popularInLompoc": "Popular in Lompoc",
+    "seeAllCategory": "See all {category}",
     "activeDeals": "{count} active deals",
     "localBusinesses": "{count} local businesses",
     "updatedDaily": "Updated daily",
@@ -48,6 +52,36 @@
     "seeAll": "See all",
     "dealsAvailable": "{count} {dealWord} available",
     "noDealsActive": "No active deals right now — check back soon!",
+    "categories": {
+      "food-drink": {
+        "tagline": "Dine local, taste Lompoc",
+        "description": "Restaurants, cafes, wine bars, and eateries serving up real Lompoc flavor — from H Street tacos to Sta. Rita Hills wine."
+      },
+      "retail": {
+        "tagline": "Shop small, shop local",
+        "description": "Boutiques, gift shops, and local stores — find one-of-a-kind items you won't see at the mall."
+      },
+      "services": {
+        "tagline": "Trusted local experts",
+        "description": "From plumbing to printing, Lompoc's service professionals are right around the corner — reliable, local, and ready."
+      },
+      "health-beauty": {
+        "tagline": "Look good, feel great",
+        "description": "Salons, spas, barbershops, and wellness studios — Lompoc's best self-care destinations in one place."
+      },
+      "auto": {
+        "tagline": "Keep your ride road-ready",
+        "description": "Trusted mechanics, detailers, and auto parts shops serving Lompoc drivers — honest work, local prices."
+      },
+      "entertainment": {
+        "tagline": "Fun happens right here",
+        "description": "Things to do, places to go, events to catch — Lompoc's entertainment scene, all in one spot."
+      },
+      "other": {
+        "tagline": "Discover something unique",
+        "description": "Lompoc businesses that defy easy categories — unique, local, and worth discovering."
+      }
+    },
     "howItWorks": {
       "title": "How It Works",
       "subtitle": "Connecting Lompoc locals with businesses since day one.",
@@ -88,6 +122,15 @@
       "q6": "How do I get the weekly deals email?",
       "a6": "Create a free account and subscribe to the weekly digest. Every Tuesday morning, the top 5 deals go straight to your inbox."
     }
+  },
+  "meta": {
+    "homeTitle": "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
+    "homeDescription": "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more. Browse by category, discover deals, and support local.",
+    "homeOgTitle": "Lompoc Local Directory — Businesses, Deals & Things To Do",
+    "homeOgDescription": "Discover Lompoc, CA by category — restaurants, boutiques, services, health & beauty, and more. All local, all free to browse.",
+    "categoryTitle": "Lompoc {category} — Local Businesses & Deals | Lompoc Deals",
+    "categoryDescription": "Browse {category} businesses and deals in Lompoc, CA. Find local {categoryLower} shops, services, and coupons — updated daily.",
+    "siteKeywords": "lompoc local directory, lompoc businesses, things to do in lompoc, lompoc ca, lompoc deals, directorio lompoc"
   },
   "auth": {
     "login": "Sign in",

@@ -8,22 +8,26 @@ import { SearchBar } from "@/components/search-bar"
 import { WeatherWidget } from "@/components/weather-widget"
 
 export const metadata = {
-  title: "Lompoc Deals — Find Local Coupons, Deals & Things To Do in Lompoc, CA",
+  title: "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
   description:
-    "Browse 155+ local business deals in Lompoc, CA — restaurants, salons, services, and more. Free to claim, updated daily. Ofertas locales en Lompoc, CA.",
+    "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more. Browse by category, discover deals, and support local. Directorio local de negocios en Lompoc, CA.",
   keywords: [
-    "lompoc deals",
-    "lompoc coupons",
+    "lompoc local directory",
+    "lompoc businesses",
     "things to do in lompoc",
-    "lompoc local businesses",
-    "ofertas en lompoc",
+    "lompoc restaurants",
+    "lompoc shops",
+    "lompoc services",
+    "lompoc deals",
+    "directorio lompoc",
+    "negocios lompoc",
     "lompoc ca",
   ],
   openGraph: {
-    title: "Lompoc Deals — Local Coupons & Things To Do",
+    title: "Lompoc Local Directory — Businesses, Deals & Things To Do",
     description:
-      "Browse 155+ deals from Lompoc, CA businesses — restaurants, salons, services, and more. Free to claim.",
-    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
+      "Discover Lompoc, CA by category — restaurants, boutiques, services, health & beauty, and more. All local, all free to browse.",
+    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California — local business directory" }],
   },
 }
 

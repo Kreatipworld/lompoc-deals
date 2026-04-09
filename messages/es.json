@@ -27,9 +27,13 @@
   },
   "home": {
     "location": "Lompoc, California",
-    "headline": "¿A dónde ir en Lompoc?",
-    "headlineHighlight": "en Lompoc?",
-    "subheadline": "Cupones, especiales y anuncios de los negocios locales que ya conoces.",
+    "headline": "Explora Lompoc,",
+    "headlineHighlight": "a tu manera.",
+    "subheadline": "Descubre negocios locales, ofertas y qué hacer — todo en un solo lugar.",
+    "directorySubheadline": "Explora Lompoc por categoría — restaurantes, tiendas, servicios y más.",
+    "exploreCategories": "Explorar por categoría",
+    "popularInLompoc": "Popular en Lompoc",
+    "seeAllCategory": "Ver todo en {category}",
     "activeDeals": "{count} ofertas activas",
     "localBusinesses": "{count} negocios locales",
     "updatedDaily": "Actualizado diariamente",
@@ -48,6 +52,36 @@
     "seeAll": "Ver todas",
     "dealsAvailable": "{count} {dealWord} disponibles",
     "noDealsActive": "Sin ofertas activas por ahora — ¡vuelve pronto!",
+    "categories": {
+      "food-drink": {
+        "tagline": "Come local, saborea Lompoc",
+        "description": "Restaurantes, cafés, bares de vino y más — sabores auténticos de Lompoc, desde tacos en la calle H hasta vinos de Sta. Rita Hills."
+      },
+      "retail": {
+        "tagline": "Compra pequeño, compra local",
+        "description": "Boutiques, tiendas de regalos y locales únicos — encuentra algo especial que no encontrarás en ningún centro comercial."
+      },
+      "services": {
+        "tagline": "Expertos locales de confianza",
+        "description": "De plomería a imprenta, los profesionales de servicios de Lompoc están a la vuelta de la esquina — confiables, locales y listos."
+      },
+      "health-beauty": {
+        "tagline": "Luce bien, siéntete genial",
+        "description": "Salones, spas, barberías y centros de bienestar — los mejores destinos de autocuidado de Lompoc en un solo lugar."
+      },
+      "auto": {
+        "tagline": "Tu vehículo, siempre listo",
+        "description": "Mecánicos de confianza, detalladores y tiendas de autopartes que sirven a los conductores de Lompoc — trabajo honesto, precios locales."
+      },
+      "entertainment": {
+        "tagline": "La diversión está aquí",
+        "description": "Qué hacer, a dónde ir, eventos que no te puedes perder — la escena de entretenimiento de Lompoc, toda en un lugar."
+      },
+      "other": {
+        "tagline": "Descubre algo único",
+        "description": "Negocios de Lompoc que no encajan en ninguna categoría — únicos, locales y que vale la pena descubrir."
+      }
+    },
     "howItWorks": {
       "title": "¿Cómo funciona?",
       "subtitle": "Conectando a los locales de Lompoc con sus negocios desde el primer día.",
@@ -88,6 +122,15 @@
       "q6": "¿Cómo recibo el correo semanal de ofertas?",
       "a6": "Crea una cuenta gratuita y suscríbete al resumen semanal. Cada martes por la mañana, las 5 mejores ofertas llegan directo a tu correo."
     }
+  },
+  "meta": {
+    "homeTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer en Lompoc, CA",
+    "homeDescription": "Explora el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
+    "homeOgTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer",
+    "homeOgDescription": "Descubre Lompoc, CA por categoría — restaurantes, boutiques, servicios, salud y belleza, y más. Todo local, todo gratis para explorar.",
+    "categoryTitle": "Lompoc {category} — Negocios y Ofertas Locales | Lompoc Deals",
+    "categoryDescription": "Explora negocios y ofertas de {category} en Lompoc, CA. Encuentra tiendas, servicios y cupones locales de {categoryLower} — actualizados diariamente.",
+    "siteKeywords": "directorio local lompoc, negocios lompoc, qué hacer en lompoc, lompoc ca, ofertas lompoc, lompoc deals"
   },
   "auth": {
     "login": "Iniciar sesión",

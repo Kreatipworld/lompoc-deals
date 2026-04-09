@@ -9,6 +9,7 @@ const nextConfig = {
       { protocol: "https", hostname: "img.evbuc.com" },
       { protocol: "https", hostname: "**.evbdn.com" },
       { protocol: "https", hostname: "**.eventbrite.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
 }
