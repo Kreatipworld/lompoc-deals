@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-import { Home, Map, Search, LayoutGrid, User, Tag } from "lucide-react"
+import { Home, Search, LayoutGrid, User, Tag } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [

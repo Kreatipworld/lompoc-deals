@@ -179,6 +179,7 @@ export default async function HomePage() {
                   {/* Logo / placeholder */}
                   <div className="flex-shrink-0">
                     {biz.logoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={biz.logoUrl}
                         alt={biz.name}
