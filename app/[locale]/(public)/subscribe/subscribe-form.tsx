@@ -34,10 +34,14 @@ export function SubscribeForm() {
       </div>
 
       {state?.error && (
-        <p className="text-sm text-destructive">{state.error}</p>
+        <p className="form-message-enter rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {state.error}
+        </p>
       )}
       {state?.success && (
-        <p className="text-sm text-green-600">{state.success}</p>
+        <p className="form-message-enter rounded-lg bg-success-muted px-3 py-2 text-sm text-success">
+          {state.success}
+        </p>
       )}
 
       <SubmitButton />

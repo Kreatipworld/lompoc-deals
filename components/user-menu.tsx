@@ -21,7 +21,7 @@ export async function UserMenu() {
       <summary className="cursor-pointer list-none rounded-md border px-3 py-1 text-sm hover:bg-accent">
         {email}
       </summary>
-      <div className="absolute right-0 z-50 mt-1 w-56 rounded-md border bg-background py-1 shadow-lg">
+      <div className="user-menu-dropdown absolute right-0 z-50 mt-1 w-56 rounded-md border bg-background py-1 shadow-lg">
         <div className="px-3 py-1.5 text-xs text-muted-foreground">
           {email} · {role}
         </div>
