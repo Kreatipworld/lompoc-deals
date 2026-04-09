@@ -10,9 +10,23 @@ import { EventsSection } from "@/components/events-section"
 import { WineriesSection } from "@/components/wineries-section"
 
 export const metadata = {
-  title: "Lompoc Deals — local coupons, specials, and announcements",
+  title: "Lompoc Deals — Find Local Coupons, Deals & Things To Do in Lompoc, CA",
   description:
-    "The latest deals from Lompoc, California businesses. Updated daily.",
+    "Browse 155+ local business deals in Lompoc, CA — restaurants, salons, services, and more. Free to claim, updated daily. Ofertas locales en Lompoc, CA.",
+  keywords: [
+    "lompoc deals",
+    "lompoc coupons",
+    "things to do in lompoc",
+    "lompoc local businesses",
+    "ofertas en lompoc",
+    "lompoc ca",
+  ],
+  openGraph: {
+    title: "Lompoc Deals — Local Coupons & Things To Do",
+    description:
+      "Browse 155+ deals from Lompoc, CA businesses — restaurants, salons, services, and more. Free to claim.",
+    images: [{ url: "/lompoc-flowers-4.jpg", width: 1200, height: 630, alt: "Lompoc, California — flower fields" }],
+  },
 }
 
 export default async function HomePage({
