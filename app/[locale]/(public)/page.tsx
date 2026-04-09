@@ -1,7 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import {
   ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown,
-  Utensils, ShoppingBag, Wrench, Car, Ticket, Home, Wine, Leaf, MoreHorizontal,
   Building2, ExternalLink
 } from "lucide-react"
 import { getFeaturedBusinesses, getAllCategories, getSiteStats } from "@/lib/queries"
@@ -27,21 +26,22 @@ export const metadata = {
   },
 }
 
-// Category gradient + icon mapping by slug
-const CATEGORY_STYLES: Record<string, { gradient: string; Icon: React.ElementType }> = {
-  "food-drink":    { gradient: "from-orange-400 to-red-500",    Icon: Utensils },
-  "retail":        { gradient: "from-pink-400 to-purple-500",   Icon: ShoppingBag },
-  "services":      { gradient: "from-blue-400 to-cyan-500",     Icon: Wrench },
-  "health-beauty": { gradient: "from-rose-400 to-pink-500",     Icon: Heart },
-  "auto":          { gradient: "from-slate-500 to-gray-700",    Icon: Car },
-  "entertainment": { gradient: "from-violet-500 to-purple-600", Icon: Ticket },
-  "real-estate":   { gradient: "from-green-400 to-emerald-600", Icon: Home },
-  "wineries":      { gradient: "from-purple-500 to-red-600",    Icon: Wine },
-  "cannabis":      { gradient: "from-green-500 to-teal-600",    Icon: Leaf },
+// Category image mapping by slug — Canva-designed covers
+const CATEGORY_IMAGES: Record<string, string> = {
+  "food-drink":    "/categories/food-drink.jpg",
+  "retail":        "/categories/retail.jpg",
+  "services":      "/categories/services.jpg",
+  "health-beauty": "/categories/health-beauty.jpg",
+  "auto":          "/categories/auto.jpg",
+  "entertainment": "/categories/entertainment.jpg",
+  "real-estate":   "/categories/real-estate.jpg",
+  "wineries":      "/categories/wineries.jpg",
+  "cannabis":      "/categories/dispensaries.jpg",
+  "dispensaries":  "/categories/dispensaries.jpg",
 }
 
-function getCategoryStyle(slug: string) {
-  return CATEGORY_STYLES[slug] ?? { gradient: "from-gray-400 to-gray-600", Icon: MoreHorizontal }
+function getCategoryImage(slug: string): string | null {
+  return CATEGORY_IMAGES[slug] ?? null
 }
 
 export default async function HomePage() {
@@ -117,25 +117,31 @@ export default async function HomePage() {
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((cat) => {
-            const { gradient, Icon } = getCategoryStyle(cat.slug)
+            const image = getCategoryImage(cat.slug)
             return (
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
                 className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col items-center justify-center text-white shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
               >
-                {/* Gradient background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
-                {/* Subtle highlight overlay */}
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_20%,white,transparent_60%)]" />
-                {/* Dark bottom gradient for text */}
-                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/40 to-transparent" />
+                {/* Photo background */}
+                {image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={image}
+                    alt={cat.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600" />
+                )}
+                {/* Dark overlay for text readability */}
+                <div className="absolute inset-0 bg-black/35 group-hover:bg-black/45 transition-colors" />
+                {/* Stronger bottom gradient for label */}
+                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" />
 
-                <div className="relative flex flex-col items-center gap-2 px-4 text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-white/30 transition-colors">
-                    <Icon className="h-7 w-7 drop-shadow" />
-                  </div>
-                  <span className="font-display text-base font-semibold leading-tight drop-shadow-sm">
+                <div className="relative flex flex-col items-end justify-end h-full w-full px-4 pb-4">
+                  <span className="font-display text-base font-bold leading-tight drop-shadow-sm">
                     {cat.name}
                   </span>
                 </div>
