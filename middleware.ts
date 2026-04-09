@@ -1,5 +1,5 @@
 import createMiddleware from "next-intl/middleware"
-import { auth } from "@/auth"
+import { getToken } from "next-auth/jwt"
 import { routing } from "@/i18n/routing"
 import type { NextRequest } from "next/server"
 
@@ -23,9 +23,13 @@ export default async function middleware(req: NextRequest) {
   const intlResponse = intlMiddleware(req)
 
   if (isProtected) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const session = await (auth as any)(req as any)
-    const role = session?.auth?.user?.role ?? session?.user?.role
+    // Use getToken to directly decode the JWT — avoids the auth(req) pattern
+    // which returns a Response (from handleAuth) rather than the session data.
+    const token = await getToken({
+      req,
+      secret: process.env.AUTH_SECRET,
+    })
+    const role = token?.role as string | undefined
 
     if (pathnameWithoutLocale.startsWith("/dashboard") && role !== "business") {
       const url = req.nextUrl.clone()

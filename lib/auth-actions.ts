@@ -116,8 +116,17 @@ export async function loginAction(
     throw err
   }
 
-  const from = (formData.get("from") as string) || "/"
-  redirect(from)
+  // Look up role so we can redirect business users directly to their dashboard
+  const user = await db.query.users.findFirst({
+    where: eq(users.email, parsed.data.email),
+    columns: { role: true },
+  })
+
+  const from = formData.get("from") as string | null
+  const destination =
+    from ||
+    (user?.role === "business" ? "/dashboard/profile" : user?.role === "admin" ? "/admin" : "/")
+  redirect(destination)
 }
 
 export async function logoutAction() {
