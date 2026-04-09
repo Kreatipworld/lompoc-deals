@@ -30,31 +30,35 @@
 
 Hi [first_name],
 
-Welcome to **Lompoc Deals** — the only place to find exclusive discounts from the restaurants, shops, and services right here in Lompoc.
+Welcome to **Lompoc Deals** — Lompoc's free local business directory. Restaurants, shops, salons, services, wineries, and more — all in one place, built for this community.
 
-You just unlocked access to **[active_deal_count] active deals** across [merchant_count] local businesses.
+You now have access to **[merchant_count] local businesses** and **[active_deal_count] active deals** — everything free to browse.
 
-**Here are a few deals we think you'll love:**
+**Explore Lompoc by category:**
 
-> [DYNAMIC: top 3 deals by view_count in consumer's area — deal title, merchant name, discount %, link]
+> [DYNAMIC: 3 category links — food-drink, health-beauty, services — with business counts]
+
+**Deals we think you'll love this week:**
+
+> [DYNAMIC: top 3 deals by view_count — deal title, merchant name, discount %, link]
 
 ---
 
 **How it works:**
 
-1. Browse deals at [lompoc-deals.vercel.app](https://lompoc-deals.vercel.app)
-2. Find a deal you want
-3. Tap **"Claim Deal"** — the merchant gets notified
-4. Show up and save
+1. Browse the directory at [lompoc-deals.vercel.app](https://lompoc-deals.vercel.app)
+2. Find a business or deal you want
+3. Tap **"Claim Deal"** — show your phone at the register
+4. Support local. Keep your dollars in Lompoc.
 
-That's it. No coupons, no codes, no printing.
+No coupons, no codes, no printing.
 
 ---
 
-Have a favorite local spot you'd love to see on Lompoc Deals?  
-**[Tell us → contact link]**
+Know a local Lompoc business that should be listed?  
+**[Nominate them → contact link]**
 
-See you at the deals,  
+Welcome to the community,  
 — The Lompoc Deals Team
 
 *You're receiving this because you signed up at lompoc-deals.vercel.app. [Unsubscribe]*

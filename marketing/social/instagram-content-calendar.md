@@ -8,8 +8,8 @@
 
 - [ ] Create Instagram Business account: @LompocDeals (or @lompoc.deals)
 - [ ] Profile photo: Lompoc Deals logo or "LD" icon in brand colors
-- [ ] Bio (EN): "🏙️ Local deals in Lompoc, CA\n💰 Free to claim — no credit card\n👇 Browse deals"
-- [ ] Bio (ES): "🏙️ Ofertas locales en Lompoc, CA\n💰 Gratis — sin tarjeta de crédito\n👇 Ver ofertas"
+- [ ] Bio (EN): "🏙️ Lompoc's local business directory\n🍽️ Restaurants · shops · services & more\n🎟️ Deals from local businesses — free to browse\n👇 Explore Lompoc"
+- [ ] Bio (ES): "🏙️ El directorio local de negocios de Lompoc\n🍽️ Restaurantes · tiendas · servicios y más\n🎟️ Ofertas de negocios locales — gratis\n👇 Explora Lompoc"
 - [ ] Link in bio: https://lompoc-deals.vercel.app
 - [ ] Set to Business account (enables analytics)
 - [ ] Connect to Facebook page (for cross-posting M-001 content)
@@ -57,23 +57,23 @@
 
 ### Template B — Merchant Story (Reel or Carousel)
 
-*Slide 1:* Business name + photo  
-*Slide 2:* What they offer / their deal  
-*Slide 3:* "Support local — claim their deal free"  
-*Slide 4:* QR or URL + signup CTA  
+*Slide 1:* Business name + hero photo  
+*Slide 2:* What they do / what makes them Lompoc  
+*Slide 3:* Current deal (if any) or "Find them on Lompoc Deals"  
+*Slide 4:* QR or URL + "List your business free"  
 
 **Caption (EN):**
 > Meet [Business Name] 👋 — a local [type] right here in Lompoc.
 >
-> They're currently offering: [deal]
+> [One sentence about what makes them great / unique to Lompoc.]
 >
-> We love highlighting the businesses that make Lompoc great. Find their deal and hundreds more at lompoc-deals.vercel.app
+> They're listed on Lompoc Deals — your free local business directory. Find hours, photos, and current deals at lompoc-deals.vercel.app
 >
-> Are you a Lompoc business? List your deals FREE → link in bio.
+> Are you a Lompoc business? Get listed FREE → link in bio.
 >
-> 🇲🇽 Conoce a [Nombre] 👋 — [tipo de negocio] local aquí en Lompoc. Ofrecen: [oferta]. Encuéntralos en lompoc-deals.vercel.app — ¡gratis!
+> 🇲🇽 Conoce a [Nombre] 👋 — [tipo de negocio] local aquí en Lompoc. [Una oración sobre lo que los hace especiales.] Están en Lompoc Deals — el directorio local gratuito. Encuéntralos en lompoc-deals.vercel.app.
 >
-> #LompocDeals #ShopLocal #Lompoc #LompocBusiness #SupportLocal #NegociosLocales
+> #LompocDeals #ShopLocal #Lompoc #LompocBusiness #SupportLocal #NegociosLocales #DirectorioLompoc
 
 ---
 
