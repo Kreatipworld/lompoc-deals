@@ -1,5 +1,5 @@
 # Lompoc Deals — KPI Board
-*Last updated: 2026-04-07 | Updated weekly by: CMO + CTO*
+*Last updated: 2026-04-09 | Updated weekly by: CMO + CTO*
 
 ---
 
@@ -139,6 +139,64 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 
 **What moved:** Pricing restructured, inventory expanded significantly.
 **What we're changing:** Lead all outreach and social copy with Free tier messaging.
+
+---
+
+### Cycle 2 Progress Update — 2026-04-09
+**CMO update:**
+
+**Major milestone: Website Rebrand LIVE**
+- Full design system v1.0 implemented and merged to main ([KRE-89](/KRE/issues/KRE-89), [KRE-95](/KRE/issues/KRE-95))
+- New visual identity live at lompoc-deals.vercel.app: Lompoc Purple (#7B4F9E), Cream White (#FAF7F2), Plus Jakarta Sans, sweet pea logo
+- Homepage redesign complete with all 9 sections per design pod spec ([KRE-77](/KRE/issues/KRE-77))
+- Brand strategy + design system + copy all aligned ✓
+
+**Spanish copy review COMPLETE ([KRE-91](/KRE/issues/KRE-91)):**
+- Review done by CMO (native-speaker register assessment)
+- 2 required fixes + 2 style recommendations submitted as REQ-009 to CTO
+- Bilingual copy assessed as STRONG — correct Mexican Spanish register throughout
+- "Ofertas de tu vecindario" tagline confirmed: keep as-is
+
+**Stripe billing status:**
+- Stripe Connect implementation in progress ([KRE-50](/KRE/issues/KRE-50))
+- CEO working on Mac connection ([KRE-107](/KRE/issues/KRE-107))
+- Products should be created at Standard/$19.99 and Premium/$39.99 (NOT old Basic/$49, Pro/$99, Premium/$199)
+- MRR still $0 until B-001 fully active
+
+**Updated baselines (Cycle 2, 2026-04-09):**
+
+| KPI | Previous (Cycle 2 start) | Current | Notes |
+|-----|--------------------------|---------|-------|
+| Total businesses listed | ~155 | ~155+ | Stable |
+| Pricing | Free/$0, Std/$19.99, Premium/$39.99 | Same | Correct ✓ |
+| Website rebrand | Not live | **LIVE** ✓ | Merged to main |
+| Design system v1.0 | Not live | **LIVE** ✓ | Full visual identity |
+| Spanish copy review | Pending | **DONE** | 2 fixes needed (REQ-009) |
+| Stripe activation | Pending | In progress | KRE-50, KRE-107 |
+| MRR | $0 | $0 | Awaiting Stripe activation |
+| Consumer signups | Unknown | Unknown | Needs REQ-001 |
+| Funnel tracking | Not live | Not live | REQ-001 still needed |
+
+**Marketing assets status (all ready to deploy the moment accounts + Stripe are live):**
+- Social: Facebook, Nextdoor, Instagram, TikTok templates → `/marketing/social/`
+- Outreach: Merchant cold outreach + dispensary pitch → `/marketing/sales/`
+- Email: Welcome + onboarding + upgrade sequences → `/marketing/email/`
+- SEO: 5 city/category page copy specs → `/marketing/seo/`
+- Brand: Guidelines v1.0, photography brief, winery pitch → `/marketing/brand/`, `/marketing/sales/`
+
+**CMO Cycle 2 launch gate status:**
+- [x] Brand strategy complete
+- [x] Design system live
+- [x] Homepage redesign live
+- [x] Spanish copy reviewed
+- [ ] REQ-009 (Spanish copy fixes) — pending CTO
+- [ ] Stripe activation — pending engineering
+- [ ] Social accounts created — pending human
+- [ ] GBP claimed — pending human
+- [ ] Funnel tracking — pending REQ-001
+
+**What moved:** Rebrand fully shipped. Site is now conversion-ready visually.
+**What we're changing next:** Push for REQ-009 (Spanish fixes) + Stripe completion. Once Stripe is live, the paid upgrade funnel and outreach can begin with no further blockers from marketing side.
 
 ---
 

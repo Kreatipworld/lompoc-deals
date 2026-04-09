@@ -1,7 +1,38 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-08 | Owner: CMO*
+*Last updated: 2026-04-09 | Owner: CMO*
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
+
+---
+
+## REQ-009 • Apply Spanish Copy Fixes (Pre-Launch Required)
+**Priority:** P0
+**Why:** CMO native Spanish copy review ([KRE-91](/KRE/issues/KRE-91)) identified 2 required fixes and 2 style recommendations. The required fixes must ship before any marketing drives traffic — Spanish copy that code-switches mid-sentence breaks trust with Lompoc's 55%+ Hispanic audience. These are surgical, low-effort text changes.
+**KPI it moves:** Trust + conversion rate among Spanish-speaking consumers. Brand perception.
+**Desired behavior (plain English):**
+
+**Required (must fix before launch):**
+
+1. `homepage.html` / `page.tsx` — around the "Ofertas destacadas esta semana" section:
+   - BEFORE: `Ofertas destacadas esta semana — hand-picked from your neighbors's favorite spots.`
+   - AFTER: `Ofertas destacadas esta semana — seleccionadas a mano por tus vecinos.`
+
+2. `merchant.html` / merchant-facing pages — around "Registra tu negocio" CTA:
+   - BEFORE: `Registra tu negocio — Takes less than 10 minutes.`
+   - AFTER: `Registra tu negocio — Toma menos de 10 minutos.`
+
+**Style recommendations (fix preferred, not blocking):**
+
+3. `merchant.html` / merchant pages — value prop section:
+   - BEFORE: `Llega a tus verdaderos vecinos`
+   - AFTER: `Llega a los vecinos de tu comunidad`
+
+4. `homepage.html` — testimonials/community section:
+   - BEFORE: `Conoce a tus vecinos — the real people behind Lompoc's businesses.`
+   - AFTER: `Conoce a tus vecinos — las personas reales detrás de los negocios de Lompoc.`
+
+**Deadline:** Before any social/paid traffic is driven to the site
+**Status:** Requested — full review in [KRE-91](/KRE/issues/KRE-91)
 
 ---
 
