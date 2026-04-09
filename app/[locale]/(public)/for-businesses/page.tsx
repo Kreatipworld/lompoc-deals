@@ -72,14 +72,14 @@ export default async function ForBusinessesPage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/signup"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
                 >
                   Get started — it&apos;s free
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/businesses"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border bg-background px-7 text-base font-semibold hover:bg-accent"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border bg-background px-7 text-base font-semibold transition-colors hover:bg-accent"
                 >
                   See who&apos;s on it
                 </Link>
@@ -152,16 +152,19 @@ export default async function ForBusinessesPage() {
               num="01"
               title="Claim or list your business"
               body="Find your business in our directory and click 'Claim it,' or list a brand-new one in 30 seconds. Free forever."
+              delay={0}
             />
             <Step
               num="02"
               title="Add your details"
               body="Logo, hours, social links, and a description. Your profile goes live the moment our admin approves it (usually same-day)."
+              delay={80}
             />
             <Step
               num="03"
               title="Post deals when you want"
               body="Coupons, specials, announcements — post as many as you want, edit anytime, expire whenever. Locals see them on the feed."
+              delay={160}
             />
           </div>
         </div>
@@ -186,31 +189,37 @@ export default async function ForBusinessesPage() {
             icon={<MapPin className="h-5 w-5" />}
             title="Lompoc-only audience"
             body="Every visitor is searching for businesses right here. No tourists, no out-of-towners — just locals."
+            delay={0}
           />
           <Benefit
             icon={<Tag className="h-5 w-5" />}
             title="Deals that get noticed"
             body="Post coupons, specials, and announcements. One flat monthly fee — no per-deal charges, no pay-to-win tricks."
+            delay={60}
           />
           <Benefit
             icon={<Eye className="h-5 w-5" />}
             title="View & click stats"
             body="See exactly how many people viewed your profile and clicked through to your site. No mystery."
+            delay={120}
           />
           <Benefit
             icon={<Mail className="h-5 w-5" />}
             title="Weekly digest"
             body="Your best deal goes out in our Saturday email to confirmed Lompoc locals. Free distribution."
+            delay={0}
           />
           <Benefit
             icon={<Heart className="h-5 w-5" />}
             title="Locals can favorite"
             body="Repeat customers save your deals to their favorites. Build a following without spending on ads."
+            delay={60}
           />
           <Benefit
             icon={<ShieldCheck className="h-5 w-5" />}
             title="You stay in control"
             body="It's your listing. Edit, expire, or remove anything. We never run ads on your profile or sell your data."
+            delay={120}
           />
         </div>
       </section>
@@ -357,7 +366,7 @@ export default async function ForBusinessesPage() {
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/signup"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
               >
                 List your business
                 <ArrowRight className="h-4 w-4" />
@@ -393,13 +402,18 @@ function Step({
   num,
   title,
   body,
+  delay = 0,
 }: {
   num: string
   title: string
   body: string
+  delay?: number
 }) {
   return (
-    <div className="relative rounded-3xl border bg-card p-7 shadow-sm">
+    <div
+      className="relative rounded-3xl border bg-card p-7 shadow-sm card-enter"
+      style={{ animationDelay: `${delay}ms` }}
+    >
       <div className="font-display text-5xl font-semibold leading-none tracking-tight text-primary/30">
         {num}
       </div>
@@ -417,13 +431,18 @@ function Benefit({
   icon,
   title,
   body,
+  delay = 0,
 }: {
   icon: React.ReactNode
   title: string
   body: string
+  delay?: number
 }) {
   return (
-    <div className="rounded-2xl border bg-card p-6 shadow-sm">
+    <div
+      className="rounded-2xl border bg-card p-6 shadow-sm card-enter"
+      style={{ animationDelay: `${delay}ms` }}
+    >
       <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
         {icon}
       </div>

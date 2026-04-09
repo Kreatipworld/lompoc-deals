@@ -137,7 +137,7 @@ export default async function MapPage({
               className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition ${
                 !activeCat
                   ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                  : "border-foreground/10 bg-background/70 backdrop-blur hover:border-primary/40 hover:bg-accent"
+                  : "border-foreground/10 bg-background/70 backdrop-blur transition-colors duration-150 hover:border-primary/40 hover:bg-accent"
               }`}
             >
               <Sparkles className="h-3.5 w-3.5" />
@@ -208,7 +208,7 @@ export default async function MapPage({
                     <li key={b.id}>
                       <Link
                         href={`/biz/${b.slug}`}
-                        className="group flex items-start gap-3 px-5 py-4 transition hover:bg-accent/40"
+                        className="group flex items-start gap-3 px-5 py-4 transition-colors duration-150 hover:bg-accent/40"
                       >
                         {/* Pin number / icon */}
                         <div className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -249,7 +249,7 @@ export default async function MapPage({
                           </div>
                         </div>
 
-                        <ArrowRight className="mt-2 h-4 w-4 flex-shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-primary" />
+                        <ArrowRight className="mt-2 h-4 w-4 flex-shrink-0 text-muted-foreground [transition:transform_150ms_cubic-bezier(0.23,1,0.32,1),color_150ms_ease] group-hover:translate-x-1 group-hover:text-primary" />
                       </Link>
                     </li>
                   )

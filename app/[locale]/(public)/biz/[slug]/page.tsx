@@ -87,12 +87,12 @@ export default async function BusinessPage({
           COVER IMAGE BANNER (full-width, above header card)
          ───────────────────────────────────────────────── */}
       {business.coverUrl ? (
-        <div className="relative h-44 w-full overflow-hidden sm:h-60">
+        <div className="relative h-44 w-full overflow-hidden sm:h-60 card-enter">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={business.coverUrl}
             alt=""
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover [transition:transform_400ms_cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.02]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
         </div>
@@ -112,7 +112,7 @@ export default async function BusinessPage({
         <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-            <Link href="/" className="transition hover:text-foreground">
+            <Link href="/" className="transition-colors duration-150 hover:text-foreground">
               Deals
             </Link>
             {business.category && (
@@ -120,7 +120,7 @@ export default async function BusinessPage({
                 <ArrowLeft className="h-3 w-3 rotate-180" aria-hidden />
                 <Link
                   href={`/category/${business.category.slug}`}
-                  className="transition hover:text-foreground"
+                  className="transition-colors duration-150 hover:text-foreground"
                 >
                   {business.category.name}
                 </Link>
@@ -223,7 +223,7 @@ export default async function BusinessPage({
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition-colors duration-150 hover:bg-secondary"
                 >
                   <MapPin className="h-3.5 w-3.5 text-primary" />
                   {business.address}
@@ -232,7 +232,7 @@ export default async function BusinessPage({
               {business.phone && (
                 <a
                   href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition-colors duration-150 hover:bg-secondary"
                 >
                   <Phone className="h-3.5 w-3.5 text-primary" />
                   {business.phone}
@@ -243,7 +243,7 @@ export default async function BusinessPage({
                   href={business.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition hover:bg-secondary"
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition-colors duration-150 hover:bg-secondary"
                 >
                   <Globe className="h-3.5 w-3.5 text-primary" />
                   {business.website.replace(/^https?:\/\//, "")}

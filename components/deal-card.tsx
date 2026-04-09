@@ -401,8 +401,8 @@ export function DealGrid({
 
   return (
     <div className={gridClass}>
-      {deals.map((d) => (
-        <DealCard key={d.id} deal={d} viewer={viewer} fromPath={fromPath} variant={variant} />
+      {deals.map((d, i) => (
+        <DealCard key={d.id} deal={d} viewer={viewer} fromPath={fromPath} variant={variant} staggerIndex={i} />
       ))}
     </div>
   )
