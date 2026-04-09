@@ -1,7 +1,8 @@
 # Chamber of Commerce Partnership Outreach
 *Owner: CMO / Merchant Acquisition Lead*
-*Created: 2026-04-08 | KPI: 15 new merchants from Chamber referral + credibility boost*
-*M-013 | Budget: $0 cash | Offer: Free 3-month Pro trial for Chamber members*
+*Created: 2026-04-08 | Updated: 2026-04-09 (directory-first pivot)*
+*KPI: 15 new merchants from Chamber referral + credibility boost*
+*M-013 | Budget: $0 cash | Offer: Free Standard upgrade for Chamber members*
 
 ---
 
@@ -29,15 +30,15 @@ Dear [Name],
 
 My name is [Founder name], and I'm reaching out about something I think your members would find genuinely useful.
 
-We built **Lompoc Deals** (lompoc-deals.vercel.app) — a free digital platform where Lompoc businesses can post deals and specials directly to local residents. It's designed specifically for Lompoc, with Spanish/English support, and there's no commission on claimed deals.
+We built **Lompoc Deals** (lompoc-deals.vercel.app) — Lompoc's free local business directory and deals platform. Think of it as a mini Yelp + Google Business built specifically for the Flower Capital: businesses get a free listing with photos, hours, categories, and contact info, plus the ability to post deals and specials for locals to browse. It's bilingual (English/Spanish) and there's no commission.
 
 **Why I'm writing to the Chamber:**
 
-Your members are exactly the businesses this is built for — local restaurants, salons, retail shops, service providers. Many of them don't have a dedicated way to promote specials to Lompoc customers digitally. Lompoc Deals gives them that, for free.
+Your members are exactly who this is built for — local restaurants, salons, retail shops, service providers. Right now, when a Lompoc resident searches for "restaurants in Lompoc" or "salons near me," your members often don't appear unless they've paid for Yelp or Google Ads. Lompoc Deals gives them a free local presence that surfaces in those searches.
 
 **What we'd like to offer Chamber members:**
 
-- **Free 3-month Pro tier** for any Chamber member who signs up — normally paid, free as a thank-you for the partnership
+- **Free Standard upgrade for 3 months** for any Chamber member who claims their listing — normally $19.99/month, free as a thank-you for the partnership
 - A co-branded announcement we can draft for your email newsletter and social media
 - A mention in our "Lompoc Deals Merchant Spotlight" series for Chamber members who post deals
 

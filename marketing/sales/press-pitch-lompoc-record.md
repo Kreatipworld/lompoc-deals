@@ -1,6 +1,7 @@
 # Press Pitch — Lompoc Record & SYV News
 *Owner: CMO | Channel: PR*
-*Created: 2026-04-08 | KPI: 1 feature article, 200 attributed signups*
+*Created: 2026-04-08 | Updated: 2026-04-09 (directory-first pivot)*
+*KPI: 1 feature article, 200 attributed signups*
 *Recommended timing: Send after first 50 merchants milestone*
 
 ---
@@ -18,7 +19,7 @@
 
 ## Primary Pitch: The Lompoc Record
 
-**Subject line:** Local story: Lompoc tech startup helping small businesses fight back against big-box
+**Subject line:** Local story: Lompoc now has its own business directory — built here, bilingual, free
 
 ---
 
@@ -26,18 +27,19 @@ Hi [Reporter/Editor name],
 
 I'm reaching out about a local story you might find interesting for your readers.
 
-**The short version:** A free digital platform built for Lompoc is helping local restaurants, salons, and shops post deals directly to Lompoc residents — no algorithm, no out-of-town middleman. It launched this year and already has [X] local businesses and [X] active deals.
+**The short version:** Lompoc now has its own free local business directory — a place where residents can discover local restaurants, shops, salons, and services all in one place, and businesses can list themselves to be found by locals actively searching in their community. Think of it as a mini Yelp built specifically for the Flower Capital. It launched this year and already lists [X]+ Lompoc businesses.
 
 **Why it's a Lompoc story:**
-The platform is built specifically for Lompoc (there's even a Spanish/English toggle, since we know our community). The founder saw that local businesses were losing foot traffic to chains partly because they had no easy way to reach Lompoc customers digitally. Yelp and Groupon charge steep commissions. This doesn't.
+The directory is built specifically for Lompoc — there's even a Spanish/English toggle, since we know our community (63% of Lompoc speaks Spanish at home). The founder saw that local businesses were losing foot traffic to chains partly because they had no easy, affordable way to be discovered digitally. Yelp costs money. This is free.
 
 **The human angle:**
-[If you have a merchant willing to be quoted — include here: "Maria's Kitchen on [street] has been using it for [time] and says [quote about results]"]
+[If you have a merchant willing to be quoted — include here: "Maria's Kitchen on [street] has been using it for [time] and says [quote about foot traffic or discovery]"]
 
 **The numbers:**
-- [X] Lompoc businesses listed, [X] active deals
-- Free to join for businesses and consumers
+- [X]+ Lompoc businesses listed across restaurants, salons, services, retail, wineries, and more
+- Free to list for businesses; free to browse for consumers
 - Bilingual (EN/ES) — designed for Lompoc's demographics
+- Businesses can also post deals and specials at no cost
 
 **What I'm offering:**
 A short interview with the founder, plus photos/screenshots of the platform. Happy to connect you with a merchant for a quote.
@@ -78,23 +80,23 @@ Lompoc Deals
 
 **News tip email body:**
 
-> LOCAL BUSINESS STORY: A Lompoc tech platform is helping small businesses compete digitally — free for merchants and consumers. Currently [X] Lompoc businesses, bilingual EN/ES. Visuals available: merchant interviews, deal redemption demo, founder interview. Tip contact: [email/phone]
+> LOCAL BUSINESS STORY: Lompoc now has its own free local business directory — [X]+ businesses listed, bilingual EN/ES, free to browse and list. Local restaurants, salons, wineries, and shops are getting found by residents who previously had no single place to search. Visuals available: merchant interviews, directory browse demo, founder interview. Tip contact: [email/phone]
 
 ---
 
 ## Talking Points (for founder interviews)
 
-1. **The problem:** Local businesses in Lompoc have no easy, affordable way to reach Lompoc customers digitally. Yelp/Groupon take commissions. Facebook requires ad budget. This is free.
+1. **The problem:** Lompoc residents have no single place to discover local businesses. And local businesses — restaurants, salons, shops — have no easy, affordable way to be found digitally. Yelp costs money. Google Ads costs money. This is free.
 
-2. **The solution:** Lompoc Deals is a free local deals directory — businesses post deals, residents browse and claim them. No commissions, no national algorithm.
+2. **The solution:** Lompoc Deals is Lompoc's free local business directory — a place where residents discover local businesses, and businesses list themselves to be found. Think Yelp, but built for the Flower Capital. Businesses can also post deals and coupons at no cost.
 
-3. **Why Lompoc:** Lompoc is an underserved market. The Hispanic community is 63% of the population, so the platform is fully bilingual. We know this town.
+3. **Why Lompoc:** Lompoc is an underserved market. There's no local discovery layer for this community. The Hispanic community is 63% of the population, so the platform is fully bilingual (EN/ES). We know this town.
 
-4. **The traction:** [X] businesses, [X] active deals, [X] signups — all organic, no paid ads.
+4. **The traction:** [X]+ businesses listed across restaurants, wineries, salons, auto repair, dispensaries, and more — all organic, no paid ads.
 
-5. **The vision:** Start in Lompoc, expand to Santa Maria, Santa Barbara, Vandenberg Village. Build the local deals network for the Central Coast.
+5. **The vision:** Start in Lompoc, expand to Santa Maria, Santa Barbara, Vandenberg Village. Build the local directory for the Central Coast.
 
-6. **The ask:** Just try it. It's free. Go to lompoc-deals.vercel.app.
+6. **The ask:** Just browse it. It's free. Go to lompoc-deals.vercel.app.
 
 ---
 
