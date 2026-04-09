@@ -1,5 +1,4 @@
 import { Link } from "@/i18n/navigation"
-import { Flower2 } from "lucide-react"
 import { UserMenu } from "@/components/user-menu"
 import { WeatherBadge } from "@/components/weather-badge"
 import { getTranslations } from "next-intl/server"
@@ -16,9 +15,15 @@ export async function SiteHeader() {
           aria-label={t("home")}
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition group-hover:scale-105">
-            <Flower2 className="h-5 w-5" />
+            {/* Sweet pea flower mark */}
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" aria-hidden="true">
+              <ellipse cx="10" cy="7.5" rx="3" ry="4" fill="currentColor" opacity="0.95"/>
+              <ellipse cx="5.8" cy="10.5" rx="2.8" ry="3.8" fill="currentColor" opacity="0.75" transform="rotate(-25 5.8 10.5)"/>
+              <ellipse cx="14.2" cy="10.5" rx="2.8" ry="3.8" fill="currentColor" opacity="0.75" transform="rotate(25 14.2 10.5)"/>
+              <path d="M10 12 Q9.5 15.5 8.5 18" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.6"/>
+            </svg>
           </span>
-          <span className="font-display text-xl font-semibold tracking-tight">
+          <span className="text-xl font-bold tracking-tight">
             Lompoc Deals
           </span>
         </Link>

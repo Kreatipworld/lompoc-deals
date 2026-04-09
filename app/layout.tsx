@@ -1,24 +1,13 @@
 import type { Metadata } from "next"
-import localFont from "next/font/local"
-import { Fraunces } from "next/font/google"
+import { Plus_Jakarta_Sans } from "next/font/google"
 import { getLocale } from "next-intl/server"
 import "./globals.css"
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-})
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-})
-const fraunces = Fraunces({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-jakarta",
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
-  axes: ["SOFT", "opsz"],
 })
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
@@ -70,7 +59,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} flex min-h-screen flex-col antialiased`}
+        className={`${plusJakarta.variable} flex min-h-screen flex-col antialiased`}
       >
         {children}
       </body>

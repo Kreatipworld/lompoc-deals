@@ -4,79 +4,78 @@
 
 @layer base {
   :root {
-    /* Iris + Forest brand palette */
-    --background: 45 20% 98%;
-    --foreground: 220 15% 12%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 12%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 12%;
+    /* ── Lompoc Deals Design System v1.0 ── */
 
-    /* Primary — iris violet */
-    --primary: 258 65% 55%;
+    /* Backgrounds */
+    --background: 39 44% 97%;        /* Cream White #FAF7F2 */
+    --foreground: 0 0% 12%;          /* Deep Charcoal #1F1F1F */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
+
+    /* Primary — Lompoc Purple #7B4F9E */
+    --primary: 273 33% 47%;
     --primary-foreground: 0 0% 100%;
 
-    /* Brand green — forest sage (used as the secondary brand color) */
-    --brand-green: 150 40% 38%;
-    --brand-green-foreground: 0 0% 100%;
+    /* Secondary — Warm Terracotta #C8653A */
+    --secondary: 39 29% 94%;         /* cream-200 for surface secondary */
+    --secondary-foreground: 0 0% 12%;
+    --muted: 36 35% 91%;             /* cream-200 #F0EBE1 */
+    --muted-foreground: 0 0% 32%;    /* charcoal-600 #525252 */
 
-    /* Neutral secondary / muted — cool light gray */
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 15% 25%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    /* Accent — light purple tint */
+    --accent: 279 44% 96%;           /* purple-50 #F5EEF9 */
+    --accent-foreground: 273 33% 30%;
 
-    /* Accent — light iris tint */
-    --accent: 258 65% 96%;
-    --accent-foreground: 258 65% 30%;
+    /* Terracotta — secondary brand (deal badges, highlights) */
+    --brand-terracotta: 18 56% 51%;  /* #C8653A */
+    --brand-terracotta-foreground: 0 0% 100%;
 
-    /* Warm amber — California gold: highlights, discount badges */
-    --amber: 38 90% 52%;
-    --amber-foreground: 30 50% 12%;
-    --amber-muted: 38 90% 95%;
-
-    /* Success — forest sage (verified, active states) */
-    --success: 150 40% 38%;
+    /* Sage — success / savings */
+    --success: 120 14% 49%;          /* Sage Green #6B8F6B */
     --success-foreground: 0 0% 100%;
-    --success-muted: 150 40% 95%;
+    --success-muted: 120 20% 91%;    /* sage-100 */
 
-    --destructive: 0 84% 60%;
+    /* Gold accent */
+    --gold: 40 87% 71%;              /* #F4C97A */
+    --gold-foreground: 30 50% 12%;
+
+    --destructive: 4 72% 56%;        /* error-400 #DC4E41 */
     --destructive-foreground: 0 0% 100%;
-    --border: 220 14% 91%;
-    --input: 220 14% 91%;
-    --ring: 258 65% 55%;
-    --radius: 0.625rem;
+    --border: 38 33% 84%;            /* cream-300 #E3DAC9 */
+    --input: 38 33% 84%;
+    --ring: 273 33% 47%;
+    --radius: 1rem;                  /* 16px — radius-lg for cards */
   }
 
   .dark {
-    --background: 258 30% 6%;
-    --foreground: 45 20% 96%;
-    --card: 258 30% 9%;
-    --card-foreground: 45 20% 96%;
-    --popover: 258 30% 9%;
-    --popover-foreground: 45 20% 96%;
-    --primary: 258 70% 65%;
+    --background: 270 26% 10%;       /* near-black with purple tint #1A1520 */
+    --foreground: 279 44% 96%;       /* purple-50 on dark */
+    --card: 270 22% 15%;             /* #231D2C */
+    --card-foreground: 279 44% 96%;
+    --popover: 270 22% 15%;
+    --popover-foreground: 279 44% 96%;
+    --primary: 273 33% 60%;          /* lighter purple for dark bg #9E79BE */
     --primary-foreground: 0 0% 100%;
-    --brand-green: 150 45% 50%;
-    --brand-green-foreground: 0 0% 100%;
-    --secondary: 258 25% 14%;
-    --secondary-foreground: 45 20% 96%;
-    --muted: 258 25% 14%;
-    --muted-foreground: 220 9% 65%;
-    --accent: 258 50% 18%;
-    --accent-foreground: 258 70% 92%;
-    --amber: 38 85% 58%;
-    --amber-foreground: 30 50% 10%;
-    --amber-muted: 38 50% 15%;
-    --success: 150 45% 50%;
+    --secondary: 270 20% 22%;        /* #2D2638 */
+    --secondary-foreground: 279 44% 96%;
+    --muted: 270 20% 22%;
+    --muted-foreground: 270 14% 55%; /* #7A6B8A */
+    --accent: 270 25% 25%;
+    --accent-foreground: 273 44% 88%;
+    --brand-terracotta: 18 56% 60%;
+    --brand-terracotta-foreground: 0 0% 100%;
+    --success: 120 18% 56%;
     --success-foreground: 0 0% 100%;
-    --success-muted: 150 30% 12%;
-
-    --destructive: 0 62% 50%;
+    --success-muted: 120 15% 18%;
+    --gold: 40 87% 71%;
+    --gold-foreground: 30 50% 12%;
+    --destructive: 4 62% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 258 25% 18%;
-    --input: 258 25% 18%;
-    --ring: 258 70% 65%;
+    --border: 270 25% 26%;           /* #3D3348 */
+    --input: 270 25% 26%;
+    --ring: 273 33% 60%;
   }
 }
 
@@ -86,22 +85,23 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "ss01", "cv11";
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
   h1, h2, h3, h4 {
-    font-family: var(--font-display), Georgia, serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     letter-spacing: -0.02em;
+    font-weight: 700;
   }
 }
 
-/* Safe-area padding for mobile bottom navigation */
+/* ── Safe-area padding for mobile bottom nav ── */
 @layer utilities {
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 
-/* Hide scrollbars on horizontal scroll containers */
+/* ── Hide scrollbars on horizontal scroll containers ── */
 .scrollbar-none {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -110,19 +110,19 @@
   display: none;
 }
 
-/* Custom Leaflet popup styling — branded card look */
+/* ── Leaflet popup — branded card look ── */
 .leaflet-popup.lompoc-popup .leaflet-popup-content-wrapper {
   background: hsl(var(--card));
   color: hsl(var(--foreground));
   border-radius: 16px;
   border: 1px solid hsl(var(--border));
-  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 12px 40px -8px rgba(31, 31, 31, 0.15);
   padding: 0;
 }
 .leaflet-popup.lompoc-popup .leaflet-popup-content {
   margin: 0;
   padding: 14px 16px 14px 16px;
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 13px;
   line-height: 1.4;
   min-width: 220px;
@@ -140,9 +140,9 @@
   margin-bottom: 4px;
 }
 .lompoc-popup-name {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.2;
   margin-bottom: 6px;

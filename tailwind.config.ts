@@ -49,13 +49,12 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          green: "hsl(var(--brand-green))",
-          "green-foreground": "hsl(var(--brand-green-foreground))",
+          terracotta: "hsl(var(--brand-terracotta))",
+          "terracotta-foreground": "hsl(var(--brand-terracotta-foreground))",
         },
-        amber: {
-          DEFAULT: "hsl(var(--amber))",
-          foreground: "hsl(var(--amber-foreground))",
-          muted: "hsl(var(--amber-muted))",
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          foreground: "hsl(var(--gold-foreground))",
         },
         success: {
           DEFAULT: "hsl(var(--success))",
@@ -64,9 +63,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "Georgia", "serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
+        sans: ["var(--font-jakarta)", "system-ui", "sans-serif"],
+        display: ["var(--font-jakarta)", "system-ui", "sans-serif"],
+        mono: ["ui-monospace", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",
