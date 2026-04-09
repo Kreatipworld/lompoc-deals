@@ -15,9 +15,16 @@ import {
 import { SearchBar } from "@/components/search-bar"
 
 export const metadata = {
-  title: "Business directory — Lompoc Deals",
+  title: "Lompoc Business Directory — 155+ Local Businesses | Lompoc Deals",
   description:
-    "All Lompoc, California businesses listed on Lompoc Deals, organized by category.",
+    "Browse 155+ Lompoc, CA businesses by category — restaurants, salons, auto repair, retail, services, and more. Find deals from local businesses you already know.",
+  keywords: [
+    "lompoc business directory",
+    "lompoc local businesses",
+    "lompoc restaurants",
+    "lompoc salons",
+    "lompoc ca businesses",
+  ],
 }
 
 export default async function BusinessesPage() {

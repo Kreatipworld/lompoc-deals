@@ -14,9 +14,16 @@ import {
 import { getSiteStats } from "@/lib/queries"
 
 export const metadata = {
-  title: "List your business — Lompoc Deals",
+  title: "List Your Lompoc Business Free — Reach Local Customers | Lompoc Deals",
   description:
-    "The free, local-first platform for Lompoc, California businesses to post coupons, specials, and announcements. Reach the locals already looking for you.",
+    "Post coupons and deals to Lompoc locals for free — no commission, no credit card. 155+ businesses already listed. Start in 2 minutes.",
+  keywords: [
+    "list business lompoc",
+    "lompoc business directory",
+    "post deals lompoc",
+    "lompoc small business marketing",
+    "free business listing lompoc ca",
+  ],
 }
 
 export default async function ForBusinessesPage() {

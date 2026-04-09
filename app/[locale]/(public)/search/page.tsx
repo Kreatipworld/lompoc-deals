@@ -4,7 +4,11 @@ import { DealGrid } from "@/components/deal-card"
 import { SearchBar } from "@/components/search-bar"
 import { MapPin } from "lucide-react"
 
-export const metadata = { title: "Search — Lompoc Deals" }
+export const metadata = {
+  title: "Search Lompoc Deals — Find Coupons, Discounts & Local Specials",
+  description:
+    "Search deals and coupons from 155+ Lompoc, CA businesses — restaurants, salons, services, retail, and more. Free to claim, updated daily.",
+}
 
 export default async function SearchPage({
   searchParams,
