@@ -1,6 +1,6 @@
 # Winery Partnership Pitch — Lompoc Deals
 *Owner: CMO / Merchant Acquisition Lead*
-*Created: 2026-04-08 | M-017 | Target: 5 winery upgrades to Standard ($49) or Premium ($99)*
+*Created: 2026-04-08 | Updated: 2026-04-09 | M-017 | Target: 5 winery upgrades to Standard ($19.99/mo) or Premium ($39.99/mo)*
 
 ---
 
@@ -24,13 +24,13 @@
 
 ## Initial Outreach Email
 
-**Subject:** Your winery is listed on Lompoc Deals — free upgrade offer
+**Subject:** Your winery is listed on Lompoc Deals — claim your free upgrade
 
 ---
 
 Hi [Name],
 
-I noticed [Winery Name] is already listed on Lompoc Deals (lompoc-deals.vercel.app) — great to have you there.
+[Winery Name] is already in Lompoc Deals' local business directory (lompoc-deals.vercel.app/category/wineries) — locals and tourists browsing the Lompoc wine scene can already find you there.
 
 I wanted to reach out personally because I think we can do a lot more for you, and I'd love to offer you something to get started.
 
@@ -38,10 +38,11 @@ I wanted to reach out personally because I think we can do a lot more for you, a
 
 We're building out a dedicated "Lompoc Wine Country" content series on Instagram and TikTok to drive wine tourists to Santa Rita Hills and the Wine Ghetto. We'd love to feature [Winery Name] in that series — your tasting deals, your story.
 
-We're offering wineries a **free 30-day trial of our Standard tier** ($49/month value) so you can:
+We're offering wineries a **free 30-day trial of our Standard tier** ($19.99/month value) so you can:
 - See exactly how many people view and claim your deals
 - Get priority placement in our Wineries section
-- Have your deal featured in our social content this month
+- Post unlimited deals (tasting discounts, events, wine club perks)
+- Have your listing featured in our social content this month
 
 No credit card, no commitment. Just try it and see if the traffic is worth it.
 
@@ -90,11 +91,11 @@ lompoc-deals.vercel.app
 
 | Objection | Response |
 |-----------|----------|
-| "We're already on Yelp/TripAdvisor" | "Those reach tourists browsing. We reach locals AND tourists specifically looking for Lompoc deals — different intent, lower competition." |
+| "We're already on Yelp/TripAdvisor" | "Yelp and TripAdvisor are generic. We're Lompoc-specific — every visitor to our site is looking for businesses *here*, not in Santa Maria or SB. And we're the only bilingual EN/ES directory for this market." |
 | "We don't offer discounts" | "A 'complimentary glass with purchase' or 'free tasting with wine club signup' counts as a deal. You're already doing this — we just help you reach more people with it." |
 | "I don't have time to manage another platform" | "Posting a deal takes 2 minutes. We do the distribution. You just upload once." |
 | "How do I know it works?" | "Start free. Standard tier shows you the analytics — views, claims, engagement. Cancel if you see zero traffic after 30 days." |
-| "We're a small operation" | "Perfect. Groupon charges 40–50% commission. We charge $49/month flat. You keep every dollar of the deal value." |
+| "We're a small operation" | "Perfect. Groupon charges 40–50% commission. We charge $19.99/month flat. You keep every dollar of the deal value." |
 
 ---
 
@@ -115,7 +116,7 @@ Help wineries brainstorm deal types that work on the platform:
 
 ## Target Winery List (from existing listings)
 
-*Pull current winery list from `/lompoc/wineries` or DB. Prioritize:*
+*Pull current winery list from `/category/wineries` or DB. Prioritize:*
 - Wine Ghetto operations (easy to visit, more casual, open to marketing)
 - Wineries with active social presence (already value content)
 - Wineries without a strong Yelp/TripAdvisor presence (need the exposure more)
