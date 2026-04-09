@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { href: "/deals", icon: Tag, label: "Deals" },
   { href: "/search", icon: Search, label: "Search" },
   { href: "/businesses", icon: LayoutGrid, label: "Directory" },
-  { href: "/dashboard", icon: User, label: "Account" },
+  { href: "/account", icon: User, label: "Account" },
 ] as const
 
 export function BottomNav() {

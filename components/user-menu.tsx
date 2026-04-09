@@ -44,10 +44,10 @@ export async function UserMenu() {
         )}
         {role === "local" && (
           <Link
-            href="/favorites"
+            href="/account"
             className="block px-3 py-1.5 text-sm hover:bg-accent"
           >
-            {t("favorites")}
+            {t("dashboard")}
           </Link>
         )}
         <div className="my-1 border-t" />

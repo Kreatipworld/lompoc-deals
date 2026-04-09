@@ -195,7 +195,7 @@ export default async function BusinessesPage() {
                 href={`/category/${g.slug}`}
                 className="text-xs font-medium text-primary hover:underline"
               >
-                See deals →
+                See all →
               </Link>
             </div>
 

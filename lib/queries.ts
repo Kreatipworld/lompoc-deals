@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories, favorites, propertyListings, events } from "@/db/schema"
+import { deals, businesses, categories, favorites, propertyListings, events, dealEvents } from "@/db/schema"
 
 export type DealCardData = {
   id: number
@@ -164,6 +164,31 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .leftJoin(deals, eq(deals.businessId, businesses.id))
     .where(eq(businesses.status, "approved"))
+    .groupBy(businesses.id, categories.id)
+    .orderBy(businesses.name)
+  return rows
+}
+
+export async function getBusinessesByCategorySlug(categorySlug: string): Promise<DirectoryBusiness[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      description: businesses.description,
+      address: businesses.address,
+      phone: businesses.phone,
+      website: businesses.website,
+      logoUrl: businesses.logoUrl,
+      categoryId: businesses.categoryId,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .where(and(eq(businesses.status, "approved"), eq(categories.slug, categorySlug)))
     .groupBy(businesses.id, categories.id)
     .orderBy(businesses.name)
   return rows
@@ -509,6 +534,72 @@ export async function getBusinessBySlug(slug: string) {
     business: { ...biz, category, ownerEmail },
     deals: bizDeals.map(rowToCard),
   }
+}
+
+// ─── User dashboard ──────────────────────────────────────────────────────────
+
+export type UserCouponData = {
+  dealId: number
+  dealTitle: string
+  dealType: "coupon" | "special" | "announcement"
+  discountText: string | null
+  imageUrl: string | null
+  expiresAt: Date
+  claimedAt: Date
+  businessName: string
+  businessSlug: string
+  isExpired: boolean
+}
+
+export type UserRedemptionData = {
+  dealId: number
+  dealTitle: string
+  discountText: string | null
+  redeemedAt: Date
+  businessName: string
+  businessSlug: string
+}
+
+export async function getUserClaimedCoupons(userId: number): Promise<UserCouponData[]> {
+  const rows = await db
+    .select({
+      dealId: deals.id,
+      dealTitle: deals.title,
+      dealType: deals.type,
+      discountText: deals.discountText,
+      imageUrl: deals.imageUrl,
+      expiresAt: deals.expiresAt,
+      claimedAt: dealEvents.createdAt,
+      businessName: businesses.name,
+      businessSlug: businesses.slug,
+    })
+    .from(dealEvents)
+    .innerJoin(deals, eq(dealEvents.dealId, deals.id))
+    .innerJoin(businesses, eq(deals.businessId, businesses.id))
+    .where(and(eq(dealEvents.userId, userId), eq(dealEvents.eventType, "claim")))
+    .orderBy(desc(dealEvents.createdAt))
+
+  const now = new Date()
+  return rows.map((r) => ({ ...r, isExpired: r.expiresAt < now }))
+}
+
+export async function getUserRedemptions(userId: number): Promise<UserRedemptionData[]> {
+  const rows = await db
+    .select({
+      dealId: deals.id,
+      dealTitle: deals.title,
+      discountText: deals.discountText,
+      redeemedAt: dealEvents.createdAt,
+      businessName: businesses.name,
+      businessSlug: businesses.slug,
+    })
+    .from(dealEvents)
+    .innerJoin(deals, eq(dealEvents.dealId, deals.id))
+    .innerJoin(businesses, eq(deals.businessId, businesses.id))
+    .where(and(eq(dealEvents.userId, userId), eq(dealEvents.eventType, "redeem")))
+    .orderBy(desc(dealEvents.createdAt))
+
+  return rows
 }
 
 // ─── Events ──────────────────────────────────────────────────────────────────

@@ -12,12 +12,19 @@ import {
   ArrowLeft,
   Sparkles,
   Home,
+  Flower2,
+  MapPin,
+  Phone,
+  Globe,
+  ArrowRight,
+  Tag,
   type LucideIcon,
 } from "lucide-react"
 import { db } from "@/db/client"
 import {
   getDealsByCategorySlug,
   getAllRealEstateListings,
+  getBusinessesByCategorySlug,
 } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
@@ -47,9 +54,9 @@ export async function generateMetadata({
   if (!cat) return { title: "Category — Lompoc Deals" }
   const catLower = cat.name.toLowerCase()
   return {
-    title: `Lompoc ${cat.name} Deals & Coupons — Local Discounts | Lompoc Deals`,
-    description: `Browse current ${catLower} deals and coupons from Lompoc, CA businesses. Free to claim, updated daily — no credit card needed.`,
-    keywords: [`lompoc ${catLower} deals`, `lompoc ${catLower} coupons`, `lompoc ${catLower}`, "lompoc ca deals"],
+    title: `Lompoc ${cat.name} Businesses & Deals — Local Directory | Lompoc Deals`,
+    description: `Browse ${catLower} businesses in Lompoc, CA — local listings, active deals, and coupons. Updated daily.`,
+    keywords: [`lompoc ${catLower}`, `lompoc ${catLower} businesses`, `lompoc ${catLower} deals`, "lompoc ca"],
   }
 }
 
@@ -72,17 +79,19 @@ export default async function CategoryPage({
       : searchParams?.tab === "sale"
         ? "for-sale"
         : null
-  const [deals, listings, viewer] = await Promise.all([
+
+  const [categoryBusinesses, deals, listings, viewer] = await Promise.all([
+    isRealEstate ? Promise.resolve([]) : getBusinessesByCategorySlug(params.slug),
     isRealEstate ? Promise.resolve([]) : getDealsByCategorySlug(params.slug),
-    isRealEstate
-      ? getAllRealEstateListings(tab ?? undefined)
-      : Promise.resolve([]),
+    isRealEstate ? getAllRealEstateListings(tab ?? undefined) : Promise.resolve([]),
     getViewer(),
   ])
-  const itemCount = isRealEstate ? listings.length : deals.length
-  const itemLabel = isRealEstate ? "listing" : "deal"
 
   const Icon = ICONS[cat.icon ?? ""] ?? Sparkles
+
+  // For real-estate, show listing count; for others, show business count
+  const heroCount = isRealEstate ? listings.length : categoryBusinesses.length
+  const heroLabel = isRealEstate ? "listing" : "business"
 
   return (
     <>
@@ -99,11 +108,11 @@ export default async function CategoryPage({
 
         <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
           <Link
-            href="/"
+            href="/businesses"
             className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-3 w-3" />
-            All categories
+            All businesses
           </Link>
 
           <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
@@ -115,8 +124,10 @@ export default async function CategoryPage({
                 {cat.name}
               </h1>
               <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-                {itemCount} active {itemCount === 1 ? itemLabel : `${itemLabel}s`} in {cat.name.toLowerCase()}
-                .
+                {heroCount} {heroCount === 1 ? heroLabel : `${heroLabel}s`} in Lompoc
+                {!isRealEstate && deals.length > 0 && (
+                  <> · <span className="text-primary font-medium">{deals.length} active {deals.length === 1 ? "deal" : "deals"}</span></>
+                )}
               </p>
             </div>
           </div>
@@ -134,9 +145,9 @@ export default async function CategoryPage({
         </div>
       </section>
 
-      {/* DEALS or LISTINGS */}
-      <section className="mx-auto max-w-6xl px-4 py-10 pb-16">
-        {isRealEstate && (
+      {/* REAL ESTATE: tabs + property grid */}
+      {isRealEstate && (
+        <section className="mx-auto max-w-6xl px-4 py-10 pb-16">
           <div className="mb-6 flex items-center gap-2 border-b">
             <Link
               href={`/category/${params.slug}`}
@@ -169,17 +180,113 @@ export default async function CategoryPage({
               For rent
             </Link>
           </div>
-        )}
-        {isRealEstate ? (
           <PropertyListingGrid listings={listings} />
-        ) : (
-          <DealGrid
-            deals={deals}
-            viewer={viewer}
-            fromPath={`/category/${params.slug}`}
-          />
-        )}
-      </section>
+        </section>
+      )}
+
+      {/* NON-REAL-ESTATE: business listings (primary) */}
+      {!isRealEstate && (
+        <>
+          <section className="mx-auto max-w-6xl px-4 py-10">
+            {categoryBusinesses.length === 0 ? (
+              <p className="py-16 text-center text-sm text-muted-foreground">
+                No businesses found in this category yet.
+              </p>
+            ) : (
+              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {categoryBusinesses.map((b) => (
+                  <li key={b.id}>
+                    <Link
+                      href={`/biz/${b.slug}`}
+                      className="group flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-accent">
+                          {b.logoUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={b.logoUrl}
+                              alt=""
+                              className="h-12 w-12 rounded-xl object-cover"
+                            />
+                          ) : (
+                            <Flower2 className="h-5 w-5 text-primary/70" />
+                          )}
+                        </div>
+                        <div className="flex-1 overflow-hidden">
+                          <h3 className="font-display text-lg font-semibold leading-tight tracking-tight line-clamp-2">
+                            {b.name}
+                          </h3>
+                          {b.activeDealCount > 0 && (
+                            <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
+                              <Tag className="h-3 w-3" />
+                              {b.activeDealCount}{" "}
+                              {b.activeDealCount === 1 ? "deal" : "deals"}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {b.description && (
+                        <p className="line-clamp-2 text-sm text-muted-foreground">
+                          {b.description}
+                        </p>
+                      )}
+
+                      <div className="mt-auto space-y-1 text-xs text-muted-foreground">
+                        {b.address && (
+                          <div className="flex items-start gap-1.5">
+                            <MapPin className="mt-0.5 h-3 w-3 flex-shrink-0 text-primary/60" />
+                            <span className="truncate">{b.address}</span>
+                          </div>
+                        )}
+                        {b.phone && (
+                          <div className="flex items-center gap-1.5">
+                            <Phone className="h-3 w-3 flex-shrink-0 text-primary/60" />
+                            {b.phone}
+                          </div>
+                        )}
+                        {b.website && (
+                          <div className="flex items-center gap-1.5">
+                            <Globe className="h-3 w-3 flex-shrink-0 text-primary/60" />
+                            <span className="truncate">
+                              {b.website.replace(/^https?:\/\//, "")}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-end pt-1 text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">
+                        View profile
+                        <ArrowRight className="ml-1 h-3 w-3" />
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          {/* DEALS: secondary section */}
+          {deals.length > 0 && (
+            <section className="mx-auto max-w-6xl px-4 pb-16">
+              <div className="mb-6 border-t pt-10">
+                <h2 className="font-display text-2xl font-semibold tracking-tight">
+                  Active deals in {cat.name}
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {deals.length} {deals.length === 1 ? "deal" : "deals"} available right now
+                </p>
+              </div>
+              <DealGrid
+                deals={deals}
+                viewer={viewer}
+                fromPath={`/category/${params.slug}`}
+              />
+            </section>
+          )}
+        </>
+      )}
     </>
   )
 }
