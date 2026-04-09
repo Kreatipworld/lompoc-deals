@@ -116,13 +116,14 @@ export default async function HomePage() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {categories.map((cat) => {
+          {categories.map((cat, i) => {
             const image = getCategoryImage(cat.slug)
             return (
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
-                className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col items-center justify-center text-white shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+                style={{ animationDelay: `${i * 55}ms` }}
+                className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col items-center justify-center text-white shadow-sm animate-fade-up card-lift hover:shadow-lg hover:-translate-y-1"
               >
                 {/* Photo background */}
                 {image ? (
@@ -130,13 +131,13 @@ export default async function HomePage() {
                   <img
                     src={image}
                     alt={cat.name}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600" />
                 )}
                 {/* Dark overlay for text readability */}
-                <div className="absolute inset-0 bg-black/35 group-hover:bg-black/45 transition-colors" />
+                <div className="absolute inset-0 bg-black/35 group-hover:bg-black/45 [transition:background-color_220ms_ease]" />
                 {/* Stronger bottom gradient for label */}
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" />
 
@@ -176,11 +177,12 @@ export default async function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredBusinesses.map((biz) => (
+              {featuredBusinesses.map((biz, i) => (
                 <Link
                   key={biz.id}
                   href={`/biz/${biz.slug}`}
-                  className="group flex gap-4 rounded-2xl border bg-background p-4 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+                  style={{ animationDelay: `${i * 80}ms` }}
+                  className="group flex gap-4 rounded-2xl border bg-background p-4 shadow-sm animate-fade-up card-lift hover:shadow-md hover:-translate-y-0.5"
                 >
                   {/* Logo / placeholder */}
                   <div className="flex-shrink-0">
@@ -435,14 +437,14 @@ export default async function HomePage() {
             <div className="flex flex-col gap-2 sm:flex-row md:flex-col">
               <Link
                 href="/for-businesses"
-                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
               >
                 List your business
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/subscribe"
-                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full border bg-background px-5 text-sm font-medium hover:bg-accent"
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full border bg-background px-5 text-sm font-medium [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-accent active:scale-[0.97]"
               >
                 <Mail className="h-4 w-4" />
                 Weekly digest

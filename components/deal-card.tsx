@@ -44,11 +44,13 @@ export function DealCard({
   viewer,
   fromPath,
   variant = "default",
+  staggerIndex = 0,
 }: {
   deal: DealCardData
   viewer: Viewer
   fromPath?: string
   variant?: "default" | "tripadvisor"
+  staggerIndex?: number
 }) {
   const isFavorited = viewer.favoritedDealIds.has(deal.id)
   const expired = isPast(deal.expiresAt)
@@ -58,7 +60,10 @@ export function DealCard({
 
   if (variant === "tripadvisor") {
     return (
-      <article className="group flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+      <article
+        className="group flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:shadow-lg hover:-translate-y-0.5 card-enter"
+        style={{ animationDelay: `${Math.min(staggerIndex, 5) * 60}ms` }}
+      >
         {/* IMAGE */}
         <Link href={`/biz/${deal.business.slug}`} className="relative block h-44 overflow-hidden flex-shrink-0">
           {deal.imageUrl ? (
@@ -66,7 +71,7 @@ export function DealCard({
             <img
               src={deal.imageUrl}
               alt={deal.title}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
             />
           ) : (
             <div
@@ -108,7 +113,7 @@ export function DealCard({
               <button
                 type="submit"
                 aria-label={isFavorited ? "Unsave deal" : "Save deal"}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-background/95 shadow transition hover:scale-110"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-background/95 shadow [transition:transform_160ms_cubic-bezier(0.23,1,0.32,1)] hover:scale-110"
               >
                 <Heart
                   className={
@@ -128,7 +133,7 @@ export function DealCard({
           {deal.business.categorySlug ? (
             <Link
               href={`/category/${deal.business.categorySlug}`}
-              className="mb-1.5 inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary hover:bg-primary/20 transition-colors"
+              className="mb-1.5 inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary hover:bg-primary/20 [transition:background-color_150ms_ease]"
             >
               <TypeIcon className="h-2.5 w-2.5" />
               {deal.business.categoryName ?? TYPE_META[deal.type].label}
@@ -178,7 +183,7 @@ export function DealCard({
                 />
                 <button
                   type="submit"
-                  className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-xs font-semibold text-primary-foreground transition hover:bg-primary/90 active:scale-[0.98]"
+                  className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-xs font-semibold text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.98]"
                 >
                   Get Deal
                   <ArrowRight className="h-3 w-3" />
@@ -203,7 +208,10 @@ export function DealCard({
   }
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-2 hover:shadow-xl">
+    <article
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm card-lift card-enter hover:-translate-y-1 hover:shadow-lg"
+      style={{ animationDelay: `${Math.min(staggerIndex, 5) * 60}ms` }}
+    >
       {/* MEDIA */}
       <div className="relative h-52 overflow-hidden">
         {deal.imageUrl ? (
@@ -211,7 +219,7 @@ export function DealCard({
           <img
             src={deal.imageUrl}
             alt={deal.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
           />
         ) : (
           <div
@@ -261,7 +269,7 @@ export function DealCard({
             <button
               type="submit"
               aria-label={isFavorited ? "Unsave deal" : "Save deal"}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-background/95 shadow-md transition hover:scale-110 hover:bg-background"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-background/95 shadow-md [transition:transform_160ms_cubic-bezier(0.23,1,0.32,1),background-color_160ms_ease] hover:scale-110 hover:bg-background"
             >
               <Heart
                 className={
@@ -323,7 +331,7 @@ export function DealCard({
               />
               <button
                 type="submit"
-                className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 active:scale-[0.98]"
+                className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.98]"
               >
                 Get Deal
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -333,7 +341,7 @@ export function DealCard({
               <input type="hidden" name="dealId" value={deal.id} />
               <button
                 type="submit"
-                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full border px-4 text-xs font-medium text-muted-foreground transition hover:border-foreground/30 hover:text-foreground"
+                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full border px-4 text-xs font-medium text-muted-foreground [transition:border-color_160ms_ease,color_160ms_ease] hover:border-foreground/30 hover:text-foreground"
               >
                 Mark as Redeemed
               </button>

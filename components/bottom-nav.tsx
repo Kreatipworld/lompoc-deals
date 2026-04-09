@@ -32,12 +32,17 @@ export function BottomNav() {
               key={href}
               href={href}
               className={cn(
-                "flex min-h-[44px] min-w-[56px] flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-1.5 text-[10px] font-medium transition-colors",
+                "relative flex min-h-[44px] min-w-[56px] flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-1.5 text-[10px] font-medium",
+                "transition-[transform,colors] duration-150 active:scale-95",
                 isActive
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
+              {/* Active pill indicator */}
+              {isActive && (
+                <span className="absolute top-1 h-1 w-5 rounded-full bg-primary opacity-70 animate-in fade-in-0 zoom-in-95 duration-200" />
+              )}
               <Icon
                 className="h-5 w-5"
                 strokeWidth={isActive ? 2.25 : 1.75}
