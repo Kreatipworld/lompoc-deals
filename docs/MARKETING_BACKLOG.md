@@ -1,5 +1,5 @@
 # Lompoc Deals — Marketing Backlog
-*Last updated: 2026-04-08 (Cycle 1, heartbeat 4) | Owner: CMO | Sorted by: revenue impact ÷ effort*
+*Last updated: 2026-04-09 (directory-first pivot — KRE-117) | Owner: CMO | Sorted by: revenue impact ÷ effort*
 
 ---
 
@@ -18,22 +18,22 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ### M-001 • Facebook Community Group Seeding
 **Channel:** Social (Facebook)  
-**Hypothesis:** Posting deal highlights in Lompoc Facebook groups (Lompoc Happenings, SYV Deals, etc.) 2–3x/week will drive 50+ signups/month at $0 CAC.  
+**Hypothesis:** Posting business spotlights + deal highlights in Lompoc Facebook groups 2–3x/week will drive 50+ signups/month at $0 CAC.  
 **Target KPI:** +50 signups/month, 10% MoM group follower growth  
 **Effort:** S  
 **Status:** this_cycle  
-**Template:** "Deal of the week: [Business] is offering [deal] — free to claim at lompoc-deals.vercel.app"  
-**Notes:** Post in both EN and ES. Pin top comment with signup link.
+**Templates:** See `/marketing/social/facebook-post-templates.md` — T1 Deal Spotlight, T2 Business Discovery, T3 Weekly Roundup  
+**Notes:** Post mix: 1 Business Spotlight + 1 Deal + 1 Roundup per week. Always EN + ES. Pin top comment with signup link.
 
 ---
 
 ### M-002 • Google Business Profile (GBP) Claim + Optimize
 **Channel:** SEO / Local Search  
 **Hypothesis:** Claiming and fully completing the Google Business Profile for Lompoc Deals will generate 20+ organic clicks/week within 30 days.  
-**Target KPI:** 20+ GBP clicks/week by day 30, top-3 for "Lompoc deals" search  
+**Target KPI:** 20+ GBP clicks/week by day 30, top-3 for "lompoc business directory" + "lompoc deals" searches  
 **Effort:** S  
-**Status:** this_cycle  
-**Notes:** Add categories (Deal/Coupon Website), photos of UI, weekly posts with featured deals, link to site.
+**Status:** this_cycle — blocked on human (board must claim the profile)  
+**Notes:** Category: "Internet company" primary + "Local business directory" secondary (NOT "Coupons & deals"). Description copy ready in `/marketing/seo/gbp-setup-checklist.md`. Full checklist updated for directory-first.
 
 ---
 
