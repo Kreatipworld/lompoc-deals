@@ -7,13 +7,21 @@ import { CategoryStrip } from "@/components/category-strip"
 import { SearchBar } from "@/components/search-bar"
 
 export const metadata = {
-  title: "Deals & Coupons — Lompoc Local Businesses",
+  title: "Lompoc Deals & Coupons — Browse Local Specials | Lompoc Deals",
   description:
-    "Browse active coupons, specials, and announcements from Lompoc, CA businesses. Updated daily. Free to claim.",
+    "Browse current deals and coupons from 155+ Lompoc, CA businesses — restaurants, salons, services, retail, and more. Updated daily, free to claim, no credit card.",
+  keywords: [
+    "lompoc deals",
+    "lompoc coupons",
+    "lompoc specials",
+    "lompoc discounts",
+    "lompoc ca deals",
+    "ofertas lompoc",
+  ],
   openGraph: {
-    title: "Deals & Coupons — Lompoc Local Businesses",
+    title: "Lompoc Deals & Coupons — Local Specials Updated Daily",
     description:
-      "Browse active coupons, specials, and announcements from Lompoc, CA businesses. Updated daily.",
+      "Browse current deals from 155+ Lompoc, CA businesses. Free to claim — no credit card needed.",
     images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
   },
 }

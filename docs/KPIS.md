@@ -5,8 +5,20 @@
 
 ## North Star Metric
 
-**Active Merchants** — businesses with at least 1 active deal in the last 30 days.  
-*Why:* More active merchants → more deals → more consumer return visits → more revenue.
+**Active Directory Businesses** — businesses with a complete profile (photo + hours + description) in the directory, regardless of active deals.
+*Why (updated for directory-first pivot, KRE-117):* The primary value is discovery — locals finding businesses. A complete profile drives profile views and foot traffic. Deals accelerate this but are not required. Active directory businesses → more consumer discovery events → more foot traffic → more revenue for merchants → more upgrades to paid tiers.
+
+*Secondary North Star (deals funnel):* **Active Merchants** — businesses with at least 1 active deal in the last 30 days. Tracked alongside the directory metric.
+
+### New Directory KPIs (added 2026-04-09)
+
+| KPI | Baseline | Week-4 Target | Why Track |
+|-----|----------|---------------|-----------|
+| Business profile completeness (photo + hours + desc) | Unknown | 50% of listed | Drives consumer discovery |
+| Business profile page views | Unknown | 500/week | Core directory metric |
+| Category page views | Unknown | 200/week | Discovery funnel top |
+| Search queries on-site | Unknown | baseline | Intent signal |
+| Businesses with 0 deals (directory-only) | Unknown | baseline | Size of directory-only segment |
 
 ---
 
@@ -197,6 +209,43 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 
 **What moved:** Rebrand fully shipped. Site is now conversion-ready visually.
 **What we're changing next:** Push for REQ-009 (Spanish fixes) + Stripe completion. Once Stripe is live, the paid upgrade funnel and outreach can begin with no further blockers from marketing side.
+
+---
+
+### Directory-First Pivot Update — 2026-04-09 (late)
+**CMO update:**
+
+**Strategic pivot: directory-first (KRE-117)**
+Board confirmed the platform is pivoting from a deals-first coupon platform to a TripAdvisor-style local business directory where deals are a premium feature. Key product changes:
+- Homepage now shows category cards + featured businesses (not a deals feed)
+- Deals moved to `/deals` page (still accessible, just not the homepage hero)
+- Category pages show businesses first, deals as a badge
+- New photo covers for all 8 category cards (Unsplash)
+- Emil design polish applied across all discovery pages
+
+**CMO assets updated for pivot:**
+- Homepage meta → "Lompoc Local Directory — Find Businesses, Deals & Things To Do"
+- For-businesses meta → "Get Your Lompoc Business Listed Free — Be Found by Locals"
+- `/deals` page meta → "Lompoc Deals & Coupons — Browse Local Specials"
+- Merchant cold outreach script → rewritten to lead with directory listing value prop
+- North Star KPI → updated to "Active Directory Businesses" (above)
+
+**New directory KPIs added** (see table above) — awaiting REQ-001 for tracking implementation.
+
+**Remaining launch gates (updated):**
+
+| Gate | Status |
+|------|--------|
+| Stripe activation | Blocked on board (3 env vars needed) |
+| REQ-009 Spanish text fixes | Pending CTO |
+| REQ-010/011 useTranslations (homepage + category sections) | Pending CTO |
+| REQ-012 Category SEO meta lookup | Pending CTO |
+| Social accounts (Instagram, Facebook, Nextdoor) | Blocked on human |
+| GBP claimed | Blocked on human |
+| Funnel + directory analytics (REQ-001) | Pending CTO |
+
+**What moved:** Full platform repositioning executed. Directory-first pivot is live.
+**What we're changing next:** Monitor Stripe activation (board action required). Once live, begin M-018 upgrade lifecycle and M-C2-2 merchant outreach sprint.
 
 ---
 
