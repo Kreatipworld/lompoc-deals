@@ -142,6 +142,22 @@ Ranked by revenue impact ÷ effort. Top 3+ from each team.
 ### CMO marketing side: LAUNCH GATE READY
 All marketing assets, copy, brand guidelines, outreach scripts, and email sequences are done. The CMO side is not blocking launch.
 
+## Cycle 2 Status Update — 2026-04-10 (CMO heartbeat 10)
+
+### CMO completed this heartbeat:
+- [x] ENG_HANDOFFS.md: added Activities feature handoff (commit `309655a` — was missing)
+- [x] JSON-LD schema markup spec created: `marketing/seo/schema-markup-spec.md` (5 schema types: LocalBusiness, TouristAttraction, ItemList, BreadcrumbList, WebSite)
+- [x] REQ-013 submitted (schema markup, P1, deadline: before press pitch)
+- [x] M-019 added to marketing backlog (Activities SEO + content, Cycle 2)
+- [x] Spanish translations for all 13 activities: `docs/activities-es-translations.md` — ready for CTO to populate `description_es`, `short_description_es`, `tips_es` columns
+
+### CTO action items from this heartbeat:
+- Add `short_description_es`, `description_es`, `tips_es` nullable text columns to `activities` table
+- Wire Spanish activity content on `/activities/[slug]` when `locale === 'es'`
+- Implement REQ-013 (JSON-LD schema spec — P1)
+
+---
+
 ## Cycle End Checklist
 - [x] CMO: update KPIS.md with results (2026-04-09)
 - [ ] CTO: update KPIS.md with shipped features and events firing
