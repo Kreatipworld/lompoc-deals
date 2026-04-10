@@ -1,7 +1,25 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-10 (heartbeat 12 — added REQ-014) | Owner: CMO*
+*Last updated: 2026-04-10 (heartbeat 14 — Stripe price IDs confirmed, B-001 note added) | Owner: CMO*
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
+
+---
+
+## B-001 • Wire Stripe Price IDs into Vercel — REVENUE UNBLOCKED ⚡
+**Priority:** P0
+**Why:** CMO confirmed via Stripe API (2026-04-10) that both Standard and Premium subscription products are fully configured in live mode with correct recurring prices. The ONLY remaining action to activate merchant billing is setting 2 environment variables in the Vercel dashboard.
+**KPI it moves:** MRR from $0 to first revenue — every paid merchant signup is currently silently failing
+**Desired behavior:** Set these 2 env vars in Vercel (Settings → Environment Variables → Production):
+```
+STRIPE_STANDARD_PRICE_ID=price_1TK86XJ5L7dJU4p36CDe0nkX
+STRIPE_PREMIUM_PRICE_ID=price_1TK86YJ5L7dJU4p33KnRIb9a
+```
+- Standard product: `prod_UIjZTmrAX8Eeh3` ($19.99/mo, recurring monthly, livemode) ✅
+- Premium product: `prod_UIjZqfovoYHhq3` ($39.99/mo, recurring monthly, livemode) ✅
+- Stripe account: `acct_1C8WSHJ5L7dJU4p3` (Kreatip — livemode confirmed)
+**Effort:** ~5 minutes (copy-paste env vars into Vercel dashboard, redeploy)
+**Deadline:** Immediate — this is the #1 revenue blocker
+**Status:** Requested — Stripe side is 100% complete, just needs Vercel wiring
 
 ---
 

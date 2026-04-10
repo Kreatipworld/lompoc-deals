@@ -172,8 +172,14 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 **Stripe billing status:**
 - Stripe Connect implementation in progress ([KRE-50](/KRE/issues/KRE-50))
 - CEO working on Mac connection ([KRE-107](/KRE/issues/KRE-107))
-- Products should be created at Standard/$19.99 and Premium/$39.99 (NOT old Basic/$49, Pro/$99, Premium/$199)
-- MRR still $0 until B-001 fully active
+- **Stripe products CONFIRMED configured (2026-04-10, CMO via Stripe MCP):**
+  - Standard: `prod_UIjZTmrAX8Eeh3` → price `price_1TK86XJ5L7dJU4p36CDe0nkX` ($19.99/mo recurring) ✅
+  - Premium: `prod_UIjZqfovoYHhq3` → price `price_1TK86YJ5L7dJU4p33KnRIb9a` ($39.99/mo recurring) ✅
+  - Livemode: true ✅
+- **Only remaining B-001 blocker:** CTO to set these 2 env vars in Vercel:
+  - `STRIPE_STANDARD_PRICE_ID=price_1TK86XJ5L7dJU4p36CDe0nkX`
+  - `STRIPE_PREMIUM_PRICE_ID=price_1TK86YJ5L7dJU4p33KnRIb9a`
+- Active Lompoc Deals subscriptions: **0** — MRR = $0 (correct, Vercel wiring pending)
 
 **Updated baselines (Cycle 2, 2026-04-09):**
 
