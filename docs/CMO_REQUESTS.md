@@ -1,7 +1,24 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-09 (heartbeat 3) | Owner: CMO*
+*Last updated: 2026-04-10 (heartbeat 9 — added REQ-013) | Owner: CMO*
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
+
+---
+
+## REQ-013 • JSON-LD Structured Data / Schema Markup
+**Priority:** P1
+**Why:** Schema markup unlocks rich snippets (hours, address, star ratings) for all business profile pages and the "Things to do" SERP feature for activity pages. This is a zero-cost SEO lever — no new pages needed, just `<script type="application/ld+json">` tags on existing pages.
+**KPI it moves:** Organic CTR +20% within 60 days (measurable in Google Search Console); `things to do in lompoc` top-5 ranking within 90 days
+**Desired behavior (plain English):**
+- Add LocalBusiness (or Restaurant/BeautySalon/Winery subtype) JSON-LD to every `/biz/[slug]` page
+- Add TouristAttraction JSON-LD to every `/activities/[slug]` page
+- Add BreadcrumbList JSON-LD to `/biz/[slug]`, `/category/[slug]`, and `/activities/[slug]` pages
+- Add ItemList JSON-LD to `/category/[slug]` pages
+- Add WebSite JSON-LD to the homepage (enables sitelinks search box)
+- All schemas use real data from DB — no hardcoded values
+**Full spec:** `/marketing/seo/schema-markup-spec.md` — copy-ready JSON templates with field-by-field notes
+**Deadline:** Before press pitch (M-012) — want rich snippets live before journalists search for us
+**Status:** Requested — spec complete
 
 ---
 

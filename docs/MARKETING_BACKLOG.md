@@ -240,15 +240,35 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ---
 
+---
+
+### M-019 • Activities / "Things To Do" SEO + Content Strategy
+**Channel:** SEO + Social (TikTok/Instagram)
+**Hypothesis:** A dedicated content strategy for the new `/activities` and `/activities/[slug]` pages (launched 2026-04-09) — including TouristAttraction JSON-LD schema, "Things to Do in Lompoc" social content, and Spanish activity descriptions — will capture tourist/visitor traffic for `things to do in lompoc` (500–1k/mo), add a new audience segment (visitors, new residents), and generate 50+ organic sessions/week within 60 days.
+**Target KPI:** Top-5 Google ranking for `things to do in lompoc` within 90 days; 50+ organic sessions/week from activities pages; 1,000+ views on first "Things To Do" TikTok video
+**Effort:** M
+**Status:** this_cycle (Cycle 2)
+**Assets:**
+- `/marketing/seo/schema-markup-spec.md` — TouristAttraction + BreadcrumbList + ItemList JSON-LD specs (REQ-013 submitted)
+- `/marketing/social/tiktok-script-templates.md` → Template 6 "Things to do in Lompoc" — ready to post
+- `/docs/activities-seed-data.md` — 10 seeded activities with categories, tags, seasonality
+**Notes:**
+- No Spanish descriptions on activity pages yet — CMO to provide ES copy for top 10 activities this cycle
+- Analytics gap: no `activity_view` event yet — add to REQ-001
+- Cross-link strategy: business profile pages for wineries/restaurants near an activity should link to nearby `/activities/[slug]` pages
+- Best timing: spring (flower fields), harvest (wine), weekend tourism roundups
+
+---
+
 ## Backlog Health
-*Last updated: 2026-04-08 (Cycle 2, heartbeat 5 — 18 items total)*
-- **Total experiments:** 18
-- **This cycle (Cycle 2):** M-001, M-002, M-003, M-C2-1, M-C2-2, M-C2-3, **M-016**, **M-018**
+*Last updated: 2026-04-10 (Cycle 2, heartbeat 9 — 19 items total)*
+- **Total experiments:** 19
+- **This cycle (Cycle 2):** M-001, M-002, M-003, M-C2-1, M-C2-2, M-C2-3, **M-016**, **M-018**, **M-019**
 - **Copy done — human execution pending:** 7 (M-001, M-002, M-003, M-004, M-007, M-009, M-013)
 - **Copy done — blocked on CTO infra:** 5 (M-005, M-006, M-008, M-012, **M-018**)
 - **Brief done — blocked on CTO (REQ-001 tracking):** 2 (M-011, M-015)
 - **Template done — blocked on CTO (REQ-004 digest cron):** 1 (M-014)
 - **Design doc done — REQ-006 needed:** 1 (M-010)
-- **New Cycle 2 additions:** M-016 (dispensary outreach), M-017 (wine tourism content), **M-018 (upgrade lifecycle)**
+- **New Cycle 2 additions:** M-016 (dispensary outreach), M-017 (wine tourism content), **M-018 (upgrade lifecycle)**, **M-019 (activities content + schema)**
 - **Key strategy shift (Cycle 2):** All outreach/social copy updated to lead with Free/$0 tier — removes merchant price objection entirely. Previous pitch: "worth $49." New pitch: "nothing to lose."
-- **New engineering requests added this cycle:** None — M-018 uses existing REQ-002 + B-001
+- **New engineering requests added this cycle:** REQ-013 (JSON-LD schema markup — unlocks rich snippets + "Things to do" SERP feature)

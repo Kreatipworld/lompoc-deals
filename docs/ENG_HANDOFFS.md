@@ -151,4 +151,40 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Activities / "Things To Do in Lompoc" — shipped 2026-04-09 (commit 309655a)
+
+**What shipped:**
+- New `activities` table + 10 seeded Lompoc activities (La Purísima Mission, Jalama Beach, Wine Ghetto, flower fields, murals, rocket launches, etc.)
+- `/activities` — browseable feed with category filter chips (outdoor, wine, history, adventure, family, dining, events, arts)
+- `/activities/[slug]` — detail pages with Leaflet map pin, tips, quick-info sidebar
+- Homepage: "Things to Do in Lompoc" section between Popular Businesses and How It Works
+- Map page: activities now appear as green pins alongside purple business pins
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app — scroll past Popular Businesses to see "Things to Do" section
+2. Click an activity card → should go to `/activities/[slug]` with map pin + tips
+3. Go to lompoc-deals.vercel.app/activities → full feed with filter chips
+4. Go to /map — green activity pins should appear alongside purple business pins
+5. Test filter chips on /activities (outdoor, wine, etc.)
+
+**Events it fires:** None yet (no analytics tracking on activity views — add activity_view event to REQ-001 backlog)
+
+**Marketing surfaces it unlocks:**
+- **SEO:** `/activities` and `/activities/[slug]` pages are indexable and target `things to do in lompoc` (500–1k/mo keyword). TouristAttraction JSON-LD schema needed on detail pages (see `marketing/seo/schema-markup-spec.md` — REQ-013).
+- **TikTok:** Template 6 "Things to Do in Lompoc this weekend" now has a real URL to point to. Content calendar week 1 starts with this template.
+- **Social:** Activity content is more shareable than deals — photos of missions, flower fields, wine ghetto → strong Instagram/Pinterest material.
+- **Visitor/tourist audience:** Opens a new acquisition segment (visitors, new residents) beyond locals-seeking-deals. 
+- **Internal linking:** Business profile pages for wineries/restaurants near an activity can cross-link to the activity — improves session depth.
+- **Wine tourism:** `/activities/wine-ghetto` + `/activities/[winery-slug]` + M-017 wine content series now all connect.
+
+**Known limitations:**
+- Activities are static seed data — no admin UI to add/edit activities yet (CTO backlog)
+- No analytics tracking on activity page views (add to REQ-001)
+- Homepage "Things to Do" section is hardcoded English — needs i18n wiring (add to REQ-010/REQ-011)
+- No Spanish descriptions on activity detail pages yet — CMO to provide ES copy for top 10 activities
+
+**CMO action:** Added M-019 to marketing backlog (Activities SEO + social content strategy). Schema markup spec written: `marketing/seo/schema-markup-spec.md`.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
