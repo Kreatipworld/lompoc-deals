@@ -130,21 +130,21 @@ export default async function BusinessPage({
             <span className="font-medium text-foreground">{business.name}</span>
           </nav>
 
-          {/* Eyebrow */}
-          <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            <span>Business</span>
-            <span className="text-foreground/30">·</span>
-            <span>Lompoc, California</span>
-            {business.category && (
-              <>
-                <span className="text-foreground/30">·</span>
-                <span>{business.category.name}</span>
-              </>
-            )}
-          </div>
-
           {/* HEADER CARD — logo overlaps cover when present */}
           <div className={`rounded-3xl border bg-card p-6 shadow-lg sm:p-8 ${business.coverUrl ? "-mt-10 sm:-mt-14" : "mt-4"}`}>
+            {/* Eyebrow */}
+            <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <span>Business</span>
+              <span className="text-foreground/30">·</span>
+              <span>Lompoc, California</span>
+              {business.category && (
+                <>
+                  <span className="text-foreground/30">·</span>
+                  <span>{business.category.name}</span>
+                </>
+              )}
+            </div>
+
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
               {/* Logo */}
               <div className="flex-shrink-0">
