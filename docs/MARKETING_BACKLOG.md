@@ -207,16 +207,21 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A "Lompoc Wine Country Deals" content series (winery tasting deals, Santa Rita Hills guides, seasonal posts) will reach wine-tourism audiences who share high-value shareable content, driving 100+ site visits/week and positioning Lompoc Deals as the guide to Lompoc Wine Country.  
 **Target KPI:** 100 site visits/week from wine content, 5 winery merchants upgraded to Standard/Premium  
 **Effort:** M  
-**Status:** copy_done — all assets ready, pending human execution + CTO SEO routes
+**Status:** copy_done — all assets ready, pending human execution (accounts) + winery outreach
 **Assets:**
-- `/marketing/social/wine-content-calendar.md` — 3 post templates (EN/ES), seasonal calendar (spring through harvest), Pinterest strategy, metrics tracker
-- `/marketing/sales/winery-partnership-pitch.md` — outreach email sequence, talking points, objection handling, deal type ideas, 5 target winery targeting guide
-- `/marketing/seo/wine-seo-page-spec.md` — full copy spec for `/lompoc/wine-deals` and `/lompoc/wineries` (H1s, intros EN/ES, meta, JSON-LD, CTO implementation notes)
+- `/marketing/social/wine-tourism-content-package.md` (NEW 2026-04-10) — complete 4-asset package:
+  - Asset 1: TikTok script "Lompoc Wine Ghetto" (30s, EN+ES captions, filming notes)
+  - Asset 2: Instagram carousel "A Walkable Wine Experience" (8 slides, EN+ES captions)
+  - Asset 3: Long-form guide "A Weekend in Lompoc Wine Country" (blog/Facebook, ~600 words, SEO-ready)
+  - Asset 4: Points to existing `winery-partnership-pitch.md`
+  - Posting schedule: Cycle 3 Week 1–4
+- `/marketing/sales/winery-partnership-pitch.md` — Premium upgrade outreach (pricing corrected ✓)
+- `/marketing/seo/wine-seo-page-spec.md` — copy spec for wine SEO pages
 **Notes:**
-- Wineries tab now live on homepage — content can drive to it directly
-- Santa Rita Hills + Wine Ghetto are established tourist draws — align with that identity
-- Best timing: harvest season (Aug–Oct), Valentine's Day, Mother's Day — plan ahead
-- Seasonal tasting deals are visually excellent for Instagram/TikTok
+- Wine Ghetto + Sta. Rita Hills content is most shareable content type on the site
+- Post TikTok/IG content first → use engagement as social proof in winery pitch
+- Best timing: harvest season (Aug–Oct), Valentine's Day, Mother's Day
+- SEO targets: `lompoc wine tasting`, `lompoc wine ghetto`, `santa rita hills wine tasting` (500–1k/mo each)
 
 ---
 
