@@ -50,6 +50,13 @@
       "when": 1775608360962,
       "tag": "0006_add_deal_events",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1775756839622,
+      "tag": "0007_brave_zarek",
+      "breakpoints": true
     }
   ]
 }
