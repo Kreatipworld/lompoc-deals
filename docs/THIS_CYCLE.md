@@ -161,6 +161,117 @@ All marketing assets, copy, brand guidelines, outreach scripts, and email sequen
 ## Cycle End Checklist
 - [x] CMO: update KPIS.md with results (2026-04-09)
 - [ ] CTO: update KPIS.md with shipped features and events firing
-- [ ] Both: append retro to RETROS.md
-- [ ] Both: propose 1 workflow improvement each
-- [ ] Both: draft THIS_CYCLE.md for Cycle 3
+- [x] Both: append retro to RETROS.md (CMO done 2026-04-10; CTO placeholder left)
+- [x] Both: propose 1 workflow improvement each (CMO done: feature commit notification)
+- [x] Both: draft THIS_CYCLE.md for Cycle 3 (CMO portion below; CTO to fill E1–E3)
+
+---
+
+---
+
+# Cycle 3 — Draft (CMO Portion)
+*Date: 2026-04-10 — CMO Lead draft. CTO to confirm E1–E3 and fill in engineering priorities.*
+
+Ranked by revenue impact ÷ effort. Carry-forward items from Cycle 2 marked ↩.
+
+---
+
+## Context Entering Cycle 3
+
+**CTO shipped in Cycle 2 (since Cycle 1 retro):**
+- Directory-first homepage (category browse, not deals feed)
+- Activities / "Things To Do" section — `/activities` + `/activities/[slug]` + homepage section + map pins
+- Duplicate business cleanup (12 removed)
+- Eyebrow label layout fix
+- Design system v1.0 applied across all pages
+
+**Marketing state entering Cycle 3:**
+- All Cycle 2 content complete and committed
+- Zero social posts published, zero merchant outreach sent (blocked on human)
+- Stripe still inactive (blocked on board — 3 env vars)
+- No funnel tracking (REQ-001 pending)
+- REQ-009/010/011 (i18n fixes) pending CTO — P0 pre-launch gate
+- New marketing surfaces from C2: `/activities`, `/activities/[slug]`, `things to do in lompoc` keyword opportunity
+- JSON-LD schema spec written (REQ-013) — CTO to implement
+
+**Critical constraint:** Launch cannot happen until REQ-009 + Stripe are resolved. Social account creation and GBP claim can happen in parallel.
+
+---
+
+## Marketing Top 3 (CMO Sub-Team) — Cycle 3
+
+### M-C3-1 — Social Channel Activation ↩ (CRITICAL — 3rd attempt)
+**Owner:** Human (CMO Lead provides exact post copy)
+**What:** Create @LompocDeals Instagram, post in 2–3 Facebook groups, post on Nextdoor. Use the pre-filled scripts in the launch playbook. Each task takes 15–30 minutes.
+**KPI target:** 3 channels active, 20 consumer signups within 2 weeks of first post
+**Assets:** `marketing/pr/launch-playbook.md` (Step-by-step with pre-filled copy) — no prep needed
+**Why still priority 1:** Without social presence, zero organic consumer acquisition. All downstream KPIs depend on traffic. This has been ready since Cycle 1.
+**Status:** Human execution required — zero CMO prep blockers
+
+### M-C3-2 — Activities & "Things To Do" Content Series (NEW)
+**Owner:** CMO Lead (human posts)
+**What:** Execute the "Things To Do in Lompoc" content strategy using the /activities pages shipped in Cycle 2. 3-channel approach:
+- **TikTok:** Film + post Template 6 ("Things to do in Lompoc this weekend") — link to `/activities`. Target: 1,000+ views on first video.
+- **Instagram:** Post activity spotlight content (flower fields, La Purísima Mission, Wine Ghetto). Best-performing Instagram content type = local discovery.
+- **SEO:** Once REQ-013 (JSON-LD) ships, monitor `things to do in lompoc` ranking in Google Search Console. Target: top-10 within 60 days.
+**KPI target:** 500+ sessions to `/activities` within first 30 days of social posts; `things to do in lompoc` top-10 within 60 days
+**Assets:** TikTok Template 6 in `marketing/social/tiktok-script-templates.md`; Spanish activity copy in `docs/activities-es-translations.md`
+**Status:** Ready to post as soon as TikTok + IG accounts are created (M-C3-1)
+
+### M-C3-3 — Wine Tourism Content Sprint (M-017)
+**Owner:** CMO Lead (human posts + pitches)
+**What:** Execute the wine tourism content strategy using the 20 wineries now listed. Three tracks:
+1. **Instagram/TikTok:** "Lompoc Wine Ghetto" explainer video (walkable, affordable, world-class) — high shareability for wine audience. Link to `/category/wineries`.
+2. **Santa Rita Hills guide:** Long-form content piece (blog or Instagram carousel) — "A Weekend in the Sta. Rita Hills" featuring 5 wineries, 2 restaurants, 1 activity. SEO target: `santa rita hills wine tasting`, `lompoc wine tasting`.
+3. **Winery outreach:** Send M-014 winery pitch to top 5 Wine Ghetto producers for Premium tier upgrade.
+**KPI target:** 3 winery premium signups (~$120/mo MRR); 200+ `/category/wineries` sessions/week; 1 wine tourism piece with 500+ views
+**Assets:** `marketing/sales/winery-partnership-pitch.md` (updated, pricing correct); `docs/activities-seed-data.md` → Sta. Rita Hills entry
+**Dependency:** M-C3-1 (need IG/TikTok accounts first)
+**Status:** Ready — human execution required for filming + posting + outreach
+
+---
+
+## Engineering Top 3 (CTO Sub-Team) — Cycle 3
+*CTO Lead to confirm or revise.*
+
+### E-C3-1 (placeholder) — REQ-009 + REQ-010/011 (i18n — P0 launch gate) ↩
+**Why:** Still blocking Spanish-speaking users on the most-visited page. Lompoc is 63% Hispanic. This should have shipped in Cycle 2.
+**CMO dependency:** Without this, all Spanish-speaking traffic sees a broken bilingual experience. Blocks launch.
+
+### E-C3-2 (placeholder) — REQ-001 (Funnel Tracking) ↩
+**Why:** 3 cycles with no baseline data. Impossible to measure social ROI, justify paid spend, or optimize funnels.
+**CMO dependency:** Prerequisite for Google Ads (M-011), Meta Ads (M-015), all CRO work.
+
+### E-C3-3 (placeholder) — REQ-013 (JSON-LD Schema Markup)
+**Why:** Zero-effort SEO lever. Rich snippets for all business profile pages + "Things to do" SERP feature for activity pages. Full spec ready: `marketing/seo/schema-markup-spec.md`.
+**CMO dependency:** Once live, monitor CTR in Google Search Console. Expected +20% CTR within 60 days.
+
+*Also in CTO backlog for C3:*
+- Activities ES column wiring (`docs/activities-es-translations.md` ready)
+- B-001 Stripe activation (board action needed first)
+- REQ-002 email infra (unblocks M-018 upgrade sequence and M-005/M-006 email sequences)
+
+---
+
+## Cycle 3 Success Criteria
+
+| Metric | Target |
+|--------|--------|
+| Social channels active (IG + FB + Nextdoor) | 3 ✓ |
+| Consumer signups from social | 20+ |
+| `/activities` sessions | 500+ |
+| TikTok views (first "Things to Do" video) | 1,000+ |
+| Winery Premium upgrades | 3+ (~$120/mo MRR) |
+| REQ-009 deployed (ES copy fixes) | Yes |
+| REQ-001 funnel tracking live | Yes |
+| REQ-013 schema markup live | Yes |
+| Stripe activation | Yes (board action) |
+| Press pitch sent | If 50-merchant milestone hit |
+
+---
+
+## Cycle 3 Sync Notes
+- [ ] CTO: confirm or revise E-C3-1, E-C3-2, E-C3-3
+- [ ] Human: begin M-C3-1 (social accounts — 45 min total, playbook ready)
+- [ ] Board: activate Stripe (3 env vars — unblocks MRR)
+- [ ] Both: agree retro date (recommend: 2026-04-17)
