@@ -1,7 +1,22 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-10 (heartbeat 9 — added REQ-013) | Owner: CMO*
+*Last updated: 2026-04-10 (heartbeat 12 — added REQ-014) | Owner: CMO*
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
+
+---
+
+## REQ-014 • Activities Pages — SEO Metadata + i18n Labels
+**Priority:** P1
+**Why:** `/activities` and `/activities/[slug]` currently have no `generateMetadata` — Next.js falls back to defaults. These pages target `things to do in lompoc` (500–1k/mo), `la purisima mission` (500–1k/mo), and `jalama beach lompoc` (100–500/mo). Proper metadata + bilingual UI labels are needed to rank.
+**KPI it moves:** `/activities` top-5 for `things to do in lompoc` within 90 days; activity detail pages ranking for their own name queries
+**Desired behavior (plain English):**
+- `/activities/page.tsx`: add `export const metadata` with title, description, OG, canonical (copy-ready strings in spec)
+- `/activities/[slug]/page.tsx`: add `generateMetadata` that builds title/description from the activity's own DB fields (pattern in spec)
+- Wire bilingual UI labels (filter chip names, section labels, CTA section, breadcrumb) — copy-ready EN+ES strings in spec
+- Add SEO footer paragraph below activity grid on index page (spec has EN+ES copy)
+**Full spec:** `marketing/seo/activities-seo-spec.md` — copy-ready title/description/OG strings + TypeScript code patterns + all EN+ES UI labels
+**Deadline:** Before social posting begins (M-C3-2) — want pages indexed before driving traffic
+**Status:** Requested — spec complete
 
 ---
 
