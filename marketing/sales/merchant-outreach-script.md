@@ -82,8 +82,10 @@
 | "I don't have time." | "It takes 5 minutes. I can set it up for you based on your Google listing — just say yes." |
 | "I don't use social media." | "This isn't social media — it's a local deals directory. Customers come looking for deals, find you, and walk in." |
 | "How do I know anyone will see it?" | "We have [X] active businesses and [Y] subscribers to our weekly deal digest. Your deals go in the feed immediately." *(Once REQ-003 ships: "I can show you view counts right in your dashboard.")* |
-| "Is it really free?" | "Yes. The basic listing is free forever. We also have a Pro plan for $49/month if you want extra features, but the free tier is fully functional." |
+| "Is it really free?" | "Yes. The basic listing is free forever. Standard is $19.99/month and Premium is $39.99/month if you want deal analytics and priority placement — but the free tier is fully functional with unlimited deal posts." |
 | "We already use Yelp / Google." | "Lompoc Deals is hyper-local and free to post deals — you can't post coupons on Yelp or Google for free. It's complementary, not a replacement." |
+| "We're already in the Chamber directory." | "The Chamber is great for B2B referrals. Lompoc Deals is consumer-facing — locals and tourists actively browsing for deals and places to go. Different audience, and free to list alongside your Chamber membership." |
+| "We have a listing on LompocOnline.us." | "LompocOnline.us is a national template site — it's auto-populated and no one locally is maintaining it. Lompoc Deals is built specifically for this community, bilingual, and consumers actually browse it for deals. Two different things." |
 
 ---
 
