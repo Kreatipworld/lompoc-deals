@@ -134,7 +134,8 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A small brand protection campaign on exact-match "Lompoc deals" and "Lompoc coupons" will capture high-intent searchers for $1–2 CPC = 25–50 signups at $50/month spend.  
 **Target KPI:** 25 new signups/month at <$2 CPL  
 **Effort:** S  
-**Status:** backlog  
+**Status:** brief_done — blocked on CTO (REQ-001 funnel tracking)  
+**Assets:** `marketing/paid/google-ads-brief.md` — complete campaign brief with ad groups, keywords, headlines, descriptions, landing page notes (EN + ES)  
 **Blocker:** Needs REQ-001 (signup funnel tracking) first — do not spend on paid without conversion data.  
 **Notes:** Escalate to CEO if spend exceeds $500/month.
 
@@ -167,7 +168,8 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 **Hypothesis:** A curated weekly digest of top 5 deals, sent every Tuesday 9am PT, will keep subscribers engaged (40%+ open rate) and drive 200 site visits/week per send.  
 **Target KPI:** 40% open rate, 200 weekly visits from email  
 **Effort:** S (template), M (automation)  
-**Status:** backlog  
+**Status:** copy_done — blocked on CTO (REQ-004 digest cron)  
+**Assets:** `marketing/email/weekly-digest-template.md` — complete EN+ES template, subject line A/B rotation, dynamic deal slot structure, unsubscribe copy, send-time rationale  
 **Blocker:** Resend email API integrated but digest cron needs QA (REQ-004 from CTO)
 
 ---
@@ -266,14 +268,15 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 ---
 
 ## Backlog Health
-*Last updated: 2026-04-10 (Cycle 2, heartbeat 9 — 19 items total)*
-- **Total experiments:** 19
-- **This cycle (Cycle 2):** M-001, M-002, M-003, M-C2-1, M-C2-2, M-C2-3, **M-016**, **M-018**, **M-019**
-- **Copy done — human execution pending:** 7 (M-001, M-002, M-003, M-004, M-007, M-009, M-013)
+*Last updated: 2026-04-11 (Cycle 3, heartbeat 1 — 19 items + C3 additions)*
+- **Total experiments:** 19 + M-C3-1, M-C3-2, M-C3-3
+- **This cycle (Cycle 3):** M-C3-1 (social activation), M-C3-2 (activities content), M-C3-3 (wine tourism)
+- **Copy done — human execution pending:** 8 (M-001, M-002, M-003, M-004, M-007, M-009, M-013, M-C3-1)
 - **Copy done — blocked on CTO infra:** 5 (M-005, M-006, M-008, M-012, **M-018**)
+- **Copy done — blocked on CTO (REQ-004 digest cron):** 1 (M-014)
 - **Brief done — blocked on CTO (REQ-001 tracking):** 2 (M-011, M-015)
-- **Template done — blocked on CTO (REQ-004 digest cron):** 1 (M-014)
 - **Design doc done — REQ-006 needed:** 1 (M-010)
+- **Canva visual assets pending human selection:** 2 (Wine Ghetto IG post, Things To Do IG post — see `marketing/brand/canva-assets-cycle3.md`)
 - **New Cycle 2 additions:** M-016 (dispensary outreach), M-017 (wine tourism content), **M-018 (upgrade lifecycle)**, **M-019 (activities content + schema)**
 - **Key strategy shift (Cycle 2):** All outreach/social copy updated to lead with Free/$0 tier — removes merchant price objection entirely. Previous pitch: "worth $49." New pitch: "nothing to lose."
 - **New engineering requests added this cycle:** REQ-013 (JSON-LD schema markup — unlocks rich snippets + "Things to do" SERP feature)
