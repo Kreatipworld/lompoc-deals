@@ -211,23 +211,43 @@ Ranked by revenue impact ÷ effort. Carry-forward items from Cycle 2 marked ↩.
 ### M-C3-2 — Activities & "Things To Do" Content Series (NEW)
 **Owner:** CMO Lead (human posts)
 **What:** Execute the "Things To Do in Lompoc" content strategy using the /activities pages shipped in Cycle 2. 3-channel approach:
-- **TikTok:** Film + post Template 6 ("Things to do in Lompoc this weekend") — link to `/activities`. Target: 1,000+ views on first video.
-- **Instagram:** Post activity spotlight content (flower fields, La Purísima Mission, Wine Ghetto). Best-performing Instagram content type = local discovery.
-- **SEO:** Once REQ-013 (JSON-LD) ships, monitor `things to do in lompoc` ranking in Google Search Console. Target: top-10 within 60 days.
+- **TikTok:** Film + post — ready-to-film scripts in `marketing/social/tiktok-thingstodo-c3-scripts.md` (Script A EN 35s, Script B ES 35s). Zero prep needed.
+- **Instagram:** 4 branded IG post candidates generated in Canva — pick one, save, post. See `marketing/brand/canva-assets-cycle3.md`.
+- **SEO:** Once REQ-013 (JSON-LD) ships, monitor `things to do in lompoc` in Google Search Console. Target: top-10 within 60 days.
 **KPI target:** 500+ sessions to `/activities` within first 30 days of social posts; `things to do in lompoc` top-10 within 60 days
-**Assets:** TikTok Template 6 in `marketing/social/tiktok-script-templates.md`; Spanish activity copy in `docs/activities-es-translations.md`
+**Assets (all CMO-complete):**
+- `marketing/social/tiktok-thingstodo-c3-scripts.md` — Scripts A + B, camera-ready
+- `marketing/brand/canva-assets-cycle3.md` — 4 IG post candidates (pick A–D)
+- `marketing/seo/activities-seo-spec.md` — metadata spec for CTO
 **Status:** Ready to post as soon as TikTok + IG accounts are created (M-C3-1)
 
 ### M-C3-3 — Wine Tourism Content Sprint (M-017)
 **Owner:** CMO Lead (human posts + pitches)
 **What:** Execute the wine tourism content strategy using the 20 wineries now listed. Three tracks:
-1. **Instagram/TikTok:** "Lompoc Wine Ghetto" explainer video (walkable, affordable, world-class) — high shareability for wine audience. Link to `/category/wineries`.
-2. **Santa Rita Hills guide:** Long-form content piece (blog or Instagram carousel) — "A Weekend in the Sta. Rita Hills" featuring 5 wineries, 2 restaurants, 1 activity. SEO target: `santa rita hills wine tasting`, `lompoc wine tasting`.
-3. **Winery outreach:** Send M-014 winery pitch to top 5 Wine Ghetto producers for Premium tier upgrade.
+1. **Instagram/TikTok:** Script C in `tiktok-thingstodo-c3-scripts.md` — "The Wine Ghetto" 30s, camera-ready. 4 IG post candidates in `canva-assets-cycle3.md`.
+2. **Santa Rita Hills guide:** Long-form content in `marketing/social/wine-tourism-content-package.md` (Assets 1–4 complete).
+3. **Winery outreach:** Named pitches for 5 producers in `marketing/sales/winery-pitch-named.md` — fill contact name + send.
 **KPI target:** 3 winery premium signups (~$120/mo MRR); 200+ `/category/wineries` sessions/week; 1 wine tourism piece with 500+ views
-**Assets:** `marketing/sales/winery-partnership-pitch.md` (updated, pricing correct); `docs/activities-seed-data.md` → Sta. Rita Hills entry
-**Dependency:** M-C3-1 (need IG/TikTok accounts first)
-**Status:** Ready — human execution required for filming + posting + outreach
+**Assets (all CMO-complete):**
+- `marketing/sales/winery-pitch-named.md` — Brewer-Clifton, Longoria, Fiddlehead, Stolpman, Wine Factory
+- `marketing/social/wine-tourism-content-package.md` — TikTok, IG carousel, long-form guide
+- `marketing/social/tiktok-thingstodo-c3-scripts.md` — Script C (Wine Ghetto)
+**Dependency:** M-C3-1 (need IG/TikTok accounts first for posts; winery email pitches can go out NOW)
+**Status:** Winery email outreach ready immediately. Social posts ready once accounts live.
+
+---
+
+## Additional C3 CMO Assets Completed (beyond original top 3)
+
+| Asset | File | Activate |
+|-------|------|---------|
+| First Week Sales Sprint (5-day action plan) | `docs/FIRST_WEEK_SPRINT.md` | NOW |
+| GBP 4-week post schedule | `marketing/seo/gbp-post-schedule.md` | When GBP claimed |
+| Competitive analysis | `docs/COMPETITIVE-ANALYSIS.md` | Reference for pitches |
+| Rocket launch reactive kit | `marketing/social/rocket-launch-reactive-kit.md` | April 13 LAUNCH |
+| Flower Festival campaign | `marketing/social/flower-festival-campaign.md` | Activate May 28 |
+| Creator/partner outreach | `marketing/sales/creator-partner-outreach.md` | DM @explore_lompoc NOW |
+| Sta. Rita Hills Wine & Fire event | see creator-partner-outreach.md | Activate late July |
 
 ---
 
