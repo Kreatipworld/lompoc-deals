@@ -16,37 +16,45 @@ These should be left as-is or deleted by the human. Do not use for publishing.
 
 ---
 
-## Cycle 3 Generated Assets
+## Cycle 3 Saved Designs (in Canva account — ready to edit + export)
 
-### Asset 1: Wine Ghetto Instagram Post (M-017, C3 Week 1)
-*Job ID: 344739a6-f2da-45b0-ab5f-40dd5f202b5b*
-*Content: "The most underrated wine destination in California" — Santa Rita Hills Pinot Noir, bilingual EN+ES*
+### Asset 1: Wine Ghetto Instagram Post ✅ SAVED
+*Design ID: DAHGmZ_qfyM | "Instagram Post - Lompoc Wine Ghetto"*
+**Edit now:** https://www.canva.com/d/CrCil4hmxCajMgv
 
-4 design candidates generated. **Human: click each preview, pick one, then ask CMO to save it to the account.**
+Candidate A saved. Open link, adjust text to finalize URL/copy, export as PNG, post.
 
-| Candidate | Preview URL |
-|-----------|------------|
-| A | https://design.canva.ai/SfWtYIR512v5Leo |
-| B | https://design.canva.ai/iDjzZz7vzAQ_cn0 |
-| C | https://design.canva.ai/0oUtSgpYSU3hJpI |
-| D | https://design.canva.ai/-HuiUslEskE2JEW |
-
-Once selected, CMO will call `create-design-from-candidate` to save it permanently and then finalize text edits.
+*Other candidates still available if you prefer a different look:*
+- B: https://design.canva.ai/iDjzZz7vzAQ_cn0
+- C: https://design.canva.ai/0oUtSgpYSU3hJpI
+- D: https://design.canva.ai/-HuiUslEskE2JEW
 
 ---
 
-### Asset 2: Things To Do in Lompoc Instagram Post (M-C3-2, C3 Week 2)
-*Job ID: bd7792f7-8c84-412b-9838-656197e47509*
-*Content: "Things to Do in Lompoc, CA" — Mission, Jalama Beach, Flower Fields, Rocket Launches, bilingual*
+### Asset 2: Things To Do in Lompoc Instagram Post ✅ SAVED
+*Design ID: DAHGmSGyqKM | "Instagram Post - Things to Do in Lompoc, CA"*
+**Edit now:** https://www.canva.com/d/7jcsxT1btdDmA2z
 
-4 design candidates generated. **Human: click each preview, pick one, then ask CMO to save it.**
+Candidate A saved. Open link, finalize copy, export as PNG, post.
 
-| Candidate | Preview URL |
-|-----------|------------|
-| A | https://design.canva.ai/LyBgVmed_jvPuvz |
-| B | https://design.canva.ai/xfTS-nC3AQ-p-l5 |
-| C | https://design.canva.ai/iIylTMN5lpozlNc |
-| D (3-page) | https://design.canva.ai/DHfkYc4lvQ102v3 |
+*Other candidates:*
+- B: https://design.canva.ai/xfTS-nC3AQ-p-l5
+- C: https://design.canva.ai/iIylTMN5lpozlNc
+- D: https://design.canva.ai/DHfkYc4lvQ102v3
+
+---
+
+### Asset 3: Rocket Launch Instagram Story ✅ SAVED (TIME-SENSITIVE — April 13)
+*Design ID: DAHGmX80VAo | "Your Story - URGENT: LAUNCH TOMORROW"*
+**Edit now:** https://www.canva.com/d/Mshf04_fvAijiYk
+**Post:** TODAY (April 11) or Monday morning (April 13) — Falcon 9 / Starlink 17-27 launches April 13 from Vandenberg SFB
+
+Open link → verify date/text → export → post as Instagram Story.
+
+*Other rocket launch Story candidates (job 8e021156):*
+- B: https://design.canva.ai/86rSOo3tBdSUlGZ
+- C: https://design.canva.ai/KEhn8r89LmCQ2kn
+- D: https://design.canva.ai/cXllhupnZXqFueX
 
 ---
 
