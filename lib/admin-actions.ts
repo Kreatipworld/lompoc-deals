@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { eq, sql, and, gt, ne } from "drizzle-orm"
+import { eq, sql, and, gt } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { businesses, deals, users, businessClaims, events, dealEvents } from "@/db/schema"
