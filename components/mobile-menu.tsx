@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
 import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Mail, Building2, User, LogIn, UserPlus } from "lucide-react"
@@ -19,7 +20,13 @@ const NAV_ITEMS = [
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
+
+  // Mount guard for portal (SSR safety)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Close menu on route change
   useEffect(() => {
@@ -38,18 +45,8 @@ export function MobileMenu() {
     }
   }, [open])
 
-  return (
+  const menuPortal = mounted ? createPortal(
     <>
-      {/* Hamburger button — mobile only */}
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Open navigation menu"
-        aria-expanded={open}
-        className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:hidden"
-      >
-        <Menu className="h-5 w-5" />
-      </button>
-
       {/* Backdrop */}
       {open && (
         <div
@@ -134,6 +131,23 @@ export function MobileMenu() {
           </div>
         </nav>
       </div>
+    </>,
+    document.body
+  ) : null
+
+  return (
+    <>
+      {/* Hamburger button — mobile only */}
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Open navigation menu"
+        aria-expanded={open}
+        className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:hidden"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+
+      {menuPortal}
     </>
   )
 }
