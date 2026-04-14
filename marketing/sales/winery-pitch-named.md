@@ -21,6 +21,12 @@ When a winery is ready to sign up for Premium, send them directly to:
 `lompoc-deals.vercel.app/signup?plan=premium`  
 This pre-selects the "Go Premium" option ($39.99/mo) — they go straight to Stripe checkout, no separate billing step. Use this URL in follow-up emails after a winery agrees to sign up.
 
+**Updated 2026-04-14 — 30-day free trial is now fully deliverable:**  
+The platform now has a `plan_override` field on business accounts. When you offer a "30-day free trial of Premium" and they accept, email the CTO to set `plan_override = 'premium'` with a 30-day `grace_period_ends_at`. No coupon code needed, no Stripe payment required upfront. After the trial period, the account reverts to Free unless they subscribe. This makes the trial offer in the pitch emails below 100% real and easy to fulfill.
+
+**Updated 2026-04-14 — First deal posts at signup:**  
+The new business signup is a multi-step wizard. Step 3 of the wizard prompts the merchant to post their first deal before they finish signing up. When you close a winery, their deal goes live the moment they complete the wizard (~5 minutes). This is a strong pitch point: "You'll be live with your first deal posted in under 5 minutes."
+
 ---
 
 ## Pitch 1 — Brewer-Clifton

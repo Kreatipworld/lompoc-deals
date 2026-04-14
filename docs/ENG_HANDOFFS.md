@@ -187,6 +187,60 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Mobile Nav + Business Signup Wizard + Plan Features — shipped 2026-04-14 (commit 5d82081 + 0eb81da + 7d217ce)
+
+**What shipped (this is a multi-feature release):**
+
+1. **Mobile hamburger menu** — Slide-out drawer on mobile (`<sm`). All major nav sections included: Home, Deals, Search, Directory, Map, Subscribe, For Businesses, Account, Sign In/Sign Up. Active-link highlighting, body-scroll lock.
+
+2. **Business signup wizard** — Multi-step form replacing the single-page signup. Includes a step progress bar. Collects: business name, category, owner name, phone, address, plan selection, and immediately prompts the first deal post during signup (`/signup/business/first-deal`).
+
+3. **User signup form** — Separate local user signup collects: name, email, city, zip, interests (JSONB). Enables segmented email campaigns by location and interest.
+
+4. **Plan features codified** (`lib/plan-features.ts` + `lib/stripe.ts`):
+   - Free: analytics ✗, social links ✗, real estate ✗, priority ranking ✗, featured on homepage ✗
+   - Standard ($19.99): analytics ✅, social links ✅, real estate ✗, priority ranking ✗, featured on homepage ✗
+   - Premium ($39.99): all features ✅
+
+5. **Billing page** — Now shows active deal count with usage progress bar (deals used / tier limit), feature checklist per tier.
+
+6. **DB migration** (`0010_add_signup_fields.sql`):
+   - Users: `name`, `email_verified`, `city`, `zip`, `interests_json`
+   - Businesses: `owner_full_name`, `plan_override` (admin override of tier), `grace_period_ends_at`
+
+**How to test it:**
+1. On mobile: go to lompoc-deals.vercel.app — confirm hamburger icon in header. Tap → slide-out drawer with all nav links.
+2. Go to `/signup` → select "I own a business" → multi-step wizard should start
+3. Complete wizard steps → step 3 should show "Post your first deal" form
+4. Complete first deal → land in dashboard
+5. Go to `/dashboard/billing` — should show current plan, deal usage bar, feature checklist
+
+**Events it fires:** None new (standard auth flow)
+
+**Marketing surfaces it unlocks:**
+
+- **Mobile conversion:** Local Lompoc users are primarily on phones. The hamburger menu unblocks mobile navigation — "Subscribe", "For Businesses", and "Sign Up" are now reachable without desktop. Direct impact on signup conversion rate.
+
+- **First-deal activation at signup:** This is the single biggest activation improvement in the platform's history. Merchants now post their first deal *before* they finish signing up. Activation rate (merchants who post ≥1 deal) should jump from unknown → near 100%. Update all onboarding and sales copy to reflect this.
+
+- **Plan override for trials:** The `plan_override` field on businesses means admin can manually set any business to Premium without going through Stripe. **This directly enables the "30-day free trial of Premium" offer in the winery pitch emails.** No Stripe coupon needed — just set `plan_override = 'premium'` with a `grace_period_ends_at` date. CMO can now confidently offer trials in outreach.
+
+- **User interests/location data:** Local user signup now collects city, zip, and interests. This enables segmented email digest campaigns — e.g., send wine deals only to users who listed "wine" as an interest, or send deals only to users in zip 93436. Upgrade digest strategy when email is wired.
+
+- **Billing page upsell:** The feature checklist on `/dashboard/billing` is now a built-in upsell tool — Free users see exactly what they're missing, with visual lock/unlock indicators.
+
+**Known limitations:**
+- Mobile menu: hidden above `sm` breakpoint (desktop uses existing horizontal nav)
+- `plan_override` requires direct DB access or admin UI (no admin panel yet) — coordinate with CTO for trial fulfillment
+- User interests not yet used in deal feed personalization (future CTO backlog item)
+
+**CMO actions:**
+- Update merchant onboarding email (Day 1) to mention "post your first deal at signup — it takes 2 minutes"
+- Update winery pitch emails to offer "30-day Premium trial" confidently (CTO can set plan_override)
+- Add merchant pitch line: "Your first deal goes live the moment you finish signing up"
+
+---
+
 ## Premium "Go Premium" Option Added to Signup Flow — shipped 2026-04-13 (commit 7edba9c)
 
 **What shipped:** A third "Go Premium" option ($39.99/mo, Crown icon) added to the signup role selector. The role selector is now a 3-column grid: "I'm a local" / "I own a business" (Free) / "Go Premium". Selecting "Go Premium" creates a business account and immediately redirects to a Stripe checkout session for the Premium subscription. Cancel URL (`/signup?plan=premium&canceled=1`) returns to signup with Premium pre-selected and a cancellation notice. Falls back to `/dashboard/billing?setup_required=1` if `STRIPE_PRICE_PREMIUM` env var is not set.

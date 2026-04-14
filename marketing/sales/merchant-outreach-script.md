@@ -22,9 +22,9 @@
 >
 > Getting listed takes **5 minutes and costs nothing**. Your profile includes your hours, photos, contact info, and a link to your website. Once you're on, locals searching for [category] businesses in Lompoc will find you.
 >
-> Bonus: you can also post deals and specials any time — free on the basic plan, no commission ever.
+> Bonus: the signup wizard walks you through posting your **first deal before you even finish signing up** — so you're live with a real offer in under 5 minutes, no extra steps.
 >
-> Interested? Just reply or sign up directly: [link]
+> Interested? Just reply or sign up directly: lompoc-deals.vercel.app/signup
 >
 > Best,  
 > [Name]  
