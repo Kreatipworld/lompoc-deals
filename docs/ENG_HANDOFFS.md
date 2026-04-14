@@ -187,6 +187,42 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Premium "Go Premium" Option Added to Signup Flow — shipped 2026-04-13 (commit 7edba9c)
+
+**What shipped:** A third "Go Premium" option ($39.99/mo, Crown icon) added to the signup role selector. The role selector is now a 3-column grid: "I'm a local" / "I own a business" (Free) / "Go Premium". Selecting "Go Premium" creates a business account and immediately redirects to a Stripe checkout session for the Premium subscription. Cancel URL (`/signup?plan=premium&canceled=1`) returns to signup with Premium pre-selected and a cancellation notice. Falls back to `/dashboard/billing?setup_required=1` if `STRIPE_PRICE_PREMIUM` env var is not set.
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app/signup — confirm 3-column role selector (Local / Business / Go Premium)
+2. Select "Go Premium" → fill in name/email/password → submit
+3. Should redirect to Stripe checkout for $39.99/mo
+4. Click "cancel" in Stripe → should return to `/signup?plan=premium&canceled=1` with amber cancellation notice and Premium pre-selected
+5. Complete checkout → should land in dashboard as a Premium business
+
+**Events it fires:** None new (same auth flow events)
+
+**Marketing surfaces it unlocks:**
+- **Direct Premium acquisition funnel:** High-intent visitors can now go from homepage → `/signup` → Premium in under 2 minutes. Link to `/signup` (not `/for-businesses`) for Premium-specific outreach.
+- **Winery pitch CTA simplification:** Emails to Brewer-Clifton, Stolpman, etc. can now say: "Go to lompoc-deals.vercel.app/signup, select 'Go Premium', and you're live in 2 minutes." No separate billing step.
+- **Pre-selected Premium landing:** `/signup?plan=premium` pre-selects the Premium option — use this URL in Premium-targeted social posts, DMs, and email CTAs for high-value merchant acquisition.
+- **Reduced drop-off:** Previous flow required signing up as a business (Free) then upgrading later. Now Premium buyers go straight to checkout without a second step.
+- **Urgency hook:** The cancel/return flow with amber notice is a soft re-engagement — "Your Premium spot is still available."
+
+**⚠️ Still needs:** `STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a` env var in Vercel (B-001). Until set, Premium signup falls back to `/dashboard/billing?setup_required=1`.
+
+**CMO action:** Update winery-pitch-named.md Premium CTA URLs and simplify the signup instructions. Add `/signup?plan=premium` as the canonical CTA URL for all Premium-tier outreach.
+
+---
+
+## Digest Cron coverUrl Fix — shipped 2026-04-13 (commit a8885eb)
+
+**What shipped:** TypeScript build fix — `bizCoverUrl` added to the digest cron query to match the updated `DealCardData` type from commit `df9777f`. No behavioral change.
+
+**Marketing surfaces it unlocks:** Digest emails now send correctly (build was failing). The email digest cron is unblocked — deal cards in digest emails will also use cover photo fallback when no deal image exists.
+
+**Known limitations:** None new.
+
+---
+
 ## Deal Cards Show Business Cover Photo as Fallback — shipped 2026-04-13 (commit df9777f)
 
 **What shipped:** Deal cards that have no deal-specific image now fall back to the business's cover photo. Both card variants (compact list card and featured/large card) updated. Alt text also corrected — uses business name when cover photo is shown.

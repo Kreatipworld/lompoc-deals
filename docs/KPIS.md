@@ -176,9 +176,9 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
   - Standard: `prod_UIjZTmrAX8Eeh3` → price `price_1TK86XJ5L7dJU4p36CDe0nkX` ($19.99/mo recurring) ✅
   - Premium: `prod_UIjZqfovoYHhq3` → price `price_1TK86YJ5L7dJU4p33KnRIb9a` ($39.99/mo recurring) ✅
   - Livemode: true ✅
-- **Only remaining B-001 blocker:** CTO to set these 2 env vars in Vercel:
-  - `STRIPE_STANDARD_PRICE_ID=price_1TK86XJ5L7dJU4p36CDe0nkX`
-  - `STRIPE_PREMIUM_PRICE_ID=price_1TK86YJ5L7dJU4p33KnRIb9a`
+- **Only remaining B-001 blocker:** CTO to set these 2 env vars in Vercel (correct names from `lib/stripe.ts`):
+  - `STRIPE_PRICE_STANDARD=price_1TK86XJ5L7dJU4p36CDe0nkX`
+  - `STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a`
 - Active Lompoc Deals subscriptions: **0** — MRR = $0 (confirmed 2026-04-11, Vercel wiring still pending)
 - **Note (2026-04-11):** Stripe account has 2 active subscriptions on old price IDs (`price_1H9OOlJ5L7dJU4p3md8iVpbO`, `smmpro`) — these are from a prior product on the same account, NOT Lompoc Deals revenue. Do not count in MRR.
 - Stripe account balance: $10.00 available (from prior product activity)

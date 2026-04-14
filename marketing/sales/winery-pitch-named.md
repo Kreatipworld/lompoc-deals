@@ -16,6 +16,11 @@ Everything else is ready to send. Copy → paste → adjust contact name → sen
 **Best day/time to send:** Tuesday–Thursday 10am–1pm PT (before afternoon tasting rush).
 **Send channel:** Email first. If no reply in 5 days, Instagram DM.
 
+**Updated 2026-04-13 — Premium signup now instant:**  
+When a winery is ready to sign up for Premium, send them directly to:  
+`lompoc-deals.vercel.app/signup?plan=premium`  
+This pre-selects the "Go Premium" option ($39.99/mo) — they go straight to Stripe checkout, no separate billing step. Use this URL in follow-up emails after a winery agrees to sign up.
+
 ---
 
 ## Pitch 1 — Brewer-Clifton

@@ -11,9 +11,10 @@ Every request here uses the standard format. CTO Lead reviews each cycle and ass
 **KPI it moves:** MRR from $0 to first revenue — every paid merchant signup is currently silently failing
 **Desired behavior:** Set these 2 env vars in Vercel (Settings → Environment Variables → Production):
 ```
-STRIPE_STANDARD_PRICE_ID=price_1TK86XJ5L7dJU4p36CDe0nkX
-STRIPE_PREMIUM_PRICE_ID=price_1TK86YJ5L7dJU4p33KnRIb9a
+STRIPE_PRICE_STANDARD=price_1TK86XJ5L7dJU4p36CDe0nkX
+STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 ```
+⚠️ **Note:** Prior CMO docs incorrectly listed these as `STRIPE_STANDARD_PRICE_ID` / `STRIPE_PREMIUM_PRICE_ID`. The actual env var names (from `lib/stripe.ts`) are `STRIPE_PRICE_STANDARD` and `STRIPE_PRICE_PREMIUM`. Use the corrected names above.
 - Standard product: `prod_UIjZTmrAX8Eeh3` ($19.99/mo, recurring monthly, livemode) ✅
 - Premium product: `prod_UIjZqfovoYHhq3` ($39.99/mo, recurring monthly, livemode) ✅
 - Stripe account: `acct_1C8WSHJ5L7dJU4p3` (Kreatip — livemode confirmed)
