@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { format } from "date-fns"
+import { format, formatDistanceToNow } from "date-fns"
 import {
   Store,
   Clock,
@@ -11,26 +11,49 @@ import {
   Globe,
   ShieldCheck,
   Inbox,
+  Activity,
+  CalendarDays,
+  UserPlus,
+  BadgeCheck,
+  TrendingUp,
+  Play,
 } from "lucide-react"
 import {
   getAdminStats,
+  getAdminActivityFeed,
   getPendingBusinesses,
   getPendingClaims,
   approveBusinessAction,
   rejectBusinessAction,
   approveClaimAction,
   rejectClaimAction,
+  type ActivityEntry,
 } from "@/lib/admin-actions"
 import { Button } from "@/components/ui/button"
 import { StatCard } from "@/components/stat-card"
 
 export const metadata = { title: "Admin — Lompoc Deals" }
 
+const ACTIVITY_ICONS: Record<ActivityEntry["type"], React.ReactNode> = {
+  user_signup: <UserPlus className="h-3.5 w-3.5 text-blue-500" />,
+  business_created: <Store className="h-3.5 w-3.5 text-amber-500" />,
+  business_approved: <BadgeCheck className="h-3.5 w-3.5 text-green-500" />,
+  deal_created: <Tag className="h-3.5 w-3.5 text-purple-500" />,
+}
+
+const ACTIVITY_LABELS: Record<ActivityEntry["type"], string> = {
+  user_signup: "New signup",
+  business_created: "Business created",
+  business_approved: "Business approved",
+  deal_created: "Deal created",
+}
+
 export default async function AdminPage() {
-  const [stats, pending, claims] = await Promise.all([
+  const [stats, pending, claims, feed] = await Promise.all([
     getAdminStats(),
     getPendingBusinesses(),
     getPendingClaims(),
+    getAdminActivityFeed(),
   ])
 
   return (
@@ -39,11 +62,10 @@ export default async function AdminPage() {
       <header className="flex items-start justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight">
-            Admin
+            Overview
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage businesses, review pending listings, and approve owner
-            claims.
+            Platform-wide stats and recent activity.
           </p>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
@@ -53,12 +75,34 @@ export default async function AdminPage() {
       </header>
 
       {/* STAT STRIP */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard
           icon={<Store className="h-4 w-4" />}
-          label="Total businesses"
+          label="Businesses"
           value={stats.totalBusinesses}
         />
+        <StatCard
+          icon={<CheckCircle className="h-4 w-4" />}
+          label="Approved"
+          value={stats.approvedBusinesses}
+        />
+        <StatCard
+          icon={<Play className="h-4 w-4" />}
+          label="Active deals"
+          value={stats.activeDeals}
+        />
+        <StatCard
+          icon={<Users className="h-4 w-4" />}
+          label="Total users"
+          value={stats.totalUsers}
+        />
+        <StatCard
+          icon={<TrendingUp className="h-4 w-4" />}
+          label="Deal engagements"
+          value={stats.totalDealEvents}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <StatCard
           icon={<Clock className="h-4 w-4" />}
           label="Pending businesses"
@@ -70,11 +114,57 @@ export default async function AdminPage() {
           value={stats.totalDeals}
         />
         <StatCard
-          icon={<Users className="h-4 w-4" />}
-          label="Total users"
-          value={stats.totalUsers}
+          icon={<CalendarDays className="h-4 w-4" />}
+          label="Total events"
+          value={stats.totalEvents}
+        />
+        <StatCard
+          icon={<Clock className="h-4 w-4" />}
+          label="Pending events"
+          value={stats.pendingEvents}
         />
       </div>
+
+      {/* ACTIVITY FEED */}
+      <section>
+        <h2 className="mb-4 font-display text-xl font-semibold tracking-tight flex items-center gap-2">
+          <Activity className="h-5 w-5 text-primary/70" />
+          Recent activity
+        </h2>
+        {feed.length === 0 ? (
+          <div className="rounded-3xl border border-dashed bg-muted/30 px-6 py-10 text-center">
+            <Activity className="mx-auto h-8 w-8 text-muted-foreground/60" />
+            <p className="mt-3 text-sm text-muted-foreground">
+              No activity yet.
+            </p>
+          </div>
+        ) : (
+          <ul className="space-y-1">
+            {feed.map((entry, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-muted/30 transition-colors"
+              >
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted">
+                  {ACTIVITY_ICONS[entry.type]}
+                </span>
+                <span className="text-muted-foreground text-[11px] w-28 shrink-0 font-medium">
+                  {ACTIVITY_LABELS[entry.type]}
+                </span>
+                <span className="flex-1 truncate font-medium">{entry.label}</span>
+                <span
+                  className="shrink-0 text-xs text-muted-foreground"
+                  title={format(new Date(entry.createdAt), "MMM d, yyyy h:mm a")}
+                >
+                  {formatDistanceToNow(new Date(entry.createdAt), {
+                    addSuffix: true,
+                  })}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {/* PENDING CLAIMS */}
       <section>
