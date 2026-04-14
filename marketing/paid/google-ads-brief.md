@@ -46,7 +46,7 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 3. Discover Local Businesses in Lompoc
 4. Lompoc's Free Business Directory
 5. Find Lompoc Restaurants & Shops
-6. 155+ Local Businesses Listed
+6. 470+ Local Businesses Listed
 7. Things To Do in Lompoc, CA
 8. Browse Lompoc by Category
 9. Wineries, Salons, Restaurants & More
@@ -58,7 +58,7 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 15. Lompoc Deals — Find Local Now
 
 **Descriptions (4 — rotate):**
-1. Browse 155+ Lompoc businesses by category — restaurants, wineries, salons, auto shops, and more. Free, bilingual EN/ES, no account needed.
+1. Browse 470+ Lompoc businesses by category — restaurants, wineries, salons, auto shops, and more. Free, bilingual EN/ES, no account needed.
 2. Lompoc's free local business directory. Find hours, photos, contact info, and current deals from businesses right in your community.
 3. Discover local restaurants, shops, services, and things to do in Lompoc, CA. Updated daily. 100% Lompoc businesses only.
 4. Looking for a Lompoc restaurant, salon, or service? Find them all at Lompoc Deals — the local business directory for the Flower Capital.
@@ -131,7 +131,7 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 5. Encuentra Negocios Cerca de Ti
 6. Restaurantes, Salones, Tiendas y Más
 7. Lompoc — Todo en Un Solo Lugar
-8. 155+ Negocios Locales Listados
+8. 470+ Negocios Locales Listados
 9. Ofertas en Lompoc — Gratis
 10. Descuentos en Negocios Locales
 11. Bilingüe EN/ES — Explora Gratis
@@ -141,7 +141,7 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 15. Directorio Local de la Capital de las Flores
 
 **Descriptions (Spanish — 4):**
-1. Explora 155+ negocios locales en Lompoc — restaurantes, salones, bodegas, servicios y más. Gratis, bilingüe EN/ES, sin necesidad de cuenta.
+1. Explora 470+ negocios locales en Lompoc — restaurantes, salones, bodegas, servicios y más. Gratis, bilingüe EN/ES, sin necesidad de cuenta.
 2. El directorio gratuito de negocios locales de Lompoc. Encuentra horarios, fotos, información de contacto y ofertas actuales de negocios en tu comunidad.
 3. Descubre restaurantes, tiendas, servicios y cosas que hacer en Lompoc, CA. Solo negocios 100% locales. Actualizado diariamente.
 4. ¿Buscas un restaurante, salón o servicio en Lompoc? Encuéntralos todos en Lompoc Deals — el directorio local de la Capital de las Flores.

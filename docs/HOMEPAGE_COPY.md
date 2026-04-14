@@ -65,8 +65,8 @@ Each section lists:
 
 ### Trust Strip (below CTAs)
 
-"155+ local businesses · Free to browse · Updated daily"  
-**[ES]:** "155+ negocios locales · Gratis para explorar · Actualizado diariamente"
+"470+ local businesses · Free to browse · Updated daily"  
+**[ES]:** "470+ negocios locales · Gratis para explorar · Actualizado diariamente"
 
 ### Hero Image
 
@@ -232,8 +232,8 @@ Body: "Track deal views and claims from your dashboard. Know exactly what's work
 
 ### Social Proof Line
 
-"Join 155+ Lompoc businesses already on the platform."  
-**[ES]:** "Únete a 155+ negocios de Lompoc ya en la plataforma."
+"Join 470+ Lompoc businesses already on the platform."  
+**[ES]:** "Únete a 470+ negocios de Lompoc ya en la plataforma."
 
 ---
 

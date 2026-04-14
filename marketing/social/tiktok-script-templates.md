@@ -141,7 +141,7 @@ When reaching out to Lompoc TikTok creators (target: 2k–20k followers, local c
 > "Okay I had no idea Lompoc had a [business type] — it's called [Business Name] and they're on [street/neighborhood]. [One sentence about what makes them special — a signature dish, the owner's story, how long they've been there.] You can find their hours, photos, and contact info at Lompoc Deals — it's a free local directory for all of Lompoc's businesses. Over 150 listed. Link in bio."
 
 **Caption (EN):**
-> Hidden gem alert 🚨 [Business Name] in Lompoc is [what they do]. Find them at lompoc-deals.vercel.app — Lompoc's free local business directory. 155+ businesses listed. #LompocDeals #Lompoc #HiddenGem #ShopLocal #LompocCA
+> Hidden gem alert 🚨 [Business Name] in Lompoc is [what they do]. Find them at lompoc-deals.vercel.app — Lompoc's free local business directory. 470+ businesses listed. #LompocDeals #Lompoc #HiddenGem #ShopLocal #LompocCA
 
 **Caption (ES):**
 > Joya escondida 🚨 [Nombre del negocio] en Lompoc [qué hacen]. Encuéntralos en lompoc-deals.vercel.app — el directorio gratuito de negocios locales de Lompoc. #LompocDeals #Lompoc #NegociosLocales #LompocCA

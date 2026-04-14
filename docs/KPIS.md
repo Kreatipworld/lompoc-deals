@@ -187,7 +187,7 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 
 | KPI | Previous (Cycle 2 start) | Current | Notes |
 |-----|--------------------------|---------|-------|
-| Total businesses listed | ~155 | ~155+ | Stable |
+| Total businesses listed | ~155 | ~155+ | Stable (see 2026-04-14 update below — now 471) |
 | Pricing | Free/$0, Std/$19.99, Premium/$39.99 | Same | Correct ✓ |
 | Website rebrand | Not live | **LIVE** ✓ | Merged to main |
 | Design system v1.0 | Not live | **LIVE** ✓ | Full visual identity |
@@ -196,6 +196,15 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 | MRR | $0 | $0 | Awaiting Stripe activation |
 | Consumer signups | Unknown | Unknown | Needs REQ-001 |
 | Funnel tracking | Not live | Not live | REQ-001 still needed |
+
+**Updated baselines (2026-04-14, Cycle 3):**
+
+| KPI | Previous | Current | Notes |
+|-----|----------|---------|-------|
+| Total businesses listed (approved) | ~155 | **471** | 35 non-Lompoc seed businesses removed (commit 9cf9b96) — all 471 are real Lompoc-area businesses |
+| Marketing copy count reference | "155+" | **"470+"** | All active marketing files updated (commit below) |
+
+---
 
 **Marketing assets status (all ready to deploy the moment accounts + Stripe are live):**
 - Social: Facebook, Nextdoor, Instagram, TikTok templates → `/marketing/social/`

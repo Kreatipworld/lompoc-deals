@@ -87,7 +87,7 @@ Ranked by revenue impact ÷ effort. Top 3+ from each team.
 **Target:** 3 dispensary signups (Standard or Premium) = ~$60/mo MRR from 1 niche sprint
 
 ### M-018 — Free-to-Paid Upgrade Lifecycle (NEW — REVENUE-CRITICAL)
-**Why now:** 155+ businesses are listed on the Free tier. Once Stripe (B-001) goes live, converting even 10% of active free merchants to Standard = ~$300/mo MRR with no new acquisition cost. This is the highest-leverage revenue lever available the moment Stripe activates.
+**Why now:** 470+ businesses are listed on the Free tier. Once Stripe (B-001) goes live, converting even 10% of active free merchants to Standard = ~$300/mo MRR with no new acquisition cost. This is the highest-leverage revenue lever available the moment Stripe activates.
 **Assets:** `/marketing/email/merchant-upgrade-sequence.md` — 5-email sequence:
   - Email 1: Fires at deal #3 (Free limit hit) — highest intent moment
   - Emails 2–3: Follow-up over 10 days if no upgrade

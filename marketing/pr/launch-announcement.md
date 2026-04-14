@@ -29,7 +29,7 @@ We built Lompoc Deals to fix that.
 **Why Lompoc:** We started here because Lompoc is underserved and because we know this community. We built bilingual EN/ES support from day one — not as an afterthought — because this is who Lompoc is.
 
 **For residents:**
-- Browse 155+ local businesses by category, free
+- Browse 470+ local businesses by category, free
 - Claim deals and coupons directly on your phone
 - Bilingual EN/ES toggle
 - Weekly digest — top 5 deals every Tuesday morning
@@ -147,7 +147,7 @@ lompoc-deals.vercel.app
 ## LAUNCH EMAIL BLAST (subscribers)
 
 **Subject:** We launched — Lompoc's local business directory is live  
-**Preview:** Browse 155+ Lompoc businesses, find deals, and support local — free.
+**Preview:** Browse 470+ Lompoc businesses, find deals, and support local — free.
 
 ---
 

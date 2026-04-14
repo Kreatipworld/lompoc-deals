@@ -241,7 +241,7 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
   - Email B: Day-30 win-back for merchants who never posted
 **Notes:**
 - Revenue unlock: every 1 merchant converted = $19.99–$39.99/mo MRR
-- 155+ businesses listed, most on Free — large potential conversion pool
+- 470+ businesses listed, most on Free — large potential conversion pool
 - Sequence suppresses automatically when merchant upgrades
 - CTO implementation notes included in asset file
 

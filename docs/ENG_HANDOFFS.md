@@ -187,6 +187,33 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Business Count Correction + Mobile Scroll Nav — shipped 2026-04-14 (commit 9cf9b96 + 613b3c0)
+
+**What shipped:**
+
+**`9cf9b96` — 35 non-Lompoc businesses removed:**
+- 35 seed businesses with addresses outside Lompoc Valley (CO, SF, KY, TN, OH, TX, etc.) rejected
+- Approved business count: **471** (was 506 including bad data; was previously reported as ~155 due to stale count)
+- Hardcoded "155+" removed from `/businesses` page SEO metadata — count is now dynamic
+
+**`613b3c0` — Bottom nav hides on scroll down, reveals on scroll up:**
+- Standard mobile UX pattern (Instagram-style). Nav hidden while reading content, reappears when scrolling back up.
+- Smooth 300ms transition. Triggers at >4px scroll down, reveals within 60px of page top.
+
+**How to test it:**
+1. `/businesses` — confirm title no longer says "155+ Local Businesses"
+2. Mobile: scroll down the deals feed — bottom nav bar should slide away. Scroll up — it reappears.
+
+**Marketing impact:**
+
+- **471 is the real number** — and a dramatically stronger social proof point than 155. All marketing copy updated from "155+" → "470+" (commit below). Use "470+ Lompoc businesses" in all outreach, social posts, and sales pitches going forward.
+- **Data integrity:** All 471 listed businesses are real Lompoc-area businesses — confirmed clean for outreach campaigns and social proof claims.
+- **Mobile UX:** Scroll-away nav = more screen space for deal browsing = better content consumption experience on phones = higher engagement and return visits.
+
+**CMO action taken:** Updated all active marketing files (google-ads-brief, launch-announcement, tiktok-script-templates, HOMEPAGE_COPY, THIS_CYCLE, MARKETING_BACKLOG) from "155+" to "470+". KPIS.md updated with new baseline.
+
+---
+
 ## Admin Dashboard Expanded + DB Migrations Applied to Production — shipped 2026-04-14 (commit 4feb620 + 0bfb574)
 
 **What shipped:**
