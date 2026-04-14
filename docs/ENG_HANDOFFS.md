@@ -187,4 +187,30 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Deal Cards Show Business Cover Photo as Fallback — shipped 2026-04-13 (commit df9777f)
+
+**What shipped:** Deal cards that have no deal-specific image now fall back to the business's cover photo. Both card variants (compact list card and featured/large card) updated. Alt text also corrected — uses business name when cover photo is shown.
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app — find a deal card that previously showed a grey placeholder
+2. Confirm it now shows the business's cover photo instead
+3. Hover the card — zoom animation should still work on the cover photo
+
+**Events it fires:** None new (same click/view tracking as before)
+
+**Marketing surfaces it unlocks:**
+- **Feed looks richer immediately:** Any business with a cover photo uploaded now has visual presence in the deals feed — no more grey placeholder cards. The feed will look significantly more populated and alive.
+- **Social screenshots:** Deal card screenshots for social posts (used in FIRST_WEEK_SPRINT.md Day 5 tactic) now look much better — no dead grey boxes.
+- **Merchant value prop:** A cover photo now appears in two places — the `/biz/[slug]` profile page AND in deal cards across the feed. Stronger ROI argument for merchants to upload high-quality photos.
+- **Outreach angle:** "Your cover photo appears everywhere your deals appear" — add this to merchant sales pitch and onboarding emails.
+- **Reduces perceived emptiness:** New visitors browsing the feed see a visual-first experience instead of a text-with-grey-boxes experience — improves first impression for consumer acquisition.
+
+**Known limitations:**
+- Businesses without a cover photo still show the placeholder (unchanged behavior)
+- No analytics on cover-photo-as-fallback impressions
+
+**CMO action:** Update merchant onboarding email (Day 1) to emphasize cover photo upload — "Your cover photo appears in the deals feed across the whole site."
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
