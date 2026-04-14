@@ -15,6 +15,7 @@ export type DealCardData = {
     name: string
     slug: string
     logoUrl: string | null
+    coverUrl: string | null
     categoryName: string | null
     categorySlug: string | null
   }
@@ -32,6 +33,7 @@ const baseDealSelect = {
   bizName: businesses.name,
   bizSlug: businesses.slug,
   bizLogoUrl: businesses.logoUrl,
+  bizCoverUrl: businesses.coverUrl,
   catName: categories.name,
   catSlug: categories.slug,
 }
@@ -48,6 +50,7 @@ type DealRow = {
   bizName: string
   bizSlug: string
   bizLogoUrl: string | null
+  bizCoverUrl: string | null
   catName: string | null
   catSlug: string | null
 }
@@ -66,6 +69,7 @@ function rowToCard(r: DealRow): DealCardData {
       name: r.bizName,
       slug: r.bizSlug,
       logoUrl: r.bizLogoUrl,
+      coverUrl: r.bizCoverUrl,
       categoryName: r.catName,
       categorySlug: r.catSlug,
     },

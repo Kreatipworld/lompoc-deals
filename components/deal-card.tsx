@@ -66,11 +66,11 @@ export function DealCard({
       >
         {/* IMAGE */}
         <Link href={`/biz/${deal.business.slug}`} className="relative block h-44 overflow-hidden flex-shrink-0">
-          {deal.imageUrl ? (
+          {deal.imageUrl || deal.business.coverUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={deal.imageUrl}
-              alt={deal.title}
+              src={deal.imageUrl ?? deal.business.coverUrl!}
+              alt={deal.imageUrl ? deal.title : deal.business.name}
               className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
             />
           ) : (
@@ -214,11 +214,11 @@ export function DealCard({
     >
       {/* MEDIA */}
       <div className="relative h-52 overflow-hidden">
-        {deal.imageUrl ? (
+        {deal.imageUrl || deal.business.coverUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={deal.imageUrl}
-            alt={deal.title}
+            src={deal.imageUrl ?? deal.business.coverUrl!}
+            alt={deal.imageUrl ? deal.title : deal.business.name}
             className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
           />
         ) : (
