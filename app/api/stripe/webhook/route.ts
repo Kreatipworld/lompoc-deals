@@ -6,6 +6,8 @@ import { eq } from "drizzle-orm"
 import type { TierKey } from "@/lib/stripe"
 import type Stripe from "stripe"
 
+const GRACE_PERIOD_DAYS = 7
+
 // Stripe requires raw body — disable Next.js body parsing
 export const dynamic = "force-dynamic"
 
@@ -102,18 +104,29 @@ export async function POST(request: Request) {
       break
     }
 
-    case "customer.subscription.deleted": {
-      const sub = event.data.object as Stripe.Subscription
-      const userId = Number(sub.metadata?.userId)
-      if (!userId) break
+    case "invoice.paid": {
+      const invoice = event.data.object as Stripe.Invoice
+      const customerId = invoice.customer as string
 
-      await db.update(subscriptions)
-        .set({
-          status: "canceled",
-          stripeSubscriptionId: null,
-          updatedAt: new Date(),
+      // Payment succeeded — clear grace period and re-activate
+      const existing = await db.query.subscriptions.findFirst({
+        where: eq(subscriptions.stripeCustomerId, customerId),
+      })
+      if (existing) {
+        await db.update(subscriptions)
+          .set({ status: "active", updatedAt: new Date() })
+          .where(eq(subscriptions.stripeCustomerId, customerId))
+        // Clear grace period on associated business
+        const biz = await db.query.businesses.findFirst({
+          where: (b, { eq: e }) => e(b.ownerUserId, existing.userId),
+          columns: { id: true },
         })
-        .where(eq(subscriptions.userId, userId))
+        if (biz) {
+          await db.update(businesses)
+            .set({ gracePeriodEndsAt: null })
+            .where(eq(businesses.id, biz.id))
+        }
+      }
       break
     }
 
@@ -125,10 +138,39 @@ export async function POST(request: Request) {
         where: eq(subscriptions.stripeCustomerId, customerId),
       })
       if (existing) {
+        const gracePeriodEndsAt = new Date(
+          Date.now() + GRACE_PERIOD_DAYS * 24 * 60 * 60 * 1000
+        )
         await db.update(subscriptions)
           .set({ status: "past_due", updatedAt: new Date() })
           .where(eq(subscriptions.stripeCustomerId, customerId))
+        // Set grace period on associated business
+        const biz = await db.query.businesses.findFirst({
+          where: (b, { eq: e }) => e(b.ownerUserId, existing.userId),
+          columns: { id: true },
+        })
+        if (biz) {
+          await db.update(businesses)
+            .set({ gracePeriodEndsAt })
+            .where(eq(businesses.id, biz.id))
+        }
       }
+      break
+    }
+
+    case "customer.subscription.deleted": {
+      const sub = event.data.object as Stripe.Subscription
+      const userId = Number(sub.metadata?.userId)
+      if (!userId) break
+
+      await db.update(subscriptions)
+        .set({
+          tier: "free",
+          status: "canceled",
+          stripeSubscriptionId: null,
+          updatedAt: new Date(),
+        })
+        .where(eq(subscriptions.userId, userId))
       break
     }
 

@@ -25,6 +25,17 @@ export const dealType = pgEnum("deal_type", [
   "special",
   "announcement",
 ])
+export const subscriptionTier = pgEnum("subscription_tier", [
+  "free",
+  "standard",
+  "premium",
+])
+export const subscriptionStatus = pgEnum("subscription_status", [
+  "active",
+  "past_due",
+  "canceled",
+  "trialing",
+])
 
 // ---------- users ----------
 export const users = pgTable("users", {
@@ -32,6 +43,11 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   role: userRole("role").notNull().default("local"),
+  name: varchar("name", { length: 200 }),
+  emailVerified: timestamp("email_verified", { withTimezone: true }),
+  city: varchar("city", { length: 100 }),
+  zip: varchar("zip", { length: 20 }),
+  interestsJson: jsonb("interests_json"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
@@ -73,6 +89,9 @@ export const businesses = pgTable(
     youtubeUrl: varchar("youtube_url", { length: 500 }),
     yelpUrl: varchar("yelp_url", { length: 500 }),
     googleBusinessUrl: varchar("google_business_url", { length: 500 }),
+    ownerFullName: varchar("owner_full_name", { length: 200 }),
+    planOverride: subscriptionTier("plan_override"),
+    gracePeriodEndsAt: timestamp("grace_period_ends_at", { withTimezone: true }),
     status: businessStatus("status").notNull().default("pending"),
     stripeConnectAccountId: varchar("stripe_connect_account_id", { length: 200 }),
     stripeConnectOnboardingComplete: boolean("stripe_connect_onboarding_complete").notNull().default(false),
@@ -174,18 +193,6 @@ export const businessClaims = pgTable("business_claims", {
 })
 
 // ---------- subscriptions ----------
-export const subscriptionTier = pgEnum("subscription_tier", [
-  "free",
-  "standard",
-  "premium",
-])
-export const subscriptionStatus = pgEnum("subscription_status", [
-  "active",
-  "past_due",
-  "canceled",
-  "trialing",
-])
-
 export const subscriptions = pgTable("subscriptions", {
   id: serial("id").primaryKey(),
   userId: integer("user_id")

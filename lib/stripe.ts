@@ -18,6 +18,11 @@ export const TIERS = {
     priceId: process.env.STRIPE_PRICE_FREE ?? "",
     price: 0,
     dealLimit: 3,
+    canViewAnalytics: false,
+    canShowSocialLinks: false,
+    canListRealEstate: false,
+    priorityRanking: false,
+    featuredOnHomepage: false,
     features: [
       "Up to 3 active deals",
       "Business profile page",
@@ -31,6 +36,11 @@ export const TIERS = {
     priceId: process.env.STRIPE_PRICE_STANDARD ?? "",
     price: 19.99,
     dealLimit: 15,
+    canViewAnalytics: true,
+    canShowSocialLinks: true,
+    canListRealEstate: false,
+    priorityRanking: false,
+    featuredOnHomepage: false,
     features: [
       "Up to 15 active deals",
       "Everything in Free",
@@ -44,6 +54,11 @@ export const TIERS = {
     priceId: process.env.STRIPE_PRICE_PREMIUM ?? "",
     price: 39.99,
     dealLimit: Infinity,
+    canViewAnalytics: true,
+    canShowSocialLinks: true,
+    canListRealEstate: true,
+    priorityRanking: true,
+    featuredOnHomepage: true,
     features: [
       "Unlimited deals",
       "Everything in Standard",
@@ -55,3 +70,4 @@ export const TIERS = {
 } as const
 
 export type TierKey = keyof typeof TIERS
+export type TierConfig = (typeof TIERS)[TierKey]
