@@ -187,6 +187,45 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Admin Dashboard Expanded + DB Migrations Applied to Production — shipped 2026-04-14 (commit 4feb620 + 0bfb574)
+
+**What shipped:**
+
+**`4feb620` — Admin dashboard expansion:**
+- New `/admin/users` page — full user table with role badges, per-row role change form
+- New `/admin/deals` page — deal table with type/status badges, pause/remove actions
+- Admin nav: Overview / Users / Deals / Events
+- Expanded KPI strip: approvedBusinesses, activeDeals, events count, totalDealEvents
+- Activity feed: 20 most recent cross-platform events
+- `seed-admin` script to promote andres@kreatipdesign.com to admin role
+
+**`0bfb574` — Stripe error handling + production DB migrations applied:**
+- Premium/Standard signup no longer crashes on Stripe errors — shows user-facing error instead
+- Validates checkout session URL before redirect
+- **PRODUCTION DB UPDATED VIA NEON MCP:** Migration 0010 (`name`, `city`, `zip`, `interests_json` on users; `owner_full_name`, `plan_override`, `grace_period_ends_at` on businesses) is now live in production. Migration 0008 events table fix (`source`, `external_id`) also applied.
+
+**How to test it:**
+1. Sign in as admin at lompoc-deals.vercel.app/admin — confirm expanded nav (Overview / Users / Deals / Events)
+2. `/admin/users` — verify user table with role badges and role change form
+3. `/admin/deals` — verify deal table with pause/remove actions
+4. Try Premium signup — confirm graceful error message if Stripe env vars not yet set
+
+**Events it fires:** `totalDealEvents` now tracked in admin stats
+
+**Marketing surfaces it unlocks:**
+
+- **Trial fulfillment is now self-service for admin:** With `plan_override` live in production and the admin `/users` page, the admin can find any business account and grant Premium trial status. The "30-day free trial" offer in winery pitch emails is fully operational — no CTO involvement needed after signup. Process: winery signs up → admin finds their account → sets `plan_override = premium` + `grace_period_ends_at = +30 days`.
+
+- **Real-time platform health:** Admin can monitor the activity feed and see deals being posted, users signing up, and events firing. CMO can check this to gauge momentum from outreach campaigns.
+
+- **Deal moderation:** Admin can pause or remove deals — gives confidence to merchants that the platform is actively managed (not abandoned). Use in sales pitch: "We actively moderate the platform to keep quality high."
+
+- **KPI visibility:** `approvedBusinesses` + `activeDeals` counts are now queryable. CMO can pull live numbers for social proof in outreach ("Join 150+ Lompoc businesses already listed").
+
+**Known limitations:** `plan_override` in admin panel requires direct action — no automated trial-expiry email yet (add to lifecycle email backlog).
+
+---
+
 ## Mobile Nav + Business Signup Wizard + Plan Features — shipped 2026-04-14 (commit 5d82081 + 0eb81da + 7d217ce)
 
 **What shipped (this is a multi-feature release):**
