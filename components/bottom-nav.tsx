@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
 import { Home, Search, LayoutGrid, User, Tag } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useEffect, useRef, useState } from "react"
 
 const NAV_ITEMS = [
   { href: "/", icon: Home, label: "Home" },
@@ -15,11 +16,42 @@ const NAV_ITEMS = [
 
 export function BottomNav() {
   const pathname = usePathname()
+  const [hidden, setHidden] = useState(false)
+  const lastScrollY = useRef(0)
+  const ticking = useRef(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (ticking.current) return
+      ticking.current = true
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY
+        const delta = currentY - lastScrollY.current
+        // Show when near top or scrolling up; hide when scrolling down >4px
+        if (currentY < 60) {
+          setHidden(false)
+        } else if (delta > 4) {
+          setHidden(true)
+        } else if (delta < -4) {
+          setHidden(false)
+        }
+        lastScrollY.current = currentY
+        ticking.current = false
+      })
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <nav
       aria-label="Main navigation"
-      className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur-sm sm:hidden"
+      className={cn(
+        "fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur-sm sm:hidden",
+        "transition-transform duration-300 ease-in-out",
+        hidden ? "translate-y-full" : "translate-y-0"
+      )}
     >
       <div className="flex h-16 items-center justify-around px-1 pb-safe">
         {NAV_ITEMS.map(({ href, icon: Icon, label }) => {
