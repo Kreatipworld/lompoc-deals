@@ -167,30 +167,38 @@ export async function businessSignupSubmitAction(
     redirect(`/signup/business/profile?userId=${userId}&stripe_pending=1`)
   }
 
-  const customer = await stripe.customers.create({
-    email,
-    metadata: { userId: String(userId) },
-  })
-  await db.insert(subscriptions).values({
-    userId,
-    stripeCustomerId: customer.id,
-    tier: "free",
-    status: "trialing",
-    cancelAtPeriodEnd: 0,
-  })
+  try {
+    const customer = await stripe.customers.create({
+      email,
+      metadata: { userId: String(userId) },
+    })
+    await db.insert(subscriptions).values({
+      userId,
+      stripeCustomerId: customer.id,
+      tier: "free",
+      status: "trialing",
+      cancelAtPeriodEnd: 0,
+    })
 
-  const checkoutSession = await stripe.checkout.sessions.create({
-    customer: customer.id,
-    mode: "subscription",
-    payment_method_types: ["card"],
-    line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${baseUrl}/signup/business/profile?userId=${userId}&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${baseUrl}/signup/business?step=2&canceled=1`,
-    metadata: { userId: String(userId), tier: plan },
-    subscription_data: { metadata: { userId: String(userId), tier: plan } },
-  })
+    const checkoutSession = await stripe.checkout.sessions.create({
+      customer: customer.id,
+      mode: "subscription",
+      payment_method_types: ["card"],
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: `${baseUrl}/signup/business/profile?userId=${userId}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/signup/business?step=2&canceled=1`,
+      metadata: { userId: String(userId), tier: plan },
+      subscription_data: { metadata: { userId: String(userId), tier: plan } },
+    })
 
-  redirect(checkoutSession.url!)
+    if (!checkoutSession.url) {
+      return { error: "Could not create checkout session. Please try again." }
+    }
+    redirect(checkoutSession.url)
+  } catch (err) {
+    if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
+    return { error: "Payment setup failed. Please try again or contact support." }
+  }
 }
 
 // ─── Step 4 — Profile setup ─────────────────────────────────────────────────

@@ -88,31 +88,39 @@ export async function signupAction(
     const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
     if (priceId) {
-      const customer = await stripe.customers.create({
-        email,
-        metadata: { userId: String(newUserId) },
-      })
-      // Create a pending subscription record so the webhook can update it
-      await db.insert(subscriptions).values({
-        userId: newUserId,
-        stripeCustomerId: customer.id,
-        tier: "free",
-        status: "trialing",
-        cancelAtPeriodEnd: 0,
-      })
-      const checkoutSession = await stripe.checkout.sessions.create({
-        customer: customer.id,
-        mode: "subscription",
-        payment_method_types: ["card"],
-        line_items: [{ price: priceId, quantity: 1 }],
-        success_url: `${baseUrl}/dashboard/billing?success=1`,
-        cancel_url: `${baseUrl}/signup?plan=premium&canceled=1`,
-        metadata: { userId: String(newUserId), tier: "premium" },
-        subscription_data: {
+      try {
+        const customer = await stripe.customers.create({
+          email,
+          metadata: { userId: String(newUserId) },
+        })
+        // Create a pending subscription record so the webhook can update it
+        await db.insert(subscriptions).values({
+          userId: newUserId,
+          stripeCustomerId: customer.id,
+          tier: "free",
+          status: "trialing",
+          cancelAtPeriodEnd: 0,
+        })
+        const checkoutSession = await stripe.checkout.sessions.create({
+          customer: customer.id,
+          mode: "subscription",
+          payment_method_types: ["card"],
+          line_items: [{ price: priceId, quantity: 1 }],
+          success_url: `${baseUrl}/dashboard/billing?success=1`,
+          cancel_url: `${baseUrl}/signup?plan=premium&canceled=1`,
           metadata: { userId: String(newUserId), tier: "premium" },
-        },
-      })
-      redirect(checkoutSession.url!)
+          subscription_data: {
+            metadata: { userId: String(newUserId), tier: "premium" },
+          },
+        })
+        if (!checkoutSession.url) {
+          return { error: "Could not create checkout session. Please try again." }
+        }
+        redirect(checkoutSession.url)
+      } catch (err) {
+        if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
+        return { error: "Payment setup failed. Your account was created — try upgrading from your dashboard." }
+      }
     } else {
       // Stripe price not configured — redirect to billing to set up later
       redirect("/dashboard/billing?setup_required=1")
