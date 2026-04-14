@@ -7,9 +7,11 @@ export const metadata = { title: "Sign up — Lompoc Deals" }
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: { claim?: string }
+  searchParams: { claim?: string; plan?: string; canceled?: string }
 }) {
   const claimSlug = searchParams.claim
+  const defaultPlan = searchParams.plan ?? null
+  const showCanceled = searchParams.canceled === "1"
   let claimingBusinessName: string | null = null
   if (claimSlug) {
     const biz = await db.query.businesses.findFirst({
@@ -48,7 +50,7 @@ export default async function SignupPage({
         </p>
       </div>
       <div className="mt-8">
-        <SignupForm claimSlug={claimSlug ?? null} />
+        <SignupForm claimSlug={claimSlug ?? null} defaultPlan={defaultPlan} showCanceled={showCanceled} />
       </div>
     </>
   )

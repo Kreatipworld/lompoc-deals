@@ -6,13 +6,15 @@ import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
 import { db } from "@/db/client"
-import { users, businessClaims } from "@/db/schema"
+import { users, businessClaims, subscriptions } from "@/db/schema"
 import { signIn, signOut } from "@/auth"
+import { stripe, TIERS } from "@/lib/stripe"
 
 const signupSchema = z.object({
   email: z.string().email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["local", "business"]),
+  // "premium" is a signup-only role that creates a business account + Stripe checkout
+  role: z.enum(["local", "business", "premium"]),
   claimSlug: z.string().optional(),
 })
 
@@ -34,8 +36,9 @@ export async function signupAction(
   }
 
   const { email, password, claimSlug } = parsed.data
-  // If claiming a business, force role=business regardless of toggle
-  const role = claimSlug ? "business" : parsed.data.role
+  // "premium" is a UI-only value; DB role is "business" for both business and premium
+  const selectedRole = claimSlug ? "business" : parsed.data.role
+  const dbRole = selectedRole === "premium" ? "business" : selectedRole
 
   const existing = await db.query.users.findFirst({
     where: eq(users.email, email),
@@ -47,7 +50,7 @@ export async function signupAction(
   const passwordHash = await bcrypt.hash(password, 10)
   const inserted = await db
     .insert(users)
-    .values({ email, passwordHash, role })
+    .values({ email, passwordHash, role: dbRole })
     .returning({ id: users.id })
   const newUserId = inserted[0]?.id
 
@@ -79,10 +82,47 @@ export async function signupAction(
     throw err
   }
 
+  // Premium signup: create Stripe checkout session and redirect there
+  if (selectedRole === "premium" && newUserId) {
+    const priceId = TIERS.premium.priceId
+    const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+
+    if (priceId) {
+      const customer = await stripe.customers.create({
+        email,
+        metadata: { userId: String(newUserId) },
+      })
+      // Create a pending subscription record so the webhook can update it
+      await db.insert(subscriptions).values({
+        userId: newUserId,
+        stripeCustomerId: customer.id,
+        tier: "free",
+        status: "trialing",
+        cancelAtPeriodEnd: 0,
+      })
+      const checkoutSession = await stripe.checkout.sessions.create({
+        customer: customer.id,
+        mode: "subscription",
+        payment_method_types: ["card"],
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: `${baseUrl}/dashboard/billing?success=1`,
+        cancel_url: `${baseUrl}/signup?plan=premium&canceled=1`,
+        metadata: { userId: String(newUserId), tier: "premium" },
+        subscription_data: {
+          metadata: { userId: String(newUserId), tier: "premium" },
+        },
+      })
+      redirect(checkoutSession.url!)
+    } else {
+      // Stripe price not configured — redirect to billing to set up later
+      redirect("/dashboard/billing?setup_required=1")
+    }
+  }
+
   if (claimSlug) {
     redirect(`/dashboard/profile?claimed=${encodeURIComponent(claimSlug)}`)
   }
-  redirect(role === "business" ? "/dashboard/profile" : "/account")
+  redirect(dbRole === "business" ? "/dashboard/profile" : "/account")
 }
 
 /** Return a redirect destination that the given role is actually allowed to visit. */
