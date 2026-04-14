@@ -28,6 +28,7 @@ export async function GET(request: Request) {
       bizName: businesses.name,
       bizSlug: businesses.slug,
       bizLogoUrl: businesses.logoUrl,
+      bizCoverUrl: businesses.coverUrl,
     })
     .from(deals)
     .innerJoin(businesses, eq(deals.businessId, businesses.id))
@@ -54,6 +55,7 @@ export async function GET(request: Request) {
       name: r.bizName,
       slug: r.bizSlug,
       logoUrl: r.bizLogoUrl,
+      coverUrl: r.bizCoverUrl,
       categoryName: null,
       categorySlug: null,
     },
