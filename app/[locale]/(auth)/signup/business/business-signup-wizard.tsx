@@ -3,11 +3,10 @@
 import { useState, useTransition, useCallback } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { Link } from "@/i18n/navigation"
-import { useSearchParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import {
   Check,
   Crown,
-  Store,
   ChevronRight,
   ChevronLeft,
   Building2,

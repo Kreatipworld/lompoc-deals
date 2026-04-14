@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { subscriptions, deals, businesses } from "@/db/schema"
+import { subscriptions, deals } from "@/db/schema"
 import { TIERS } from "@/lib/stripe"
 import { getPlanFeatures } from "@/lib/plan-features"
 import { eq, and, gt, sql } from "drizzle-orm"

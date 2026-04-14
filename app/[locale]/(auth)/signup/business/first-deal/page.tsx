@@ -19,11 +19,6 @@ export default async function FirstDealPage() {
 
   if (!biz) redirect("/dashboard/profile")
 
-  const categories = await db.query.categories.findMany({
-    orderBy: (c, { asc }) => [asc(c.name)],
-    columns: { id: true, name: true },
-  })
-
   return (
     <div className="space-y-6">
       <div className="space-y-1">
