@@ -382,17 +382,28 @@ export function BusinessSignupWizard({
   const [step1Data, setStep1Data] = useState<Record<string, string>>({})
   const [plan, setPlan] = useState<"free" | "standard" | "premium">("standard")
 
-  // Restore step1Data from sessionStorage when landing mid-flow (e.g. after Stripe cancel)
+  // Restore step1Data and plan from sessionStorage on mount (covers page reloads and soft-nav remounts)
   useEffect(() => {
-    if (initialStep > 0) {
-      try {
-        const saved = sessionStorage.getItem("bizSignupStep1")
-        if (saved) setStep1Data(JSON.parse(saved))
-      } catch {
-        // ignore parse errors
-      }
+    try {
+      const saved = sessionStorage.getItem("bizSignupStep1")
+      if (saved && Object.keys(step1Data).length === 0) setStep1Data(JSON.parse(saved))
+      const savedPlan = sessionStorage.getItem("bizSignupPlan") as "free" | "standard" | "premium" | null
+      if (savedPlan) setPlan(savedPlan)
+    } catch {
+      // ignore – sessionStorage unavailable (private mode, etc.)
     }
-  }, [initialStep])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Keep sessionStorage in sync whenever step1Data or plan change
+  useEffect(() => {
+    if (Object.keys(step1Data).length === 0) return
+    try { sessionStorage.setItem("bizSignupStep1", JSON.stringify(step1Data)) } catch {}
+  }, [step1Data])
+
+  useEffect(() => {
+    try { sessionStorage.setItem("bizSignupPlan", plan) } catch {}
+  }, [plan])
 
   const STEP_LABELS = ["Account info", "Choose a plan", "Payment"]
 
@@ -418,7 +429,6 @@ export function BusinessSignupWizard({
           defaultValues={step1Data}
           onNext={(data) => {
             setStep1Data(data)
-            try { sessionStorage.setItem("bizSignupStep1", JSON.stringify(data)) } catch {}
             goToStep(1)
           }}
         />

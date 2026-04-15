@@ -72,15 +72,20 @@ export async function businessSignupSubmitAction(
   _prev: BizSignupState,
   formData: FormData
 ): Promise<BizSignupState> {
+  // Guard: if account fields are missing the session was lost — tell the user to restart
+  if (!formData.get("email")) {
+    return { error: "Your session expired. Please go back to step 1 and re-enter your details." }
+  }
+
   const parsed = finalSchema.safeParse({
-    ownerFullName: formData.get("ownerFullName"),
-    businessName: formData.get("businessName"),
-    email: formData.get("email"),
-    password: formData.get("password"),
+    ownerFullName: formData.get("ownerFullName") ?? "",
+    businessName: formData.get("businessName") ?? "",
+    email: formData.get("email") ?? "",
+    password: formData.get("password") ?? "",
     categoryId: formData.get("categoryId") || undefined,
-    address: formData.get("address"),
+    address: formData.get("address") ?? "",
     phone: formData.get("phone") || undefined,
-    plan: formData.get("plan"),
+    plan: formData.get("plan") ?? "",
   })
 
   if (!parsed.success) {
