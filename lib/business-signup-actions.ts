@@ -92,7 +92,73 @@ export async function businessSignupSubmitAction(
 
   const existing = await db.query.users.findFirst({ where: eq(users.email, email) })
   if (existing) {
-    return { error: "An account with that email already exists" }
+    // Check if this is a resume-after-Stripe-cancel scenario:
+    // the user's account was created but payment never completed.
+    const passwordMatch = await bcrypt.compare(password, existing.passwordHash)
+    if (passwordMatch && existing.role === "business") {
+      const existingSub = await db.query.subscriptions.findFirst({
+        where: (s, { eq: e }) => e(s.userId, existing.id),
+      })
+      if (existingSub?.status === "trialing" && plan !== "free") {
+        // Resume: create a new Stripe checkout for the existing customer
+        const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+        const tierKey = plan as TierKey
+        const priceId = TIERS[tierKey].priceId
+        if (priceId) {
+          try {
+            const customerId =
+              existingSub.stripeCustomerId ??
+              (
+                await stripe.customers.create({
+                  email,
+                  metadata: { userId: String(existing.id) },
+                })
+              ).id
+
+            if (!existingSub.stripeCustomerId) {
+              await db
+                .update(subscriptions)
+                .set({ stripeCustomerId: customerId })
+                .where(eq(subscriptions.userId, existing.id))
+            }
+
+            const checkoutSession = await stripe.checkout.sessions.create({
+              customer: customerId,
+              mode: "subscription",
+              payment_method_types: ["card"],
+              line_items: [{ price: priceId, quantity: 1 }],
+              success_url: `${baseUrl}/signup/business/profile?userId=${existing.id}&session_id={CHECKOUT_SESSION_ID}`,
+              cancel_url: `${baseUrl}/signup/business?step=3&canceled=1`,
+              metadata: { userId: String(existing.id), tier: plan },
+              subscription_data: { metadata: { userId: String(existing.id), tier: plan } },
+            })
+
+            if (!checkoutSession.url) {
+              return { error: "Could not create checkout session. Please try again." }
+            }
+
+            // Sign in the existing user before redirecting
+            try {
+              await signIn("credentials", { email, password, redirect: false })
+            } catch (err) {
+              if (err instanceof AuthError) {
+                return { error: "Sign-in failed. Please sign in and visit your dashboard." }
+              }
+              throw err
+            }
+
+            redirect(checkoutSession.url)
+          } catch (err) {
+            if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
+            return { error: "Payment setup failed. Please try again or contact support." }
+          }
+        }
+      }
+    }
+    return {
+      error:
+        "An account with that email already exists. Please sign in instead.",
+    }
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
@@ -186,7 +252,7 @@ export async function businessSignupSubmitAction(
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${baseUrl}/signup/business/profile?userId=${userId}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/signup/business?step=2&canceled=1`,
+      cancel_url: `${baseUrl}/signup/business?step=3&canceled=1`,
       metadata: { userId: String(userId), tier: plan },
       subscription_data: { metadata: { userId: String(userId), tier: plan } },
     })

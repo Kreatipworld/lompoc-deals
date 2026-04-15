@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition, useCallback } from "react"
+import { useState, useTransition, useCallback, useEffect } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { useRouter } from "next/navigation"
@@ -168,9 +168,14 @@ function Step1({
         placeholder: "(805) 555-0100",
       })}
 
-      {(state?.error) && (
+      {state?.error && (
         <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          {state.error}
+          {state.error}{" "}
+          {state.error.includes("already exists") && (
+            <Link href="/login" className="font-medium underline">
+              Sign in instead
+            </Link>
+          )}
         </p>
       )}
 
@@ -335,7 +340,12 @@ function Step3({
 
       {state?.error && (
         <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          {state.error}
+          {state.error}{" "}
+          {state.error.includes("already exists") && (
+            <Link href="/login" className="font-medium underline">
+              Sign in
+            </Link>
+          )}
         </p>
       )}
 
@@ -372,6 +382,18 @@ export function BusinessSignupWizard({
   const [step1Data, setStep1Data] = useState<Record<string, string>>({})
   const [plan, setPlan] = useState<"free" | "standard" | "premium">("standard")
 
+  // Restore step1Data from sessionStorage when landing mid-flow (e.g. after Stripe cancel)
+  useEffect(() => {
+    if (initialStep > 0) {
+      try {
+        const saved = sessionStorage.getItem("bizSignupStep1")
+        if (saved) setStep1Data(JSON.parse(saved))
+      } catch {
+        // ignore parse errors
+      }
+    }
+  }, [initialStep])
+
   const STEP_LABELS = ["Account info", "Choose a plan", "Payment"]
 
   const goToStep = (n: number) => {
@@ -396,6 +418,7 @@ export function BusinessSignupWizard({
           defaultValues={step1Data}
           onNext={(data) => {
             setStep1Data(data)
+            try { sessionStorage.setItem("bizSignupStep1", JSON.stringify(data)) } catch {}
             goToStep(1)
           }}
         />
