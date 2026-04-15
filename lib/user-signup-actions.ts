@@ -72,16 +72,20 @@ export async function localSignupAction(
     interestsJson: interests && interests.length > 0 ? interests : null,
   })
 
+  let autoSignInOk = true
   try {
     await signIn("credentials", { email, password, redirect: false })
   } catch (err) {
     if (err instanceof AuthError) {
       return { error: "Account created but sign-in failed. Please log in." }
     }
-    throw err
+    // Unexpected error (e.g. crypto failure, network issue): account was
+    // created — fall back to manual login rather than crashing the page.
+    console.error("[localSignupAction] auto sign-in failed:", err)
+    autoSignInOk = false
   }
 
-  redirect("/account")
+  redirect(autoSignInOk ? "/account" : "/login")
 }
 
 export { INTEREST_OPTIONS }
