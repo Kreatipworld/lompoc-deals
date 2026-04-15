@@ -6,7 +6,14 @@ import { stripe, TIERS, type TierKey } from "@/lib/stripe"
 import { eq } from "drizzle-orm"
 
 export async function POST(request: Request) {
-  const session = await auth()
+  let session
+  try {
+    session = await auth()
+  } catch (err) {
+    console.error("[stripe/checkout] auth() failed:", err)
+    return NextResponse.json({ error: "Authentication error. Please sign in again." }, { status: 401 })
+  }
+
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
@@ -14,46 +21,72 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Only business accounts can subscribe" }, { status: 403 })
   }
 
-  const { tier } = await request.json() as { tier: TierKey }
+  let body: { tier: TierKey }
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
+  }
+  const { tier } = body
+
   if (!TIERS[tier]) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 })
   }
 
+  const userId = Number(session.user.id)
+
   // Free tier requires no Stripe checkout — just create/update the subscription record
   if (tier === "free") {
-    const userId = Number(session.user.id)
-    const existing = await db.query.subscriptions.findFirst({
-      where: eq(subscriptions.userId, userId),
-    })
-    if (existing) {
-      await db.update(subscriptions)
-        .set({ tier: "free", status: "active", stripeSubscriptionId: null, cancelAtPeriodEnd: 0, updatedAt: new Date() })
-        .where(eq(subscriptions.userId, userId))
-    } else {
-      await db.insert(subscriptions).values({
-        userId,
-        tier: "free",
-        status: "active",
-        cancelAtPeriodEnd: 0,
+    let existing
+    try {
+      existing = await db.query.subscriptions.findFirst({
+        where: eq(subscriptions.userId, userId),
       })
+    } catch (err) {
+      console.error("[stripe/checkout] DB query failed (free tier):", err)
+      return NextResponse.json({ error: "Database error. Please try again." }, { status: 503 })
     }
+
+    try {
+      if (existing) {
+        await db.update(subscriptions)
+          .set({ tier: "free", status: "active", stripeSubscriptionId: null, cancelAtPeriodEnd: 0, updatedAt: new Date() })
+          .where(eq(subscriptions.userId, userId))
+      } else {
+        await db.insert(subscriptions).values({
+          userId,
+          tier: "free",
+          status: "active",
+          cancelAtPeriodEnd: 0,
+        })
+      }
+    } catch (err) {
+      console.error("[stripe/checkout] DB update failed (free tier):", err)
+      return NextResponse.json({ error: "Database error. Please try again." }, { status: 503 })
+    }
+
     const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
     return NextResponse.json({ url: `${baseUrl}/dashboard/billing?success=1` })
   }
 
   const priceId = TIERS[tier].priceId
   if (!priceId) {
-    return NextResponse.json({ error: "Stripe price not configured for this tier" }, { status: 503 })
+    return NextResponse.json({ error: "Stripe price not configured for this tier. Contact support." }, { status: 503 })
   }
 
-  const userId = Number(session.user.id)
   const userEmail = session.user.email!
 
   // Get or create Stripe customer
   let stripeCustomerId: string
-  const existing = await db.query.subscriptions.findFirst({
-    where: eq(subscriptions.userId, userId),
-  })
+  let existing
+  try {
+    existing = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.userId, userId),
+    })
+  } catch (err) {
+    console.error("[stripe/checkout] DB query failed:", err)
+    return NextResponse.json({ error: "Database error. Please try again." }, { status: 503 })
+  }
 
   if (existing?.stripeCustomerId) {
     stripeCustomerId = existing.stripeCustomerId
