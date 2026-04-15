@@ -94,5 +94,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 502 })
   }
 
+  if (!checkoutSession.url) {
+    console.error("[stripe/checkout] checkout session created but url is null", checkoutSession.id)
+    return NextResponse.json({ error: "Stripe returned no checkout URL. Please try again." }, { status: 502 })
+  }
+
   return NextResponse.json({ url: checkoutSession.url })
 }
