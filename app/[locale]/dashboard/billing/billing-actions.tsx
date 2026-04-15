@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import type { TierKey } from "@/lib/stripe"
 
 type Props =
@@ -9,7 +8,6 @@ type Props =
   | { hasSubscription: boolean; mode: "subscribe"; tier: TierKey; label: string }
 
 export default function BillingActions(props: Props) {
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
 
   async function handleManage() {
@@ -17,7 +15,7 @@ export default function BillingActions(props: Props) {
     const res = await fetch("/api/stripe/portal", { method: "POST" })
     const data = await res.json()
     if (data.url) {
-      router.push(data.url)
+      window.location.href = data.url
     } else {
       alert("Could not open billing portal. Please try again.")
       setLoading(false)
@@ -33,7 +31,7 @@ export default function BillingActions(props: Props) {
     })
     const data = await res.json()
     if (data.url) {
-      router.push(data.url)
+      window.location.href = data.url
     } else {
       alert(data.error ?? "Could not start checkout. Please try again.")
       setLoading(false)
