@@ -3,15 +3,20 @@ import { Link } from "@/i18n/navigation"
 import { getViewer } from "@/lib/viewer"
 import { getUserClaimedCoupons, getUserRedemptions, getFavoritedDeals } from "@/lib/queries"
 import { db } from "@/db/client"
-import { subscribers } from "@/db/schema"
+import { subscribers, users } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { auth } from "@/auth"
 import { formatDistanceToNow, format } from "date-fns"
-import { Tag, CheckCircle2, Clock, Heart, Mail, Bell } from "lucide-react"
+import { Tag, CheckCircle2, Clock, Heart, Mail, Bell, BellOff } from "lucide-react"
+import { updateNotificationPrefsAction } from "@/lib/business-follow-actions"
 
 export const metadata = { title: "My account — Lompoc Deals" }
 
-export default async function AccountPage() {
+export default async function AccountPage({
+  searchParams,
+}: {
+  searchParams: { notif?: string }
+}) {
   const viewer = await getViewer()
   if (!viewer.isAuthed) {
     redirect("/login?from=/account")
@@ -30,7 +35,7 @@ export default async function AccountPage() {
   const session = await auth()
   const userEmail = session?.user?.email ?? ""
 
-  const [coupons, redemptions, favoritedDeals, subscriber] = await Promise.all([
+  const [coupons, redemptions, favoritedDeals, subscriber, userRow] = await Promise.all([
     getUserClaimedCoupons(viewer.userId!),
     getUserRedemptions(viewer.userId!),
     getFavoritedDeals(viewer.userId!),
@@ -38,11 +43,17 @@ export default async function AccountPage() {
       where: eq(subscribers.email, userEmail),
       columns: { confirmedAt: true },
     }),
+    db.query.users.findFirst({
+      where: eq(users.id, viewer.userId!),
+      columns: { notificationEmails: true },
+    }),
   ])
 
   const activeCoupons = coupons.filter((c) => !c.isExpired)
   const expiredCoupons = coupons.filter((c) => c.isExpired)
   const isSubscribed = !!subscriber?.confirmedAt
+  const notificationEmails = userRow?.notificationEmails ?? true
+  const notifJustDisabled = searchParams.notif === "off"
 
   return (
     <div className="mx-auto max-w-4xl space-y-10 px-4 py-8">
@@ -53,6 +64,12 @@ export default async function AccountPage() {
           Your saved deals, coupons, and preferences
         </p>
       </section>
+
+      {notifJustDisabled && (
+        <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          Deal notifications turned off. You can re-enable them below.
+        </div>
+      )}
 
       {/* Quick links */}
       <section className="flex flex-wrap gap-3">
@@ -112,6 +129,51 @@ export default async function AccountPage() {
             Subscribe free
           </Link>
         )}
+      </section>
+
+      {/* Deal notifications */}
+      <section className="rounded-xl border p-5">
+        <div className="flex items-center gap-2">
+          {notificationEmails ? (
+            <Bell className="h-5 w-5 text-primary" />
+          ) : (
+            <BellOff className="h-5 w-5 text-muted-foreground" />
+          )}
+          <h2 className="text-lg font-semibold">Deal notifications</h2>
+          <span className={`ml-auto rounded-full px-2 py-0.5 text-xs font-medium ${notificationEmails ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"}`}>
+            {notificationEmails ? "On" : "Off"}
+          </span>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {notificationEmails
+            ? "Get emails when deals you saved are updated, and when businesses you follow post new deals."
+            : "You won't receive deal update or new deal notifications."}
+        </p>
+        <form action={updateNotificationPrefsAction} className="mt-3">
+          {notificationEmails && (
+            <input type="hidden" name="notificationEmails" value="" />
+          )}
+          {notificationEmails ? (
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium hover:bg-muted"
+            >
+              <BellOff className="h-3.5 w-3.5" />
+              Turn off
+            </button>
+          ) : (
+            <>
+              <input type="hidden" name="notificationEmails" value="on" />
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                <Bell className="h-3.5 w-3.5" />
+                Turn on
+              </button>
+            </>
+          )}
+        </form>
       </section>
 
       {/* Favorited deals */}

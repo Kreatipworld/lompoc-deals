@@ -1,6 +1,15 @@
 import { Resend } from "resend"
 import type { DealCardData } from "@/lib/queries"
 
+export type DealNotificationData = {
+  id: number
+  title: string
+  description: string | null
+  discountText: string | null
+  businessName: string
+  businessSlug: string
+}
+
 const FROM_ADDRESS = "Lompoc Deals <onboarding@resend.dev>"
 
 function getResend(): Resend | null {
@@ -188,6 +197,94 @@ export async function sendWelcomeEmail(
 
           <p style="color:#888;font-size:12px;margin-top:32px;">
             <a href="${siteLink}" style="color:#888;">lompocdeals.com</a>
+          </p>
+        </div>
+      `,
+    })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
+export async function sendDealUpdateEmail(
+  email: string,
+  deal: DealNotificationData,
+  unsubscribeToken: string
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) return { ok: false, error: "Email service not configured" }
+
+  const dealUrl = siteUrl(`/en/biz/${deal.businessSlug}`)
+  const unsubUrl = siteUrl(`/api/notifications/unsubscribe?token=${unsubscribeToken}`)
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: email,
+      subject: `Updated: ${deal.title} — ${deal.businessName}`,
+      html: `
+        <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
+          <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 12px;">
+            A deal you saved was updated
+          </p>
+          <h1 style="font-size: 22px; margin: 0 0 4px;">${deal.title}</h1>
+          <p style="font-size: 14px; color: #888; margin: 0 0 12px;">${deal.businessName}${deal.discountText ? " · " + deal.discountText : ""}</p>
+          ${deal.description ? `<p style="color: #555; line-height: 1.5; font-size: 14px;">${deal.description}</p>` : ""}
+          <p style="margin: 24px 0;">
+            <a href="${dealUrl}"
+               style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
+              View deal
+            </a>
+          </p>
+          <p style="color: #888; font-size: 12px; margin-top: 32px;">
+            You're getting this because you saved this deal.
+            <a href="${unsubUrl}" style="color: #888;">Turn off deal notifications</a>
+            · <a href="${siteUrl("/en")}" style="color: #888;">Visit site</a>
+          </p>
+        </div>
+      `,
+    })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
+export async function sendNewDealFromFollowedBusinessEmail(
+  email: string,
+  deal: DealNotificationData,
+  unsubscribeToken: string
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) return { ok: false, error: "Email service not configured" }
+
+  const bizUrl = siteUrl(`/en/biz/${deal.businessSlug}`)
+  const unsubUrl = siteUrl(`/api/notifications/unsubscribe?token=${unsubscribeToken}`)
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: email,
+      subject: `New deal from ${deal.businessName}: ${deal.title}`,
+      html: `
+        <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
+          <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 12px;">
+            New deal from a business you follow
+          </p>
+          <h1 style="font-size: 22px; margin: 0 0 4px;">${deal.title}</h1>
+          <p style="font-size: 14px; color: #888; margin: 0 0 12px;">${deal.businessName}${deal.discountText ? " · " + deal.discountText : ""}</p>
+          ${deal.description ? `<p style="color: #555; line-height: 1.5; font-size: 14px;">${deal.description}</p>` : ""}
+          <p style="margin: 24px 0;">
+            <a href="${bizUrl}"
+               style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
+              See all deals from ${deal.businessName}
+            </a>
+          </p>
+          <p style="color: #888; font-size: 12px; margin-top: 32px;">
+            You're getting this because you follow ${deal.businessName}.
+            <a href="${unsubUrl}" style="color: #888;">Turn off deal notifications</a>
+            · <a href="${siteUrl("/en")}" style="color: #888;">Visit site</a>
           </p>
         </div>
       `,

@@ -19,6 +19,7 @@ import { BusinessSocialLinks } from "@/components/business-social-links"
 import { BusinessHours } from "@/components/business-hours"
 import { BusinessMapLoader } from "@/components/business-map-loader"
 import { BusinessClaimCta } from "@/components/business-claim-cta"
+import { FollowBusinessButton } from "@/components/follow-business-button"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
@@ -197,6 +198,16 @@ export default async function BusinessPage({
                     Listed since{" "}
                     {format(new Date(business.createdAt), "MMM yyyy")}
                   </span>
+                  {viewer.isLocal && (
+                    <>
+                      <span className="text-foreground/30">·</span>
+                      <FollowBusinessButton
+                        businessId={business.id}
+                        slug={params.slug}
+                        isFollowing={viewer.followedBusinessIds.has(business.id)}
+                      />
+                    </>
+                  )}
                 </div>
 
                 {/* Social links + Google reviews */}

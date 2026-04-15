@@ -48,6 +48,7 @@ export const users = pgTable("users", {
   city: varchar("city", { length: 100 }),
   zip: varchar("zip", { length: 20 }),
   interestsJson: jsonb("interests_json"),
+  notificationEmails: boolean("notification_emails").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
@@ -328,6 +329,25 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
     .notNull()
     .defaultNow(),
 })
+
+// ---------- business follows ----------
+export const businessFollows = pgTable(
+  "business_follows",
+  {
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    businessId: integer("business_id")
+      .notNull()
+      .references(() => businesses.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.businessId] }),
+  })
+)
 
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {

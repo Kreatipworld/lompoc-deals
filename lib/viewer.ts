@@ -8,6 +8,7 @@ export type Viewer = {
   isBusiness: boolean
   userId: number | null
   favoritedDealIds: Set<number>
+  followedBusinessIds: Set<number>
 }
 
 export async function getViewer(): Promise<Viewer> {
@@ -20,6 +21,7 @@ export async function getViewer(): Promise<Viewer> {
       isBusiness: false,
       userId: null,
       favoritedDealIds: new Set(),
+      followedBusinessIds: new Set(),
     }
   }
 
@@ -27,12 +29,20 @@ export async function getViewer(): Promise<Viewer> {
   const role = session.user.role
 
   let favoritedDealIds = new Set<number>()
+  let followedBusinessIds = new Set<number>()
   if (role === "local") {
-    const rows = await db.query.favorites.findMany({
-      where: (f, { eq }) => eq(f.userId, userId),
-      columns: { dealId: true },
-    })
-    favoritedDealIds = new Set(rows.map((r) => r.dealId))
+    const [favRows, followRows] = await Promise.all([
+      db.query.favorites.findMany({
+        where: (f, { eq }) => eq(f.userId, userId),
+        columns: { dealId: true },
+      }),
+      db.query.businessFollows.findMany({
+        where: (f, { eq }) => eq(f.userId, userId),
+        columns: { businessId: true },
+      }),
+    ])
+    favoritedDealIds = new Set(favRows.map((r) => r.dealId))
+    followedBusinessIds = new Set(followRows.map((r) => r.businessId))
   }
 
   return {
@@ -42,5 +52,6 @@ export async function getViewer(): Promise<Viewer> {
     isBusiness: role === "business",
     userId,
     favoritedDealIds,
+    followedBusinessIds,
   }
 }

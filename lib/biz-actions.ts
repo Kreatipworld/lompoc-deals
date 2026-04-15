@@ -6,12 +6,13 @@ import { redirect } from "next/navigation"
 import { and, eq, gt, sql } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses, deals, subscriptions, propertyListings } from "@/db/schema"
+import { businesses, deals, subscriptions, propertyListings, favorites, businessFollows, users } from "@/db/schema"
 import { assertFeature } from "@/lib/plan-features"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
 import { TIERS } from "@/lib/stripe"
+import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail } from "@/lib/email"
 
 function slugify(s: string) {
   return s
@@ -285,18 +286,42 @@ export async function saveDealAction(
         ...(imageUrl ? { imageUrl } : {}),
       })
       .where(eq(deals.id, id))
-  } else {
-    await db.insert(deals).values({
-      businessId: biz.id,
-      type: data.type,
+
+    // Fire deal-update notifications (non-blocking)
+    void notifyDealUpdated(id, {
       title: data.title,
       description: data.description ?? null,
       discountText: data.discountText ?? null,
-      terms: data.terms ?? null,
-      startsAt,
-      expiresAt,
-      imageUrl,
+      businessName: biz.name,
+      businessSlug: biz.slug,
     })
+  } else {
+    const [inserted] = await db
+      .insert(deals)
+      .values({
+        businessId: biz.id,
+        type: data.type,
+        title: data.title,
+        description: data.description ?? null,
+        discountText: data.discountText ?? null,
+        terms: data.terms ?? null,
+        startsAt,
+        expiresAt,
+        imageUrl,
+      })
+      .returning({ id: deals.id })
+
+    // Fire new-deal notifications to business followers (non-blocking)
+    if (inserted) {
+      void notifyNewDeal(biz.id, {
+        id: inserted.id,
+        title: data.title,
+        description: data.description ?? null,
+        discountText: data.discountText ?? null,
+        businessName: biz.name,
+        businessSlug: biz.slug,
+      })
+    }
   }
 
   revalidatePath("/dashboard/deals")
@@ -338,6 +363,65 @@ export async function deleteDealAction(formData: FormData) {
 
   revalidatePath("/dashboard/deals")
   revalidatePath("/")
+}
+
+// ============ notification helpers ============
+
+type DealInfo = {
+  title: string
+  description: string | null
+  discountText: string | null
+  businessName: string
+  businessSlug: string
+}
+
+async function notifyDealUpdated(dealId: number, info: DealInfo) {
+  try {
+    const favRows = await db
+      .select({ email: users.email, token: users.email, notif: users.notificationEmails })
+      .from(favorites)
+      .innerJoin(users, eq(favorites.userId, users.id))
+      .where(and(eq(favorites.dealId, dealId), eq(users.notificationEmails, true)))
+
+    await Promise.allSettled(
+      favRows.map((row) =>
+        sendDealUpdateEmail(
+          row.email,
+          { id: dealId, ...info },
+          Buffer.from(row.email).toString("base64url")
+        )
+      )
+    )
+  } catch (e) {
+    console.error("[notify] deal update failed", e)
+  }
+}
+
+async function notifyNewDeal(businessId: number, info: DealInfo & { id: number }) {
+  try {
+    const followRows = await db
+      .select({ email: users.email, notif: users.notificationEmails })
+      .from(businessFollows)
+      .innerJoin(users, eq(businessFollows.userId, users.id))
+      .where(
+        and(
+          eq(businessFollows.businessId, businessId),
+          eq(users.notificationEmails, true)
+        )
+      )
+
+    await Promise.allSettled(
+      followRows.map((row) =>
+        sendNewDealFromFollowedBusinessEmail(
+          row.email,
+          info,
+          Buffer.from(row.email).toString("base64url")
+        )
+      )
+    )
+  } catch (e) {
+    console.error("[notify] new deal failed", e)
+  }
 }
 
 // ============ data fetchers (used by dashboard server components) ============
