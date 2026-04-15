@@ -6,7 +6,8 @@ import { redirect } from "next/navigation"
 import { and, eq, gt, sql } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses, deals, subscriptions } from "@/db/schema"
+import { businesses, deals, subscriptions, propertyListings } from "@/db/schema"
+import { assertFeature } from "@/lib/plan-features"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
@@ -372,4 +373,146 @@ export async function getCategoriesList() {
   return db.query.categories.findMany({
     orderBy: (c, { asc }) => [asc(c.name)],
   })
+}
+
+// ============ property listings ============
+
+export type PropertyState = { error?: string }
+
+const propertySchema = z.object({
+  type: z.enum(["for-sale", "for-rent"]),
+  title: z.string().min(3, "Title must be at least 3 characters"),
+  description: z.string().optional(),
+  priceDollars: z.coerce.number().positive("Price must be a positive number"),
+  beds: z.coerce.number().int().min(0).optional(),
+  baths: z.coerce.number().min(0).optional(),
+  sqft: z.coerce.number().int().min(0).optional(),
+  address: z.string().optional(),
+})
+
+export async function upsertPropertyAction(
+  _prevState: PropertyState,
+  formData: FormData
+): Promise<PropertyState> {
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) return { error: "Create your business profile first" }
+
+  // Require premium tier
+  const sub = await db.query.subscriptions.findFirst({
+    where: eq(subscriptions.userId, userId),
+  })
+  const tierKey = sub?.tier ?? "free"
+  try {
+    assertFeature(tierKey, "canListRealEstate")
+  } catch {
+    return { error: "Property listings require the Premium plan" }
+  }
+
+  const parsed = propertySchema.safeParse({
+    type: formData.get("type"),
+    title: formData.get("title"),
+    description: formData.get("description") || undefined,
+    priceDollars: formData.get("priceCents"),
+    beds: formData.get("beds") || undefined,
+    baths: formData.get("baths") || undefined,
+    sqft: formData.get("sqft") || undefined,
+    address: formData.get("address") || undefined,
+  })
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+  }
+  const data = parsed.data
+
+  const imageFile = formData.get("image") as File | null
+  let imageUrl: string | undefined
+  if (imageFile && imageFile.size > 0) {
+    try {
+      imageUrl = await uploadImage(imageFile, "listings")
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "Image upload failed" }
+    }
+  }
+
+  const listingId = formData.get("listingId")
+
+  if (listingId) {
+    const id = parseInt(listingId.toString(), 10)
+    const existing = await db.query.propertyListings.findFirst({
+      where: (pl, { eq: e }) => e(pl.id, id),
+    })
+    if (!existing || existing.businessId !== biz.id) {
+      return { error: "Listing not found" }
+    }
+    await db
+      .update(propertyListings)
+      .set({
+        type: data.type,
+        title: data.title,
+        description: data.description ?? null,
+        priceCents: Math.round(data.priceDollars * 100),
+        beds: data.beds ?? null,
+        baths: data.baths ?? null,
+        sqft: data.sqft ?? null,
+        address: data.address ?? null,
+        ...(imageUrl ? { imageUrl } : {}),
+      })
+      .where(eq(propertyListings.id, id))
+  } else {
+    await db.insert(propertyListings).values({
+      businessId: biz.id,
+      type: data.type,
+      title: data.title,
+      description: data.description ?? null,
+      priceCents: Math.round(data.priceDollars * 100),
+      beds: data.beds ?? null,
+      baths: data.baths ?? null,
+      sqft: data.sqft ?? null,
+      address: data.address ?? null,
+      imageUrl,
+      status: "active",
+    })
+  }
+
+  revalidatePath("/dashboard/properties")
+  revalidatePath("/")
+  redirect("/dashboard/properties")
+}
+
+export async function deletePropertyAction(formData: FormData) {
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) return
+
+  const listingId = parseInt(formData.get("listingId")?.toString() ?? "0", 10)
+  if (!listingId) return
+
+  await db
+    .update(propertyListings)
+    .set({ status: "inactive" })
+    .where(and(eq(propertyListings.id, listingId), eq(propertyListings.businessId, biz.id)))
+
+  revalidatePath("/dashboard/properties")
+  revalidatePath("/")
+}
+
+export async function getMyProperties() {
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) return []
+  return db.query.propertyListings.findMany({
+    where: (pl, { and: a, eq: e }) => a(e(pl.businessId, biz.id), e(pl.status, "active")),
+    orderBy: (pl, { desc }) => [desc(pl.createdAt)],
+  })
+}
+
+export async function getMyPropertyById(id: number) {
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) return null
+  const pl = await db.query.propertyListings.findFirst({
+    where: (p, { eq: e }) => e(p.id, id),
+  })
+  if (!pl || pl.businessId !== biz.id) return null
+  return pl
 }

@@ -1,7 +1,11 @@
 import { redirect } from "next/navigation"
-import { LayoutDashboard, Store, Tag, BarChart3, CreditCard, Wallet } from "lucide-react"
+import { LayoutDashboard, Store, Tag, BarChart3, CreditCard, Wallet, Building2 } from "lucide-react"
 import { auth } from "@/auth"
+import { db } from "@/db/client"
+import { subscriptions } from "@/db/schema"
+import { eq } from "drizzle-orm"
 import { getMyDeals } from "@/lib/biz-actions"
+import { TIERS } from "@/lib/stripe"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { isPast } from "date-fns"
 
@@ -15,11 +19,19 @@ export default async function DashboardLayout({
     redirect("/login")
   }
 
-  // Fetch active deal count for the badge (best-effort — won't crash the layout)
+  const userId = Number(session.user.id)
+
+  // Fetch active deal count + subscription tier in parallel (best-effort)
   let activeDealCount = 0
+  let canListRealEstate = false
   try {
-    const deals = await getMyDeals()
+    const [deals, sub] = await Promise.all([
+      getMyDeals(),
+      db.query.subscriptions.findFirst({ where: eq(subscriptions.userId, userId) }),
+    ])
     activeDealCount = deals.filter((d) => !isPast(d.expiresAt)).length
+    const tier = sub?.tier ?? "free"
+    canListRealEstate = TIERS[tier].canListRealEstate
   } catch {
     // silently ignore — layout must not hard-fail
   }
@@ -29,6 +41,9 @@ export default async function DashboardLayout({
     { href: "/dashboard/profile", icon: <Store className="h-4 w-4" />, label: "Profile" },
     { href: "/dashboard/deals", icon: <Tag className="h-4 w-4" />, label: "Deals", badge: activeDealCount },
     { href: "/dashboard/stats", icon: <BarChart3 className="h-4 w-4" />, label: "Stats" },
+    ...(canListRealEstate
+      ? [{ href: "/dashboard/properties", icon: <Building2 className="h-4 w-4" />, label: "Properties" }]
+      : []),
     { href: "/dashboard/billing", icon: <CreditCard className="h-4 w-4" />, label: "Billing" },
     { href: "/dashboard/payouts", icon: <Wallet className="h-4 w-4" />, label: "Payouts" },
   ]

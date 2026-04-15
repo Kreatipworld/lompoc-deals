@@ -17,6 +17,9 @@ import {
   AlertCircle,
   CheckCircle2,
   Plus,
+  Building2,
+  Share2,
+  Lock,
 } from "lucide-react"
 import { isPast } from "date-fns"
 
@@ -251,6 +254,56 @@ export default async function DashboardHomePage() {
           title="Edit profile"
           desc="Update your business info, hours, and images"
         />
+        {/* Properties — Premium feature */}
+        <QuickAction
+          href={tierConfig.canListRealEstate ? "/dashboard/properties" : "/dashboard/billing"}
+          icon={<Building2 className="h-5 w-5" />}
+          title="Manage properties"
+          desc={
+            tierConfig.canListRealEstate
+              ? "Add and manage real estate listings"
+              : "Upgrade to Premium to list properties for sale or rent"
+          }
+          badge={!tierConfig.canListRealEstate ? "Premium" : undefined}
+        />
+      </div>
+
+      {/* Plan features */}
+      <div className="rounded-3xl border bg-card p-6 shadow-sm">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-display text-lg font-semibold">Plan features</h2>
+          {currentTier !== "premium" && (
+            <Link
+              href="/dashboard/billing"
+              className="text-xs font-medium text-primary hover:underline"
+            >
+              Upgrade
+            </Link>
+          )}
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <PlanFeatureCard
+            icon={<BarChart3 className="h-4 w-4" />}
+            title="Analytics"
+            desc="Views, clicks &amp; funnel data"
+            available={tierConfig.canViewAnalytics}
+            upgradeLabel="Standard"
+          />
+          <PlanFeatureCard
+            icon={<Share2 className="h-4 w-4" />}
+            title="Social links"
+            desc="Instagram, Facebook &amp; more"
+            available={tierConfig.canShowSocialLinks}
+            upgradeLabel="Standard"
+          />
+          <PlanFeatureCard
+            icon={<Building2 className="h-4 w-4" />}
+            title="Property listings"
+            desc="Real estate for-sale &amp; for-rent"
+            available={tierConfig.canListRealEstate}
+            upgradeLabel="Premium"
+          />
+        </div>
       </div>
     </div>
   )
@@ -287,6 +340,50 @@ function MetricCard({
         {label}
       </div>
       {sub && <div className="mt-1 text-xs text-muted-foreground">{sub}</div>}
+    </div>
+  )
+}
+
+function PlanFeatureCard({
+  icon,
+  title,
+  desc,
+  available,
+  upgradeLabel,
+}: {
+  icon: React.ReactNode
+  title: string
+  desc: string
+  available: boolean
+  upgradeLabel: string
+}) {
+  return (
+    <div
+      className={`flex items-start gap-3 rounded-2xl border p-4 ${
+        available ? "bg-card" : "bg-muted/20 opacity-70"
+      }`}
+    >
+      <div
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+          available ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+        }`}
+      >
+        {available ? icon : <Lock className="h-4 w-4" />}
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium">{title}</p>
+          {!available && (
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+              {upgradeLabel}
+            </span>
+          )}
+        </div>
+        <p className="mt-0.5 text-xs text-muted-foreground">{desc}</p>
+      </div>
+      {available && (
+        <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+      )}
     </div>
   )
 }
