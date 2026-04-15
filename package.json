@@ -14,7 +14,8 @@
     "db:seed": "node --env-file=.env.local node_modules/.bin/tsx db/seed.ts",
     "db:sync-zillow": "node --env-file=.env.local node_modules/.bin/tsx db/sync-zillow.ts",
     "db:scrape-google-places": "node --env-file=.env.local node_modules/.bin/tsx db/scrape-google-places.ts",
-    "seed:admin": "node --env-file=.env.local node_modules/.bin/tsx scripts/seed-admin.ts"
+    "seed:admin": "node --env-file=.env.local node_modules/.bin/tsx scripts/seed-admin.ts",
+    "reset:admin-password": "node --env-file=.env.local node_modules/.bin/tsx scripts/reset-admin-password.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
