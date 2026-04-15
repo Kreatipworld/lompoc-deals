@@ -12,6 +12,7 @@ import { stripe, TIERS } from "@/lib/stripe"
 import type { TierKey } from "@/lib/stripe"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
+import { sendWelcomeEmail } from "@/lib/email"
 
 // ─── Step 1 — Account creation ──────────────────────────────────────────────
 
@@ -200,6 +201,11 @@ export async function businessSignupSubmitAction(
     categoryId: categoryId ?? null,
     status: "pending",
   })
+
+  // Fire-and-forget welcome email — don't block signup on failure
+  sendWelcomeEmail(email, ownerFullName, "business").catch((err) =>
+    console.error("[businessSignupSubmitAction] welcome email failed:", err)
+  )
 
   // Auto sign-in
   try {

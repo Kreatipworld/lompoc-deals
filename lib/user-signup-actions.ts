@@ -8,6 +8,7 @@ import { AuthError } from "next-auth"
 import { db } from "@/db/client"
 import { users } from "@/db/schema"
 import { signIn } from "@/auth"
+import { sendWelcomeEmail } from "@/lib/email"
 
 const localSignupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -58,6 +59,11 @@ export async function localSignupAction(
     zip: zip ?? null,
     interestsJson: interests && interests.length > 0 ? interests : null,
   })
+
+  // Fire-and-forget welcome email — don't block signup on failure
+  sendWelcomeEmail(email, name, "local").catch((err) =>
+    console.error("[localSignupAction] welcome email failed:", err)
+  )
 
   let autoSignInOk = true
   try {
