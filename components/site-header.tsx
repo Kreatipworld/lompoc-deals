@@ -36,6 +36,7 @@ export async function SiteHeader() {
           <NavLink href="/map">{t("map")}</NavLink>
           <NavLink href="/subscribe">{t("subscribe")}</NavLink>
           <NavLink href="/for-businesses">{t("forBusinesses")}</NavLink>
+          <NavLink href="/locals">{t("forLocals")}</NavLink>
         </nav>
 
         <div className="flex items-center gap-3">
