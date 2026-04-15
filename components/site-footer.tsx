@@ -91,9 +91,19 @@ export async function SiteFooter() {
 
           <div className="space-y-3">
             <h3 className="font-display text-sm font-semibold tracking-tight">
-              {t("stayInTouch")}
+              {t("forLocals")}
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/locals" className="hover:text-foreground">
+                  {t("whyJoin")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/signup/user" className="hover:text-foreground">
+                  {t("joinFree")}
+                </Link>
+              </li>
               <li>
                 <Link href="/subscribe" className="hover:text-foreground">
                   {t("weeklyDigest")}
