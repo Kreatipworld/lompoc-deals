@@ -58,10 +58,17 @@ export async function POST(request: Request) {
   if (existing?.stripeCustomerId) {
     stripeCustomerId = existing.stripeCustomerId
   } else {
-    const customer = await stripe.customers.create({
-      email: userEmail,
-      metadata: { userId: String(userId) },
-    })
+    let customer
+    try {
+      customer = await stripe.customers.create({
+        email: userEmail,
+        metadata: { userId: String(userId) },
+      })
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to create Stripe customer"
+      console.error("[stripe/checkout] customer create failed:", message)
+      return NextResponse.json({ error: message }, { status: 502 })
+    }
     stripeCustomerId = customer.id
   }
 
