@@ -12,11 +12,16 @@ export default function BillingActions(props: Props) {
 
   async function handleManage() {
     setLoading(true)
-    const res = await fetch("/api/stripe/portal", { method: "POST" })
-    const data = await res.json()
-    if (data.url) {
-      window.location.href = data.url
-    } else {
+    try {
+      const res = await fetch("/api/stripe/portal", { method: "POST" })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert(data.error ?? "Could not open billing portal. Please try again.")
+        setLoading(false)
+      }
+    } catch {
       alert("Could not open billing portal. Please try again.")
       setLoading(false)
     }
@@ -24,16 +29,21 @@ export default function BillingActions(props: Props) {
 
   async function handleSubscribe(tier: TierKey) {
     setLoading(true)
-    const res = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tier }),
-    })
-    const data = await res.json()
-    if (data.url) {
-      window.location.href = data.url
-    } else {
-      alert(data.error ?? "Could not start checkout. Please try again.")
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tier }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert(data.error ?? "Could not start checkout. Please try again.")
+        setLoading(false)
+      }
+    } catch {
+      alert("Could not start checkout. Please try again.")
       setLoading(false)
     }
   }

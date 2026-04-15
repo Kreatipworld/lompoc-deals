@@ -1,10 +1,18 @@
 import { NextResponse } from "next/server"
-import { stripe } from "@/lib/stripe"
+import { stripe, TIERS } from "@/lib/stripe"
 import { db } from "@/db/client"
 import { subscriptions, businesses } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import type { TierKey } from "@/lib/stripe"
 import type Stripe from "stripe"
+
+/** Map a Stripe price ID back to the tier key it represents. */
+function tierFromPriceId(priceId: string): TierKey | null {
+  for (const [key, config] of Object.entries(TIERS) as [TierKey, (typeof TIERS)[TierKey]][]) {
+    if (config.priceId && config.priceId === priceId) return key
+  }
+  return null
+}
 
 const GRACE_PERIOD_DAYS = 7
 
@@ -89,7 +97,11 @@ export async function POST(request: Request) {
       const userId = Number(sub.metadata?.userId)
       if (!userId) break
 
-      const tier = (sub.metadata?.tier ?? "free") as TierKey
+      // Prefer deriving tier from the active price (handles portal upgrades/downgrades
+      // where metadata.tier may still reflect the original plan).
+      const activePriceId = sub.items?.data?.[0]?.price?.id
+      const tierFromPrice = activePriceId ? tierFromPriceId(activePriceId) : null
+      const tier = tierFromPrice ?? ((sub.metadata?.tier ?? "free") as TierKey)
       const periodEnd = getPeriodEnd(sub)
 
       await db.update(subscriptions)
