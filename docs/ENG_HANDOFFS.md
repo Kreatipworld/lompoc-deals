@@ -187,6 +187,31 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Properties Module + Plan Features Grid on Dashboard — shipped 2026-04-14 (commit 26cf470)
+
+**What shipped:**
+- **`/dashboard/properties`** — Premium-gated property listings CRUD (add, edit, remove). Standard/Free users see an upgrade gate with billing CTA.
+- **Dashboard nav** — "Properties" link appears only for Premium users (`canListRealEstate = true`)
+- **Plan features grid on Overview** — All 5 features (analytics, social links, properties, priority ranking, featured on homepage) shown with enabled/locked states and per-feature upgrade CTAs
+- **"Manage properties" quick action** on Overview — Premium CTA for non-premium users
+
+**How to test it:**
+1. As Premium: go to `/dashboard/properties` — full property list with Add/Edit/Delete
+2. As Free/Standard: go to `/dashboard/properties` — upgrade gate with billing link
+3. Dashboard Overview → features grid shows all features with lock/unlock state
+
+**Marketing surfaces it unlocks:**
+
+- **New Premium acquisition vertical: Lompoc real estate.** Property listings are now a fully functional Premium-only feature. Target: Lompoc real estate agents, property managers, rental agencies — military families relocating to/from Vandenberg SFB drive a large, recurring rental and purchase market. Premium at $39.99/mo is cheap vs. Zillow/Realtor.com listing fees.
+
+- **In-dashboard upsell grid:** The features grid on the Overview page is the best upsell surface in the app. Every free and standard merchant now sees all 5 premium features listed with lock icons, each with a direct "Upgrade" CTA. This creates persistent upsell exposure at every login.
+
+- **Properties as differentiation:** "List your rental properties and homes for sale directly on Lompoc's local business directory" is a unique offer. No other local platform in Lompoc has this. Add to competitive differentiation matrix.
+
+**CMO action:** Create targeted pitch content for Lompoc real estate businesses. New file: `marketing/sales/realestate-pitch.md`.
+
+---
+
 ## Business Dashboard Overview + Upgrade Upsell System — shipped 2026-04-14 (commit 0fac879 + e2aa310)
 
 **What shipped:**
