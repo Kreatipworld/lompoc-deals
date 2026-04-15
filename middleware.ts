@@ -11,6 +11,11 @@ const protectedPaths = ["/dashboard", "/admin"]
 export default auth(function middleware(req) {
   const { pathname } = req.nextUrl
 
+  // Skip intl middleware for API routes — they have no locale prefix
+  if (pathname.startsWith("/api")) {
+    return
+  }
+
   // Also tolerate legacy /en/* and /es/* URLs that may be cached or
   // bookmarked. Strip the prefix so the auth check still works.
   const pathnameWithoutLocale = pathname.replace(/^\/(en|es)(\/|$)/, "/") || "/"
