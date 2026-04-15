@@ -3,7 +3,8 @@
 import { useFormState, useFormStatus } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { Mail, Lock, User, MapPin, Tag } from "lucide-react"
-import { localSignupAction, INTEREST_OPTIONS, type LocalSignupState } from "@/lib/user-signup-actions"
+import { localSignupAction, type LocalSignupState } from "@/lib/user-signup-actions"
+import { INTEREST_OPTIONS } from "@/lib/interest-options"
 
 function SubmitButton() {
   const { pending } = useFormStatus()

@@ -9,19 +9,6 @@ import { db } from "@/db/client"
 import { users } from "@/db/schema"
 import { signIn } from "@/auth"
 
-const INTEREST_OPTIONS = [
-  "Food & Drink",
-  "Retail & Shopping",
-  "Health & Beauty",
-  "Home & Garden",
-  "Entertainment",
-  "Automotive",
-  "Sports & Fitness",
-  "Services",
-  "Real Estate",
-  "Other",
-] as const
-
 const localSignupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Enter a valid email"),
@@ -88,4 +75,3 @@ export async function localSignupAction(
   redirect(autoSignInOk ? "/account" : "/login")
 }
 
-export { INTEREST_OPTIONS }
