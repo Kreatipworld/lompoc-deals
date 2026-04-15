@@ -187,6 +187,43 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Business Dashboard Overview + Upgrade Upsell System — shipped 2026-04-14 (commit 0fac879 + e2aa310)
+
+**What shipped:**
+
+**`0fac879` — Business dashboard overview page:**
+- Dashboard root (`/dashboard`) now shows a full Overview page instead of redirecting to Profile
+- **Plan status card:** current tier, subscription status, renewal date
+- **Deal usage bar:** active deals / tier limit with color coding. Warning at 75% usage ("running out"), blocked state at limit
+- **Metrics strip:** active deal count, total views, total clicks (all-time)
+- **Quick actions:** Add Deal, Edit Profile, Manage Billing
+- **Upgrade nudge CTA for Free tier:** persistent banner when at or near deal limit
+- **Stats page gated:** Free merchants see an upgrade prompt on `/dashboard/stats` instead of data
+
+**`e2aa310` — Admin dashboard resilience:** Prevent crash when DB data is unavailable (internal fix).
+
+**How to test it:**
+1. Sign up as a business → go to `/dashboard` — should see Overview (not redirect to profile)
+2. As Free tier: create 3 deals → Usage bar should show 100%, upgrade CTA appears
+3. Go to `/dashboard/stats` on Free tier → should see upgrade prompt, not data
+4. On Standard+: go to `/dashboard/stats` → should see views/clicks data
+
+**Marketing surfaces it unlocks:**
+
+- **Built-in upgrade funnel is now live:** Free merchants who use the dashboard will organically see upgrade prompts as they approach their 3-deal limit. This is the highest-leverage upsell mechanism to date — no outbound needed. The platform upsells itself.
+
+- **Stats page as Standard upsell:** Free merchants visiting `/dashboard/stats` see a locked screen prompting upgrade to Standard ($19.99). This is a "pain point at the right moment" upsell — the merchant wants their data, the unlock is one click away.
+
+- **Merchant activation reinforcement:** The views/clicks metrics strip on the Overview makes merchants feel the platform is working for them. "You got 47 views this week" → emotional investment → less churn.
+
+- **Onboarding email opportunity:** Day 3 onboarding email (currently in backlog) should say: "Check your dashboard → see how many people viewed your listing this week." This drives dashboard visits and exposes the upgrade prompt.
+
+- **Retention hook:** "Welcome back, [Business Name]" + metrics → reason to log in weekly. Higher DAU/MAU = higher upsell conversion rate.
+
+**CMO action:** Update merchant onboarding email sequence Day 3 to reference the dashboard metrics and nudge to `/dashboard/stats` for Standard upsell.
+
+---
+
 ## Business Count Correction + Mobile Scroll Nav — shipped 2026-04-14 (commit 9cf9b96 + 613b3c0)
 
 **What shipped:**

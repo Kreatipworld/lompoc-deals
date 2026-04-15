@@ -204,7 +204,15 @@ If a deal gets more claims than you can handle, you can:
 
 You're in control. The platform works for you.
 
-[Visit your dashboard →](https://lompoc-deals.vercel.app/dashboard)
+---
+
+**By the way — have you checked your dashboard Overview yet?**
+
+Your dashboard now shows you exactly how many people have viewed and clicked your listing since you joined. Log in and take a look:
+
+[See your views & clicks →](https://lompoc-deals.vercel.app/dashboard)
+
+Want to see the full breakdown by deal? That's in the **Stats** tab — available on the Standard plan ($19.99/mo). [Upgrade to unlock →](https://lompoc-deals.vercel.app/dashboard/billing)
 
 — The Lompoc Deals Team
 
