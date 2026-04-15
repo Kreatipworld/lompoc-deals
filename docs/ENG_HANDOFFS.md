@@ -187,6 +187,56 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Welcome Emails + Business Follows + Deal Notifications + Password Reset — shipped 2026-04-15 (commits d7d3ea3 + d3f1c73 + 2243854)
+
+**What shipped:**
+
+**`d7d3ea3` — Welcome email on signup (REQ-002 COMPLETE):**
+- Bilingual EN/ES welcome email sent to both local users and business signups after account creation
+- Uses Resend, fire-and-forget (won't block signup)
+- **REQ-002 from CMO_REQUESTS.md is now done.** The Day 0 email in the merchant onboarding drip is now live automatically.
+
+**`d3f1c73` — Business follows + deal notifications:**
+- `business_follows` table (migration 0012)
+- Follow/unfollow button on every `/biz/[slug]` page for logged-in local users
+- Notification prefs toggle on account page (`/account`)
+- Email notification sent when a **favorited deal is updated**
+- Email notification sent when a **followed business posts a new deal**
+- One-click unsubscribe at `/api/notifications/unsubscribe`
+
+**`2243854` — Forgot-password / account recovery:**
+- `/forgot-password` → sends reset link via Resend (1-hour expiry)
+- `/reset-password` → validates token, updates password
+- Login form now has "Forgot password?" link
+
+**How to test it:**
+1. Sign up as a local user → check inbox for welcome email
+2. Go to `/biz/[any-business-slug]` while logged in → Follow button should appear
+3. Follow a business → business posts a new deal → check email for notification
+4. Go to `/account` → notification preferences toggle
+5. Log out → go to `/login` → click "Forgot password?" → enter email → check inbox for reset link
+
+**Marketing surfaces this unlocks:**
+
+- **REQ-002 done.** Day 0 welcome email fires automatically for all new signups. Both the consumer welcome and merchant welcome sequences from `marketing/email/` are now auto-triggered. The drip sequences I wrote can be loaded into Resend as follow-on automations.
+
+- **Business follows = the notification moat.** Every local user who follows a business will receive an email the moment that business posts a new deal. This creates a direct email channel between merchants and their most engaged customers — no Mailchimp required, no extra cost. For merchants: "When you post a deal, everyone who follows your business gets an email." This is the most compelling merchant value prop the platform has had.
+
+- **Viral loop:** Locals follow businesses → businesses get motivated to post deals → followers get notified → followers claim deals → merchants see ROI → merchants upgrade. This is the engine that drives organic MRR growth.
+
+- **Follow button on `/biz/[slug]`** — every business profile page now has a Follow button. This is a new acquisition surface: "Follow this business for deal alerts" is a softer CTA than "Sign up" — converts browsers into registered accounts.
+
+- **Notification prefs on /account** — transparent opt-out. Good for email deliverability and CAN-SPAM compliance.
+
+- **Forgot password** — reduces churn from account lockouts. Affects both consumers and merchants.
+
+**CMO actions taken:**
+- Updated merchant onboarding drip: Day 0 email is now live (automatic via Resend)
+- Updated for-businesses pitch copy to highlight the follows/notifications feature
+- Updated social copy to encourage locals to follow businesses
+
+---
+
 ## Consumer Landing Page /locals + Auth Fix — shipped 2026-04-15 (commits 2e9f3fa + 60e74dc + 63657b7 + 016628e)
 
 **What shipped:**

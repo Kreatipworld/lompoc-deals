@@ -24,6 +24,8 @@
 >
 > Bonus: the signup wizard walks you through posting your **first deal before you even finish signing up** — so you're live with a real offer in under 5 minutes, no extra steps.
 >
+> And when you post a deal, **every Lompoc Deals user who follows your business gets an email notification instantly** — no extra work on your end. It's a direct line to your most loyal customers.
+>
 > Interested? Just reply or sign up directly: lompoc-deals.vercel.app/signup
 >
 > Best,  

@@ -192,7 +192,7 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 - Sequences should be easy for CMO team to edit (markdown or simple template files)
 - Unsubscribe link in every email  
 **Deadline:** Cycle 2  
-**Status:** Requested
+**Status:** ✅ PARTIALLY DONE (2026-04-15) — Welcome email (Day 0) now fires automatically via Resend on both user and business signup (commit d7d3ea3). Full multi-step sequence (Days 1/3/7/14) still needs Resend automation wiring. Day 0 is live.
 
 ---
 
