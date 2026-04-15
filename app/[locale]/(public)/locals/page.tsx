@@ -4,7 +4,6 @@ import {
   Heart,
   MapPin,
   Mail,
-  Star,
   Bell,
   Tag,
   Users,
