@@ -70,6 +70,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: message }, { status: 502 })
     }
     stripeCustomerId = customer.id
+
+    // Persist the customer ID immediately so retries reuse the same customer
+    try {
+      if (existing) {
+        await db.update(subscriptions)
+          .set({ stripeCustomerId: customer.id, status: "trialing", updatedAt: new Date() })
+          .where(eq(subscriptions.userId, userId))
+      } else {
+        await db.insert(subscriptions).values({
+          userId,
+          stripeCustomerId: customer.id,
+          tier: "free",
+          status: "trialing",
+          cancelAtPeriodEnd: 0,
+        })
+      }
+    } catch (err) {
+      console.error("[stripe/checkout] failed to save stripeCustomerId:", err)
+      // Non-fatal — the webhook will update on checkout.session.completed
+    }
   }
 
   const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
