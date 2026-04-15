@@ -1,7 +1,6 @@
+import { auth } from "@/auth"
 import createMiddleware from "next-intl/middleware"
-import { getToken } from "next-auth/jwt"
 import { routing } from "@/i18n/routing"
-import type { NextRequest } from "next/server"
 
 const intlMiddleware = createMiddleware(routing)
 
@@ -9,7 +8,7 @@ const intlMiddleware = createMiddleware(routing)
 // longer have /en or /es prefixes, so we match against the raw pathname.
 const protectedPaths = ["/dashboard", "/admin"]
 
-export default async function middleware(req: NextRequest) {
+export default auth(function middleware(req) {
   const { pathname } = req.nextUrl
 
   // Also tolerate legacy /en/* and /es/* URLs that may be cached or
@@ -23,13 +22,9 @@ export default async function middleware(req: NextRequest) {
   const intlResponse = intlMiddleware(req)
 
   if (isProtected) {
-    // Use getToken to directly decode the JWT — avoids the auth(req) pattern
-    // which returns a Response (from handleAuth) rather than the session data.
-    const token = await getToken({
-      req,
-      secret: process.env.AUTH_SECRET,
-    })
-    const role = token?.role as string | undefined
+    // Use req.auth from the NextAuth v5 session — avoids getToken() which
+    // does not correctly decode NextAuth v5 JWTs in Edge middleware.
+    const role = req.auth?.user?.role
 
     if (pathnameWithoutLocale.startsWith("/dashboard") && role !== "business") {
       const url = req.nextUrl.clone()
@@ -47,7 +42,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   return intlResponse
-}
+})
 
 export const config = {
   matcher: [
