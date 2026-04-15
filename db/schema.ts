@@ -349,6 +349,27 @@ export const businessFollows = pgTable(
   })
 )
 
+// ---------- telegram ----------
+export const telegramSettings = pgTable("telegram_settings", {
+  key: varchar("key", { length: 100 }).primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+})
+
+export const telegramMessages = pgTable("telegram_messages", {
+  id: serial("id").primaryKey(),
+  chatId: varchar("chat_id", { length: 50 }).notNull(),
+  fromName: varchar("from_name", { length: 200 }),
+  fromUsername: varchar("from_username", { length: 200 }),
+  text: text("text").notNull(),
+  readAt: timestamp("read_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+})
+
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),

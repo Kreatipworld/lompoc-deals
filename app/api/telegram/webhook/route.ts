@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendTelegramMessage, type TelegramUpdate } from "@/lib/telegram";
 import { db } from "@/db/client";
-import { deals, businesses } from "@/db/schema";
+import { deals, businesses, telegramSettings, telegramMessages } from "@/db/schema";
 import { eq, sql, and, gt } from "drizzle-orm";
 
 // Verify the request comes from Telegram using the secret token
@@ -12,22 +12,37 @@ function verifyTelegramRequest(req: NextRequest): boolean {
   return incomingSecret === secretToken;
 }
 
-async function handleCommand(chatId: number, command: string): Promise<string> {
+async function saveChatId(chatId: number): Promise<void> {
+  await db
+    .insert(telegramSettings)
+    .values({ key: "board_chat_id", value: String(chatId) })
+    .onConflictDoUpdate({
+      target: telegramSettings.key,
+      set: { value: String(chatId), updatedAt: new Date() },
+    });
+}
+
+async function handleCommand(chatId: number, command: string, args?: string): Promise<string> {
   switch (command) {
     case "/start":
+      await saveChatId(chatId);
       return (
         "👋 *Welcome to Lompoc Deals Bot!*\n\n" +
         "I'm here to help the board stay connected with the platform.\n\n" +
         "Commands:\n" +
         "/status — Platform snapshot\n" +
-        "/help — Show this message"
+        "/ask <question> — Send a message to the CEO\n" +
+        "/help — Show this message\n\n" +
+        "_Your chat has been registered for board updates._"
       );
 
     case "/help":
       return (
         "*Available Commands*\n\n" +
         "/status — Platform snapshot (deals, businesses)\n" +
-        "/help — Show this message"
+        "/ask <question> — Send a message to the CEO agent\n" +
+        "/help — Show this message\n\n" +
+        "_You can also send any free-text message to reach the CEO._"
       );
 
     case "/status": {
@@ -59,11 +74,32 @@ async function handleCommand(chatId: number, command: string): Promise<string> {
       }
     }
 
+    case "/ask": {
+      if (!args?.trim()) {
+        return "Usage: /ask <your question>\n\nExample: /ask What is the current revenue?";
+      }
+      return null as unknown as string; // signal: handled by caller via queueMessage
+    }
+
     default:
       return (
         "I didn't recognise that command. Try /help to see what I can do."
       );
   }
+}
+
+async function queueMessage(
+  chatId: number,
+  text: string,
+  fromName?: string,
+  fromUsername?: string
+): Promise<void> {
+  await db.insert(telegramMessages).values({
+    chatId: String(chatId),
+    text,
+    fromName: fromName ?? null,
+    fromUsername: fromUsername ?? null,
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -93,19 +129,34 @@ export async function POST(req: NextRequest) {
 
   const chatId = message.chat.id;
   const text = message.text.trim();
+  const senderName = message.from?.first_name ?? "Board member";
+  const senderUsername = message.from?.username;
 
   // Extract command (strip bot username suffix if present, e.g. /start@MyBot)
-  const commandMatch = text.match(/^(\/\w+)/);
+  const commandMatch = text.match(/^(\/\w+)(?:\s+([\s\S]*))?$/);
   if (commandMatch) {
     const command = commandMatch[1].toLowerCase();
-    const reply = await handleCommand(chatId, command);
-    await sendTelegramMessage(chatId, reply);
+    const args = commandMatch[2]?.trim();
+
+    if (command === "/ask") {
+      // Queue the /ask message for CEO to read
+      const question = args ?? "";
+      if (!question) {
+        await sendTelegramMessage(chatId, "Usage: /ask <your question>\n\nExample: /ask What is the current revenue?");
+      } else {
+        await queueMessage(chatId, `[/ask from ${senderName}${senderUsername ? " @" + senderUsername : ""}]: ${question}`, senderName, senderUsername);
+        await sendTelegramMessage(chatId, "✅ Your question has been queued for the CEO. You'll hear back soon.");
+      }
+    } else {
+      const reply = await handleCommand(chatId, command, args);
+      await sendTelegramMessage(chatId, reply);
+    }
   } else {
-    // Echo acknowledgement for plain messages
-    const senderName = message.from?.first_name ?? "there";
+    // Free-text message → queue for CEO
+    await queueMessage(chatId, text, senderName, senderUsername);
     await sendTelegramMessage(
       chatId,
-      `Hi ${senderName}! I received your message. Use /help to see what I can do.`
+      `✅ Message received, ${senderName}. The CEO will respond shortly.`
     );
   }
 
