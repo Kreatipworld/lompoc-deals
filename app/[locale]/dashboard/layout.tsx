@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { Store, Tag, BarChart3, CreditCard, Wallet } from "lucide-react"
+import { LayoutDashboard, Store, Tag, BarChart3, CreditCard, Wallet } from "lucide-react"
 import { auth } from "@/auth"
 import { getMyDeals } from "@/lib/biz-actions"
 import { DashboardNav } from "@/components/dashboard-nav"
@@ -25,6 +25,7 @@ export default async function DashboardLayout({
   }
 
   const links = [
+    { href: "/dashboard", icon: <LayoutDashboard className="h-4 w-4" />, label: "Overview" },
     { href: "/dashboard/profile", icon: <Store className="h-4 w-4" />, label: "Profile" },
     { href: "/dashboard/deals", icon: <Tag className="h-4 w-4" />, label: "Deals", badge: activeDealCount },
     { href: "/dashboard/stats", icon: <BarChart3 className="h-4 w-4" />, label: "Stats" },

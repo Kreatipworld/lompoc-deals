@@ -7,7 +7,13 @@ import {
   BarChart3,
   ShoppingBag,
   CheckCircle2,
+  Lock,
+  Zap,
 } from "lucide-react"
+import { auth } from "@/auth"
+import { db } from "@/db/client"
+import { subscriptions } from "@/db/schema"
+import { eq } from "drizzle-orm"
 import { getMyBusiness } from "@/lib/biz-actions"
 import { getDealFunnel, type FunnelWindow } from "@/lib/funnel-queries"
 import { Link } from "@/i18n/navigation"
@@ -22,6 +28,17 @@ export default async function StatsPage({
   const params = await searchParams
   const window: FunnelWindow =
     params.window === "7d" || params.window === "all" ? params.window : "30d"
+
+  // Tier gate — analytics require Standard or Premium
+  const session = await auth()
+  const userId = Number(session?.user?.id)
+  const sub = await db.query.subscriptions.findFirst({
+    where: eq(subscriptions.userId, userId),
+  })
+  const currentTier = sub?.tier ?? "free"
+  if (currentTier === "free") {
+    return <AnalyticsUpgradeGate />
+  }
 
   const biz = await getMyBusiness()
   const funnelRows = biz ? await getDealFunnel(biz.id, window) : []
@@ -246,6 +263,45 @@ function BigStat({
       </div>
       <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
         {label}
+      </div>
+    </div>
+  )
+}
+
+function AnalyticsUpgradeGate() {
+  return (
+    <div className="space-y-6">
+      <header>
+        <h1 className="font-display text-3xl font-semibold tracking-tight">Stats</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Deal performance metrics across your business.
+        </p>
+      </header>
+
+      <div className="rounded-3xl border border-dashed bg-muted/20 px-6 py-16 text-center">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <Lock className="h-7 w-7" />
+        </div>
+        <h3 className="mt-4 font-display text-xl font-semibold">Analytics unlocked on Standard+</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Upgrade to Standard or Premium to see views, clicks, claims, and funnel analytics for all
+          your deals.
+        </p>
+        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href="/dashboard/billing"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            <Zap className="h-4 w-4" />
+            Upgrade to Standard — $19.99/mo
+          </Link>
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium hover:bg-accent"
+          >
+            Back to overview
+          </Link>
+        </div>
       </div>
     </div>
   )

@@ -13,8 +13,12 @@ export function DashboardNav({
   return (
     <nav className="flex flex-row gap-1 lg:flex-col">
       {links.map(({ href, icon, label, badge }) => {
-        // Match active: the pathname (after locale) should start with or equal the href segment
-        const active = pathname.includes(href)
+        // For the exact dashboard root, require exact segment match to avoid matching all sub-routes
+        const segment = href.replace(/^\//, "").split("/").pop() ?? ""
+        const active =
+          href.endsWith("/dashboard")
+            ? /\/dashboard$/.test(pathname)
+            : pathname.includes(`/${segment}`)
         return (
           <Link
             key={href}
