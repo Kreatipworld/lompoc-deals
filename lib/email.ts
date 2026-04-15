@@ -111,7 +111,6 @@ export async function sendWelcomeEmail(
   }
 
   const siteLink = siteUrl()
-  const dealsLink = siteUrl("/en")
   const dashboardLink = role === "business" ? siteUrl("/en/dashboard") : siteUrl("/en/account")
 
   const isBusinessRole = role === "business"
