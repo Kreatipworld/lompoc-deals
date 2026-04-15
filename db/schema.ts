@@ -315,6 +315,20 @@ export const activities = pgTable(
   })
 )
 
+// ---------- password reset tokens ----------
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  token: varchar("token", { length: 100 }).notNull().unique(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+})
+
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),

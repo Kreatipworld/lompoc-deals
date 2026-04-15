@@ -56,6 +56,49 @@ export async function sendConfirmationEmail(
   }
 }
 
+export async function sendPasswordResetEmail(
+  email: string,
+  token: string
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY not set; skipping send")
+    return { ok: false, error: "Email service not configured" }
+  }
+
+  const resetUrl = siteUrl(`/reset-password?token=${token}`)
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: email,
+      subject: "Reset your Lompoc Deals password",
+      html: `
+        <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
+          <h1 style="font-size: 22px; margin-bottom: 8px;">Reset your password</h1>
+          <p style="color: #555; line-height: 1.5;">
+            We received a request to reset the password for your Lompoc Deals account.
+            Click the button below to choose a new password. This link expires in 1 hour.
+          </p>
+          <p style="margin: 24px 0;">
+            <a href="${resetUrl}"
+               style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
+              Reset password
+            </a>
+          </p>
+          <p style="color: #888; font-size: 13px;">
+            If you didn't request a password reset, you can safely ignore this email.<br><br>
+            Or paste this link in your browser:<br>
+            <span style="word-break: break-all;">${resetUrl}</span>
+          </p>
+        </div>
+      `,
+    })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
 export async function sendDigestEmail(
   email: string,
   unsubscribeToken: string,

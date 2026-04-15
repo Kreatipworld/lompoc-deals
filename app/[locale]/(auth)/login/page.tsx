@@ -8,7 +8,7 @@ export const metadata = { title: "Sign in — Lompoc Deals" }
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { from?: string }
+  searchParams: { from?: string; reset?: string }
 }) {
   const session = await auth()
   if (session?.user) {
@@ -41,6 +41,11 @@ export default async function LoginPage({
           Sign in to your Lompoc Deals account.
         </p>
       </div>
+      {searchParams.reset === "1" && (
+        <p className="mt-4 rounded-lg bg-green-50 px-4 py-3 text-center text-sm text-green-800">
+          Password updated! Sign in with your new password.
+        </p>
+      )}
       <div className="mt-8">
         <LoginForm from={searchParams.from} />
       </div>
