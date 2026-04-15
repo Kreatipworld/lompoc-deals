@@ -294,6 +294,10 @@ export async function approveClaimAction(formData: FormData) {
     where: (c, { eq: e }) => e(c.id, id),
   })
   if (!claim) return
+  const business = await db.query.businesses.findFirst({
+    where: (b, { eq: e }) => e(b.id, claim.businessId),
+    columns: { slug: true },
+  })
   // Transfer ownership and mark claim approved
   await db
     .update(businesses)
@@ -314,7 +318,7 @@ export async function approveClaimAction(formData: FormData) {
       )
     )
   revalidatePath("/admin")
-  revalidatePath(`/biz/${claim.businessId}`)
+  if (business?.slug) revalidatePath(`/biz/${business.slug}`)
   revalidatePath("/dashboard/profile")
 }
 

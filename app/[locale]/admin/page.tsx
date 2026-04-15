@@ -48,13 +48,35 @@ const ACTIVITY_LABELS: Record<ActivityEntry["type"], string> = {
   deal_created: "Deal created",
 }
 
+const DEFAULT_STATS = {
+  totalBusinesses: 0,
+  pendingBusinesses: 0,
+  approvedBusinesses: 0,
+  totalDeals: 0,
+  activeDeals: 0,
+  totalUsers: 0,
+  pendingClaims: 0,
+  totalEvents: 0,
+  pendingEvents: 0,
+  totalDealEvents: 0,
+}
+
 export default async function AdminPage() {
-  const [stats, pending, claims, feed] = await Promise.all([
-    getAdminStats(),
-    getPendingBusinesses(),
-    getPendingClaims(),
-    getAdminActivityFeed(),
-  ])
+  const [statsResult, pendingResult, claimsResult, feedResult] =
+    await Promise.allSettled([
+      getAdminStats(),
+      getPendingBusinesses(),
+      getPendingClaims(),
+      getAdminActivityFeed(),
+    ])
+
+  const stats =
+    statsResult.status === "fulfilled" ? statsResult.value : DEFAULT_STATS
+  const pending =
+    pendingResult.status === "fulfilled" ? pendingResult.value : []
+  const claims =
+    claimsResult.status === "fulfilled" ? claimsResult.value : []
+  const feed = feedResult.status === "fulfilled" ? feedResult.value : []
 
   return (
     <div className="space-y-8">
