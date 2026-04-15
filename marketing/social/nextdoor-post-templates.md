@@ -115,7 +115,7 @@ The site is bilingual (English/Spanish) — fits our community well.
 
 Currently listing [Y]+ Lompoc businesses and [X]+ active deals. Happy to answer any questions!
 
-lompoc-deals.vercel.app
+lompoc-deals.vercel.app/locals
 
 ---
 
@@ -140,7 +140,7 @@ El sitio es bilingüe (inglés/español) — se adapta bien a nuestra comunidad.
 
 Actualmente tenemos [Y]+ negocios de Lompoc y [X]+ ofertas activas. ¡Con gusto respondo cualquier pregunta!
 
-lompoc-deals.vercel.app
+lompoc-deals.vercel.app/locals
 
 ---
 

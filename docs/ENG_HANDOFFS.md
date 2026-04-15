@@ -187,6 +187,40 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Consumer Landing Page /locals + Auth Fix — shipped 2026-04-15 (commits 2e9f3fa + 60e74dc + 63657b7 + 016628e)
+
+**What shipped:**
+
+**`2e9f3fa` + `60e74dc` + `63657b7` — `/locals` consumer conversion page:**
+- Full landing page at `/locals` targeting Lompoc residents: hero with live stats, 3-step how-it-works, 6-benefit grid, "free forever" feature checklist, category teaser, final CTA → `/signup/user`
+- SEO metadata: "For Locals — Discover Deals & Support Lompoc Businesses | Lompoc Deals"
+- Keywords: `lompoc locals`, `lompoc deals for residents`, `lompoc local discounts`, `things to do lompoc`, `support local lompoc`
+- Already uses "470+" live stats
+- Added to: mobile nav, desktop nav, footer "For Locals" column
+- Bilingual EN/ES translations included
+
+**`016628e` — Auth middleware fix:** Uses NextAuth v5 `auth()` instead of deprecated `getToken()`. Internal stability fix.
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app/locals — full consumer landing page with live stats
+2. Mobile nav → "For Locals" link
+3. Footer → "For Locals" column link
+4. CTA → `/signup/user` local user signup
+
+**Marketing surfaces it unlocks:**
+
+- **Canonical consumer CTA URL is now `/locals`** (not homepage). Use `lompoc-deals.vercel.app/locals` as the "link in bio" on Instagram/TikTok and in all consumer-facing posts. It's purpose-built to convert browsers → signups.
+
+- **Nextdoor + Facebook posts**: Replace `lompoc-deals.vercel.app` with `lompoc-deals.vercel.app/locals` in all consumer community posts. The `/locals` page directly answers "what's in it for me as a resident" before asking them to sign up.
+
+- **SEO**: `/locals` is a new indexable page targeting `lompoc locals` and `support local lompoc` — low competition, high community intent keywords.
+
+- **Bilingual out of the box**: `/es/locals` is live for Spanish-speaking residents — use this URL in Spanish-language community posts (Nextdoor Spanish speakers, Spanish Facebook groups).
+
+**CMO action taken:** Updated TikTok scripts (stale "150 businesses" → "470+"). Updated `marketing/pr/launch-playbook.md` to use `/locals` as consumer CTA.
+
+---
+
 ## Properties Module + Plan Features Grid on Dashboard — shipped 2026-04-14 (commit 26cf470)
 
 **What shipped:**

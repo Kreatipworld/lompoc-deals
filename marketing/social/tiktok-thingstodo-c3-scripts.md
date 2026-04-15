@@ -30,7 +30,7 @@ Things to do in Lompoc this weekend 📍
 
 > **Number three:** Jalama Beach. It's a 15-mile drive down a winding road to a wild stretch of coast. Famous for the Jalama Burger. World-class surf. No crowds.
 
-> Find all of these — plus deals at 150 local businesses — at lompoc-deals.vercel.app. Link in bio. It's completely free."
+> Find all of these — plus deals at 470+ local businesses — at lompoc-deals.vercel.app. Link in bio. It's completely free."
 
 **Duration:** ~35 seconds at normal speaking pace
 
@@ -58,7 +58,7 @@ Things to do in Lompoc this weekend 🍷🏛️🌊
 2. La Purísima Mission — most restored mission in CA, 25 miles of trails
 3. Jalama Beach — wild coast, legendary Jalama Burger, world-class surf
 
-Find deals at 150+ Lompoc businesses → lompoc-deals.vercel.app (link in bio)
+Find deals at 470+ Lompoc businesses → lompoc-deals.vercel.app (link in bio)
 
 #Lompoc #ThingsToDoInLompoc #LompocCA #WineGhetto #LompocDeals #SantaBarbaraCo #VisitLompoc #HiddenGemCalifornia #WineCountry #JalamaBeach
 ```
@@ -98,7 +98,7 @@ Qué hacer en Lompoc este fin de semana 📍
 
 > **Número tres:** Jalama Beach. Son 15 millas por una carretera sinuosa hasta una playa salvaje en la costa. Famosa por la hamburguesa Jalama. Surf de talla mundial. Sin gente.
 
-> Encuentra todo esto — y descuentos en más de 150 negocios locales de Lompoc — en lompoc-deals.vercel.app. El enlace está en el bio. Es completamente gratis."
+> Encuentra todo esto — y descuentos en más de 470 negocios locales de Lompoc — en lompoc-deals.vercel.app. El enlace está en el bio. Es completamente gratis."
 
 ---
 
@@ -110,7 +110,7 @@ Qué hacer en Lompoc este fin de semana 🍷🏛️🌊
 2. Misión La Purísima — la más restaurada de CA, 25 millas de senderos
 3. Jalama Beach — costa salvaje, la legendaria hamburguesa Jalama, surf de talla mundial
 
-Descuentos en 150+ negocios locales → lompoc-deals.vercel.app (enlace en el bio)
+Descuentos en 470+ negocios locales → lompoc-deals.vercel.app (enlace en el bio)
 
 #Lompoc #LompocCA #LompocDeals #QuéHacer #FinDeSemana #WineGhetto #JalamaBeach #NegociosLocales #VisitaLompoc #CaliforniaHispana
 ```
