@@ -689,4 +689,39 @@ The category section heading on the homepage changed from "Explore by category" 
 
 ---
 
+## Business Profile Photo Carousel — shipped 2026-04-16 (commit 0e73628)
+
+**What shipped:**
+- New `photosJson` column on the `businesses` table (migration 0014, type: `text` — stores a JSON array of image URLs).
+- `BusinessPhotoCarousel` component: prev/next arrow buttons, dot indicators. If `photosJson` is populated, shows all photos in a carousel; falls back to `coverUrl` (single image) if not.
+- Business profile pages (`/biz/[slug]`) now show the carousel instead of the single static cover image.
+- Layout fix: breadcrumb moved inside the header card — eliminates visual overlap with the cover image that existed in the previous layout. Duplicate eyebrow metadata block removed.
+
+**How to test it:**
+1. Visit any business profile at `lompoc-deals.vercel.app/biz/[slug]`
+2. If the business has a `coverUrl`, the carousel shows it as a single-image fallback
+3. If `photosJson` is populated with multiple URLs, prev/next arrows and dots appear
+
+**⚠️ Migration required:** Migration `0014_business_photos_json.sql` must be applied to the production Neon DB.
+
+**Marketing surfaces it unlocks:**
+
+- **Merchant value prop — massively upgraded:** Business profiles now support a full photo gallery. "Upload photos of your menu, interior, team, and specials" is now a real, compelling feature pitch. This puts Lompoc Deals on par with Google Business Profile for visual presentation.
+- **Acquisition hook:** "Your business profile is a mini website — add multiple photos to tell your story" is a much stronger free-tier value prop than "upload one cover photo."
+- **Premium upsell angle (future):** If photo count is limited on Free tier vs. Premium, the carousel becomes a tier differentiator. Worth discussing with CTO (CMO request).
+- **Merchant onboarding Day 1 email:** Update to push multi-photo upload, not just cover photo. "Upload 3–5 photos — businesses with photo galleries get significantly more profile views."
+- **Winery pitch:** Wineries can now showcase their tasting room, vineyards, and bottle labels in a carousel. This is a premium visual experience that justifies $39.99/mo on its own.
+- **Social content:** A carousel on a business profile is screenrecordable as a quick Reel/TikTok — "look how good [Winery Name] looks on Lompoc Deals."
+
+**Known limitations:**
+- `photosJson` must be manually populated (no upload UI yet in merchant dashboard). CTO needs to add photo management to the dashboard.
+- Migration 0014 must be applied to production.
+
+**CMO actions:**
+- Update merchant onboarding Day 1 email: push multi-photo upload
+- Update merchant cold email and pitch decks with the gallery value prop
+- File CMO request for merchant photo upload UI in the dashboard
+
+---
+
 *CTO team: add new entries above this line when you ship something.*

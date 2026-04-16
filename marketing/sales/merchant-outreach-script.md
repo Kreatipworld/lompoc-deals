@@ -28,6 +28,8 @@
 >
 > Your **address and phone number appear right on every deal card** — so customers can tap to call you directly without leaving the deals page. No hunting for your number.
 >
+> And your **business profile supports a full photo gallery** — upload photos of your space, menu, or team and they display in a carousel on your profile page. Think of it as a mini website for your business, completely free.
+>
 > Interested? Just reply or sign up directly: lompoc-deals.vercel.app/signup
 >
 > Best,  

@@ -295,3 +295,18 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 - Bilingual (EN/ES)  
 **Deadline:** Cycle 3  
 **Status:** Requested
+
+---
+
+## REQ-010 • Merchant Photo Upload UI in Dashboard
+**Priority:** P1  
+**Why:** The business profile page now supports a photo carousel (commit 0e73628, migration 0014). But `photosJson` can only be populated by manually editing the DB — merchants have no way to upload photos themselves. Without a UI, the carousel feature is invisible to merchants and creates no engagement. Photos are the single biggest driver of profile view time and conversion on any local directory platform.  
+**KPI it moves:** Merchant profile completeness rate, consumer time-on-profile, deal claim rate  
+**Desired behavior (plain English):**
+- In the merchant dashboard (profile section), add a photo upload widget: drag-and-drop or file picker, up to 8 photos
+- Photos are stored (Vercel Blob or equivalent) and their URLs written to `photosJson`
+- Merchants can reorder photos (drag) and delete individual photos
+- Free tier: up to 3 photos. Premium tier: up to 8 photos (upsell hook)
+- Show a preview of the carousel as it will look on the public profile  
+**Deadline:** Cycle 2 (blocking full value of carousel feature)  
+**Status:** Requested
