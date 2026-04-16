@@ -724,9 +724,9 @@ The category section heading on the homepage changed from "Explore by category" 
 
 ---
 
-## SafeImage — Broken Image Fallbacks — shipped 2026-04-16 (commit 7a9b893)
+## SafeImage — Broken Image Fallbacks (full coverage) — shipped 2026-04-16 (commits 7a9b893 + c3d03a1)
 
-**What shipped:** New `SafeImage` client component with `onError` handler. Replaces raw `<img>` tags across deal cards (both variants), property listing cards, listing detail photo galleries, and activity cards. When an image URL is broken or missing, renders a defined fallback (gradient placeholder, icon, or "Photo not available" text) instead of a broken image icon.
+**What shipped:** New `SafeImage` client component with `onError` handler. Complete rollout across all public pages — deal cards, property listing cards, listing detail galleries, activity cards, business-photo-carousel, biz/[slug] logo, businesses directory, category page, homepage, activities pages, and search bar autocomplete results. When an image URL is broken or missing, renders a graceful fallback instead of a broken image icon. Also verified: all business and listing addresses already include "Lompoc CA" (SEO benefit).
 
 **Marketing surfaces it unlocks:**
 - Feed and profile pages look polished even when merchant-uploaded image URLs go stale or are missing. No broken image icons anywhere on the platform.
