@@ -20,6 +20,7 @@ import { BusinessHours } from "@/components/business-hours"
 import { BusinessMapLoader } from "@/components/business-map-loader"
 import { BusinessClaimCta } from "@/components/business-claim-cta"
 import { FollowBusinessButton } from "@/components/follow-business-button"
+import { BusinessPhotoCarousel } from "@/components/business-photo-carousel"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
@@ -82,21 +83,22 @@ export default async function BusinessPage({
   const isUnclaimed = business.ownerEmail === SYSTEM_OWNER_EMAIL
   const reviewsUrl = googleReviewsUrl(business)
 
+  // Build photo array: photosJson takes priority, then fall back to coverUrl
+  const photosJson = business.photosJson as string[] | null
+  const photos: string[] =
+    Array.isArray(photosJson) && photosJson.length > 0
+      ? photosJson
+      : business.coverUrl
+      ? [business.coverUrl]
+      : []
+
   return (
     <>
       {/* ─────────────────────────────────────────────────
           COVER IMAGE BANNER (full-width, above header card)
          ───────────────────────────────────────────────── */}
-      {business.coverUrl ? (
-        <div className="relative h-44 w-full overflow-hidden sm:h-60 card-enter">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={business.coverUrl}
-            alt=""
-            className="h-full w-full object-cover [transition:transform_400ms_cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.02]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
-        </div>
+      {photos.length > 0 ? (
+        <BusinessPhotoCarousel photos={photos} businessName={business.name} />
       ) : (
         <div className="h-24 w-full bg-gradient-to-r from-primary/20 via-accent to-primary/10 sm:h-36" />
       )}
@@ -111,8 +113,10 @@ export default async function BusinessPage({
         />
 
         <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
-          {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
+          {/* HEADER CARD — logo overlaps cover when present */}
+          <div className={`rounded-3xl border bg-card p-6 shadow-lg sm:p-8 ${photos.length > 0 ? "-mt-10 sm:-mt-14" : "mt-4"}`}>
+          {/* Breadcrumb — inside the card to prevent overlap with cover */}
+          <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
             <Link href="/" className="transition-colors duration-150 hover:text-foreground">
               Deals
             </Link>
@@ -130,22 +134,6 @@ export default async function BusinessPage({
             <ArrowLeft className="h-3 w-3 rotate-180" aria-hidden />
             <span className="font-medium text-foreground">{business.name}</span>
           </nav>
-
-          {/* HEADER CARD — logo overlaps cover when present */}
-          <div className={`rounded-3xl border bg-card p-6 shadow-lg sm:p-8 ${business.coverUrl ? "-mt-10 sm:-mt-14" : "mt-4"}`}>
-            {/* Eyebrow */}
-            <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              <span>Business</span>
-              <span className="text-foreground/30">·</span>
-              <span>Lompoc, California</span>
-              {business.category && (
-                <>
-                  <span className="text-foreground/30">·</span>
-                  <span>{business.category.name}</span>
-                </>
-              )}
-            </div>
-
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
               {/* Logo */}
               <div className="flex-shrink-0">
