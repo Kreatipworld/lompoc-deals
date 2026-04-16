@@ -109,7 +109,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-14">
         <div className="mb-8">
           <h2 className="font-display text-3xl font-bold tracking-tight">
-            Explore by category
+            Live Local. Love Lompoc.
           </h2>
           <p className="mt-1 text-muted-foreground">
             Find things to do, eat, and discover in Lompoc
