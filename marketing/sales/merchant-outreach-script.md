@@ -26,6 +26,8 @@
 >
 > And when you post a deal, **every Lompoc Deals user who follows your business gets an email notification instantly** — no extra work on your end. It's a direct line to your most loyal customers.
 >
+> Your **address and phone number appear right on every deal card** — so customers can tap to call you directly without leaving the deals page. No hunting for your number.
+>
 > Interested? Just reply or sign up directly: lompoc-deals.vercel.app/signup
 >
 > Best,  

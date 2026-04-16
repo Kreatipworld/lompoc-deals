@@ -279,3 +279,19 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 - CMO will provide HOMEPAGE_COPY.md (all section copy) — see `/docs/HOMEPAGE_COPY.md`  
 **Deadline:** Cycle 2  
 **Status:** Requested — design pod ticket [KRE-77](/KRE/issues/KRE-77) assigned to CTO
+
+---
+
+## REQ-009 • "Things to Do in Lompoc" SEO Landing Page
+**Priority:** P1  
+**Why:** The `/deals` page now has a "Things to Do in Lompoc" section powered by the activities table (commit cbc312a). This content should also live on a dedicated, indexable URL to capture high-intent tourism and relocation queries: "things to do in Lompoc CA", "Lompoc activities", "Lompoc attractions". This is a zero-ad-spend SEO acquisition channel for both consumers and Vandenberg military relocations.  
+**KPI it moves:** Organic consumer signups, session depth, SEO impressions for tourism/relocation queries  
+**Desired behavior (plain English):**
+- Create a dedicated page at `/lompoc/things-to-do` (or `/things-to-do`)
+- Pull from the activities table — show all featured activities with full detail (description, tips, address, seasonality, image, Learn More link)
+- Page title: "Things to Do in Lompoc, CA — Local Attractions & Activities"
+- Add schema markup: `TouristAttraction` for each activity
+- Link from the homepage and `/locals` page
+- Bilingual (EN/ES)  
+**Deadline:** Cycle 3  
+**Status:** Requested

@@ -617,4 +617,57 @@ The category section heading on the homepage changed from "Explore by category" 
 
 ---
 
+## Richer Deal Cards + "Things to Do in Lompoc" Section — shipped 2026-04-16 (commit cbc312a)
+
+**What shipped:**
+
+1. **Deal card enrichment:** Cards now show the business address (MapPin icon), phone number (clickable `tel:` link), and a terms hint. Description expanded from 2-line to 3-line clamp. Applied to all card variants.
+
+2. **"Things to Do in Lompoc" section on `/deals`:** A new section below the category strip shows up to 6 featured activities (from the activities table). Each card shows: image/icon, description, tips, address, seasonality badge, and a "Learn More" link. Section only renders when activities exist.
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app/deals — confirm deal cards show address + phone
+2. Tap the phone number on mobile — should open dialer
+3. Scroll below the category strip — confirm "Things to Do in Lompoc / Local Attractions & Activities" section renders if activities are loaded
+
+**Events it fires:** No new analytics events (existing card click tracking)
+
+**Marketing surfaces it unlocks:**
+
+- **Deal cards → direct calls:** Address + phone on the card means customers can call directly without visiting the business page. For restaurants, salons, and services, this eliminates a friction step between "seeing the deal" and "showing up." Claim rates should improve.
+- **"Things to Do in Lompoc" — SEO gold:** This section is the exact content that ranks for high-intent local tourism queries: "things to do in Lompoc CA", "Lompoc attractions", "Lompoc activities". This is a programmatic SEO opportunity. The copy "Discover what makes Lompoc special — from wineries to wildflowers" is emotionally resonant and local-specific. **File CMO request: dedicated `/lompoc/things-to-do` SEO landing page.**
+- **Vandenberg relocation angle:** Military families researching Lompoc will hit the "Things to Do" section. This is a passive acquisition touchpoint for a high-value segment (incoming permanent-change-of-station families who need to discover the community fast).
+- **Tourism + visitor acquisition:** The `/deals` page now serves two audiences: deal-hunters AND first-time visitors to Lompoc. Stronger reason to share the URL externally (tourism groups, Facebook travel posts, Nextdoor "what to do this weekend" threads).
+- **Screenshot asset:** The activities section has a distinctive visual card grid with destination-style imagery. Great for Instagram and Nextdoor "here's what Lompoc Deals looks like" posts.
+
+**Known limitations:**
+- Activities section only renders if `getFeaturedActivities()` returns > 0 results — requires the activities table to be populated.
+- No analytics on "Things to Do" section engagement yet.
+
+**CMO actions:**
+- Update merchant pitch: "Your address and phone are now on every deal card — customers can call you directly without leaving the deals page."
+- File REQ for a dedicated `/lompoc/things-to-do` SEO landing page (see CMO_REQUESTS.md).
+
+---
+
+## /locals Hero Background Image — shipped 2026-04-16 (commit ce91501)
+
+**What shipped:** The `/locals` consumer landing page hero section now uses `lompoc-hero.jpg` as a full-bleed background image, with gradient overlays (horizontal + vertical) to maintain text readability. Replaces the previous gradient-only background.
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app/locals — hero should show the Lompoc landscape photo with text overlaid
+
+**Marketing surfaces it unlocks:**
+
+- **Visual credibility at the fold:** Every consumer-facing marketing post and email links to `/locals`. The hero is the first thing visitors see. A real Lompoc photo is dramatically more compelling than a gradient — it signals "this is a real place, built for your community."
+- **Screenshot opportunity:** The `/locals` hero now makes a strong social post screenshot: authentic Lompoc photo, brand copy overlay. Ideal for "Lompoc has its own deals app" posts on Instagram, TikTok, and Nextdoor.
+- **Ad creative asset:** The hero visual can be screen-captured and used directly in Meta/Google ad creative — no Canva needed for a quick social ad.
+
+**Known limitations:**
+- Uses the same `lompoc-hero.jpg` as other pages — brand team may want a unique hero per section eventually.
+
+**CMO action:** Schedule a social post using a screenshot of the updated `/locals` hero. First polished visual we have for the consumer product.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
