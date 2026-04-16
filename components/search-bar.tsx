@@ -2,6 +2,7 @@
 
 import { useRouter } from "@/i18n/navigation"
 import { Search, Building2, Tag } from "lucide-react"
+import { SafeImage } from "@/components/safe-image"
 import { useEffect, useRef, useState, useCallback } from "react"
 
 // Example queries that cycle through the typewriter animation
@@ -238,8 +239,16 @@ export function SearchBar({
                   }`}
                 >
                   {biz.logoUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={biz.logoUrl} alt={biz.name} className="h-7 w-7 rounded-lg object-cover flex-shrink-0" />
+                    <SafeImage
+                      src={biz.logoUrl}
+                      alt={biz.name}
+                      className="h-7 w-7 rounded-lg object-cover flex-shrink-0"
+                      fallback={
+                        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                          <Building2 className="h-3.5 w-3.5" />
+                        </div>
+                      }
+                    />
                   ) : (
                     <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                       <Building2 className="h-3.5 w-3.5" />

@@ -31,6 +31,7 @@ import { DealGrid } from "@/components/deal-card"
 import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
+import { SafeImage } from "@/components/safe-image"
 
 const ICONS: Record<string, LucideIcon> = {
   utensils: Utensils,
@@ -203,11 +204,11 @@ export default async function CategoryPage({
                       <div className="flex items-start gap-3">
                         <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-accent">
                           {b.logoUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
+                            <SafeImage
                               src={b.logoUrl}
                               alt=""
                               className="h-12 w-12 rounded-xl object-cover"
+                              fallback={<Flower2 className="h-5 w-5 text-primary/70" />}
                             />
                           ) : (
                             <Flower2 className="h-5 w-5 text-primary/70" />

@@ -5,6 +5,7 @@ import {
 } from "lucide-react"
 import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities } from "@/lib/queries"
 import { SearchBar } from "@/components/search-bar"
+import { SafeImage } from "@/components/safe-image"
 
 export const metadata = {
   title: "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
@@ -128,11 +129,11 @@ export default async function HomePage() {
               >
                 {/* Photo background */}
                 {image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <SafeImage
                     src={image}
                     alt={cat.name}
                     className="absolute inset-0 h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+                    fallback={<div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600" />}
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600" />
@@ -188,11 +189,15 @@ export default async function HomePage() {
                   {/* Logo / placeholder */}
                   <div className="flex-shrink-0">
                     {biz.logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <SafeImage
                         src={biz.logoUrl}
                         alt={biz.name}
                         className="h-14 w-14 rounded-xl object-cover"
+                        fallback={
+                          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                            <Building2 className="h-7 w-7" />
+                          </div>
+                        }
                       />
                     ) : (
                       <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -275,8 +280,7 @@ export default async function HomePage() {
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-accent">
                   {activity.imageUrl && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <SafeImage
                       src={activity.imageUrl}
                       alt={activity.title}
                       className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"

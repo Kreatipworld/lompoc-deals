@@ -13,6 +13,7 @@ import {
   getSiteStats,
 } from "@/lib/queries"
 import { SearchBar } from "@/components/search-bar"
+import { SafeImage } from "@/components/safe-image"
 
 export const metadata = {
   title: "Lompoc Business Directory — Local Businesses | Lompoc Deals",
@@ -209,11 +210,11 @@ export default async function BusinessesPage() {
                     <div className="flex items-start gap-3">
                       <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-accent">
                         {b.logoUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          <SafeImage
                             src={b.logoUrl}
                             alt=""
                             className="h-12 w-12 rounded-xl object-cover"
+                            fallback={<Flower2 className="h-5 w-5 text-primary/70" />}
                           />
                         ) : (
                           <Flower2 className="h-5 w-5 text-primary/70" />

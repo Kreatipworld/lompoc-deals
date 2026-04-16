@@ -21,6 +21,7 @@ import { BusinessMapLoader } from "@/components/business-map-loader"
 import { BusinessClaimCta } from "@/components/business-claim-cta"
 import { FollowBusinessButton } from "@/components/follow-business-button"
 import { BusinessPhotoCarousel } from "@/components/business-photo-carousel"
+import { SafeImage } from "@/components/safe-image"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
@@ -138,11 +139,15 @@ export default async function BusinessPage({
               {/* Logo */}
               <div className="flex-shrink-0">
                 {business.logoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <SafeImage
                     src={business.logoUrl}
                     alt={`${business.name} logo`}
                     className="h-20 w-20 rounded-2xl border-2 border-background bg-background object-cover shadow-md sm:h-24 sm:w-24"
+                    fallback={
+                      <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-background bg-gradient-to-br from-primary/15 to-accent shadow-md sm:h-24 sm:w-24">
+                        <Flower2 className="h-9 w-9 text-primary/60" />
+                      </div>
+                    }
                   />
                 ) : (
                   <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-background bg-gradient-to-br from-primary/15 to-accent shadow-md sm:h-24 sm:w-24">

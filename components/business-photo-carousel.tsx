@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { SafeImage } from "@/components/safe-image"
 
 interface BusinessPhotoCarouselProps {
   photos: string[]
@@ -27,8 +28,7 @@ export function BusinessPhotoCarousel({
   if (photos.length === 1) {
     return (
       <div className="relative h-44 w-full overflow-hidden sm:h-60 card-enter">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <SafeImage
           src={photos[0]}
           alt=""
           className="h-full w-full object-cover [transition:transform_400ms_cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.02]"
@@ -48,8 +48,7 @@ export function BusinessPhotoCarousel({
           style={{ opacity: i === current ? 1 : 0 }}
           aria-hidden={i !== current}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <SafeImage
             src={url}
             alt={i === 0 ? `${businessName} photo` : ""}
             className="h-full w-full object-cover"

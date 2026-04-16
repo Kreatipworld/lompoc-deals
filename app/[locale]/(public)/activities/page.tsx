@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation"
 import { MapPin, ArrowRight, Compass } from "lucide-react"
 import { getActivities, getActivityCategories } from "@/lib/queries"
+import { SafeImage } from "@/components/safe-image"
 
 export const metadata = {
   title: "Things to Do in Lompoc, CA — Adventures & Activities | Lompoc Deals",
@@ -123,11 +124,18 @@ export default async function ActivitiesPage({
                 {/* Image */}
                 <div className="relative aspect-[16/9] overflow-hidden bg-accent">
                   {activity.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <SafeImage
                       src={activity.imageUrl}
                       alt={activity.title}
                       className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+                      fallback={
+                        <div
+                          className="h-full w-full bg-cover bg-center"
+                          style={{
+                            backgroundImage: `url(${CATEGORY_IMAGES[activity.category] ?? ""})`,
+                          }}
+                        />
+                      }
                     />
                   ) : (
                     <div

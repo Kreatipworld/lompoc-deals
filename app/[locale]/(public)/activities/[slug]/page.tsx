@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { MapPin, ArrowLeft, ExternalLink, Lightbulb, CalendarDays, Compass } from "lucide-react"
 import { getActivityBySlug, getActivities } from "@/lib/queries"
+import { SafeImage } from "@/components/safe-image"
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 
@@ -67,8 +68,7 @@ export default async function ActivityDetailPage({
       {/* Hero image */}
       {activity.imageUrl && (
         <div className="relative mb-6 overflow-hidden rounded-2xl aspect-[16/7]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <SafeImage
             src={activity.imageUrl}
             alt={activity.title}
             className="h-full w-full object-cover"
