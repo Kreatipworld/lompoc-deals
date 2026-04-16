@@ -515,4 +515,66 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 ---
 
+## Landing Page Search — Typewriter Animation + Autocomplete — shipped 2026-04-15 (commit 6f43cad)
+
+**What shipped:** The homepage search bar now has two UX enhancements:
+1. **Typewriter placeholder** — when the bar is empty and unfocused, it cycles through example queries ("pizza near downtown…", "wine tasting deals…", "hair salon specials…", "auto repair coupons…", "coffee shops…", "yoga classes…", "fresh flowers…", "local restaurants…").
+2. **Autocomplete dropdown** — as users type (250ms debounce), a dropdown shows grouped results: businesses (with logo + category) and active deals (with discount badge). Full keyboard navigation (arrows, enter, escape). Clicking a business goes to its profile; clicking a deal goes to search results.
+
+New endpoint: `GET /api/search/autocomplete?q=<query>`
+
+**How to test it:**
+1. Go to lompoc-deals.vercel.app — watch the search bar cycle through example queries
+2. Click the search bar and type "pizza" — autocomplete dropdown should appear with matching businesses and deals
+3. Use arrow keys to navigate, Enter to select, Escape to close
+
+**Events it fires:** No new analytics events (click/navigation events via existing router)
+
+**Marketing surfaces it unlocks:**
+- **First impression at the fold:** Every visitor sees the typewriter cycling through local categories before they even type. This acts as ambient advertising — visitors learn what Lompoc Deals covers without reading any copy. "wine tasting deals" tells a story instantly.
+- **Discovery engine for deals:** Autocomplete surfaces active deals with discount badges right in the search box — turning passive browsing into active deal discovery.
+- **Merchant logo visibility:** Businesses appear in autocomplete results with their logo. Merchants with a logo uploaded get a visual advantage every time a user searches for anything near their name or category. New merchant upsell hook: "Upload your logo — it appears in search results."
+- **Reduces bounce from "where do I start?"** New visitors no longer face a blank search bar. The typewriter demonstrates the breadth of available deals, increasing the chance they engage.
+- **Ad creative asset:** Screen-record the typewriter animation cycling through categories → 3-second social video that sells the concept without a single word of voiceover.
+
+**Known limitations:**
+- Autocomplete only searches businesses and active deals (not categories or locations)
+- No analytics on autocomplete click-through rate yet
+
+**CMO action:**
+- Update HOMEPAGE_COPY.md to reflect the search bar now being an animated experience — this is a visual hook for social posts
+- Add "Upload your logo — it appears in search results and autocomplete" to merchant onboarding Day 1 email
+- Create a screen-record TikTok/Reel: typewriter animation → user types → autocomplete appears → clicks a deal. Zero voiceover needed.
+
+---
+
+## Telegram Bot — Board Communication — shipped 2026-04-15 (commits 4a8feaa + 8cf84c0)
+
+**What shipped:** A Telegram bot that gives the board real-time visibility into the platform and two-way messaging with the CEO agent.
+
+- `4a8feaa` — Webhook at `/api/telegram/webhook`. Commands: `/start`, `/help`, `/status` (returns live deal count + approved business count from the DB). Setup endpoint at `/api/telegram/setup`.
+- `8cf84c0` — Two-way messaging: DB tables `telegram_settings` + `telegram_messages` (migration 0013). `/start` registers the board's Telegram chat ID. Free-text messages and `/ask <question>` are queued for the CEO. `GET /api/telegram/inbox` returns unread messages. `POST /api/telegram/send` lets the CEO reply.
+
+**Required env vars:** `TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET` (see `.env.example`)
+
+**How to test it:**
+1. Add `TELEGRAM_BOT_TOKEN` + `TELEGRAM_WEBHOOK_SECRET` to Vercel env
+2. Call `POST /api/telegram/setup` to register the webhook with Telegram
+3. Open the bot in Telegram → `/status` → should return live deal and business counts
+
+**Events it fires:** None (not wired to analytics)
+
+**Marketing surfaces it unlocks:**
+- **Operational monitoring:** Board can check `/status` in Telegram to see live deal count and business count at any time — a real-time pulse on platform health.
+- **Future: deal alert channel.** The Telegram infrastructure is now live. A next step (CMO request) would be a public Telegram channel where new deals are broadcast automatically — giving consumers a "subscribe to Lompoc Deals alerts" option on Telegram. High-intent audience, zero cost.
+- **Future: merchant alert.** Could send merchants a Telegram message when someone claims their deal or when their deal is expiring soon.
+
+**Known limitations:**
+- Currently internal-only (board ↔ CEO). No public Telegram channel or consumer-facing bot yet.
+- `/status` is a raw command — not a polished consumer experience.
+
+**CMO action:** File CMO request for a public Telegram deals channel (broadcast new deals automatically). This is a zero-CAC consumer acquisition channel.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*

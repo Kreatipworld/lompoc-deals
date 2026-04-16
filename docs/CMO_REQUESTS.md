@@ -251,6 +251,21 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 
 ---
 
+## REQ-008 • Public Telegram Deals Channel — Broadcast New Deals Automatically
+**Priority:** P1  
+**Why:** The Telegram bot infrastructure is now live (commits 4a8feaa + 8cf84c0). A public Telegram channel that broadcasts new deals is a zero-CAC consumer acquisition channel. Telegram channels have high open rates (far exceeding email for broadcast content) and Lompoc's tech-forward residents skew toward messaging apps. We can grow this channel organically and use it to drive repeat visits.  
+**KPI it moves:** Consumer DAU, deal claim rate, consumer retention  
+**Desired behavior (plain English):**
+- Create a public Telegram channel (e.g., "@LompocDeals")
+- When a new deal is approved/published, automatically send a formatted message to the channel: business name, deal title, discount text, link to the deal page
+- Message should be bilingual (EN + ES) or at minimum have a bilingual toggle
+- Optional: only broadcast Premium merchant deals (creates upsell incentive for Premium tier)
+- The board-to-CEO messaging (internal) remains separate and unaffected  
+**Deadline:** Cycle 3  
+**Status:** Requested
+
+---
+
 ## REQ-007 • Homepage Redesign — Landing Page Design Pod
 **Priority:** P0  
 **Why:** The current homepage does not pass the 3-second test for Lompoc locals. It fails to communicate value immediately, has no clear conversion path for merchants, and is not optimized for the bilingual, mobile-first Lompoc audience. This is the highest-impact surface for both consumer signups and merchant conversion.  

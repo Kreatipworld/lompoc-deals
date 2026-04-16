@@ -153,6 +153,8 @@ Lompoc locals are browsing the platform right now. Every day without a deal is v
 
 **It takes 5 minutes: [Add your first deal →](https://lompoc-deals.vercel.app/dashboard)**
 
+**Pro tip while you're in the dashboard:** Upload your business logo. Your logo now appears in the search autocomplete dropdown when locals type anything related to your business or category — it's the first visual impression you make before they even visit your profile.
+
 Here's what local merchants are offering that's getting the most views right now:
 
 > [DYNAMIC: 3 top-performing deals by view_count — category, deal type, discount range]
