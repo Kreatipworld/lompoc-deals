@@ -11,7 +11,7 @@ export function DashboardNav({
   const pathname = usePathname()
 
   return (
-    <nav className="flex flex-row gap-1 lg:flex-col">
+    <nav className="flex flex-row gap-1 overflow-x-auto scrollbar-none lg:flex-col lg:overflow-visible">
       {links.map(({ href, icon, label, badge }) => {
         // For the exact dashboard root, require exact segment match to avoid matching all sub-routes
         const segment = href.replace(/^\//, "").split("/").pop() ?? ""
@@ -23,7 +23,7 @@ export function DashboardNav({
           <Link
             key={href}
             href={href}
-            className={`flex flex-1 items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition lg:flex-initial ${
+            className={`flex flex-none items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium transition lg:gap-2.5 ${
               active
                 ? "bg-primary/10 text-primary font-semibold"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground"
