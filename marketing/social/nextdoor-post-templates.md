@@ -117,6 +117,8 @@ Currently listing [Y]+ Lompoc businesses and [X]+ active deals. Happy to answer 
 
 lompoc-deals.vercel.app/locals
 
+*Live Local. Love Lompoc.*
+
 ---
 
 ## Template 3 — Community Intro Post (ES)

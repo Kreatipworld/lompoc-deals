@@ -76,8 +76,12 @@ Each section lists:
 
 ## 3 — CATEGORY QUICK-PICKS
 
-**Section intro (optional):** "What are you looking for?"  
-**[ES]:** "¿Qué estás buscando?"
+**Section Heading (LIVE — board-approved):** "Live Local. Love Lompoc."  
+**[ES]:** "Vive Local. Ama Lompoc."  
+*Note: This replaced "Explore by category" per board direction (commit d8ca2ec). This is now the primary brand tagline for the homepage. Use this line in social posts, email headers, and ad creative.*
+
+**Subheading:** "Find things to do, eat, and discover in Lompoc"  
+**[ES]:** "Encuentra qué hacer, comer y descubrir en Lompoc"
 
 **Category labels + icons:**
 | Category | EN | ES |

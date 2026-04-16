@@ -173,6 +173,7 @@ Know a local business that should be listed? Send them to lompoc-deals.vercel.ap
 Thanks for being part of this.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 

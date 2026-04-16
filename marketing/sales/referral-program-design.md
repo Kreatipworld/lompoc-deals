@@ -91,6 +91,7 @@ New merchant visits referral URL
 > Just share it by text, social, or in person. We'll take care of the rest.
 > 
 > — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 ---
 

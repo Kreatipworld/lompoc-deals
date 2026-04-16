@@ -60,6 +60,7 @@ Know a local Lompoc business that should be listed?
 
 Welcome to the community,  
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *You're receiving this because you signed up at lompoc-deals.vercel.app. [Unsubscribe]*
 
@@ -133,6 +134,7 @@ A quick heads-up from Lompoc Deals.
 See the full deal board → [lompoc-deals.vercel.app](https://lompoc-deals.vercel.app)
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 
@@ -198,6 +200,7 @@ If you haven't used Lompoc Deals yet, here's a 30-second walkthrough:
 *Every Tuesday we send this digest to Lompoc locals. You can [manage your preferences] or [unsubscribe] anytime.*
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 ---
 

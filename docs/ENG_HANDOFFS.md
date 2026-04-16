@@ -591,4 +591,30 @@ New endpoint: `GET /api/search/autocomplete?q=<query>`
 
 ---
 
+## Brand Tagline Live + Category Count Fix — shipped 2026-04-15 (commits d8ca2ec + 66f4a21)
+
+**`d8ca2ec` — "Live Local. Love Lompoc." homepage heading (board-requested):**
+
+The category section heading on the homepage changed from "Explore by category" → **"Live Local. Love Lompoc."** This is now the primary brand tagline visible above the fold for every visitor.
+
+**Marketing impact:**
+- "Live Local. Love Lompoc." is a brand-level statement, not just section copy. It should propagate to: social bio, email footers, ad creative taglines, launch announcement, and printed collateral.
+- Updated `docs/HOMEPAGE_COPY.md` section 3 to reflect this as the live, board-approved heading with Spanish equivalent "Vive Local. Ama Lompoc."
+- This replaces the functional "Explore by category" label — it's a brand identity signal, not a navigation instruction.
+
+**`66f4a21` — Category grid + stat bar now show only real categories:**
+
+`getAllCategories()` and `getSiteStats()` now INNER JOIN on approved businesses — empty categories no longer appear in the grid or chip filters. Stat bar category count is consistent with what's shown in the grid.
+
+**Marketing impact:**
+- Homepage category grid shows only categories with live businesses. No more empty grid slots.
+- Stat bar accuracy: "X categories" now matches what visitors can actually browse. Credibility up.
+- No copy updates needed.
+
+**CMO actions:**
+- Propagate "Live Local. Love Lompoc." tagline across social bios, email footers, and ad creative.
+- Add Spanish variant "Vive Local. Ama Lompoc." to all bilingual assets.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*

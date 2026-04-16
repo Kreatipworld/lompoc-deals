@@ -57,6 +57,7 @@ Not ready yet? Your 3 current deals stay live — you just can't post new ones u
 Questions? Reply to this email and we'll help.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 ---
 
@@ -113,6 +114,7 @@ Standard is $19.99/month. That's less than a single Facebook boost — with zero
 Still on the fence? Hit reply and tell us what's holding you back — we'll answer any question honestly.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 ---
 
@@ -241,6 +243,7 @@ You're currently on the Free plan (up to 3 deals). If you want to post more or s
 *(Link: `lompoc-deals.vercel.app/dashboard`)*
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 ---
 
@@ -299,6 +302,7 @@ Your 3 free deal slots are waiting.
 If you're not sure Lompoc Deals is right for your business, reply and let us know — we'll give you an honest answer.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 ---
 

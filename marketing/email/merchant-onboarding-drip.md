@@ -57,6 +57,7 @@ Your deal will go live immediately and start appearing to local consumers.
 Questions? Reply to this email — we read every message.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Manage preferences] · [Unsubscribe]*
 
@@ -138,6 +139,7 @@ You can update your deal anytime from the [Merchant Dashboard →](https://lompo
 Keep it up — we'll check back in a couple of days.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 
@@ -162,6 +164,7 @@ Here's what local merchants are offering that's getting the most views right now
 You don't have to beat those numbers — just get started. The algorithm surfaces new deals to active browsers.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 
@@ -217,6 +220,7 @@ Your dashboard now shows you exactly how many people have viewed and clicked you
 Want to see the full breakdown by deal? That's in the **Stats** tab — available on the Standard plan ($19.99/mo). [Upgrade to unlock →](https://lompoc-deals.vercel.app/dashboard/billing)
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 
@@ -309,6 +313,7 @@ This is our paid tier. It's $[price]/month per featured slot.
 Interested? [Learn more →](https://lompoc-deals.vercel.app/merchant/upgrade) or reply to this email.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 
@@ -344,6 +349,7 @@ A few things worth knowing:
 We're rooting for you.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 
@@ -369,6 +375,7 @@ If your deal is live and none of that has helped, **reply to this email** — we
 We want Lompoc Deals to work for you.
 
 — The Lompoc Deals Team
+*Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
 
