@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Link } from "@/i18n/navigation"
 import {
   ArrowRight,
@@ -37,17 +38,23 @@ export default async function LocalsPage() {
           HERO
          ───────────────────────────────────────────────── */}
       <section className="relative isolate overflow-hidden border-b">
+        {/* Background image */}
+        <Image
+          src="/lompoc-hero.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 -z-30 object-cover object-center"
+        />
+        {/* Gradient overlay for readability */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-b from-accent via-background to-background"
+          className="absolute inset-0 -z-20 bg-gradient-to-r from-background/95 via-background/80 to-background/60"
         />
         <div
           aria-hidden
-          className="absolute -left-32 top-0 -z-10 h-[480px] w-[480px] rounded-full bg-primary/15 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="absolute -right-20 top-32 -z-10 h-[360px] w-[360px] rounded-full bg-primary/10 blur-3xl"
+          className="absolute inset-0 -z-20 bg-gradient-to-b from-transparent via-transparent to-background/90"
         />
 
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24 lg:py-32">
