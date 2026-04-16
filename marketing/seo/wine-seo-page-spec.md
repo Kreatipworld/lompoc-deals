@@ -160,7 +160,7 @@ Add to `app/sitemap.ts`:
 ## Cross-Promotion
 
 Once live, add links to wine pages from:
-- Homepage hero or "Explore by category" section → Wineries tab (already exists)
+- Homepage "Live Local. Love Lompoc." category section → Wineries tab (already exists)
 - `/lompoc` hub page → add Wine Deals and Wineries to category nav
 - `seo-page-copy-spec.md` hub page (`/lompoc`) → add wine links to category navigation
 - Social bio links (Instagram, TikTok) → rotate between homepage and `/lompoc/wineries`

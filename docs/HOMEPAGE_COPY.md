@@ -34,16 +34,16 @@ Each section lists:
 
 ### Headline Variants
 
-**A (Primary):** "Explore Lompoc, your way."  
-**[ES]:** "Explora Lompoc, a tu manera."
+**LIVE (commit 44c8d4b):** "All of Lompoc / in One Place" (two lines — "in One Place" in italic yellow)  
+**[ES]:** "Todo Lompoc / en Un Solo Lugar" *(translation needed — confirm with CTO before shipping ES version)*
 
-**B:** "Lompoc's local business directory — restaurants, shops, services & more"  
+**Previous (archived):** "Explore Lompoc, your way." — replaced 2026-04-16
+
+**B (A/B candidate):** "Lompoc's local business directory — restaurants, shops, services & more"  
 **[ES]:** "El directorio local de negocios de Lompoc — restaurantes, tiendas, servicios y más"
 
-**C:** "Discover Lompoc. Support local."  
+**C (A/B candidate):** "Discover Lompoc. Support local."  
 **[ES]:** "Descubre Lompoc. Apoya lo local."
-
-*Note: A is live on site as of 2026-04-09 (KRE-117 pivot). B and C are A/B test candidates.*
 
 ### Subheadline
 

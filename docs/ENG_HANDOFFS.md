@@ -670,4 +670,23 @@ The category section heading on the homepage changed from "Explore by category" 
 
 ---
 
+## Hero Headline Update + Mobile User Menu Polish — shipped 2026-04-16 (commit 44c8d4b)
+
+**What shipped (two changes bundled):**
+
+1. **Hero H1 updated:** Homepage main headline changed from "Explore Lompoc / by category" → **"All of Lompoc / in One Place"** ("in One Place" renders in italic yellow). This is the most prominent copy on the entire site.
+
+2. **Mobile user menu polish:** Logged-in users on mobile now see a `UserCircle` icon in the nav instead of their full email address. The email+role line and its separator are hidden in the dropdown on mobile. Desktop behavior unchanged.
+
+**Marketing surfaces it unlocks:**
+
+- **"All of Lompoc in One Place"** is a stronger, more inclusive positioning statement than "Explore by category." It signals comprehensiveness — not just deals, but the full local directory. Better for consumer acquisition messaging.
+- Updated `docs/HOMEPAGE_COPY.md` to mark this as the live headline and archive the previous variant.
+- **Cascading copy note:** Ad headlines, social bios, and email preheaders that previously said "explore by category" should be updated to reflect "All of Lompoc in One Place" or the companion tagline "Live Local. Love Lompoc."
+- Mobile UX improvement reduces visual clutter in the nav — cleaner first impression for the ~60% of visitors on mobile.
+
+**CMO action:** Review ad copy and social bios for any references to "Explore by category" and update to align with the new hero positioning.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
