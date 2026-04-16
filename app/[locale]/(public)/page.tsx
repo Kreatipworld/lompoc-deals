@@ -79,8 +79,8 @@ export default async function HomePage() {
           </div>
 
           <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
-            Explore Lompoc <br className="sm:hidden" />
-            <span className="italic text-yellow-300">by category</span>
+            All of Lompoc <br className="sm:hidden" />
+            <span className="italic text-yellow-300">in One Place</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
             Discover local restaurants, shops, services, and more — all in one place.

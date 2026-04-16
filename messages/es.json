@@ -162,7 +162,8 @@
     "signOut": "Cerrar sesión",
     "signIn": "Iniciar sesión",
     "createAccount": "Crear cuenta",
-    "admin": "Administración"
+    "admin": "Administración",
+    "account": "Cuenta"
   },
   "deals": {
     "expires": "Vence el {date}",

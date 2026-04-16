@@ -162,7 +162,8 @@
     "signOut": "Sign out",
     "signIn": "Sign in",
     "createAccount": "Create account",
-    "admin": "Admin"
+    "admin": "Admin",
+    "account": "Account"
   },
   "deals": {
     "expires": "Expires {date}",
