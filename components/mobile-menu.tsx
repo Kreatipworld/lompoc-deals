@@ -14,8 +14,8 @@ const NAV_ITEMS = [
   { href: "/businesses", icon: LayoutGrid, label: "Directory" },
   { href: "/map", icon: Map, label: "Map" },
   { href: "/subscribe", icon: Mail, label: "Subscribe" },
-  { href: "/locals", icon: Heart, label: "For Locals" },
-  { href: "/for-businesses", icon: Building2, label: "For Businesses" },
+  { href: "/locals", icon: Heart, label: "Locals" },
+  { href: "/for-businesses", icon: Building2, label: "Businesses" },
   { href: "/account", icon: User, label: "Account" },
 ] as const
 
