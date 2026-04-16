@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, Tag } from "lucide-react"
-import { getDealsGroupedByCategory, getSiteStats } from "@/lib/queries"
+import { ArrowRight, Tag, MapPin, Compass } from "lucide-react"
+import { getDealsGroupedByCategory, getSiteStats, getFeaturedActivities } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealCard } from "@/components/deal-card"
 import { CategoryStrip } from "@/components/category-strip"
@@ -27,10 +27,11 @@ export const metadata = {
 }
 
 export default async function DealsPage() {
-  const [categorizedDeals, viewer, stats] = await Promise.all([
+  const [categorizedDeals, viewer, stats, featuredActivities] = await Promise.all([
     getDealsGroupedByCategory(6),
     getViewer(),
     getSiteStats(),
+    getFeaturedActivities(6),
   ])
 
   return (
@@ -56,6 +57,101 @@ export default async function DealsPage() {
 
       {/* ─── CATEGORY STRIP ─── */}
       <CategoryStrip />
+
+      {/* ─── THINGS TO DO ─── */}
+      {featuredActivities.length > 0 && (
+        <section className="border-b bg-muted/20 py-10">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-6 flex items-end justify-between">
+              <div>
+                <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                  <Compass className="h-3 w-3" />
+                  Things to Do in Lompoc
+                </div>
+                <h2 className="font-display text-2xl font-bold tracking-tight">
+                  Local Attractions &amp; Activities
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Discover what makes Lompoc special — from wineries to wildflowers.
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredActivities.map((activity) => (
+                <article
+                  key={activity.id}
+                  className="group flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:shadow-lg hover:-translate-y-0.5"
+                >
+                  {/* Image */}
+                  <div className="relative h-44 overflow-hidden flex-shrink-0 bg-gradient-to-br from-emerald-100 via-teal-50 to-violet-100">
+                    {activity.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={activity.imageUrl}
+                        alt={activity.title}
+                        className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <Compass className="h-12 w-12 text-foreground/20" strokeWidth={1.25} />
+                      </div>
+                    )}
+                    <div className="absolute bottom-2.5 left-2.5 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-medium capitalize backdrop-blur shadow-sm">
+                      {activity.category.replace(/-/g, " ")}
+                    </div>
+                  </div>
+
+                  {/* Body */}
+                  <div className="flex flex-1 flex-col p-3.5">
+                    <h3 className="font-display text-[15px] font-semibold leading-snug tracking-tight line-clamp-2">
+                      {activity.title}
+                    </h3>
+
+                    {activity.description && (
+                      <p className="mt-1.5 line-clamp-3 text-xs text-muted-foreground leading-relaxed">
+                        {activity.description}
+                      </p>
+                    )}
+
+                    {activity.tips && (
+                      <p className="mt-1.5 line-clamp-2 text-[11px] text-amber-700 dark:text-amber-400 leading-relaxed italic">
+                        Tip: {activity.tips}
+                      </p>
+                    )}
+
+                    {activity.address && (
+                      <p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground truncate w-full">
+                        <MapPin className="h-3 w-3 shrink-0 text-primary/60" />
+                        <span className="truncate">{activity.address}</span>
+                      </p>
+                    )}
+
+                    {activity.seasonality && (
+                      <p className="mt-1 text-[10px] text-muted-foreground/70">
+                        Best: {activity.seasonality}
+                      </p>
+                    )}
+
+                    {activity.sourceUrl && (
+                      <div className="mt-auto pt-3">
+                        <a
+                          href={activity.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full border border-primary/30 px-4 text-xs font-semibold text-primary [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/10 active:scale-[0.98]"
+                        >
+                          Learn More
+                          <ArrowRight className="h-3 w-3" />
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ─── CATEGORIZED DEALS ─── */}
       {categorizedDeals.length === 0 ? (

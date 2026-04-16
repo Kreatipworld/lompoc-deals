@@ -9,6 +9,7 @@ export type DealCardData = {
   description: string | null
   imageUrl: string | null
   discountText: string | null
+  terms: string | null
   expiresAt: Date
   business: {
     id: number
@@ -18,6 +19,8 @@ export type DealCardData = {
     coverUrl: string | null
     categoryName: string | null
     categorySlug: string | null
+    address: string | null
+    phone: string | null
   }
 }
 
@@ -28,12 +31,15 @@ const baseDealSelect = {
   description: deals.description,
   imageUrl: deals.imageUrl,
   discountText: deals.discountText,
+  terms: deals.terms,
   expiresAt: deals.expiresAt,
   bizId: businesses.id,
   bizName: businesses.name,
   bizSlug: businesses.slug,
   bizLogoUrl: businesses.logoUrl,
   bizCoverUrl: businesses.coverUrl,
+  bizAddress: businesses.address,
+  bizPhone: businesses.phone,
   catName: categories.name,
   catSlug: categories.slug,
 }
@@ -45,12 +51,15 @@ type DealRow = {
   description: string | null
   imageUrl: string | null
   discountText: string | null
+  terms: string | null
   expiresAt: Date
   bizId: number
   bizName: string
   bizSlug: string
   bizLogoUrl: string | null
   bizCoverUrl: string | null
+  bizAddress: string | null
+  bizPhone: string | null
   catName: string | null
   catSlug: string | null
 }
@@ -63,6 +72,7 @@ function rowToCard(r: DealRow): DealCardData {
     description: r.description,
     imageUrl: r.imageUrl,
     discountText: r.discountText,
+    terms: r.terms,
     expiresAt: r.expiresAt,
     business: {
       id: r.bizId,
@@ -72,6 +82,8 @@ function rowToCard(r: DealRow): DealCardData {
       coverUrl: r.bizCoverUrl,
       categoryName: r.catName,
       categorySlug: r.catSlug,
+      address: r.bizAddress,
+      phone: r.bizPhone,
     },
   }
 }

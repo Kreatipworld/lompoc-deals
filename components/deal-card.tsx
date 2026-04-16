@@ -6,6 +6,9 @@ import {
   Tag,
   Megaphone,
   Sparkles,
+  MapPin,
+  Phone,
+  FileText,
   type LucideIcon,
 } from "lucide-react"
 import { formatDistanceToNowStrict, isPast, differenceInHours } from "date-fns"
@@ -160,16 +163,43 @@ export function DealCard({
 
           {/* Description */}
           {deal.description && (
-            <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
+            <p className="mt-1.5 line-clamp-3 text-xs text-muted-foreground leading-relaxed">
               {deal.description}
             </p>
           )}
+
+          {/* Location & contact */}
+          <div className="mt-2 space-y-0.5">
+            {deal.business.address && (
+              <p className="inline-flex items-center gap-1 text-[11px] text-muted-foreground truncate w-full">
+                <MapPin className="h-3 w-3 shrink-0 text-primary/60" />
+                <span className="truncate">{deal.business.address}</span>
+              </p>
+            )}
+            {deal.business.phone && (
+              <a
+                href={`tel:${deal.business.phone}`}
+                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary"
+              >
+                <Phone className="h-3 w-3 shrink-0 text-primary/60" />
+                {deal.business.phone}
+              </a>
+            )}
+          </div>
 
           {/* Expiry */}
           <p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
             <Clock className="h-3 w-3" />
             {expired ? "Expired" : `Expires ${formatDistanceToNowStrict(deal.expiresAt)}`}
           </p>
+
+          {/* Terms hint */}
+          {deal.terms && (
+            <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-muted-foreground/70 italic">
+              <FileText className="h-2.5 w-2.5 shrink-0" />
+              <span className="line-clamp-1">{deal.terms}</span>
+            </p>
+          )}
 
           {/* CTA */}
           {!expired && (
@@ -298,8 +328,35 @@ export function DealCard({
         </div>
 
         {deal.description && (
-          <p className="line-clamp-2 text-sm text-muted-foreground">
+          <p className="line-clamp-3 text-sm text-muted-foreground">
             {deal.description}
+          </p>
+        )}
+
+        {/* Location & contact */}
+        <div className="space-y-1">
+          {deal.business.address && (
+            <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground truncate w-full">
+              <MapPin className="h-3.5 w-3.5 shrink-0 text-primary/60" />
+              <span className="truncate">{deal.business.address}</span>
+            </p>
+          )}
+          {deal.business.phone && (
+            <a
+              href={`tel:${deal.business.phone}`}
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary"
+            >
+              <Phone className="h-3.5 w-3.5 shrink-0 text-primary/60" />
+              {deal.business.phone}
+            </a>
+          )}
+        </div>
+
+        {/* Terms hint */}
+        {deal.terms && (
+          <p className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/70 italic">
+            <FileText className="h-3 w-3 shrink-0" />
+            <span className="line-clamp-2">{deal.terms}</span>
           </p>
         )}
 

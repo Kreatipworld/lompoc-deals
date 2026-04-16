@@ -49,6 +49,7 @@ export async function GET(request: Request) {
     description: r.description,
     imageUrl: r.imageUrl,
     discountText: r.discountText,
+    terms: null,
     expiresAt: r.expiresAt,
     business: {
       id: r.bizId,
@@ -58,6 +59,8 @@ export async function GET(request: Request) {
       coverUrl: r.bizCoverUrl,
       categoryName: null,
       categorySlug: null,
+      address: null,
+      phone: null,
     },
   }))
 
