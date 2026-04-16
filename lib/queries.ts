@@ -410,9 +410,18 @@ export async function getMapBusinesses(): Promise<MapBusiness[]> {
 }
 
 export async function getAllCategories() {
-  return db.query.categories.findMany({
-    orderBy: (c, { asc }) => [asc(c.name)],
-  })
+  // Only return categories that have at least one approved business
+  const rows = await db
+    .selectDistinct({
+      id: categories.id,
+      name: categories.name,
+      slug: categories.slug,
+      icon: categories.icon,
+    })
+    .from(categories)
+    .innerJoin(businesses, and(eq(businesses.categoryId, categories.id), eq(businesses.status, "approved")))
+    .orderBy(categories.name)
+  return rows
 }
 
 export type CategoryWithDeals = {
@@ -479,8 +488,9 @@ export async function getSiteStats() {
       .innerJoin(businesses, eq(deals.businessId, businesses.id))
       .where(activeAndApproved),
     db
-      .select({ n: sql<number>`count(*)::int` })
-      .from(categories),
+      .select({ n: sql<number>`count(distinct ${categories.id})::int` })
+      .from(categories)
+      .innerJoin(businesses, and(eq(businesses.categoryId, categories.id), eq(businesses.status, "approved"))),
   ])
   return {
     businesses: bizRow[0]?.n ?? 0,
