@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import { getListingById } from "@/lib/queries"
 import { BusinessMapLoader } from "@/components/business-map-loader"
+import { SafeImage } from "@/components/safe-image"
 
 export async function generateMetadata({
   params,
@@ -74,11 +75,15 @@ export default async function ListingPage({
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {/* Main photo */}
             <div className="overflow-hidden rounded-2xl border md:row-span-2 md:h-[520px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <SafeImage
                 src={allPhotos[0]}
                 alt={listing.title}
                 className="h-full w-full object-cover"
+                fallback={
+                  <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
+                    Photo not available
+                  </div>
+                }
               />
             </div>
             {/* Thumbnails */}
@@ -87,11 +92,15 @@ export default async function ListingPage({
                 key={i}
                 className="hidden h-[256px] overflow-hidden rounded-2xl border md:block"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <SafeImage
                   src={url}
                   alt={`${listing.title} photo ${i + 2}`}
                   className="h-full w-full object-cover"
+                  fallback={
+                    <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
+                      Photo not available
+                    </div>
+                  }
                 />
               </div>
             ))}

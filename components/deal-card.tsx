@@ -18,6 +18,7 @@ import { toggleFavoriteAction } from "@/lib/favorite-actions"
 import { trackClaimAction, trackRedeemAction } from "@/lib/tracking-actions"
 import type { DealCardData } from "@/lib/queries"
 import type { Viewer } from "@/lib/viewer"
+import { SafeImage } from "@/components/safe-image"
 
 const TYPE_META: Record<
   DealCardData["type"],
@@ -69,20 +70,18 @@ export function DealCard({
       >
         {/* IMAGE */}
         <Link href={`/biz/${deal.business.slug}`} className="relative block h-44 overflow-hidden flex-shrink-0">
-          {deal.imageUrl || deal.business.coverUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={deal.imageUrl ?? deal.business.coverUrl!}
-              alt={deal.imageUrl ? deal.title : deal.business.name}
-              className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-            />
-          ) : (
-            <div
-              className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradientFor(deal.id)}`}
-            >
-              <TypeIcon className="h-12 w-12 text-foreground/20" strokeWidth={1.25} />
-            </div>
-          )}
+          <SafeImage
+            src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
+            alt={deal.imageUrl ? deal.title : deal.business.name}
+            className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+            fallback={
+              <div
+                className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradientFor(deal.id)}`}
+              >
+                <TypeIcon className="h-12 w-12 text-foreground/20" strokeWidth={1.25} />
+              </div>
+            }
+          />
 
           {/* Discount badge */}
           {deal.discountText && (
@@ -244,22 +243,20 @@ export function DealCard({
     >
       {/* MEDIA */}
       <div className="relative h-52 overflow-hidden">
-        {deal.imageUrl || deal.business.coverUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={deal.imageUrl ?? deal.business.coverUrl!}
-            alt={deal.imageUrl ? deal.title : deal.business.name}
-            className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
-          />
-        ) : (
-          <div
-            className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradientFor(
-              deal.id
-            )}`}
-          >
-            <TypeIcon className="h-14 w-14 text-foreground/20" strokeWidth={1.25} />
-          </div>
-        )}
+        <SafeImage
+          src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
+          alt={deal.imageUrl ? deal.title : deal.business.name}
+          className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+          fallback={
+            <div
+              className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradientFor(
+                deal.id
+              )}`}
+            >
+              <TypeIcon className="h-14 w-14 text-foreground/20" strokeWidth={1.25} />
+            </div>
+          }
+        />
 
         {/* Discount badge (top-left, amber California gold) */}
         {deal.discountText && (

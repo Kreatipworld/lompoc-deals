@@ -3,6 +3,7 @@ import { ArrowRight, Tag, MapPin, Compass } from "lucide-react"
 import { getDealsGroupedByCategory, getSiteStats, getFeaturedActivities } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { DealCard } from "@/components/deal-card"
+import { SafeImage } from "@/components/safe-image"
 import { CategoryStrip } from "@/components/category-strip"
 import { SearchBar } from "@/components/search-bar"
 
@@ -84,18 +85,16 @@ export default async function DealsPage() {
                 >
                   {/* Image */}
                   <div className="relative h-44 overflow-hidden flex-shrink-0 bg-gradient-to-br from-emerald-100 via-teal-50 to-violet-100">
-                    {activity.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={activity.imageUrl}
-                        alt={activity.title}
-                        className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <Compass className="h-12 w-12 text-foreground/20" strokeWidth={1.25} />
-                      </div>
-                    )}
+                    <SafeImage
+                      src={activity.imageUrl ?? undefined}
+                      alt={activity.title}
+                      className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                      fallback={
+                        <div className="flex h-full w-full items-center justify-center">
+                          <Compass className="h-12 w-12 text-foreground/20" strokeWidth={1.25} />
+                        </div>
+                      }
+                    />
                     <div className="absolute bottom-2.5 left-2.5 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-medium capitalize backdrop-blur shadow-sm">
                       {activity.category.replace(/-/g, " ")}
                     </div>

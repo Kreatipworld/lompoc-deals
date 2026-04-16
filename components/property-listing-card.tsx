@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation"
 import { Bed, Bath, Maximize, MapPin } from "lucide-react"
 import type { PropertyListing } from "@/lib/queries"
+import { SafeImage } from "@/components/safe-image"
 
 function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
   const dollars = cents / 100
@@ -21,14 +22,11 @@ export function PropertyListingCard({
     >
       {/* Image */}
       <div className="relative h-52 overflow-hidden">
-        {listing.imageUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={listing.imageUrl}
-            alt={listing.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        )}
+        <SafeImage
+          src={listing.imageUrl ?? undefined}
+          alt={listing.title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
         {/* Type badge */}
         <div className="absolute left-3 top-3">
           <span
