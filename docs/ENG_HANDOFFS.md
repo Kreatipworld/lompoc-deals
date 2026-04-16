@@ -577,4 +577,18 @@ New endpoint: `GET /api/search/autocomplete?q=<query>`
 
 ---
 
+## Nav Label Fix — "Locals" / "Businesses" — shipped 2026-04-15 (commit 3c91da3)
+
+**What shipped:** Two navigation label corrections:
+1. `nav.forLocals` translation key was missing — rendered as a raw key string in the header. Now correctly shows "Locals" (EN) / "Locales" (ES).
+2. `forBusinesses` renamed from "For businesses" → "Businesses" (EN) and "Para negocios" → "Negocios" (ES). Mobile menu hardcoded labels updated to match.
+
+**Marketing surfaces it unlocks:**
+- `/locals` consumer page is now properly labeled in the nav — the CTA we use across Nextdoor, Facebook, and social posts ("visit lompoc-deals.vercel.app/locals") now leads to a page that is correctly linked in the header. Before this fix, the nav link was showing a broken key.
+- Cleaner, shorter nav labels ("Locals" / "Businesses") scan better on mobile — reduces friction for first-time visitors choosing where to go.
+
+**No CMO action needed.** Nav copy now matches all existing marketing materials.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
