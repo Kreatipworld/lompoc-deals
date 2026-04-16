@@ -724,4 +724,16 @@ The category section heading on the homepage changed from "Explore by category" 
 
 ---
 
+## SafeImage — Broken Image Fallbacks — shipped 2026-04-16 (commit 7a9b893)
+
+**What shipped:** New `SafeImage` client component with `onError` handler. Replaces raw `<img>` tags across deal cards (both variants), property listing cards, listing detail photo galleries, and activity cards. When an image URL is broken or missing, renders a defined fallback (gradient placeholder, icon, or "Photo not available" text) instead of a broken image icon.
+
+**Marketing surfaces it unlocks:**
+- Feed and profile pages look polished even when merchant-uploaded image URLs go stale or are missing. No broken image icons anywhere on the platform.
+- Social screenshots of the deals feed / property listings are now always clean — no embarrassing broken-image artifacts.
+
+**No CMO action needed.** Platform quality improvement.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
