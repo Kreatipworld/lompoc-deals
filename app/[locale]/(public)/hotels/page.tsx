@@ -4,7 +4,6 @@ import { HOTELS } from "@/lib/hotels-data"
 import {
   MapPin,
   Phone,
-  Globe,
   Star,
   ArrowRight,
   BedDouble,
@@ -96,9 +95,9 @@ export default function HotelsPage() {
           </div>
 
           <p className="mt-6 max-w-2xl text-muted-foreground">
-            Visiting the Flower Capital of America? Whether you're here for Vandenberg Space Force
-            Base, the Santa Rita Hills wine trail, or the annual Lompoc Flower Festival — find the
-            right stay right here.
+            Visiting the Flower Capital of America? Whether you&apos;re here for Vandenberg Space
+            Force Base, the Santa Rita Hills wine trail, or the annual Lompoc Flower Festival —
+            find the right stay right here.
           </p>
         </div>
       </section>
