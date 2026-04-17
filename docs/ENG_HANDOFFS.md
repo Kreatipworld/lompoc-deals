@@ -843,4 +843,29 @@ Full backlink map at `content/blog/backlink-map.md`.
 
 ---
 
+## Blog → Platform Business Spotlight — shipped 2026-04-17 (commits 4d87369 + dbda8b2)
+
+**What shipped:**
+
+- `4d87369` — `BlogBusinessSpotlight` component: after the article body, each blog post now shows 3 relevant platform businesses matched by blog category (food-dining → restaurants, wine-country → wineries, outdoor-adventures → fitness, etc.). Each spotlight card shows: business logo, category badge, description snippet, and active deal count. `getBusinessesForBlogCategory()` query handles the category mapping automatically.
+- Blog index redesigned: dark hero card for the featured (most recent) post on the default view. Improved card grid with author metadata and category label formatting.
+- `dbda8b2` — Bug fix: raw SQL `ANY()` replaced with Drizzle `inArray()` for the business category filter. No behavioral change.
+
+**How to test it:**
+1. Visit any blog post at `/blog/[slug]` → scroll past the article → confirm "Businesses in Lompoc" spotlight shows 3 businesses
+2. Wine post → shows wineries. Food post → shows restaurants. Etc.
+3. Visit `/blog` → first post should render as a full-width dark hero card
+
+**Marketing surfaces it unlocks:**
+
+- **Full SEO → platform conversion funnel:** Organic traffic lands on a blog post → reads the article → sees 3 matching Lompoc Deals businesses with active deal counts → clicks through to a business profile → claims a deal. This is the complete top-of-funnel-to-conversion path, fully automated.
+- **Active deal count = urgency signal:** "3 active deals" visible on the spotlight card gives readers a reason to click now, not later.
+- **Zero-maintenance relevance:** The category mapping is automatic — no manual curation needed as new businesses are added to the platform. When a new winery signs up and posts a deal, it can appear in wine blog posts automatically.
+- **Blog index hero redesign:** The featured post treatment (dark hero card) makes the blog feel like a premium editorial publication. This improves first impressions for new visitors and encourages more article clicks.
+- **Deal count as social proof:** A business showing "5 active deals" in the spotlight is a strong signal that the platform is active. This builds consumer confidence.
+
+**No additional CMO copy action needed.** The component is self-contained and automatic.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
