@@ -1,4 +1,4 @@
-import { and, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm"
+import { and, desc, eq, gt, gte, ilike, inArray, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts } from "@/db/schema"
 
@@ -968,7 +968,7 @@ export async function getBusinessesForBlogCategory(
     .where(
       and(
         eq(businesses.status, "approved"),
-        slugs ? sql`${categories.slug} = ANY(${slugs})` : undefined
+        slugs ? inArray(categories.slug, slugs) : undefined
       )
     )
     .groupBy(businesses.id, categories.id)
