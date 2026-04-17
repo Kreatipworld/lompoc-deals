@@ -736,4 +736,16 @@ The category section heading on the homepage changed from "Explore by category" 
 
 ---
 
+## Mobile Dashboard Viewport Fix — shipped 2026-04-16 (commit cfb7ec5)
+
+**What shipped:** The merchant dashboard navigation tab bar was overflowing the mobile viewport (~343px), causing all dashboard content to be clipped on the left side when navigating between tabs. Fixed: tab bar now scrolls independently (horizontal scroll within container), and `overflow-x: hidden` added to `html`/`body` as a belt-and-suspenders guard.
+
+**Marketing impact:**
+- Most new merchants will sign up and onboard on mobile (cold outreach → tap link → signup on phone). A broken dashboard on mobile was silently killing activation. This fix ensures the first experience in the dashboard is clean on any screen size.
+- Higher mobile activation rate → more first deals posted → better retention.
+
+**No CMO copy action needed.**
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
