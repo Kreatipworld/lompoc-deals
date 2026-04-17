@@ -808,4 +808,39 @@ This is the biggest content marketing infrastructure shipped to date. Full impac
 
 ---
 
+## 48 Blog Posts Published + Footer Link — shipped 2026-04-17 (commits 31aee2a + 4b5297c)
+
+**What shipped:**
+
+- `31aee2a` — 48 SEO blog posts seeded from `content/blog/posts-1-25.json` + `content/blog/posts-26-50.json` and published to the `blog_posts` table. Publish dates spread across 6 months for natural-looking history. "Blog" link added to site footer Browse section (EN + ES).
+- `4b5297c` — `best-taquerias-lompoc` post updated with 9 specific local taqueria business listings linked to their `/biz/` profile pages. Featured images added to all 48 posts. Heading structure fixed (bold-in-p → proper h3 tags). Taquerias post rewritten for readability.
+
+**Blog content structure (6 topic clusters, 48 posts):**
+| Cluster | Posts | Primary SEO Keywords |
+|---------|-------|---------------------|
+| Things to Do | 8 | "things to do Lompoc CA", "Lompoc itinerary" |
+| Food & Dining | 8 | "best restaurants Lompoc CA", "taquerias Lompoc" |
+| Wine Country | 7 | "Lompoc Wine Ghetto", "Santa Rita Hills wine tasting" |
+| Outdoor Adventures | 8 | "hiking near Lompoc CA", "Jalama Beach guide" |
+| Local History & Culture | 8 | "history of Lompoc CA", "La Purisima Mission" |
+| Community Guides | 9 | "moving to Lompoc CA", "Lompoc Flower Festival" |
+
+Full backlink map at `content/blog/backlink-map.md`.
+
+**Marketing impact:**
+
+- **Immediate SEO footprint:** 48 published posts with spread publish dates, Schema.org BlogPosting, canonical URLs, and internal links to `/businesses`, `/deals`, `/biz/[slug]`. Google will index the full cluster.
+- **Topic cluster SEO:** The 6 clusters are designed so posts link to each other. This creates link equity rings that boost the entire domain — not just individual posts.
+- **Business page internal links:** Taqueria post links directly to 9 Lompoc business profiles at `/biz/[slug]`. This is the model for all future "Best X in Lompoc" posts — every business mentioned should link to their Lompoc Deals profile.
+- **Footer blog link:** Every page on the site now has a footer link to `/blog`. Passive discovery for every visitor.
+- **CMO content strategy (`marketing/content/blog-content-strategy.md`) updated** — the first 5 Priority 1 posts requested are now part of the live 48. Content focus shifts to ongoing publishing, new verticals, and merchant spotlight posts.
+
+**CMO next actions:**
+- Update `marketing/content/blog-content-strategy.md` to reflect 48 posts live; define ongoing publishing plan.
+- Identify 5 more "Best X in Lompoc" posts where we can link to specific business profiles (same pattern as taquerias post).
+- Submit `/api/blog/rss` to Google News once 10+ posts have 30+ days of publish history.
+- Share top 3 posts on Nextdoor/Facebook/Instagram to seed initial organic traffic.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*

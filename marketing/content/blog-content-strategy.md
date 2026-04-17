@@ -1,7 +1,11 @@
 # Blog Content Strategy — Lompoc Deals
-*Owner: CMO | Created: 2026-04-17 | Platform: /blog (live as of commit affda73)*
+*Owner: CMO | Created: 2026-04-17 | Updated: 2026-04-17 | Platform: /blog (live as of commit affda73)*
 
-Blog infrastructure is live. This doc defines content pillars, the first 10 posts to publish, and the ongoing publishing cadence.
+**Status: 48 posts already published** (commits 31aee2a + 4b5297c). The CTO seeded all 6 topic clusters. This doc is updated to reflect the live state and define the ongoing publishing plan.
+
+**Blog live at:** lompoc-deals.vercel.app/blog  
+**RSS feed:** lompoc-deals.vercel.app/api/blog/rss  
+**Backlink map:** `content/blog/backlink-map.md`
 
 ---
 
@@ -18,9 +22,60 @@ Blog infrastructure is live. This doc defines content pillars, the first 10 post
 
 ---
 
-## First 10 Posts (ranked by SEO value × ease)
+## Live Content (48 posts — all published)
 
-### Priority 1 — Publish immediately (evergreen, high search volume)
+All 6 clusters are live. See `content/blog/backlink-map.md` for the full slug index and internal link structure.
+
+| Cluster | Posts | Status |
+|---------|-------|--------|
+| Things to Do | 8 | ✅ Live |
+| Food & Dining | 8 | ✅ Live |
+| Wine Country | 7 | ✅ Live |
+| Outdoor Adventures | 8 | ✅ Live |
+| Local History & Culture | 8 | ✅ Live |
+| Community Guides | 9 | ✅ Live |
+
+**Key completed post:** `best-taquerias-lompoc` — links to 9 specific Lompoc business profiles at `/biz/[slug]`. This is the template for all future "Best X in Lompoc" posts.
+
+---
+
+## Ongoing Publishing Plan (posts 49+)
+
+### Priority: Business-Linked Posts (highest SEO + platform value)
+Each post should mention specific Lompoc Deals businesses and link to `/biz/[slug]`.
+
+**Post 49: "Best Hair Salons & Beauty Services in Lompoc, CA"**
+- Link to 6–8 specific Beauty & Wellness businesses on the platform
+
+**Post 50: "Best Coffee Shops in Lompoc, CA"**
+- Link to Coffee & Cafés businesses on the platform
+
+**Post 51: "Best Auto Repair Shops in Lompoc, CA"**
+- Link to Auto Services businesses
+
+**Post 52: "Best Yoga & Fitness Studios in Lompoc, CA"**
+- Link to Fitness businesses
+
+**Post 53: "Where to Stay in Lompoc, CA — Hotels & Lodging Guide"**
+- Link to `/hotels` and all 4 hotel detail pages (ties into KRE-262)
+
+### Priority: Merchant Acquisition (SEO → signup funnel)
+
+**Post 54: "How to List Your Lompoc Business Online for Free"**
+- Slug: `/blog/list-lompoc-business-free`
+- CTA: lompoc-deals.vercel.app/signup
+- Targets business owners searching for local directory options
+
+**Post 55: "Why Lompoc Businesses Are Choosing Local Deals Platforms Over Yelp"**
+- Merchant acquisition + positioning vs. Yelp
+
+---
+
+## Original "First 10 Posts" Plan — Superseded
+
+The original Priority 1 posts (Posts 1–5 below) are now covered by the 48 live posts. Keeping for reference.
+
+### Priority 1 (DONE — covered in 48 live posts)
 
 **Post 1: "Best Restaurants in Lompoc, CA — Local Picks for 2026"**
 - Slug: `/blog/best-restaurants-lompoc-ca`
