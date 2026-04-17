@@ -34,6 +34,7 @@ export async function SiteHeader() {
           <NavLink href="/deals">{t("deals")}</NavLink>
           <NavLink href="/businesses">{t("directory")}</NavLink>
           <NavLink href="/map">{t("map")}</NavLink>
+          <NavLink href="/hotels">{t("hotels")}</NavLink>
           <NavLink href="/subscribe">{t("subscribe")}</NavLink>
           <NavLink href="/for-businesses">{t("forBusinesses")}</NavLink>
           <NavLink href="/locals">{t("forLocals")}</NavLink>
