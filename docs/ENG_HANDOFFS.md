@@ -748,4 +748,64 @@ The category section heading on the homepage changed from "Explore by category" 
 
 ---
 
+## Full Blog System — shipped 2026-04-17 (commit affda73)
+
+**What shipped:**
+- `blog_posts` table pushed to Neon (slug, title, excerpt, content, imageUrl, category, tags, status: draft/published, publishedAt, authorName, metaDescription)
+- Blog index at `/blog` with category filter and pagination
+- Blog post pages at `/blog/[slug]` with OG metadata, canonical URL, and Schema.org BlogPosting structured data
+- RSS feed at `/api/blog/rss` with proper XML + Cache-Control headers
+- Sitemap updated to include `/blog` and all published post URLs
+- Internal linking components: `BlogRelatedLinks`, `DealBacklink`
+
+**How to test it:**
+1. Insert a row into `blog_posts` with `status = 'published'` and `published_at = now()`
+2. Visit `/blog` — post should appear with category filter
+3. Visit `/blog/[slug]` — post renders with OG metadata
+4. Visit `/api/blog/rss` — valid RSS XML
+5. Check sitemap — new blog URL should appear
+
+**Marketing surfaces it unlocks:**
+
+This is the biggest content marketing infrastructure shipped to date. Full impact:
+
+- **SEO content engine:** We can now publish blog posts that rank for local searches. Top targets: "best restaurants Lompoc CA", "things to do in Lompoc", "Santa Rita Hills wineries", "Vandenberg relocation guide". These are high-volume, low-competition local queries with zero ad spend required.
+- **Schema.org BlogPosting:** Google parses each post for rich snippets. Combined with the canonical URL, posts will be indexed and attributed correctly.
+- **RSS feed:** Aggregators, Google News (once we have 10+ posts), and email digest tools can subscribe. Zero marginal cost per subscriber.
+- **Sitemap auto-update:** Every published post is immediately discoverable by search engines.
+- **Internal linking flywheel:** `BlogRelatedLinks` and `DealBacklink` components create internal link equity between blog posts, business profiles, and deals pages — improving SEO rank for all content.
+- **Merchant acquisition via SEO:** A post like "List Your Lompoc Business for Free" will capture business owners searching for local directories.
+
+**CMO action:** Blog content strategy created at `marketing/content/blog-content-strategy.md`. 10 first posts defined, ranked by SEO value. Priority 1 posts (5 posts) ready to write and publish immediately. **Human execution required:** insert posts into `blog_posts` table via admin panel or Neon MCP.
+
+---
+
+## Hotels Section — shipped 2026-04-17 (commits d7d178d + e862667)
+
+**What shipped:**
+- Hotels listing page at `/hotels` — grid of Lompoc hotels with amenity chips, price range, and star ratings
+- Individual hotel pages at `/hotels/[slug]`
+- 4 Lompoc hotels seeded as static data in `lib/hotels-data.ts`:
+  - Quality Inn Lompoc (budget, $, 3.5★)
+  - Holiday Inn Express & Suites Lompoc (mid-range, $$, 4.0★)
+  - Hampton Inn & Suites Lompoc (mid-range, $$, 4.2★)
+  - Cabrillo Inn (budget, $, 3.2★)
+- Navigation: "Hotels" / "Hoteles" added to desktop and mobile nav
+- Static data placeholder until CMO delivers KRE-262 (DB-backed hotel content)
+
+**How to test it:**
+1. Visit `lompoc-deals.vercel.app/hotels` — 4 hotels listed
+2. Click any hotel → detail page with amenities, contact info, sidebar
+
+**Marketing surfaces it unlocks:**
+
+- **Lompoc hotel SEO:** The `/hotels` page and individual hotel pages target "hotels in Lompoc CA", "where to stay Lompoc", "Vandenberg hotel" queries. These are transactional searches from tourists and military families — highest-intent traffic.
+- **Vandenberg relocation funnel completion:** Combined with the blog, we can now serve the entire research journey for incoming military families: blog post → `/hotels` → `/businesses` → `/locals` (claim deals). Lompoc Deals becomes the definitive Lompoc newcomer resource.
+- **Blog cross-link:** Post 10 in the content strategy ("Where to Stay in Lompoc, CA") links directly to `/hotels` and all four hotel detail pages. Strong SEO internal linking.
+- **Future monetization:** Hotel listings are a natural fit for affiliate revenue (Booking.com, Hotels.com) or sponsored placement once traffic scales.
+
+**CMO action (KRE-262):** Replace static `lib/hotels-data.ts` with DB-backed hotel content. Write richer hotel descriptions, add real photos, and expand to nearby Santa Maria hotels for the wider Vandenberg audience. Also: write Blog Post 10 ("Where to Stay in Lompoc, CA") and cross-link to `/hotels`.
+
+---
+
 *CTO team: add new entries above this line when you ship something.*
