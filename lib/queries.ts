@@ -918,3 +918,65 @@ export async function countPublishedBlogPosts(category?: string): Promise<number
 export async function getRecentBlogPosts(limit = 3): Promise<BlogPostCard[]> {
   return getPublishedBlogPosts(limit, 0)
 }
+
+// ---------- blog ↔ business recommendations ----------
+
+export type BlogBusinessCard = {
+  id: number
+  name: string
+  slug: string
+  description: string | null
+  logoUrl: string | null
+  categoryName: string | null
+  categorySlug: string | null
+  activeDealCount: number
+}
+
+/**
+ * Maps a blog post category to related business category slugs,
+ * then returns up to `limit` approved businesses in those categories.
+ */
+const BLOG_CATEGORY_TO_BUSINESS_SLUGS: Record<string, string[]> = {
+  "food-dining": ["restaurants", "food-drink", "bars", "coffee"],
+  "wine-country": ["wineries", "bars", "food-drink"],
+  "things-to-do": ["entertainment", "services", "activities", "restaurants"],
+  "outdoor-adventures": ["services", "activities", "entertainment"],
+  "community-guides": ["retail", "services", "health-beauty", "auto"],
+  "local-history": ["entertainment", "services", "other"],
+}
+
+export async function getBusinessesForBlogCategory(
+  blogCategory: string | null,
+  limit = 3
+): Promise<BlogBusinessCard[]> {
+  const slugs = blogCategory ? (BLOG_CATEGORY_TO_BUSINESS_SLUGS[blogCategory] ?? null) : null
+
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      description: businesses.description,
+      logoUrl: businesses.logoUrl,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now() and ${deals.paused} = false)::int`,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .where(
+      and(
+        eq(businesses.status, "approved"),
+        slugs ? sql`${categories.slug} = ANY(${slugs})` : undefined
+      )
+    )
+    .groupBy(businesses.id, categories.id)
+    .orderBy(
+      sql`count(${deals.id}) filter (where ${deals.expiresAt} > now() and ${deals.paused} = false) desc`,
+      businesses.name
+    )
+    .limit(limit)
+
+  return rows as BlogBusinessCard[]
+}

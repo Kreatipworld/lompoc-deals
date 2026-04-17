@@ -3,9 +3,10 @@ import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
 import { CalendarDays, Tag, ArrowLeft, User } from "lucide-react"
-import { getBlogPostBySlug, getRecentBlogPosts } from "@/lib/queries"
+import { getBlogPostBySlug, getRecentBlogPosts, getBusinessesForBlogCategory } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { BlogRelatedLinks } from "@/components/blog-related-links"
+import { BlogBusinessSpotlight } from "@/components/blog-business-spotlight"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -43,6 +44,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   ])
 
   if (!post) notFound()
+
+  const relatedBusinesses = await getBusinessesForBlogCategory(post.category ?? null, 3)
 
   const relatedPosts = recentPosts.filter((p) => p.slug !== post.slug).slice(0, 2)
 
@@ -170,6 +173,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         {relatedPosts.length > 0 && (
           <BlogRelatedLinks posts={relatedPosts} />
         )}
+
+        {/* Platform business recommendations */}
+        <BlogBusinessSpotlight businesses={relatedBusinesses} />
 
         {/* CTA to deals */}
         <div className="mt-10 p-6 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
