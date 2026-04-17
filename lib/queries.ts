@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities } from "@/db/schema"
+import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts } from "@/db/schema"
 
 export type DealCardData = {
   id: number
@@ -820,4 +820,101 @@ export async function getMapActivities(): Promise<MapActivity[]> {
       lng: r.lng as number,
       category: r.category,
     }))
+}
+
+// ---------- blog ----------
+
+export type BlogPostCard = {
+  id: number
+  slug: string
+  title: string
+  excerpt: string | null
+  imageUrl: string | null
+  category: string | null
+  tags: string[] | null
+  authorName: string | null
+  publishedAt: Date | null
+}
+
+export type BlogPostFull = BlogPostCard & {
+  content: string
+  metaDescription: string | null
+  updatedAt: Date
+}
+
+export async function getPublishedBlogPosts(
+  limit = 20,
+  offset = 0,
+  category?: string
+): Promise<BlogPostCard[]> {
+  const conditions = [eq(blogPosts.status, "published")]
+  if (category) conditions.push(eq(blogPosts.category, category))
+
+  const rows = await db
+    .select({
+      id: blogPosts.id,
+      slug: blogPosts.slug,
+      title: blogPosts.title,
+      excerpt: blogPosts.excerpt,
+      imageUrl: blogPosts.imageUrl,
+      category: blogPosts.category,
+      tags: blogPosts.tags,
+      authorName: blogPosts.authorName,
+      publishedAt: blogPosts.publishedAt,
+    })
+    .from(blogPosts)
+    .where(and(...conditions))
+    .orderBy(desc(blogPosts.publishedAt))
+    .limit(limit)
+    .offset(offset)
+
+  return rows as BlogPostCard[]
+}
+
+export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | null> {
+  const rows = await db
+    .select()
+    .from(blogPosts)
+    .where(and(eq(blogPosts.slug, slug), eq(blogPosts.status, "published")))
+    .limit(1)
+
+  if (!rows[0]) return null
+  const r = rows[0]
+  return {
+    id: r.id,
+    slug: r.slug,
+    title: r.title,
+    excerpt: r.excerpt,
+    content: r.content,
+    imageUrl: r.imageUrl,
+    category: r.category,
+    tags: r.tags as string[] | null,
+    authorName: r.authorName,
+    publishedAt: r.publishedAt,
+    metaDescription: r.metaDescription,
+    updatedAt: r.updatedAt,
+  }
+}
+
+export async function getBlogCategories(): Promise<string[]> {
+  const rows = await db
+    .selectDistinct({ category: blogPosts.category })
+    .from(blogPosts)
+    .where(and(eq(blogPosts.status, "published"), sql`${blogPosts.category} is not null`))
+    .orderBy(blogPosts.category)
+  return rows.map((r) => r.category).filter(Boolean) as string[]
+}
+
+export async function countPublishedBlogPosts(category?: string): Promise<number> {
+  const conditions = [eq(blogPosts.status, "published")]
+  if (category) conditions.push(eq(blogPosts.category, category))
+  const rows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(blogPosts)
+    .where(and(...conditions))
+  return Number(rows[0]?.count ?? 0)
+}
+
+export async function getRecentBlogPosts(limit = 3): Promise<BlogPostCard[]> {
+  return getPublishedBlogPosts(limit, 0)
 }

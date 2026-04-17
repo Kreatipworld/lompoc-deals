@@ -371,6 +371,39 @@ export const telegramMessages = pgTable("telegram_messages", {
     .defaultNow(),
 })
 
+// ---------- blog posts ----------
+export const blogPostStatus = pgEnum("blog_post_status", [
+  "draft",
+  "published",
+])
+
+export const blogPosts = pgTable(
+  "blog_posts",
+  {
+    id: serial("id").primaryKey(),
+    slug: varchar("slug", { length: 300 }).notNull(),
+    title: varchar("title", { length: 500 }).notNull(),
+    excerpt: text("excerpt"),
+    content: text("content").notNull(),
+    imageUrl: varchar("image_url", { length: 1000 }),
+    category: varchar("category", { length: 100 }),
+    tags: jsonb("tags").$type<string[]>(),
+    status: blogPostStatus("status").notNull().default("draft"),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    authorName: varchar("author_name", { length: 200 }),
+    metaDescription: text("meta_description"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    slugIdx: uniqueIndex("blog_posts_slug_idx").on(t.slug),
+  })
+)
+
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),
