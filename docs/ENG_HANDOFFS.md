@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-18 (CMO added entries for 843d8c9 + 3196265 — Mapbox interactive map) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-18 (CMO added entry for 6cff5ac — Mapbox CSS race condition fix) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,20 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Mapbox CSS Race Condition Fix — shipped 2026-04-18 (commit 6cff5ac)
+
+**What shipped:** Bug fix for the interactive map rendering blank on init. Root cause: `mapbox-gl/dist/mapbox-gl.css` was imported inside the dynamically-loaded map component, causing Next.js to split it into a lazy CSS chunk. Mapbox GL measured its container before the CSS applied height/layout styles, producing a zero-height canvas. Fix: moved the `@import` to `globals.css` so it's in the eager bundle and always available before any map component initializes. Files changed: `app/globals.css` (+3 lines), removed local CSS imports from 4 map components.
+
+**How to test it:**
+1. Visit `/map` on a fresh page load — map should render immediately without a blank flash
+2. Check on slow connections (throttle in DevTools) — previously the blank-map bug was most visible here
+
+**Marketing impact:** The blank-map bug was a first-impression killer. Fixing it means the "Take a Tour" social asset content (screen recording) will now show a clean, instant map load — essential for any video marketing of this feature.
+
+**No new env vars or migrations required.**
 
 ---
 
