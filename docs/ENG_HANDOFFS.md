@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-09 (CMO added entry for 5046c43) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-18 (CMO added entries for 843d8c9 + 3196265 — Mapbox interactive map) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -865,6 +865,84 @@ Full backlink map at `content/blog/backlink-map.md`.
 - **Deal count as social proof:** A business showing "5 active deals" in the spotlight is a strong signal that the platform is active. This builds consumer confidence.
 
 **No additional CMO copy action needed.** The component is self-contained and automatic.
+
+---
+
+## Mapbox GL JS Migration — shipped 2026-04-17 (commit 843d8c9)
+
+**What shipped:** All map components migrated from OpenStreetMap/Leaflet to Mapbox GL JS (`react-map-gl@8`, `mapbox-gl@3`). This replaces the old tile-based map stack with a vector-based, GPU-accelerated renderer that supports 3D terrain, custom styling, and smooth animations. This commit is the infrastructure prerequisite for the interactive map in 3196265.
+
+**How to test it:**
+1. Any page with a map component should load without Leaflet CSS flicker
+2. The `/map` route is the primary test surface (see 3196265 entry below)
+3. Check Vercel build logs — will fail if `NEXT_PUBLIC_MAPBOX_TOKEN` is not set
+
+**Required env var (P0 — BLOCKING):**
+```
+NEXT_PUBLIC_MAPBOX_TOKEN=<your Mapbox public token>
+```
+Must be set in **Vercel → Settings → Environment Variables → Production + Preview** before next deploy or the map page will be blank/broken. Get token from mapbox.com → Account → Tokens.
+
+**Marketing surfaces it unlocks:** Prerequisite for all Mapbox-based map features (see 3196265).
+
+**Known limitations:** Map will not render without `NEXT_PUBLIC_MAPBOX_TOKEN` set in Vercel.
+
+---
+
+## Interactive Lompoc Map + Subscribe Page Redesign — shipped 2026-04-17 (commit 3196265)
+
+**What shipped:**
+
+**Part 1 — Full Mapbox Interactive Map at `/map`:**
+- 3D terrain with pitch, bearing, fog, and sky atmosphere rendering
+- 31 POIs across 7 categories: hotels (10), wine (7), outdoor (5), history (4), events (2), flowers (2), shopping (1)
+- Animated custom category markers (color-coded by category per `lib/map-categories.ts`)
+- Glassmorphism filter bar: toggle any of 7 category layers on/off
+- Fuzzy search bar: type any landmark name, category, or keyword to find POIs
+- Click any pin → popup card with name, category badge, highlight text, rating, price
+- Desktop: persistent sidebar listing all visible POIs; Mobile: bottom drawer
+- **"Take a Tour" button** — animated fly-to journey visiting 6 Lompoc highlights in sequence (Flower Festival, La Purisima Mission, Wine Ghetto, Jalama Beach, Vandenberg, downtown murals)
+- Day/Night mode toggle (switches Mapbox style)
+- "Near Me" button — geolocates user and zooms to their position
+- Share button — copies current map state URL to clipboard
+- Page title: "Explore Lompoc — Interactive Map"
+- Meta description: "Discover Lompoc, California on an immersive 3D map. Hotels, wineries, historic sites, outdoor adventures, and more — all in one place."
+
+**Part 2 — Weekly Digest Subscribe Page Redesign at `/subscribe`:**
+- Was: minimal email capture form
+- Now: full landing page with benefit bullets (top 10 deals weekly, sent Saturday 9am, free and no spam), merchant testimonials, subscriber social proof count, and a polished email capture CTA
+
+**How to test it:**
+1. Ensure `NEXT_PUBLIC_MAPBOX_TOKEN` is set in Vercel (see 843d8c9 entry above) — REQUIRED
+2. Visit `/map` → 3D terrain map loads with category filter bar and 31 POIs
+3. Click any category toggle → pins for that category show/hide
+4. Type "wine" in search → wine POIs surface
+5. Click a pin → popup card appears
+6. Desktop: sidebar should list all visible POIs
+7. Click "Take a Tour" → map animates through 6 Lompoc highlights
+8. Click the moon/sun icon → map switches between day/night style
+9. Visit `/subscribe` → confirm full landing page (not just a bare form)
+
+**Events it fires:** None tracked yet (CMO REQ-001 — analytics still pending).
+
+**Marketing surfaces it unlocks:**
+
+- **"Take a Tour" is a hero social media asset.** Screen-record the animated fly-to tour from a desktop browser (1080p/4K) and cut it to a 30–60 second reel. This is our most visually impressive feature to date — 3D terrain flyover of Lompoc wine country and the coast. Post to: Instagram Reels, TikTok, Facebook, Nextdoor. Caption: *"Explore Lompoc from above — 31 local gems, one map. 🗺️ lompoc-deals.vercel.app/map"*
+- **Map page = premium brand signal.** A 3D interactive map with Mapbox (same stack as AirBnB, Uber, Snap) communicates this platform is built to last. Use in cold outreach materials and in the merchant signup CTA.
+- **Subscribe page redesign improves conversion.** Previous page was a bare form. New page has benefit copy, testimonials, and social proof. Update any social/email links pointing to `/subscribe` and verify the benefit copy is accurate before sharing.
+- **31 POIs include hotels, wineries, and outdoor sites** — directly feeds the wine tourism and Vandenberg/military blog pillars. Link `/map` from the VanDB relocation guide and the wine country posts.
+- **"Near Me" feature** — useful in Nextdoor/Facebook copy targeting locals: *"Where is everything in Lompoc? Tap 'Near Me' on our map."*
+- **Share button** — users can share a specific filtered map view (e.g., just wineries). This is a passive viral loop. Encourage sharing in the social caption.
+
+**CMO next actions:**
+- Screen-record the "Take a Tour" feature and cut for Instagram Reels / TikTok (highest priority social asset since launch)
+- Add `/map` link to the blog sidebar, homepage nav, and wine country blog posts
+- Update subscribe page benefit copy if any claims (e.g., subscriber count) need to be accurate to current numbers
+- Add `NEXT_PUBLIC_MAPBOX_TOKEN` to the P0 blocker list alongside B-001 (Stripe env vars)
+
+**Known limitations:**
+- Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
+- 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
 
 ---
 
