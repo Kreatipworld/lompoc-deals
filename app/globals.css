@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mapbox GL CSS — must be global so it loads before the dynamic map component initializes */
+@import "mapbox-gl/dist/mapbox-gl.css";
+
 @layer base {
   :root {
     /* ── Lompoc Deals Design System v1.0 ── */

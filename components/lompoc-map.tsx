@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react"
 import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
-import "mapbox-gl/dist/mapbox-gl.css"
 import { Link } from "@/i18n/navigation"
 import type { MapBusiness, MapActivity } from "@/lib/queries"
 

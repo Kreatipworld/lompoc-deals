@@ -1,7 +1,6 @@
 "use client"
 
 import Map, { Marker, NavigationControl } from "react-map-gl/mapbox"
-import "mapbox-gl/dist/mapbox-gl.css"
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 

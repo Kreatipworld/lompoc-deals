@@ -9,7 +9,6 @@ import {
 } from "react"
 import MapGL, { Marker, Popup, Source, NavigationControl } from "react-map-gl/mapbox"
 import type { MapRef, MapMouseEvent } from "react-map-gl/mapbox"
-import "mapbox-gl/dist/mapbox-gl.css"
 import { Compass, LocateFixed, Sun, Moon, Share2, LayoutList, Map as MapIcon } from "lucide-react"
 
 import { POIS, type POI } from "@/lib/map-pois"

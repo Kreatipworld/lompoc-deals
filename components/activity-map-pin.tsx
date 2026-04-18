@@ -2,7 +2,6 @@
 
 import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
 import { useState } from "react"
-import "mapbox-gl/dist/mapbox-gl.css"
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
