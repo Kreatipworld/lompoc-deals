@@ -273,7 +273,7 @@ export default async function MapPage({
           <span className="text-foreground/30">·</span>
           <span>{totalAcrossAll} pinned businesses</span>
           <span className="text-foreground/30">·</span>
-          <span>OpenStreetMap data</span>
+          <span>Mapbox</span>
           <span className="text-foreground/30">·</span>
           <span>Updated daily</span>
         </div>
