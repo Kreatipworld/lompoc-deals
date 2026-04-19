@@ -41,7 +41,8 @@ export const subscriptionStatus = pgEnum("subscription_status", [
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   email: varchar("email", { length: 255 }).notNull().unique(),
-  passwordHash: text("password_hash").notNull(),
+  passwordHash: text("password_hash"),
+  googleId: varchar("google_id", { length: 255 }).unique(),
   role: userRole("role").notNull().default("local"),
   name: varchar("name", { length: 200 }),
   emailVerified: timestamp("email_verified", { withTimezone: true }),

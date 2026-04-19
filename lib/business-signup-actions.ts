@@ -100,7 +100,9 @@ export async function businessSignupSubmitAction(
   if (existing) {
     // Check if this is a resume-after-Stripe-cancel scenario:
     // the user's account was created but payment never completed.
-    const passwordMatch = await bcrypt.compare(password, existing.passwordHash)
+    const passwordMatch = existing.passwordHash
+      ? await bcrypt.compare(password, existing.passwordHash)
+      : false
     if (passwordMatch && existing.role === "business") {
       const existingSub = await db.query.subscriptions.findFirst({
         where: (s, { eq: e }) => e(s.userId, existing.id),
