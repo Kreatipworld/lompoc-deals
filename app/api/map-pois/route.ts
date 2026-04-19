@@ -26,9 +26,8 @@ function toMapCategory(slug: string | null): CategoryId {
 }
 
 export async function GET() {
-  let rows: Awaited<ReturnType<typeof db.select>>
   try {
-    rows = await db
+    const rows = await db
       .select({
         id: businesses.id,
         name: businesses.name,
@@ -42,24 +41,24 @@ export async function GET() {
       .leftJoin(categories, eq(businesses.categoryId, categories.id))
       .where(and(eq(businesses.status, "approved"), isNotNull(businesses.lat), isNotNull(businesses.lng)))
       .orderBy(businesses.name)
+
+    const pois = rows.map((row) => ({
+      id: String(row.id),
+      name: row.name,
+      slug: row.slug,
+      lat: row.lat as number,
+      lng: row.lng as number,
+      category: toMapCategory(row.categorySlug ?? null),
+      highlight: row.description?.slice(0, 120) ?? row.name,
+    }))
+
+    return NextResponse.json(pois, {
+      headers: {
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+      },
+    })
   } catch (err) {
     console.error("[map-pois] DB query failed:", err)
     return NextResponse.json([], { status: 200 })
   }
-
-  const pois = rows.map((row) => ({
-    id: String(row.id),
-    name: row.name,
-    slug: row.slug,
-    lat: row.lat as number,
-    lng: row.lng as number,
-    category: toMapCategory(row.categorySlug ?? null),
-    highlight: row.description?.slice(0, 120) ?? row.name,
-  }))
-
-  return NextResponse.json(pois, {
-    headers: {
-      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
-    },
-  })
 }
