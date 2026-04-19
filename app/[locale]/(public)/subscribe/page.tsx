@@ -1,4 +1,5 @@
 import { Mail, Sparkles, Clock, ShieldCheck, Star, Users } from "lucide-react"
+import { CategoryPatternBg } from "@/components/category-pattern-bg"
 import { SubscribeForm } from "./subscribe-form"
 
 export const metadata = {
@@ -80,6 +81,8 @@ export default function SubscribePage() {
     <div className="min-h-screen">
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-accent via-background to-background px-4 py-16 sm:py-24">
+        {/* Tiled deal-category icon pattern — sits above gradient, behind content */}
+        <CategoryPatternBg />
         {/* Decorative blobs */}
         <div
           aria-hidden
@@ -251,8 +254,10 @@ export default function SubscribePage() {
       </section>
 
       {/* ── Bottom CTA ── */}
-      <section className="bg-primary px-4 py-14 text-primary-foreground">
-        <div className="mx-auto max-w-xl text-center">
+      <section className="relative overflow-hidden bg-primary px-4 py-14 text-primary-foreground">
+        {/* Icon pattern in white on dark CTA background */}
+        <CategoryPatternBg className="text-primary-foreground/10" />
+        <div className="relative mx-auto max-w-xl text-center">
           <Mail className="mx-auto mb-4 h-10 w-10 opacity-80" />
           <h2 className="text-2xl font-extrabold sm:text-3xl">
             Ready to start saving?
