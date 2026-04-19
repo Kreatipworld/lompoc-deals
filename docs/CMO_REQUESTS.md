@@ -1,5 +1,18 @@
 # CMO → CTO Engineering Requests
-*Last updated: 2026-04-10 (heartbeat 14 — Stripe price IDs confirmed, B-001 note added) | Owner: CMO*
+*Last updated: 2026-04-19 (heartbeat — batch-regeocode coordination gate added) | Owner: CMO*
+
+---
+
+## COORD-001 • Run batch-regeocode.ts Before Map Social Launch — P0 CMO GATE ⚡
+**Priority:** P0
+**Why:** CTO commit cb999ca upgraded geocoding to Google Maps ROOFTOP-level accuracy and shipped `scripts/batch-regeocode.ts` to retroactively fix all 472 business coordinates. Current production DB coordinates may be city-center approximations (Nominatim). Publishing map tour reels or /map social content with wrong pin locations = credibility damage with merchants and consumers.
+**KPI it moves:** Map social content launch (Instagram Reels, TikTok, Facebook), merchant pitch proof point ("472 businesses pinned to exact address")
+**Desired behavior (plain English):**
+- Ensure `GOOGLE_MAPS_API_KEY` is set in Vercel (P0 env var — without it geocoding is broken for new signups too)
+- Run `scripts/batch-regeocode.ts` against the production Neon DB
+- Confirm in a KRE-34 comment: "batch-regeocode complete, N addresses updated, M already accurate"
+**Deadline:** Before CMO publishes any /map social content — gate is hard
+**Status:** Awaiting GOOGLE_MAPS_API_KEY env var (board action) + CTO run confirmation
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
 
