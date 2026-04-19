@@ -17,7 +17,8 @@
     "seed:admin": "node --env-file=.env.local node_modules/.bin/tsx scripts/seed-admin.ts",
     "reset:admin-password": "node --env-file=.env.local node_modules/.bin/tsx scripts/reset-admin-password.ts",
     "batch-regeocode": "node --env-file=.env.local node_modules/.bin/tsx scripts/batch-regeocode.ts",
-    "db:fix-images": "node --env-file=.env.local node_modules/.bin/tsx db/fix-business-images.ts"
+    "db:fix-images": "node --env-file=.env.local node_modules/.bin/tsx db/fix-business-images.ts",
+    "db:fix-chain-logos": "node --env-file=.env.local node_modules/.bin/tsx db/fix-chain-logos.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

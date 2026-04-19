@@ -303,19 +303,38 @@ async function main() {
         photosUpdated++
       }
 
-      // 5. Logo: try Clearbit if business has a website and logo needs replacing
+      // 5. Logo: try Clearbit first, fall back to Google Places icon
       let logoBlobUrl: string | null = null
-      if (!COVERS_ONLY && biz.website && !isVercelBlob(biz.logoUrl)) {
+      if (!COVERS_ONLY && !isVercelBlob(biz.logoUrl)) {
         await sleep(200)
-        const logoResult = await fetchClearbitLogo(biz.website)
-        if (logoResult) {
-          if (!DRY_RUN) {
-            logoBlobUrl = await uploadBuffer(logoResult.buffer, "logos", logoResult.contentType)
-          } else {
-            logoBlobUrl = "https://vercel-storage.com/dry-run/logo.jpg"
+
+        // 5a. Clearbit (requires working DNS to logo.clearbit.com)
+        if (biz.website) {
+          const logoResult = await fetchClearbitLogo(biz.website)
+          if (logoResult) {
+            if (!DRY_RUN) {
+              logoBlobUrl = await uploadBuffer(logoResult.buffer, "logos", logoResult.contentType)
+            } else {
+              logoBlobUrl = "https://vercel-storage.com/dry-run/logo.jpg"
+            }
+            console.log(`  ✓ logo uploaded (Clearbit)`)
+            logoUpdated++
           }
-          console.log(`  ✓ logo uploaded (Clearbit)`)
-          logoUpdated++
+        }
+
+        // 5b. Google Places icon as fallback when Clearbit fails
+        if (!logoBlobUrl && details.icon) {
+          await sleep(200)
+          const iconResult = await downloadUrl(details.icon)
+          if (iconResult) {
+            if (!DRY_RUN) {
+              logoBlobUrl = await uploadBuffer(iconResult.buffer, "logos", iconResult.contentType)
+            } else {
+              logoBlobUrl = "https://vercel-storage.com/dry-run/logo-icon.png"
+            }
+            console.log(`  ✓ logo uploaded (Google Places icon)`)
+            logoUpdated++
+          }
         }
       }
 
