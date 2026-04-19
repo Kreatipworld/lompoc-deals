@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { HOTELS, getHotelBySlug } from "@/lib/hotels-data"
+import { HotelsMap } from "@/components/hotels-map"
 import {
   ArrowLeft,
   BedDouble,
@@ -14,6 +15,7 @@ import {
   Coffee,
   CheckCircle2,
   ExternalLink,
+  Navigation,
 } from "lucide-react"
 
 export function generateStaticParams() {
@@ -168,7 +170,15 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
               <div className="space-y-3 text-sm">
                 <div className="flex items-start gap-2 text-muted-foreground">
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary/70" />
-                  <span>{hotel.address}</span>
+                  <div>
+                    <div>{hotel.address}</div>
+                    {hotel.avenue && (
+                      <div className="text-xs italic text-muted-foreground/70 mt-0.5">{hotel.avenue}</div>
+                    )}
+                    {hotel.neighborhood && (
+                      <div className="text-xs text-muted-foreground/60 mt-0.5">{hotel.neighborhood}</div>
+                    )}
+                  </div>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Phone className="h-4 w-4 shrink-0 text-primary/70" />
@@ -202,6 +212,17 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
                   Book a room
                 </a>
               )}
+            </div>
+
+            {/* Mini map */}
+            <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
+              <div style={{ height: 200 }}>
+                <HotelsMap hotels={[hotel]} />
+              </div>
+              <div className="px-4 py-3 text-xs text-muted-foreground flex items-center gap-1.5">
+                <Navigation className="h-3 w-3 shrink-0 text-primary/60" />
+                <span>{hotel.address}</span>
+              </div>
             </div>
 
             {/* Other hotels */}
