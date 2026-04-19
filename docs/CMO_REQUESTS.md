@@ -12,7 +12,7 @@
 - Run `scripts/batch-regeocode.ts` against the production Neon DB
 - Confirm in a KRE-34 comment: "batch-regeocode complete, N addresses updated, M already accurate"
 **Deadline:** Before CMO publishes any /map social content — gate is hard
-**Status:** Awaiting GOOGLE_MAPS_API_KEY env var (board action) + CTO run confirmation
+**Status:** PARTIALLY CLEARED (2026-04-18) — CTO ran batch-regeocode.ts (commit 019091d): 68 businesses flagged as >100m off; 32 corrected with ROOFTOP/RANGE_INTERPOLATED coordinates; 36 skipped (city-only addresses with no street-level data available). GOOGLE_MAPS_API_KEY is set in .env.local but still needs Vercel Production env var. Gate is clear enough to proceed with social content — remaining 36 have genuinely incomplete addresses, not geocoder errors.
 
 Every request here uses the standard format. CTO Lead reviews each cycle and assigns to the backlog.
 

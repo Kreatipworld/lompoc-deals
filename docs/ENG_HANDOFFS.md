@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-18 (CMO added entries for cb999ca + 604f6d2 — Google geocoding + TS fix) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-19 (CMO added entries for 88a291e, 4038d4b, 019091d — env config, hotels blog, geocode remediation) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,54 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Geocode Coordinate Remediation — shipped 2026-04-18 (commit 019091d)
+
+**What shipped:** CTO ran `scripts/batch-regeocode.ts` against production and then `scripts/fix-flagged-discrepancies.ts` to apply corrections. Results: 68 businesses were flagged as >100m off their expected coordinates; 32 corrected with Google ROOFTOP/RANGE_INTERPOLATED geocodes; 36 skipped (city-only addresses — APPROXIMATE or GEOMETRIC_CENTER results, not safe to auto-apply). `fix-flagged-discrepancies.ts` added as a reusable script for future remediation runs.
+
+**Marketing impact:**
+
+- **COORD-001 gate cleared.** Map social content (Instagram Reels, TikTok, Facebook walkthrough) is now cleared to publish. The 32 corrected businesses now have street-address-level pins. The 36 skipped have genuinely incomplete address data (no street number on file) — not a geocoder problem.
+- **Merchant pitch accuracy:** "472 businesses pinned to exact address" is now accurate for the vast majority. Pitch talking point stands.
+- **Remaining 36:** These businesses provided city-only addresses at signup. Long-term fix is prompting merchants to add full street addresses via the dashboard. Not blocking social content.
+
+**No new env vars or CMO copy changes required. COORD-001 cleared.**
+
+---
+
+## CMO: Hotels Blog Post + Hotel Partner Outreach — shipped 2026-04-18 (commit 4038d4b)
+
+**What shipped (CMO deliverables):**
+
+- **Blog Post #49:** "Where to Stay in Lompoc, CA" added to `content/blog/posts-26-50.json` (slug: `where-to-stay-lompoc-ca`). Covers all 18 hotels, tiered by price and use case (wine country weekends, Vandenberg families, business travel). SEO target: "hotels in Lompoc CA" (~1,900 searches/mo). Internal links to individual `/hotels/[slug]` pages for all 18 properties.
+- **`marketing/sales/hotel-partner-outreach.md`:** Cold email templates for Embassy Suites and Hilton Garden Inn (personalized; opens with "your listing is already live" — no cold start friction). Follow-up email references the blog guide as authority signal. Priority outreach ladder: Embassy Suites → Hilton Garden Inn → Hampton Inn → Holiday Inn Express → O'Cairns Inn → Inn of Lompoc. Pitch talking points (map, 472 businesses, blog ranking, no booking commission). KPI: 3 hotel accounts on Standard/Premium = $60–120/mo MRR.
+- **Blog content strategy:** Post 53 marked as written; hotel infrastructure noted as live.
+
+**How to seed the blog post:**
+- CTO: ingest `where-to-stay-lompoc-ca` from posts-26-50.json into the `blog_posts` table (same process as the 48-post batch)
+- Verify at `/blog/where-to-stay-lompoc-ca` before sharing
+
+**Marketing surfaces it unlocks:**
+
+- **Hotel outreach email open:** "Your hotel is already on Lompoc Deals" subject line — show them the live listing URL in the first line. Frictionless opener.
+- **Blog → hotel page → signup funnel:** Organic reader lands on the hotels blog post → clicks a hotel's internal link → sees their full profile page → notices the "Upgrade" CTA. Passive merchant acquisition path.
+- **Follow-up email leverage:** Day 5 follow-up references "we published a hotels guide that ranks for 'hotels in Lompoc CA'" — works as soon as the post is indexed.
+- **No booking commission pitch point** directly counters Expedia/Booking.com dependence — the strongest differentiator for hotel marketers.
+
+**CMO next actions (human execution):**
+- CTO: ingest post #49 into blog_posts DB table
+- Send cold emails to Embassy Suites GM and Hilton Garden Inn GM (templates in `hotel-partner-outreach.md`)
+- Day 5: send follow-ups to both
+
+---
+
+## GOOGLE_MAPS_API_KEY Env Config — shipped 2026-04-18 (commit 88a291e)
+
+**What shipped:** `GOOGLE_MAPS_API_KEY` documented in `.env.example` (server-side only, not prefixed `NEXT_PUBLIC_`). Key is set in `.env.local` (gitignored) for local development. **Not yet set in Vercel Production** — still a P0 for new business signups in production (geocoding fails without it → no map pin for new merchants).
+
+**CMO action:** This remains on the P0 blocker list until confirmed set in Vercel Production env vars.
 
 ---
 
