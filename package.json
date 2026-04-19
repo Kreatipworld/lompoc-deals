@@ -15,7 +15,8 @@
     "db:sync-zillow": "node --env-file=.env.local node_modules/.bin/tsx db/sync-zillow.ts",
     "db:scrape-google-places": "node --env-file=.env.local node_modules/.bin/tsx db/scrape-google-places.ts",
     "seed:admin": "node --env-file=.env.local node_modules/.bin/tsx scripts/seed-admin.ts",
-    "reset:admin-password": "node --env-file=.env.local node_modules/.bin/tsx scripts/reset-admin-password.ts"
+    "reset:admin-password": "node --env-file=.env.local node_modules/.bin/tsx scripts/reset-admin-password.ts",
+    "batch-regeocode": "node --env-file=.env.local node_modules/.bin/tsx scripts/batch-regeocode.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
