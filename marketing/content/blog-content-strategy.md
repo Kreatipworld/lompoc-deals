@@ -56,8 +56,13 @@ Each post should mention specific Lompoc Deals businesses and link to `/biz/[slu
 **Post 52: "Best Yoga & Fitness Studios in Lompoc, CA"**
 - Link to Fitness businesses
 
-**Post 53: "Where to Stay in Lompoc, CA — Hotels & Lodging Guide"**
-- Link to `/hotels` and all 4 hotel detail pages (ties into KRE-262)
+**Post 53: "Where to Stay in Lompoc, CA — Hotels & Lodging Guide"** ✅ WRITTEN (2026-04-19)
+- Slug: `where-to-stay-lompoc-ca` — added to `content/blog/posts-26-50.json`
+- Hotel infrastructure LIVE: 18 hotels, individual `/hotels/[slug]` pages with Mapbox maps (commit 795106b)
+- Links to `/hotels` listing + individual hotel slugs
+- Target keyword: "hotels in Lompoc CA" (~1,900 searches/mo)
+- Seed to DB: run `db/seed-blog-posts.mjs` (or CTO can seed post #49 individually)
+- Hotel partner outreach: `marketing/sales/hotel-partner-outreach.md` — Embassy Suites + Hilton Garden Inn priority targets
 
 ### Priority: Merchant Acquisition (SEO → signup funnel)
 
