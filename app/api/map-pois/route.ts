@@ -26,20 +26,26 @@ function toMapCategory(slug: string | null): CategoryId {
 }
 
 export async function GET() {
-  const rows = await db
-    .select({
-      id: businesses.id,
-      name: businesses.name,
-      slug: businesses.slug,
-      lat: businesses.lat,
-      lng: businesses.lng,
-      description: businesses.description,
-      categorySlug: categories.slug,
-    })
-    .from(businesses)
-    .leftJoin(categories, eq(businesses.categoryId, categories.id))
-    .where(and(eq(businesses.status, "approved"), isNotNull(businesses.lat), isNotNull(businesses.lng)))
-    .orderBy(businesses.name)
+  let rows: Awaited<ReturnType<typeof db.select>>
+  try {
+    rows = await db
+      .select({
+        id: businesses.id,
+        name: businesses.name,
+        slug: businesses.slug,
+        lat: businesses.lat,
+        lng: businesses.lng,
+        description: businesses.description,
+        categorySlug: categories.slug,
+      })
+      .from(businesses)
+      .leftJoin(categories, eq(businesses.categoryId, categories.id))
+      .where(and(eq(businesses.status, "approved"), isNotNull(businesses.lat), isNotNull(businesses.lng)))
+      .orderBy(businesses.name)
+  } catch (err) {
+    console.error("[map-pois] DB query failed:", err)
+    return NextResponse.json([], { status: 200 })
+  }
 
   const pois = rows.map((row) => ({
     id: String(row.id),
