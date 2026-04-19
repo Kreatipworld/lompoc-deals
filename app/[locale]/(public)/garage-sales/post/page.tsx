@@ -1,12 +1,19 @@
 import { ShoppingBag } from "lucide-react"
 import { PostGarageSaleForm } from "./post-form"
+import { auth } from "@/auth"
+import { redirect } from "next/navigation"
 
 export const metadata = {
   title: "Post a Garage Sale — Lompoc Deals",
   description: "List your garage sale or yard sale in Lompoc for free. Locals will find you on the map.",
 }
 
-export default function PostGarageSalePage() {
+export default async function PostGarageSalePage() {
+  const session = await auth()
+  if (!session?.user) {
+    redirect("/login?from=/garage-sales/post")
+  }
+
   return (
     <div className="mx-auto max-w-xl px-4 py-12">
       <div className="mb-8 flex flex-col items-center gap-2 text-center">

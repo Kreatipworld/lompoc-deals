@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { CheckCircle2, LogIn } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 import { Link } from "@/i18n/navigation"
-import { useSession } from "next-auth/react"
 
 const ITEM_CATEGORIES = [
   { value: "furniture", label: "Furniture" },
@@ -23,7 +22,6 @@ const ITEM_CATEGORIES = [
 ] as const
 
 export function PostGarageSaleForm() {
-  const { data: session, status } = useSession()
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [errorMsg, setErrorMsg] = useState("")
   const [selectedCats, setSelectedCats] = useState<string[]>([])
@@ -70,38 +68,6 @@ export function PostGarageSaleForm() {
       setFormStatus("error")
       setErrorMsg(err instanceof Error ? err.message : "Something went wrong")
     }
-  }
-
-  if (status === "loading") {
-    return <div className="py-8 text-center text-sm text-muted-foreground">Loading…</div>
-  }
-
-  if (!session) {
-    return (
-      <div className="flex flex-col items-center gap-4 py-8 text-center">
-        <LogIn className="h-8 w-8 text-orange-500" />
-        <div>
-          <p className="font-semibold">Sign in to post a garage sale</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Free accounts — no credit card needed.
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <Link
-            href="/login"
-            className="rounded-full border px-4 py-2 text-sm font-medium transition hover:bg-accent"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
-          >
-            Create account
-          </Link>
-        </div>
-      </div>
-    )
   }
 
   if (formStatus === "success") {
