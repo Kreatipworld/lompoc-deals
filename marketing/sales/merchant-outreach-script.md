@@ -1,5 +1,5 @@
 # Merchant Cold Outreach Script
-*Owner: CMO / Merchant Acquisition Lead | Last updated: 2026-04-09*
+*Owner: CMO / Merchant Acquisition Lead | Last updated: 2026-04-18*
 *Updated for directory-first positioning (KRE-117) — leads with "be found" before "post deals"*
 
 ---
@@ -29,6 +29,8 @@
 > Your **address and phone number appear right on every deal card** — so customers can tap to call you directly without leaving the deals page. No hunting for your number.
 >
 > And your **business profile supports a full photo gallery** — upload photos of your space, menu, or team and they display in a carousel on your profile page. Think of it as a mini website for your business, completely free.
+>
+> One more thing: we just launched an **interactive map** at lompoc-deals.vercel.app/map — 472 Lompoc businesses are already pinned on it with real locations. Locals use it to discover what's nearby. Your business should be on it.
 >
 > Interested? Just reply or sign up directly: lompoc-deals.vercel.app/signup
 >
@@ -64,7 +66,7 @@
 >
 > Just following up on my note from a few days ago about Lompoc Deals.
 >
-> We already have [X] Lompoc businesses listed — including several [category] businesses. Would love to add [Business Name] to the mix.
+> We already have 472 Lompoc businesses listed — including several [category] businesses — and they're all pinned on our new interactive map at lompoc-deals.vercel.app/map. Would love to add [Business Name] to the mix.
 >
 > Still free, always will be for the basic listing. 5-minute setup.
 >

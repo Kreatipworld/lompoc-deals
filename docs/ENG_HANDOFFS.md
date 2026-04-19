@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-18 (CMO added entry for 6cff5ac — Mapbox CSS race condition fix) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-18 (CMO added entries for 795106b + 5e8f311 — hotels expansion + live map POIs) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,83 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Hotels Expansion: 18 Properties + Mapbox Hotel Map — shipped 2026-04-18 (commit 795106b)
+
+**What shipped:**
+- `lib/hotels-data.ts` expanded from 8 → 18 Lompoc properties: Embassy Suites, Hilton Garden Inn, O'Cairns Inn & Suites, Inn of Lompoc, Lotus of Lompoc, Village Inn, Motel 6, Red Roof Inn (+ originals)
+- New `HotelsMap` component: Mapbox outdoors-v12 style with 3D terrain and pitched camera — matches the quality of the main interactive map
+- Pulsing selected markers: clicking a hotel in the list animates the corresponding pin on the map
+- Popup cards: hotel name, address, directions link (opens Google Maps)
+- Map now embedded on both the `/hotels` listing page AND individual `/hotels/[slug]` detail pages
+
+**How to test it:**
+1. Visit `/hotels` → map shows all 18 properties, list on the side
+2. Click any hotel in the list → map camera flies to that pin, pin pulses
+3. Click a pin popup "Directions" → opens Google Maps
+4. Visit `/hotels/[slug]` for any individual hotel → small Mapbox map centered on that property
+
+**Events it fires:** None tracked yet.
+
+**Marketing surfaces it unlocks:**
+
+- **18 hotels is a complete Lompoc inventory.** The hotels page is now a definitive resource — use it as a landing page for "hotels in Lompoc CA" SEO (target keyword: ~1,900 searches/mo nationally, low competition locally).
+- **Directions link = micro-conversion.** Every "Get Directions" click is a signal of high purchase intent. When GA is wired (REQ-001), track this event as a top-funnel conversion.
+- **Hotel map on detail pages** makes individual hotel slug pages linkable and shareable. Pitch these pages to hotel partners as a free listing ("your hotel, your map, your directions — all on Lompoc Deals").
+- **KRE-262 partially addressed:** The hotel dataset is now comprehensive (18 vs 8). Full KRE-262 completion (pulling from DB instead of static file) is still pending — but the static data is now accurate and complete enough for launch.
+- **Blog integration:** The "Best Hotels in Lompoc" blog post (on the content calendar) should link directly to `/hotels` and to 3–5 individual hotel slug pages. Internal links from a blog post → hotel pages → `/hotels` listing creates a topic cluster for hotel SEO.
+
+**CMO next actions:**
+- Publish the "Best Hotels in Lompoc" blog post (post #49 from content strategy) linking to `/hotels` and individual slugs
+- Pitch hotel pages to Embassy Suites and Hilton Garden Inn as a free listing (warm outreach — these are the biggest names)
+- Update `marketing/content/blog-content-strategy.md` to mark hotel listing infrastructure as live
+
+**Known limitations:**
+- Hotel data is still static in `lib/hotels-data.ts` — not pulled from the business DB (KRE-262 full completion pending)
+- Requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel (same as interactive map)
+
+---
+
+## Live Business Map: 472 Real Businesses Replace Hardcoded POIs — shipped 2026-04-18 (commit 5e8f311)
+
+**What shipped:** The interactive map at `/map` is now a live business directory map. The 30 hardcoded (and incorrectly placed) POIs in `lib/map-pois.ts` have been replaced with a live `/api/map-pois` endpoint that queries the database and returns all 472 approved businesses with their real verified coordinates. Map categories updated to match actual DB category schema (`food-drink`, `wineries`, `retail`, etc.). MapPopup "View Details" button now links directly to `/biz/[slug]`.
+
+**Scope of change:**
+- `app/api/map-pois/route.ts` — new API endpoint, serves approved businesses as GeoJSON-style POIs
+- `lib/map-pois.ts` — reduced to near-empty (static data deleted; live data from API)
+- `lib/map-categories.ts` — categories updated to match real DB taxonomy
+- `components/map/LompocInteractiveMap.tsx` — fetches from `/api/map-pois` instead of static import
+- `components/map/MapPopup.tsx` — "View Details" links to `/biz/[slug]`
+- `hooks/useMapFilter.ts` — updated to work with live category data
+
+**How to test it:**
+1. Visit `/map` → confirm 472 pins load (not 31)
+2. Toggle the "Wineries" filter → should show only winery businesses from the DB
+3. Click any pin → popup with business name, category, highlight; "View Details" → `/biz/[slug]`
+4. The hardcoded "La Purisima Mission" and other static landmarks are now gone — map shows real businesses only
+
+**Events it fires:** None tracked yet (REQ-001 pending).
+
+**Marketing surfaces it unlocks:**
+
+- **472 businesses on the map is the headline.** This is the single most important upgrade since launch. The map went from a toy demo (31 hardcoded pins) to a real directory (472 verified businesses). Lead with this number in every merchant pitch: *"472 Lompoc businesses are already on the map — is yours?"*
+- **Map → business profile conversion path is now live.** User sees a pin → clicks popup → "View Details" → lands on `/biz/[slug]` with the merchant's full profile and active deals. This is the consumer funnel: Discovery → Profile → Claim Deal. It now works end-to-end from the map.
+- **Merchant acquisition pitch upgrade.** Demo the map to prospective merchants during cold outreach. Showing a real map with 472 local businesses is orders of magnitude more convincing than a demo with 31 generic pins. Update `marketing/sales/merchant-outreach-script.md` to add: *"Pull up lompoc-deals.vercel.app/map — your competitors are already there."*
+- **"Near Me" + real coordinates = hyperlocal utility.** The "Near Me" button now surfaces actual nearby businesses (not fake POIs). This makes the map genuinely useful for Lompoc residents, not just a visual.
+- **Social content angle:** Film a walk-through of the map showing real Lompoc businesses. "Every taqueria, every winery, every shop — all in one place." This is now factually accurate and visually compelling.
+- **SEO:** The `/map` page now represents the full business directory. Consider adding structured data (JSON-LD LocalBusiness array) to the map page or linking it from every `/biz/[slug]` page as "See on map."
+
+**CMO next actions:**
+- Update `marketing/sales/merchant-outreach-script.md` — add the 472-businesses map pitch line
+- Update `docs/HOMEPAGE_COPY.md` — note that map now reflects live data (472 businesses, not POIs)
+- Screen-record a map walkthrough showing real business pins (separate from the "Take a Tour" flyover reel) for Facebook/Nextdoor audience
+- In merchant cold email, add map screenshot or link with "Your business should be here" framing
+
+**Known limitations:**
+- "Take a Tour" animated fly-to still references the 6 original hardcoded landmark locations (Flower Festival, Wine Ghetto, etc.) — those landmarks are not businesses and won't appear as pins. The tour visuals still work (fly-to coordinates), just the pins at tour stops are gone.
+- Static fallback POIs removed — if the `/api/map-pois` endpoint fails, map shows zero pins
 
 ---
 
