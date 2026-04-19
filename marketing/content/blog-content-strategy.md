@@ -66,13 +66,18 @@ Each post should mention specific Lompoc Deals businesses and link to `/biz/[slu
 
 ### Priority: Merchant Acquisition (SEO → signup funnel)
 
-**Post 54: "How to List Your Lompoc Business Online for Free"**
-- Slug: `/blog/list-lompoc-business-free`
+**Post 54: "How to List Your Lompoc Business Online for Free"** ✅ WRITTEN (2026-04-19)
+- Slug: `list-lompoc-business-free` — added to `content/blog/posts-26-50.json`
+- Covers GBP, Lompoc Deals, Yelp, Bing Places, Facebook — 5-platform guide
 - CTA: lompoc-deals.vercel.app/signup
-- Targets business owners searching for local directory options
+- Target keyword: "list Lompoc business online free", "free business listing Lompoc CA"
+- Seed to DB: run `db/seed-blog-posts.mjs` (post #50)
 
-**Post 55: "Why Lompoc Businesses Are Choosing Local Deals Platforms Over Yelp"**
-- Merchant acquisition + positioning vs. Yelp
+**Post 55: "Yelp vs. Lompoc Deals: Which Is Better for Lompoc Businesses?"** ✅ WRITTEN (2026-04-19)
+- Slug: `lompoc-deals-vs-yelp` — added to `content/blog/posts-26-50.json`
+- Honest comparison: national scale vs. hyperlocal reach, deal alerts, bilingual gap, pricing ($300+/mo Yelp ads vs $19.99 Standard)
+- Target keyword: "alternatives to Yelp for small business", "best way to advertise Lompoc business"
+- Seed to DB: run `db/seed-blog-posts.mjs` (post #51)
 
 ---
 
