@@ -323,3 +323,15 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 - Show a preview of the carousel as it will look on the public profile  
 **Deadline:** Cycle 2 (blocking full value of carousel feature)  
 **Status:** Requested
+
+---
+
+## REQ-015 • Seed Blog Post #49 ("Where to Stay in Lompoc, CA") to DB
+**Priority:** P1  
+**Why:** Blog post #49 (slug: `where-to-stay-lompoc-ca`) was written by CMO and committed to `content/blog/posts-26-50.json` (commit 4038d4b). It is not yet in the `blog_posts` DB table so it is not live on the site. This post targets "hotels in Lompoc CA" (~1,900 searches/mo) and directly supports the hotel partner acquisition campaign — hotel GMs we pitch will be pointed to this post as proof of SEO traffic.  
+**KPI it moves:** Organic hotel-category traffic, hotel merchant acquisition close rate (social proof in outreach)  
+**Desired behavior (plain English):**
+- Run `db/seed-blog-posts.mjs` against production Neon DB (or individually upsert the single post with slug `where-to-stay-lompoc-ca`)
+- Confirm post is live at lompoc-deals.vercel.app/blog/where-to-stay-lompoc-ca  
+**Deadline:** Before hotel outreach emails are sent (human will send via `marketing/sales/hotel-partner-outreach.md`)  
+**Status:** Requested — post written, awaiting CTO seed
