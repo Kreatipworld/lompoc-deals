@@ -11,7 +11,7 @@ import MapGL, { Marker, Popup, Source, NavigationControl } from "react-map-gl/ma
 import type { MapRef, MapMouseEvent } from "react-map-gl/mapbox"
 import { Compass, LocateFixed, Sun, Moon, Share2, LayoutList, Map as MapIcon } from "lucide-react"
 
-import { POIS, type POI } from "@/lib/map-pois"
+import type { POI } from "@/lib/map-pois"
 import { CATEGORY_MAP } from "@/lib/map-categories"
 import { distanceMiles, LOMPOC_CENTER } from "@/lib/map-utils"
 import { useMapFilter } from "@/hooks/useMapFilter"
@@ -36,8 +36,17 @@ export function LompocInteractiveMap() {
   const [showListView, setShowListView] = useState(false)
   const [markersVisible, setMarkersVisible] = useState(false)
   const [popupPos, setPopupPos] = useState<{ lng: number; lat: number } | null>(null)
+  const [pois, setPois] = useState<POI[]>([])
 
-  const { activeCategories, toggleCategory, selectAllCategories, searchQuery, setSearchQuery, filteredPois, searchResults } = useMapFilter()
+  // Fetch real business POIs from the database
+  useEffect(() => {
+    fetch("/api/map-pois")
+      .then((r) => r.json())
+      .then((data) => setPois(data))
+      .catch(() => {})
+  }, [])
+
+  const { activeCategories, toggleCategory, selectAllCategories, searchQuery, setSearchQuery, filteredPois, searchResults } = useMapFilter(pois)
   const { location: userLocation, loading: geoLoading, requestLocation } = useGeolocation()
 
   // Staggered marker entrance on load
@@ -50,11 +59,11 @@ export function LompocInteractiveMap() {
   const distanceMap = useMemo(() => {
     const base = userLocation ?? LOMPOC_CENTER
     const map = new globalThis.Map<string, number>()
-    POIS.forEach((p) => {
+    pois.forEach((p) => {
       map.set(p.id, distanceMiles(base.lat, base.lng, p.lat, p.lng))
     })
     return map
-  }, [userLocation])
+  }, [pois, userLocation])
 
   // Sort sidebar pois by distance if user location available
   const sidebarPois = useMemo(() => {
@@ -261,7 +270,7 @@ export function LompocInteractiveMap() {
 
           {/* Markers */}
           {markersVisible &&
-            POIS.map((poi, index) => {
+            pois.map((poi, index) => {
               const cat = CATEGORY_MAP[poi.category]
               const isFiltered = !filteredPois.some((p) => p.id === poi.id)
               return (

@@ -3,9 +3,9 @@
 import { useState, useMemo } from "react"
 import type { CategoryId } from "@/lib/map-categories"
 import { CATEGORIES } from "@/lib/map-categories"
-import { POIS, type POI } from "@/lib/map-pois"
+import type { POI } from "@/lib/map-pois"
 
-export function useMapFilter() {
+export function useMapFilter(pois: POI[]) {
   const [activeCategories, setActiveCategories] = useState<Set<CategoryId>>(
     new Set(CATEGORIES.map((c) => c.id))
   )
@@ -30,7 +30,7 @@ export function useMapFilter() {
   }
 
   const filteredPois = useMemo(() => {
-    let result = POIS.filter((p) => activeCategories.has(p.category))
+    let result = pois.filter((p) => activeCategories.has(p.category))
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase()
       result = result.filter(
@@ -41,17 +41,19 @@ export function useMapFilter() {
       )
     }
     return result
-  }, [activeCategories, searchQuery])
+  }, [pois, activeCategories, searchQuery])
 
   const searchResults = useMemo((): POI[] => {
     if (!searchQuery.trim()) return []
     const q = searchQuery.toLowerCase()
-    return POIS.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.highlight.toLowerCase().includes(q)
-    ).slice(0, 8)
-  }, [searchQuery])
+    return pois
+      .filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.highlight.toLowerCase().includes(q)
+      )
+      .slice(0, 8)
+  }, [pois, searchQuery])
 
   return {
     activeCategories,

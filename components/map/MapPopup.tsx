@@ -89,17 +89,14 @@ export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProp
             <Navigation className="h-3.5 w-3.5" />
             Directions
           </a>
-          <button
+          <a
+            href={`/biz/${poi.slug}`}
             className="flex flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-white transition-opacity hover:opacity-90"
             style={{ backgroundColor: category.color }}
-            onClick={() => {
-              // Scroll to sidebar item if it exists
-              document.getElementById(`poi-${poi.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" })
-            }}
           >
             <ExternalLink className="h-3.5 w-3.5" />
-            View Details
-          </button>
+            View Listing
+          </a>
         </div>
       </div>
     </div>

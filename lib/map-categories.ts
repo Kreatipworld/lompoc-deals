@@ -1,22 +1,28 @@
 import {
-  Bed,
   Wine,
-  Landmark,
-  Mountain,
+  UtensilsCrossed,
   ShoppingBag,
-  Flower2,
+  Heart,
   PartyPopper,
+  Wrench,
+  Car,
+  MapPin,
+  Leaf,
+  Home,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 export type CategoryId =
-  | "hotels"
-  | "wine"
-  | "history"
-  | "outdoor"
-  | "shopping"
-  | "flowers"
-  | "events"
+  | "wineries"
+  | "food-drink"
+  | "retail"
+  | "health-beauty"
+  | "entertainment"
+  | "services"
+  | "auto"
+  | "other"
+  | "dispensaries"
+  | "real-estate"
 
 export interface Category {
   id: CategoryId
@@ -28,53 +34,74 @@ export interface Category {
 
 export const CATEGORIES: Category[] = [
   {
-    id: "hotels",
-    name: "Hotels & Stays",
-    color: "#581C87",
-    icon: Bed,
-    emoji: "🏨",
-  },
-  {
-    id: "wine",
-    name: "Wine & Dining",
+    id: "wineries",
+    name: "Wine & Wineries",
     color: "#DC2626",
     icon: Wine,
     emoji: "🍷",
   },
   {
-    id: "history",
-    name: "History & Culture",
-    color: "#D97706",
-    icon: Landmark,
-    emoji: "🏛️",
+    id: "food-drink",
+    name: "Food & Drink",
+    color: "#EA580C",
+    icon: UtensilsCrossed,
+    emoji: "🍽️",
   },
   {
-    id: "outdoor",
-    name: "Outdoor & Beach",
-    color: "#059669",
-    icon: Mountain,
-    emoji: "🌊",
-  },
-  {
-    id: "shopping",
-    name: "Shopping & Local",
+    id: "retail",
+    name: "Shopping & Retail",
     color: "#3B82F6",
     icon: ShoppingBag,
     emoji: "🛍️",
   },
   {
-    id: "flowers",
-    name: "Flowers & Nature",
+    id: "health-beauty",
+    name: "Health & Beauty",
     color: "#EC4899",
-    icon: Flower2,
-    emoji: "🌸",
+    icon: Heart,
+    emoji: "💆",
   },
   {
-    id: "events",
-    name: "Events & Fun",
+    id: "entertainment",
+    name: "Entertainment",
     color: "#8B5CF6",
     icon: PartyPopper,
     emoji: "🎉",
+  },
+  {
+    id: "services",
+    name: "Services",
+    color: "#64748B",
+    icon: Wrench,
+    emoji: "🔧",
+  },
+  {
+    id: "auto",
+    name: "Auto",
+    color: "#1E40AF",
+    icon: Car,
+    emoji: "🚗",
+  },
+  {
+    id: "dispensaries",
+    name: "Dispensaries",
+    color: "#16A34A",
+    icon: Leaf,
+    emoji: "🌿",
+  },
+  {
+    id: "real-estate",
+    name: "Real Estate",
+    color: "#D97706",
+    icon: Home,
+    emoji: "🏠",
+  },
+  {
+    id: "other",
+    name: "Other",
+    color: "#6B7280",
+    icon: MapPin,
+    emoji: "📍",
   },
 ]
 
