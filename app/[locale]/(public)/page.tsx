@@ -3,9 +3,10 @@ import {
   ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown,
   Building2, ExternalLink, Compass
 } from "lucide-react"
-import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities } from "@/lib/queries"
+import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getFeaturedDeals } from "@/lib/queries"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
+import { DealsCarousel } from "@/components/deals-carousel"
 
 export const metadata = {
   title: "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
@@ -46,11 +47,12 @@ function getCategoryImage(slug: string): string | null {
 }
 
 export default async function HomePage() {
-  const [categories, featuredBusinesses, stats, featuredActivities] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6),
+    getFeaturedDeals(6),
   ])
 
   return (
@@ -103,6 +105,11 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─────────────────────────────────────────────────
+          FEATURED DEALS CAROUSEL
+         ───────────────────────────────────────────────── */}
+      <DealsCarousel deals={featuredDeals} />
 
       {/* ─────────────────────────────────────────────────
           EXPLORE BY CATEGORY — Image card grid

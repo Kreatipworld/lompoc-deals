@@ -105,6 +105,18 @@ export async function getActiveDeals(limit = 50): Promise<DealCardData[]> {
   return rows.map(rowToCard)
 }
 
+export async function getFeaturedDeals(limit = 6): Promise<DealCardData[]> {
+  const rows = await db
+    .select(baseDealSelect)
+    .from(deals)
+    .innerJoin(businesses, eq(deals.businessId, businesses.id))
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .where(activeAndApproved)
+    .orderBy(desc(deals.createdAt))
+    .limit(limit)
+  return rows.map(rowToCard)
+}
+
 export async function getDealsByCategorySlug(
   slug: string,
   limit = 50
