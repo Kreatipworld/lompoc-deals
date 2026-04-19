@@ -335,3 +335,13 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 - Confirm post is live at lompoc-deals.vercel.app/blog/where-to-stay-lompoc-ca  
 **Deadline:** Before hotel outreach emails are sent (human will send via `marketing/sales/hotel-partner-outreach.md`)  
 **Status:** Requested — post written, awaiting CTO seed
+
+---
+
+## B-002 • Apply Migration 0015 to Production Neon DB — GARAGE SALES BLOCKED ⚡
+**Priority:** P0
+**Why:** CTO shipped the community garage sales feature (commits 338d0ac + 02eee95) with a new `garage_sales` table. Migration `db/migrations/0015_garage_sales.sql` must be applied to production before the `/garage-sales` browse page, `/garage-sales/[id]` detail page, and `/garage-sales/post` form will function. Without it, all three routes will error. This is the same pattern as migration 0014 (photo carousel).
+**KPI it moves:** Community UGC posts, return-visit rate, Nextdoor-driven consumer signups
+**Desired behavior:** Apply `db/migrations/0015_garage_sales.sql` to production Neon DB. Confirm garage sale post form works at lompoc-deals.vercel.app/garage-sales/post.
+**Deadline:** Immediately — feature is live in code but dark in production
+**Status:** Requested

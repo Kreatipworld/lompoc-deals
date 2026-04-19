@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-19 (CMO added entry for 51f8f61 — featured deals carousel on homepage) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-19 (CMO added entries for 338d0ac + 02eee95 — community garage sales) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,59 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Community Garage Sales — shipped 2026-04-19 (commits 338d0ac + dd771a2 + 02eee95)
+
+**What shipped:** Full community garage sale discovery and posting feature.
+
+- **`/garage-sales`** — browse page: Mapbox map with orange pins + scrollable card list. Each card: address, date/time, item categories, preview.
+- **`/garage-sales/[id]`** — detail page: full description, item categories, date/time, address, Mapbox pin, "Get Directions" link.
+- **`/garage-sales/post`** — post form: auth-gated (logged-in users only), free, listings go live immediately. Fields: address (geocoded to lat/lng), date range, time, description, item categories.
+- **APIs:** `GET/POST /api/garage-sales` and `GET /api/garage-sales/[id]`
+- **Navigation:** linked in header and mobile menu
+- **Bilingual:** full EN/ES strings for all UI
+- **DB:** new `garage_sales` table — migration `0015_garage_sales.sql`
+
+**Bug fixes included (dd771a2 + 02eee95):** Post form used `useSession()` (next-auth/react) without a `SessionProvider`, always showing the "sign in" prompt to logged-in users (making posting impossible). Fixed by removing the redundant client-side auth check (server-side redirect in `page.tsx` already handles auth). Also fixed login redirect: `?callbackUrl` → `?from` so users return to `/garage-sales/post` after signing in.
+
+**Required production action (P0):**
+```
+Migration 0015 must be applied to production Neon DB:
+db/migrations/0015_garage_sales.sql
+```
+Without it, the post form will fail and the browse/detail pages will error.
+
+**How to test it:**
+1. Sign in as a consumer → visit `/garage-sales/post` → should show the form (not a sign-in prompt)
+2. Post a test garage sale → verify it appears on `/garage-sales` map and card list
+3. Click the card → `/garage-sales/[id]` with map pin and directions link
+4. Sign out → visit `/garage-sales/post` → should redirect to login with `?from=/garage-sales/post`
+5. ES locale: toggle language → confirm all strings translated
+
+**Events it fires:** None tracked yet (REQ-001 pending).
+
+**Marketing surfaces it unlocks:**
+
+- **Nextdoor is the #1 channel for this feature.** Garage sale discovery is Nextdoor's core use case. Our version adds a map, bilingual support, and zero friction (free, instant, auth-gated but not paywalled). Post on Nextdoor immediately: *"Lompoc now has a free garage sale map — post yours at lompoc-deals.vercel.app/garage-sales"*. This is the highest-urgency Nextdoor post since launch.
+- **Facebook Marketplace crossover.** Many Lompoc residents post garage sales on Facebook Marketplace. Pitch `/garage-sales/post` as a complement: *"Also on Lompoc Deals — locals can find you on the map."* Post in Lompoc Facebook groups.
+- **Consumer return-visit driver.** Garage sales change weekly — users who check once will return next weekend. This is the platform's first high-frequency, calendar-driven content type. It trains the weekly check-in habit before the email digest is fully optimized.
+- **Email digest integration.** The Saturday morning digest should add a "Garage Sales This Weekend" section (1–3 nearby sales). This is an easy data source (date-filtered from the garage_sales table) and will significantly increase open rates for digest subscribers.
+- **Merchant crossover.** Any merchant who stages a liquidation sale, warehouse cleanout, or pop-up event can use this feature. Mention it in merchant onboarding: *"Hosting a garage sale or liquidation event? Post it free on our map."*
+- **Bilingual reach.** The full ES translation means this feature reaches Lompoc's Spanish-speaking community from day one — where Nextdoor and Facebook can miss them. Post the Nextdoor/Facebook announcement in both languages.
+- **UGC flywheel.** Every garage sale posted by a consumer is content we didn't have to create. The map fills itself. As listings accumulate, the browse page becomes a reason to visit the site even without a deal.
+
+**CMO next actions (human execution):**
+- Post on Nextdoor (EN + ES): "Free garage sale map for Lompoc — post yours at lompoc-deals.vercel.app/garage-sales"
+- Post in Lompoc Facebook groups (same copy)
+- Add "Garage Sales This Weekend" section to the weekly digest template
+- Update merchant onboarding Day 0 email to mention garage sale / liquidation posting
+
+**Known limitations:**
+- Migration 0015 must run in production before feature is usable
+- Listings go live immediately (no moderation) — watch for abuse/spam as volume grows
+- No expiry/cleanup for past listings yet — stale listings will accumulate over time
 
 ---
 
