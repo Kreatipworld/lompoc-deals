@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-18 (CMO added entries for 795106b + 5e8f311 — hotels expansion + live map POIs) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-18 (CMO added entry for f01aaee — map-pois cold start fix) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,18 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Map POIs Cold Start Fix — shipped 2026-04-18 (commit f01aaee)
+
+**What shipped:** Resilience fix for the `/api/map-pois` endpoint. Unhandled DB promise rejections on cold start caused Next.js to return an HTML 500 page instead of JSON, silently breaking the map POI fetch — the map would render with zero pins and no visible error. Fix wraps the DB query in try/catch and returns `[]` on failure, so the map renders empty (with a visible "no results" state) rather than crashing. Same pattern previously applied to the Stripe checkout endpoint.
+
+**How to test it:** Difficult to reproduce locally, but on Vercel's cold-start (first request after idle) the map should now always show either pins or an empty state — never a silent blank failure.
+
+**Marketing impact:** Eliminates a silent failure mode that would have made the map look broken to first-time visitors (who are most likely to hit a cold start). Protects the first impression for any social/Nextdoor traffic driven to `/map`.
+
+**No new env vars, migrations, or CMO copy actions required.**
 
 ---
 
