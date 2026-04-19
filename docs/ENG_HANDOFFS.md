@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-19 (CMO added entries for 88a291e, 4038d4b, 019091d — env config, hotels blog, geocode remediation) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-19 (CMO added entry for 51f8f61 — featured deals carousel on homepage) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,35 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Featured Deals Carousel on Homepage — shipped 2026-04-18 (commit 51f8f61)
+
+**What shipped:** A horizontal snap-scroll deals carousel now appears on the landing page between the hero section and the "Live Lompoc" category grid. `DealsCarousel` component: responsive cards with deal image (gradient fallback if no image), discount badge, business name, and deal title. Fetches up to 6 active + approved deals via `getFeaturedDeals()` query in `lib/queries.ts`. Server-rendered — no client-side loading state.
+
+**How to test it:**
+1. Visit the homepage (lompoc-deals.vercel.app) → confirm a scrollable carousel of deal cards appears below the hero
+2. If fewer than 6 active deals exist in the DB, carousel shows however many are available (graceful empty state if none)
+3. Each card: deal image or gradient fallback, discount badge (e.g. "20% off"), business name, deal title
+4. Mobile: cards should snap-scroll horizontally
+
+**Events it fires:** None tracked yet (REQ-001 pending).
+
+**Marketing surfaces it unlocks:**
+
+- **Homepage deal visibility = top-of-funnel conversion.** First-time visitors now see real active deals immediately below the hero — before scrolling at all on most screens. This is the single most direct path from "just landed on the site" to "I want to come back."
+- **Discount badge = urgency signal.** The badge makes the value proposition concrete on the first page load. This is stronger than any copy — real deals from real Lompoc businesses.
+- **Merchant incentive:** Merchants with active deals now appear on the homepage carousel. This is a compelling upgrade pitch: "Post a deal and your business appears on the Lompoc Deals homepage." Add this line to cold emails and the onboarding drip.
+- **Deal photo quality matters now.** The carousel shows deal images or falls back to a gradient. Merchants with photos look significantly better than those without. Add a note to the onboarding drip: "Add a photo to your deal — deals with photos appear in the homepage carousel."
+- **Screenshot asset:** A homepage carousel showing 5–6 active Lompoc deals is a strong creative for paid Facebook/Instagram ads targeting Lompoc residents. "Look what's on sale in Lompoc this week."
+
+**CMO next actions:**
+- Update `marketing/email/merchant-onboarding-drip.md`: add "post a deal → appear on the homepage" as a Day 1 incentive
+- Update cold email: add homepage carousel as a merchant benefit ("your deal on the Lompoc Deals homepage")
+- Screenshot the carousel for use as an ad creative once 5+ active deals are live
+
+**Known limitations:** Carousel is empty if no active + approved deals exist in the DB. Priority: get first few merchants to post deals before any social promotion of the homepage.
 
 ---
 

@@ -159,6 +159,7 @@ Lompoc locals are browsing the platform right now. Every day without a deal is v
 
 1. **Upload your business logo** — it appears in search autocomplete when locals type anything related to your category.
 2. **Add 3–5 photos** — your profile now supports a full photo gallery (carousel with arrows). Businesses with photo galleries get significantly more profile views. Showcase your space, menu, team, or specials.
+3. **Post a deal with a photo** — active deals with images appear in the **homepage carousel**, right below the hero section. That's the first thing every visitor sees when they land on lompoc-deals.vercel.app.
 
 Here's what local merchants are offering that's getting the most views right now:
 

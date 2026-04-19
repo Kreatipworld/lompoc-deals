@@ -31,6 +31,8 @@
 > And your **business profile supports a full photo gallery** — upload photos of your space, menu, or team and they display in a carousel on your profile page. Think of it as a mini website for your business, completely free.
 >
 > One more thing: we just launched an **interactive map** at lompoc-deals.vercel.app/map — 472 Lompoc businesses are already pinned on it with real locations. Locals use it to discover what's nearby. Your business should be on it.
+
+And when you post a deal with a photo, it appears in the **homepage deals carousel** — the first thing every visitor sees when they land on the site. That's prime placement, completely free on the basic plan.
 >
 > Interested? Just reply or sign up directly: lompoc-deals.vercel.app/signup
 >
