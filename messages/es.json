@@ -8,7 +8,8 @@
     "forBusinesses": "Negocios",
     "forLocals": "Locales",
     "hotels": "Hoteles",
-    "home": "Inicio de Lompoc Deals"
+    "home": "Inicio de Lompoc Deals",
+    "garageSales": "Ventas de Garaje"
   },
   "footer": {
     "tagline": "Cupones, especiales y anuncios locales de la Capital de las Flores de América.",
@@ -264,5 +265,36 @@
     "submit": "Enviar",
     "required": "Obligatorio",
     "optional": "Opcional"
+  },
+  "garageSales": {
+    "title": "Ventas de Garaje en Lompoc",
+    "subtitle": "Ventas de garaje publicadas por la comunidad",
+    "postSale": "Publicar venta",
+    "postTitle": "Publicar una venta de garaje",
+    "postSubtitle": "Gratis. Tu venta aparece en el mapa de inmediato.",
+    "noSales": "No hay ventas próximas",
+    "noSalesSubtitle": "¡Sé el primero en publicar una venta de garaje en Lompoc!",
+    "thisWeekend": "Este fin de semana",
+    "upcoming": "Próximas",
+    "today": "Hoy",
+    "weekend": "Este fin de semana",
+    "week": "Esta semana",
+    "address": "Dirección",
+    "dateRange": "Fechas",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de fin",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin",
+    "description": "¿Qué se vende?",
+    "categories": "Categorías de artículos",
+    "postedDate": "Publicado el {date}",
+    "getDirections": "Cómo llegar",
+    "viewDetails": "Ver detalles",
+    "backToAll": "Todas las ventas",
+    "signInToPost": "Inicia sesión para publicar",
+    "success": "¡Tu venta está en vivo!",
+    "successSubtitle": "Los vecinos ya pueden encontrar tu venta en el mapa.",
+    "viewListing": "Ver tu anuncio",
+    "browseAll": "Ver todas las ventas"
   }
 }

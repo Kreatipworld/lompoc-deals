@@ -8,7 +8,8 @@
     "forBusinesses": "Businesses",
     "forLocals": "Locals",
     "hotels": "Hotels",
-    "home": "Lompoc Deals home"
+    "home": "Lompoc Deals home",
+    "garageSales": "Garage Sales"
   },
   "footer": {
     "tagline": "Local coupons, specials, and announcements from the Flower Capital of America.",
@@ -264,5 +265,36 @@
     "submit": "Submit",
     "required": "Required",
     "optional": "Optional"
+  },
+  "garageSales": {
+    "title": "Garage Sales in Lompoc",
+    "subtitle": "Community-posted yard & garage sales",
+    "postSale": "Post a sale",
+    "postTitle": "Post a garage sale",
+    "postSubtitle": "Free to post. Your sale appears on the map right away.",
+    "noSales": "No upcoming sales",
+    "noSalesSubtitle": "Be the first to post a garage sale in Lompoc!",
+    "thisWeekend": "This weekend",
+    "upcoming": "Upcoming",
+    "today": "Today",
+    "weekend": "This weekend",
+    "week": "This week",
+    "address": "Address",
+    "dateRange": "Dates",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "description": "What’s for sale?",
+    "categories": "Item categories",
+    "postedDate": "Posted {date}",
+    "getDirections": "Get directions",
+    "viewDetails": "View details",
+    "backToAll": "All garage sales",
+    "signInToPost": "Sign in to post a garage sale",
+    "success": "Your sale is live!",
+    "successSubtitle": "Locals can now find your garage sale on the map.",
+    "viewListing": "View your listing",
+    "browseAll": "Browse all sales"
   }
 }

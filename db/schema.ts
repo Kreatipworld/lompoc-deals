@@ -404,6 +404,34 @@ export const blogPosts = pgTable(
   })
 )
 
+// ---------- garage sales ----------
+export const garageSaleStatus = pgEnum("garage_sale_status", [
+  "active",
+  "expired",
+  "removed",
+])
+
+export const garageSales = pgTable("garage_sales", {
+  id: serial("id").primaryKey(),
+  postedByUserId: integer("posted_by_user_id").references(() => users.id, {
+    onDelete: "set null",
+  }),
+  address: text("address").notNull(),
+  lat: doublePrecision("lat"),
+  lng: doublePrecision("lng"),
+  description: text("description").notNull(),
+  startDate: timestamp("start_date", { withTimezone: true }).notNull(),
+  endDate: timestamp("end_date", { withTimezone: true }).notNull(),
+  startTime: varchar("start_time", { length: 10 }),
+  endTime: varchar("end_time", { length: 10 }),
+  itemCategories: jsonb("item_categories").$type<string[]>(),
+  photos: jsonb("photos").$type<string[]>(),
+  status: garageSaleStatus("status").notNull().default("active"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+})
+
 // ---------- subscribers ----------
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),
