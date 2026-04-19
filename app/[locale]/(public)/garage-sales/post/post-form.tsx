@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -25,7 +24,6 @@ const ITEM_CATEGORIES = [
 
 export function PostGarageSaleForm() {
   const { data: session, status } = useSession()
-  const router = useRouter()
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [errorMsg, setErrorMsg] = useState("")
   const [selectedCats, setSelectedCats] = useState<string[]>([])
