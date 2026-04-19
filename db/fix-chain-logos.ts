@@ -121,7 +121,18 @@ async function main() {
   let ok = 0
   let fail = 0
 
+  // Load current logo_url for all chain ids to skip already-uploaded logos
+  const allBizMap = new Map<number, string | null>()
+  const allBiz = await db.query.businesses.findMany({ columns: { id: true, logoUrl: true } })
+  for (const b of allBiz) allBizMap.set(b.id, b.logoUrl ?? null)
+
   for (const chain of CHAIN_LOGOS) {
+    // Skip if ALL ids in this chain already have a Vercel Blob logo
+    const allDone = chain.ids.every((id) => allBizMap.get(id)?.includes("vercel-storage.com"))
+    if (allDone) {
+      console.log(`▸ ${chain.label} — ✓ already has logo, skipping`)
+      continue
+    }
     process.stdout.write(`▸ ${chain.label} (${chain.domain})… `)
 
     // 1. Try Clearbit
@@ -132,8 +143,15 @@ async function main() {
       img = await fetchGooglePlacesIcon(chain.label)
     }
 
+    // 3. Fall back to Google's favicon CDN (t2.gstatic.com)
     if (!img) {
-      console.log("⚠  no logo found (Clearbit + Google Places both failed)")
+      img = await downloadUrl(
+        `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://${chain.domain}&size=256`
+      )
+    }
+
+    if (!img) {
+      console.log("⚠  no logo found (all sources failed)")
       fail++
       await sleep(300)
       continue
