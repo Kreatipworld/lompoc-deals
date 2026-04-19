@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-18 (CMO added entry for 279e970 — subscribe page pattern background) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-18 (CMO added entries for cb999ca + 604f6d2 — Google geocoding + TS fix) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,44 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Google Maps Geocoding + Batch Re-geocode Script — shipped 2026-04-18 (commit cb999ca)
+
+**What shipped:**
+- `lib/geocode.ts` upgraded from Nominatim (free, low-accuracy) to Google Maps Geocoding API. Same `geocodeAddress()` signature — backward compatible. New `geocodeAddressFull()` returns lat/lng + `locationType` + `formattedAddress`. New `isHighConfidence()` helper (accepts ROOFTOP and RANGE_INTERPOLATED results, rejects GEOMETRIC_CENTER and APPROXIMATE).
+- `scripts/batch-regeocode.ts` — one-time script to re-geocode all businesses in the DB: auto-updates high-confidence results within a 100m threshold, flags discrepancies >100m for manual review, reports businesses with no geocode result, 50ms delay between requests for rate limiting.
+- `package.json`: `npm run batch-regeocode` script added.
+
+**Required env var (P0 — needed for geocoding to work in production):**
+```
+GOOGLE_MAPS_API_KEY=<your Google Maps Geocoding API key>
+```
+Must be set in **Vercel → Settings → Environment Variables → Production + Preview**. Without it, new business signups will fail to geocode (no coordinates → no map pin).
+
+**How to test it:**
+1. Set `GOOGLE_MAPS_API_KEY` locally
+2. Sign up a new test business with a Lompoc address → confirm lat/lng is populated in DB
+3. Run `npm run batch-regeocode` locally against staging DB to see accuracy report
+
+**Marketing surfaces it unlocks:**
+
+- **Accurate map pins = credibility.** The previous Nominatim geocoder placed some pins at incorrect locations (which triggered commit 5e8f311 to replace hardcoded POIs). Google's Geocoding API with ROOFTOP-level accuracy means every new business signup gets a precise street-address pin — not a neighborhood centroid.
+- **Batch re-geocode script** allows the CTO team to retroactively fix any existing businesses with poor coordinates. Running this script before any major map social push is strongly recommended — if a featured business pin is on the wrong street, it undermines trust.
+- **CMO action:** Coordinate with CTO to run `batch-regeocode` against production before launching the map walkthrough social content (to ensure all 472 pins are accurate).
+
+**Known limitations:** Requires `GOOGLE_MAPS_API_KEY` — new business signups will silently fail to get coordinates without it.
+
+---
+
+## Map POIs TypeScript Build Fix — shipped 2026-04-18 (commit 604f6d2)
+
+**What shipped:** TS type error fix for the map-pois try/catch refactor (f01aaee). The prior fix used `Awaited<ReturnType<typeof db.select>>` which resolves to `PgSelectBuilder` (not the result array), causing a build failure on Vercel. Restructured to keep `rows` and `pois` mapping inside the try block with `const` inference, eliminating the pre-declared variable. This was a build-breaking error — without this fix, the Vercel deploy would fail and the map would serve stale JS.
+
+**Marketing impact:** Unblocks the Vercel production deploy. No visible change to users.
+
+**No env vars, migrations, or CMO copy actions required.**
 
 ---
 
