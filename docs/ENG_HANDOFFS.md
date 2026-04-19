@@ -1,5 +1,5 @@
 # Engineering → Marketing Handoff Notes
-*Last updated: 2026-04-18 (CMO added entry for f01aaee — map-pois cold start fix) | Owner: CTO (writes) / CMO (reads)*
+*Last updated: 2026-04-18 (CMO added entry for 279e970 — subscribe page pattern background) | Owner: CTO (writes) / CMO (reads)*
 
 Every feature the CTO team ships that has marketing relevance gets a handoff note here. Format below.
 
@@ -943,6 +943,25 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 **Known limitations:**
 - Map requires `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel — site will break without it
 - 31 POIs in `lib/map-pois.ts` are hardcoded (not pulled from the business DB) — future iteration should merge DB businesses with POIs
+
+---
+
+## Subscribe Page: Category Icon Pattern Background — shipped 2026-04-18 (commit 279e970)
+
+**What shipped:** Visual polish for the `/subscribe` page. A new `CategoryPatternBg` component adds a subtle repeating SVG tile (400×400px, 14 minimal line-art icons: food, shopping, coffee, home, auto, health, outdoor, beauty, entertainment, events, music, deals, fitness, camera) as the background for the hero and CTA sections. Icons are stroke-only at 9–10% opacity — present as texture, not competing with the copy. Accessibility compliant: `aria-hidden` and `pointer-events-none` throughout (WCAG AA). Design inspiration: WhatsApp chat background, Venmo transaction screen.
+
+**How to test it:**
+1. Visit `/subscribe` → hero section should have a subtle icon pattern behind the text (barely perceptible, just adds depth)
+2. Scroll to the bottom CTA → dark background section should also show white icon pattern at ~10% opacity
+3. Screen reader / keyboard: pattern should be invisible to AT
+
+**Marketing surfaces it unlocks:**
+
+- **Screenshot-ready landing page.** The `/subscribe` page is now polished enough to screenshot for social ads and organic posts. The pattern adds a premium feel without visual noise. Use as the creative asset for any "subscribe to our weekly digest" social push.
+- **Brand signal.** The 14 category icons (food, coffee, beauty, auto, etc.) visually communicate the breadth of the platform without any words. First-time visitors immediately understand: "this covers everything local."
+- **Email list acquisition campaign.** With the subscribe page now fully designed (benefits, testimonials, social proof + polished visual background), it's ready to be the destination for a paid or organic email list growth campaign. Consider: Instagram Story swipe-up → `/subscribe`.
+
+**No env vars, migrations, or copy changes required.**
 
 ---
 
