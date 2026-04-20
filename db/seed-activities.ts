@@ -19,8 +19,7 @@ const ACTIVITIES = [
     address: "2295 Purisima Rd, Lompoc, CA 93436",
     lat: 34.6696,
     lng: -120.4362,
-    imageUrl:
-      "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/activities/la-purisima-mission.jpg",
     tips: "Arrive early on weekends. Wear comfortable shoes. Leashed dogs allowed on outside trails.",
     seasonality: "Year-round",
     sourceUrl: "https://www.parks.ca.gov/?page_id=608",
@@ -35,8 +34,7 @@ const ACTIVITIES = [
     address: "Central Ave & V St, Lompoc, CA 93436",
     lat: 34.6391,
     lng: -120.51,
-    imageUrl:
-      "https://images.unsplash.com/photo-1490750967868-88df5691cc55?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/activities/lompoc-flower-fields.jpg",
     tips: "Peak bloom runs late May through June. Pick up the free Flower Route map at the Chamber of Commerce.",
     seasonality: "Spring (May–June)",
     sourceUrl: "https://www.lompoc.com/flower-industry",
@@ -51,8 +49,7 @@ const ACTIVITIES = [
     address: "Downtown Lompoc, H St & Ocean Ave",
     lat: 34.6383,
     lng: -120.4578,
-    imageUrl:
-      "https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/activities/lompoc-murals.jpg",
     tips: "Free self-guided tour maps at the Lompoc Museum. Walk covers ~1.5 miles downtown.",
     seasonality: "Year-round",
     sourceUrl: "https://www.muralslompoc.com",
@@ -67,8 +64,7 @@ const ACTIVITIES = [
     address: "Jalama Rd, Lompoc, CA 93436",
     lat: 34.5068,
     lng: -120.5018,
-    imageUrl:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/activities/jalama-beach.jpg",
     tips: "Day use fee required. The Jalama Burger is legendary — do not skip it. Bring layers for coastal wind.",
     seasonality: "Year-round (best spring–fall)",
     sourceUrl: "https://www.countyofsb.org/parks/jalama",
@@ -83,8 +79,7 @@ const ACTIVITIES = [
     address: "1520-1800 E Chestnut Ave, Lompoc, CA 93436",
     lat: 34.6491,
     lng: -120.4378,
-    imageUrl:
-      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/activities/wine-ghetto-tasting.jpg",
     tips: "Most tasting rooms open Thursday–Sunday. Walk between wineries — all within a few minutes of each other.",
     seasonality: "Year-round (Thu–Sun)",
     sourceUrl: "https://www.lompocwineghetto.com",
@@ -99,8 +94,7 @@ const ACTIVITIES = [
     address: "Lompoc, CA 93436",
     lat: 34.6391,
     lng: -120.4579,
-    imageUrl:
-      "https://images.unsplash.com/photo-1541185934-01b600ea069c?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/activities/vandenberg-launch.jpg",
     tips: "Great viewing: Ocean Ave overpass, Harris Grade Road, downtown. Follow @30thSpaceWing on X for launch alerts.",
     seasonality: "Year-round",
     sourceUrl: null,
