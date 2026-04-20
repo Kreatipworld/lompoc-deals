@@ -22,11 +22,31 @@ function getTextContent(message: UIMessage): string {
     .join("")
 }
 
-// Parse markdown links and bold, return React nodes
+const LINK_CLASS = "underline underline-offset-2 font-medium active:opacity-60 touch-manipulation"
+
+function makeLink(href: string, label: React.ReactNode, key: number): React.ReactNode {
+  const isInternal = href.startsWith("/")
+  const isTel = href.startsWith("tel:")
+  return (
+    <a
+      key={key}
+      href={href}
+      target={isInternal || isTel ? undefined : "_blank"}
+      rel={isInternal || isTel ? undefined : "noopener noreferrer"}
+      className={LINK_CLASS}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {label}
+    </a>
+  )
+}
+
+// Parse markdown links, bold, plain URLs, phone numbers, and newlines → React nodes
 function renderMarkdown(text: string): React.ReactNode[] {
   const parts: React.ReactNode[] = []
-  // Pattern: markdown links [text](url), bold **text**, and newlines
-  const pattern = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\n/g
+  // Groups: (1,2) markdown link, (3) bold, (4) plain URL, (5) phone number, (6) newline
+  const pattern =
+    /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|(https?:\/\/[^\s<>"')\]]+)|(\(?\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4})|\n/g
   let last = 0
   let match: RegExpExecArray | null
   let key = 0
@@ -36,24 +56,19 @@ function renderMarkdown(text: string): React.ReactNode[] {
       parts.push(text.slice(last, match.index))
     }
     if (match[1] && match[2]) {
-      // Markdown link
-      const href = match[2]
-      const isInternal = href.startsWith("/")
-      parts.push(
-        <a
-          key={key++}
-          href={href}
-          target={isInternal ? undefined : "_blank"}
-          rel={isInternal ? undefined : "noopener noreferrer"}
-          className="underline underline-offset-2 font-medium hover:opacity-80"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {match[1]}
-        </a>
-      )
+      // Markdown link [text](url)
+      parts.push(makeLink(match[2], match[1], key++))
     } else if (match[3]) {
-      // Bold
+      // Bold **text**
       parts.push(<strong key={key++}>{match[3]}</strong>)
+    } else if (match[4]) {
+      // Plain URL
+      const url = match[4].replace(/[.,;:!?]+$/, "") // strip trailing punctuation
+      parts.push(makeLink(url, url, key++))
+    } else if (match[5]) {
+      // Phone number
+      const digits = match[5].replace(/\D/g, "")
+      parts.push(makeLink(`tel:+1${digits}`, match[5], key++))
     } else {
       // Newline
       parts.push(<br key={key++} />)

@@ -116,6 +116,22 @@ export async function POST(request: Request) {
 
   const userId = parseInt(session.user.id, 10)
 
+  // Geocode the address with Google Maps
+  let lat: number | null = null
+  let lng: number | null = null
+  try {
+    const geoQuery = encodeURIComponent(address.trim() + ", Lompoc, CA")
+    const geoUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${geoQuery}&key=${process.env.GOOGLE_MAPS_API_KEY}`
+    const geoRes = await fetch(geoUrl)
+    const geoData = await geoRes.json()
+    if (geoData.results?.[0]?.geometry?.location) {
+      lat = geoData.results[0].geometry.location.lat
+      lng = geoData.results[0].geometry.location.lng
+    }
+  } catch {
+    // Geocoding failure is non-fatal — sale is still created without pin
+  }
+
   const [sale] = await db
     .insert(garageSales)
     .values({
@@ -127,6 +143,8 @@ export async function POST(request: Request) {
       startTime: startTime ? String(startTime).slice(0, 10) : null,
       endTime: endTime ? String(endTime).slice(0, 10) : null,
       itemCategories: cats && cats.length > 0 ? cats : null,
+      lat,
+      lng,
       status: "active",
     })
     .returning()
