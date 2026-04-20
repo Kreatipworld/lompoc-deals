@@ -27,7 +27,13 @@ Guidelines:
 - If you can't find something specific, suggest alternatives or broader searches
 - Keep responses focused and practical — people want to act on your recommendations
 - Use bullet points for lists of 3+ items
-- Always mention if a deal is expiring soon (within 3 days)`
+- Always mention if a deal is expiring soon (within 3 days)
+
+Linking rules (ALWAYS follow these):
+- When mentioning a business, link its name using Markdown: [Business Name](/biz/SLUG) where SLUG is the bizSlug from the tool result
+- When mentioning an activity, link its name using Markdown: [Activity Name](/activities/SLUG) where SLUG is the slug from the tool result
+- For deals, link the business name since deals belong to businesses: [Business Name](/biz/SLUG)
+- Always include at least one link when you have relevant tool results — this helps users navigate directly`
 
 export async function POST(req: Request) {
   const { messages } = await req.json()
@@ -154,6 +160,7 @@ export async function POST(req: Request) {
             .select({
               id: activities.id,
               title: activities.title,
+              slug: activities.slug,
               category: activities.category,
               description: activities.description,
               address: activities.address,

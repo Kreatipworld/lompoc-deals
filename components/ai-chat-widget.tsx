@@ -22,6 +22,52 @@ function getTextContent(message: UIMessage): string {
     .join("")
 }
 
+// Parse markdown links and bold, return React nodes
+function renderMarkdown(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = []
+  // Pattern: markdown links [text](url), bold **text**, and newlines
+  const pattern = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\n/g
+  let last = 0
+  let match: RegExpExecArray | null
+  let key = 0
+
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > last) {
+      parts.push(text.slice(last, match.index))
+    }
+    if (match[1] && match[2]) {
+      // Markdown link
+      const href = match[2]
+      const isInternal = href.startsWith("/")
+      parts.push(
+        <a
+          key={key++}
+          href={href}
+          target={isInternal ? undefined : "_blank"}
+          rel={isInternal ? undefined : "noopener noreferrer"}
+          className="underline underline-offset-2 font-medium hover:opacity-80"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {match[1]}
+        </a>
+      )
+    } else if (match[3]) {
+      // Bold
+      parts.push(<strong key={key++}>{match[3]}</strong>)
+    } else {
+      // Newline
+      parts.push(<br key={key++} />)
+    }
+    last = match.index + match[0].length
+  }
+
+  if (last < text.length) {
+    parts.push(text.slice(last))
+  }
+
+  return parts
+}
+
 const transport = new DefaultChatTransport({ api: "/api/chat" })
 
 export function AIChatWidget() {
@@ -47,8 +93,7 @@ export function AIChatWidget() {
   }, [open, messages.length])
 
   function handleSuggestion(text: string) {
-    setInput(text)
-    setTimeout(() => inputRef.current?.focus(), 0)
+    sendMessage({ text })
   }
 
   function handleFormSubmit(e: React.FormEvent) {
@@ -63,19 +108,19 @@ export function AIChatWidget() {
     <>
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-20 right-4 sm:bottom-6 z-50 w-[calc(100vw-2rem)] max-w-sm shadow-2xl rounded-2xl overflow-hidden border border-border bg-background flex flex-col">
+        <div className="fixed bottom-[4.5rem] right-3 sm:bottom-6 sm:right-4 z-50 w-[calc(100vw-1.5rem)] max-w-sm shadow-2xl rounded-2xl overflow-hidden border border-border bg-background flex flex-col">
           {/* Header */}
           <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5" />
               <div>
                 <p className="font-semibold text-sm leading-none">Lompoc Guide</p>
-                <p className="text-xs opacity-80 mt-0.5">AI assistant for local deals & places</p>
+                <p className="text-xs opacity-80 mt-0.5">AI assistant for local deals &amp; places</p>
               </div>
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="opacity-80 hover:opacity-100 transition-opacity"
+              className="opacity-80 hover:opacity-100 transition-opacity p-1 -mr-1"
               aria-label="Close chat"
             >
               <X className="w-5 h-5" />
@@ -83,7 +128,7 @@ export function AIChatWidget() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[280px] max-h-[420px]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[240px] max-h-[min(420px,calc(70vh-8rem))]">
             {messages.length === 0 ? (
               <div className="space-y-3">
                 <div className="bg-muted rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-sm max-w-[85%]">
@@ -94,7 +139,7 @@ export function AIChatWidget() {
                     <button
                       key={s}
                       onClick={() => handleSuggestion(s)}
-                      className="block w-full text-left text-xs px-3 py-2 rounded-xl border border-border hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+                      className="block w-full text-left text-xs px-3 py-2.5 rounded-xl border border-border hover:bg-accent transition-colors text-muted-foreground hover:text-foreground active:scale-[0.98]"
                     >
                       {s}
                     </button>
@@ -115,13 +160,13 @@ export function AIChatWidget() {
                   >
                     <div
                       className={cn(
-                        "rounded-2xl px-3.5 py-2.5 text-sm max-w-[85%] whitespace-pre-wrap",
+                        "rounded-2xl px-3.5 py-2.5 text-sm max-w-[85%]",
                         m.role === "user"
                           ? "bg-primary text-primary-foreground rounded-tr-sm"
                           : "bg-muted rounded-tl-sm"
                       )}
                     >
-                      {text || "…"}
+                      {m.role === "assistant" ? renderMarkdown(text || "…") : (text || "…")}
                     </div>
                   </div>
                 )
@@ -147,13 +192,17 @@ export function AIChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about deals, places, events…"
-              className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground"
+              className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground min-w-0"
+              style={{ fontSize: "16px" }}
               disabled={isLoading}
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <Button
               type="submit"
               size="icon"
-              className="h-8 w-8 flex-shrink-0"
+              className="h-9 w-9 flex-shrink-0"
               disabled={isLoading || !input.trim()}
               aria-label="Send message"
             >
@@ -167,7 +216,7 @@ export function AIChatWidget() {
       <button
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "fixed bottom-20 right-4 sm:bottom-6 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all",
+          "fixed bottom-[4.5rem] right-3 sm:bottom-6 sm:right-4 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all",
           "bg-primary text-primary-foreground hover:scale-105 active:scale-95",
           open && "hidden"
         )}
