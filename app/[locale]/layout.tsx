@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { BottomNav } from "@/components/bottom-nav"
+import { AIChatWidget } from "@/components/ai-chat-widget"
 import { routing } from "@/i18n/routing"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
@@ -32,6 +33,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <main className="flex-1 pt-16 pb-16 sm:pt-0 sm:pb-0">{children}</main>
       <SiteFooter />
       <BottomNav />
+      <AIChatWidget />
       <Toaster />
     </NextIntlClientProvider>
   )
