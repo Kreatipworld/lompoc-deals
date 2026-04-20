@@ -29,7 +29,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <SiteHeader />
-      <main className="flex-1 pb-16 sm:pb-0">{children}</main>
+      <main className="flex-1 pt-16 pb-16 sm:pt-0 sm:pb-0">{children}</main>
       <SiteFooter />
       <BottomNav />
       <Toaster />

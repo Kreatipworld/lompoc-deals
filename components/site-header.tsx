@@ -9,7 +9,7 @@ export async function SiteHeader() {
   const t = await getTranslations("nav")
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="fixed left-0 right-0 top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:sticky sm:left-auto sm:right-auto">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link
           href="/"
