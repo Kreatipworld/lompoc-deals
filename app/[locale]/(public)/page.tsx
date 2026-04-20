@@ -28,18 +28,18 @@ export const metadata = {
   },
 }
 
-// Category image mapping by slug — Unsplash photos (no text overlay)
+// Category image mapping by slug — local Lompoc business photos
 const CATEGORY_IMAGES: Record<string, string> = {
-  "food-drink":    "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80",
-  "retail":        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80",
-  "services":      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80",
-  "health-beauty": "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80",
-  "auto":          "https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&w=800&q=80",
-  "entertainment": "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80",
-  "real-estate":   "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80",
-  "wineries":      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80",
-  "cannabis":      "https://images.unsplash.com/photo-1585059895524-72359e06133a?auto=format&fit=crop&w=800&q=80",
-  "dispensaries":  "https://images.unsplash.com/photo-1585059895524-72359e06133a?auto=format&fit=crop&w=800&q=80",
+  "food-drink":    "/categories/food-drink.jpg",
+  "retail":        "/categories/retail.jpg",
+  "services":      "/categories/services.jpg",
+  "health-beauty": "/categories/health-beauty.jpg",
+  "auto":          "/categories/auto.jpg",
+  "entertainment": "/categories/entertainment.jpg",
+  "real-estate":   "/categories/real-estate.jpg",
+  "wineries":      "/categories/wineries.jpg",
+  "cannabis":      "/categories/dispensaries.jpg",
+  "dispensaries":  "/categories/dispensaries.jpg",
 }
 
 function getCategoryImage(slug: string): string | null {
