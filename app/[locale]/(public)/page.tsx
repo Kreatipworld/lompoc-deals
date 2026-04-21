@@ -40,6 +40,7 @@ const CATEGORY_IMAGES: Record<string, string> = {
   "wineries":      "/categories/wineries.jpg",
   "cannabis":      "/categories/dispensaries.jpg",
   "dispensaries":  "/categories/dispensaries.jpg",
+  "other":         "/categories/other.jpg",
 }
 
 function getCategoryImage(slug: string): string | null {
