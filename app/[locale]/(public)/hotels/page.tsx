@@ -3,23 +3,22 @@ import { Link } from "@/i18n/navigation"
 import { HOTELS } from "@/lib/hotels-data"
 import { HotelsMap } from "@/components/hotels-map"
 import { ScrollReveal } from "@/components/scroll-reveal"
+import { HotelsFilterGrid } from "@/components/hotels-filter-grid"
+import { ActivityTicker } from "@/components/activity-ticker"
 import {
   MapPin,
-  Phone,
-  Star,
   ArrowRight,
   BedDouble,
-  Wifi,
-  Car,
-  Coffee,
   Landmark,
   Navigation,
   Wine,
   Rocket,
   Flower2,
   Palette,
-  Globe,
   ChevronRight,
+  ShieldCheck,
+  Tag,
+  Ban,
 } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -42,92 +41,63 @@ export const metadata: Metadata = {
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-const PRICE_LABEL: Record<string, string> = {
-  $: "Budget",
-  $$: "Mid-range",
-  $$$: "Upscale",
-}
-
-const PRICE_BADGE_CLASS: Record<string, string> = {
-  $: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800",
-  $$: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-800",
-  $$$: "bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-950/40 dark:text-violet-400 dark:border-violet-800",
-}
-
-// Gradient covers per price tier — used as visual stand-ins for hotel photos
 const COVER_GRADIENT: Record<string, string> = {
   $: "from-emerald-500/20 via-teal-400/10 to-cyan-300/10",
   $$: "from-amber-500/25 via-orange-400/15 to-yellow-300/10",
   $$$: "from-violet-600/25 via-purple-500/15 to-fuchsia-400/10",
 }
 
-const AMENITY_ICON: Record<string, React.ReactNode> = {
-  "Free Wi-Fi": <Wifi className="h-3 w-3" />,
-  "Free Parking": <Car className="h-3 w-3" />,
-  "Hot Breakfast": <Coffee className="h-3 w-3" />,
-  "Continental Breakfast": <Coffee className="h-3 w-3" />,
-  "Free Breakfast": <Coffee className="h-3 w-3" />,
-}
+// ── Static data ───────────────────────────────────────────────────────────────
 
-// ── Sub-components ────────────────────────────────────────────────────────────
-
-function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "md" }) {
-  const full = Math.floor(rating)
-  const half = rating % 1 >= 0.5
-  const sz = size === "md" ? "h-4 w-4" : "h-3.5 w-3.5"
-  return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`${sz} ${
-            i < full
-              ? "fill-amber-400 text-amber-400"
-              : i === full && half
-                ? "fill-amber-200 text-amber-400"
-                : "fill-muted text-muted-foreground/30"
-          }`}
-        />
-      ))}
-      <span className="ml-1 text-xs font-medium text-muted-foreground">{rating.toFixed(1)}</span>
-    </div>
-  )
-}
-
-// ── Tourism reasons ────────────────────────────────────────────────────────────
+const TRUST_ITEMS = [
+  {
+    icon: <ShieldCheck className="h-5 w-5 text-primary" />,
+    title: "Verified Properties",
+    desc: "Every listing manually reviewed",
+  },
+  {
+    icon: <Tag className="h-5 w-5 text-brand-terracotta" />,
+    title: "Best-Price Guarantee",
+    desc: "No booking fees, ever",
+  },
+  {
+    icon: <Wine className="h-5 w-5 text-primary" />,
+    title: "Wine Country Access",
+    desc: "All hotels near Santa Rita Hills AVA",
+  },
+  {
+    icon: <Ban className="h-5 w-5 text-emerald-600" />,
+    title: "Free Cancellation",
+    desc: "Flexible options on select stays",
+  },
+]
 
 const WHY_VISIT = [
   {
     icon: <Wine className="h-6 w-6" />,
     label: "Santa Rita Hills Wine Trail",
     desc: "World-class Pinot Noir & Chardonnay. Dozens of tasting rooms within 20 minutes of downtown.",
-    accent: "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300",
     iconBg: "bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-300",
   },
   {
     icon: <Rocket className="h-6 w-6" />,
     label: "Vandenberg Space Force Base",
     desc: "Rocket launches visible from the city. Home to SpaceX Falcon 9 polar orbit missions.",
-    accent: "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300",
     iconBg: "bg-sky-100 text-sky-600 dark:bg-sky-900/50 dark:text-sky-300",
   },
   {
     icon: <Flower2 className="h-6 w-6" />,
     label: "Flower Fields & Festival",
     desc: "The Flower Capital of America. Acres of blooms from April through June every year.",
-    accent: "bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300",
     iconBg: "bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-300",
   },
   {
     icon: <Palette className="h-6 w-6" />,
     label: "Old Town Murals & History",
     desc: "80+ murals in Old Town tell Lompoc's history. La Purísima Mission is minutes away.",
-    accent: "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300",
     iconBg: "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-300",
   },
 ]
-
-// ── Neighborhood guide ──────────────────────────────────────────────────────
 
 const NEIGHBORHOODS = [
   {
@@ -153,16 +123,16 @@ const NEIGHBORHOODS = [
   },
 ]
 
+// ── Top picks (editor's picks) ─────────────────────────────────────────────
+
+const FEATURED_MAIN_SLUG = "embassy-suites-lompoc"
+const FEATURED_SECONDARY_SLUGS = ["hampton-inn-lompoc", "holiday-inn-express-lompoc"]
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 
-const TOP_PICKS = HOTELS.filter((h) =>
-  ["embassy-suites-lompoc", "hampton-inn-lompoc", "holiday-inn-express-lompoc", "ocairns-inn-lompoc"].includes(h.slug)
-)
-
 export default function HotelsPage() {
-  const upscale = HOTELS.filter((h) => h.priceRange === "$$$")
-  const midRange = HOTELS.filter((h) => h.priceRange === "$$")
-  const budget = HOTELS.filter((h) => h.priceRange === "$")
+  const featuredMain = HOTELS.find((h) => h.slug === FEATURED_MAIN_SLUG)
+  const featuredSecondary = FEATURED_SECONDARY_SLUGS.map((s) => HOTELS.find((h) => h.slug === s)).filter(Boolean)
 
   return (
     <>
@@ -185,12 +155,15 @@ export default function HotelsPage() {
         />
 
         <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
-          {/* Badge */}
+          {/* Eyebrow badge */}
           <div
             className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/80 px-3 py-1.5 text-xs font-medium text-primary backdrop-blur-sm animate-fade-up"
             style={{ animationDelay: "0ms" }}
           >
-            <Flower2 className="h-3 w-3" />
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
             Flower Capital of America · Lompoc, CA
           </div>
 
@@ -216,8 +189,8 @@ export default function HotelsPage() {
           >
             {[
               { label: "Hotels listed", value: `${HOTELS.length}` },
-              { label: "Price tiers", value: "3" },
               { label: "Avg rating", value: (HOTELS.reduce((s, h) => s + h.rating, 0) / HOTELS.length).toFixed(1) + " ★" },
+              { label: "Price tiers", value: "3" },
               { label: "Min from VSFB", value: "< 10 min" },
             ].map((s) => (
               <div
@@ -255,6 +228,118 @@ export default function HotelsPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
+          TRUST STRIP
+      ══════════════════════════════════════════════════════ */}
+      <section className="border-b bg-background">
+        <div className="mx-auto max-w-7xl px-4 py-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {TRUST_ITEMS.map((item) => (
+              <div key={item.title} className="flex items-center gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent">
+                  {item.icon}
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-foreground">{item.title}</div>
+                  <div className="text-[11px] text-muted-foreground">{item.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          EDITOR'S PICKS — featured grid (1 large + 2 small)
+      ══════════════════════════════════════════════════════ */}
+      <section className="border-b">
+        <div className="mx-auto max-w-7xl px-4 py-10">
+          <ScrollReveal>
+            <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-primary/70">
+              Editor&apos;s picks
+            </div>
+            <h2 className="font-display text-xl font-bold tracking-tight">Top-Rated Stays</h2>
+          </ScrollReveal>
+
+          {featuredMain && (
+            <div className="mt-6 grid gap-5 md:grid-cols-[1.6fr_1fr] md:grid-rows-2">
+              {/* Main featured card */}
+              <ScrollReveal className="md:row-span-2">
+                <Link
+                  href={`/hotels/${featuredMain.slug}`}
+                  className="group relative flex h-full min-h-[280px] flex-col overflow-hidden rounded-2xl border shadow-sm transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(123,79,158,0.16),0_4px_12px_rgba(31,31,31,0.08)] hover:border-primary/20 md:min-h-[360px]"
+                >
+                  {/* Full-bleed gradient background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${COVER_GRADIENT[featuredMain.priceRange]} transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]`} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+
+                  {/* Wishlist */}
+                  <button
+                    aria-label={`Save ${featuredMain.name} to wishlist`}
+                    onClick={(e) => e.preventDefault()}
+                    className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 text-muted-foreground/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:text-brand-terracotta group-hover:opacity-100"
+                  >
+                    <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.75}>
+                      <path d="M10 17s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 17 8c0 4.65-7 9-7 9z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+
+                  {/* Text overlay */}
+                  <div className="relative mt-auto p-5 text-white">
+                    <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider opacity-80">
+                      {featuredMain.priceRange === "$$$" ? "Upscale" : featuredMain.priceRange === "$$" ? "Mid-Range" : "Budget"}
+                    </div>
+                    <h3 className="font-display text-lg font-bold leading-snug">{featuredMain.name}</h3>
+                    <div className="mt-1 flex items-center gap-1.5 text-[11px] opacity-80">
+                      <MapPin className="h-3 w-3" />
+                      {featuredMain.avenue ?? featuredMain.address}
+                    </div>
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-semibold backdrop-blur-sm">
+                        {(featuredMain.rating * 2).toFixed(1)} · {featuredMain.rating >= 4.5 ? "Exceptional" : featuredMain.rating >= 4.25 ? "Superb" : "Very Good"}
+                      </span>
+                      <span className="flex items-center gap-0.5 text-xs font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        View <ArrowRight className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </ScrollReveal>
+
+              {/* Secondary cards */}
+              {featuredSecondary.map((hotel, i) =>
+                hotel ? (
+                  <ScrollReveal key={hotel.slug} delay={i * 80}>
+                    <Link
+                      href={`/hotels/${hotel.slug}`}
+                      className="group flex h-full overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(123,79,158,0.16),0_4px_12px_rgba(31,31,31,0.08)] hover:border-primary/20"
+                    >
+                      {/* Small image area */}
+                      <div className={`relative flex h-full w-28 shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br ${COVER_GRADIENT[hotel.priceRange]}`}>
+                        <BedDouble className="h-7 w-7 text-foreground/10 transition-transform duration-[400ms] group-hover:scale-105" />
+                      </div>
+                      <div className="flex flex-1 flex-col justify-center gap-1 p-4">
+                        <div className="text-[10px] font-semibold uppercase tracking-wider text-primary/70">
+                          {hotel.priceRange === "$$$" ? "Upscale" : hotel.priceRange === "$$" ? "Mid-Range" : "Budget"}
+                        </div>
+                        <h3 className="font-display text-sm font-bold leading-snug tracking-tight line-clamp-2">{hotel.name}</h3>
+                        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                          <MapPin className="h-3 w-3 shrink-0 text-primary/50" />
+                          <span className="truncate">{hotel.avenue ?? hotel.address}</span>
+                        </div>
+                        <span className="mt-1 inline-flex w-fit rounded-full bg-sage-100 px-2.5 py-0.5 text-[10px] font-semibold text-sage-800">
+                          {(hotel.rating * 2).toFixed(1)} · {hotel.rating >= 4.5 ? "Exceptional" : hotel.rating >= 4.25 ? "Superb" : "Very Good"}
+                        </span>
+                      </div>
+                    </Link>
+                  </ScrollReveal>
+                ) : null
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
           WHY VISIT LOMPOC
       ══════════════════════════════════════════════════════ */}
       <section className="border-b bg-accent/30">
@@ -269,7 +354,7 @@ export default function HotelsPage() {
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {WHY_VISIT.map((item, i) => (
               <ScrollReveal key={item.label} delay={i * 80} className="h-full">
-                <div className="flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+                <div className="flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-md">
                   <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${item.iconBg}`}>
                     {item.icon}
                   </div>
@@ -285,193 +370,45 @@ export default function HotelsPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          TOP PICKS
+          FILTER BAR + ALL HOTELS GRID (client component)
       ══════════════════════════════════════════════════════ */}
-      <section className="border-b">
+      <HotelsFilterGrid />
+
+      {/* ══════════════════════════════════════════════════════
+          MAP
+      ══════════════════════════════════════════════════════ */}
+      <section className="border-t bg-accent/20">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-primary/70">
-                  Editor&apos;s picks
-                </div>
-                <h2 className="font-display text-xl font-bold tracking-tight">Top-Rated Stays</h2>
+            <h2 className="mb-3 font-display text-xl font-bold tracking-tight">Hotels on the Map</h2>
+          </ScrollReveal>
+          <ScrollReveal delay={80}>
+            <div className="overflow-hidden rounded-2xl border shadow-sm" style={{ height: 440 }}>
+              <HotelsMap hotels={HOTELS} />
+            </div>
+            <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <span className="h-3 w-3 rounded-full bg-emerald-500" />
+                <span>Budget ($)</span>
               </div>
+              <div className="flex items-center gap-1.5">
+                <span className="h-3 w-3 rounded-full bg-amber-500" />
+                <span>Mid-range ($$)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="h-3 w-3 rounded-full bg-violet-600" />
+                <span>Upscale ($$$)</span>
+              </div>
+              <span className="ml-auto italic">Click a pin to preview</span>
             </div>
           </ScrollReveal>
-
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {TOP_PICKS.map((hotel, i) => (
-              <ScrollReveal key={hotel.slug} delay={i * 70}>
-                <Link
-                  href={`/hotels/${hotel.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-200 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-lg"
-                >
-                  {/* Cover */}
-                  <div
-                    className={`relative flex h-36 items-center justify-center bg-gradient-to-br ${COVER_GRADIENT[hotel.priceRange]} overflow-hidden`}
-                  >
-                    <BedDouble className="h-10 w-10 text-foreground/10 transition-transform duration-300 group-hover:scale-110" />
-                    {/* Price badge overlay */}
-                    <span
-                      className={`absolute right-3 top-3 rounded-full border px-2 py-0.5 text-[11px] font-bold ${PRICE_BADGE_CLASS[hotel.priceRange]}`}
-                    >
-                      {hotel.priceRange}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-1 flex-col gap-2 p-4">
-                    <div>
-                      <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        {PRICE_LABEL[hotel.priceRange]}
-                      </div>
-                      <h3 className="mt-0.5 font-display text-sm font-bold leading-snug tracking-tight line-clamp-2">
-                        {hotel.name}
-                      </h3>
-                    </div>
-                    <StarRating rating={hotel.rating} />
-                    <p className="line-clamp-2 text-[11px] text-muted-foreground leading-relaxed">
-                      {hotel.tagline}
-                    </p>
-                    <div className="mt-auto flex items-center justify-between pt-1">
-                      <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                        <MapPin className="h-3 w-3 shrink-0 text-primary/50" />
-                        <span className="truncate">{hotel.neighborhood?.split("—")[0].trim()}</span>
-                      </div>
-                      <span className="flex items-center gap-0.5 text-[11px] font-medium text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        View <ArrowRight className="h-3 w-3" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          FULL HOTEL LIST + MAP
+          NEIGHBORHOOD GUIDE
       ══════════════════════════════════════════════════════ */}
-      <div className="mx-auto max-w-7xl px-4 py-10 pb-16">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start">
-
-          {/* ── Hotel list by tier ── */}
-          <div className="flex-1 min-w-0 space-y-10">
-
-            {/* Upscale */}
-            {upscale.length > 0 && (
-              <div>
-                <ScrollReveal>
-                  <div className="mb-4 flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-violet-500" />
-                    <h2 className="font-display text-base font-bold tracking-tight">Upscale ($$$)</h2>
-                    <span className="rounded-full bg-violet-50 px-2 py-0.5 text-[11px] font-medium text-violet-600 dark:bg-violet-950/40 dark:text-violet-400">
-                      {upscale.length} hotels
-                    </span>
-                  </div>
-                </ScrollReveal>
-                <ul className="space-y-3">
-                  {upscale.map((hotel, i) => (
-                    <ScrollReveal key={hotel.slug} delay={i * 60} as="li">
-                      <HotelCard hotel={hotel} />
-                    </ScrollReveal>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Mid-range */}
-            {midRange.length > 0 && (
-              <div>
-                <ScrollReveal>
-                  <div className="mb-4 flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-amber-500" />
-                    <h2 className="font-display text-base font-bold tracking-tight">Mid-Range ($$)</h2>
-                    <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-600 dark:bg-amber-950/40 dark:text-amber-400">
-                      {midRange.length} hotels
-                    </span>
-                  </div>
-                </ScrollReveal>
-                <ul className="space-y-3">
-                  {midRange.map((hotel, i) => (
-                    <ScrollReveal key={hotel.slug} delay={i * 60} as="li">
-                      <HotelCard hotel={hotel} />
-                    </ScrollReveal>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Budget */}
-            {budget.length > 0 && (
-              <div>
-                <ScrollReveal>
-                  <div className="mb-4 flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-emerald-500" />
-                    <h2 className="font-display text-base font-bold tracking-tight">Budget ($)</h2>
-                    <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400">
-                      {budget.length} hotels
-                    </span>
-                  </div>
-                </ScrollReveal>
-                <ul className="space-y-3">
-                  {budget.map((hotel, i) => (
-                    <ScrollReveal key={hotel.slug} delay={i * 50} as="li">
-                      <HotelCard hotel={hotel} />
-                    </ScrollReveal>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <ScrollReveal>
-              <p className="text-center text-xs text-muted-foreground">
-                Know a Lompoc hotel that should be listed?{" "}
-                <Link href="/for-businesses" className="underline underline-offset-2 hover:text-foreground">
-                  Add your property
-                </Link>
-              </p>
-            </ScrollReveal>
-          </div>
-
-          {/* ── Map ── */}
-          <div className="lg:sticky lg:top-6 w-full lg:w-[420px] shrink-0">
-            <ScrollReveal>
-              <h2 className="mb-3 font-display text-base font-bold tracking-tight">
-                Hotels on the Map
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={80}>
-              <div className="overflow-hidden rounded-2xl border shadow-sm" style={{ height: 500 }}>
-                <HotelsMap hotels={HOTELS} />
-              </div>
-              {/* Legend */}
-              <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-emerald-500" />
-                  <span>Budget ($)</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-amber-500" />
-                  <span>Mid-range ($$)</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-violet-600" />
-                  <span>Upscale ($$$)</span>
-                </div>
-                <span className="ml-auto italic">Click a pin to preview</span>
-              </div>
-            </ScrollReveal>
-          </div>
-
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════════════════
-          WHERE TO STAY — NEIGHBORHOOD GUIDE
-      ══════════════════════════════════════════════════════ */}
-      <section className="border-t bg-accent/30">
+      <section className="border-t">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
             <h2 className="font-display text-xl font-bold tracking-tight">
@@ -523,9 +460,7 @@ export default function HotelsPage() {
       <section className="border-t">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
-            <h2 className="font-display text-xl font-bold tracking-tight">
-              Lompoc Visitor Tips
-            </h2>
+            <h2 className="font-display text-xl font-bold tracking-tight">Lompoc Visitor Tips</h2>
           </ScrollReveal>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
@@ -564,84 +499,34 @@ export default function HotelsPage() {
           </div>
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════════════════
+          HOTEL OWNER CTA BANNER
+      ══════════════════════════════════════════════════════ */}
+      <section className="border-t bg-primary/5">
+        <div className="mx-auto max-w-7xl px-4 py-10">
+          <ScrollReveal>
+            <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
+              <div className="flex-1">
+                <h2 className="font-display text-lg font-bold">Own a Hotel in Lompoc?</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Get your property in front of thousands of visitors planning trips to Lompoc, the Santa Rita Hills, and Vandenberg Space Force Base.
+                </p>
+              </div>
+              <Link
+                href="/for-businesses"
+                className="shrink-0 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md"
+              >
+                List your property
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ── Activity ticker (fixed bottom-left) ─────────────────────────── */}
+      <ActivityTicker />
     </>
-  )
-}
-
-// ── HotelCard ──────────────────────────────────────────────────────────────────
-
-import type { Hotel } from "@/lib/hotels-data"
-
-function HotelCard({ hotel }: { hotel: Hotel }) {
-  return (
-    <Link
-      href={`/hotels/${hotel.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md sm:flex-row"
-    >
-      {/* Cover */}
-      <div
-        className={`relative flex h-28 shrink-0 items-center justify-center bg-gradient-to-br ${COVER_GRADIENT[hotel.priceRange]} sm:h-auto sm:w-28`}
-      >
-        <BedDouble className="h-8 w-8 text-foreground/10 transition-transform duration-300 group-hover:scale-110" />
-        {/* Website indicator */}
-        {hotel.website && (
-          <span className="absolute bottom-1.5 right-1.5 flex items-center gap-0.5 rounded-full bg-background/80 px-1.5 py-0.5 text-[9px] font-medium text-muted-foreground backdrop-blur-sm">
-            <Globe className="h-2.5 w-2.5" />
-            Book
-          </span>
-        )}
-      </div>
-
-      <div className="flex flex-1 flex-col gap-1.5 p-4">
-        {/* Name + price */}
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display text-sm font-bold leading-snug tracking-tight">{hotel.name}</h3>
-          <span
-            className={`shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-bold ${PRICE_BADGE_CLASS[hotel.priceRange]}`}
-          >
-            {hotel.priceRange}
-          </span>
-        </div>
-
-        <StarRating rating={hotel.rating} />
-
-        <p className="line-clamp-1 text-xs text-muted-foreground">{hotel.tagline}</p>
-
-        {/* Amenity chips */}
-        <div className="flex flex-wrap gap-1">
-          {hotel.amenities.slice(0, 3).map((a) => (
-            <span
-              key={a}
-              className="inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-medium text-muted-foreground"
-            >
-              {AMENITY_ICON[a] ?? null}
-              {a}
-            </span>
-          ))}
-          {hotel.amenities.length > 3 && (
-            <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] text-muted-foreground">
-              +{hotel.amenities.length - 3} more
-            </span>
-          )}
-        </div>
-
-        {/* Address row */}
-        <div className="flex items-start gap-1.5 text-xs text-muted-foreground">
-          <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-primary/50" />
-          <span className="truncate">{hotel.address}</span>
-        </div>
-        {hotel.phone && (
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Phone className="h-3 w-3 shrink-0 text-primary/50" />
-            {hotel.phone}
-          </div>
-        )}
-
-        <div className="flex items-center justify-end pt-0.5 text-xs font-semibold text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-          View details
-          <ArrowRight className="ml-1 h-3 w-3" />
-        </div>
-      </div>
-    </Link>
   )
 }
