@@ -243,7 +243,7 @@ export default async function ForBusinessesPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <Reveal preset="stagger" className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
             {/* Free */}
             <div className="flex flex-col rounded-3xl border bg-card p-7 shadow-sm">
               <div className="font-display text-xl font-semibold">Free</div>
@@ -275,7 +275,7 @@ export default async function ForBusinessesPage() {
 
             {/* Standard — highlighted */}
             <div className="relative flex flex-col rounded-3xl border-2 border-primary bg-card p-7 shadow-lg ring-1 ring-primary/20">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-primary-foreground">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-primary-foreground animate-pop-badge">
                 Most popular
               </div>
               <div className="font-display text-xl font-semibold">Standard</div>
@@ -334,7 +334,7 @@ export default async function ForBusinessesPage() {
                 Get started
               </Link>
             </div>
-          </div>
+          </Reveal>
 
           <p className="mt-8 text-center text-xs text-muted-foreground">
             No credit card required for the Free plan. Cancel paid plans anytime.
