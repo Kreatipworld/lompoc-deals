@@ -149,26 +149,23 @@ export default async function ForBusinessesPage() {
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <Reveal preset="stagger" className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
             <Step
               num="01"
               title="Claim or list your business"
               body="Find your business in our directory and click 'Claim it,' or list a brand-new one in 30 seconds. Free forever."
-              delay={0}
             />
             <Step
               num="02"
               title="Add your details"
               body="Logo, hours, social links, and a description. Your profile goes live the moment our admin approves it (usually same-day)."
-              delay={80}
             />
             <Step
               num="03"
               title="Post deals when you want"
               body="Coupons, specials, announcements — post as many as you want, edit anytime, expire whenever. Locals see them on the feed."
-              delay={160}
             />
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -404,18 +401,13 @@ function Step({
   num,
   title,
   body,
-  delay = 0,
 }: {
   num: string
   title: string
   body: string
-  delay?: number
 }) {
   return (
-    <div
-      className="relative rounded-3xl border bg-card p-7 shadow-sm card-enter"
-      style={{ animationDelay: `${delay}ms` }}
-    >
+    <div className="relative rounded-3xl border bg-card p-7 shadow-sm">
       <div className="font-display text-5xl font-semibold leading-none tracking-tight text-primary/30">
         {num}
       </div>
