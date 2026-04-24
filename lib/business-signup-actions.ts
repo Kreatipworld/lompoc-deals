@@ -27,7 +27,9 @@ const step1Schema = z.object({
   phone: z.string().optional(),
 })
 
-export type BizSignupState = { error?: string } | undefined
+export type BizSignupState =
+  | { error?: string; checkoutUrl?: string }
+  | undefined
 
 /** Validates Step 1 data — called client-side via action to get inline errors. */
 export async function validateStep1Action(
@@ -162,7 +164,7 @@ export async function businessSignupSubmitAction(
               throw err
             }
 
-            redirect(checkoutSession.url)
+            return { checkoutUrl: checkoutSession.url }
           } catch (err) {
             if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
             return { error: "Payment setup failed. Please try again or contact support." }
@@ -280,7 +282,7 @@ export async function businessSignupSubmitAction(
     if (!checkoutSession.url) {
       return { error: "Could not create checkout session. Please try again." }
     }
-    redirect(checkoutSession.url)
+    return { checkoutUrl: checkoutSession.url }
   } catch (err) {
     if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
     return { error: "Payment setup failed. Please try again or contact support." }
