@@ -3,14 +3,17 @@
  *
  * Usage:
  *   node --env-file=.env.local node_modules/.bin/tsx scripts/batch-regeocode.ts
+ *   node --env-file=.env.local node_modules/.bin/tsx scripts/batch-regeocode.ts --dry-run
+ *   node --env-file=.env.local node_modules/.bin/tsx scripts/batch-regeocode.ts --dry-run --threshold 30
  *
  * What it does:
  *   - Fetches all businesses with a non-empty address
  *   - Calls Google Maps Geocoding API for each address
  *   - Auto-updates high-confidence results (ROOFTOP / RANGE_INTERPOLATED)
- *     when distance from current coords is ≤ 100m (or no coords exist yet)
- *   - Flags discrepancies > 100m for manual review
+ *     when distance from current coords is ≤ threshold (or no coords exist yet)
+ *   - Flags discrepancies > threshold for manual review
  *   - Prints a summary report at the end
+ *   - With --dry-run, no DB writes are performed
  *
  * Requires: GOOGLE_MAPS_API_KEY and DATABASE_URL in env
  */
@@ -20,6 +23,16 @@ import { drizzle } from "drizzle-orm/neon-http"
 import { eq, isNotNull, ne } from "drizzle-orm"
 import * as schema from "../db/schema"
 import { geocodeAddressFull, isHighConfidence } from "../lib/geocode"
+
+// ─── CLI args ───────────────────────────────────────────────────────────────
+
+const args = process.argv.slice(2)
+const DRY_RUN = args.includes("--dry-run")
+const THRESHOLD_M = (() => {
+  const idx = args.indexOf("--threshold")
+  const parsed = idx !== -1 ? parseInt(args[idx + 1], 10) : NaN
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 100
+})()
 
 // ─── Haversine distance (metres) ────────────────────────────────────────────
 
@@ -72,9 +85,11 @@ async function main() {
     .from(schema.businesses)
     .where(isNotNull(schema.businesses.address))
 
-  console.log(`\nFound ${businesses.length} businesses with addresses.\n`)
+  console.log(`\nFound ${businesses.length} businesses with addresses.`)
+  console.log(`Mode: ${DRY_RUN ? "DRY RUN — no writes" : "LIVE — writes enabled"}`)
+  console.log(`Discrepancy threshold: ${THRESHOLD_M}m\n`)
 
-  const DISTANCE_THRESHOLD_M = 100
+  const DISTANCE_THRESHOLD_M = THRESHOLD_M
 
   type Report = {
     id: number
@@ -167,10 +182,12 @@ async function main() {
     }
 
     // Auto-update: either high-confidence, within threshold, or no existing coords
-    await db
-      .update(schema.businesses)
-      .set({ lat: newCoords.lat, lng: newCoords.lng })
-      .where(eq(schema.businesses.id, biz.id))
+    if (!DRY_RUN) {
+      await db
+        .update(schema.businesses)
+        .set({ lat: newCoords.lat, lng: newCoords.lng })
+        .where(eq(schema.businesses.id, biz.id))
+    }
 
     updatedCount++
     report.push({
@@ -195,11 +212,12 @@ async function main() {
   console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
   console.log("BATCH RE-GEOCODE SUMMARY")
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-  console.log(`Total businesses processed : ${businesses.length}`)
-  console.log(`Updated (auto)             : ${updatedCount}`)
-  console.log(`Skipped (low confidence)   : ${skippedCount}`)
-  console.log(`Flagged (discrepancy >100m): ${discrepancyCount}`)
-  console.log(`No result from Google      : ${noResultCount}`)
+  console.log(`Mode                        : ${DRY_RUN ? "DRY RUN" : "LIVE"}`)
+  console.log(`Total businesses processed  : ${businesses.length}`)
+  console.log(`Updated${DRY_RUN ? " (would update)" : " (auto)       "}      : ${updatedCount}`)
+  console.log(`Skipped (low confidence)    : ${skippedCount}`)
+  console.log(`Flagged (discrepancy >${DISTANCE_THRESHOLD_M}m)${" ".repeat(Math.max(0, 3 - String(DISTANCE_THRESHOLD_M).length))}: ${discrepancyCount}`)
+  console.log(`No result from Google       : ${noResultCount}`)
 
   if (discrepancyCount > 0) {
     console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")

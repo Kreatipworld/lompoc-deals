@@ -10,6 +10,7 @@ import { businesses, deals, subscriptions, propertyListings, favorites, business
 import { assertFeature } from "@/lib/plan-features"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
+import { lompocAddressError } from "@/lib/lompoc-zip"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
 import { TIERS } from "@/lib/stripe"
 import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail } from "@/lib/email"
@@ -84,6 +85,11 @@ export async function saveProfileAction(
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
   }
   const data = parsed.data
+
+  if (data.address) {
+    const addrErr = lompocAddressError(data.address)
+    if (addrErr) return { error: addrErr }
+  }
 
   // Optional file uploads
   const logoFile = formData.get("logo") as File | null

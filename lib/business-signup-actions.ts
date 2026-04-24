@@ -13,6 +13,7 @@ import type { TierKey } from "@/lib/stripe"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { sendWelcomeEmail } from "@/lib/email"
+import { lompocAddressError } from "@/lib/lompoc-zip"
 
 // ─── Step 1 — Account creation ──────────────────────────────────────────────
 
@@ -45,6 +46,9 @@ export async function validateStep1Action(
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
   }
+
+  const addrErr = lompocAddressError(parsed.data.address)
+  if (addrErr) return { error: addrErr }
 
   const existing = await db.query.users.findFirst({
     where: eq(users.email, parsed.data.email),
@@ -95,6 +99,9 @@ export async function businessSignupSubmitAction(
 
   const { ownerFullName, businessName, email, password, categoryId, address, phone, plan } =
     parsed.data
+
+  const addrErr = lompocAddressError(address)
+  if (addrErr) return { error: addrErr }
 
   const existing = await db.query.users.findFirst({ where: eq(users.email, email) })
   if (existing) {

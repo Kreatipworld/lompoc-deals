@@ -34,12 +34,28 @@ const SINGLE_ID = (() => {
   const idx = args.indexOf("--id")
   return idx !== -1 ? parseInt(args[idx + 1], 10) : null
 })()
+const THRESHOLD_M = (() => {
+  const idx = args.indexOf("--threshold")
+  const parsed = idx !== -1 ? parseInt(args[idx + 1], 10) : NaN
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 30
+})()
 
 // Rate limit: stay under 600 req/min (Mapbox free tier)
 const DELAY_MS = 120
 
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms))
+}
+
+function haversineMetres(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6_371_000
+  const toRad = (d: number) => (d * Math.PI) / 180
+  const dLat = toRad(lat2 - lat1)
+  const dLng = toRad(lng2 - lng1)
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
 /** Returns true if the address has a street number (not just city/zip) */
@@ -90,6 +106,7 @@ async function main() {
   console.log(
     `🔍 Re-geocoding businesses via Mapbox${DRY_RUN ? " (DRY RUN)" : ""}${SINGLE_ID ? ` (id=${SINGLE_ID})` : ""}`,
   )
+  console.log(`   threshold: ${THRESHOLD_M}m (report moves > this)`)
   console.log()
 
   const allBusinesses = await db.query.businesses.findMany({
@@ -111,6 +128,21 @@ async function main() {
   let errors = 0
   let unchanged = 0
 
+  type Discrepancy = {
+    id: number
+    name: string
+    address: string
+    oldLat: number | null
+    oldLng: number | null
+    newLat: number
+    newLng: number
+    distanceM: number
+    relevance: number
+    placeName: string
+  }
+  const discrepancies: Discrepancy[] = []
+  const lowRelevance: Array<{ id: number; name: string; address: string; relevance: number }> = []
+
   for (const biz of toProcess) {
     await sleep(DELAY_MS)
 
@@ -124,23 +156,35 @@ async function main() {
     // Only trust high-relevance Mapbox results
     if (result.relevance < 0.9) {
       console.log(`  ~ low relevance (${result.relevance.toFixed(2)}): "${biz.name}"`)
+      lowRelevance.push({ id: biz.id, name: biz.name, address: biz.address!, relevance: result.relevance })
       skipped++
       continue
     }
 
-    const latDiff = Math.abs(result.lat - (biz.lat ?? 0))
-    const lngDiff = Math.abs(result.lng - (biz.lng ?? 0))
-    const moved = latDiff > 0.0001 || lngDiff > 0.0001 // ~11m threshold
+    const distanceM =
+      biz.lat != null && biz.lng != null
+        ? haversineMetres(biz.lat, biz.lng, result.lat, result.lng)
+        : Infinity
 
-    if (!moved) {
+    if (distanceM <= THRESHOLD_M) {
       unchanged++
       continue
     }
 
-    console.log(`  ✓ updating: "${biz.name}"`)
-    console.log(`    old: (${biz.lat}, ${biz.lng})`)
-    console.log(`    new: (${result.lat}, ${result.lng})  relevance=${result.relevance.toFixed(2)}`)
-    console.log(`    place: ${result.placeName}`)
+    discrepancies.push({
+      id: biz.id,
+      name: biz.name,
+      address: biz.address!,
+      oldLat: biz.lat,
+      oldLng: biz.lng,
+      newLat: result.lat,
+      newLng: result.lng,
+      distanceM: Math.round(distanceM),
+      relevance: result.relevance,
+      placeName: result.placeName,
+    })
+
+    console.log(`  ⚠ [${biz.id}] "${biz.name}" Δ${Math.round(distanceM)}m`)
 
     if (!DRY_RUN) {
       await db
@@ -151,11 +195,35 @@ async function main() {
     updated++
   }
 
-  console.log(`\n✅  Done.`)
-  console.log(
-    `   updated=${updated}  unchanged=${unchanged}  low-relevance-skipped=${skipped}  errors=${errors}`,
-  )
-  if (DRY_RUN) console.log("   (DRY RUN — no writes made)")
+  // ─── Discrepancy report ───────────────────────────────────────────────────
+  discrepancies.sort((a, b) => b.distanceM - a.distanceM)
+
+  console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+  console.log(`DISCREPANCIES > ${THRESHOLD_M}m  (sorted by distance, biggest first)`)
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+  if (discrepancies.length === 0) {
+    console.log("  (none)")
+  } else {
+    for (const d of discrepancies) {
+      console.log(`\n  [${d.id}] ${d.name}`)
+      console.log(`    address : ${d.address}`)
+      console.log(`    mapbox  : ${d.placeName} (relevance ${d.relevance.toFixed(2)})`)
+      console.log(`    old     : (${d.oldLat?.toFixed(5) ?? "null"}, ${d.oldLng?.toFixed(5) ?? "null"})`)
+      console.log(`    new     : (${d.newLat.toFixed(5)}, ${d.newLng.toFixed(5)})`)
+      console.log(`    distance: ${d.distanceM}m`)
+    }
+  }
+
+  console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+  console.log("SUMMARY")
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+  console.log(`  processed       : ${toProcess.length}`)
+  console.log(`  discrepancies   : ${discrepancies.length}  (> ${THRESHOLD_M}m)`)
+  console.log(`  within threshold: ${unchanged}`)
+  console.log(`  low-relevance   : ${lowRelevance.length}  (Mapbox <0.9)`)
+  console.log(`  no result       : ${errors}`)
+  console.log(DRY_RUN ? `  mode            : DRY RUN — no writes` : `  mode            : LIVE — ${updated} rows updated`)
 }
 
 main().catch((err) => {

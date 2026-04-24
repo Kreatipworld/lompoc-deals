@@ -25,6 +25,7 @@ import bcrypt from "bcryptjs"
 import { db } from "./client"
 import { categories, users, businesses } from "./schema"
 import { eq } from "drizzle-orm"
+import { isLompocAddress } from "../lib/lompoc-zip"
 
 // ---- helpers ---------------------------------------------------------------
 
@@ -185,6 +186,7 @@ async function main() {
   // ---- upsert businesses ----
   let inserted = 0
   let skipped = 0
+  let skippedNonLompoc = 0
   let errors = 0
 
   for (const place of places) {
@@ -192,6 +194,14 @@ async function main() {
 
     const name = place.title.trim()
     const slug = slugify(name)
+
+    // Guard: reject anything outside the Lompoc area so the scraper can't
+    // pull in wrong-city chain-store matches (Walmart in Toledo, CVS in NC, etc.)
+    if (!isLompocAddress(place.address ?? null)) {
+      console.log(`  ⊘ skip (non-Lompoc): ${name} — ${place.address ?? "no address"}`)
+      skippedNonLompoc++
+      continue
+    }
 
     try {
       // Skip if business with this slug already exists
@@ -267,7 +277,7 @@ async function main() {
     }
   }
 
-  console.log(`\n✅  Done. inserted=${inserted}  enriched/skipped=${skipped}  errors=${errors}`)
+  console.log(`\n✅  Done. inserted=${inserted}  enriched/skipped=${skipped}  non-Lompoc-skipped=${skippedNonLompoc}  errors=${errors}`)
   process.exit(0)
 }
 
