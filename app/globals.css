@@ -217,6 +217,7 @@
   .form-message-enter { animation: none; }
   .user-menu-dropdown { animation: none; }
   .reveal-item { opacity: 1; transform: none; transition: none; }
+  .animate-pop-badge { animation: none; }
 }
 
 /* ── Hide scrollbars on horizontal scroll containers ── */
@@ -322,6 +323,21 @@
 }
 .card-enter {
   animation: card-enter 320ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* Pricing "Most popular" badge pulse */
+@keyframes pop-badge-pulse {
+  0%, 100% {
+    opacity: 0.9;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.06);
+  }
+}
+.animate-pop-badge {
+  animation: pop-badge-pulse 2.4s ease-in-out infinite;
 }
 
 /* Image fade-in on load */
