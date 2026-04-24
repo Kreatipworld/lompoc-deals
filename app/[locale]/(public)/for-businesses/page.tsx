@@ -12,6 +12,7 @@ import {
   Check,
 } from "lucide-react"
 import { getSiteStats } from "@/lib/queries"
+import { Reveal } from "@/components/reveal"
 
 export const metadata = {
   title: "Get Your Lompoc Business Listed Free — Be Found by Locals | Lompoc Deals",
@@ -52,7 +53,7 @@ export default async function ForBusinessesPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24 lg:py-32">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
             {/* Left: copy + CTA */}
-            <div>
+            <Reveal preset="stagger" as="div">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
                 <MapPin className="h-3 w-3" />
                 For Lompoc business owners
@@ -90,10 +91,10 @@ export default async function ForBusinessesPage() {
                 ✓ Free forever for the basics &nbsp;·&nbsp; ✓ No credit card
                 &nbsp;·&nbsp; ✓ 30-second setup
               </p>
-            </div>
+            </Reveal>
 
             {/* Right: visual stat card */}
-            <div className="relative">
+            <Reveal preset="fadeIn" delay={300} className="relative">
               <div className="relative rounded-3xl border bg-card p-8 shadow-xl shadow-primary/5">
                 <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                   Lompoc Deals · Right now
@@ -125,7 +126,7 @@ export default async function ForBusinessesPage() {
                 aria-hidden
                 className="absolute -inset-6 -z-10 rounded-[40px] bg-primary/5 blur-2xl"
               />
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
