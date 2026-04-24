@@ -7,6 +7,8 @@ import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActiv
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { DealsCarousel } from "@/components/deals-carousel"
+import { AnimeReveal } from "@/components/anime-reveal"
+import { AnimatedCounter } from "@/components/animated-counter"
 
 export const metadata = {
   title: "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
@@ -97,12 +99,12 @@ export default async function HomePage() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
-              {stats.activeDeals} active deals
+              <AnimatedCounter value={stats.activeDeals} duration={1200} delay={600} /> active deals
             </span>
             <span className="text-white/30">·</span>
-            <span>{stats.businesses} local businesses</span>
+            <span><AnimatedCounter value={stats.businesses} duration={1400} delay={700} /> local businesses</span>
             <span className="text-white/30">·</span>
-            <span>{stats.categories} categories</span>
+            <span><AnimatedCounter value={stats.categories} duration={1000} delay={800} /> categories</span>
           </div>
         </div>
       </section>
@@ -116,14 +118,14 @@ export default async function HomePage() {
           EXPLORE BY CATEGORY — Image card grid
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-14">
-        <div className="mb-8">
+        <AnimeReveal direction="up" delay={0} duration={600} className="mb-8">
           <h2 className="font-display text-3xl font-bold tracking-tight">
             Live Local. Love Lompoc.
           </h2>
           <p className="mt-1 text-muted-foreground">
             Find things to do, eat, and discover in Lompoc
           </p>
-        </div>
+        </AnimeReveal>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((cat, i) => {
@@ -347,14 +349,14 @@ export default async function HomePage() {
          ───────────────────────────────────────────────── */}
       <section className="border-t bg-accent/30 py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-10 text-center">
+          <AnimeReveal direction="up" delay={0} duration={600} className="mb-10 text-center">
             <h2 className="font-display text-3xl font-bold tracking-tight">
               How It Works
             </h2>
             <p className="mt-2 text-muted-foreground">
               Connecting Lompoc locals with businesses since day one.
             </p>
-          </div>
+          </AnimeReveal>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {[
               {
@@ -375,20 +377,19 @@ export default async function HomePage() {
                 body: "Every deal claimed is a sale made in Lompoc. Keep your dollars here.",
                 step: "03",
               },
-            ].map(({ icon: Icon, title, body, step }) => (
-              <div
-                key={step}
-                className="relative flex flex-col items-center rounded-2xl border bg-background p-8 text-center shadow-sm"
-              >
-                <span className="absolute right-4 top-4 font-display text-5xl font-bold text-muted/30 select-none">
-                  {step}
-                </span>
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Icon className="h-6 w-6" />
+            ].map(({ icon: Icon, title, body, step }, i) => (
+              <AnimeReveal key={step} direction="up" delay={i * 80} duration={560}>
+                <div className="relative flex flex-col items-center rounded-2xl border bg-background p-8 text-center shadow-sm">
+                  <span className="absolute right-4 top-4 font-display text-5xl font-bold text-muted/30 select-none">
+                    {step}
+                  </span>
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-display text-lg font-semibold">{title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{body}</p>
                 </div>
-                <h3 className="font-display text-lg font-semibold">{title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{body}</p>
-              </div>
+              </AnimeReveal>
             ))}
           </div>
         </div>
@@ -427,9 +428,9 @@ export default async function HomePage() {
                 name: "Ana L.",
                 neighborhood: "Mission Hills",
               },
-            ].map(({ quote, name, neighborhood }) => (
+            ].map(({ quote, name, neighborhood }, i) => (
+              <AnimeReveal key={name} direction="up" delay={i * 80} duration={560}>
               <figure
-                key={name}
                 className="flex flex-col rounded-2xl border bg-accent/40 p-6"
               >
                 <Quote className="mb-3 h-5 w-5 text-primary/40" />
@@ -446,6 +447,7 @@ export default async function HomePage() {
                   </div>
                 </figcaption>
               </figure>
+              </AnimeReveal>
             ))}
           </div>
           <p className="mt-4 text-center text-xs text-muted-foreground">
