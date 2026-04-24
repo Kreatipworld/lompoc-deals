@@ -8,7 +8,7 @@
 
 "use client"
 
-import { useEffect, useRef, type ReactNode } from "react"
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react"
 import { DURATION, EASE, STAGGER, usePrefersReducedMotion } from "@/lib/motion"
 import type { AnimationParams } from "animejs"
 
@@ -36,6 +36,17 @@ export function Reveal({
   const ref = useRef<HTMLElement>(null)
   const reduced = usePrefersReducedMotion()
 
+  // Render-time initial style prevents FOUC. Stagger handles children in
+  // useEffect — root stays visible so children can reveal against a stable parent.
+  const initialStyle: CSSProperties =
+    preset === "stagger"
+      ? { willChange: "opacity, transform" }
+      : preset === "fadeUp"
+        ? { opacity: 0, transform: "translateY(16px)", willChange: "opacity, transform" }
+        : preset === "scaleIn"
+          ? { opacity: 0, transform: "scale(0.98)", willChange: "opacity, transform" }
+          : { opacity: 0, willChange: "opacity, transform" } // fadeIn
+
   useEffect(() => {
     const root = ref.current
     if (!root) return
@@ -53,22 +64,13 @@ export function Reveal({
       return
     }
 
-    // Set initial state inline (prevents FOUC)
-    const setInitial = (el: HTMLElement) => {
-      el.style.opacity = "0"
-      if (preset === "fadeUp" || preset === "stagger") {
-        el.style.transform = "translateY(16px)"
-      } else if (preset === "scaleIn") {
-        el.style.transform = "scale(0.98)"
-      }
-    }
-
+    // Only stagger needs to initialize children imperatively here —
+    // non-stagger presets are already hidden via initialStyle above.
     if (preset === "stagger") {
       for (const child of Array.from(root.children) as HTMLElement[]) {
-        setInitial(child)
+        child.style.opacity = "0"
+        child.style.transform = "translateY(16px)"
       }
-    } else {
-      setInitial(root)
     }
 
     const run = async () => {
@@ -112,7 +114,7 @@ export function Reveal({
 
   return (
     // @ts-expect-error polymorphic ref
-    <Tag ref={ref} className={className} style={{ willChange: "opacity, transform" }}>
+    <Tag ref={ref} className={className} style={initialStyle}>
       {children}
     </Tag>
   )
