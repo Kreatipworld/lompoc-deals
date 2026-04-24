@@ -9,6 +9,7 @@ import { SafeImage } from "@/components/safe-image"
 import { DealsCarousel } from "@/components/deals-carousel"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
+import { Reveal } from "@/components/reveal"
 
 export const metadata = {
   title: "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
@@ -518,7 +519,7 @@ export default async function HomePage() {
           BUSINESS CTA
          ───────────────────────────────────────────────── */}
       <section className="mx-auto mb-16 max-w-6xl px-4">
-        <div className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/10 via-accent to-background p-8 sm:p-12">
+        <Reveal preset="scaleIn" className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/10 via-accent to-background p-8 sm:p-12">
           <div
             aria-hidden
             className="absolute right-[-40px] top-[-40px] h-48 w-48 rounded-full bg-primary/10 blur-2xl"
@@ -554,7 +555,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   )
