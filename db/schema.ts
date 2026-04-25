@@ -11,6 +11,7 @@ import {
   jsonb,
   primaryKey,
   uniqueIndex,
+  index,
 } from "drizzle-orm/pg-core"
 
 // ---------- enums ----------
@@ -35,6 +36,14 @@ export const subscriptionStatus = pgEnum("subscription_status", [
   "past_due",
   "canceled",
   "trialing",
+])
+export const feedPostType = pgEnum("feed_post_type", ["for_sale", "info"])
+export const feedPostStatus = pgEnum("feed_post_status", [
+  "pending",
+  "approved",
+  "rejected",
+  "expired",
+  "sold",
 ])
 
 // ---------- users ----------
@@ -412,6 +421,11 @@ export const garageSaleStatus = pgEnum("garage_sale_status", [
   "removed",
 ])
 
+/**
+ * @deprecated 2026-04-24 — replaced by `feedPosts` (Phase 5 Town Feed).
+ * Kept read-only for one release; will be dropped in a follow-up migration.
+ * New code MUST use `feedPosts`. See docs/superpowers/specs/2026-04-24-town-feed-design.md.
+ */
 export const garageSales = pgTable("garage_sales", {
   id: serial("id").primaryKey(),
   postedByUserId: integer("posted_by_user_id").references(() => users.id, {
@@ -445,3 +459,52 @@ export const subscribers = pgTable("subscribers", {
     .notNull()
     .defaultNow(),
 })
+
+// ---------- feed posts ----------
+export const feedPosts = pgTable(
+  "feed_posts",
+  {
+    id: serial("id").primaryKey(),
+    postedByUserId: integer("posted_by_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: feedPostType("type").notNull(),
+
+    // Common
+    title: varchar("title", { length: 200 }).notNull(),
+    description: text("description"),
+    photos: jsonb("photos"), // string[] of Vercel Blob URLs (0–4)
+
+    // for_sale only
+    priceCents: integer("price_cents"),
+    saleStartsAt: timestamp("sale_starts_at", { withTimezone: true }),
+    saleEndsAt: timestamp("sale_ends_at", { withTimezone: true }),
+
+    // Optional location
+    address: varchar("address", { length: 300 }),
+    lat: doublePrecision("lat"),
+    lng: doublePrecision("lng"),
+
+    // Moderation
+    status: feedPostStatus("status").notNull().default("pending"),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    approvedByUserId: integer("approved_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    rejectionReason: text("rejection_reason"),
+
+    // Highlight
+    isFeatured: boolean("is_featured").notNull().default(false),
+
+    // Lifecycle
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    statusExpiresIdx: index("feed_posts_status_expires_idx").on(t.status, t.expiresAt),
+    typeStatusIdx: index("feed_posts_type_status_idx").on(t.type, t.status),
+    postedByIdx: index("feed_posts_posted_by_idx").on(t.postedByUserId),
+  })
+)
