@@ -217,7 +217,8 @@
   .form-message-enter { animation: none; }
   .user-menu-dropdown { animation: none; }
   .reveal-item { opacity: 1; transform: none; transition: none; }
-  .animate-pop-badge { animation: none; }
+  .animate-pop-badge,
+  .animate-feed-new-pulse { animation: none; }
 }
 
 /* ── Hide scrollbars on horizontal scroll containers ── */
@@ -338,6 +339,21 @@
 }
 .animate-pop-badge {
   animation: pop-badge-pulse 2.4s ease-in-out infinite;
+}
+
+/* Feed "NEW" badge pulse — marks freshly approved posts (24h) */
+@keyframes feed-new-pulse {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+.animate-feed-new-pulse {
+  animation: feed-new-pulse 1.6s ease-in-out infinite;
 }
 
 /* Image fade-in on load */
