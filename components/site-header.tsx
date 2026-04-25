@@ -2,6 +2,7 @@ import { NavLink } from "@/components/nav-link"
 import { UserMenu } from "@/components/user-menu"
 import { WeatherBadge } from "@/components/weather-badge"
 import { MobileMenu } from "@/components/mobile-menu"
+import { LocaleSwitcher } from "@/components/locale-switcher"
 import { Link } from "@/i18n/navigation"
 import { getTranslations } from "next-intl/server"
 
@@ -44,6 +45,9 @@ export async function SiteHeader() {
           {/* Weather badge — desktop only, too noisy on mobile */}
           <span className="hidden sm:block">
             <WeatherBadge />
+          </span>
+          <span className="hidden sm:block">
+            <LocaleSwitcher />
           </span>
           <UserMenu />
           <MobileMenu />

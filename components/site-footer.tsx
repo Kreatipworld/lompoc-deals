@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import { Flower2 } from "lucide-react"
+import { LocaleSwitcher } from "@/components/locale-switcher"
 import { getTranslations } from "next-intl/server"
 
 export async function SiteFooter() {
@@ -120,6 +121,7 @@ export async function SiteFooter() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t pt-6 text-xs text-muted-foreground sm:flex-row">
           <p>{t("copyright", { year })}</p>
+          <LocaleSwitcher />
           <p>{t("madeWith")}</p>
         </div>
       </div>
