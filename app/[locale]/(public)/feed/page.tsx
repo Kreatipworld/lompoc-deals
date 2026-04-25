@@ -4,9 +4,9 @@ import { getFeedItems, type FeedDisplayItem } from "@/lib/feed-queries"
 import { FeedMasonry } from "@/components/feed-masonry"
 
 export const metadata = {
-  title: "Lompoc Feed — local listings, info, and events",
+  title: "Lompoc Neighborhood — local listings, yard sales, info, and events",
   description:
-    "Browse the Lompoc community feed: items for sale, neighborhood info, and upcoming events from your neighbors.",
+    "Browse the Lompoc neighborhood feed: items for sale, yard sales, neighborhood info, and upcoming events from your neighbors.",
 }
 
 type FeedType = "for_sale" | "info" | "event"
@@ -46,15 +46,15 @@ export default async function FeedPage({
       <header className="mb-6">
         <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
           <Sparkles className="h-3 w-3" />
-          Lompoc Feed
+          Neighborhood
         </div>
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
           What&apos;s happening in Lompoc
         </h1>
         <p className="mt-2 max-w-2xl text-base text-muted-foreground">
-          Locals post things for sale, neighborhood info, and events. Have something to share?{" "}
+          Locals post things for sale, yard sales, neighborhood info, and events. Have something to share?{" "}
           <Link href="/feed/post" className="font-medium text-primary underline">
-            Post to the feed →
+            Post to the neighborhood →
           </Link>
         </p>
       </header>

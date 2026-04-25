@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Mail, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag } from "lucide-react"
+import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
@@ -14,8 +14,7 @@ const NAV_ITEMS = [
   { href: "/businesses", icon: LayoutGrid, label: "Directory" },
   { href: "/map", icon: Map, label: "Map" },
   { href: "/hotels", icon: BedDouble, label: "Hotels" },
-  { href: "/garage-sales", icon: ShoppingBag, label: "Garage Sales" },
-  { href: "/subscribe", icon: Mail, label: "Subscribe" },
+  { href: "/feed", icon: ShoppingBag, label: "Neighborhood" },
   { href: "/locals", icon: Heart, label: "Locals" },
   { href: "/for-businesses", icon: Building2, label: "Businesses" },
   { href: "/account", icon: User, label: "Account" },
