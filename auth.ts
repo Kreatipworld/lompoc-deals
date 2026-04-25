@@ -1,6 +1,5 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import Google from "next-auth/providers/google"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
 import { eq } from "drizzle-orm"
@@ -19,10 +18,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
   providers: [
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID!,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-    }),
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
@@ -37,7 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: eq(users.email, email),
         })
         if (!found) return null
-        if (!found.passwordHash) return null // Google-only account
+        if (!found.passwordHash) return null // legacy account with no password set
 
         const ok = await bcrypt.compare(password, found.passwordHash)
         if (!ok) return null
@@ -51,59 +46,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account?.provider !== "google") return true
-
-      const email = user.email
-      if (!email) return false
-
-      const existing = await db.query.users.findFirst({
-        where: eq(users.email, email),
-      })
-
-      if (existing) {
-        // Link Google account to existing user if not already linked
-        if (!existing.googleId) {
-          await db
-            .update(users)
-            .set({
-              googleId: account.providerAccountId,
-              emailVerified: new Date(),
-              // Backfill name if missing
-              ...(existing.name ? {} : { name: profile?.name ?? null }),
-            })
-            .where(eq(users.id, existing.id))
-        }
-        return true
-      }
-
-      // Create new local user via Google
-      await db.insert(users).values({
-        email,
-        passwordHash: null,
-        role: "local",
-        name: profile?.name ?? null,
-        googleId: account.providerAccountId,
-        emailVerified: new Date(),
-      })
-      return true
-    },
-
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
-        if (account?.provider === "google") {
-          // Look up DB user to get our id and role
-          const found = await db.query.users.findFirst({
-            where: eq(users.email, user.email!),
-          })
-          if (found) {
-            token.id = String(found.id)
-            token.role = found.role
-          }
-        } else {
-          token.id = (user as { id: string }).id
-          token.role = (user as { role: "local" | "business" | "admin" }).role
-        }
+        token.id = (user as { id: string }).id
+        token.role = (user as { role: "local" | "business" | "admin" }).role
       }
       return token
     },

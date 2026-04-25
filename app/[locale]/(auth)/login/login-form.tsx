@@ -4,7 +4,6 @@ import { useFormState, useFormStatus } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { Mail, Lock } from "lucide-react"
 import { loginAction, type FormState } from "@/lib/auth-actions"
-import { GoogleSignInButton } from "@/components/google-sign-in-button"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -80,14 +79,6 @@ export function LoginForm({ from }: { from?: string }) {
       )}
 
       <SubmitButton />
-
-      <div className="relative flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">or</span>
-        <div className="h-px flex-1 bg-border" />
-      </div>
-
-      <GoogleSignInButton callbackUrl={from} />
 
       <p className="text-center text-sm text-muted-foreground">
         New here?{" "}

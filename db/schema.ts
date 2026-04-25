@@ -51,6 +51,7 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   passwordHash: text("password_hash"),
+  /** @deprecated Google OAuth was removed; column kept for rollback safety. Will be dropped in a future migration. */
   googleId: varchar("google_id", { length: 255 }).unique(),
   role: userRole("role").notNull().default("local"),
   name: varchar("name", { length: 200 }),

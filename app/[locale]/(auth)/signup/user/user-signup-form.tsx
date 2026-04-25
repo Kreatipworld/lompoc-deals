@@ -5,7 +5,6 @@ import { Link } from "@/i18n/navigation"
 import { Mail, Lock, User, MapPin, Tag } from "lucide-react"
 import { localSignupAction, type LocalSignupState } from "@/lib/user-signup-actions"
 import { INTEREST_OPTIONS } from "@/lib/interest-options"
-import { GoogleSignInButton } from "@/components/google-sign-in-button"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -28,14 +27,6 @@ export function UserSignupForm() {
 
   return (
     <div className="space-y-5">
-      <GoogleSignInButton callbackUrl="/account" />
-
-      <div className="relative flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">or sign up with email</span>
-        <div className="h-px flex-1 bg-border" />
-      </div>
-
     <form action={action} className="space-y-5">
       {/* Name */}
       <div className="space-y-2">
