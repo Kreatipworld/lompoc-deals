@@ -219,7 +219,7 @@ export async function requestPasswordResetAction(
   const { email } = parsed.data
   const user = await db.query.users.findFirst({
     where: eq(users.email, email),
-    columns: { id: true },
+    columns: { id: true, locale: true },
   })
 
   // Always return success to avoid leaking whether email exists
@@ -234,7 +234,7 @@ export async function requestPasswordResetAction(
     expiresAt,
   })
 
-  await sendPasswordResetEmail(email, token)
+  await sendPasswordResetEmail(email, token, (user.locale ?? "en") as "en" | "es")
 
   return { success: true }
 }

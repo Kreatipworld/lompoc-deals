@@ -64,7 +64,7 @@ export async function localSignupAction(
   })
 
   // Fire-and-forget welcome email — don't block signup on failure
-  sendWelcomeEmail(email, name, "local").catch((err) =>
+  sendWelcomeEmail(email, name, "local", locale).catch((err) =>
     console.error("[localSignupAction] welcome email failed:", err)
   )
 

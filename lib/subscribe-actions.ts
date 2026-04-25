@@ -49,7 +49,8 @@ export async function subscribeAction(
     })
   }
 
-  const result = await sendConfirmationEmail(email, token)
+  // TODO(i18n): subscribers table has no locale column; default to "en"
+  const result = await sendConfirmationEmail(email, token, "en")
   if (!result.ok) {
     // If email service isn't configured, still tell the user the
     // address is on file — they just won't receive a confirmation.

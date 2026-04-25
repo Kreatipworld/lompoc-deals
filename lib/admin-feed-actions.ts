@@ -18,7 +18,7 @@ async function requireAdmin(): Promise<number> {
 
 async function getPostAndPoster(id: number) {
   const result = await db
-    .select({ post: feedPosts, posterEmail: users.email })
+    .select({ post: feedPosts, posterEmail: users.email, posterLocale: users.locale })
     .from(feedPosts)
     .leftJoin(users, eq(users.id, feedPosts.postedByUserId))
     .where(eq(feedPosts.id, id))
@@ -33,7 +33,7 @@ export async function approveFeedPostAction(formData: FormData): Promise<void> {
 
   const data = await getPostAndPoster(id)
   if (!data) return
-  const { post, posterEmail } = data
+  const { post, posterEmail, posterLocale } = data
 
   const now = new Date()
   const expiresAt = computeExpiration(
@@ -52,7 +52,7 @@ export async function approveFeedPostAction(formData: FormData): Promise<void> {
     .where(eq(feedPosts.id, id))
 
   if (posterEmail) {
-    sendFeedApprovalEmail(posterEmail, post.title).catch((e) =>
+    sendFeedApprovalEmail(posterEmail, post.title, (posterLocale ?? "en") as "en" | "es").catch((e) =>
       console.error("[approveFeedPostAction] email failed:", e)
     )
   }
@@ -73,7 +73,7 @@ export async function rejectFeedPostAction(formData: FormData): Promise<void> {
 
   const data = await getPostAndPoster(id)
   if (!data) return
-  const { post, posterEmail } = data
+  const { post, posterEmail, posterLocale } = data
 
   await db
     .update(feedPosts)
@@ -81,7 +81,7 @@ export async function rejectFeedPostAction(formData: FormData): Promise<void> {
     .where(eq(feedPosts.id, id))
 
   if (posterEmail) {
-    sendFeedRejectionEmail(posterEmail, post.title, reason).catch((e) =>
+    sendFeedRejectionEmail(posterEmail, post.title, reason, (posterLocale ?? "en") as "en" | "es").catch((e) =>
       console.error("[rejectFeedPostAction] email failed:", e)
     )
   }
@@ -97,7 +97,7 @@ export async function featureFeedPostAction(formData: FormData): Promise<void> {
 
   const data = await getPostAndPoster(id)
   if (!data) return
-  const { post, posterEmail } = data
+  const { post, posterEmail, posterLocale } = data
 
   if (post.status === "pending") {
     const now = new Date()
@@ -117,7 +117,7 @@ export async function featureFeedPostAction(formData: FormData): Promise<void> {
       .where(eq(feedPosts.id, id))
 
     if (posterEmail) {
-      sendFeedApprovalEmail(posterEmail, post.title).catch((e) =>
+      sendFeedApprovalEmail(posterEmail, post.title, (posterLocale ?? "en") as "en" | "es").catch((e) =>
         console.error("[featureFeedPostAction] email failed:", e)
       )
     }

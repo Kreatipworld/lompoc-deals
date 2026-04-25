@@ -384,7 +384,7 @@ type DealInfo = {
 async function notifyDealUpdated(dealId: number, info: DealInfo) {
   try {
     const favRows = await db
-      .select({ email: users.email, token: users.email, notif: users.notificationEmails })
+      .select({ email: users.email, token: users.email, notif: users.notificationEmails, locale: users.locale })
       .from(favorites)
       .innerJoin(users, eq(favorites.userId, users.id))
       .where(and(eq(favorites.dealId, dealId), eq(users.notificationEmails, true)))
@@ -394,7 +394,8 @@ async function notifyDealUpdated(dealId: number, info: DealInfo) {
         sendDealUpdateEmail(
           row.email,
           { id: dealId, ...info },
-          Buffer.from(row.email).toString("base64url")
+          Buffer.from(row.email).toString("base64url"),
+          (row.locale ?? "en") as "en" | "es"
         )
       )
     )
@@ -406,7 +407,7 @@ async function notifyDealUpdated(dealId: number, info: DealInfo) {
 async function notifyNewDeal(businessId: number, info: DealInfo & { id: number }) {
   try {
     const followRows = await db
-      .select({ email: users.email, notif: users.notificationEmails })
+      .select({ email: users.email, notif: users.notificationEmails, locale: users.locale })
       .from(businessFollows)
       .innerJoin(users, eq(businessFollows.userId, users.id))
       .where(
@@ -421,7 +422,8 @@ async function notifyNewDeal(businessId: number, info: DealInfo & { id: number }
         sendNewDealFromFollowedBusinessEmail(
           row.email,
           info,
-          Buffer.from(row.email).toString("base64url")
+          Buffer.from(row.email).toString("base64url"),
+          (row.locale ?? "en") as "en" | "es"
         )
       )
     )

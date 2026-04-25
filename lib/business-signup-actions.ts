@@ -216,7 +216,7 @@ export async function businessSignupSubmitAction(
   })
 
   // Fire-and-forget welcome email — don't block signup on failure
-  sendWelcomeEmail(email, ownerFullName, "business").catch((err) =>
+  sendWelcomeEmail(email, ownerFullName, "business", locale).catch((err) =>
     console.error("[businessSignupSubmitAction] welcome email failed:", err)
   )
 
