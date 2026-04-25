@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/sync-events",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/expire-feed-posts",
+      "schedule": "0 8 * * *"
     }
   ]
 }
