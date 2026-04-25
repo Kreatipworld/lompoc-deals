@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition, useCallback, useEffect } from "react"
+import { useState, useTransition, useCallback, useEffect, useRef } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { useRouter } from "next/navigation"
@@ -22,6 +22,7 @@ import {
   type BizSignupState,
 } from "@/lib/business-signup-actions"
 import { TIERS } from "@/lib/stripe"
+import { DURATION, EASE, usePrefersReducedMotion } from "@/lib/motion"
 import type { Category } from "./page"
 
 // ── Shared submit button ────────────────────────────────────────────────────
@@ -382,6 +383,38 @@ export function BusinessSignupWizard({
   const [step1Data, setStep1Data] = useState<Record<string, string>>({})
   const [plan, setPlan] = useState<"free" | "standard" | "premium">("standard")
 
+  const stepContainerRef = useRef<HTMLDivElement>(null)
+  const prevStepRef = useRef(step)
+  const reducedMotion = usePrefersReducedMotion()
+
+  useEffect(() => {
+    const container = stepContainerRef.current
+    if (!container) return
+    if (reducedMotion) {
+      prevStepRef.current = step
+      return
+    }
+    if (prevStepRef.current === step) return
+
+    const forward = step > prevStepRef.current
+    prevStepRef.current = step
+
+    let cancelled = false
+    ;(async () => {
+      const { animate } = await import("animejs")
+      if (cancelled) return
+      animate(container, {
+        opacity: [0, 1],
+        translateX: [forward ? 20 : -20, 0],
+        duration: DURATION.transition,
+        easing: EASE.standard,
+      })
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [step, reducedMotion])
+
   // Restore step1Data and plan from sessionStorage on mount (covers page reloads and soft-nav remounts)
   useEffect(() => {
     try {
@@ -423,34 +456,36 @@ export function BusinessSignupWizard({
         <StepBar current={step} total={STEP_LABELS.length} />
       </div>
 
-      {step === 0 && (
-        <Step1
-          categories={categories}
-          defaultValues={step1Data}
-          onNext={(data) => {
-            setStep1Data(data)
-            goToStep(1)
-          }}
-        />
-      )}
-      {step === 1 && (
-        <Step2
-          defaultPlan={plan}
-          onNext={(p) => {
-            setPlan(p)
-            goToStep(2)
-          }}
-          onBack={() => goToStep(0)}
-        />
-      )}
-      {step === 2 && (
-        <Step3
-          plan={plan}
-          step1Data={step1Data}
-          showCanceled={showCanceled}
-          onBack={() => goToStep(1)}
-        />
-      )}
+      <div ref={stepContainerRef}>
+        {step === 0 && (
+          <Step1
+            categories={categories}
+            defaultValues={step1Data}
+            onNext={(data) => {
+              setStep1Data(data)
+              goToStep(1)
+            }}
+          />
+        )}
+        {step === 1 && (
+          <Step2
+            defaultPlan={plan}
+            onNext={(p) => {
+              setPlan(p)
+              goToStep(2)
+            }}
+            onBack={() => goToStep(0)}
+          />
+        )}
+        {step === 2 && (
+          <Step3
+            plan={plan}
+            step1Data={step1Data}
+            showCanceled={showCanceled}
+            onBack={() => goToStep(1)}
+          />
+        )}
+      </div>
     </div>
   )
 }
