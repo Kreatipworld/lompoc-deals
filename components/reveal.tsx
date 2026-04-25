@@ -36,11 +36,12 @@ export function Reveal({
   const ref = useRef<HTMLElement>(null)
   const reduced = usePrefersReducedMotion()
 
-  // Render-time initial style prevents FOUC. Stagger handles children in
-  // useEffect — root stays visible so children can reveal against a stable parent.
+  // Render-time initial style prevents FOUC. For stagger, the root is also
+  // hidden at render time (opacity: 0) so above-the-fold stagger groups don't
+  // flash their children before useEffect can hide them individually.
   const initialStyle: CSSProperties =
     preset === "stagger"
-      ? { willChange: "opacity, transform" }
+      ? { opacity: 0, willChange: "opacity, transform" }
       : preset === "fadeUp"
         ? { opacity: 0, transform: "translateY(16px)", willChange: "opacity, transform" }
         : preset === "scaleIn"
@@ -64,13 +65,15 @@ export function Reveal({
       return
     }
 
-    // Only stagger needs to initialize children imperatively here —
-    // non-stagger presets are already hidden via initialStyle above.
+    // Stagger: hide children first (their individual opacity), then reveal the
+    // root. Order matters — reversing it would show children at full opacity
+    // for one frame before they get hidden.
     if (preset === "stagger") {
       for (const child of Array.from(root.children) as HTMLElement[]) {
         child.style.opacity = "0"
         child.style.transform = "translateY(16px)"
       }
+      root.style.opacity = "1"
     }
 
     const run = async () => {

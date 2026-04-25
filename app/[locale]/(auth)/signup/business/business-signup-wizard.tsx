@@ -299,10 +299,19 @@ function Step3({
   )
   const stripeConfigured = !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
+  const overlayShown = !!state?.checkoutUrl
+
   return (
     <>
-      {state?.checkoutUrl && <SignupSuccessMoment checkoutUrl={state.checkoutUrl} />}
-      <form action={action} className="space-y-5">
+      {overlayShown && <SignupSuccessMoment checkoutUrl={state!.checkoutUrl!} />}
+      <form
+        action={action}
+        className="space-y-5"
+        // Block keyboard/pointer interaction with the underlying form while
+        // the success overlay is shown — prevents tab-back focus + SR noise
+        // during the 900ms pre-Stripe window.
+        inert={overlayShown ? true : undefined}
+      >
         {/* Hidden fields carry wizard state */}
         {Object.entries(step1Data).map(([k, v]) => (
           <input key={k} type="hidden" name={k} value={v} />
