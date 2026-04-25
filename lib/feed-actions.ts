@@ -14,8 +14,8 @@ import { addDays, computeExpiration } from "@/lib/feed-expiration"
 
 async function requireLocalUser() {
   const session = await auth()
-  if (!session?.user) {
-    throw new Error("Not authorized — sign in required")
+  if (!session?.user || session.user.role !== "local") {
+    throw new Error("Not authorized — local account required")
   }
   return { userId: parseInt(session.user.id, 10) }
 }
@@ -85,12 +85,16 @@ export async function submitFeedPostAction(
   }
 
   // Upload photos (0–4)
+  const ALLOWED_PHOTO_TYPES = new Set(["image/jpeg", "image/png", "image/webp"])
   const photoFiles = formData.getAll("photos").filter((v): v is File => v instanceof File && v.size > 0)
   if (photoFiles.length > 4) {
     return { error: "You can upload up to 4 photos." }
   }
   const photoUrls: string[] = []
   for (const file of photoFiles) {
+    if (!ALLOWED_PHOTO_TYPES.has(file.type)) {
+      return { error: `"${file.name}" must be a JPEG, PNG, or WebP image.` }
+    }
     if (file.size > 5 * 1024 * 1024) {
       return { error: `Photo "${file.name}" exceeds 5MB.` }
     }
@@ -169,12 +173,18 @@ export async function extendExpirationAction(
     return { error: "Only approved posts can be extended." }
   }
 
-  const newExpiresAt = computeExpiration(
-    { type: post.type, saleEndsAt: post.saleEndsAt },
-    new Date()
-  )
+  // For yard-sale posts (saleEndsAt set), the original window has usually
+  // passed by the time the user clicks "Still valid" — feeding that stale
+  // saleEndsAt back into computeExpiration would produce an already-past
+  // expiresAt and the cron would expire the post again. Instead, treat
+  // "extend" as converting the post to single-item-style: clear saleEndsAt
+  // and use the standard 30-day rule.
+  const newExpiresAt = computeExpiration({ type: post.type, saleEndsAt: null }, new Date())
 
-  await db.update(feedPosts).set({ expiresAt: newExpiresAt }).where(eq(feedPosts.id, id))
+  await db
+    .update(feedPosts)
+    .set({ expiresAt: newExpiresAt, saleEndsAt: null, saleStartsAt: null })
+    .where(eq(feedPosts.id, id))
   revalidatePath("/feed/my")
   revalidatePath("/feed")
   return { success: "Extended for another period." }

@@ -1,5 +1,7 @@
-import { redirect, RedirectType } from "next/navigation"
+import { permanentRedirect } from "next/navigation"
 
 export default function GarageSalesPage() {
-  redirect("/feed?type=for_sale", RedirectType.replace)
+  // 308 permanent — old yard-sales URL becomes the for-sale slice of the feed.
+  // Search engines transfer authority to /feed via the permanent status.
+  permanentRedirect("/feed?type=for_sale")
 }

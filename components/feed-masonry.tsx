@@ -1,16 +1,6 @@
-"use client"
-
-import Masonry from "react-masonry-css"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
 import { Reveal } from "@/components/reveal"
 import { FeedCard } from "@/components/feed-card"
-
-const BREAKPOINTS = {
-  default: 3,
-  1024: 3,
-  640: 2,
-  0: 1,
-}
 
 export function FeedMasonry({ items }: { items: FeedDisplayItem[] }) {
   const featured = items.filter((i) => i.isFeatured).slice(0, 2)
@@ -34,18 +24,16 @@ export function FeedMasonry({ items }: { items: FeedDisplayItem[] }) {
           No posts yet. Be the first to post!
         </p>
       ) : (
-        <Reveal preset="stagger" stagger={80}>
-          <Masonry
-            breakpointCols={BREAKPOINTS}
-            className="-ml-4 flex w-auto"
-            columnClassName="pl-4 bg-clip-padding"
-          >
-            {rest.map((item) => (
-              <div key={item.id} className="mb-4">
-                <FeedCard item={item} />
-              </div>
-            ))}
-          </Masonry>
+        <Reveal
+          preset="stagger"
+          stagger={80}
+          className="columns-1 gap-4 sm:columns-2 lg:columns-3"
+        >
+          {rest.map((item) => (
+            <div key={item.id} className="mb-4 break-inside-avoid">
+              <FeedCard item={item} />
+            </div>
+          ))}
         </Reveal>
       )}
     </div>
