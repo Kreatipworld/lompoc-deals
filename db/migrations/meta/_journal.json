@@ -57,6 +57,13 @@
       "when": 1775756839622,
       "tag": "0007_brave_zarek",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1777091747252,
+      "tag": "0008_typical_captain_stacy",
+      "breakpoints": true
     }
   ]
 }
