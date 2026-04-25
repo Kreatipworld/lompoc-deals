@@ -9,6 +9,7 @@ import { db } from "@/db/client"
 import { users } from "@/db/schema"
 import { signIn } from "@/auth"
 import { sendWelcomeEmail } from "@/lib/email"
+import { getCurrentLocale } from "@/lib/i18n-helpers"
 
 const localSignupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -50,6 +51,7 @@ export async function localSignupAction(
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
+  const locale = await getCurrentLocale()
   await db.insert(users).values({
     email,
     passwordHash,
@@ -58,6 +60,7 @@ export async function localSignupAction(
     city: city ?? null,
     zip: zip ?? null,
     interestsJson: interests && interests.length > 0 ? interests : null,
+    locale,
   })
 
   // Fire-and-forget welcome email — don't block signup on failure

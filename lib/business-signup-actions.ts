@@ -14,6 +14,7 @@ import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { sendWelcomeEmail } from "@/lib/email"
 import { lompocAddressError } from "@/lib/lompoc-zip"
+import { getCurrentLocale } from "@/lib/i18n-helpers"
 
 // ─── Step 1 — Account creation ──────────────────────────────────────────────
 
@@ -179,9 +180,10 @@ export async function businessSignupSubmitAction(
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
+  const locale = await getCurrentLocale()
   const [newUser] = await db
     .insert(users)
-    .values({ email, passwordHash, role: "business" })
+    .values({ email, passwordHash, role: "business", locale })
     .returning({ id: users.id })
 
   const userId = newUser.id
