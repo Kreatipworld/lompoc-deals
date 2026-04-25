@@ -266,6 +266,20 @@
     "required": "Obligatorio",
     "optional": "Opcional"
   },
+  "mobileMenu": {
+    "home": "Inicio",
+    "deals": "Ofertas",
+    "search": "Buscar",
+    "directory": "Directorio",
+    "map": "Mapa",
+    "hotels": "Hoteles",
+    "neighborhood": "Vecindario",
+    "locals": "Locales",
+    "businesses": "Negocios",
+    "account": "Cuenta",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse"
+  },
   "garageSales": {
     "title": "Ventas de Garaje en Lompoc",
     "subtitle": "Ventas de garaje publicadas por la comunidad",

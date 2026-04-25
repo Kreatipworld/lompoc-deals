@@ -6,22 +6,25 @@ import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
 import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-const NAV_ITEMS = [
-  { href: "/", icon: Home, label: "Home" },
-  { href: "/deals", icon: Tag, label: "Deals" },
-  { href: "/search", icon: Search, label: "Search" },
-  { href: "/businesses", icon: LayoutGrid, label: "Directory" },
-  { href: "/map", icon: Map, label: "Map" },
-  { href: "/hotels", icon: BedDouble, label: "Hotels" },
-  { href: "/feed", icon: ShoppingBag, label: "Neighborhood" },
-  { href: "/locals", icon: Heart, label: "Locals" },
-  { href: "/for-businesses", icon: Building2, label: "Businesses" },
-  { href: "/account", icon: User, label: "Account" },
-] as const
+import { useTranslations } from "next-intl"
+import { LocaleSwitcher } from "@/components/locale-switcher"
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
+  const t = useTranslations("mobileMenu")
+
+  const navItems = [
+    { href: "/", icon: Home, label: t("home") },
+    { href: "/deals", icon: Tag, label: t("deals") },
+    { href: "/search", icon: Search, label: t("search") },
+    { href: "/businesses", icon: LayoutGrid, label: t("directory") },
+    { href: "/map", icon: Map, label: t("map") },
+    { href: "/hotels", icon: BedDouble, label: t("hotels") },
+    { href: "/feed", icon: ShoppingBag, label: t("neighborhood") },
+    { href: "/locals", icon: Heart, label: t("locals") },
+    { href: "/for-businesses", icon: Building2, label: t("businesses") },
+    { href: "/account", icon: User, label: t("account") },
+  ]
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
 
@@ -81,8 +84,11 @@ export function MobileMenu() {
 
         {/* Nav links */}
         <nav className="flex-1 overflow-y-auto px-2 py-4">
+          <div className="px-1 pb-3">
+            <LocaleSwitcher variant="mobile" />
+          </div>
           <ul className="space-y-1">
-            {NAV_ITEMS.map(({ href, icon: Icon, label }) => {
+            {navItems.map(({ href, icon: Icon, label }) => {
               const isActive =
                 href === "/"
                   ? pathname === "/" || pathname === "/en" || pathname === "/es"
@@ -117,7 +123,7 @@ export function MobileMenu() {
                   className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
                   <LogIn className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                  Sign In
+                  {t("signIn")}
                 </Link>
               </li>
               <li>
@@ -126,7 +132,7 @@ export function MobileMenu() {
                   className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
                   <UserPlus className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                  Sign Up
+                  {t("signUp")}
                 </Link>
               </li>
             </ul>
