@@ -5,8 +5,8 @@ export const routing = defineRouting({
   defaultLocale: "en",
   // English-only mode: no /en or /es prefix on URLs.
   // Spanish translations stay in messages/es.json but are unreachable.
-  localePrefix: "never",
-  localeDetection: false,
+  localePrefix: "as-needed",
+  localeDetection: true,
 })
 
 export type Locale = (typeof routing.locales)[number]
