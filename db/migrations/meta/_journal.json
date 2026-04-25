@@ -64,6 +64,13 @@
       "when": 1777091747252,
       "tag": "0008_typical_captain_stacy",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1777145845901,
+      "tag": "0009_many_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }

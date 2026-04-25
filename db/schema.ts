@@ -53,6 +53,7 @@ export const users = pgTable("users", {
   passwordHash: text("password_hash"),
   /** @deprecated Google OAuth was removed; column kept for rollback safety. Will be dropped in a future migration. */
   googleId: varchar("google_id", { length: 255 }).unique(),
+  locale: varchar("locale", { length: 5 }).notNull().default("en"),
   role: userRole("role").notNull().default("local"),
   name: varchar("name", { length: 200 }),
   emailVerified: timestamp("email_verified", { withTimezone: true }),
