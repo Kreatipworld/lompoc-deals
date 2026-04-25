@@ -295,6 +295,81 @@ export async function sendNewDealFromFollowedBusinessEmail(
   }
 }
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
+export async function sendFeedApprovalEmail(
+  toEmail: string,
+  postTitle: string
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY not set; skipping send")
+    return { ok: false, error: "Email service not configured" }
+  }
+
+  const feedUrl = siteUrl("/en/feed")
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: toEmail,
+      subject: `Your post "${postTitle}" is live on Lompoc Deals`,
+      html: `
+        <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
+          <p>Good news — an admin approved your post <strong>"${escapeHtml(postTitle)}"</strong> and it's now live on the Lompoc Deals feed.</p>
+          <p style="margin: 24px 0;">
+            <a href="${feedUrl}"
+               style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
+              View the feed →
+            </a>
+          </p>
+          <p style="color: #888; font-size: 12px; margin-top: 32px;">If you didn't post this, please reply to this email — we'll remove it.</p>
+        </div>
+      `,
+    })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
+export async function sendFeedRejectionEmail(
+  toEmail: string,
+  postTitle: string,
+  reason: string
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY not set; skipping send")
+    return { ok: false, error: "Email service not configured" }
+  }
+
+  const postUrl = siteUrl("/en/feed/post")
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: toEmail,
+      subject: `Your post "${postTitle}" wasn't approved`,
+      html: `
+        <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
+          <p>Hi — your post <strong>"${escapeHtml(postTitle)}"</strong> wasn't approved by our admin.</p>
+          <p><strong>Reason:</strong> ${escapeHtml(reason)}</p>
+          <p>You're welcome to revise it and submit again at <a href="${postUrl}">${postUrl}</a>.</p>
+        </div>
+      `,
+    })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
 export async function sendDigestEmail(
   email: string,
   unsubscribeToken: string,
