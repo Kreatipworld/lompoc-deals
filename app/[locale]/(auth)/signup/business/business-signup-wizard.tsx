@@ -367,6 +367,96 @@ function Step3({
   )
 }
 
+// ── Success moment — shown briefly before Stripe redirect ───────────────────
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const reducedMotion = usePrefersReducedMotion()
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    if (reducedMotion) {
+      // Short delay just to avoid a flash-of-nothing before redirect
+      const t = setTimeout(() => {
+        window.location.href = checkoutUrl
+      }, 100)
+      return () => clearTimeout(t)
+    }
+
+    let cancelled = false
+    ;(async () => {
+      const { animate } = await import("animejs")
+      if (cancelled) return
+
+      const check = container.querySelector<HTMLElement>("[data-check]")
+      const sweep = container.querySelector<HTMLElement>("[data-sweep]")
+
+      if (check) {
+        animate(check, {
+          opacity: [0, 1],
+          scale: [0.6, 1.1, 1],
+          duration: 450,
+          easing: EASE.standard,
+        })
+      }
+      if (sweep) {
+        animate(sweep, {
+          scaleX: [0, 1],
+          opacity: [0, 1],
+          duration: 450,
+          delay: 100,
+          easing: EASE.standard,
+        })
+      }
+    })()
+
+    const redirectTimer = setTimeout(() => {
+      window.location.href = checkoutUrl
+    }, DURATION.success)
+
+    return () => {
+      cancelled = true
+      clearTimeout(redirectTimer)
+    }
+  }, [checkoutUrl, reducedMotion])
+
+  return (
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-background/95 backdrop-blur-sm"
+      role="status"
+      aria-live="polite"
+      aria-label="Account created, redirecting to payment"
+    >
+      <div
+        data-check
+        className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg"
+        style={{ opacity: reducedMotion ? 1 : 0 }}
+      >
+        <Check className="h-10 w-10" strokeWidth={3} />
+      </div>
+      <div className="flex flex-col items-center gap-3">
+        <p className="font-display text-xl font-semibold tracking-tight">
+          Account created
+        </p>
+        <div
+          data-sweep
+          className="h-[2px] w-32 origin-left rounded-full bg-gradient-to-r from-primary via-primary to-transparent"
+          style={{
+            opacity: reducedMotion ? 1 : 0,
+            transform: reducedMotion ? "none" : "scaleX(0)",
+          }}
+        />
+        <p className="text-sm text-muted-foreground">
+          Redirecting to secure payment…
+        </p>
+      </div>
+    </div>
+  )
+}
+
 // ── Wizard orchestrator ─────────────────────────────────────────────────────
 
 export function BusinessSignupWizard({
