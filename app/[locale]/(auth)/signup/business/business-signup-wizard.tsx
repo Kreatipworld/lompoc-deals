@@ -300,75 +300,77 @@ function Step3({
   const stripeConfigured = !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
   return (
-    <form action={action} className="space-y-5">
-      {/* Hidden fields carry wizard state */}
-      {Object.entries(step1Data).map(([k, v]) => (
-        <input key={k} type="hidden" name={k} value={v} />
-      ))}
-      <input type="hidden" name="plan" value={plan} />
+    <>
+      {state?.checkoutUrl && <SignupSuccessMoment checkoutUrl={state.checkoutUrl} />}
+      <form action={action} className="space-y-5">
+        {/* Hidden fields carry wizard state */}
+        {Object.entries(step1Data).map(([k, v]) => (
+          <input key={k} type="hidden" name={k} value={v} />
+        ))}
+        <input type="hidden" name="plan" value={plan} />
 
-      {showCanceled && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          Payment was cancelled. Choose a plan and try again.
-        </div>
-      )}
+        {showCanceled && (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            Payment was cancelled. Choose a plan and try again.
+          </div>
+        )}
 
-      {plan === "free" ? (
-        <div className="rounded-2xl border border-green-200 bg-green-50 p-5 text-sm text-green-900">
-          <p className="font-semibold">Free plan — no payment needed!</p>
-          <p className="mt-1 text-green-700">
-            You selected the Free plan. Click continue to set up your profile.
-          </p>
-        </div>
-      ) : !stripeConfigured ? (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
-          <p className="font-semibold">Stripe billing coming soon</p>
-          <p className="mt-1 text-amber-700">
-            Payment processing isn&apos;t fully configured yet. Your account will be created on the{" "}
-            <strong>Free</strong> plan and upgraded automatically once billing is enabled.
-          </p>
-        </div>
-      ) : (
-        <div className="rounded-2xl border border-border bg-card p-5 text-sm">
-          <p className="font-semibold">
-            {TIERS[plan].name} — ${TIERS[plan].price}/mo
-          </p>
-          <p className="mt-1 text-muted-foreground">
-            You&apos;ll be securely redirected to Stripe to complete payment. Cancel anytime.
-          </p>
-        </div>
-      )}
+        {plan === "free" ? (
+          <div className="rounded-2xl border border-green-200 bg-green-50 p-5 text-sm text-green-900">
+            <p className="font-semibold">Free plan — no payment needed!</p>
+            <p className="mt-1 text-green-700">
+              You selected the Free plan. Click continue to set up your profile.
+            </p>
+          </div>
+        ) : !stripeConfigured ? (
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
+            <p className="font-semibold">Stripe billing coming soon</p>
+            <p className="mt-1 text-amber-700">
+              Payment processing isn&apos;t fully configured yet. Your account will be created on the{" "}
+              <strong>Free</strong> plan and upgraded automatically once billing is enabled.
+            </p>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-border bg-card p-5 text-sm">
+            <p className="font-semibold">
+              {TIERS[plan].name} — ${TIERS[plan].price}/mo
+            </p>
+            <p className="mt-1 text-muted-foreground">
+              You&apos;ll be securely redirected to Stripe to complete payment. Cancel anytime.
+            </p>
+          </div>
+        )}
 
-      {state?.error && (
-        <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          {state.error}{" "}
-          {state.error.includes("already exists") && (
-            <Link href="/login" className="font-medium underline">
-              Sign in
-            </Link>
-          )}
-        </p>
-      )}
+        {state?.error && (
+          <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            {state.error}{" "}
+            {state.error.includes("already exists") && (
+              <Link href="/login" className="font-medium underline">
+                Sign in
+              </Link>
+            )}
+          </p>
+        )}
 
-      <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-5 text-sm font-medium transition hover:bg-muted"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back
-        </button>
-        <SubmitButton
-          label={plan === "free" || !stripeConfigured ? "Create account" : "Pay & create account"}
-        />
-      </div>
-    </form>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-5 text-sm font-medium transition hover:bg-muted"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </button>
+          <SubmitButton
+            label={plan === "free" || !stripeConfigured ? "Create account" : "Pay & create account"}
+          />
+        </div>
+      </form>
+    </>
   )
 }
 
 // ── Success moment — shown briefly before Stripe redirect ───────────────────
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const reducedMotion = usePrefersReducedMotion()
