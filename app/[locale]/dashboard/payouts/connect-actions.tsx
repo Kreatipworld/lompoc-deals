@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
-export function ConnectStripeButton() {
+export function ConnectStripeButton({ labels }: { labels: { connect: string; redirecting: string } }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -29,12 +29,12 @@ export function ConnectStripeButton() {
       disabled={loading}
       className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
     >
-      {loading ? "Redirecting to Stripe…" : "Connect with Stripe"}
+      {loading ? labels.redirecting : labels.connect}
     </button>
   )
 }
 
-export function StripeExpressDashboardButton({ accountId }: { accountId: string }) {
+export function StripeExpressDashboardButton({ accountId, labels }: { accountId: string; labels: { loading: string; open: string } }) {
   const [loading, setLoading] = useState(false)
 
   async function openDashboard() {
@@ -59,7 +59,7 @@ export function StripeExpressDashboardButton({ accountId }: { accountId: string 
       disabled={loading}
       className="rounded-xl border px-4 py-2 text-sm font-medium transition hover:bg-accent disabled:opacity-50"
     >
-      {loading ? "Loading…" : "Open Stripe Dashboard"}
+      {loading ? labels.loading : labels.open}
     </button>
   )
 }

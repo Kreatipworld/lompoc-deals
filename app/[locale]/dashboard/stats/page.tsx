@@ -17,6 +17,7 @@ import { eq } from "drizzle-orm"
 import { getMyBusiness } from "@/lib/biz-actions"
 import { getDealFunnel, type FunnelWindow } from "@/lib/funnel-queries"
 import { Link } from "@/i18n/navigation"
+import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "Stats — Lompoc Deals" }
 
@@ -29,15 +30,14 @@ export default async function StatsPage({
   const window: FunnelWindow =
     params.window === "7d" || params.window === "all" ? params.window : "30d"
 
-  // Tier gate — analytics require Standard or Premium
-  const session = await auth()
+  const [t, session] = await Promise.all([getTranslations("dashboardStats"), auth()])
   const userId = Number(session?.user?.id)
   const sub = await db.query.subscriptions.findFirst({
     where: eq(subscriptions.userId, userId),
   })
   const currentTier = sub?.tier ?? "free"
   if (currentTier === "free") {
-    return <AnalyticsUpgradeGate />
+    return <AnalyticsUpgradeGate t={t} />
   }
 
   const biz = await getMyBusiness()
@@ -54,16 +54,17 @@ export default async function StatsPage({
       ? funnelRows.reduce((best, r) => (r.views > best.views ? r : best))
       : null
 
-  const windowLabel = window === "7d" ? "7 days" : window === "30d" ? "30 days" : "all time"
+  const windowLabel =
+    window === "7d" ? t("window7d") : window === "30d" ? t("window30d") : t("windowAll")
 
   return (
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl font-semibold tracking-tight">
-          Stats
+          {t("title")}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Deal performance metrics across your business.
+          {t("subtitle")}
         </p>
       </header>
 
@@ -71,28 +72,27 @@ export default async function StatsPage({
         <div className="rounded-3xl border border-dashed bg-muted/30 px-6 py-12 text-center">
           <BarChart3 className="mx-auto h-10 w-10 text-muted-foreground/60" />
           <p className="mt-3 text-sm text-muted-foreground">
-            Create a{" "}
             <Link
               href="/dashboard/profile"
               className="font-medium text-primary underline underline-offset-4"
             >
-              business profile
+              {t("createProfile")}
             </Link>{" "}
-            to start tracking stats.
+            {t("noBusinessHint")}
           </p>
         </div>
       ) : funnelRows.length === 0 ? (
         <div className="rounded-3xl border border-dashed bg-muted/30 px-6 py-16 text-center">
           <TrendingUp className="mx-auto h-10 w-10 text-muted-foreground/60" />
-          <h3 className="mt-4 font-display text-xl font-semibold">No data yet</h3>
+          <h3 className="mt-4 font-display text-xl font-semibold">{t("noData")}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Post your first deal to start seeing views and clicks here.
+            {t("noDataHint")}
           </p>
           <Link
             href="/dashboard/deals/new"
             className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            Post a deal
+            {t("postDeal")}
           </Link>
         </div>
       ) : (
@@ -109,7 +109,7 @@ export default async function StatsPage({
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
               >
-                {w === "7d" ? "7 days" : w === "30d" ? "30 days" : "All time"}
+                {w === "7d" ? t("window7d") : w === "30d" ? t("window30d") : t("windowAll")}
               </Link>
             ))}
           </div>
@@ -118,35 +118,40 @@ export default async function StatsPage({
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <BigStat
               icon={<Eye className="h-5 w-5" />}
-              label={`Views (${windowLabel})`}
+              label={t("views", { window: windowLabel })}
               value={totalViews}
               trend={totalViews > 0 ? "up" : "neutral"}
+              trendLabel={t("trendActive")}
             />
             <BigStat
               icon={<MousePointerClick className="h-5 w-5" />}
-              label={`Clicks (${windowLabel})`}
+              label={t("clicks", { window: windowLabel })}
               value={totalClicks}
               trend={totalClicks > 0 ? "up" : "neutral"}
+              trendLabel={t("trendActive")}
             />
             <BigStat
               icon={<ShoppingBag className="h-5 w-5" />}
-              label={`Claims (${windowLabel})`}
+              label={t("claims", { window: windowLabel })}
               value={totalClaims}
               trend={totalClaims > 0 ? "up" : "neutral"}
+              trendLabel={t("trendActive")}
             />
             <BigStat
               icon={<CheckCircle2 className="h-5 w-5" />}
-              label={`Redeems (${windowLabel})`}
+              label={t("redeems", { window: windowLabel })}
               value={totalRedeems}
               trend={totalRedeems > 0 ? "up" : "neutral"}
+              trendLabel={t("trendActive")}
             />
           </div>
 
           <BigStat
             icon={<Tag className="h-5 w-5" />}
-            label="Click-through rate"
+            label={t("ctr")}
             value={`${ctr}%`}
             trend={ctr >= 5 ? "up" : "neutral"}
+            trendLabel={t("trendActive")}
           />
 
           {/* Best performing deal */}
@@ -157,15 +162,17 @@ export default async function StatsPage({
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                  Best performing deal
+                  {t("bestDeal")}
                 </p>
                 <p className="mt-0.5 truncate font-display text-lg font-semibold">
                   {bestDeal.dealTitle}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {bestDeal.views.toLocaleString()} views &middot;{" "}
-                  {bestDeal.clicks.toLocaleString()} clicks &middot;{" "}
-                  {bestDeal.claims.toLocaleString()} claims
+                  {t("bestDealStats", {
+                    views: bestDeal.views.toLocaleString(),
+                    clicks: bestDeal.clicks.toLocaleString(),
+                    claims: bestDeal.claims.toLocaleString(),
+                  })}
                 </p>
               </div>
             </div>
@@ -175,24 +182,24 @@ export default async function StatsPage({
           <div className="overflow-hidden rounded-3xl border bg-card shadow-sm">
             <div className="border-b px-6 py-4">
               <h2 className="font-display text-lg font-semibold">
-                Funnel analytics
+                {t("funnelTitle")}
               </h2>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                Visit → Click → Claim → Redeem · {windowLabel}
+                {t("funnelSubtitle", { window: windowLabel })}
               </p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="border-b text-left text-xs uppercase tracking-wider text-muted-foreground">
                   <tr>
-                    <th className="px-6 py-3">Deal</th>
-                    <th className="px-6 py-3 text-right">Views</th>
-                    <th className="px-6 py-3 text-right">Clicks</th>
-                    <th className="px-6 py-3 text-right">CTR</th>
-                    <th className="px-6 py-3 text-right">Claims</th>
-                    <th className="px-6 py-3 text-right">Claim%</th>
-                    <th className="px-6 py-3 text-right">Redeems</th>
-                    <th className="px-6 py-3 text-right">Redeem%</th>
+                    <th className="px-6 py-3">{t("colDeal")}</th>
+                    <th className="px-6 py-3 text-right">{t("colViews")}</th>
+                    <th className="px-6 py-3 text-right">{t("colClicks")}</th>
+                    <th className="px-6 py-3 text-right">{t("colCtr")}</th>
+                    <th className="px-6 py-3 text-right">{t("colClaims")}</th>
+                    <th className="px-6 py-3 text-right">{t("colClaimRate")}</th>
+                    <th className="px-6 py-3 text-right">{t("colRedeems")}</th>
+                    <th className="px-6 py-3 text-right">{t("colRedeemRate")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
@@ -239,11 +246,13 @@ function BigStat({
   label,
   value,
   trend,
+  trendLabel,
 }: {
   icon: React.ReactNode
   label: string
   value: number | string
   trend?: "up" | "down" | "neutral"
+  trendLabel: string
 }) {
   return (
     <div className="rounded-3xl border bg-gradient-to-br from-primary/5 to-card p-6 shadow-sm">
@@ -254,7 +263,7 @@ function BigStat({
         {trend === "up" && (
           <span className="flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
             <TrendingUp className="h-3 w-3" />
-            Active
+            {trendLabel}
           </span>
         )}
       </div>
@@ -268,13 +277,13 @@ function BigStat({
   )
 }
 
-function AnalyticsUpgradeGate() {
+function AnalyticsUpgradeGate({ t }: { t: Awaited<ReturnType<typeof getTranslations<"dashboardStats">>> }) {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="font-display text-3xl font-semibold tracking-tight">Stats</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Deal performance metrics across your business.
+          {t("subtitle")}
         </p>
       </header>
 
@@ -282,10 +291,9 @@ function AnalyticsUpgradeGate() {
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
           <Lock className="h-7 w-7" />
         </div>
-        <h3 className="mt-4 font-display text-xl font-semibold">Analytics unlocked on Standard+</h3>
+        <h3 className="mt-4 font-display text-xl font-semibold">{t("upgradeTitle")}</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          Upgrade to Standard or Premium to see views, clicks, claims, and funnel analytics for all
-          your deals.
+          {t("upgradeBody")}
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -293,13 +301,13 @@ function AnalyticsUpgradeGate() {
             className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
             <Zap className="h-4 w-4" />
-            Upgrade to Standard — $19.99/mo
+            {t("upgradeStandard")}
           </Link>
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium hover:bg-accent"
           >
-            Back to overview
+            {t("backToOverview")}
           </Link>
         </div>
       </div>

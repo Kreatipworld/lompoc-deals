@@ -163,7 +163,9 @@
     "email": "Email",
     "password": "Password",
     "name": "Name",
-    "forgotPassword": "Forgot password?",
+    "forgotPassword": {
+      "metaTitle": "Forgot Password — Lompoc Deals"
+    },
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
     "logout": "Sign out",
@@ -202,9 +204,6 @@
       "claimSubheading": "Set up your business owner account in 30 seconds.",
       "claimingBadgeTitle": "Claiming",
       "claimingBadgeBody": "Create your account and an admin will review your claim."
-    },
-    "forgotPassword": {
-      "metaTitle": "Forgot Password — Lompoc Deals"
     },
     "resetPassword": {
       "metaTitle": "Reset Password — Lompoc Deals"
@@ -412,7 +411,7 @@
     "heroBody": "Lompoc Deals connects locals to exclusive discounts, specials, and announcements from the businesses that make this city great. Free forever — no spam, no ads.",
     "heroCtaPrimary": "Join free — it takes 30 seconds",
     "heroCtaSecondary": "Browse deals first",
-    "heroTrustLine": "✓ Always free \u00a0·\u00a0 ✓ No credit card \u00a0·\u00a0 ✓ Unsubscribe anytime",
+    "heroTrustLine": "✓ Always free  ·  ✓ No credit card  ·  ✓ Unsubscribe anytime",
     "statCardEyebrow": "Lompoc Deals · Right now",
     "statBusinesses": "local businesses with active listings",
     "statDeals": "deals & specials live right now",
@@ -506,7 +505,7 @@
       "subtitle": "Lompoc Deals is the free, hometown-first directory for the Flower Capital. Post your coupons, specials, and announcements in 30 seconds — and reach the people already searching for the shops they love.",
       "ctaGetStarted": "Get started — it's free",
       "ctaSeeWho": "See who's on it",
-      "trustLine": "✓ Free forever for the basics \u00a0·\u00a0 ✓ No credit card \u00a0·\u00a0 ✓ 30-second setup",
+      "trustLine": "✓ Free forever for the basics  ·  ✓ No credit card  ·  ✓ 30-second setup",
       "statRightNow": "Lompoc Deals · Right now",
       "statBusinesses": "local businesses listed",
       "statDeals": "active deals & specials",
@@ -1281,7 +1280,9 @@
     "imageLabel": "Photo",
     "savePending": "Saving…",
     "saveCreate": "Add listing",
-    "saveEdit": "Save changes"
+    "saveEdit": "Save changes",
+    "imageLabelEdit": "Photo (leave blank to keep current)",
+    "descriptionPlaceholder": "Describe the property, neighborhood, features..."
   },
   "dashboardPayouts": {
     "title": "Payouts",
@@ -1294,7 +1295,32 @@
     "dashboardBtn": "Open Stripe dashboard",
     "pendingTitle": "Connection pending",
     "pendingBody": "Complete your Stripe onboarding to start receiving payouts.",
-    "resumeBtn": "Resume onboarding"
+    "resumeBtn": "Resume onboarding",
+    "almostThereAlert": "Almost there — Stripe is still reviewing your details. Check back shortly or complete any missing steps.",
+    "reauthAlert": "Your Stripe onboarding link expired. Click below to continue.",
+    "stripeConnect": "Stripe Connect",
+    "accountConnected": "Account connected",
+    "accountConnectedBody": "Your Stripe Express account is active. Payouts will be deposited to your linked bank account on Stripe's standard schedule.",
+    "onboardingComplete": "Onboarding complete",
+    "onboardingInProgress": "Onboarding in progress",
+    "onboardingInProgressBody": "Your Stripe Express account was created but onboarding is not yet complete. Click below to continue.",
+    "notConnectedTitle": "Not connected",
+    "notConnectedBody": "Connect a Stripe account to enable payouts. You'll be guided through Stripe's Express onboarding flow.",
+    "earningsSummary": "Earnings summary",
+    "earningsSummaryBody": "Detailed earnings and payout history are available in your Stripe Express Dashboard. Use the button above to view your balance, upcoming payouts, and transaction history.",
+    "availableBalance": "Available balance",
+    "nextPayout": "Next payout",
+    "totalEarned": "Total earned",
+    "viewInStripe": "View in Stripe",
+    "howPayoutsWork": "How payouts work",
+    "payoutsInfo1": "Lompoc Deals uses Stripe Connect to process and distribute payouts to business owners.",
+    "payoutsInfo2": "A platform fee applies to each payout — contact support for current rates.",
+    "payoutsInfo3": "Payouts are processed by Stripe on a standard schedule (typically 2 business days after funds are available).",
+    "payoutsInfo4": "Use Stripe test mode during development — no real money is moved.",
+    "connectWithStripe": "Connect with Stripe",
+    "redirectingToStripe": "Redirecting to Stripe…",
+    "openStripeDashboard": "Open Stripe Dashboard",
+    "loadingDashboard": "Loading…"
   },
   "dashboardNav": {
     "overview": "Overview",

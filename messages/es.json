@@ -163,7 +163,9 @@
     "email": "Correo electrónico",
     "password": "Contraseña",
     "name": "Nombre",
-    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "forgotPassword": {
+      "metaTitle": "Olvidé mi contraseña — Lompoc Deals"
+    },
     "noAccount": "¿No tienes una cuenta?",
     "haveAccount": "¿Ya tienes una cuenta?",
     "logout": "Cerrar sesión",
@@ -202,9 +204,6 @@
       "claimSubheading": "Crea tu cuenta de propietario en 30 segundos.",
       "claimingBadgeTitle": "Reclamando",
       "claimingBadgeBody": "Crea tu cuenta y un administrador revisará tu solicitud."
-    },
-    "forgotPassword": {
-      "metaTitle": "Olvidé mi contraseña — Lompoc Deals"
     },
     "resetPassword": {
       "metaTitle": "Restablecer contraseña — Lompoc Deals"
@@ -412,7 +411,7 @@
     "heroBody": "Lompoc Deals conecta a los residentes con descuentos exclusivos, especiales y anuncios de los negocios que hacen grande a esta ciudad. Gratis para siempre — sin spam, sin anuncios.",
     "heroCtaPrimary": "Únete gratis — toma 30 segundos",
     "heroCtaSecondary": "Ver las ofertas primero",
-    "heroTrustLine": "✓ Siempre gratis \u00a0·\u00a0 ✓ Sin tarjeta de crédito \u00a0·\u00a0 ✓ Cancela cuando quieras",
+    "heroTrustLine": "✓ Siempre gratis  ·  ✓ Sin tarjeta de crédito  ·  ✓ Cancela cuando quieras",
     "statCardEyebrow": "Lompoc Deals · Ahora mismo",
     "statBusinesses": "negocios locales con listados activos",
     "statDeals": "ofertas y especiales en vivo ahora mismo",
@@ -506,7 +505,7 @@
       "subtitle": "Lompoc Deals es el directorio gratuito y enfocado en lo local para la Capital de las Flores. Publica tus cupones, especiales y anuncios en 30 segundos — y llega a quienes ya buscan los negocios que aman.",
       "ctaGetStarted": "Comienza — es gratis",
       "ctaSeeWho": "Ve quién ya está aquí",
-      "trustLine": "✓ Gratis para siempre en lo básico \u00a0·\u00a0 ✓ Sin tarjeta de crédito \u00a0·\u00a0 ✓ Configuración en 30 segundos",
+      "trustLine": "✓ Gratis para siempre en lo básico  ·  ✓ Sin tarjeta de crédito  ·  ✓ Configuración en 30 segundos",
       "statRightNow": "Lompoc Deals · Ahora mismo",
       "statBusinesses": "negocios locales publicados",
       "statDeals": "ofertas y especiales activos",
@@ -1281,7 +1280,9 @@
     "imageLabel": "Foto",
     "savePending": "Guardando…",
     "saveCreate": "Agregar listado",
-    "saveEdit": "Guardar cambios"
+    "saveEdit": "Guardar cambios",
+    "imageLabelEdit": "Foto (deja en blanco para conservar la actual)",
+    "descriptionPlaceholder": "Describe la propiedad, el vecindario, las características..."
   },
   "dashboardPayouts": {
     "title": "Pagos",
@@ -1294,7 +1295,32 @@
     "dashboardBtn": "Abrir panel de Stripe",
     "pendingTitle": "Conexión pendiente",
     "pendingBody": "Completa tu registro en Stripe para empezar a recibir pagos.",
-    "resumeBtn": "Continuar registro"
+    "resumeBtn": "Continuar registro",
+    "almostThereAlert": "Casi listo — Stripe aún está revisando tus datos. Vuelve pronto o completa los pasos pendientes.",
+    "reauthAlert": "Tu enlace de registro en Stripe expiró. Haz clic abajo para continuar.",
+    "stripeConnect": "Stripe Connect",
+    "accountConnected": "Cuenta conectada",
+    "accountConnectedBody": "Tu cuenta Stripe Express está activa. Los pagos se depositarán en tu cuenta bancaria vinculada según el calendario estándar de Stripe.",
+    "onboardingComplete": "Registro completo",
+    "onboardingInProgress": "Registro en progreso",
+    "onboardingInProgressBody": "Tu cuenta Stripe Express fue creada pero el registro aún no está completo. Haz clic abajo para continuar.",
+    "notConnectedTitle": "No conectado",
+    "notConnectedBody": "Conecta una cuenta Stripe para habilitar pagos. Te guiaremos a través del proceso de incorporación Express de Stripe.",
+    "earningsSummary": "Resumen de ganancias",
+    "earningsSummaryBody": "Los detalles de ganancias e historial de pagos están disponibles en tu Panel Stripe Express. Usa el botón de arriba para ver tu saldo, próximos pagos e historial de transacciones.",
+    "availableBalance": "Saldo disponible",
+    "nextPayout": "Próximo pago",
+    "totalEarned": "Total ganado",
+    "viewInStripe": "Ver en Stripe",
+    "howPayoutsWork": "Cómo funcionan los pagos",
+    "payoutsInfo1": "Lompoc Deals usa Stripe Connect para procesar y distribuir pagos a los dueños de negocios.",
+    "payoutsInfo2": "Se aplica una tarifa de plataforma a cada pago — contáctanos para conocer las tarifas actuales.",
+    "payoutsInfo3": "Los pagos son procesados por Stripe en un calendario estándar (generalmente 2 días hábiles después de que los fondos estén disponibles).",
+    "payoutsInfo4": "Usa el modo de prueba de Stripe durante el desarrollo — no se mueve dinero real.",
+    "connectWithStripe": "Conectar con Stripe",
+    "redirectingToStripe": "Redirigiendo a Stripe…",
+    "openStripeDashboard": "Abrir Panel de Stripe",
+    "loadingDashboard": "Cargando…"
   },
   "dashboardNav": {
     "overview": "Resumen",

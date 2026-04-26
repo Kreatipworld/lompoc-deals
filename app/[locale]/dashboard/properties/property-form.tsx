@@ -3,6 +3,7 @@
 import { useFormState, useFormStatus } from "react-dom"
 import { upsertPropertyAction } from "@/lib/biz-actions"
 import { AlertCircle } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface PropertyFormProps {
   listing?: {
@@ -20,6 +21,7 @@ interface PropertyFormProps {
 }
 
 export function PropertyForm({ listing }: PropertyFormProps) {
+  const t = useTranslations("dashboardProperties")
   const [state, action] = useFormState(upsertPropertyAction, {})
 
   return (
@@ -35,21 +37,21 @@ export function PropertyForm({ listing }: PropertyFormProps) {
 
       {/* Type */}
       <div className="space-y-2">
-        <label className="text-sm font-medium">Listing type</label>
+        <label className="text-sm font-medium">{t("listingType")}</label>
         <div className="flex gap-3">
-          {(["for-sale", "for-rent"] as const).map((t) => (
+          {(["for-sale", "for-rent"] as const).map((v) => (
             <label
-              key={t}
+              key={v}
               className="flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition hover:bg-accent has-[:checked]:border-primary has-[:checked]:bg-primary/5"
             >
               <input
                 type="radio"
                 name="type"
-                value={t}
-                defaultChecked={listing ? listing.type === t : t === "for-sale"}
+                value={v}
+                defaultChecked={listing ? listing.type === v : v === "for-sale"}
                 className="accent-primary"
               />
-              {t === "for-sale" ? "For sale" : "For rent"}
+              {v === "for-sale" ? t("forSale") : t("forRent")}
             </label>
           ))}
         </div>
@@ -58,14 +60,14 @@ export function PropertyForm({ listing }: PropertyFormProps) {
       {/* Title */}
       <div className="space-y-2">
         <label htmlFor="title" className="text-sm font-medium">
-          Title <span className="text-destructive">*</span>
+          {t("titleLabel")} <span className="text-destructive">*</span>
         </label>
         <input
           id="title"
           name="title"
           type="text"
           defaultValue={listing?.title}
-          placeholder="e.g. 3BR/2BA Home in Central Lompoc"
+          placeholder={t("titlePlaceholder")}
           required
           className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
         />
@@ -74,7 +76,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
       {/* Price */}
       <div className="space-y-2">
         <label htmlFor="priceCents" className="text-sm font-medium">
-          Price (in dollars) <span className="text-destructive">*</span>
+          {t("priceLabel")} <span className="text-destructive">*</span>
         </label>
         <div className="relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
@@ -92,13 +94,13 @@ export function PropertyForm({ listing }: PropertyFormProps) {
             className="w-full rounded-xl border bg-background py-2.5 pl-8 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary/30"
           />
         </div>
-        <p className="text-xs text-muted-foreground">Enter the price in dollars (e.g. 450000 for $450,000)</p>
+        <p className="text-xs text-muted-foreground">{t("priceHint")}</p>
       </div>
 
       {/* Address */}
       <div className="space-y-2">
         <label htmlFor="address" className="text-sm font-medium">
-          Address
+          {t("addressLabel")}
         </label>
         <input
           id="address"
@@ -114,7 +116,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
       <div className="grid grid-cols-3 gap-4">
         <div className="space-y-2">
           <label htmlFor="beds" className="text-sm font-medium">
-            Bedrooms
+            {t("bedsLabel")}
           </label>
           <input
             id="beds"
@@ -129,7 +131,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
         </div>
         <div className="space-y-2">
           <label htmlFor="baths" className="text-sm font-medium">
-            Bathrooms
+            {t("bathsLabel")}
           </label>
           <input
             id="baths"
@@ -144,7 +146,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
         </div>
         <div className="space-y-2">
           <label htmlFor="sqft" className="text-sm font-medium">
-            Sq ft
+            {t("sqftLabel")}
           </label>
           <input
             id="sqft"
@@ -162,13 +164,13 @@ export function PropertyForm({ listing }: PropertyFormProps) {
       {/* Description */}
       <div className="space-y-2">
         <label htmlFor="description" className="text-sm font-medium">
-          Description
+          {t("descriptionLabel")}
         </label>
         <textarea
           id="description"
           name="description"
           defaultValue={listing?.description ?? ""}
-          placeholder="Describe the property, neighborhood, features..."
+          placeholder={t("descriptionPlaceholder")}
           rows={4}
           className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
         />
@@ -177,7 +179,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
       {/* Image */}
       <div className="space-y-2">
         <label htmlFor="image" className="text-sm font-medium">
-          Photo {listing?.imageUrl ? "(leave blank to keep current)" : ""}
+          {listing?.imageUrl ? t("imageLabelEdit") : t("imageLabel")}
         </label>
         {listing?.imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -196,12 +198,12 @@ export function PropertyForm({ listing }: PropertyFormProps) {
         />
       </div>
 
-      <SubmitButton isEdit={!!listing} />
+      <SubmitButton isEdit={!!listing} labels={{ saving: t("savePending"), create: t("saveCreate"), edit: t("saveEdit") }} />
     </form>
   )
 }
 
-function SubmitButton({ isEdit }: { isEdit: boolean }) {
+function SubmitButton({ isEdit, labels }: { isEdit: boolean; labels: { saving: string; create: string; edit: string } }) {
   const { pending } = useFormStatus()
   return (
     <button
@@ -209,7 +211,7 @@ function SubmitButton({ isEdit }: { isEdit: boolean }) {
       disabled={pending}
       className="w-full rounded-full bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60"
     >
-      {pending ? "Saving..." : isEdit ? "Save changes" : "Add listing"}
+      {pending ? labels.saving : isEdit ? labels.edit : labels.create}
     </button>
   )
 }
