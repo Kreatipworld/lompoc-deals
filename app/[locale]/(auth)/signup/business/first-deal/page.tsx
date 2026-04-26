@@ -2,12 +2,20 @@ import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { redirect } from "next/navigation"
 import { Link } from "@/i18n/navigation"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 import { FirstDealForm } from "./first-deal-form"
 import { Sparkles } from "lucide-react"
 
-export const metadata = { title: "Add your first deal — Lompoc Deals" }
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("signupBusiness")
+  return {
+    title: t("firstDeal.metaTitle"),
+  }
+}
 
 export default async function FirstDealPage() {
+  const t = await getTranslations("signupBusiness")
   const session = await auth()
   if (!session?.user) redirect("/login")
 
@@ -23,13 +31,13 @@ export default async function FirstDealPage() {
     <div className="space-y-6">
       <div className="space-y-1">
         <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Step 5 of 5
+          {t("firstDeal.stepLabel")}
         </div>
         <h1 className="font-display text-2xl font-semibold tracking-tight">
-          Add your first deal
+          {t("firstDeal.title")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Give customers a reason to visit <strong>{biz.name}</strong>. You can add more from your dashboard.
+          {t("firstDeal.subtitle", { bizName: biz.name })}
         </p>
       </div>
 
@@ -38,9 +46,9 @@ export default async function FirstDealPage() {
       <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm">
         <Sparkles className="h-5 w-5 shrink-0 text-primary" />
         <span>
-          Almost there! After this step you&apos;ll land in your business dashboard.{" "}
+          {t("firstDeal.almostThere")}{" "}
           <Link href="/dashboard" className="font-medium text-primary hover:underline">
-            Skip to dashboard →
+            {t("firstDeal.skipToDashboard")}
           </Link>
         </span>
       </div>

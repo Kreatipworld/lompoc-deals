@@ -426,6 +426,105 @@
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse"
   },
+  "signupBusiness": {
+    "metaTitle": "Publica tu negocio — Lompoc Deals",
+    "metaDescription": "Regístrate como negocio en Lompoc Deals. Llega a clientes locales en Lompoc sin cargos por oferta y sin costos ocultos.",
+    "pageTitle": "Publica tu negocio",
+    "pageSubtitle": "Llega a clientes locales en Lompoc. Sin cargos por oferta, sin costos ocultos.",
+    "stepBar": {
+      "stepOf": "Paso {current} de {total}"
+    },
+    "stepLabels": {
+      "accountInfo": "Información de cuenta",
+      "choosePlan": "Elegir un plan",
+      "payment": "Pago"
+    },
+    "step1": {
+      "ownerFullNameLabel": "Tu nombre completo",
+      "ownerFullNamePlaceholder": "Jane Smith",
+      "businessNameLabel": "Nombre del negocio",
+      "businessNamePlaceholder": "Lompoc Blooms",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "tú@tunegocio.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Al menos 6 caracteres",
+      "categoryLabel": "Categoría",
+      "categoryPlaceholder": "Selecciona una categoría…",
+      "addressLabel": "Dirección del negocio",
+      "addressPlaceholder": "123 H St, Lompoc, CA 93436",
+      "phoneLabel": "Teléfono (opcional)",
+      "phonePlaceholder": "(805) 555-0100",
+      "checking": "Verificando…",
+      "continueToPlan": "Continuar a la selección de plan",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Iniciar sesión",
+      "signInLink": "Inicia sesión en su lugar"
+    },
+    "step2": {
+      "mostPopular": "Más popular",
+      "free": "Gratis",
+      "perMonth": "/mes",
+      "continueWith": "Continuar con {planName}",
+      "back": "Atrás"
+    },
+    "step3": {
+      "canceledBanner": "El pago fue cancelado. Elige un plan e inténtalo de nuevo.",
+      "freePlanTitle": "Plan gratuito — ¡no se necesita pago!",
+      "freePlanBody": "Seleccionaste el plan gratuito. Haz clic en continuar para configurar tu perfil.",
+      "stripeComingSoonTitle": "Facturación de Stripe próximamente",
+      "stripeComingSoonBody": "El procesamiento de pagos aún no está completamente configurado. Tu cuenta se creará en el plan Free y se actualizará automáticamente una vez que se habilite la facturación.",
+      "paidPlanBody": "Te redirigiremos de forma segura a Stripe para completar el pago. Cancela en cualquier momento.",
+      "back": "Atrás",
+      "signInLink": "Iniciar sesión"
+    },
+    "successMoment": {
+      "accountCreated": "Cuenta creada",
+      "redirecting": "Redirigiendo al pago seguro…",
+      "ariaLabel": "Cuenta creada, redirigiendo al pago"
+    },
+    "profile": {
+      "stepLabel": "Paso 4 de 5",
+      "title": "Configura tu perfil",
+      "subtitle": "Agrega imágenes y enlaces para que los clientes reconozcan tu negocio.",
+      "stripePendingBanner": "Tu cuenta fue creada en el plan Free. Puedes mejorar a un plan de pago desde tu panel de facturación una vez que se habilite el procesamiento de pagos.",
+      "logoLabel": "Logo",
+      "logoOptional": "(opcional)",
+      "logoUploadCta": "Haz clic para subir el logo",
+      "coverLabel": "Imagen de portada",
+      "coverOptional": "(opcional)",
+      "coverUploadCta": "Haz clic para subir la imagen de portada",
+      "descriptionLabel": "Acerca de tu negocio",
+      "descriptionOptional": "(opcional)",
+      "descriptionPlaceholder": "Cuéntales a los clientes qué hace especial a tu negocio…",
+      "websiteLabel": "Sitio web",
+      "websiteOptional": "(opcional)",
+      "websitePlaceholder": "https://tunegocio.com",
+      "socialLinksLabel": "Redes sociales",
+      "socialLinksOptional": "(opcional)",
+      "instagramPlaceholder": "https://instagram.com/tunegocio",
+      "facebookPlaceholder": "https://facebook.com/tunegocio",
+      "tiktokPlaceholder": "https://tiktok.com/@tunegocio",
+      "savePending": "Guardando…",
+      "saveIdle": "Guardar y agregar primera oferta",
+      "skipForNow": "Omitir por ahora"
+    },
+    "firstDeal": {
+      "metaTitle": "Agrega tu primera oferta — Lompoc Deals",
+      "stepLabel": "Paso 5 de 5",
+      "title": "Agrega tu primera oferta",
+      "subtitle": "Dale a los clientes una razón para visitar {bizName}. Puedes agregar más desde tu panel.",
+      "almostThere": "¡Ya casi! Después de este paso llegarás a tu panel de negocio.",
+      "skipToDashboard": "Ir al panel →"
+    },
+    "buttons": {
+      "back": "Atrás",
+      "next": "Siguiente",
+      "continue": "Continuar",
+      "createAccount": "Crear cuenta",
+      "payAndCreate": "Pagar y crear cuenta",
+      "pleaseWait": "Por favor espera…"
+    }
+  },
   "garageSales": {
     "title": "Ventas de Garaje en Lompoc",
     "subtitle": "Ventas de garaje publicadas por la comunidad",

@@ -4,6 +4,7 @@ import { useState, useTransition, useCallback, useEffect, useRef } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import {
   Check,
   Crown,
@@ -29,13 +30,14 @@ import type { Category } from "./page"
 
 function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus()
+  const t = useTranslations("signupBusiness")
   return (
     <button
       type="submit"
       disabled={pending}
       className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
     >
-      {pending ? "Please wait…" : label}
+      {pending ? t("buttons.pleaseWait") : label}
       {!pending && <ChevronRight className="h-4 w-4" />}
     </button>
   )
@@ -69,6 +71,7 @@ function Step1({
   onNext: (data: Record<string, string>) => void
   defaultValues: Record<string, string>
 }) {
+  const t = useTranslations("signupBusiness")
   const [state, action] = useFormState<BizSignupState, FormData>(
     validateStep1Action,
     undefined
@@ -116,32 +119,32 @@ function Step1({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {field("ownerFullName", "Your full name", <User className="h-4 w-4" />, {
+      {field("ownerFullName", t("step1.ownerFullNameLabel"), <User className="h-4 w-4" />, {
         required: true,
-        placeholder: "Jane Smith",
+        placeholder: t("step1.ownerFullNamePlaceholder"),
         autoComplete: "name",
       })}
-      {field("businessName", "Business name", <Building2 className="h-4 w-4" />, {
+      {field("businessName", t("step1.businessNameLabel"), <Building2 className="h-4 w-4" />, {
         required: true,
-        placeholder: "Lompoc Blooms",
+        placeholder: t("step1.businessNamePlaceholder"),
       })}
-      {field("email", "Email", <Mail className="h-4 w-4" />, {
+      {field("email", t("step1.emailLabel"), <Mail className="h-4 w-4" />, {
         type: "email",
         required: true,
         autoComplete: "email",
-        placeholder: "you@yourbusiness.com",
+        placeholder: t("step1.emailPlaceholder"),
       })}
-      {field("password", "Password", <Lock className="h-4 w-4" />, {
+      {field("password", t("step1.passwordLabel"), <Lock className="h-4 w-4" />, {
         type: "password",
         required: true,
         minLength: 6,
         autoComplete: "new-password",
-        placeholder: "At least 6 characters",
+        placeholder: t("step1.passwordPlaceholder"),
       })}
 
       <div className="space-y-1.5">
         <label htmlFor="categoryId" className="text-sm font-medium text-foreground">
-          Category
+          {t("step1.categoryLabel")}
         </label>
         <select
           id="categoryId"
@@ -149,7 +152,7 @@ function Step1({
           defaultValue={defaultValues.categoryId ?? ""}
           className="h-11 w-full rounded-full border border-input bg-background px-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
         >
-          <option value="">Select a category…</option>
+          <option value="">{t("step1.categoryPlaceholder")}</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -158,15 +161,15 @@ function Step1({
         </select>
       </div>
 
-      {field("address", "Business address", <MapPin className="h-4 w-4" />, {
+      {field("address", t("step1.addressLabel"), <MapPin className="h-4 w-4" />, {
         required: true,
-        placeholder: "123 H St, Lompoc, CA 93436",
+        placeholder: t("step1.addressPlaceholder"),
         autoComplete: "street-address",
       })}
-      {field("phone", "Phone (optional)", <Phone className="h-4 w-4" />, {
+      {field("phone", t("step1.phoneLabel"), <Phone className="h-4 w-4" />, {
         type: "tel",
         autoComplete: "tel",
-        placeholder: "(805) 555-0100",
+        placeholder: t("step1.phonePlaceholder"),
       })}
 
       {state?.error && (
@@ -174,7 +177,7 @@ function Step1({
           {state.error}{" "}
           {state.error.includes("already exists") && (
             <Link href="/login" className="font-medium underline">
-              Sign in instead
+              {t("step1.signInLink")}
             </Link>
           )}
         </p>
@@ -182,16 +185,16 @@ function Step1({
 
       {isPending ? (
         <div className="h-11 flex items-center justify-center text-sm text-muted-foreground">
-          Checking…
+          {t("step1.checking")}
         </div>
       ) : (
-        <SubmitButton label="Continue to plan selection" />
+        <SubmitButton label={t("step1.continueToPlan")} />
       )}
 
       <p className="text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        {t("step1.haveAccount")}{" "}
         <Link href="/login" className="font-medium text-primary hover:underline">
-          Sign in
+          {t("step1.signIn")}
         </Link>
       </p>
     </form>
@@ -209,6 +212,7 @@ function Step2({
   onBack: () => void
   defaultPlan: "free" | "standard" | "premium"
 }) {
+  const t = useTranslations("signupBusiness")
   const [selected, setSelected] = useState<"free" | "standard" | "premium">(defaultPlan)
 
   return (
@@ -228,7 +232,7 @@ function Step2({
             >
               {key === "standard" && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-primary/30 bg-primary px-3 py-0.5 text-xs font-semibold text-primary-foreground">
-                  Most popular
+                  {t("step2.mostPopular")}
                 </span>
               )}
               {key === "premium" && (
@@ -237,11 +241,11 @@ function Step2({
               <div className="font-display text-base font-semibold">{tier.name}</div>
               <div className="mt-1">
                 {tier.price === 0 ? (
-                  <span className="font-display text-2xl font-bold">Free</span>
+                  <span className="font-display text-2xl font-bold">{t("step2.free")}</span>
                 ) : (
                   <>
                     <span className="font-display text-2xl font-bold">${tier.price}</span>
-                    <span className="text-xs text-muted-foreground">/mo</span>
+                    <span className="text-xs text-muted-foreground">{t("step2.perMonth")}</span>
                   </>
                 )}
               </div>
@@ -265,14 +269,14 @@ function Step2({
           className="inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-5 text-sm font-medium transition hover:bg-muted"
         >
           <ChevronLeft className="h-4 w-4" />
-          Back
+          {t("step2.back")}
         </button>
         <button
           type="button"
           onClick={() => onNext(selected)}
           className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
         >
-          Continue with {TIERS[selected].name}
+          {t("step2.continueWith", { planName: TIERS[selected].name })}
           <ChevronRight className="h-4 w-4" />
         </button>
       </div>
@@ -293,6 +297,7 @@ function Step3({
   onBack: () => void
   showCanceled: boolean
 }) {
+  const t = useTranslations("signupBusiness")
   const [state, action] = useFormState<BizSignupState, FormData>(
     businessSignupSubmitAction,
     undefined
@@ -307,9 +312,6 @@ function Step3({
       <form
         action={action}
         className="space-y-5"
-        // Block keyboard/pointer interaction with the underlying form while
-        // the success overlay is shown — prevents tab-back focus + SR noise
-        // during the 900ms pre-Stripe window.
         inert={overlayShown ? true : undefined}
       >
         {/* Hidden fields carry wizard state */}
@@ -320,23 +322,22 @@ function Step3({
 
         {showCanceled && (
           <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-            Payment was cancelled. Choose a plan and try again.
+            {t("step3.canceledBanner")}
           </div>
         )}
 
         {plan === "free" ? (
           <div className="rounded-2xl border border-green-200 bg-green-50 p-5 text-sm text-green-900">
-            <p className="font-semibold">Free plan — no payment needed!</p>
+            <p className="font-semibold">{t("step3.freePlanTitle")}</p>
             <p className="mt-1 text-green-700">
-              You selected the Free plan. Click continue to set up your profile.
+              {t("step3.freePlanBody")}
             </p>
           </div>
         ) : !stripeConfigured ? (
           <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
-            <p className="font-semibold">Stripe billing coming soon</p>
+            <p className="font-semibold">{t("step3.stripeComingSoonTitle")}</p>
             <p className="mt-1 text-amber-700">
-              Payment processing isn&apos;t fully configured yet. Your account will be created on the{" "}
-              <strong>Free</strong> plan and upgraded automatically once billing is enabled.
+              {t("step3.stripeComingSoonBody")}
             </p>
           </div>
         ) : (
@@ -345,7 +346,7 @@ function Step3({
               {TIERS[plan].name} — ${TIERS[plan].price}/mo
             </p>
             <p className="mt-1 text-muted-foreground">
-              You&apos;ll be securely redirected to Stripe to complete payment. Cancel anytime.
+              {t("step3.paidPlanBody")}
             </p>
           </div>
         )}
@@ -355,7 +356,7 @@ function Step3({
             {state.error}{" "}
             {state.error.includes("already exists") && (
               <Link href="/login" className="font-medium underline">
-                Sign in
+                {t("step3.signInLink")}
               </Link>
             )}
           </p>
@@ -368,10 +369,10 @@ function Step3({
             className="inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-5 text-sm font-medium transition hover:bg-muted"
           >
             <ChevronLeft className="h-4 w-4" />
-            Back
+            {t("step3.back")}
           </button>
           <SubmitButton
-            label={plan === "free" || !stripeConfigured ? "Create account" : "Pay & create account"}
+            label={plan === "free" || !stripeConfigured ? t("buttons.createAccount") : t("buttons.payAndCreate")}
           />
         </div>
       </form>
@@ -381,6 +382,7 @@ function Step3({
 
 // ── Success moment — shown briefly before Stripe redirect ───────────────────
 function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
+  const t = useTranslations("signupBusiness")
   const containerRef = useRef<HTMLDivElement>(null)
   const reducedMotion = usePrefersReducedMotion()
 
@@ -389,7 +391,6 @@ function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
     if (!container) return
 
     if (reducedMotion) {
-      // Short delay just to avoid a flash-of-nothing before redirect
       const t = setTimeout(() => {
         window.location.href = checkoutUrl
       }, 100)
@@ -439,7 +440,7 @@ function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
       className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-background/95 backdrop-blur-sm"
       role="status"
       aria-live="polite"
-      aria-label="Account created, redirecting to payment"
+      aria-label={t("successMoment.ariaLabel")}
     >
       <div
         data-check
@@ -450,7 +451,7 @@ function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
       </div>
       <div className="flex flex-col items-center gap-3">
         <p className="font-display text-xl font-semibold tracking-tight">
-          Account created
+          {t("successMoment.accountCreated")}
         </p>
         <div
           data-sweep
@@ -461,7 +462,7 @@ function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
           }}
         />
         <p className="text-sm text-muted-foreground">
-          Redirecting to secure payment…
+          {t("successMoment.redirecting")}
         </p>
       </div>
     </div>
@@ -479,6 +480,7 @@ export function BusinessSignupWizard({
   initialStep: number
   showCanceled: boolean
 }) {
+  const t = useTranslations("signupBusiness")
   const router = useRouter()
   const [step, setStep] = useState(initialStep)
   const [step1Data, setStep1Data] = useState<Record<string, string>>({})
@@ -539,7 +541,11 @@ export function BusinessSignupWizard({
     try { sessionStorage.setItem("bizSignupPlan", plan) } catch {}
   }, [plan])
 
-  const STEP_LABELS = ["Account info", "Choose a plan", "Payment"]
+  const STEP_LABELS = [
+    t("stepLabels.accountInfo"),
+    t("stepLabels.choosePlan"),
+    t("stepLabels.payment"),
+  ]
 
   const goToStep = (n: number) => {
     setStep(n)
@@ -551,7 +557,7 @@ export function BusinessSignupWizard({
       {/* Progress */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>Step {step + 1} of {STEP_LABELS.length}</span>
+          <span>{t("stepBar.stepOf", { current: step + 1, total: STEP_LABELS.length })}</span>
           <span>{STEP_LABELS[step]}</span>
         </div>
         <StepBar current={step} total={STEP_LABELS.length} />

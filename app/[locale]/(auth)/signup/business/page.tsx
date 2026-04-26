@@ -1,8 +1,16 @@
 import { db } from "@/db/client"
 import { Store } from "lucide-react"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 import { BusinessSignupWizard } from "./business-signup-wizard"
 
-export const metadata = { title: "Sign up as a business — Lompoc Deals" }
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("signupBusiness")
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  }
+}
 
 export type Category = { id: number; name: string; slug: string }
 
@@ -11,6 +19,8 @@ export default async function BusinessSignupPage({
 }: {
   searchParams: { step?: string; canceled?: string }
 }) {
+  const t = await getTranslations("signupBusiness")
+
   const categories = await db.query.categories.findMany({
     orderBy: (c, { asc }) => [asc(c.name)],
     columns: { id: true, name: true, slug: true },
@@ -29,10 +39,10 @@ export default async function BusinessSignupPage({
         </div>
         <div className="space-y-1">
           <h1 className="font-display text-3xl font-semibold tracking-tight">
-            List your business
+            {t("pageTitle")}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Reach local customers in Lompoc. No per-deal fees, no hidden charges.
+            {t("pageSubtitle")}
           </p>
         </div>
       </div>

@@ -426,6 +426,105 @@
     "signIn": "Sign in",
     "signUp": "Sign up"
   },
+  "signupBusiness": {
+    "metaTitle": "List your business — Lompoc Deals",
+    "metaDescription": "Sign up as a business on Lompoc Deals. Reach local customers in Lompoc with no per-deal fees and no hidden charges.",
+    "pageTitle": "List your business",
+    "pageSubtitle": "Reach local customers in Lompoc. No per-deal fees, no hidden charges.",
+    "stepBar": {
+      "stepOf": "Step {current} of {total}"
+    },
+    "stepLabels": {
+      "accountInfo": "Account info",
+      "choosePlan": "Choose a plan",
+      "payment": "Payment"
+    },
+    "step1": {
+      "ownerFullNameLabel": "Your full name",
+      "ownerFullNamePlaceholder": "Jane Smith",
+      "businessNameLabel": "Business name",
+      "businessNamePlaceholder": "Lompoc Blooms",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@yourbusiness.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "At least 6 characters",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "Select a category…",
+      "addressLabel": "Business address",
+      "addressPlaceholder": "123 H St, Lompoc, CA 93436",
+      "phoneLabel": "Phone (optional)",
+      "phonePlaceholder": "(805) 555-0100",
+      "checking": "Checking…",
+      "continueToPlan": "Continue to plan selection",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "signInLink": "Sign in instead"
+    },
+    "step2": {
+      "mostPopular": "Most popular",
+      "free": "Free",
+      "perMonth": "/mo",
+      "continueWith": "Continue with {planName}",
+      "back": "Back"
+    },
+    "step3": {
+      "canceledBanner": "Payment was cancelled. Choose a plan and try again.",
+      "freePlanTitle": "Free plan — no payment needed!",
+      "freePlanBody": "You selected the Free plan. Click continue to set up your profile.",
+      "stripeComingSoonTitle": "Stripe billing coming soon",
+      "stripeComingSoonBody": "Payment processing isn't fully configured yet. Your account will be created on the Free plan and upgraded automatically once billing is enabled.",
+      "paidPlanBody": "You'll be securely redirected to Stripe to complete payment. Cancel anytime.",
+      "back": "Back",
+      "signInLink": "Sign in"
+    },
+    "successMoment": {
+      "accountCreated": "Account created",
+      "redirecting": "Redirecting to secure payment…",
+      "ariaLabel": "Account created, redirecting to payment"
+    },
+    "profile": {
+      "stepLabel": "Step 4 of 5",
+      "title": "Set up your profile",
+      "subtitle": "Add images and links so customers recognize your business.",
+      "stripePendingBanner": "Your account was created on the Free plan. You can upgrade to a paid plan from your billing dashboard once payment processing is enabled.",
+      "logoLabel": "Logo",
+      "logoOptional": "(optional)",
+      "logoUploadCta": "Click to upload logo",
+      "coverLabel": "Cover image",
+      "coverOptional": "(optional)",
+      "coverUploadCta": "Click to upload cover image",
+      "descriptionLabel": "About your business",
+      "descriptionOptional": "(optional)",
+      "descriptionPlaceholder": "Tell customers what makes your business special…",
+      "websiteLabel": "Website",
+      "websiteOptional": "(optional)",
+      "websitePlaceholder": "https://yourbusiness.com",
+      "socialLinksLabel": "Social links",
+      "socialLinksOptional": "(optional)",
+      "instagramPlaceholder": "https://instagram.com/yourbusiness",
+      "facebookPlaceholder": "https://facebook.com/yourbusiness",
+      "tiktokPlaceholder": "https://tiktok.com/@yourbusiness",
+      "savePending": "Saving…",
+      "saveIdle": "Save and add first deal",
+      "skipForNow": "Skip for now"
+    },
+    "firstDeal": {
+      "metaTitle": "Add your first deal — Lompoc Deals",
+      "stepLabel": "Step 5 of 5",
+      "title": "Add your first deal",
+      "subtitle": "Give customers a reason to visit {bizName}. You can add more from your dashboard.",
+      "almostThere": "Almost there! After this step you'll land in your business dashboard.",
+      "skipToDashboard": "Skip to dashboard →"
+    },
+    "buttons": {
+      "back": "Back",
+      "next": "Next",
+      "continue": "Continue",
+      "createAccount": "Create account",
+      "payAndCreate": "Pay & create account",
+      "pleaseWait": "Please wait…"
+    }
+  },
   "garageSales": {
     "title": "Garage Sales in Lompoc",
     "subtitle": "Community-posted yard & garage sales",
