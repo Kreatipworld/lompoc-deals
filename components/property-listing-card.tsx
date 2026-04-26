@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation"
 import { Bed, Bath, Maximize, MapPin } from "lucide-react"
 import type { PropertyListing } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
+import { getTranslations } from "next-intl/server"
 
 function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
   const dollars = cents / 100
@@ -9,11 +10,12 @@ function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
   return type === "for-rent" ? `$${formatted}/mo` : `$${formatted}`
 }
 
-export function PropertyListingCard({
+export async function PropertyListingCard({
   listing,
 }: {
   listing: PropertyListing
 }) {
+  const t = await getTranslations("propertyCard")
   const isForSale = listing.type === "for-sale"
   return (
     <Link
@@ -36,7 +38,7 @@ export function PropertyListingCard({
                 : "bg-foreground text-background"
             }`}
           >
-            {isForSale ? "For sale" : "For rent"}
+            {isForSale ? t("forSale") : t("forRent")}
           </span>
         </div>
         {/* Price overlay (bottom-left) */}
@@ -89,23 +91,24 @@ export function PropertyListingCard({
         )}
 
         <div className="mt-auto pt-2 text-xs font-medium text-primary">
-          Listed by {listing.business.name}
+          {t("listedBy", { name: listing.business.name })}
         </div>
       </div>
     </Link>
   )
 }
 
-export function PropertyListingGrid({
+export async function PropertyListingGrid({
   listings,
 }: {
   listings: PropertyListing[]
 }) {
+  const t = await getTranslations("propertyCard")
   if (listings.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed bg-muted/30 px-6 py-16 text-center">
         <p className="text-sm text-muted-foreground">
-          No active listings right now. Check back soon.
+          {t("noListings")}
         </p>
       </div>
     )

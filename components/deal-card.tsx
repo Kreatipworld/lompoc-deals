@@ -19,14 +19,13 @@ import { trackClaimAction, trackRedeemAction } from "@/lib/tracking-actions"
 import type { DealCardData } from "@/lib/queries"
 import type { Viewer } from "@/lib/viewer"
 import { SafeImage } from "@/components/safe-image"
+import { getTranslations } from "next-intl/server"
 
-const TYPE_META: Record<
-  DealCardData["type"],
-  { label: string; icon: LucideIcon }
-> = {
-  coupon: { label: "Coupon", icon: Tag },
-  special: { label: "Special", icon: Sparkles },
-  announcement: { label: "News", icon: Megaphone },
+type TypeKey = DealCardData["type"]
+const TYPE_ICON: Record<TypeKey, LucideIcon> = {
+  coupon: Tag,
+  special: Sparkles,
+  announcement: Megaphone,
 }
 
 // 6 deterministic gradient palettes — picked by deal id so each card looks
@@ -43,7 +42,7 @@ function gradientFor(id: number) {
   return GRADIENTS[id % GRADIENTS.length]
 }
 
-export function DealCard({
+export async function DealCard({
   deal,
   viewer,
   fromPath,
@@ -56,11 +55,16 @@ export function DealCard({
   variant?: "default" | "tripadvisor"
   staggerIndex?: number
 }) {
+  const t = await getTranslations("dealCard")
   const isFavorited = viewer.favoritedDealIds.has(deal.id)
   const expired = isPast(deal.expiresAt)
   const hoursLeft = differenceInHours(deal.expiresAt, new Date())
   const expiresSoon = !expired && hoursLeft < 72
-  const TypeIcon = TYPE_META[deal.type].icon
+  const TypeIcon = TYPE_ICON[deal.type]
+  const typeLabel =
+    deal.type === "coupon" ? t("typeCoupon")
+    : deal.type === "special" ? t("typeSpecial")
+    : t("typeAnnouncement")
 
   if (variant === "tripadvisor") {
     return (
@@ -94,7 +98,7 @@ export function DealCard({
           {expired && (
             <div className="absolute inset-0 flex items-center justify-center bg-background/75 backdrop-blur-sm">
               <span className="rounded-full bg-foreground/90 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-background">
-                Expired
+                {t("expired")}
               </span>
             </div>
           )}
@@ -103,7 +107,7 @@ export function DealCard({
           {expiresSoon && (
             <div className="absolute right-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-semibold text-white shadow">
               <Clock className="h-2.5 w-2.5" />
-              Ends soon
+              {t("endsSoon")}
             </div>
           )}
 
@@ -114,7 +118,7 @@ export function DealCard({
               {fromPath && <input type="hidden" name="from" value={fromPath} />}
               <button
                 type="submit"
-                aria-label={isFavorited ? "Unsave deal" : "Save deal"}
+                aria-label={isFavorited ? t("unsaveDeal") : t("saveDeal")}
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-background/95 shadow [transition:transform_160ms_cubic-bezier(0.23,1,0.32,1)] hover:scale-110"
               >
                 <Heart
@@ -138,12 +142,12 @@ export function DealCard({
               className="mb-1.5 inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary hover:bg-primary/20 [transition:background-color_150ms_ease]"
             >
               <TypeIcon className="h-2.5 w-2.5" />
-              {deal.business.categoryName ?? TYPE_META[deal.type].label}
+              {deal.business.categoryName ?? typeLabel}
             </Link>
           ) : (
             <span className="mb-1.5 inline-flex w-fit items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
               <TypeIcon className="h-2.5 w-2.5" />
-              {TYPE_META[deal.type].label}
+              {typeLabel}
             </span>
           )}
 
@@ -189,7 +193,7 @@ export function DealCard({
           {/* Expiry */}
           <p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
             <Clock className="h-3 w-3" />
-            {expired ? "Expired" : `Expires ${formatDistanceToNowStrict(deal.expiresAt)}`}
+            {expired ? t("expired") : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt) })}
           </p>
 
           {/* Terms hint */}
@@ -214,7 +218,7 @@ export function DealCard({
                   type="submit"
                   className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-xs font-semibold text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.98]"
                 >
-                  Get Deal
+                  {t("getDeal")}
                   <ArrowRight className="h-3 w-3" />
                 </button>
               </form>
@@ -227,7 +231,7 @@ export function DealCard({
             <form action={adminSoftDeleteDealAction}>
               <input type="hidden" name="dealId" value={deal.id} />
               <Button type="submit" variant="destructive" size="sm" className="w-full">
-                Admin: soft-delete
+                {t("adminDelete")}
               </Button>
             </form>
           </div>
@@ -268,14 +272,14 @@ export function DealCard({
         {/* Type badge (bottom-left, subtle) */}
         <div className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-medium text-foreground shadow-sm backdrop-blur">
           <TypeIcon className="h-3 w-3" />
-          {TYPE_META[deal.type].label}
+          {typeLabel}
         </div>
 
         {/* Expired overlay */}
         {expired && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
             <span className="rounded-full bg-foreground/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-background">
-              Expired
+              {t("expired")}
             </span>
           </div>
         )}
@@ -284,7 +288,7 @@ export function DealCard({
         {expiresSoon && (
           <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm">
             <Clock className="h-3 w-3" />
-            Ends soon
+            {t("endsSoon")}
           </div>
         )}
 
@@ -295,7 +299,7 @@ export function DealCard({
             {fromPath && <input type="hidden" name="from" value={fromPath} />}
             <button
               type="submit"
-              aria-label={isFavorited ? "Unsave deal" : "Save deal"}
+              aria-label={isFavorited ? t("unsaveDeal") : t("saveDeal")}
               className="flex h-9 w-9 items-center justify-center rounded-full bg-background/95 shadow-md [transition:transform_160ms_cubic-bezier(0.23,1,0.32,1),background-color_160ms_ease] hover:scale-110 hover:bg-background"
             >
               <Heart
@@ -361,8 +365,8 @@ export function DealCard({
           <span className="inline-flex items-center gap-1">
             <Clock className="h-3 w-3" />
             {expired
-              ? "Expired"
-              : `Expires in ${formatDistanceToNowStrict(deal.expiresAt)}`}
+              ? t("expired")
+              : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt) })}
           </span>
           {deal.business.categorySlug && (
             <Link
@@ -387,7 +391,7 @@ export function DealCard({
                 type="submit"
                 className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.98]"
               >
-                Get Deal
+                {t("getDeal")}
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </form>
@@ -397,7 +401,7 @@ export function DealCard({
                 type="submit"
                 className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full border px-4 text-xs font-medium text-muted-foreground [transition:border-color_160ms_ease,color_160ms_ease] hover:border-foreground/30 hover:text-foreground"
               >
-                Mark as Redeemed
+                {t("markRedeemed")}
               </button>
             </form>
           </div>
@@ -414,7 +418,7 @@ export function DealCard({
               size="sm"
               className="w-full"
             >
-              Admin: soft-delete
+              {t("adminDelete")}
             </Button>
           </form>
         </div>
@@ -423,7 +427,7 @@ export function DealCard({
   )
 }
 
-export function DealGrid({
+export async function DealGrid({
   deals,
   viewer,
   fromPath,
@@ -434,15 +438,16 @@ export function DealGrid({
   fromPath?: string
   variant?: "default" | "tripadvisor"
 }) {
+  const t = await getTranslations("dealCard")
   if (deals.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed bg-muted/30 px-6 py-16 text-center">
         <Sparkles className="mx-auto h-10 w-10 text-muted-foreground/60" />
         <h3 className="mt-4 font-display text-xl font-semibold">
-          No deals yet
+          {t("noDeals")}
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Check back soon — new offers drop every day from local businesses.
+          {t("noDealsSubtitle")}
         </p>
       </div>
     )

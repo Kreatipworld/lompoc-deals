@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import { MessageCircle, X, Send, Loader2, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { UIMessage } from "ai"
+import { useTranslations } from "next-intl"
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const T = {
@@ -24,13 +25,7 @@ const T = {
   online: "#10B981",
 } as const
 
-// ─── Suggestions ──────────────────────────────────────────────────────────────
-const SUGGESTIONS = [
-  "What deals are available today?",
-  "Find me food & drink specials",
-  "What are some fun things to do?",
-  "Any upcoming events?",
-]
+// ─── Suggestions are now translated inside the component ──────────────────────
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function getTextContent(message: UIMessage): string {
@@ -136,7 +131,7 @@ function LinkChip({ link, isOutgoing }: { link: ExtractedLink; isOutgoing: boole
         border: `1px solid ${isOutgoing ? "rgba(79,70,229,0.2)" : T.border}`,
         outlineColor: T.brand,
       }}
-      aria-label={`Open: ${link.label}`}
+      aria-label={link.label}
     >
       <div
         className="flex-shrink-0 w-11 h-11 rounded-lg flex items-center justify-center text-xl"
@@ -232,12 +227,20 @@ function buildGroups(messages: UIMessage[]): MsgGroup[] {
 const transport = new DefaultChatTransport({ api: "/api/chat" })
 
 export function AIChatWidget() {
+  const t = useTranslations("chat")
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState("")
   const [showScrollFab, setShowScrollFab] = useState(false)
   const messagesRef = useRef<HTMLDivElement>(null)
   const endRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const SUGGESTIONS = [
+    t("suggestion1"),
+    t("suggestion2"),
+    t("suggestion3"),
+    t("suggestion4"),
+  ]
 
   const { messages, sendMessage, status } = useChat({ transport })
   const isLoading = status === "streaming" || status === "submitted"
@@ -325,10 +328,10 @@ export function AIChatWidget() {
               </div>
               <div>
                 <p className="text-[15px] font-semibold leading-none" style={{ color: T.text }}>
-                  Lompoc Guide
+                  {t("title")}
                 </p>
                 <p className="text-[11px] font-medium mt-0.5" style={{ color: T.online }}>
-                  Online · AI assistant
+                  {t("online")}
                 </p>
               </div>
             </div>
@@ -336,7 +339,7 @@ export function AIChatWidget() {
               onClick={() => setOpen(false)}
               className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 active:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2"
               style={{ width: "36px", height: "36px", outlineColor: T.brand }}
-              aria-label="Close chat"
+              aria-label={t("close")}
             >
               <X className="w-5 h-5" style={{ color: T.textMuted }} />
             </button>
@@ -362,7 +365,7 @@ export function AIChatWidget() {
                       color: T.text,
                     }}
                   >
-                    Hi! I&apos;m your Lompoc Guide. Ask me about local deals, businesses, activities, or upcoming events!
+                    {t("welcomeMessage")}
                   </div>
                   <div className="space-y-1.5 pt-1">
                     {SUGGESTIONS.map((s) => (
@@ -387,7 +390,7 @@ export function AIChatWidget() {
                 <div className="flex flex-col gap-2">
                   {groups.map((group, gi) => (
                     <div key={gi}>
-                      {group.showDate && <DateSeparator label="Today" />}
+                      {group.showDate && <DateSeparator label={t("today")} />}
                       <div
                         className="flex flex-col"
                         style={{
@@ -478,7 +481,7 @@ export function AIChatWidget() {
                   boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
                   outlineColor: T.brand,
                 }}
-                aria-label="Scroll to latest messages"
+                aria-label={t("scrollToLatest")}
               >
                 <ChevronDown className="w-4 h-4" style={{ color: T.brand }} />
               </button>
@@ -500,7 +503,7 @@ export function AIChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about deals, places, events…"
+              placeholder={t("placeholder")}
               rows={1}
               className="flex-1 resize-none outline-none min-w-0 overflow-y-auto"
               style={{
@@ -518,7 +521,7 @@ export function AIChatWidget() {
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
-              aria-label="Message input"
+              aria-label={t("inputLabel")}
             />
             <button
               type="submit"
@@ -532,7 +535,7 @@ export function AIChatWidget() {
                 boxShadow: `0 2px 8px ${T.brandShadow}`,
                 outlineColor: T.brand,
               }}
-              aria-label="Send message"
+              aria-label={t("send")}
             >
               <Send className="w-[18px] h-[18px] text-white" />
             </button>
@@ -553,7 +556,7 @@ export function AIChatWidget() {
           boxShadow: `0 2px 8px ${T.brandShadow}`,
           outlineColor: T.brand,
         }}
-        aria-label="Open Lompoc Guide chat"
+        aria-label={t("open")}
       >
         <MessageCircle className="w-6 h-6" />
       </button>
