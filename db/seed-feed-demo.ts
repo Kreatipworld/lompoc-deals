@@ -218,6 +218,180 @@ const DEMO_POSTS: DemoFeedPost[] = [
   },
 ]
 
+const DEMO_POSTS_ES: DemoFeedPost[] = [
+  // Single-item for sale (6)
+  {
+    type: "for_sale",
+    title: "Sofá vintage de mediados de siglo — buen estado",
+    description:
+      "Estructura de nogal sólida, cojines originales, sin manchas ni rasgaduras. Casa libre de humo. Solo recogida — calle H cerca del correo.",
+    priceCents: 12000,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: "200 W H St, Lompoc, CA 93436",
+    photos: ["https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&auto=format&fit=crop&q=70"],
+    isFeatured: true,
+  },
+  {
+    type: "for_sale",
+    title: "Bicicleta de montaña — rodada 26, en buen estado",
+    description:
+      "Bicicleta de montaña con 21 velocidades, frenos de disco, llantas nuevas. La usé dos temporadas. Precio negociable. Traer efectivo.",
+    priceCents: 8500,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: null,
+    photos: ["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "for_sale",
+    title: "Tabla de surf 7'2\" — buena para principiantes",
+    description:
+      "Tabla de surf tipo longboard, ideal para aprender. Pequeño golpe en la proa, reparado. La usé en Jalama varias veces. Incluye correa.",
+    priceCents: 22000,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: null,
+    photos: ["https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "for_sale",
+    title: "Leña partida — gratis, venga a recoger",
+    description:
+      "Tumbamos un eucalipto grande en el patio y sobró bastante leña ya partida. Gratis para quien venga a recoger. Necesita camioneta. Primero en llegar.",
+    priceCents: 0,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: "100 N V St, Lompoc, CA 93436",
+    photos: ["https://images.unsplash.com/photo-1542830880-c41cd47fb4d7?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "for_sale",
+    title: "Vajilla de cerámica — juego completo para 8",
+    description:
+      "Juego de vajilla de cerámica artesanal, color azul marino, completo para 8 personas. Platos, tazones, tazas y platitos. Sin astillas ni grietas.",
+    priceCents: 7500,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: null,
+    photos: ["https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "for_sale",
+    title: "Escalera de fibra de vidrio 8 pies — casi nueva",
+    description:
+      "Compré esta escalera para un solo proyecto y nunca la volví a usar. Capacidad 300 lbs, muy estable. Vale $180 en Home Depot.",
+    priceCents: 7000,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: null,
+    photos: null,
+  },
+
+  // Yard sales (3)
+  {
+    type: "for_sale",
+    title: "Venta de garaje familiar — sábado y domingo",
+    description:
+      "Tres vecinos de la calle Cedar limpiando sus garajes. Muebles, ropa de niños, herramientas, cosas de cocina y decoración. Solo efectivo. Los madrugadores son bienvenidos.",
+    priceCents: null,
+    saleStartsAt: daysAhead(3),
+    saleEndsAt: daysAhead(4),
+    address: "421 W Maple Ave, Lompoc, CA 93436",
+    photos: ["https://images.unsplash.com/photo-1567361808960-dec9cb578182?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "for_sale",
+    title: "Venta de herencia — solo el sábado",
+    description:
+      "Vendemos las pertenencias de mi abuela: loza fina, manteles bordados, joyería vintage y herramientas antiguas. De 8am a 1pm, no se aceptan tarjetas.",
+    priceCents: null,
+    saleStartsAt: daysAhead(5),
+    saleEndsAt: daysAhead(5),
+    address: "316 N N St, Lompoc, CA 93436",
+    photos: ["https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "for_sale",
+    title: "¡Nos mudamos! — venta de todo este fin de semana",
+    description:
+      "Sofá, comedor de 6 sillas, cama matrimonial con colchón, lavadora y secadora (funcionan). Precios razonables, todo debe salir. Sáb y Dom 9am-3pm.",
+    priceCents: null,
+    saleStartsAt: daysAhead(2),
+    saleEndsAt: daysAhead(3),
+    address: "1100 N Daisy St, Lompoc, CA 93436",
+    photos: null,
+  },
+
+  // Info posts (6)
+  {
+    type: "info",
+    title: "Se perdió gato atigrado — colonia Calle Real",
+    description:
+      "Nuestro gato Manchas salió el martes por la noche y no ha regresado. Es atigrado gris, sin collar pero tiene chip. Muy amistoso, se acerca solo. Si lo ven llamen al 805-555-0198. Hay recompensa.",
+    priceCents: null,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: "Área de Calle Real, Lompoc, CA 93436",
+    photos: ["https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "info",
+    title: "Fiesta de la cuadra este sábado — Calle H",
+    description:
+      "Fiesta anual de la cuadra en la calle H este sábado de 4 a 9pm. Traigan un platillo para compartir. Habrá música, juegos para niños y nieve raspada a las 6pm. Perros con correa son bienvenidos.",
+    priceCents: null,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: "Calle H entre Ocean y Cypress, Lompoc, CA 93436",
+    photos: null,
+  },
+  {
+    type: "info",
+    title: "Aviso: corte de agua el martes por la mañana",
+    description:
+      "El departamento de agua realizará trabajos en la tubería principal de la calle N entre Maple y Walnut. El agua estará cortada de 8am a 12pm el martes. Guarden agua la noche anterior.",
+    priceCents: null,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: "Calle N entre Maple y Walnut, Lompoc, CA 93436",
+    photos: null,
+  },
+  {
+    type: "info",
+    title: "Piano vertical — gratis, usted lo lleva",
+    description:
+      "Piano vertical en buen estado de funcionamiento, solo necesita afinación. Gratis si puede recogerlo antes del próximo fin de semana. Necesitan al menos 4 personas y una camioneta. Hay acceso por el garaje.",
+    priceCents: null,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: "Área de Vandenberg Village",
+    photos: ["https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=1200&auto=format&fit=crop&q=70"],
+  },
+  {
+    type: "info",
+    title: "Busco carpool — Lompoc a Vandenberg AFB",
+    description:
+      "Busco con quien compartir el viaje a la base de lunes a viernes, turno de 7am a 4pm. Comparto la gasolina. También hablo inglés. Mándeme un mensaje.",
+    priceCents: null,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: null,
+    photos: null,
+  },
+  {
+    type: "info",
+    title: "Niñera disponible — joven con experiencia y referencias",
+    description:
+      "Estudiante de último año de preparatoria, certificada en primeros auxilios y RCP. Tengo referencias de tres familias de Lompoc. Disponible tardes y fines de semana. $17/hr. Hablo español e inglés.",
+    priceCents: null,
+    saleStartsAt: null,
+    saleEndsAt: null,
+    address: null,
+    photos: null,
+  },
+]
+
 const DEMO_EVENTS = [
   {
     title: "Lompoc Flower Festival — opening day",
@@ -251,6 +425,39 @@ const DEMO_EVENTS = [
   },
 ]
 
+const DEMO_EVENTS_ES = [
+  {
+    title: "Festival de las Flores de Lompoc — día inaugural",
+    description:
+      "Celebración anual de los campos de flores de Lompoc. Desfile a las 10am, puestos de comida todo el día y música en vivo en el Parque Ryon. Entrada gratuita para toda la familia.",
+    location: "Parque Ryon, Lompoc, CA",
+    imageUrl: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&auto=format&fit=crop&q=70",
+    category: "festival" as const,
+    startsAt: daysAhead(8),
+    endsAt: daysAhead(8),
+  },
+  {
+    title: "Mercado de productores — viernes por la tarde",
+    description:
+      "Mercado semanal en la plaza del Ayuntamiento de Lompoc. Frutas y verduras locales, pan artesanal, flores frescas y comida caliente. Todos los viernes de 2 a 6pm. Traigan sus bolsas.",
+    location: "Plaza del Ayuntamiento de Lompoc, Lompoc, CA",
+    imageUrl: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=1200&auto=format&fit=crop&q=70",
+    category: "market" as const,
+    startsAt: daysAhead(3),
+    endsAt: daysAhead(3),
+  },
+  {
+    title: "Música en vivo en Cork & Tap — noche de mariachi",
+    description:
+      "Grupo de mariachi local tocará en vivo esta noche. Sin cover. Se recomiendan reservaciones para mesas. Ambiente familiar hasta las 9pm.",
+    location: "Cork & Tap, 113 N H St, Lompoc, CA 93436",
+    imageUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=70",
+    category: "arts" as const,
+    startsAt: daysAhead(5),
+    endsAt: daysAhead(5),
+  },
+]
+
 // ─── Seeder logic ───────────────────────────────────────────────────────────
 
 async function findOrCreateDemoUser(): Promise<number> {
@@ -273,8 +480,8 @@ async function findOrCreateDemoUser(): Promise<number> {
 
 async function removeDemo() {
   console.log(`🧹  Removing demo content…\n`)
-  const titles = DEMO_POSTS.map((p) => p.title)
-  const eventTitles = DEMO_EVENTS.map((e) => e.title)
+  const titles = [...DEMO_POSTS, ...DEMO_POSTS_ES].map((p) => p.title)
+  const eventTitles = [...DEMO_EVENTS, ...DEMO_EVENTS_ES].map((e) => e.title)
 
   const deletedFeed = await db
     .delete(feedPosts)
@@ -353,6 +560,57 @@ async function main() {
     console.log(`  + ${post.type.padEnd(8)} "${post.title}"`)
   }
 
+  // Spanish posts
+  let insertedEs = 0
+  let skippedEs = 0
+
+  for (const post of DEMO_POSTS_ES) {
+    const existing = await db.query.feedPosts.findFirst({
+      where: eq(feedPosts.title, post.title),
+    })
+    if (existing) {
+      skippedEs++
+      continue
+    }
+
+    const now = new Date()
+    let expiresAt: Date
+    if (post.type === "info") {
+      expiresAt = new Date(now)
+      expiresAt.setDate(expiresAt.getDate() + 7)
+    } else if (post.saleEndsAt) {
+      expiresAt = new Date(post.saleEndsAt)
+      expiresAt.setHours(expiresAt.getHours() + 24)
+    } else {
+      expiresAt = new Date(now)
+      expiresAt.setDate(expiresAt.getDate() + 30)
+    }
+
+    const approvedAt = new Date(now.getTime() - Math.random() * 6 * 60 * 60 * 1000)
+
+    await db.insert(feedPosts).values({
+      postedByUserId: demoUserId,
+      type: post.type,
+      title: post.title,
+      description: post.description,
+      photos: post.photos ?? null,
+      priceCents: post.priceCents,
+      saleStartsAt: post.saleStartsAt,
+      saleEndsAt: post.saleEndsAt,
+      address: post.address,
+      lat: null,
+      lng: null,
+      status: "approved",
+      approvedAt,
+      approvedByUserId: null,
+      isFeatured: post.isFeatured ?? false,
+      expiresAt,
+      createdAt: approvedAt,
+    })
+    insertedEs++
+    console.log(`  + ${post.type.padEnd(8)} (ES) "${post.title}"`)
+  }
+
   // Events
   let eventInserted = 0
   let eventSkipped = 0
@@ -381,14 +639,46 @@ async function main() {
     console.log(`  + event    "${ev.title}"`)
   }
 
+  // Spanish events
+  let eventInsertedEs = 0
+  let eventSkippedEs = 0
+  for (const ev of DEMO_EVENTS_ES) {
+    const existing = await db.query.events.findFirst({
+      where: and(eq(events.title, ev.title), eq(events.source, DEMO_SOURCE)),
+    })
+    if (existing) {
+      eventSkippedEs++
+      continue
+    }
+
+    await db.insert(events).values({
+      title: ev.title,
+      description: ev.description,
+      location: ev.location,
+      imageUrl: ev.imageUrl,
+      category: ev.category,
+      startsAt: ev.startsAt,
+      endsAt: ev.endsAt,
+      submittedByUserId: demoUserId,
+      status: "approved",
+      source: DEMO_SOURCE,
+    })
+    eventInsertedEs++
+    console.log(`  + event (ES) "${ev.title}"`)
+  }
+
   console.log(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
   console.log(`SUMMARY`)
   console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-  console.log(`  feed_posts inserted : ${inserted}`)
-  console.log(`  feed_posts skipped  : ${skipped} (already existed)`)
-  console.log(`  events inserted     : ${eventInserted}`)
-  console.log(`  events skipped      : ${eventSkipped} (already existed)`)
-  console.log(`  demo user           : ${DEMO_USER_EMAIL} (id=${demoUserId})`)
+  console.log(`  feed_posts (EN) inserted : ${inserted}`)
+  console.log(`  feed_posts (EN) skipped  : ${skipped} (already existed)`)
+  console.log(`  feed_posts (ES) inserted : ${insertedEs}`)
+  console.log(`  feed_posts (ES) skipped  : ${skippedEs} (already existed)`)
+  console.log(`  events (EN) inserted     : ${eventInserted}`)
+  console.log(`  events (EN) skipped      : ${eventSkipped} (already existed)`)
+  console.log(`  events (ES) inserted     : ${eventInsertedEs}`)
+  console.log(`  events (ES) skipped      : ${eventSkippedEs} (already existed)`)
+  console.log(`  demo user                : ${DEMO_USER_EMAIL} (id=${demoUserId})`)
   console.log(`\nVisit http://localhost:3001/en/feed to see the seeded content.`)
 
   process.exit(0)
