@@ -22,6 +22,8 @@ import { BusinessClaimCta } from "@/components/business-claim-cta"
 import { FollowBusinessButton } from "@/components/follow-business-button"
 import { BusinessPhotoCarousel } from "@/components/business-photo-carousel"
 import { SafeImage } from "@/components/safe-image"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
@@ -29,18 +31,21 @@ export async function generateMetadata({
   params,
 }: {
   params: { slug: string }
-}) {
-  const data = await getBusinessBySlug(params.slug)
-  if (!data) return { title: "Business not found — Lompoc Deals" }
+}): Promise<Metadata> {
+  const [data, t] = await Promise.all([
+    getBusinessBySlug(params.slug),
+    getTranslations("businesses.profile"),
+  ])
+  if (!data) return { title: t("metaNotFound") }
   const { name, description } = data.business
   const catLabel = data.business.category?.name ?? "local business"
-  const fallbackDescription = `Browse current deals and coupons from ${name}, a ${catLabel} in Lompoc, CA. Free to claim — updated directly by the business.`
+  const fallbackDescription = t("metaFallbackDescription", { name, catLabel })
   return {
-    title: `${name} — Deals & Coupons in Lompoc, CA | Lompoc Deals`,
+    title: `${name} — ${t("metaTitleSuffix")}`,
     description: description ?? fallbackDescription,
     openGraph: {
-      title: `${name} | Lompoc Deals`,
-      description: description ?? `Current deals from ${name} in Lompoc, CA. Free to claim.`,
+      title: `${name} ${t("metaOgSuffix")}`,
+      description: description ?? t("metaOgFallback", { name }),
     },
   }
 }
@@ -60,9 +65,10 @@ export default async function BusinessPage({
 }: {
   params: { slug: string }
 }) {
-  const [data, viewer] = await Promise.all([
+  const [data, viewer, t] = await Promise.all([
     getBusinessBySlug(params.slug),
     getViewer(),
+    getTranslations("businesses.profile"),
   ])
   if (!data) notFound()
   const { business, deals } = data
@@ -75,7 +81,9 @@ export default async function BusinessPage({
 
   const activeDeals = deals.filter((d) => new Date(d.expiresAt) > new Date())
   const itemCount = isRealEstate ? listings.length : activeDeals.length
-  const itemLabel = isRealEstate ? "listing" : "deal"
+  const itemLabel = isRealEstate
+    ? itemCount === 1 ? t("listingSingular") : t("listingPlural")
+    : itemCount === 1 ? t("dealSingular") : t("dealPlural")
 
   if (!isRealEstate && deals.length > 0) {
     void bumpViewCounts(deals.map((d) => d.id))
@@ -119,7 +127,7 @@ export default async function BusinessPage({
           {/* Breadcrumb — inside the card to prevent overlap with cover */}
           <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
             <Link href="/" className="transition-colors duration-150 hover:text-foreground">
-              Deals
+              {t("breadcrumbHome")}
             </Link>
             {business.category && (
               <>
@@ -182,14 +190,14 @@ export default async function BusinessPage({
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-1">
                     <Sparkles className="h-3 w-3 text-primary" />
-                    {itemCount} active{" "}
-                    {itemCount === 1 ? itemLabel : `${itemLabel}s`}
+                    {t("trustActiveItem", { count: itemCount, label: itemLabel })}
                   </span>
                   <span className="text-foreground/30">·</span>
                   <span className="inline-flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
-                    Listed since{" "}
-                    {format(new Date(business.createdAt), "MMM yyyy")}
+                    {t("trustListed", {
+                      date: format(new Date(business.createdAt), "MMM yyyy"),
+                    })}
                   </span>
                   {viewer.isLocal && (
                     <>
@@ -267,10 +275,10 @@ export default async function BusinessPage({
           <div>
             <div className="mb-6 flex items-end justify-between">
               <h2 className="font-display text-2xl font-semibold tracking-tight">
-                {isRealEstate ? "Active listings" : "Active deals"}
+                {isRealEstate ? t("sectionActiveListings") : t("sectionActiveDeals")}
               </h2>
               <p className="text-sm text-muted-foreground">
-                from {business.name}
+                {t("sectionFrom", { name: business.name })}
               </p>
             </div>
             {isRealEstate ? (

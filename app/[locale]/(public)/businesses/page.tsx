@@ -18,25 +18,23 @@ import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = {
-  title: "Lompoc Business Directory — Local Businesses | Lompoc Deals",
-  description:
-    "Browse Lompoc, CA businesses by category — restaurants, salons, auto repair, retail, services, and more. Find deals from local businesses you already know.",
-  keywords: [
-    "lompoc business directory",
-    "lompoc local businesses",
-    "lompoc restaurants",
-    "lompoc salons",
-    "lompoc ca businesses",
-  ],
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("businesses.directory")
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  }
 }
 
 export default async function BusinessesPage() {
-  const [businesses, cats, stats] = await Promise.all([
+  const [businesses, cats, stats, t] = await Promise.all([
     getDirectoryBusinesses(),
     getAllCategories(),
     getSiteStats(),
+    getTranslations("businesses.directory"),
   ])
 
   const grouped = new Map<
@@ -116,20 +114,20 @@ export default async function BusinessesPage() {
           <AnimeReveal direction="up" delay={0} duration={600}>
             <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">
               <span className="h-px w-8 bg-white/30" />
-              <span>Directory</span>
+              <span>{t("eyebrow")}</span>
               <span className="text-white/20">·</span>
-              <span>Lompoc, California</span>
+              <span>{t("eyebrowLocation")}</span>
               <span className="text-white/20">·</span>
-              <span>est. 2026</span>
+              <span>{t("eyebrowEst")}</span>
             </div>
           </AnimeReveal>
 
           {/* Display headline */}
           <AnimeReveal direction="up" delay={80} duration={700}>
             <h1 className="relative mt-6 font-display text-[clamp(3.2rem,11vw,8.5rem)] font-bold leading-[0.9] tracking-[-0.04em] text-white">
-              <span className="block">Lompoc,</span>
+              <span className="block">{t("heroLine1")}</span>
               <span className="mt-1 block italic text-primary">
-                in full bloom.
+                {t("heroLine2")}
               </span>
             </h1>
           </AnimeReveal>
@@ -138,10 +136,7 @@ export default async function BusinessesPage() {
           <AnimeReveal direction="up" delay={160} duration={700}>
             <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <p className="max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
-                The Flower Capital&apos;s complete index of local businesses —
-                restaurants, retail, services, and the spots only locals know.
-                Browse by category, search by name, find your next favorite on
-                H&nbsp;Street.
+                {t("heroBody")}
               </p>
 
               {/* Stat cluster */}
@@ -151,7 +146,7 @@ export default async function BusinessesPage() {
                     <AnimatedCounter value={stats.businesses} duration={1400} delay={400} />
                   </div>
                   <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                    Local businesses
+                    {t("statLocalBusinesses")}
                   </div>
                 </div>
               </div>
@@ -184,13 +179,13 @@ export default async function BusinessesPage() {
           {/* Stat bar */}
           <AnimeReveal direction="up" delay={400} duration={700}>
             <div className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/10 pt-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">
-              <span className="text-white/60">{stats.businesses} Businesses</span>
+              <span className="text-white/60">{t("statBarBusinesses", { count: stats.businesses })}</span>
               <span className="text-white/10">·</span>
-              <span>{stats.activeDeals} Active Deals</span>
+              <span>{t("statBarActiveDeals", { count: stats.activeDeals })}</span>
               <span className="text-white/10">·</span>
-              <span>{stats.categories} Categories</span>
+              <span>{t("statBarCategories", { count: stats.categories })}</span>
               <span className="text-white/10">·</span>
-              <span>Updated daily</span>
+              <span>{t("statBarUpdatedDaily")}</span>
             </div>
           </AnimeReveal>
         </div>
@@ -203,10 +198,10 @@ export default async function BusinessesPage() {
         <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
-              { label: "Businesses", value: stats.businesses, icon: <Flower2 className="h-4 w-4" /> },
-              { label: "Active Deals", value: stats.activeDeals, icon: <Tag className="h-4 w-4" /> },
-              { label: "Categories", value: stats.categories, icon: <Sparkles className="h-4 w-4" /> },
-              { label: "Updated", value: null, label2: "Daily", icon: <TrendingUp className="h-4 w-4" /> },
+              { label: t("statLocalBusinesses"), value: stats.businesses, icon: <Flower2 className="h-4 w-4" /> },
+              { label: t("statActiveDeals"), value: stats.activeDeals, icon: <Tag className="h-4 w-4" /> },
+              { label: t("statCategories"), value: stats.categories, icon: <Sparkles className="h-4 w-4" /> },
+              { label: t("statUpdated"), value: null, label2: t("statUpdatedValue"), icon: <TrendingUp className="h-4 w-4" /> },
             ].map((s, i) => (
               <AnimeReveal key={s.label} direction="up" delay={i * 60} duration={600}>
                 <div className="flex flex-col gap-1 rounded-2xl border bg-card p-5 shadow-sm">
@@ -241,14 +236,15 @@ export default async function BusinessesPage() {
                     {g.name}
                   </h2>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    {g.items.length} {g.items.length === 1 ? "business" : "businesses"}
+                    {g.items.length}{" "}
+                    {g.items.length === 1 ? t("businessSingular") : t("businessPlural")}
                   </p>
                 </div>
                 <Link
                   href={`/category/${g.slug}`}
                   className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
                 >
-                  See all
+                  {t("seeAll")}
                   <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
@@ -288,7 +284,7 @@ export default async function BusinessesPage() {
                           <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
                             <Tag className="h-3 w-3" />
                             {b.activeDealCount}{" "}
-                            {b.activeDealCount === 1 ? "deal" : "deals"}
+                            {b.activeDealCount === 1 ? t("dealSingular") : t("dealPlural")}
                           </span>
                         )}
                       </div>
@@ -324,7 +320,7 @@ export default async function BusinessesPage() {
                     </div>
 
                     <div className="flex items-center justify-end pt-1 text-xs font-semibold text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                      View profile
+                      {t("viewProfile")}
                       <ArrowRight className="ml-1 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
                     </div>
                   </Link>
@@ -345,18 +341,17 @@ export default async function BusinessesPage() {
               <Flower2 className="h-5 w-5" />
             </div>
             <h2 className="mt-5 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Own a Lompoc business?
+              {t("ctaHeading")}
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-              Get listed in the directory free — add your hours, photos, deals,
-              and let locals find you.
+              {t("ctaBody")}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/for-businesses"
                 className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md active:scale-[0.97]"
               >
-                List your business free
+                {t("ctaListFree")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
@@ -364,7 +359,7 @@ export default async function BusinessesPage() {
                 className="inline-flex h-12 items-center gap-2 rounded-full border bg-background px-7 text-base font-semibold transition-colors hover:bg-accent"
               >
                 <Tag className="h-4 w-4" />
-                Browse active deals
+                {t("ctaBrowseDeals")}
               </Link>
             </div>
           </div>

@@ -1,7 +1,10 @@
 import { Link } from "@/i18n/navigation"
 import { Lock, ArrowRight } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
-export function BusinessClaimCta({ slug }: { slug: string }) {
+export async function BusinessClaimCta({ slug }: { slug: string }) {
+  const t = await getTranslations("businesses.profile")
+
   return (
     <div className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/10 via-accent to-background p-6 sm:p-8">
       <div
@@ -15,11 +18,10 @@ export function BusinessClaimCta({ slug }: { slug: string }) {
           </div>
           <div>
             <h3 className="font-display text-xl font-semibold tracking-tight">
-              Is this your business?
+              {t("claimHeading")}
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Claim your listing in 30 seconds and start posting your own
-              coupons, specials, and announcements.
+              {t("claimBody")}
             </p>
           </div>
         </div>
@@ -27,7 +29,7 @@ export function BusinessClaimCta({ slug }: { slug: string }) {
           href={`/signup?claim=${encodeURIComponent(slug)}`}
           className="inline-flex h-11 flex-shrink-0 items-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
         >
-          Claim this listing
+          {t("claimCta")}
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>

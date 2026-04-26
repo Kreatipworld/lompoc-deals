@@ -6,10 +6,12 @@ import {
   isOpenNow,
   parseHours,
 } from "@/lib/hours"
+import { getTranslations } from "next-intl/server"
 
-export function BusinessHours({ hoursJson }: { hoursJson: unknown }) {
+export async function BusinessHours({ hoursJson }: { hoursJson: unknown }) {
   const hours = parseHours(hoursJson)
   const open = isOpenNow(hours)
+  const t = await getTranslations("businesses.profile")
 
   // If every day is null, show nothing — we don't fake hours
   const anyDay = DAY_KEYS.some((k) => hours[k] !== null)
@@ -20,7 +22,7 @@ export function BusinessHours({ hoursJson }: { hoursJson: unknown }) {
       <div className="mb-3 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           <Clock className="h-3.5 w-3.5" />
-          Hours
+          {t("hours")}
         </h3>
         <span
           className={`rounded-full border px-2 py-0.5 text-[11px] font-medium ${
@@ -29,7 +31,7 @@ export function BusinessHours({ hoursJson }: { hoursJson: unknown }) {
               : "border-muted-foreground/20 bg-muted text-muted-foreground"
           }`}
         >
-          {open ? "Open now" : "Closed now"}
+          {open ? t("openNow") : t("closedNow")}
         </span>
       </div>
       <ul className="space-y-1 text-sm">
