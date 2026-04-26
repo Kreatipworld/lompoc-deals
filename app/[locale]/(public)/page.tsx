@@ -10,25 +10,28 @@ import { DealsCarousel } from "@/components/deals-carousel"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = {
-  title: "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
-  description:
-    "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more. Browse by category, discover deals, and support local.",
-  keywords: [
-    "lompoc directory",
-    "lompoc businesses",
-    "things to do in lompoc",
-    "lompoc local businesses",
-    "lompoc ca",
-    "lompoc deals",
-  ],
-  openGraph: {
-    title: "Lompoc Local Directory — Businesses, Deals & Things To Do",
-    description:
-      "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more.",
-    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
-  },
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "home" })
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    keywords: [
+      "lompoc directory",
+      "lompoc businesses",
+      "things to do in lompoc",
+      "lompoc local businesses",
+      "lompoc ca",
+      "lompoc deals",
+    ],
+    openGraph: {
+      title: t("metaTitle"),
+      description: t("metaDescription"),
+      images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
+    },
+  }
 }
 
 // Category image mapping by slug — local Lompoc business photos
@@ -50,13 +53,14 @@ function getCategoryImage(slug: string): string | null {
   return CATEGORY_IMAGES[slug] ?? null
 }
 
-export default async function HomePage() {
-  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals] = await Promise.all([
+export default async function HomePage({ params }: { params: { locale: string } }) {
+  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals, t] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6),
     getFeaturedDeals(6),
+    getTranslations({ locale: params.locale, namespace: "home" }),
   ])
 
   return (
@@ -82,15 +86,15 @@ export default async function HomePage() {
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             <MapPin className="h-3 w-3" />
-            Lompoc, California
+            {t("location")}
           </div>
 
           <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
-            All of Lompoc <br className="sm:hidden" />
-            <span className="italic text-yellow-300">in One Place</span>
+            {t("heroTitle")} <br className="sm:hidden" />
+            <span className="italic text-yellow-300">{t("heroHighlight")}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
-            Discover local restaurants, shops, services, and more — all in one place.
+            {t("heroSubheadline")}
           </p>
 
           <div className="mx-auto mt-8 max-w-xl">
@@ -100,12 +104,12 @@ export default async function HomePage() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
-              <AnimatedCounter value={stats.activeDeals} duration={1200} delay={600} /> active deals
+              <AnimatedCounter value={stats.activeDeals} duration={1200} delay={600} /> {t("statActiveDeals")}
             </span>
             <span className="text-white/30">·</span>
-            <span><AnimatedCounter value={stats.businesses} duration={1400} delay={700} /> local businesses</span>
+            <span><AnimatedCounter value={stats.businesses} duration={1400} delay={700} /> {t("statLocalBusinesses")}</span>
             <span className="text-white/30">·</span>
-            <span><AnimatedCounter value={stats.categories} duration={1000} delay={800} /> categories</span>
+            <span><AnimatedCounter value={stats.categories} duration={1000} delay={800} /> {t("statCategories")}</span>
           </div>
         </div>
       </section>
@@ -121,10 +125,10 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-14">
         <AnimeReveal direction="up" delay={0} duration={600} className="mb-8">
           <h2 className="font-display text-3xl font-bold tracking-tight">
-            Live Local. Love Lompoc.
+            {t("liveLoveHeading")}
           </h2>
           <p className="mt-1 text-muted-foreground">
-            Find things to do, eat, and discover in Lompoc
+            {t("liveLoveSubheading")}
           </p>
         </AnimeReveal>
 
@@ -174,17 +178,17 @@ export default async function HomePage() {
             <div className="mb-8 flex items-end justify-between">
               <div>
                 <h2 className="font-display text-3xl font-bold tracking-tight">
-                  Popular in Lompoc
+                  {t("popularInLompoc")}
                 </h2>
                 <p className="mt-1 text-muted-foreground">
-                  Local businesses with active offers right now
+                  {t("businessesSubheading")}
                 </p>
               </div>
               <Link
                 href="/businesses"
                 className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
               >
-                View all businesses
+                {t("viewAllBusinesses")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -237,7 +241,7 @@ export default async function HomePage() {
                     {biz.activeDealCount > 0 && (
                       <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
                         <Tag className="h-2.5 w-2.5" />
-                        {biz.activeDealCount} {biz.activeDealCount === 1 ? "deal" : "deals"}
+                        {biz.activeDealCount} {biz.activeDealCount === 1 ? t("deal") : t("deals")}
                       </div>
                     )}
                   </div>
@@ -250,7 +254,7 @@ export default async function HomePage() {
                 href="/businesses"
                 className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
               >
-                View all businesses
+                {t("viewAllBusinesses")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -266,17 +270,17 @@ export default async function HomePage() {
           <div className="mb-8 flex items-end justify-between">
             <div>
               <h2 className="font-display text-3xl font-bold tracking-tight">
-                Things to Do in Lompoc
+                {t("activitiesHeading")}
               </h2>
               <p className="mt-1 text-muted-foreground">
-                Adventures, history, and hidden gems — all within reach
+                {t("activitiesSubheading")}
               </p>
             </div>
             <Link
               href="/activities"
               className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
             >
-              See all activities
+              {t("seeAllActivities")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -330,7 +334,7 @@ export default async function HomePage() {
                 href="/activities"
                 className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
               >
-                See all activities
+                {t("seeAllActivities")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -339,7 +343,7 @@ export default async function HomePage() {
               className="ml-auto inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
             >
               <Compass className="h-4 w-4 text-primary" />
-              Explore the map
+              {t("exploreMap")}
             </Link>
           </div>
         </section>
@@ -352,30 +356,30 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl px-4">
           <AnimeReveal direction="up" delay={0} duration={600} className="mb-10 text-center">
             <h2 className="font-display text-3xl font-bold tracking-tight">
-              How It Works
+              {t("howItWorks.title")}
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Connecting Lompoc locals with businesses since day one.
+              {t("howItWorks.subtitle")}
             </p>
           </AnimeReveal>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {[
               {
                 icon: Search,
-                title: "Browse local deals",
-                body: "Find coupons and specials from restaurants, shops, salons, and more — all in one place, all in Lompoc.",
+                title: t("howItWorks.step1Title"),
+                body: t("howItWorks.step1Body"),
                 step: "01",
               },
               {
                 icon: Tag,
-                title: "Claim your deal",
-                body: "Tap Claim, show your phone at the register, and save. No printing, no apps to download.",
+                title: t("howItWorks.step2Title"),
+                body: t("howItWorks.step2Body"),
                 step: "02",
               },
               {
                 icon: Heart,
-                title: "Support local",
-                body: "Every deal claimed is a sale made in Lompoc. Keep your dollars here.",
+                title: t("howItWorks.step3Title"),
+                body: t("howItWorks.step3Body"),
                 step: "03",
               },
             ].map(({ icon: Icon, title, body, step }, i) => (
@@ -403,31 +407,28 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-10 text-center">
             <h2 className="font-display text-3xl font-bold tracking-tight">
-              What Lompoc Says
+              {t("testimonials.title")}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Real people. Real savings. Real Lompoc.
+              {t("testimonials.subtitle")}
             </p>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {[
               {
-                quote:
-                  "I found a deal for my favorite spot on H Street — saved $12 on my first visit. Now I check every week.",
-                name: "Maria R.",
-                neighborhood: "Old Town",
+                quote: t("testimonials.quote1"),
+                name: t("testimonials.name1"),
+                neighborhood: t("testimonials.neighborhood1"),
               },
               {
-                quote:
-                  "As a veteran at Vandenberg, this is the easiest way to find what's close by without driving to Santa Maria.",
-                name: "James T.",
-                neighborhood: "Vandenberg Village",
+                quote: t("testimonials.quote2"),
+                name: t("testimonials.name2"),
+                neighborhood: t("testimonials.neighborhood2"),
               },
               {
-                quote:
-                  "Tres meses usándolo — ya ahorré más de $80. Se lo recomiendo a toda mi familia.",
-                name: "Ana L.",
-                neighborhood: "Mission Hills",
+                quote: t("testimonials.quote3"),
+                name: t("testimonials.name3"),
+                neighborhood: t("testimonials.neighborhood3"),
               },
             ].map(({ quote, name, neighborhood }, i) => (
               <AnimeReveal key={name} direction="up" delay={i * 80} duration={560}>
@@ -452,8 +453,7 @@ export default async function HomePage() {
             ))}
           </div>
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            {/* REPLACE WITH REAL LOMPOC TESTIMONIALS */}
-            Placeholder quotes — real testimonials coming soon.
+            {t("testimonials.placeholder")}
           </p>
         </div>
       </section>
@@ -465,38 +465,20 @@ export default async function HomePage() {
         <div className="mx-auto max-w-3xl px-4">
           <div className="mb-10 text-center">
             <h2 className="font-display text-3xl font-bold tracking-tight">
-              Questions?
+              {t("faq.title")}
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Everything you need to know about Lompoc Deals.
+              {t("faq.subtitle")}
             </p>
           </div>
           <div className="space-y-3">
             {[
-              {
-                q: "Is Lompoc Deals free to use?",
-                a: "Yes, completely. Browsing deals and claiming them is always free for Lompoc residents. No account required to browse.",
-              },
-              {
-                q: "How do I claim a deal?",
-                a: 'Click "Claim Deal" on any offer. If it requires an account, sign up in 30 seconds — just your email. Then show your phone at the business.',
-              },
-              {
-                q: "How do businesses post deals?",
-                a: "Sign up as a business (free), create your profile, and post your first deal in under 5 minutes. The free plan includes 3 active deals.",
-              },
-              {
-                q: "What does it cost to list my business?",
-                a: "Our Free plan is $0 forever — 3 deals, basic profile. Standard is $19.99/month for unlimited deals and priority placement.",
-              },
-              {
-                q: "Is this only for Lompoc?",
-                a: "For now, yes. We're 100% focused on Lompoc. That's what makes it work — every deal is from someone local, for someone local.",
-              },
-              {
-                q: "How do I get the weekly deals email?",
-                a: "Create a free account and subscribe to the weekly digest. Every Tuesday morning, the top 5 deals go straight to your inbox.",
-              },
+              { q: t("faq.q1"), a: t("faq.a1") },
+              { q: t("faq.q2"), a: t("faq.a2") },
+              { q: t("faq.q3"), a: t("faq.a3") },
+              { q: t("faq.q4"), a: t("faq.a4") },
+              { q: t("faq.q5"), a: t("faq.a5") },
+              { q: t("faq.q6"), a: t("faq.a6") },
             ].map(({ q, a }) => (
               <details
                 key={q}
@@ -528,14 +510,13 @@ export default async function HomePage() {
             <div className="max-w-xl">
               <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-background/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
                 <Sparkles className="h-3 w-3" />
-                For business owners
+                {t("forBusinessOwners")}
               </div>
               <h3 className="font-display text-3xl font-semibold tracking-tight">
-                Own a Lompoc business?
+                {t("ownABusiness")}
               </h3>
               <p className="mt-3 text-muted-foreground">
-                List your business, post your own coupons, and reach locals
-                actively looking to spend at home. Free forever for the basics.
+                {t("businessCta")}
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row md:flex-col">
@@ -543,7 +524,7 @@ export default async function HomePage() {
                 href="/for-businesses"
                 className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
               >
-                List your business
+                {t("listYourBusiness")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
@@ -551,7 +532,7 @@ export default async function HomePage() {
                 className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full border bg-background px-5 text-sm font-medium [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-accent active:scale-[0.97]"
               >
                 <Mail className="h-4 w-4" />
-                Weekly digest
+                {t("weeklyDigest")}
               </Link>
             </div>
           </div>

@@ -1,9 +1,13 @@
 import { LompocInteractiveMapLoader } from "@/components/map/LompocInteractiveMapLoader"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = {
-  title: "Explore Lompoc — Interactive Map",
-  description:
-    "Discover Lompoc, California on an immersive 3D map. Hotels, wineries, historic sites, outdoor adventures, and more — all in one place.",
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "map" })
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  }
 }
 
 export default function MapPage() {

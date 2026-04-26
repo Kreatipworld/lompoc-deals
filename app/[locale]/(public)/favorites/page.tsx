@@ -3,8 +3,13 @@ import { Link } from "@/i18n/navigation"
 import { getViewer } from "@/lib/viewer"
 import { getFavoritedDeals } from "@/lib/queries"
 import { DealGrid } from "@/components/deal-card"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = { title: "My favorites — Lompoc Deals" }
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "favorites" })
+  return { title: t("metaTitle") }
+}
 
 export default async function FavoritesPage() {
   const viewer = await getViewer()

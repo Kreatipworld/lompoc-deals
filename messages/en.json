@@ -203,6 +203,12 @@
       "claimingBadgeTitle": "Claiming",
       "claimingBadgeBody": "Create your account and an admin will review your claim."
     },
+    "forgotPassword": {
+      "metaTitle": "Forgot Password — Lompoc Deals"
+    },
+    "resetPassword": {
+      "metaTitle": "Reset Password — Lompoc Deals"
+    },
     "signupUser": {
       "metaTitle": "Sign up as a local — Lompoc Deals",
       "metaDescription": "Join Lompoc Deals free — save deals, follow businesses, and discover what's happening in Lompoc.",
@@ -282,6 +288,15 @@
     "claimBusiness": "Is this your business?",
     "viewAll": "View all businesses"
   },
+  "activities": {
+    "metaTitle": "Things to Do in Lompoc, CA — Adventures & Activities | Lompoc Deals",
+    "metaDescription": "Discover the best things to do in Lompoc, CA — historic missions, flower fields, wine tasting, beaches, murals, and outdoor adventures. Updated by locals.",
+    "metaOgTitle": "Things to Do in Lompoc, CA",
+    "metaOgDescription": "Explore Lompoc — missions, flower fields, wine tasting, rocket launches, and more."
+  },
+  "favorites": {
+    "metaTitle": "My favorites — Lompoc Deals"
+  },
   "subscribe": {
     "title": "Get the weekly digest",
     "subtitle": "Every Sunday, the best deals from Lompoc delivered to your inbox.",
@@ -291,7 +306,9 @@
     "successTitle": "You're subscribed!",
     "successSubtitle": "Look for your first digest next Sunday.",
     "unsubscribe": "Unsubscribe",
-    "unsubscribeSuccess": "You've been unsubscribed."
+    "unsubscribeSuccess": "You've been unsubscribed.",
+    "confirmMetaTitle": "Confirm subscription — Lompoc Deals",
+    "unsubscribeMetaTitle": "Unsubscribe — Lompoc Deals"
   },
   "search": {
     "placeholder": "Search deals, businesses…",
@@ -471,7 +488,9 @@
   "map": {
     "title": "Businesses on the map",
     "subtitle": "Explore local businesses in Lompoc, CA",
-    "viewDeal": "View deal"
+    "viewDeal": "View deal",
+    "metaTitle": "Explore Lompoc — Interactive Map",
+    "metaDescription": "Discover Lompoc, California on an immersive 3D map. Hotels, wineries, historic sites, outdoor adventures, and more — all in one place."
   },
   "forBusinesses": {
     "title": "Grow your Lompoc business",
@@ -926,6 +945,11 @@
       "dealSingular": "deal",
       "dealPlural": "deals"
     }
+  },
+  "locale": {
+    "english": "English",
+    "spanish": "Spanish",
+    "label": "Language"
   },
   "errors": {
     "auth": {

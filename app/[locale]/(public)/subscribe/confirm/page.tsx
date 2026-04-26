@@ -1,7 +1,12 @@
 import { Link } from "@/i18n/navigation"
 import { confirmSubscriptionByToken } from "@/lib/subscribe-actions"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = { title: "Confirm subscription — Lompoc Deals" }
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "subscribe" })
+  return { title: t("confirmMetaTitle") }
+}
 
 export default async function ConfirmPage({
   searchParams,

@@ -2,24 +2,27 @@ import { Link } from "@/i18n/navigation"
 import { MapPin, ArrowRight, Compass } from "lucide-react"
 import { getActivities, getActivityCategories } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = {
-  title: "Things to Do in Lompoc, CA — Adventures & Activities | Lompoc Deals",
-  description:
-    "Discover the best things to do in Lompoc, CA — historic missions, flower fields, wine tasting, beaches, murals, and outdoor adventures. Updated by locals.",
-  keywords: [
-    "things to do in lompoc",
-    "lompoc activities",
-    "lompoc adventures",
-    "lompoc attractions",
-    "lompoc ca things to do",
-  ],
-  openGraph: {
-    title: "Things to Do in Lompoc, CA",
-    description:
-      "Explore Lompoc — missions, flower fields, wine tasting, rocket launches, and more.",
-    images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
-  },
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "activities" })
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    keywords: [
+      "things to do in lompoc",
+      "lompoc activities",
+      "lompoc adventures",
+      "lompoc attractions",
+      "lompoc ca things to do",
+    ],
+    openGraph: {
+      title: t("metaOgTitle"),
+      description: t("metaOgDescription"),
+      images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
+    },
+  }
 }
 
 const CATEGORY_LABELS: Record<string, string> = {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useLocale } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { usePathname, useRouter } from "@/i18n/navigation"
 
 type Variant = "default" | "mobile"
@@ -9,6 +9,7 @@ export function LocaleSwitcher({ variant = "default" }: { variant?: Variant }) {
   const locale = useLocale()
   const pathname = usePathname()
   const router = useRouter()
+  const t = useTranslations("locale")
 
   function switchTo(target: "en" | "es") {
     if (target === locale) return
@@ -19,7 +20,7 @@ export function LocaleSwitcher({ variant = "default" }: { variant?: Variant }) {
     return (
       <div className="flex items-center justify-between border-b py-3">
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          {locale === "es" ? "Idioma" : "Language"}
+          {t("label")}
         </span>
         <div className="flex items-center gap-1">
           <PillButton active={locale === "en"} onClick={() => switchTo("en")} label="English" />

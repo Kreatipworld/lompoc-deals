@@ -1,4 +1,10 @@
-export const metadata = { title: "Forgot Password — Lompoc Deals" }
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
+
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+  return { title: t("forgotPassword.metaTitle") }
+}
 
 import { ForgotPasswordForm } from "./forgot-password-form"
 
