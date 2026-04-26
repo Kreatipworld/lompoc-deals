@@ -4,21 +4,22 @@ import { Plus, Eye, MousePointerClick, Tag, Pause, Play } from "lucide-react"
 import { getMyBusiness, getMyDeals, deleteDealAction, toggleDealPausedAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { StatCard } from "@/components/stat-card"
+import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "My deals — Lompoc Deals" }
 
-function ExpiryLabel({ expiresAt }: { expiresAt: Date }) {
-  const expired = isPast(expiresAt)
-  if (expired) {
+function ExpiryLabel({ expiresAt, labels }: { expiresAt: Date; labels: { expired: string; today: string; tomorrow: string; inDays: (d: number) => string } }) {
+  const isExpired = isPast(expiresAt)
+  if (isExpired) {
     return (
       <span className="font-medium text-muted-foreground">
-        Expired {format(new Date(expiresAt), "MMM d, yyyy")}
+        {labels.expired} {format(new Date(expiresAt), "MMM d, yyyy")}
       </span>
     )
   }
   const days = differenceInDays(new Date(expiresAt), new Date())
   const label =
-    days === 0 ? "Expires today" : days === 1 ? "Expires tomorrow" : `Expires in ${days} days`
+    days === 0 ? labels.today : days === 1 ? labels.tomorrow : labels.inDays(days)
   const colorClass =
     days <= 2
       ? "text-destructive font-semibold"
@@ -29,22 +30,27 @@ function ExpiryLabel({ expiresAt }: { expiresAt: Date }) {
 }
 
 export default async function MyDealsPage() {
-  const [biz, deals] = await Promise.all([getMyBusiness(), getMyDeals()])
+  const [biz, deals, t] = await Promise.all([getMyBusiness(), getMyDeals(), getTranslations("dashboardDeals")])
+  const expiryLabels = {
+    expired: t("expired"),
+    today: t("expiresToday"),
+    tomorrow: t("expiresTomorrow"),
+    inDays: (d: number) => t("expiresInDays", { days: d }),
+  }
 
   if (!biz) {
     return (
       <div className="space-y-4">
         <h1 className="font-display text-3xl font-semibold tracking-tight">
-          My deals
+          {t("title")}
         </h1>
         <div className="rounded-3xl border border-dashed bg-muted/30 px-6 py-12 text-center">
           <Tag className="mx-auto h-10 w-10 text-muted-foreground/60" />
           <p className="mt-3 text-sm text-muted-foreground">
-            You need to{" "}
             <Link href="/dashboard/profile" className="font-medium text-primary underline">
-              create a business profile
+              {t("createProfile")}
             </Link>{" "}
-            before you can post deals.
+            {t("noBusiness")}
           </p>
         </div>
       </div>
@@ -60,10 +66,10 @@ export default async function MyDealsPage() {
       <header className="flex items-start justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight">
-            My deals
+            {t("title")}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage coupons, specials, and announcements for {biz.name}.
+            {t("subtitle", { bizName: biz.name })}
           </p>
         </div>
         <Link
@@ -71,7 +77,7 @@ export default async function MyDealsPage() {
           className={buttonVariants({ className: "rounded-full" })}
         >
           <Plus className="h-4 w-4" />
-          New deal
+          {t("newDeal")}
         </Link>
       </header>
 
@@ -79,17 +85,17 @@ export default async function MyDealsPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
           icon={<Tag className="h-4 w-4" />}
-          label="Active deals"
+          label={t("activeDeals")}
           value={active.length}
         />
         <StatCard
           icon={<Eye className="h-4 w-4" />}
-          label="Lifetime views"
+          label={t("lifetimeViews")}
           value={totalViews}
         />
         <StatCard
           icon={<MousePointerClick className="h-4 w-4" />}
-          label="Lifetime clicks"
+          label={t("lifetimeClicks")}
           value={totalClicks}
         />
       </div>
@@ -99,11 +105,10 @@ export default async function MyDealsPage() {
         <div className="rounded-3xl border border-dashed bg-muted/30 px-6 py-16 text-center">
           <Tag className="mx-auto h-10 w-10 text-muted-foreground/60" />
           <h3 className="mt-4 font-display text-xl font-semibold">
-            No deals yet
+            {t("noDeals")}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Click <span className="font-medium">New deal</span> to post your
-            first one.
+            {t("noDealsHint")}
           </p>
         </div>
       ) : (
@@ -126,12 +131,12 @@ export default async function MyDealsPage() {
                   )}
                   {d.paused && (
                     <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                      paused
+                      {t("paused")}
                     </span>
                   )}
                   {expired && !d.paused && (
                     <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                      expired
+                      {t("expired")}
                     </span>
                   )}
                 </div>
@@ -144,7 +149,7 @@ export default async function MyDealsPage() {
                   </p>
                 )}
                 <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
-                  <ExpiryLabel expiresAt={new Date(d.expiresAt)} />
+                  <ExpiryLabel expiresAt={new Date(d.expiresAt)} labels={expiryLabels} />
                   <span className="inline-flex items-center gap-1 text-muted-foreground">
                     <Eye className="h-3 w-3" />
                     {d.viewCount}
@@ -162,7 +167,7 @@ export default async function MyDealsPage() {
                       size: "sm",
                     })}
                   >
-                    Edit
+                    {t("edit")}
                   </Link>
                   {/* Pause/activate toggle — only shown for non-expired deals */}
                   {!expired && (
@@ -173,12 +178,12 @@ export default async function MyDealsPage() {
                         {d.paused ? (
                           <>
                             <Play className="mr-1 h-3 w-3" />
-                            Activate
+                            {t("activate")}
                           </>
                         ) : (
                           <>
                             <Pause className="mr-1 h-3 w-3" />
-                            Pause
+                            {t("pause")}
                           </>
                         )}
                       </Button>
@@ -187,7 +192,7 @@ export default async function MyDealsPage() {
                   <form action={deleteDealAction}>
                     <input type="hidden" name="dealId" value={d.id} />
                     <Button variant="ghost" size="sm" type="submit">
-                      {expired ? "Hide" : "Remove"}
+                      {expired ? t("hide") : t("remove")}
                     </Button>
                   </form>
                 </div>

@@ -4,12 +4,13 @@ import { useFormState, useFormStatus } from "react-dom"
 import { subscribeAction, type SubscribeState } from "@/lib/subscribe-actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useTranslations } from "next-intl"
 
 interface SubscribeFormProps {
   variant?: "default" | "inverted"
 }
 
-function SubmitButton({ variant }: { variant: "default" | "inverted" }) {
+function SubmitButton({ variant, labels }: { variant: "default" | "inverted"; labels: { sending: string; subscribe: string } }) {
   const { pending } = useFormStatus()
   return (
     <Button
@@ -21,12 +22,13 @@ function SubmitButton({ variant }: { variant: "default" | "inverted" }) {
           : "shrink-0 font-semibold"
       }
     >
-      {pending ? "Sending…" : "Subscribe free"}
+      {pending ? labels.sending : labels.subscribe}
     </Button>
   )
 }
 
 export function SubscribeForm({ variant = "default" }: SubscribeFormProps) {
+  const t = useTranslations("subscribeForm")
   const [state, action] = useFormState<SubscribeState, FormData>(
     subscribeAction,
     undefined
@@ -55,14 +57,14 @@ export function SubscribeForm({ variant = "default" }: SubscribeFormProps) {
           type="email"
           autoComplete="email"
           required
-          placeholder="your@email.com"
+          placeholder={t("emailPlaceholder")}
           className={
             variant === "inverted"
               ? "border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-primary-foreground/50"
               : ""
           }
         />
-        <SubmitButton variant={variant} />
+        <SubmitButton variant={variant} labels={{ sending: t("sendingLabel"), subscribe: t("subscribeCta") }} />
       </div>
 
       {state?.error && (

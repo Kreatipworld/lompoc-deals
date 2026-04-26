@@ -8,13 +8,14 @@ import { getMyDeals } from "@/lib/biz-actions"
 import { TIERS } from "@/lib/stripe"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { isPast } from "date-fns"
+import { getTranslations } from "next-intl/server"
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const session = await auth()
+  const [session, t] = await Promise.all([auth(), getTranslations("dashboardNav")])
   if (!session?.user || session.user.role !== "business") {
     redirect("/login")
   }
@@ -37,14 +38,14 @@ export default async function DashboardLayout({
   }
 
   const links = [
-    { href: "/dashboard", icon: <LayoutDashboard className="h-4 w-4" />, label: "Overview" },
-    { href: "/dashboard/profile", icon: <Store className="h-4 w-4" />, label: "Profile" },
-    { href: "/dashboard/deals", icon: <Tag className="h-4 w-4" />, label: "Deals", badge: activeDealCount },
-    { href: "/dashboard/stats", icon: <BarChart3 className="h-4 w-4" />, label: "Stats" },
+    { href: "/dashboard", icon: <LayoutDashboard className="h-4 w-4" />, label: t("overview") },
+    { href: "/dashboard/profile", icon: <Store className="h-4 w-4" />, label: t("profile") },
+    { href: "/dashboard/deals", icon: <Tag className="h-4 w-4" />, label: t("deals"), badge: activeDealCount },
+    { href: "/dashboard/stats", icon: <BarChart3 className="h-4 w-4" />, label: t("stats") },
     ...(canListRealEstate
-      ? [{ href: "/dashboard/properties", icon: <Building2 className="h-4 w-4" />, label: "Properties" }]
+      ? [{ href: "/dashboard/properties", icon: <Building2 className="h-4 w-4" />, label: t("properties") }]
       : []),
-    { href: "/dashboard/billing", icon: <CreditCard className="h-4 w-4" />, label: "Billing" },
+    { href: "/dashboard/billing", icon: <CreditCard className="h-4 w-4" />, label: t("billing") },
   ]
 
   return (
@@ -52,7 +53,7 @@ export default async function DashboardLayout({
       <aside className="lg:w-60">
         <div className="mb-4 px-3">
           <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Business
+            {t("businessSection")}
           </h2>
         </div>
         <DashboardNav links={links} />

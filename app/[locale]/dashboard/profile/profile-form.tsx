@@ -12,6 +12,7 @@ import {
   parseHours,
   type Hours,
 } from "@/lib/hours"
+import { useTranslations } from "next-intl"
 
 type Biz = {
   name: string
@@ -31,7 +32,7 @@ type Biz = {
   googleBusinessUrl: string | null
 } | null
 
-function HoursEditor({ initial }: { initial: Hours }) {
+function HoursEditor({ initial, labelTo, labelClosed }: { initial: Hours; labelTo: string; labelClosed: string }) {
   return (
     <div className="space-y-2">
       {DAY_KEYS.map((day) => {
@@ -52,7 +53,7 @@ function HoursEditor({ initial }: { initial: Hours }) {
               className="h-8 max-w-[110px]"
               disabled={isClosed}
             />
-            <span className="text-xs text-muted-foreground">to</span>
+            <span className="text-xs text-muted-foreground">{labelTo}</span>
             <Input
               type="time"
               name={`hours_${day}_close`}
@@ -73,7 +74,7 @@ function HoursEditor({ initial }: { initial: Hours }) {
                   inputs.forEach((i) => (i.disabled = e.currentTarget.checked))
                 }}
               />
-              Closed
+              {labelClosed}
             </label>
           </div>
         )
@@ -84,11 +85,11 @@ function HoursEditor({ initial }: { initial: Hours }) {
 
 type Category = { id: number; name: string }
 
-function SaveButton() {
+function SaveButton({ labels }: { labels: { saving: string; idle: string } }) {
   const { pending } = useFormStatus()
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Saving…" : "Save profile"}
+      {pending ? labels.saving : labels.idle}
     </Button>
   )
 }
@@ -100,6 +101,7 @@ export function ProfileForm({
   biz: Biz
   categories: Category[]
 }) {
+  const t = useTranslations("dashboardProfile")
   const [state, action] = useFormState<ProfileState, FormData>(
     saveProfileAction,
     undefined
@@ -108,12 +110,12 @@ export function ProfileForm({
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="name">Business name</Label>
+        <Label htmlFor="name">{t("nameLabel")}</Label>
         <Input id="name" name="name" required defaultValue={biz?.name ?? ""} />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">{t("descriptionLabel")}</Label>
         <Textarea
           id="description"
           name="description"
@@ -123,14 +125,14 @@ export function ProfileForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="categoryId">Category</Label>
+        <Label htmlFor="categoryId">{t("categoryLabel")}</Label>
         <select
           id="categoryId"
           name="categoryId"
           defaultValue={biz?.categoryId ?? ""}
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
         >
-          <option value="">— pick one —</option>
+          <option value="">{t("categoryDefault")}</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -140,25 +142,25 @@ export function ProfileForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="address">Address (Lompoc, CA)</Label>
+        <Label htmlFor="address">{t("addressLabel")}</Label>
         <Input
           id="address"
           name="address"
-          placeholder="123 Main St, Lompoc, CA 93436"
+          placeholder={t("addressPlaceholder")}
           defaultValue={biz?.address ?? ""}
         />
         <p className="text-xs text-muted-foreground">
-          We&apos;ll geocode this to a map pin automatically.
+          {t("addressHint")}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone</Label>
+          <Label htmlFor="phone">{t("phoneLabel")}</Label>
           <Input id="phone" name="phone" defaultValue={biz?.phone ?? ""} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="website">Website</Label>
+          <Label htmlFor="website">{t("websiteLabel")}</Label>
           <Input
             id="website"
             name="website"
@@ -171,7 +173,7 @@ export function ProfileForm({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="logo">Logo image</Label>
+          <Label htmlFor="logo">{t("logoLabel")}</Label>
           {biz?.logoUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -183,7 +185,7 @@ export function ProfileForm({
           <Input id="logo" name="logo" type="file" accept="image/*" />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="cover">Cover image</Label>
+          <Label htmlFor="cover">{t("coverLabel")}</Label>
           {biz?.coverUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -199,31 +201,28 @@ export function ProfileForm({
       <div className="space-y-4 border-t pt-6">
         <div>
           <h3 className="font-display text-base font-semibold tracking-tight">
-            Hours
+            {t("hoursTitle")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            Set your weekly hours. Check &ldquo;Closed&rdquo; for days
-            you&apos;re not open.
+            {t("hoursHint")}
           </p>
         </div>
-        <HoursEditor initial={parseHours(biz?.hoursJson)} />
+        <HoursEditor initial={parseHours(biz?.hoursJson)} labelTo={t("hoursTo")} labelClosed={t("hoursClosed")} />
       </div>
 
       <div className="space-y-4 border-t pt-6">
         <div>
           <h3 className="font-display text-base font-semibold tracking-tight">
-            Social media
+            {t("socialTitle")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            Optional. Paste full URLs (e.g.{" "}
-            <code className="text-foreground">https://instagram.com/yourbiz</code>
-            ).
+            {t("socialHint")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="instagramUrl">Instagram</Label>
+            <Label htmlFor="instagramUrl">{t("instagramLabel")}</Label>
             <Input
               id="instagramUrl"
               name="instagramUrl"
@@ -233,7 +232,7 @@ export function ProfileForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="facebookUrl">Facebook</Label>
+            <Label htmlFor="facebookUrl">{t("facebookLabel")}</Label>
             <Input
               id="facebookUrl"
               name="facebookUrl"
@@ -243,7 +242,7 @@ export function ProfileForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="tiktokUrl">TikTok</Label>
+            <Label htmlFor="tiktokUrl">{t("tiktokLabel")}</Label>
             <Input
               id="tiktokUrl"
               name="tiktokUrl"
@@ -253,7 +252,7 @@ export function ProfileForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="youtubeUrl">YouTube</Label>
+            <Label htmlFor="youtubeUrl">{t("youtubeLabel")}</Label>
             <Input
               id="youtubeUrl"
               name="youtubeUrl"
@@ -263,7 +262,7 @@ export function ProfileForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="yelpUrl">Yelp</Label>
+            <Label htmlFor="yelpUrl">{t("yelpLabel")}</Label>
             <Input
               id="yelpUrl"
               name="yelpUrl"
@@ -273,7 +272,7 @@ export function ProfileForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="googleBusinessUrl">Google Business</Label>
+            <Label htmlFor="googleBusinessUrl">{t("googleBusinessLabel")}</Label>
             <Input
               id="googleBusinessUrl"
               name="googleBusinessUrl"
@@ -292,7 +291,7 @@ export function ProfileForm({
         <p className="text-sm text-green-600">{state.success}</p>
       )}
 
-      <SaveButton />
+      <SaveButton labels={{ saving: t("savePending"), idle: t("saveIdle") }} />
     </form>
   )
 }

@@ -1,6 +1,7 @@
 import { Sparkles } from "lucide-react"
 import { getCategoriesList, getMyBusiness } from "@/lib/biz-actions"
 import { ProfileForm } from "./profile-form"
+import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "Business profile — Lompoc Deals" }
 
@@ -18,7 +19,7 @@ export default async function ProfilePage({
 }: {
   searchParams: { claimed?: string }
 }) {
-  const [biz, cats] = await Promise.all([getMyBusiness(), getCategoriesList()])
+  const [biz, cats, t] = await Promise.all([getMyBusiness(), getCategoriesList(), getTranslations("dashboardProfile")])
 
   return (
     <div className="space-y-6">
@@ -29,12 +30,10 @@ export default async function ProfilePage({
           </div>
           <div className="text-sm">
             <p className="font-semibold text-amber-900">
-              Claim received for {decodeURIComponent(searchParams.claimed)}
+              {t("claimReceived", { name: decodeURIComponent(searchParams.claimed) })}
             </p>
             <p className="text-amber-800">
-              Your claim is pending admin review. You&apos;ll be able to edit the
-              listing once it&apos;s approved. In the meantime, you can create
-              your own profile below.
+              {t("claimBody")}
             </p>
           </div>
         </div>
@@ -43,12 +42,10 @@ export default async function ProfilePage({
       <header className="flex items-start justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight">
-            Business profile
+            {t("title")}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {biz
-              ? "Update your details, hours, and images. Changes go live instantly."
-              : "Create your business profile to start posting deals to the Lompoc community."}
+            {biz ? t("subtitleEdit") : t("subtitleCreate")}
           </p>
         </div>
         {biz && (

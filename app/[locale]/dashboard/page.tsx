@@ -22,11 +22,12 @@ import {
   Lock,
 } from "lucide-react"
 import { isPast } from "date-fns"
+import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "Dashboard — Lompoc Deals" }
 
 export default async function DashboardHomePage() {
-  const session = await auth()
+  const [session, t] = await Promise.all([auth(), getTranslations("dashboardHome")])
   if (!session?.user || session.user.role !== "business") {
     redirect("/login")
   }
@@ -79,10 +80,10 @@ export default async function DashboardHomePage() {
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl font-semibold tracking-tight">
-          {biz?.name ? `Welcome back, ${biz.name}` : "Welcome"}
+          {biz?.name ? t("welcomeBack", { name: biz.name }) : t("welcome")}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Here&apos;s an overview of your business on Lompoc Deals.
+          {t("overview")}
         </p>
       </header>
 
@@ -91,13 +92,7 @@ export default async function DashboardHomePage() {
         <div className="flex items-start gap-2.5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>
-            Payment failed. Your plan features remain active until{" "}
-            <strong>{new Date(biz.gracePeriodEndsAt).toLocaleDateString()}</strong>. Update your
-            payment method in{" "}
-            <Link href="/dashboard/billing" className="font-semibold underline underline-offset-4">
-              Billing
-            </Link>{" "}
-            to avoid interruption.
+            {t("gracePeriodWarning", { date: new Date(biz.gracePeriodEndsAt).toLocaleDateString() })}
           </span>
         </div>
       )}
@@ -106,19 +101,14 @@ export default async function DashboardHomePage() {
       {biz?.status === "pending" && (
         <div className="flex items-start gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            Your business is <strong>pending review</strong>. Our team will approve it shortly. You
-            can set up your profile and deals in the meantime.
-          </span>
+          <span>{t("pendingWarning")}</span>
         </div>
       )}
 
       {biz?.status === "approved" && (
         <div className="flex items-start gap-2.5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            Your business is <strong>approved</strong> and live on Lompoc Deals.
-          </span>
+          <span>{t("approvedBanner")}</span>
         </div>
       )}
 
@@ -126,22 +116,22 @@ export default async function DashboardHomePage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <MetricCard
           icon={<Tag className="h-5 w-5" />}
-          label="Active deals"
+          label={t("activeDeals")}
           value={activeDealCount.toString()}
-          sub={dealLimit === Infinity ? "Unlimited plan" : `of ${dealLimit} allowed`}
+          sub={dealLimit === Infinity ? t("unlimited") : t("ofAllowed", { limit: dealLimit })}
           highlight={isAtLimit ? "danger" : isNearLimit ? "warn" : undefined}
         />
         <MetricCard
           icon={<Eye className="h-5 w-5" />}
-          label="Total views"
+          label={t("totalViews")}
           value={totalViews.toLocaleString()}
-          sub="All time"
+          sub={t("allTime")}
         />
         <MetricCard
           icon={<MousePointerClick className="h-5 w-5" />}
-          label="Total clicks"
+          label={t("totalClicks")}
           value={totalClicks.toLocaleString()}
-          sub="All time"
+          sub={t("allTime")}
         />
       </div>
 
@@ -152,20 +142,20 @@ export default async function DashboardHomePage() {
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-primary" />
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Current plan
+                {t("currentPlan")}
               </span>
             </div>
             <div className="mt-1 flex items-baseline gap-2">
               <span className="font-display text-2xl font-semibold">{tierConfig.name}</span>
               <span className="text-sm text-muted-foreground">
-                {tierConfig.price === 0 ? "Free" : `$${tierConfig.price}/mo`}
+                {tierConfig.price === 0 ? "" : `$${tierConfig.price}/mo`}
               </span>
             </div>
             {sub?.currentPeriodEnd && (
               <p className="mt-1 text-xs text-muted-foreground">
                 {sub.cancelAtPeriodEnd
-                  ? `Cancels ${sub.currentPeriodEnd.toLocaleDateString()}`
-                  : `Renews ${sub.currentPeriodEnd.toLocaleDateString()}`}
+                  ? t("cancels", { date: sub.currentPeriodEnd.toLocaleDateString() })
+                  : t("renews", { date: sub.currentPeriodEnd.toLocaleDateString() })}
               </p>
             )}
           </div>
@@ -173,7 +163,7 @@ export default async function DashboardHomePage() {
             href="/dashboard/billing"
             className="shrink-0 rounded-xl border px-3 py-1.5 text-xs font-medium transition hover:bg-accent"
           >
-            {isActive && sub ? "Manage plan" : "View plans"}
+            {isActive && sub ? t("managePlan") : t("viewPlans")}
           </Link>
         </div>
 
@@ -181,7 +171,7 @@ export default async function DashboardHomePage() {
         {dealLimit !== Infinity && (
           <div className="mt-5 space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">Deal usage</span>
+              <span className="text-muted-foreground">{t("dealUsage")}</span>
               <span className="font-medium">
                 {activeDealCount} / {dealLimit}
               </span>
@@ -206,16 +196,16 @@ export default async function DashboardHomePage() {
           <div className="mt-5 flex items-center gap-3 rounded-2xl bg-primary/5 px-4 py-3">
             <Zap className="h-5 w-5 shrink-0 text-primary" />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium">Unlock more with Standard</p>
+              <p className="text-sm font-medium">{t("upgradeCta")}</p>
               <p className="text-xs text-muted-foreground">
-                Analytics, social links, and up to 15 active deals for $19.99/mo
+                {t("upgradeBody")}
               </p>
             </div>
             <Link
               href="/dashboard/billing"
               className="shrink-0 rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition hover:bg-primary/90"
             >
-              Upgrade
+              {t("upgrade")}
             </Link>
           </div>
         )}
@@ -226,43 +216,43 @@ export default async function DashboardHomePage() {
         <QuickAction
           href="/dashboard/deals/new"
           icon={<Plus className="h-5 w-5" />}
-          title="Post a deal"
-          desc="Create a coupon, special, or announcement"
+          title={t("postDeal")}
+          desc={t("postDealDesc")}
           disabled={isAtLimit}
-          disabledHint="Deal limit reached — upgrade your plan to post more"
+          disabledHint={t("dealLimitReached")}
         />
         <QuickAction
           href="/dashboard/deals"
           icon={<Tag className="h-5 w-5" />}
-          title="Manage deals"
-          desc="Edit, pause, or remove your active deals"
+          title={t("manageDeals")}
+          desc={t("manageDealsDesc")}
         />
         <QuickAction
           href={currentTier === "free" ? "/dashboard/billing" : "/dashboard/stats"}
           icon={<BarChart3 className="h-5 w-5" />}
-          title="View analytics"
+          title={t("viewAnalytics")}
           desc={
             currentTier === "free"
-              ? "Upgrade to Standard to unlock full analytics"
-              : "See views, clicks, and funnel data"
+              ? t("viewAnalyticsUpgrade")
+              : t("viewAnalyticsDesc")
           }
           badge={currentTier === "free" ? "Standard+" : undefined}
         />
         <QuickAction
           href="/dashboard/profile"
           icon={<Store className="h-5 w-5" />}
-          title="Edit profile"
-          desc="Update your business info, hours, and images"
+          title={t("editProfile")}
+          desc={t("editProfileDesc")}
         />
         {/* Properties — Premium feature */}
         <QuickAction
           href={tierConfig.canListRealEstate ? "/dashboard/properties" : "/dashboard/billing"}
           icon={<Building2 className="h-5 w-5" />}
-          title="Manage properties"
+          title={t("manageProperties")}
           desc={
             tierConfig.canListRealEstate
-              ? "Add and manage real estate listings"
-              : "Upgrade to Premium to list properties for sale or rent"
+              ? t("managePropertiesDesc")
+              : t("managePropertiesUpgrade")
           }
           badge={!tierConfig.canListRealEstate ? "Premium" : undefined}
         />
@@ -271,35 +261,35 @@ export default async function DashboardHomePage() {
       {/* Plan features */}
       <div className="rounded-3xl border bg-card p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold">Plan features</h2>
+          <h2 className="font-display text-lg font-semibold">{t("planFeatures")}</h2>
           {currentTier !== "premium" && (
             <Link
               href="/dashboard/billing"
               className="text-xs font-medium text-primary hover:underline"
             >
-              Upgrade
+              {t("upgrade")}
             </Link>
           )}
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <PlanFeatureCard
             icon={<BarChart3 className="h-4 w-4" />}
-            title="Analytics"
-            desc="Views, clicks &amp; funnel data"
+            title={t("analytics")}
+            desc={t("analyticsDesc")}
             available={tierConfig.canViewAnalytics}
             upgradeLabel="Standard"
           />
           <PlanFeatureCard
             icon={<Share2 className="h-4 w-4" />}
-            title="Social links"
-            desc="Instagram, Facebook &amp; more"
+            title={t("socialLinks")}
+            desc={t("socialLinksDesc")}
             available={tierConfig.canShowSocialLinks}
             upgradeLabel="Standard"
           />
           <PlanFeatureCard
             icon={<Building2 className="h-4 w-4" />}
-            title="Property listings"
-            desc="Real estate for-sale &amp; for-rent"
+            title={t("propertyListings")}
+            desc={t("propertyListingsDesc")}
             available={tierConfig.canListRealEstate}
             upgradeLabel="Premium"
           />
