@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { HOTELS } from "@/lib/hotels-data"
 import { HotelsMap } from "@/components/hotels-map"
@@ -21,22 +21,29 @@ import {
   Ban,
 } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "Lompoc Hotels & Accommodations — Where to Stay | Lompoc Deals",
-  description:
-    "Find curated hotels in Lompoc, CA. From budget-friendly motels to upscale suites — near Vandenberg Space Force Base, downtown Lompoc, and the Santa Rita Hills wine country.",
-  keywords: [
-    "lompoc hotels",
-    "lompoc accommodations",
-    "hotels in lompoc ca",
-    "lompoc motels",
-    "where to stay lompoc",
-    "lompoc california lodging",
-  ],
-  openGraph: {
-    title: "Lompoc Hotels & Accommodations",
-    description: "Curated hotels in Lompoc, CA — from budget to boutique.",
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "hotels" })
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    keywords: [
+      "lompoc hotels",
+      "lompoc accommodations",
+      "hotels in lompoc ca",
+      "lompoc motels",
+      "where to stay lompoc",
+      "lompoc california lodging",
+    ],
+    openGraph: {
+      title: t("metaOgTitle"),
+      description: t("metaOgDescription"),
+    },
+  }
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -47,92 +54,126 @@ const COVER_GRADIENT: Record<string, string> = {
   $$$: "from-violet-600/25 via-purple-500/15 to-fuchsia-400/10",
 }
 
-// ── Static data ───────────────────────────────────────────────────────────────
-
-const TRUST_ITEMS = [
-  {
-    icon: <ShieldCheck className="h-5 w-5 text-primary" />,
-    title: "Verified Properties",
-    desc: "Every listing manually reviewed",
-  },
-  {
-    icon: <Tag className="h-5 w-5 text-brand-terracotta" />,
-    title: "Best-Price Guarantee",
-    desc: "No booking fees, ever",
-  },
-  {
-    icon: <Wine className="h-5 w-5 text-primary" />,
-    title: "Wine Country Access",
-    desc: "All hotels near Santa Rita Hills AVA",
-  },
-  {
-    icon: <Ban className="h-5 w-5 text-emerald-600" />,
-    title: "Free Cancellation",
-    desc: "Flexible options on select stays",
-  },
-]
-
-const WHY_VISIT = [
-  {
-    icon: <Wine className="h-6 w-6" />,
-    label: "Santa Rita Hills Wine Trail",
-    desc: "World-class Pinot Noir & Chardonnay. Dozens of tasting rooms within 20 minutes of downtown.",
-    iconBg: "bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-300",
-  },
-  {
-    icon: <Rocket className="h-6 w-6" />,
-    label: "Vandenberg Space Force Base",
-    desc: "Rocket launches visible from the city. Home to SpaceX Falcon 9 polar orbit missions.",
-    iconBg: "bg-sky-100 text-sky-600 dark:bg-sky-900/50 dark:text-sky-300",
-  },
-  {
-    icon: <Flower2 className="h-6 w-6" />,
-    label: "Flower Fields & Festival",
-    desc: "The Flower Capital of America. Acres of blooms from April through June every year.",
-    iconBg: "bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-300",
-  },
-  {
-    icon: <Palette className="h-6 w-6" />,
-    label: "Old Town Murals & History",
-    desc: "80+ murals in Old Town tell Lompoc's history. La Purísima Mission is minutes away.",
-    iconBg: "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-300",
-  },
-]
-
-const NEIGHBORHOODS = [
-  {
-    name: "N H Street Corridor",
-    subtitle: "Most hotels · Best selection",
-    desc: "The main hotel strip. All major chains are here — within minutes of dining, gas, and the Vandenberg gate. Easy freeway access.",
-    badge: "bg-primary/10 text-primary",
-    slugs: ["embassy-suites-lompoc", "hilton-garden-inn-lompoc", "holiday-inn-express-lompoc", "hampton-inn-lompoc"],
-  },
-  {
-    name: "Downtown & Ocean Ave",
-    subtitle: "Local feel · Walkable",
-    desc: "Closest to Old Town murals, the Friday Market, and local cafés. Budget options with genuine neighborhood character.",
-    badge: "bg-brand-terracotta/10 text-brand-terracotta",
-    slugs: ["cabrillo-inn-lompoc", "civic-center-motel-lompoc", "lotus-of-lompoc", "village-inn-lompoc"],
-  },
-  {
-    name: "Santa Ynez Valley",
-    subtitle: "Wine country luxury · 30 min east",
-    desc: "If you're visiting for the Santa Rita Hills AVA, staying in Buellton or Solvang puts you right in wine country — full-service amenities and vineyard views.",
-    badge: "bg-violet-100 text-violet-700 dark:bg-violet-950/40 dark:text-violet-400",
-    slugs: ["santa-ynez-valley-marriott-solvang"],
-  },
-]
-
 // ── Top picks (editor's picks) ─────────────────────────────────────────────
 
 const FEATURED_MAIN_SLUG = "embassy-suites-lompoc"
 const FEATURED_SECONDARY_SLUGS = ["hampton-inn-lompoc", "holiday-inn-express-lompoc"]
 
+// ── Neighborhood slugs ────────────────────────────────────────────────────
+
+const NEIGHBORHOOD_SLUGS = [
+  ["embassy-suites-lompoc", "hilton-garden-inn-lompoc", "holiday-inn-express-lompoc", "hampton-inn-lompoc"],
+  ["cabrillo-inn-lompoc", "civic-center-motel-lompoc", "lotus-of-lompoc", "village-inn-lompoc"],
+  ["santa-ynez-valley-marriott-solvang"],
+]
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 
-export default function HotelsPage() {
+export default async function HotelsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "hotels" })
+
   const featuredMain = HOTELS.find((h) => h.slug === FEATURED_MAIN_SLUG)
   const featuredSecondary = FEATURED_SECONDARY_SLUGS.map((s) => HOTELS.find((h) => h.slug === s)).filter(Boolean)
+
+  function priceLabel(range: string) {
+    if (range === "$$$") return t("priceUpscale")
+    if (range === "$$") return t("priceMidRange")
+    return t("priceBudget")
+  }
+
+  function ratingLabel(rating: number) {
+    if (rating >= 4.5) return t("ratingExceptional")
+    if (rating >= 4.25) return t("ratingSuperb")
+    return t("ratingVeryGood")
+  }
+
+  const TRUST_ITEMS = [
+    {
+      icon: <ShieldCheck className="h-5 w-5 text-primary" />,
+      title: t("trustVerifiedTitle"),
+      desc: t("trustVerifiedDesc"),
+    },
+    {
+      icon: <Tag className="h-5 w-5 text-brand-terracotta" />,
+      title: t("trustBestPriceTitle"),
+      desc: t("trustBestPriceDesc"),
+    },
+    {
+      icon: <Wine className="h-5 w-5 text-primary" />,
+      title: t("trustWineTitle"),
+      desc: t("trustWineDesc"),
+    },
+    {
+      icon: <Ban className="h-5 w-5 text-emerald-600" />,
+      title: t("trustCancelTitle"),
+      desc: t("trustCancelDesc"),
+    },
+  ]
+
+  const WHY_VISIT = [
+    {
+      icon: <Wine className="h-6 w-6" />,
+      label: t("whyWineLabel"),
+      desc: t("whyWineDesc"),
+      iconBg: "bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-300",
+    },
+    {
+      icon: <Rocket className="h-6 w-6" />,
+      label: t("whyRocketLabel"),
+      desc: t("whyRocketDesc"),
+      iconBg: "bg-sky-100 text-sky-600 dark:bg-sky-900/50 dark:text-sky-300",
+    },
+    {
+      icon: <Flower2 className="h-6 w-6" />,
+      label: t("whyFlowerLabel"),
+      desc: t("whyFlowerDesc"),
+      iconBg: "bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-300",
+    },
+    {
+      icon: <Palette className="h-6 w-6" />,
+      label: t("whyMuralsLabel"),
+      desc: t("whyMuralsDesc"),
+      iconBg: "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-300",
+    },
+  ]
+
+  const NEIGHBORHOODS = [
+    {
+      name: t("neighborhoodHStreetName"),
+      subtitle: t("neighborhoodHStreetSubtitle"),
+      desc: t("neighborhoodHStreetDesc"),
+      badge: "bg-primary/10 text-primary",
+      slugs: NEIGHBORHOOD_SLUGS[0],
+    },
+    {
+      name: t("neighborhoodDowntownName"),
+      subtitle: t("neighborhoodDowntownSubtitle"),
+      desc: t("neighborhoodDowntownDesc"),
+      badge: "bg-brand-terracotta/10 text-brand-terracotta",
+      slugs: NEIGHBORHOOD_SLUGS[1],
+    },
+    {
+      name: t("neighborhoodWineCountryName"),
+      subtitle: t("neighborhoodWineCountrySubtitle"),
+      desc: t("neighborhoodWineCountryDesc"),
+      badge: "bg-violet-100 text-violet-700 dark:bg-violet-950/40 dark:text-violet-400",
+      slugs: NEIGHBORHOOD_SLUGS[2],
+    },
+  ]
+
+  const TIPS = [
+    { title: t("tip1Title"), body: t("tip1Body") },
+    { title: t("tip2Title"), body: t("tip2Body") },
+    { title: t("tip3Title"), body: t("tip3Body") },
+    { title: t("tip4Title"), body: t("tip4Body") },
+    { title: t("tip5Title"), body: t("tip5Body") },
+    { title: t("tip6Title"), body: t("tip6Body") },
+  ]
 
   return (
     <>
@@ -164,7 +205,7 @@ export default function HotelsPage() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
-            Flower Capital of America · Lompoc, CA
+            {t("eyebrowBadge")}
           </div>
 
           {/* Heading */}
@@ -172,14 +213,13 @@ export default function HotelsPage() {
             className="font-display text-4xl font-bold tracking-tight sm:text-5xl animate-fade-up"
             style={{ animationDelay: "60ms" }}
           >
-            Where to Stay in Lompoc
+            {t("heroHeading")}
           </h1>
           <p
             className="mt-3 max-w-xl text-base text-muted-foreground leading-relaxed animate-fade-up"
             style={{ animationDelay: "110ms" }}
           >
-            {HOTELS.length} curated hotels — from budget-friendly stays near Vandenberg to boutique
-            inns steps from the Santa Rita Hills wine trail.
+            {t("heroSubheading", { count: HOTELS.length })}
           </p>
 
           {/* Stats row */}
@@ -188,10 +228,10 @@ export default function HotelsPage() {
             style={{ animationDelay: "160ms" }}
           >
             {[
-              { label: "Hotels listed", value: `${HOTELS.length}` },
-              { label: "Avg rating", value: (HOTELS.reduce((s, h) => s + h.rating, 0) / HOTELS.length).toFixed(1) + " ★" },
-              { label: "Price tiers", value: "3" },
-              { label: "Min from VSFB", value: "< 10 min" },
+              { label: t("statHotelsListed"), value: `${HOTELS.length}` },
+              { label: t("statAvgRating"), value: (HOTELS.reduce((s, h) => s + h.rating, 0) / HOTELS.length).toFixed(1) + " ★" },
+              { label: t("statPriceTiers"), value: t("statPriceTiersValue") },
+              { label: t("statMinFromVSFB"), value: t("statMinFromVSFBValue") },
             ].map((s) => (
               <div
                 key={s.label}
@@ -209,10 +249,10 @@ export default function HotelsPage() {
             style={{ animationDelay: "200ms" }}
           >
             {[
-              { icon: <Landmark className="h-3.5 w-3.5" />, label: "La Purísima Mission", note: "State historic park" },
-              { icon: <Navigation className="h-3.5 w-3.5" />, label: "Vandenberg Space Force Base", note: "Main gate · Hwy 1" },
-              { icon: <Flower2 className="h-3.5 w-3.5" />, label: "Flower Fields", note: "Apr–Jun peak" },
-              { icon: <Wine className="h-3.5 w-3.5" />, label: "Santa Rita Hills AVA", note: "World-class Pinot Noir" },
+              { icon: <Landmark className="h-3.5 w-3.5" />, label: "La Purísima Mission", note: t("landmarkMissionNote") },
+              { icon: <Navigation className="h-3.5 w-3.5" />, label: "Vandenberg Space Force Base", note: t("landmarkVandenbergNote") },
+              { icon: <Flower2 className="h-3.5 w-3.5" />, label: "Flower Fields", note: t("landmarkFlowerNote") },
+              { icon: <Wine className="h-3.5 w-3.5" />, label: "Santa Rita Hills AVA", note: t("landmarkWineNote") },
             ].map((lm) => (
               <div
                 key={lm.label}
@@ -255,9 +295,9 @@ export default function HotelsPage() {
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
             <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-primary/70">
-              Editor&apos;s picks
+              {t("editorPicksLabel")}
             </div>
-            <h2 className="font-display text-xl font-bold tracking-tight">Top-Rated Stays</h2>
+            <h2 className="font-display text-xl font-bold tracking-tight">{t("topRatedStays")}</h2>
           </ScrollReveal>
 
           {featuredMain && (
@@ -286,7 +326,7 @@ export default function HotelsPage() {
                   {/* Text overlay */}
                   <div className="relative mt-auto p-5 text-white">
                     <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider opacity-80">
-                      {featuredMain.priceRange === "$$$" ? "Upscale" : featuredMain.priceRange === "$$" ? "Mid-Range" : "Budget"}
+                      {priceLabel(featuredMain.priceRange)}
                     </div>
                     <h3 className="font-display text-lg font-bold leading-snug">{featuredMain.name}</h3>
                     <div className="mt-1 flex items-center gap-1.5 text-[11px] opacity-80">
@@ -295,10 +335,10 @@ export default function HotelsPage() {
                     </div>
                     <div className="mt-2 flex items-center justify-between">
                       <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-semibold backdrop-blur-sm">
-                        {(featuredMain.rating * 2).toFixed(1)} · {featuredMain.rating >= 4.5 ? "Exceptional" : featuredMain.rating >= 4.25 ? "Superb" : "Very Good"}
+                        {(featuredMain.rating * 2).toFixed(1)} · {ratingLabel(featuredMain.rating)}
                       </span>
                       <span className="flex items-center gap-0.5 text-xs font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        View <ArrowRight className="h-3 w-3" />
+                        {t("cardView")} <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
                   </div>
@@ -319,7 +359,7 @@ export default function HotelsPage() {
                       </div>
                       <div className="flex flex-1 flex-col justify-center gap-1 p-4">
                         <div className="text-[10px] font-semibold uppercase tracking-wider text-primary/70">
-                          {hotel.priceRange === "$$$" ? "Upscale" : hotel.priceRange === "$$" ? "Mid-Range" : "Budget"}
+                          {priceLabel(hotel.priceRange)}
                         </div>
                         <h3 className="font-display text-sm font-bold leading-snug tracking-tight line-clamp-2">{hotel.name}</h3>
                         <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
@@ -327,7 +367,7 @@ export default function HotelsPage() {
                           <span className="truncate">{hotel.avenue ?? hotel.address}</span>
                         </div>
                         <span className="mt-1 inline-flex w-fit rounded-full bg-sage-100 px-2.5 py-0.5 text-[10px] font-semibold text-sage-800">
-                          {(hotel.rating * 2).toFixed(1)} · {hotel.rating >= 4.5 ? "Exceptional" : hotel.rating >= 4.25 ? "Superb" : "Very Good"}
+                          {(hotel.rating * 2).toFixed(1)} · {ratingLabel(hotel.rating)}
                         </span>
                       </div>
                     </Link>
@@ -345,9 +385,9 @@ export default function HotelsPage() {
       <section className="border-b bg-accent/30">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
-            <h2 className="font-display text-xl font-bold tracking-tight">What Brings Visitors to Lompoc?</h2>
+            <h2 className="font-display text-xl font-bold tracking-tight">{t("whyVisitHeading")}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Your reason for visiting shapes the best place to stay.
+              {t("whyVisitSubheading")}
             </p>
           </ScrollReveal>
 
@@ -380,7 +420,7 @@ export default function HotelsPage() {
       <section className="border-t bg-accent/20">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
-            <h2 className="mb-3 font-display text-xl font-bold tracking-tight">Hotels on the Map</h2>
+            <h2 className="mb-3 font-display text-xl font-bold tracking-tight">{t("mapHeading")}</h2>
           </ScrollReveal>
           <ScrollReveal delay={80}>
             <div className="overflow-hidden rounded-2xl border shadow-sm" style={{ height: 440 }}>
@@ -389,17 +429,17 @@ export default function HotelsPage() {
             <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-emerald-500" />
-                <span>Budget ($)</span>
+                <span>{t("mapLegendBudget")}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-amber-500" />
-                <span>Mid-range ($$)</span>
+                <span>{t("mapLegendMid")}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-violet-600" />
-                <span>Upscale ($$$)</span>
+                <span>{t("mapLegendUpscale")}</span>
               </div>
-              <span className="ml-auto italic">Click a pin to preview</span>
+              <span className="ml-auto italic">{t("mapClickPin")}</span>
             </div>
           </ScrollReveal>
         </div>
@@ -412,10 +452,10 @@ export default function HotelsPage() {
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
             <h2 className="font-display text-xl font-bold tracking-tight">
-              Which Area Should You Stay In?
+              {t("neighborhoodHeading")}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Lompoc has three distinct hotel zones — each suited to a different kind of visit.
+              {t("neighborhoodSubheading")}
             </p>
           </ScrollReveal>
 
@@ -460,35 +500,10 @@ export default function HotelsPage() {
       <section className="border-t">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <ScrollReveal>
-            <h2 className="font-display text-xl font-bold tracking-tight">Lompoc Visitor Tips</h2>
+            <h2 className="font-display text-xl font-bold tracking-tight">{t("tipsHeading")}</h2>
           </ScrollReveal>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "Book Early for Flower Festival",
-                body: "The annual Lompoc Flower Festival (June) fills hotels fast. Book at least 2–3 months ahead. The H Street corridor is your best bet for availability.",
-              },
-              {
-                title: "Vandenberg Launch Watching",
-                body: "SpaceX launches from Vandenberg are often visible from Lompoc. Check the launch schedule — the H Street hotels have clear sightlines to the north.",
-              },
-              {
-                title: "Wine Tasting Day Trips",
-                body: "Most Lompoc hotels are 15–25 minutes from Santa Rita Hills tasting rooms. Stay in town and hire a driver, or stay in Buellton for vineyard immersion.",
-              },
-              {
-                title: "Pet-Friendly Options",
-                body: "Motel 6, Red Roof Inn, Quality Inn, Days Inn, and Cabrillo Inn welcome pets. Always call ahead to confirm policies and fees.",
-              },
-              {
-                title: "Best Value on H Street",
-                body: "The Holiday Inn Express and Hampton Inn consistently offer the best value: hot breakfast included, pools, and prime location — at mid-range prices.",
-              },
-              {
-                title: "Getting Around",
-                body: "Lompoc is car-dependent. All major hotels have free parking. The H Street corridor puts you within 10 min of most attractions.",
-              },
-            ].map((tip, i) => (
+            {TIPS.map((tip, i) => (
               <ScrollReveal key={tip.title} delay={i * 50}>
                 <div className="rounded-2xl border bg-card p-5 shadow-sm transition-all duration-200 hover:shadow-md">
                   <h3 className="font-semibold text-sm">{tip.title}</h3>
@@ -508,16 +523,16 @@ export default function HotelsPage() {
           <ScrollReveal>
             <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
               <div className="flex-1">
-                <h2 className="font-display text-lg font-bold">Own a Hotel in Lompoc?</h2>
+                <h2 className="font-display text-lg font-bold">{t("ctaBannerHeading")}</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Get your property in front of thousands of visitors planning trips to Lompoc, the Santa Rita Hills, and Vandenberg Space Force Base.
+                  {t("ctaBannerBody")}
                 </p>
               </div>
               <Link
                 href="/for-businesses"
                 className="shrink-0 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md"
               >
-                List your property
+                {t("ctaBannerButton")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

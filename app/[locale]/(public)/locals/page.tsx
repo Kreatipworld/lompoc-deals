@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server"
 import Image from "next/image"
 import { Link } from "@/i18n/navigation"
 import {
@@ -14,23 +15,60 @@ import {
 } from "lucide-react"
 import { getSiteStats } from "@/lib/queries"
 
-export const metadata = {
-  title: "For Locals — Discover Deals & Support Lompoc Businesses | Lompoc Deals",
-  description:
-    "Sign up free and get exclusive deals from 470+ Lompoc businesses. Save favorites, get the weekly digest, and discover what's happening in your hometown.",
-  keywords: [
-    "lompoc locals",
-    "lompoc deals for residents",
-    "lompoc local discounts",
-    "things to do lompoc",
-    "lompoc community",
-    "lompoc ca businesses",
-    "support local lompoc",
-  ],
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "locals" })
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    keywords: [
+      "lompoc locals",
+      "lompoc deals for residents",
+      "lompoc local discounts",
+      "things to do lompoc",
+      "lompoc community",
+      "lompoc ca businesses",
+      "support local lompoc",
+    ],
+  }
 }
 
-export default async function LocalsPage() {
+export default async function LocalsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "locals" })
   const stats = await getSiteStats()
+
+  const CATEGORIES = [
+    { label: t("cat1"), emoji: "🍽️" },
+    { label: t("cat2"), emoji: "🍷" },
+    { label: t("cat3"), emoji: "🛍️" },
+    { label: t("cat4"), emoji: "💆" },
+    { label: t("cat5"), emoji: "🔧" },
+    { label: t("cat6"), emoji: "🚗" },
+    { label: t("cat7"), emoji: "🏡" },
+    { label: t("cat8"), emoji: "🎭" },
+  ]
+
+  const FEATURES = [
+    t("feature1"),
+    t("feature2"),
+    t("feature3"),
+    t("feature4"),
+    t("feature5"),
+    t("feature6"),
+    t("feature7"),
+    t("feature8"),
+    t("feature9"),
+    t("feature10"),
+  ]
 
   return (
     <>
@@ -63,19 +101,17 @@ export default async function LocalsPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
                 <MapPin className="h-3 w-3" />
-                For Lompoc residents
+                {t("heroBadge")}
               </div>
 
               <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                Your hometown&apos;s best deals,{" "}
+                {t("heroH1")}{" "}
                 <br />
-                <span className="italic text-primary">all in one place.</span>
+                <span className="italic text-primary">{t("heroH1Italic")}</span>
               </h1>
 
               <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Lompoc Deals connects locals to exclusive discounts, specials,
-                and announcements from the businesses that make this city great.
-                Free forever — no spam, no ads.
+                {t("heroBody")}
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -83,20 +119,19 @@ export default async function LocalsPage() {
                   href="/signup/user"
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
                 >
-                  Join free — it takes 30 seconds
+                  {t("heroCtaPrimary")}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/deals"
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-full border bg-background px-7 text-base font-semibold transition-colors hover:bg-accent"
                 >
-                  Browse deals first
+                  {t("heroCtaSecondary")}
                 </Link>
               </div>
 
               <p className="mt-4 text-xs text-muted-foreground">
-                ✓ Always free &nbsp;·&nbsp; ✓ No credit card &nbsp;·&nbsp; ✓
-                Unsubscribe anytime
+                {t("heroTrustLine")}
               </p>
             </div>
 
@@ -104,28 +139,27 @@ export default async function LocalsPage() {
             <div className="relative">
               <div className="relative rounded-3xl border bg-card p-8 shadow-xl shadow-primary/5">
                 <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  Lompoc Deals · Right now
+                  {t("statCardEyebrow")}
                 </div>
                 <div className="mt-6 space-y-6">
                   <BigStat
                     value={stats.businesses}
-                    label="local businesses with active listings"
+                    label={t("statBusinesses")}
                   />
                   <div className="border-t" />
                   <BigStat
                     value={stats.activeDeals}
-                    label="deals & specials live right now"
+                    label={t("statDeals")}
                   />
                   <div className="border-t" />
                   <BigStat
                     value={stats.categories}
-                    label="categories — wineries to wellness"
+                    label={t("statCategories")}
                   />
                 </div>
                 <div className="mt-8 rounded-2xl bg-accent p-4 text-xs text-accent-foreground">
                   <Heart className="mb-1 h-3.5 w-3.5" />
-                  <strong>Free to join.</strong> Save favorites, get deal
-                  alerts, and never miss a Lompoc special again.
+                  <strong>{t("statCardNote")}</strong> {t("statCardNoteBody")}
                 </div>
               </div>
               <div
@@ -144,34 +178,34 @@ export default async function LocalsPage() {
         <div className="mx-auto max-w-6xl px-4 py-20">
           <div className="mx-auto max-w-2xl text-center">
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              How it works
+              {t("howItWorksEyebrow")}
             </div>
             <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Three steps.{" "}
-              <span className="italic text-primary">Start saving.</span>
+              {t("howItWorksH2")}{" "}
+              <span className="italic text-primary">{t("howItWorksH2Italic")}</span>
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              No app download. No credit card. No catch.
+              {t("howItWorksBody")}
             </p>
           </div>
 
           <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
             <Step
-              num="01"
-              title="Create your free account"
-              body="Sign up in 30 seconds — just your name, zip code, and a password. Tell us your interests so we only show you what matters."
+              num={t("step1Num")}
+              title={t("step1Title")}
+              body={t("step1Body")}
               delay={0}
             />
             <Step
-              num="02"
-              title="Discover local businesses"
-              body="Browse 470+ Lompoc businesses by category, search by name, or explore the deals feed. No algorithm burying what you care about."
+              num={t("step2Num")}
+              title={t("step2Title")}
+              body={t("step2Body")}
               delay={80}
             />
             <Step
-              num="03"
-              title="Save, follow, and save money"
-              body="Heart your favorites, get the weekly digest with the top deals, and redeem offers directly with local businesses."
+              num={t("step3Num")}
+              title={t("step3Title")}
+              body={t("step3Body")}
               delay={160}
             />
           </div>
@@ -184,50 +218,50 @@ export default async function LocalsPage() {
       <section className="mx-auto max-w-6xl px-4 py-20">
         <div className="mx-auto max-w-2xl text-center">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Why join
+            {t("whyJoinEyebrow")}
           </div>
           <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            Built for Lompoc people,{" "}
+            {t("whyJoinH2")}{" "}
             <br />
-            <span className="italic text-primary">not algorithms.</span>
+            <span className="italic text-primary">{t("whyJoinH2Italic")}</span>
           </h2>
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <Benefit
             icon={<Tag className="h-5 w-5" />}
-            title="Real deals from real locals"
-            body="Every coupon, special, and announcement comes directly from a Lompoc business owner — not a national chain, not a bot."
+            title={t("b1Title")}
+            body={t("b1Body")}
             delay={0}
           />
           <Benefit
             icon={<Heart className="h-5 w-5" />}
-            title="Save your favorites"
-            body="Heart the businesses and deals you love. Come back anytime and find them waiting. Build your personal Lompoc guide."
+            title={t("b2Title")}
+            body={t("b2Body")}
             delay={60}
           />
           <Benefit
             icon={<Mail className="h-5 w-5" />}
-            title="Saturday deal digest"
-            body="One email every Saturday morning — the top 10 deals from Lompoc businesses that week. Unsubscribe with one click, anytime."
+            title={t("b3Title")}
+            body={t("b3Body")}
             delay={120}
           />
           <Benefit
             icon={<Compass className="h-5 w-5" />}
-            title="Discover hidden gems"
-            body="470+ businesses are listed. Many you've probably never heard of. The Wine Ghetto, local repair shops, wellness studios — all here."
+            title={t("b4Title")}
+            body={t("b4Body")}
             delay={0}
           />
           <Benefit
             icon={<Users className="h-5 w-5" />}
-            title="Support your community"
-            body="Every deal you redeem goes straight to a Lompoc business owner. Not Amazon. Not a franchise. Your neighbor."
+            title={t("b5Title")}
+            body={t("b5Body")}
             delay={60}
           />
           <Benefit
             icon={<Bell className="h-5 w-5" />}
-            title="Always free, no ads"
-            body="Your account is free forever. We never sell your data, show ads, or flood your inbox. Just local deals when you want them."
+            title={t("b6Title")}
+            body={t("b6Body")}
             delay={120}
           />
         </div>
@@ -240,30 +274,19 @@ export default async function LocalsPage() {
         <div className="mx-auto max-w-5xl px-4 py-20">
           <div className="text-center">
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              What you get
+              {t("whatYouGetEyebrow")}
             </div>
             <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Everything included. <span className="italic text-primary">Free.</span>
+              {t("whatYouGetH2")} <span className="italic text-primary">{t("whatYouGetH2Free")}</span>
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              No tiers, no upgrades, no hidden costs for locals. Full access, always.
+              {t("whatYouGetBody")}
             </p>
           </div>
 
           <div className="mx-auto mt-12 max-w-2xl rounded-3xl border bg-card p-8 shadow-sm sm:p-10">
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {[
-                "Browse all 470+ Lompoc businesses",
-                "See every active deal & special",
-                "Save favorites with one tap",
-                "Weekly Saturday deal digest email",
-                "Search by category, name, or keyword",
-                "Interactive map of local businesses",
-                "Business hours and contact info",
-                "Bilingual — English & Spanish",
-                "Works on any phone or computer",
-                "No app download required",
-              ].map((feature) => (
+              {FEATURES.map((feature) => (
                 <li key={feature} className="flex items-start gap-3 text-sm">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <span>{feature}</span>
@@ -273,14 +296,14 @@ export default async function LocalsPage() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="font-display text-2xl font-bold">$0</div>
-                <div className="text-sm text-muted-foreground">forever, for locals</div>
+                <div className="font-display text-2xl font-bold">{t("priceFree")}</div>
+                <div className="text-sm text-muted-foreground">{t("priceForever")}</div>
               </div>
               <Link
                 href="/signup/user"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
               >
-                Create your free account
+                {t("priceCtaCreate")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -294,29 +317,19 @@ export default async function LocalsPage() {
       <section className="mx-auto max-w-6xl px-4 py-20">
         <div className="mx-auto max-w-2xl text-center">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            What&apos;s on Lompoc Deals
+            {t("categoriesEyebrow")}
           </div>
           <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            From wine to wellness.{" "}
-            <span className="italic text-primary">It&apos;s all here.</span>
+            {t("categoriesH2")}{" "}
+            <span className="italic text-primary">{t("categoriesH2Italic")}</span>
           </h2>
           <p className="mt-3 text-base text-muted-foreground">
-            Restaurants, wineries, retail, services, health, auto — if it&apos;s
-            in Lompoc, it&apos;s in the directory.
+            {t("categoriesBody")}
           </p>
         </div>
 
         <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {[
-            { label: "Restaurants & Bars", emoji: "🍽️" },
-            { label: "Wineries & Tasting Rooms", emoji: "🍷" },
-            { label: "Retail & Shopping", emoji: "🛍️" },
-            { label: "Health & Beauty", emoji: "💆" },
-            { label: "Home Services", emoji: "🔧" },
-            { label: "Auto & Transportation", emoji: "🚗" },
-            { label: "Real Estate", emoji: "🏡" },
-            { label: "Entertainment", emoji: "🎭" },
-          ].map(({ label, emoji }) => (
+          {CATEGORIES.map(({ label, emoji }) => (
             <div
               key={label}
               className="flex flex-col items-center gap-3 rounded-2xl border bg-card p-5 text-center shadow-sm"
@@ -334,7 +347,7 @@ export default async function LocalsPage() {
             href="/businesses"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
           >
-            Browse all businesses
+            {t("browseAllBusinesses")}
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -358,35 +371,34 @@ export default async function LocalsPage() {
               <Zap className="h-6 w-6" />
             </div>
             <h2 className="mt-6 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-              Lompoc is your town.{" "}
-              <span className="italic text-primary">Own it.</span>
+              {t("finalH2")}{" "}
+              <span className="italic text-primary">{t("finalH2Italic")}</span>
             </h2>
             <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-              Join your neighbors. Discover deals. Support the businesses that
-              make this city worth living in.
+              {t("finalBody")}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/signup/user"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
               >
-                Join free
+                {t("finalCtaPrimary")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/deals"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >
-                or browse deals without signing up →
+                {t("finalCtaSecondary")}
               </Link>
             </div>
             <p className="mt-5 text-xs text-muted-foreground">
-              Own a business?{" "}
+              {t("finalOwnerNote")}{" "}
               <Link
                 href="/for-businesses"
                 className="font-medium text-primary hover:underline"
               >
-                List it free →
+                {t("finalOwnerCta")}
               </Link>
             </p>
           </div>
