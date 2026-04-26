@@ -245,6 +245,22 @@
     "saved": "Guardado",
     "noDeals": "Sin ofertas aún",
     "noDealsSubtitle": "Vuelve pronto para ver nuevas ofertas de negocios locales.",
+    "page": {
+      "metaTitle": "Ofertas y Cupones en Lompoc — Especiales Locales | Lompoc Deals",
+      "metaDescription": "Explora ofertas y cupones actuales de más de 155 negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Actualizadas a diario, gratis para canjear.",
+      "metaKeywords": "ofertas lompoc,cupones lompoc,especiales lompoc,descuentos lompoc,lompoc ca deals,lompoc deals",
+      "ogTitle": "Ofertas y Cupones en Lompoc — Especiales Locales Actualizados a Diario",
+      "ogDescription": "Explora ofertas actuales de más de 155 negocios en Lompoc, CA. Gratis para canjear — sin tarjeta de crédito.",
+      "ogImageAlt": "Lompoc, California",
+      "badge": "Ofertas locales, actualizadas a diario",
+      "heading": "Ofertas y Cupones",
+      "subheading": "{count} ofertas activas de negocios en Lompoc — gratis para canjear, sin necesidad de imprimir.",
+      "noDeals": "No se encontraron ofertas activas por ahora — ¡vuelve pronto!",
+      "dealSingular": "oferta",
+      "dealPlural": "ofertas",
+      "dealsAvailable": "{count} {dealWord} disponibles",
+      "seeAll": "Ver todas"
+    },
     "categories": {
       "food-drink": "Comida y bebida",
       "retail": "Tiendas",

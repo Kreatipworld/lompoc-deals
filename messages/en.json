@@ -245,6 +245,22 @@
     "saved": "Saved",
     "noDeals": "No deals yet",
     "noDealsSubtitle": "Check back soon for new deals from local businesses.",
+    "page": {
+      "metaTitle": "Lompoc Deals & Coupons — Browse Local Specials | Lompoc Deals",
+      "metaDescription": "Browse current deals and coupons from 155+ Lompoc, CA businesses — restaurants, salons, services, retail, and more. Updated daily, free to claim, no credit card.",
+      "metaKeywords": "lompoc deals,lompoc coupons,lompoc specials,lompoc discounts,lompoc ca deals,ofertas lompoc",
+      "ogTitle": "Lompoc Deals & Coupons — Local Specials Updated Daily",
+      "ogDescription": "Browse current deals from 155+ Lompoc, CA businesses. Free to claim — no credit card needed.",
+      "ogImageAlt": "Lompoc, California",
+      "badge": "Local deals, updated daily",
+      "heading": "Deals & Coupons",
+      "subheading": "{count} active offers from Lompoc businesses — free to claim, no printing required.",
+      "noDeals": "No active deals right now — check back soon!",
+      "dealSingular": "deal",
+      "dealPlural": "deals",
+      "dealsAvailable": "{count} {dealWord} available",
+      "seeAll": "See all"
+    },
     "categories": {
       "food-drink": "Food & Drink",
       "retail": "Retail",
