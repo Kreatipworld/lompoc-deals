@@ -1,12 +1,19 @@
 import { SubmitEventForm } from "./submit-form"
 import { CalendarDays } from "lucide-react"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = {
-  title: "Submit an Event — Lompoc Deals",
-  description: "Tell Lompoc about your upcoming event, festival, or business launch.",
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "submitEvent" })
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  }
 }
 
-export default function SubmitEventPage() {
+export default async function SubmitEventPage({ params }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "submitEvent" })
+
   return (
     <div className="mx-auto max-w-xl px-4 py-12">
       <div className="mb-8 flex flex-col items-center gap-2 text-center">
@@ -14,10 +21,10 @@ export default function SubmitEventPage() {
           <CalendarDays className="h-6 w-6 text-primary" />
         </div>
         <h1 className="font-display text-3xl font-semibold tracking-tight">
-          Submit an event
+          {t("heading")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Free to post. Events are reviewed before going live — usually within a few hours.
+          {t("subtitle")}
         </p>
       </div>
 

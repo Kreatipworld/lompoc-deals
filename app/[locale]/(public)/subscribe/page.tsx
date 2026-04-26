@@ -1,72 +1,20 @@
 import { Mail, Sparkles, Clock, ShieldCheck, Star, Users } from "lucide-react"
 import { CategoryPatternBg } from "@/components/category-pattern-bg"
 import { SubscribeForm } from "./subscribe-form"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
-export const metadata = {
-  title: "Weekly Digest — Lompoc Deals",
-  description:
-    "Get the top 10 local deals delivered free every Saturday morning. Join thousands of Lompoc locals saving every week.",
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "subscribePage" })
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  }
 }
-
-const benefits = [
-  {
-    icon: Sparkles,
-    title: "Top 10 curated deals",
-    desc: "We hand-pick the best offers from local businesses every week — no filler, just savings.",
-  },
-  {
-    icon: Clock,
-    title: "Delivered Saturday at 9am",
-    desc: "Start your weekend knowing exactly where to find the best deals in Lompoc.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Free. No spam. Ever.",
-    desc: "One email per week, unsubscribe in one click. We respect your inbox.",
-  },
-]
-
-const testimonials = [
-  {
-    quote: "I saved over $200 last month just from deals in the digest. It's become a Saturday morning ritual.",
-    author: "Maria T.",
-    subtitle: "Lompoc local",
-  },
-  {
-    quote: "Found my favorite new restaurant through the digest. Now I go every week.",
-    author: "James R.",
-    subtitle: "Downtown resident",
-  },
-  {
-    quote: "As a small business owner, the digest brings in real customers. As a shopper, it saves me money.",
-    author: "Sandra K.",
-    subtitle: "Business owner & subscriber",
-  },
-]
-
-const sampleDeals = [
-  {
-    business: "Lompoc Brewing Co.",
-    category: "Food & Drink",
-    deal: "Happy Hour — 20% off all pints",
-    badge: "Today only",
-    color: "bg-brand-terracotta/10 text-brand-terracotta",
-  },
-  {
-    business: "Valley Flowers",
-    category: "Shopping",
-    deal: "Spring bouquets from $18 — this weekend only",
-    badge: "Weekend deal",
-    color: "bg-success/10 text-success",
-  },
-  {
-    business: "Central Coast Yoga",
-    category: "Wellness",
-    deal: "First class free for new students",
-    badge: "New offer",
-    color: "bg-accent text-accent-foreground",
-  },
-]
 
 function InlineSubscribeForm() {
   return (
@@ -76,7 +24,49 @@ function InlineSubscribeForm() {
   )
 }
 
-export default function SubscribePage() {
+export default async function SubscribePage({
+  params,
+}: {
+  params: { locale: string }
+}) {
+  const t = await getTranslations({ locale: params.locale, namespace: "subscribePage" })
+
+  const benefits = [
+    { icon: Sparkles, title: t("benefit1Title"), desc: t("benefit1Desc") },
+    { icon: Clock, title: t("benefit2Title"), desc: t("benefit2Desc") },
+    { icon: ShieldCheck, title: t("benefit3Title"), desc: t("benefit3Desc") },
+  ]
+
+  const testimonials = [
+    { quote: t("testimonial1Quote"), author: t("testimonial1Author"), subtitle: t("testimonial1Sub") },
+    { quote: t("testimonial2Quote"), author: t("testimonial2Author"), subtitle: t("testimonial2Sub") },
+    { quote: t("testimonial3Quote"), author: t("testimonial3Author"), subtitle: t("testimonial3Sub") },
+  ]
+
+  const sampleDeals = [
+    {
+      business: "Lompoc Brewing Co.",
+      category: "Food & Drink",
+      deal: "Happy Hour — 20% off all pints",
+      badge: t("sampleBadgeToday"),
+      color: "bg-brand-terracotta/10 text-brand-terracotta",
+    },
+    {
+      business: "Valley Flowers",
+      category: "Shopping",
+      deal: "Spring bouquets from $18 — this weekend only",
+      badge: t("sampleBadgeWeekend"),
+      color: "bg-success/10 text-success",
+    },
+    {
+      business: "Central Coast Yoga",
+      category: "Wellness",
+      deal: "First class free for new students",
+      badge: t("sampleBadgeNew"),
+      color: "bg-accent text-accent-foreground",
+    },
+  ]
+
   return (
     <div className="min-h-screen">
       {/* ── Hero ── */}
@@ -96,18 +86,17 @@ export default function SubscribePage() {
         <div className="relative mx-auto max-w-2xl text-center">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-accent px-4 py-1.5 text-sm font-medium text-primary">
             <Mail className="h-3.5 w-3.5" />
-            Free weekly deals digest
+            {t("badge")}
           </div>
 
           <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Your weekly shortcut
+            {t("heading1")}
             <br />
-            <span className="text-primary">to Lompoc savings</span>
+            <span className="text-primary">{t("heading2")}</span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-md text-base text-muted-foreground sm:text-lg">
-            Every Saturday at 9am, get the top 10 deals from local Lompoc
-            businesses — hand-picked and delivered free to your inbox.
+            {t("subheading")}
           </p>
 
           <div className="mt-8 flex justify-center">
@@ -116,7 +105,7 @@ export default function SubscribePage() {
 
           <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
             <Users className="h-3.5 w-3.5" />
-            Join 1,400+ Lompoc locals already saving every week
+            {t("socialProofCount", { count: "1,400" })}
           </p>
         </div>
       </section>
@@ -125,7 +114,7 @@ export default function SubscribePage() {
       <section className="bg-background px-4 py-14">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-center text-2xl font-bold tracking-tight">
-            Why locals love the digest
+            {t("benefitsHeading")}
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {benefits.map(({ icon: Icon, title, desc }) => (
@@ -148,10 +137,10 @@ export default function SubscribePage() {
       <section className="bg-muted/40 px-4 py-14">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-center text-2xl font-bold tracking-tight">
-            Here&apos;s what a typical digest looks like
+            {t("previewHeading")}
           </h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">
-            Real deals. Real savings. Real Lompoc businesses.
+            {t("previewSubheading")}
           </p>
 
           {/* Mock email preview */}
@@ -165,7 +154,7 @@ export default function SubscribePage() {
                   <div className="h-2.5 w-2.5 rounded-full bg-success/50" />
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  📬 Lompoc Deals — This week&apos;s top deals
+                  📬 {t("previewEmailSubject")}
                 </span>
               </div>
             </div>
@@ -177,13 +166,13 @@ export default function SubscribePage() {
                   LD
                 </div>
                 <div>
-                  <p className="text-xs font-semibold">Lompoc Deals</p>
-                  <p className="text-xs text-muted-foreground">deals@lompocdeals.com</p>
+                  <p className="text-xs font-semibold">{t("previewFrom")}</p>
+                  <p className="text-xs text-muted-foreground">{t("previewEmail")}</p>
                 </div>
               </div>
 
               <h3 className="font-bold text-foreground">
-                🛍️ This week&apos;s top 3 deals in Lompoc
+                🛍️ {t("previewWeekly")}
               </h3>
               <p className="mt-1 text-xs text-muted-foreground">Saturday, April 19 · 9:00 AM</p>
 
@@ -211,7 +200,7 @@ export default function SubscribePage() {
               </div>
 
               <p className="mt-4 text-center text-xs text-muted-foreground">
-                + 7 more deals in the full digest &rarr;
+                {t("previewMoreDeals")} &rarr;
               </p>
             </div>
           </div>
@@ -223,7 +212,7 @@ export default function SubscribePage() {
         <div className="mx-auto max-w-3xl">
           <div className="mb-8 text-center">
             <div className="mb-2 text-4xl font-extrabold text-primary">1,400+</div>
-            <p className="text-sm text-muted-foreground">Lompoc locals saving every week</p>
+            <p className="text-sm text-muted-foreground">{t("statLocals")}</p>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-3">
@@ -260,11 +249,10 @@ export default function SubscribePage() {
         <div className="relative mx-auto max-w-xl text-center">
           <Mail className="mx-auto mb-4 h-10 w-10 opacity-80" />
           <h2 className="text-2xl font-extrabold sm:text-3xl">
-            Ready to start saving?
+            {t("ctaHeading")}
           </h2>
           <p className="mt-3 text-sm text-primary-foreground/80 sm:text-base">
-            Join Lompoc locals who never miss a great deal. Free, every Saturday.
-            Unsubscribe anytime.
+            {t("ctaBody")}
           </p>
           <div className="mt-6 flex justify-center">
             <div className="w-full max-w-sm">

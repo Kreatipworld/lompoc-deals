@@ -32,6 +32,7 @@ import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
+import { getTranslations } from "next-intl/server"
 
 const ICONS: Record<string, LucideIcon> = {
   utensils: Utensils,
@@ -65,9 +66,11 @@ export default async function CategoryPage({
   params,
   searchParams,
 }: {
-  params: { slug: string }
+  params: { slug: string; locale: string }
   searchParams?: { tab?: string }
 }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "category" })
+
   const cat = await db.query.categories.findFirst({
     where: (c, { eq }) => eq(c.slug, params.slug),
   })
@@ -92,7 +95,9 @@ export default async function CategoryPage({
 
   // For real-estate, show listing count; for others, show business count
   const heroCount = isRealEstate ? listings.length : categoryBusinesses.length
-  const heroLabel = isRealEstate ? "listing" : "business"
+  const heroLabel = isRealEstate
+    ? heroCount === 1 ? t("listingSingular") : t("listingPlural")
+    : heroCount === 1 ? t("businessSingular") : t("businessPlural")
 
   return (
     <>
@@ -113,7 +118,7 @@ export default async function CategoryPage({
             className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-3 w-3" />
-            All businesses
+            {t("allBusinesses")}
           </Link>
 
           <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
@@ -125,9 +130,9 @@ export default async function CategoryPage({
                 {cat.name}
               </h1>
               <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-                {heroCount} {heroCount === 1 ? heroLabel : `${heroLabel}s`} in Lompoc
+                {heroCount} {heroLabel} in Lompoc
                 {!isRealEstate && deals.length > 0 && (
-                  <> · <span className="text-primary font-medium">{deals.length} active {deals.length === 1 ? "deal" : "deals"}</span></>
+                  <> · <span className="text-primary font-medium">{deals.length} {deals.length === 1 ? t("dealSingular") : t("dealPlural")}</span></>
                 )}
               </p>
             </div>
@@ -158,7 +163,7 @@ export default async function CategoryPage({
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
-              All
+              {t("tabAll")}
             </Link>
             <Link
               href={`/category/${params.slug}?tab=sale`}
@@ -168,7 +173,7 @@ export default async function CategoryPage({
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
-              For sale
+              {t("tabForSale")}
             </Link>
             <Link
               href={`/category/${params.slug}?tab=rent`}
@@ -178,7 +183,7 @@ export default async function CategoryPage({
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
-              For rent
+              {t("tabForRent")}
             </Link>
           </div>
           <PropertyListingGrid listings={listings} />
@@ -191,7 +196,7 @@ export default async function CategoryPage({
           <section className="mx-auto max-w-6xl px-4 py-10">
             {categoryBusinesses.length === 0 ? (
               <p className="py-16 text-center text-sm text-muted-foreground">
-                No businesses found in this category yet.
+                {t("noBusinesses")}
               </p>
             ) : (
               <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -222,7 +227,7 @@ export default async function CategoryPage({
                             <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
                               <Tag className="h-3 w-3" />
                               {b.activeDealCount}{" "}
-                              {b.activeDealCount === 1 ? "deal" : "deals"}
+                              {b.activeDealCount === 1 ? t("dealSingular") : t("dealPlural")}
                             </span>
                           )}
                         </div>
@@ -258,7 +263,7 @@ export default async function CategoryPage({
                       </div>
 
                       <div className="flex items-center justify-end pt-1 text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">
-                        View profile
+                        {t("viewProfile")}
                         <ArrowRight className="ml-1 h-3 w-3" />
                       </div>
                     </Link>
@@ -273,10 +278,10 @@ export default async function CategoryPage({
             <section className="mx-auto max-w-6xl px-4 pb-16">
               <div className="mb-6 border-t pt-10">
                 <h2 className="font-display text-2xl font-semibold tracking-tight">
-                  Active deals in {cat.name}
+                  {t("activeDealsIn", { name: cat.name })}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {deals.length} {deals.length === 1 ? "deal" : "deals"} available right now
+                  {t("dealsAvailable", { count: deals.length, label: deals.length === 1 ? t("dealSingular") : t("dealPlural") })}
                 </p>
               </div>
               <DealGrid

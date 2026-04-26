@@ -7,6 +7,7 @@ import { getBlogPostBySlug, getRecentBlogPosts, getBusinessesForBlogCategory } f
 import { SafeImage } from "@/components/safe-image"
 import { BlogRelatedLinks } from "@/components/blog-related-links"
 import { BlogBusinessSpotlight } from "@/components/blog-business-spotlight"
+import { getTranslations } from "next-intl/server"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -37,7 +38,9 @@ export async function generateMetadata({
   }
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: { slug: string; locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "blog" })
+
   const [post, recentPosts] = await Promise.all([
     getBlogPostBySlug(params.slug),
     getRecentBlogPosts(3),
@@ -92,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           href="/blog"
           className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 mb-6 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" /> Back to Blog
+          <ArrowLeft className="w-4 h-4" /> {t("backToBlog")}
         </Link>
 
         <article>
@@ -154,7 +157,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
             <div className="mt-8 pt-6 border-t border-gray-100">
-              <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Tags</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">{t("tags")}</p>
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
                   <span
@@ -171,25 +174,25 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
         {/* Internal linking — related posts + deals CTA */}
         {relatedPosts.length > 0 && (
-          <BlogRelatedLinks posts={relatedPosts} />
+          <BlogRelatedLinks posts={relatedPosts} title={t("relatedArticles")} />
         )}
 
         {/* Platform business recommendations */}
-        <BlogBusinessSpotlight businesses={relatedBusinesses} />
+        <BlogBusinessSpotlight businesses={relatedBusinesses} title={t("localBusinesses")} supportLocalText={t("supportLocal")} browseAllText={t("browseAllBusinesses")} />
 
         {/* CTA to deals */}
         <div className="mt-10 p-6 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
           <p className="text-emerald-800 font-semibold mb-2">
-            Looking for deals in Lompoc?
+            {t("lookingForDeals")}
           </p>
           <p className="text-emerald-700 text-sm mb-4">
-            Browse coupons, specials, and announcements from local businesses.
+            {t("lookingForDealsBody")}
           </p>
           <Link
             href="/"
             className="inline-block px-5 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors"
           >
-            Browse Deals
+            {t("browseDeals")}
           </Link>
         </div>
       </main>

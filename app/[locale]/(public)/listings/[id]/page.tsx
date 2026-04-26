@@ -14,18 +14,21 @@ import {
 import { getListingById } from "@/lib/queries"
 import { BusinessMapLoader } from "@/components/business-map-loader"
 import { SafeImage } from "@/components/safe-image"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string }
-}) {
+  params: { id: string; locale: string }
+}): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "listing" })
   const id = parseInt(params.id, 10)
   if (isNaN(id)) return { title: "Listing — Lompoc Deals" }
   const listing = await getListingById(id)
-  if (!listing) return { title: "Listing not found — Lompoc Deals" }
+  if (!listing) return { title: t("metaNotFound") }
   return {
-    title: `${listing.title} — Lompoc Deals`,
+    title: `${listing.title} ${t("metaTitleSuffix")}`,
     description: listing.description ?? undefined,
   }
 }
@@ -39,8 +42,9 @@ function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
 export default async function ListingPage({
   params,
 }: {
-  params: { id: string }
+  params: { id: string; locale: string }
 }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "listing" })
   const id = parseInt(params.id, 10)
   if (isNaN(id)) notFound()
   const listing = await getListingById(id)
@@ -65,7 +69,7 @@ export default async function ListingPage({
           className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-3 w-3" />
-          Back to all listings
+          {t("backToListings")}
         </Link>
       </div>
 
@@ -81,7 +85,7 @@ export default async function ListingPage({
                 className="h-full w-full object-cover"
                 fallback={
                   <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
-                    Photo not available
+                    {t("photoNotAvailable")}
                   </div>
                 }
               />
@@ -98,7 +102,7 @@ export default async function ListingPage({
                   className="h-full w-full object-cover"
                   fallback={
                     <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
-                      Photo not available
+                      {t("photoNotAvailable")}
                     </div>
                   }
                 />
@@ -107,7 +111,7 @@ export default async function ListingPage({
           </div>
         ) : (
           <div className="flex h-80 items-center justify-center rounded-2xl border bg-muted text-sm text-muted-foreground">
-            No photos available
+            {t("noPhotos")}
           </div>
         )}
       </section>
@@ -126,7 +130,7 @@ export default async function ListingPage({
                     : "bg-foreground text-background"
                 }`}
               >
-                {isForSale ? "For sale" : "For rent"}
+                {isForSale ? t("forSale") : t("forRent")}
               </span>
               <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
                 {listing.title}
@@ -148,25 +152,25 @@ export default async function ListingPage({
                 {listing.beds != null && (
                   <span className="inline-flex items-center gap-1.5">
                     <Bed className="h-4 w-4 text-primary" />
-                    <strong>{listing.beds}</strong> bed
+                    <strong>{listing.beds}</strong> {t("beds")}
                   </span>
                 )}
                 {listing.baths != null && (
                   <span className="inline-flex items-center gap-1.5">
                     <Bath className="h-4 w-4 text-primary" />
-                    <strong>{listing.baths}</strong> bath
+                    <strong>{listing.baths}</strong> {t("baths")}
                   </span>
                 )}
                 {listing.sqft != null && (
                   <span className="inline-flex items-center gap-1.5">
                     <Maximize className="h-4 w-4 text-primary" />
-                    <strong>{listing.sqft.toLocaleString()}</strong> sqft
+                    <strong>{listing.sqft.toLocaleString()}</strong> {t("sqft")}
                   </span>
                 )}
                 {listing.yearBuilt != null && (
                   <span className="inline-flex items-center gap-1.5">
                     <Calendar className="h-4 w-4 text-primary" />
-                    Built <strong>{listing.yearBuilt}</strong>
+                    {t("builtYear", { year: listing.yearBuilt })}
                   </span>
                 )}
               </div>
@@ -176,7 +180,7 @@ export default async function ListingPage({
             {listing.description && (
               <div>
                 <h2 className="font-display text-xl font-semibold tracking-tight">
-                  About this property
+                  {t("aboutProperty")}
                 </h2>
                 <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
                   {listing.description}
@@ -188,7 +192,7 @@ export default async function ListingPage({
             {listing.lat != null && listing.lng != null && (
               <div>
                 <h2 className="font-display text-xl font-semibold tracking-tight">
-                  Location
+                  {t("location")}
                 </h2>
                 <div className="mt-3 overflow-hidden rounded-2xl border shadow-sm">
                   <div className="h-72">
@@ -207,7 +211,7 @@ export default async function ListingPage({
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-3xl border bg-card p-6 shadow-sm">
               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Listed by
+                {t("listedBy")}
               </div>
               <h3 className="mt-2 font-display text-xl font-semibold leading-tight tracking-tight">
                 {listing.business.name}
@@ -242,7 +246,7 @@ export default async function ListingPage({
                 href={`/biz/${listing.business.slug}`}
                 className="mt-5 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                View brokerage profile
+                {t("viewBrokerage")}
               </Link>
             </div>
 
@@ -254,7 +258,7 @@ export default async function ListingPage({
                 className="mt-3 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full border bg-background px-4 text-sm font-medium hover:bg-accent"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
-                View on Zillow
+                {t("viewOnZillow")}
               </a>
             )}
           </aside>

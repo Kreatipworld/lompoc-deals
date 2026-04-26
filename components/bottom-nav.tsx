@@ -5,16 +5,18 @@ import { usePathname } from "next/navigation"
 import { Home, Search, LayoutGrid, User, Tag } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
+import { useTranslations } from "next-intl"
 
 const NAV_ITEMS = [
-  { href: "/", icon: Home, label: "Home" },
-  { href: "/deals", icon: Tag, label: "Deals" },
-  { href: "/search", icon: Search, label: "Search" },
-  { href: "/businesses", icon: LayoutGrid, label: "Directory" },
-  { href: "/account", icon: User, label: "Account" },
+  { href: "/", icon: Home, labelKey: "home" },
+  { href: "/deals", icon: Tag, labelKey: "deals" },
+  { href: "/search", icon: Search, labelKey: "search" },
+  { href: "/businesses", icon: LayoutGrid, labelKey: "directory" },
+  { href: "/account", icon: User, labelKey: "account" },
 ] as const
 
 export function BottomNav() {
+  const t = useTranslations("bottomNav")
   const pathname = usePathname()
   const [hidden, setHidden] = useState(false)
   const lastScrollY = useRef(0)
@@ -54,7 +56,7 @@ export function BottomNav() {
       )}
     >
       <div className="flex h-16 items-center justify-around px-1 pb-safe">
-        {NAV_ITEMS.map(({ href, icon: Icon, label }) => {
+        {NAV_ITEMS.map(({ href, icon: Icon, labelKey }) => {
           const isActive =
             href === "/"
               ? pathname === "/" || pathname === "/en" || pathname === "/es"
@@ -79,7 +81,7 @@ export function BottomNav() {
                 className="h-5 w-5"
                 strokeWidth={isActive ? 2.25 : 1.75}
               />
-              {label}
+              {t(labelKey)}
             </Link>
           )
         })}

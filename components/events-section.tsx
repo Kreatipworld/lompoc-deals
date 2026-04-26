@@ -14,25 +14,23 @@ import {
   Store,
   Tag,
 } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
-// ─── Category labels & icons ──────────────────────────────────────────────────
+// ─── Category icon mapping (labels come from translations) ────────────────────
 
-const CATEGORY_META: Record<
-  string,
-  { label: string; Icon: React.ComponentType<{ className?: string }> }
-> = {
-  community: { label: "Community", Icon: Users },
-  "business-launch": { label: "Business Launch", Icon: Store },
-  festival: { label: "Festival", Icon: Music },
-  arts: { label: "Arts", Icon: Landmark },
-  food: { label: "Food", Icon: Utensils },
-  sports: { label: "Sports", Icon: Trophy },
-  market: { label: "Market", Icon: ShoppingBag },
-  other: { label: "Event", Icon: Tag },
+const CATEGORY_ICON: Record<string, React.ComponentType<{ className?: string }>> = {
+  community: Users,
+  "business-launch": Store,
+  festival: Music,
+  arts: Landmark,
+  food: Utensils,
+  sports: Trophy,
+  market: ShoppingBag,
+  other: Tag,
 }
 
-function categoryMeta(cat: string) {
-  return CATEGORY_META[cat] ?? CATEGORY_META.other
+function categoryIcon(cat: string) {
+  return CATEGORY_ICON[cat] ?? CATEGORY_ICON.other
 }
 
 // ─── Date formatting ──────────────────────────────────────────────────────────
@@ -70,10 +68,12 @@ function formatEventDate(startsAt: Date, endsAt: Date | null) {
 
 function EventCard({
   event,
+  label,
 }: {
   event: Awaited<ReturnType<typeof getUpcomingEvents>>[number]
+  label: string
 }) {
-  const { label, Icon } = categoryMeta(event.category)
+  const Icon = categoryIcon(event.category)
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
@@ -147,18 +147,18 @@ function EventCard({
 
 // ─── Empty state ──────────────────────────────────────────────────────────────
 
-function EmptyEvents() {
+function EmptyEvents({ noEvents, submitLabel }: { noEvents: string; submitLabel: string }) {
   return (
     <div className="col-span-full flex flex-col items-center gap-3 rounded-2xl border border-dashed py-12 text-center">
       <CalendarDays className="h-8 w-8 text-muted-foreground/40" />
       <p className="text-sm text-muted-foreground">
-        No upcoming events yet — check back soon!
+        {noEvents}
       </p>
       <Link
         href="/submit-event"
         className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
       >
-        Submit an event
+        {submitLabel}
         <ArrowRight className="h-3.5 w-3.5" />
       </Link>
     </div>
@@ -168,6 +168,19 @@ function EmptyEvents() {
 // ─── Main section (Server Component) ─────────────────────────────────────────
 
 export async function EventsSection() {
+  const t = await getTranslations("eventsSection")
+
+  const CATEGORY_LABEL: Record<string, string> = {
+    community: t("community"),
+    "business-launch": t("businessLaunch"),
+    festival: t("festival"),
+    arts: t("arts"),
+    food: t("food"),
+    sports: t("sports"),
+    market: t("market"),
+    other: t("event"),
+  }
+
   let evts: Awaited<ReturnType<typeof getUpcomingEvents>> = []
   try {
     evts = await getUpcomingEvents(undefined, 8)
@@ -182,17 +195,17 @@ export async function EventsSection() {
       <div className="mb-6 flex items-end justify-between">
         <div>
           <h2 className="font-display text-2xl font-semibold tracking-tight">
-            Upcoming events
+            {t("heading")}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            What&apos;s happening in Lompoc
+            {t("subtitle")}
           </p>
         </div>
         <Link
           href="/submit-event"
           className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
         >
-          Submit an event
+          {t("submitEvent")}
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
@@ -200,9 +213,15 @@ export async function EventsSection() {
       {/* Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {evts.length > 0 ? (
-          evts.map((e) => <EventCard key={e.id} event={e} />)
+          evts.map((e) => (
+            <EventCard
+              key={e.id}
+              event={e}
+              label={CATEGORY_LABEL[e.category] ?? CATEGORY_LABEL.other}
+            />
+          ))
         ) : (
-          <EmptyEvents />
+          <EmptyEvents noEvents={t("noEvents")} submitLabel={t("submitEvent")} />
         )}
       </div>
     </section>

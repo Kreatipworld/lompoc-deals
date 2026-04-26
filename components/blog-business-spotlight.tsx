@@ -6,6 +6,8 @@ import type { BlogBusinessCard } from "@/lib/queries"
 interface BlogBusinessSpotlightProps {
   businesses: BlogBusinessCard[]
   title?: string
+  supportLocalText?: string
+  browseAllText?: string
 }
 
 /**
@@ -15,6 +17,8 @@ interface BlogBusinessSpotlightProps {
 export function BlogBusinessSpotlight({
   businesses,
   title = "Local Businesses on Lompoc Deals",
+  supportLocalText = "Support local — these businesses are listed on Lompoc Deals.",
+  browseAllText = "Browse all Lompoc businesses",
 }: BlogBusinessSpotlightProps) {
   if (businesses.length === 0) return null
 
@@ -27,7 +31,7 @@ export function BlogBusinessSpotlight({
         </h2>
       </div>
       <p className="text-xs text-gray-400 mb-4">
-        Support local — these businesses are listed on Lompoc Deals.
+        {supportLocalText}
       </p>
 
       <ul className="space-y-3">
@@ -68,6 +72,7 @@ export function BlogBusinessSpotlight({
                 {biz.activeDealCount > 0 && (
                   <p className="text-xs font-medium text-emerald-600 mt-1">
                     {biz.activeDealCount} active deal{biz.activeDealCount !== 1 ? "s" : ""}
+                    {/* Note: activeDealCount text intentionally kept as-is; parent can pass translated text if needed */}
                   </p>
                 )}
               </div>
@@ -83,7 +88,7 @@ export function BlogBusinessSpotlight({
           href="/businesses"
           className="text-xs text-emerald-600 hover:text-emerald-700 font-medium hover:underline transition-colors"
         >
-          Browse all Lompoc businesses →
+          {browseAllText} →
         </Link>
       </div>
     </aside>

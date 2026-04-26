@@ -1,15 +1,17 @@
 import { Link } from "@/i18n/navigation"
 import { Globe, MapPin, Phone, Wine } from "lucide-react"
 import { getWineryBusinesses } from "@/lib/queries"
+import { getTranslations } from "next-intl/server"
 
 export async function WineriesSection() {
+  const t = await getTranslations("wineriesSection")
   const wineries = await getWineryBusinesses()
 
   if (wineries.length === 0) {
     return (
       <section className="mx-auto max-w-6xl px-4 py-12 text-center text-muted-foreground">
         <Wine className="mx-auto mb-3 h-10 w-10 opacity-40" />
-        <p>No wineries listed yet. Check back soon!</p>
+        <p>{t("noWineries")}</p>
       </section>
     )
   }
@@ -18,11 +20,10 @@ export async function WineriesSection() {
     <section className="mx-auto max-w-6xl px-4 py-10">
       <div className="mb-6">
         <h2 className="font-display text-2xl font-semibold tracking-tight">
-          Lompoc Wine Ghetto &amp; Santa Rita Hills
+          {t("heading")}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          {wineries.length} wineries · world-class Pinot Noir &amp; Chardonnay
-          country
+          {t("subtitle", { count: wineries.length })}
         </p>
       </div>
 
@@ -69,7 +70,7 @@ export async function WineriesSection() {
               {w.website && (
                 <span className="flex items-center gap-1 text-primary">
                   <Globe className="h-3 w-3" />
-                  Visit website
+                  {t("visitWebsite")}
                 </span>
               )}
             </div>

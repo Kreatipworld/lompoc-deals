@@ -5,6 +5,7 @@ import { db } from "@/db/client"
 import { garageSales } from "@/db/schema"
 import { eq, and } from "drizzle-orm"
 import { MapPin, Clock, Tag, Navigation, ArrowLeft, ShoppingBag } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
 interface Props {
   params: { id: string; locale: string }
@@ -41,6 +42,8 @@ function formatDateRange(startDate: Date, endDate: Date) {
 }
 
 export default async function GarageSaleDetailPage({ params }: Props) {
+  const t = await getTranslations({ locale: params.locale, namespace: "garageSaleDetail" })
+
   const id = parseInt(params.id, 10)
   if (isNaN(id)) notFound()
 
@@ -67,7 +70,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        All garage sales
+        {t("backToAll")}
       </Link>
 
       <div className="rounded-3xl border bg-card shadow-sm overflow-hidden">
@@ -78,7 +81,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
           </div>
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-orange-100">
-              Garage Sale
+              {t("garageSale")}
             </p>
             <h1 className="mt-0.5 text-xl font-bold text-white leading-tight">
               {sale.address}
@@ -114,7 +117,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
                 className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-orange-600 hover:underline"
               >
                 <Navigation className="h-3 w-3" />
-                Get directions
+                {t("getDirections")}
               </a>
             </div>
           </div>
@@ -122,7 +125,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
           {/* Description */}
           <div>
             <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              What&apos;s for sale
+              {t("whatsForSale")}
             </h2>
             <p className="text-sm leading-relaxed whitespace-pre-line">{sale.description}</p>
           </div>
@@ -131,7 +134,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
           {cats && cats.length > 0 && (
             <div>
               <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Categories
+                {t("categories")}
               </h2>
               <div className="flex flex-wrap gap-1.5">
                 {cats.map((cat) => (
@@ -149,20 +152,20 @@ export default async function GarageSaleDetailPage({ params }: Props) {
 
           {/* Posted date */}
           <p className="text-xs text-muted-foreground border-t pt-4">
-            Posted {sale.createdAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+            {t("postedDate", { date: sale.createdAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) })}
           </p>
         </div>
       </div>
 
       {/* CTA — post your own */}
       <div className="mt-8 rounded-2xl border bg-orange-50 p-5 text-center">
-        <p className="text-sm font-medium">Got stuff to sell too?</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">Post your own garage sale free — no account required to browse, just to post.</p>
+        <p className="text-sm font-medium">{t("gotStuff")}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">{t("postYourOwn")}</p>
         <Link
           href="/garage-sales/post"
           className="mt-3 inline-flex items-center gap-2 rounded-full bg-orange-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
         >
-          Post a garage sale
+          {t("postCta")}
         </Link>
       </div>
     </div>

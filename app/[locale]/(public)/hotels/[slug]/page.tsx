@@ -17,6 +17,7 @@ import {
   ExternalLink,
   Navigation,
 } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
 export function generateStaticParams() {
   return HOTELS.map((h) => ({ slug: h.slug }))
@@ -45,11 +46,7 @@ export async function generateMetadata({
   }
 }
 
-const PRICE_LABEL: Record<string, string> = {
-  $: "Budget-friendly",
-  $$: "Mid-range",
-  $$$: "Upscale",
-}
+// PRICE_LABEL is now built from translations inside the component
 
 const AMENITY_ICON: Record<string, React.ReactNode> = {
   "Free Wi-Fi": <Wifi className="h-4 w-4" />,
@@ -58,11 +55,11 @@ const AMENITY_ICON: Record<string, React.ReactNode> = {
   "Continental Breakfast": <Coffee className="h-4 w-4" />,
 }
 
-function StarRating({ rating }: { rating: number }) {
+function StarRating({ rating, ariaLabel, outOf5 }: { rating: number; ariaLabel: string; outOf5: string }) {
   const full = Math.floor(rating)
   const half = rating % 1 >= 0.5
   return (
-    <div className="flex items-center gap-1" aria-label={`${rating} out of 5 stars`}>
+    <div className="flex items-center gap-1" aria-label={ariaLabel}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
@@ -76,12 +73,20 @@ function StarRating({ rating }: { rating: number }) {
         />
       ))}
       <span className="ml-1 text-sm font-medium">{rating.toFixed(1)}</span>
-      <span className="text-sm text-muted-foreground">/ 5</span>
+      <span className="text-sm text-muted-foreground">{outOf5}</span>
     </div>
   )
 }
 
-export default function HotelPage({ params }: { params: { slug: string } }) {
+export default async function HotelPage({ params }: { params: { slug: string; locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "hotelDetail" })
+
+  const PRICE_LABEL: Record<string, string> = {
+    $: t("priceBudget"),
+    $$: t("priceMid"),
+    $$$: t("priceUpscale"),
+  }
+
   const hotel = getHotelBySlug(params.slug)
   if (!hotel) notFound()
 
@@ -102,7 +107,7 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
             className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-3 w-3" />
-            All hotels
+            {t("allHotels")}
           </Link>
         </div>
 
@@ -135,19 +140,23 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
               </h1>
               <p className="mt-2 text-lg text-muted-foreground italic">{hotel.tagline}</p>
               <div className="mt-3">
-                <StarRating rating={hotel.rating} />
+                <StarRating
+                  rating={hotel.rating}
+                  ariaLabel={t("starRating", { rating: hotel.rating.toFixed(1) })}
+                  outOf5={t("outOf5")}
+                />
               </div>
             </div>
 
             {/* About */}
             <div>
-              <h2 className="font-display text-xl font-semibold tracking-tight mb-3">About</h2>
+              <h2 className="font-display text-xl font-semibold tracking-tight mb-3">{t("about")}</h2>
               <p className="text-muted-foreground leading-relaxed">{hotel.description}</p>
             </div>
 
             {/* Amenities */}
             <div>
-              <h2 className="font-display text-xl font-semibold tracking-tight mb-4">Amenities</h2>
+              <h2 className="font-display text-xl font-semibold tracking-tight mb-4">{t("amenities")}</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {hotel.amenities.map((amenity) => (
                   <li key={amenity} className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -165,7 +174,7 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
           <div className="space-y-4">
             {/* Contact card */}
             <div className="rounded-2xl border bg-card p-5 shadow-sm space-y-4">
-              <h3 className="font-display font-semibold">Contact &amp; Location</h3>
+              <h3 className="font-display font-semibold">{t("contactLocation")}</h3>
 
               <div className="space-y-3 text-sm">
                 <div className="flex items-start gap-2 text-muted-foreground">
@@ -195,7 +204,7 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 hover:text-foreground"
                     >
-                      Visit website
+                      {t("visitWebsite")}
                       <ExternalLink className="h-3 w-3" />
                     </a>
                   </div>
@@ -209,7 +218,7 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
                   rel="noopener noreferrer"
                   className="block w-full rounded-xl bg-primary px-4 py-2.5 text-center text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
                 >
-                  Book a room
+                  {t("bookRoom")}
                 </a>
               )}
             </div>
@@ -228,7 +237,7 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
             {/* Other hotels */}
             {otherHotels.length > 0 && (
               <div className="rounded-2xl border bg-card p-5 shadow-sm">
-                <h3 className="font-display font-semibold mb-3">Other Lompoc Hotels</h3>
+                <h3 className="font-display font-semibold mb-3">{t("otherHotels")}</h3>
                 <ul className="space-y-2">
                   {otherHotels.slice(0, 3).map((h) => (
                     <li key={h.slug}>
@@ -246,7 +255,7 @@ export default function HotelPage({ params }: { params: { slug: string } }) {
                   href="/hotels"
                   className="mt-3 block text-center text-xs font-medium text-primary hover:underline"
                 >
-                  See all hotels →
+                  {t("seeAllHotels")} →
                 </Link>
               </div>
             )}

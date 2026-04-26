@@ -2,16 +2,19 @@
 
 import { useEffect, useState } from "react"
 import { BedDouble, X } from "lucide-react"
-
-const MESSAGES = [
-  { name: "Sarah from San Diego", action: "just booked Embassy Suites" },
-  { name: "3 travelers", action: "are viewing hotels right now" },
-  { name: "John from Los Angeles", action: "booked Hampton Inn for the flower festival" },
-  { name: "12 deals", action: "are available this weekend" },
-  { name: "Maria from Santa Barbara", action: "checked in at Holiday Inn Express" },
-]
+import { useTranslations } from "next-intl"
 
 export function ActivityTicker() {
+  const t = useTranslations("activityTicker")
+
+  const MESSAGES = [
+    { name: t("msg0Name"), action: t("msg0Action") },
+    { name: t("msg1Name"), action: t("msg1Action") },
+    { name: t("msg2Name"), action: t("msg2Action") },
+    { name: t("msg3Name"), action: t("msg3Action") },
+    { name: t("msg4Name"), action: t("msg4Action") },
+  ]
+
   const [visible, setVisible] = useState(false)
   const [index, setIndex] = useState(0)
   const [dismissed, setDismissed] = useState(false)
@@ -28,14 +31,15 @@ export function ActivityTicker() {
     return () => clearTimeout(hide)
   }, [visible, dismissed])
 
+  const messageCount = MESSAGES.length
   useEffect(() => {
     if (dismissed) return
     const cycle = setInterval(() => {
-      setIndex((i) => (i + 1) % MESSAGES.length)
+      setIndex((i) => (i + 1) % messageCount)
       setVisible(true)
     }, 8000)
     return () => clearInterval(cycle)
-  }, [dismissed])
+  }, [dismissed, messageCount])
 
   if (dismissed) return null
 
@@ -61,7 +65,7 @@ export function ActivityTicker() {
         </div>
         <button
           onClick={() => setDismissed(true)}
-          aria-label="Dismiss notification"
+          aria-label={t("dismiss")}
           className="ml-1 shrink-0 rounded-full p-0.5 text-muted-foreground/50 hover:text-muted-foreground transition-colors"
         >
           <X className="h-3 w-3" />

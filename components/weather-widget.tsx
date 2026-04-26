@@ -13,6 +13,7 @@ import {
   Droplets,
 } from "lucide-react"
 import type { LucideProps } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
 // ─── Icon mapping ────────────────────────────────────────────────────────────
 type IconComponent = React.ComponentType<LucideProps>
@@ -44,12 +45,12 @@ const CONDITION_COLOR: Record<WeatherCondition, string> = {
 }
 
 // ─── Day cell ────────────────────────────────────────────────────────────────
-function DayCell({ day, isToday }: { day: DayForecast; isToday: boolean }) {
+function DayCell({ day, isToday, todayLabel }: { day: DayForecast; isToday: boolean; todayLabel: string }) {
   const Icon = CONDITION_ICON[day.condition]
   const iconColor = CONDITION_COLOR[day.condition]
 
   const label = isToday
-    ? "Today"
+    ? todayLabel
     : day.date.toLocaleDateString("en-US", { weekday: "short" })
 
   return (
@@ -89,6 +90,8 @@ function DayCell({ day, isToday }: { day: DayForecast; isToday: boolean }) {
 
 // ─── Main widget ─────────────────────────────────────────────────────────────
 export async function WeatherWidget() {
+  const t = await getTranslations("weatherWidget")
+
   let forecast
   try {
     forecast = await fetchWeatherForecast()
@@ -114,7 +117,7 @@ export async function WeatherWidget() {
             </span>
           </div>
           <span className="text-xs text-muted-foreground">
-            Lompoc, CA · 7-day forecast
+            {t("forecast")}
           </span>
         </div>
 
@@ -125,6 +128,7 @@ export async function WeatherWidget() {
               key={day.date.toISOString()}
               day={day}
               isToday={day.date.toDateString() === todayStr}
+              todayLabel={t("today")}
             />
           ))}
         </div>

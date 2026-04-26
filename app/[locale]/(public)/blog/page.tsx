@@ -4,6 +4,7 @@ import { format } from "date-fns"
 import { CalendarDays, Tag, ChevronLeft, ChevronRight, User, ArrowRight } from "lucide-react"
 import { getPublishedBlogPosts, getBlogCategories, countPublishedBlogPosts } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
+import { getTranslations } from "next-intl/server"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 const PAGE_SIZE = 12
@@ -21,10 +22,14 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogIndexPage({
+  params,
   searchParams,
 }: {
+  params: { locale: string }
   searchParams: { category?: string; page?: string }
 }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "blog" })
+
   const category = searchParams.category ?? undefined
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10))
   const offset = (page - 1) * PAGE_SIZE
@@ -47,19 +52,19 @@ export default async function BlogIndexPage({
       {/* Page header */}
       <header className="mb-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-1">
-          Lompoc Deals Blog
+          {t("eyebrow")}
         </p>
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
-          Local Stories &amp; Community Tips
+          {t("heading")}
         </h1>
         <p className="text-gray-500 text-lg max-w-xl">
-          Business spotlights, neighborhood guides, and insider tips for Lompoc, CA.
+          {t("subheading")}
         </p>
       </header>
 
       {/* Category filter */}
       {categories.length > 0 && (
-        <nav className="flex flex-wrap gap-2 mb-8" aria-label="Blog categories">
+        <nav className="flex flex-wrap gap-2 mb-8" aria-label={t("blogCategoriesLabel")}>
           <Link
             href="/blog"
             className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
@@ -68,7 +73,7 @@ export default async function BlogIndexPage({
                 : "bg-white text-gray-600 border-gray-200 hover:border-emerald-400 hover:text-emerald-600"
             }`}
           >
-            All
+            {t("filterAll")}
           </Link>
           {categories.map((cat) => (
             <Link
@@ -88,7 +93,7 @@ export default async function BlogIndexPage({
 
       {posts.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
-          <p className="text-xl">No posts yet — check back soon!</p>
+          <p className="text-xl">{t("noPosts")}</p>
         </div>
       ) : (
         <>
@@ -138,7 +143,7 @@ export default async function BlogIndexPage({
                     )}
                   </div>
                   <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-emerald-400 group-hover:text-emerald-300 transition-colors">
-                    Read article <ArrowRight className="w-4 h-4" />
+                    {t("readArticle")} <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
               </article>
@@ -200,24 +205,24 @@ export default async function BlogIndexPage({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <nav className="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+            <nav className="mt-12 flex items-center justify-center gap-2" aria-label={t("paginationLabel")}>
               {page > 1 && (
                 <Link
                   href={`/blog?${category ? `category=${encodeURIComponent(category)}&` : ""}page=${page - 1}`}
                   className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
                 >
-                  <ChevronLeft className="w-4 h-4" /> Previous
+                  <ChevronLeft className="w-4 h-4" /> {t("paginationPrev")}
                 </Link>
               )}
               <span className="text-sm text-gray-500">
-                Page {page} of {totalPages}
+                {t("paginationPage", { page, total: totalPages })}
               </span>
               {page < totalPages && (
                 <Link
                   href={`/blog?${category ? `category=${encodeURIComponent(category)}&` : ""}page=${page + 1}`}
                   className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
                 >
-                  Next <ChevronRight className="w-4 h-4" />
+                  {t("paginationNext")} <ChevronRight className="w-4 h-4" />
                 </Link>
               )}
             </nav>

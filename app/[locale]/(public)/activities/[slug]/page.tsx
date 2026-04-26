@@ -5,21 +5,13 @@ import { getActivityBySlug, getActivities } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
+import { getTranslations } from "next-intl/server"
 
 // Lazy-load single-pin map to avoid SSR issues with Leaflet
 const ActivityMapPin = dynamic(
   () => import("@/components/activity-map-pin"),
   { ssr: false, loading: () => <div className="h-64 w-full animate-pulse rounded-xl bg-accent" /> }
 )
-
-const CATEGORY_LABELS: Record<string, string> = {
-  outdoors: "Outdoors",
-  history: "History & Culture",
-  arts: "Arts & Murals",
-  "food-wine": "Food & Wine",
-  family: "Family",
-  unique: "Only in Lompoc",
-}
 
 export async function generateStaticParams() {
   const activities = await getActivities()
@@ -29,7 +21,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }): Promise<Metadata> {
   const { slug } = await params
   const activity = await getActivityBySlug(slug)
@@ -48,9 +40,20 @@ export async function generateMetadata({
 export default async function ActivityDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }) {
-  const { slug } = await params
+  const { slug, locale } = await params
+  const t = await getTranslations({ locale, namespace: "activityDetail" })
+
+  const CATEGORY_LABELS: Record<string, string> = {
+    outdoors: t("outdoors"),
+    history: t("history"),
+    arts: t("arts"),
+    "food-wine": t("foodWine"),
+    family: t("family"),
+    unique: t("unique"),
+  }
+
   const activity = await getActivityBySlug(slug)
   if (!activity) notFound()
 
@@ -62,7 +65,7 @@ export default async function ActivityDetailPage({
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
-        Things to Do
+        {t("thingsToDo")}
       </Link>
 
       {/* Hero image */}
@@ -80,7 +83,7 @@ export default async function ActivityDetailPage({
             </span>
             {activity.featured && (
               <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                Featured
+                {t("featured")}
               </span>
             )}
           </div>
@@ -122,7 +125,7 @@ export default async function ActivityDetailPage({
             <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
               <div className="mb-2 flex items-center gap-2 font-semibold text-amber-800 dark:text-amber-300">
                 <Lightbulb className="h-4 w-4" />
-                Local Tips
+                {t("localTips")}
               </div>
               <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200">
                 {activity.tips}
@@ -140,7 +143,7 @@ export default async function ActivityDetailPage({
                 className="inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
               >
                 <ExternalLink className="h-4 w-4" />
-                Official website
+                {t("officialWebsite")}
               </a>
             </div>
           )}
@@ -169,21 +172,21 @@ export default async function ActivityDetailPage({
 
           {/* Quick facts */}
           <div className="rounded-xl border p-4 space-y-3">
-            <h3 className="font-semibold text-sm">Quick Info</h3>
+            <h3 className="font-semibold text-sm">{t("quickInfo")}</h3>
             <dl className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
-                <dt className="text-muted-foreground min-w-[80px]">Category</dt>
+                <dt className="text-muted-foreground min-w-[80px]">{t("category")}</dt>
                 <dd className="font-medium">{CATEGORY_LABELS[activity.category] ?? activity.category}</dd>
               </div>
               {activity.seasonality && (
                 <div className="flex items-start gap-2">
-                  <dt className="text-muted-foreground min-w-[80px]">Best time</dt>
+                  <dt className="text-muted-foreground min-w-[80px]">{t("bestTime")}</dt>
                   <dd className="font-medium">{activity.seasonality}</dd>
                 </div>
               )}
               {activity.address && (
                 <div className="flex items-start gap-2">
-                  <dt className="text-muted-foreground min-w-[80px]">Location</dt>
+                  <dt className="text-muted-foreground min-w-[80px]">{t("location")}</dt>
                   <dd className="font-medium">{activity.address}</dd>
                 </div>
               )}
@@ -196,7 +199,7 @@ export default async function ActivityDetailPage({
             className="flex items-center gap-2 rounded-xl border p-4 text-sm font-medium hover:bg-accent transition-colors"
           >
             <Compass className="h-4 w-4 text-primary" />
-            See all things to do
+            {t("seeAll")}
           </Link>
         </div>
       </div>

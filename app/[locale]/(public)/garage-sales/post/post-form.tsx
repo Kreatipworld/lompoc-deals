@@ -7,21 +7,24 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { CheckCircle2 } from "lucide-react"
 import { Link } from "@/i18n/navigation"
+import { useTranslations } from "next-intl"
 
-const ITEM_CATEGORIES = [
-  { value: "furniture", label: "Furniture" },
-  { value: "clothes", label: "Clothes & Accessories" },
-  { value: "electronics", label: "Electronics" },
-  { value: "toys", label: "Toys & Games" },
-  { value: "books", label: "Books & Media" },
-  { value: "kitchen", label: "Kitchen & Home" },
-  { value: "tools", label: "Tools & Hardware" },
-  { value: "sports", label: "Sports & Outdoors" },
-  { value: "antiques", label: "Antiques & Collectibles" },
-  { value: "other", label: "Other" },
+const ITEM_CATEGORY_KEYS = [
+  { value: "furniture", key: "furniture" },
+  { value: "clothes", key: "clothes" },
+  { value: "electronics", key: "electronics" },
+  { value: "toys", key: "toys" },
+  { value: "books", key: "books" },
+  { value: "kitchen", key: "kitchen" },
+  { value: "tools", key: "tools" },
+  { value: "sports", key: "sports" },
+  { value: "antiques", key: "antiques" },
+  { value: "other", key: "other" },
 ] as const
 
 export function PostGarageSaleForm() {
+  const t = useTranslations("garageSaleForm")
+  const tGarageSales = useTranslations("garageSales")
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [errorMsg, setErrorMsg] = useState("")
   const [selectedCats, setSelectedCats] = useState<string[]>([])
@@ -59,7 +62,7 @@ export function PostGarageSaleForm() {
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
-        throw new Error(data.error ?? "Submission failed")
+        throw new Error(data.error ?? t("errorDefault"))
       }
       const data = await res.json()
       setNewSaleId(data.id)
@@ -74,9 +77,9 @@ export function PostGarageSaleForm() {
     return (
       <div className="flex flex-col items-center gap-3 py-8 text-center">
         <CheckCircle2 className="h-10 w-10 text-green-500" />
-        <h2 className="text-xl font-semibold">Your sale is live!</h2>
+        <h2 className="text-xl font-semibold">{tGarageSales("success")}</h2>
         <p className="text-sm text-muted-foreground">
-          Locals can now find your garage sale on the map.
+          {tGarageSales("successSubtitle")}
         </p>
         <div className="mt-2 flex gap-3">
           {newSaleId && (
@@ -84,14 +87,14 @@ export function PostGarageSaleForm() {
               href={`/garage-sales/${newSaleId}`}
               className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
             >
-              View your listing
+              {tGarageSales("viewListing")}
             </Link>
           )}
           <Link
             href="/garage-sales"
             className="rounded-full border px-4 py-2 text-sm font-medium transition hover:bg-accent"
           >
-            Browse all sales
+            {tGarageSales("browseAll")}
           </Link>
         </div>
       </div>
@@ -101,46 +104,46 @@ export function PostGarageSaleForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="address">Address *</Label>
+        <Label htmlFor="address">{t("addressLabel")} *</Label>
         <Input
           id="address"
           name="address"
-          placeholder="123 Oak St, Lompoc, CA 93436"
+          placeholder={t("addressPlaceholder")}
           required
           minLength={5}
           maxLength={500}
         />
-        <p className="text-xs text-muted-foreground">Street address so shoppers can find you</p>
+        <p className="text-xs text-muted-foreground">{t("addressHint")}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="startDate">Start date *</Label>
+          <Label htmlFor="startDate">{t("startDate")} *</Label>
           <Input id="startDate" name="startDate" type="date" required />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="endDate">End date *</Label>
+          <Label htmlFor="endDate">{t("endDate")} *</Label>
           <Input id="endDate" name="endDate" type="date" required />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="startTime">Start time</Label>
+          <Label htmlFor="startTime">{t("startTime")}</Label>
           <Input id="startTime" name="startTime" type="time" placeholder="07:00" />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="endTime">End time</Label>
+          <Label htmlFor="endTime">{t("endTime")}</Label>
           <Input id="endTime" name="endTime" type="time" placeholder="13:00" />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">What&apos;s for sale? *</Label>
+        <Label htmlFor="description">{t("descriptionLabel")} *</Label>
         <Textarea
           id="description"
           name="description"
-          placeholder="Lots of household items — furniture, kids clothes, books, kitchen stuff. No junk, all in good condition."
+          placeholder={t("descriptionPlaceholder")}
           rows={4}
           required
           minLength={10}
@@ -149,9 +152,9 @@ export function PostGarageSaleForm() {
       </div>
 
       <div className="space-y-2">
-        <Label>Item categories <span className="text-muted-foreground font-normal">(optional)</span></Label>
+        <Label>{t("categoriesLabel")} <span className="text-muted-foreground font-normal">{t("categoriesOptional")}</span></Label>
         <div className="flex flex-wrap gap-2">
-          {ITEM_CATEGORIES.map((cat) => {
+          {ITEM_CATEGORY_KEYS.map((cat) => {
             const active = selectedCats.includes(cat.value)
             return (
               <button
@@ -164,7 +167,7 @@ export function PostGarageSaleForm() {
                     : "border-border text-muted-foreground hover:border-orange-300 hover:text-orange-700"
                 }`}
               >
-                {cat.label}
+                {t(cat.key)}
               </button>
             )
           })}
@@ -180,11 +183,11 @@ export function PostGarageSaleForm() {
         disabled={formStatus === "submitting"}
         className="w-full bg-orange-500 hover:bg-orange-600"
       >
-        {formStatus === "submitting" ? "Posting…" : "Post garage sale — free"}
+        {formStatus === "submitting" ? t("submittingButton") : t("submitButton")}
       </Button>
 
       <p className="text-center text-xs text-muted-foreground">
-        Your sale appears on the map immediately. No review required.
+        {t("disclaimer")}
       </p>
     </form>
   )

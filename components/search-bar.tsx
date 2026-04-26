@@ -4,6 +4,7 @@ import { useRouter } from "@/i18n/navigation"
 import { Search, Building2, Tag } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import { useEffect, useRef, useState, useCallback } from "react"
+import { useTranslations } from "next-intl"
 
 // Example queries that cycle through the typewriter animation
 const EXAMPLE_QUERIES = [
@@ -72,6 +73,7 @@ export function SearchBar({
   defaultValue?: string
   size?: "default" | "lg"
 }) {
+  const t = useTranslations("searchBar")
   const router = useRouter()
   const isLarge = size === "lg"
   const inputRef = useRef<HTMLInputElement>(null)
@@ -214,7 +216,7 @@ export function SearchBar({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onKeyDown={handleKeyDown}
-          placeholder={showTypewriter ? "" : "Search deals or businesses…"}
+          placeholder={showTypewriter ? "" : t("placeholder")}
           className={`w-full rounded-full border border-border bg-background pl-12 pr-4 shadow-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4 ${
             isLarge ? "h-14 text-base" : "h-11 text-sm"
           } ${showDropdown ? "rounded-b-none rounded-t-full ring-4" : ""}`}
@@ -227,7 +229,7 @@ export function SearchBar({
           {results!.businesses.length > 0 && (
             <div>
               <div className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Businesses
+                {t("businesses")}
               </div>
               {results!.businesses.map((biz, i) => (
                 <button
@@ -268,7 +270,7 @@ export function SearchBar({
           {results!.deals.length > 0 && (
             <div className={results!.businesses.length > 0 ? "border-t" : ""}>
               <div className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Deals
+                {t("deals")}
               </div>
               {results!.deals.map((deal, i) => {
                 const idx = results!.businesses.length + i
@@ -301,7 +303,7 @@ export function SearchBar({
 
           {loading && (
             <div className="px-4 py-3 text-center text-xs text-muted-foreground">
-              Searching…
+              {t("searching")}
             </div>
           )}
 
@@ -312,7 +314,7 @@ export function SearchBar({
               className="flex w-full items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <Search className="h-3 w-3" />
-              Search for &ldquo;<span className="font-medium text-foreground">{value}</span>&rdquo;
+              {t("searchFor")} &ldquo;<span className="font-medium text-foreground">{value}</span>&rdquo;
             </button>
           </div>
         </div>
