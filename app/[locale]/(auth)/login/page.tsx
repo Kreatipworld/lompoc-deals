@@ -1,13 +1,27 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
+import { getTranslations } from "next-intl/server"
 import { LoginForm } from "./login-form"
 
 export const dynamic = "force-dynamic"
-export const metadata = { title: "Sign in — Lompoc Deals" }
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}) {
+  const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+  return {
+    title: t("login.metaTitle"),
+    description: t("login.metaDescription"),
+  }
+}
 
 export default async function LoginPage({
+  params,
   searchParams,
 }: {
+  params: { locale: string }
   searchParams: { from?: string; reset?: string }
 }) {
   const session = await auth()
@@ -31,19 +45,21 @@ export default async function LoginPage({
     redirect(destination)
   }
 
+  const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+
   return (
     <>
       <div className="space-y-2 text-center">
         <h1 className="font-display text-3xl font-semibold tracking-tight">
-          Welcome back
+          {t("login.heading")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Sign in to your Lompoc Deals account.
+          {t("login.subheading")}
         </p>
       </div>
       {searchParams.reset === "1" && (
         <p className="mt-4 rounded-lg bg-green-50 px-4 py-3 text-center text-sm text-green-800">
-          Password updated! Sign in with your new password.
+          {t("login.passwordResetBanner")}
         </p>
       )}
       <div className="mt-8">

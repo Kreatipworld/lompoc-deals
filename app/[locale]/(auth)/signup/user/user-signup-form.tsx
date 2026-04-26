@@ -5,16 +5,18 @@ import { Link } from "@/i18n/navigation"
 import { Mail, Lock, User, MapPin, Tag } from "lucide-react"
 import { localSignupAction, type LocalSignupState } from "@/lib/user-signup-actions"
 import { INTEREST_OPTIONS } from "@/lib/interest-options"
+import { useTranslations } from "next-intl"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
+  const t = useTranslations("auth")
   return (
     <button
       type="submit"
       disabled={pending}
       className="inline-flex h-11 w-full items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition-[transform,background-color,opacity] duration-150 hover:bg-primary/90 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
     >
-      {pending ? "Creating account…" : "Create account"}
+      {pending ? t("signupUser.submitPending") : t("signupUser.submitIdle")}
     </button>
   )
 }
@@ -24,6 +26,7 @@ export function UserSignupForm() {
     localSignupAction,
     undefined
   )
+  const t = useTranslations("auth")
 
   return (
     <div className="space-y-5">
@@ -31,7 +34,7 @@ export function UserSignupForm() {
       {/* Name */}
       <div className="space-y-2">
         <label htmlFor="name" className="text-sm font-medium text-foreground">
-          Your name
+          {t("signupUser.nameLabel")}
         </label>
         <div className="relative">
           <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -41,7 +44,7 @@ export function UserSignupForm() {
             type="text"
             autoComplete="name"
             required
-            placeholder="Jane Smith"
+            placeholder={t("signupUser.namePlaceholder")}
             className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
           />
         </div>
@@ -50,7 +53,7 @@ export function UserSignupForm() {
       {/* Email */}
       <div className="space-y-2">
         <label htmlFor="email" className="text-sm font-medium text-foreground">
-          Email
+          {t("signupUser.emailLabel")}
         </label>
         <div className="relative">
           <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -60,7 +63,7 @@ export function UserSignupForm() {
             type="email"
             autoComplete="email"
             required
-            placeholder="you@example.com"
+            placeholder={t("signupUser.emailPlaceholder")}
             className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
           />
         </div>
@@ -69,7 +72,7 @@ export function UserSignupForm() {
       {/* Password */}
       <div className="space-y-2">
         <label htmlFor="password" className="text-sm font-medium text-foreground">
-          Password
+          {t("signupUser.passwordLabel")}
         </label>
         <div className="relative">
           <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -80,7 +83,7 @@ export function UserSignupForm() {
             autoComplete="new-password"
             minLength={6}
             required
-            placeholder="At least 6 characters"
+            placeholder={t("signupUser.passwordPlaceholder")}
             className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
           />
         </div>
@@ -90,7 +93,8 @@ export function UserSignupForm() {
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
           <label htmlFor="city" className="text-sm font-medium text-foreground">
-            City <span className="text-muted-foreground font-normal">(optional)</span>
+            {t("signupUser.cityLabel")}{" "}
+            <span className="text-muted-foreground font-normal">({t("signupUser.optional")})</span>
           </label>
           <div className="relative">
             <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -106,7 +110,8 @@ export function UserSignupForm() {
         </div>
         <div className="space-y-2">
           <label htmlFor="zip" className="text-sm font-medium text-foreground">
-            ZIP <span className="text-muted-foreground font-normal">(optional)</span>
+            {t("signupUser.zipLabel")}{" "}
+            <span className="text-muted-foreground font-normal">({t("signupUser.optional")})</span>
           </label>
           <input
             id="zip"
@@ -124,7 +129,8 @@ export function UserSignupForm() {
       <div className="space-y-2">
         <div className="flex items-center gap-1.5 text-sm font-medium text-foreground">
           <Tag className="h-3.5 w-3.5" />
-          Interests <span className="text-muted-foreground font-normal">(pick any)</span>
+          {t("signupUser.interestsLabel")}{" "}
+          <span className="text-muted-foreground font-normal">({t("signupUser.interestsHint")})</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {INTEREST_OPTIONS.map((interest) => (
@@ -152,9 +158,9 @@ export function UserSignupForm() {
       <SubmitButton />
 
       <p className="text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        {t("signupUser.haveAccount")}{" "}
         <Link href="/login" className="font-medium text-primary hover:underline">
-          Sign in
+          {t("signupUser.signIn")}
         </Link>
       </p>
     </form>

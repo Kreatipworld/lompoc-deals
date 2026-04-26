@@ -2,14 +2,29 @@ import { db } from "@/db/client"
 import { SignupForm } from "./signup-form"
 import { Link } from "@/i18n/navigation"
 import { Sparkles, Heart, Store, ChevronRight } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Sign up — Lompoc Deals" }
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}) {
+  const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+  return {
+    title: t("signupLanding.metaTitle"),
+    description: t("signupLanding.metaDescription"),
+  }
+}
 
 export default async function SignupPage({
+  params,
   searchParams,
 }: {
+  params: { locale: string }
   searchParams: { claim?: string; plan?: string; canceled?: string }
 }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+
   const claimSlug = searchParams.claim
   const defaultPlan = searchParams.plan ?? null
   const showCanceled = searchParams.canceled === "1"
@@ -33,20 +48,21 @@ export default async function SignupPage({
             </div>
             <div className="text-sm">
               <p className="font-semibold">
-                Claiming <span className="text-primary">{claimingBusinessName}</span>
+                {t("signupLanding.claimingBadgeTitle")}{" "}
+                <span className="text-primary">{claimingBusinessName}</span>
               </p>
               <p className="text-muted-foreground">
-                Create your account and an admin will review your claim.
+                {t("signupLanding.claimingBadgeBody")}
               </p>
             </div>
           </div>
         )}
         <div className="space-y-2 text-center">
           <h1 className="font-display text-3xl font-semibold tracking-tight">
-            Claim your listing
+            {t("signupLanding.claimHeading")}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Set up your business owner account in 30 seconds.
+            {t("signupLanding.claimSubheading")}
           </p>
         </div>
         <div className="mt-8">
@@ -61,10 +77,10 @@ export default async function SignupPage({
     <>
       <div className="space-y-2 text-center">
         <h1 className="font-display text-3xl font-semibold tracking-tight">
-          Join Lompoc Deals
+          {t("signupLanding.heading")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          No per-deal fees. No hidden charges. No ads.
+          {t("signupLanding.subheading")}
         </p>
       </div>
 
@@ -78,13 +94,13 @@ export default async function SignupPage({
             <Heart className="h-6 w-6" />
           </div>
           <div>
-            <div className="font-display text-lg font-semibold">I&apos;m a local</div>
+            <div className="font-display text-lg font-semibold">{t("signupLanding.localTitle")}</div>
             <div className="mt-1 text-sm text-muted-foreground">
-              Browse deals, save favorites, follow local businesses. Always free.
+              {t("signupLanding.localBody")}
             </div>
           </div>
           <div className="mt-auto flex items-center gap-1 text-sm font-medium text-primary">
-            Get started free
+            {t("signupLanding.localCta")}
             <ChevronRight className="h-4 w-4" />
           </div>
         </Link>
@@ -98,22 +114,22 @@ export default async function SignupPage({
             <Store className="h-6 w-6" />
           </div>
           <div>
-            <div className="font-display text-lg font-semibold">I own a business</div>
+            <div className="font-display text-lg font-semibold">{t("signupLanding.businessTitle")}</div>
             <div className="mt-1 text-sm text-muted-foreground">
-              Post deals, grow your audience, track analytics. Plans from $0/mo.
+              {t("signupLanding.businessBody")}
             </div>
           </div>
           <div className="mt-auto flex items-center gap-1 text-sm font-medium text-primary">
-            View plans
+            {t("signupLanding.businessCta")}
             <ChevronRight className="h-4 w-4" />
           </div>
         </Link>
       </div>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        {t("signupLanding.haveAccount")}{" "}
         <Link href="/login" className="font-medium text-primary hover:underline">
-          Sign in
+          {t("signupLanding.signIn")}
         </Link>
       </p>
     </>

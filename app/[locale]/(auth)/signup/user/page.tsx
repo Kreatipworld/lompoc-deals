@@ -1,9 +1,26 @@
 import { Heart } from "lucide-react"
 import { UserSignupForm } from "./user-signup-form"
+import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Sign up as a local — Lompoc Deals" }
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}) {
+  const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+  return {
+    title: t("signupUser.metaTitle"),
+    description: t("signupUser.metaDescription"),
+  }
+}
 
-export default function UserSignupPage() {
+export default async function UserSignupPage({
+  params,
+}: {
+  params: { locale: string }
+}) {
+  const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+
   return (
     <>
       <div className="flex flex-col items-center gap-3 text-center">
@@ -12,10 +29,10 @@ export default function UserSignupPage() {
         </div>
         <div className="space-y-1">
           <h1 className="font-display text-3xl font-semibold tracking-tight">
-            Join as a local
+            {t("signupUser.heading")}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Save deals, follow businesses, and discover what&apos;s happening in Lompoc. Free forever.
+            {t("signupUser.subheading")}
           </p>
         </div>
       </div>

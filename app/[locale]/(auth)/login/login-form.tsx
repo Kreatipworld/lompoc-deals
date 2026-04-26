@@ -4,16 +4,18 @@ import { useFormState, useFormStatus } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { Mail, Lock } from "lucide-react"
 import { loginAction, type FormState } from "@/lib/auth-actions"
+import { useTranslations } from "next-intl"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
+  const t = useTranslations("auth")
   return (
     <button
       type="submit"
       disabled={pending}
       className="inline-flex h-11 w-full items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition-[transform,background-color,opacity] duration-150 hover:bg-primary/90 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
     >
-      {pending ? "Signing in…" : "Sign in"}
+      {pending ? t("login.submitPending") : t("login.submitIdle")}
     </button>
   )
 }
@@ -23,6 +25,7 @@ export function LoginForm({ from }: { from?: string }) {
     loginAction,
     undefined
   )
+  const t = useTranslations("auth")
 
   return (
     <form action={action} className="space-y-5">
@@ -30,7 +33,7 @@ export function LoginForm({ from }: { from?: string }) {
 
       <div className="space-y-2">
         <label htmlFor="email" className="text-sm font-medium text-foreground">
-          Email
+          {t("login.emailLabel")}
         </label>
         <div className="relative">
           <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -40,7 +43,7 @@ export function LoginForm({ from }: { from?: string }) {
             type="email"
             autoComplete="email"
             required
-            placeholder="you@example.com"
+            placeholder={t("login.emailPlaceholder")}
             className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
           />
         </div>
@@ -49,13 +52,13 @@ export function LoginForm({ from }: { from?: string }) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label htmlFor="password" className="text-sm font-medium text-foreground">
-            Password
+            {t("login.passwordLabel")}
           </label>
           <Link
             href="/forgot-password"
             className="text-xs text-muted-foreground hover:text-primary hover:underline"
           >
-            Forgot password?
+            {t("login.forgotPassword")}
           </Link>
         </div>
         <div className="relative">
@@ -81,12 +84,12 @@ export function LoginForm({ from }: { from?: string }) {
       <SubmitButton />
 
       <p className="text-center text-sm text-muted-foreground">
-        New here?{" "}
+        {t("login.newHere")}{" "}
         <Link
           href="/signup"
           className="font-medium text-primary hover:underline"
         >
-          Create an account
+          {t("login.createAccount")}
         </Link>
       </p>
     </form>
