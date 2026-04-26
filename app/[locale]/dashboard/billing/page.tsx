@@ -6,6 +6,7 @@ import { getPlanFeatures } from "@/lib/plan-features"
 import { eq, and, gt, sql } from "drizzle-orm"
 import { CreditCard, Check, AlertCircle, CheckCircle2, BarChart2, ExternalLink, Star, Zap } from "lucide-react"
 import BillingActions from "./billing-actions"
+import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "Billing — Lompoc Deals" }
 
@@ -14,7 +15,7 @@ export default async function BillingPage({
 }: {
   searchParams: { success?: string; canceled?: string }
 }) {
-  const session = await auth()
+  const [session, t] = await Promise.all([auth(), getTranslations("dashboardBilling")])
   const userId = Number(session!.user!.id)
 
   const sub = await db.query.subscriptions.findFirst({
@@ -47,11 +48,11 @@ export default async function BillingPage({
 
   // Feature display for plan info card
   const FEATURE_ITEMS: { label: string; key: keyof typeof features; icon: React.ReactNode }[] = [
-    { label: "View & click analytics", key: "canViewAnalytics", icon: <BarChart2 className="h-3.5 w-3.5" /> },
-    { label: "Social links on profile", key: "canShowSocialLinks", icon: <ExternalLink className="h-3.5 w-3.5" /> },
-    { label: "Real estate listings", key: "canListRealEstate", icon: <Star className="h-3.5 w-3.5" /> },
-    { label: "Priority in search results", key: "priorityRanking", icon: <Zap className="h-3.5 w-3.5" /> },
-    { label: "Featured on homepage", key: "featuredOnHomepage", icon: <Star className="h-3.5 w-3.5" /> },
+    { label: t("featureAnalytics"), key: "canViewAnalytics", icon: <BarChart2 className="h-3.5 w-3.5" /> },
+    { label: t("featureSocialLinks"), key: "canShowSocialLinks", icon: <ExternalLink className="h-3.5 w-3.5" /> },
+    { label: t("featureRealEstate"), key: "canListRealEstate", icon: <Star className="h-3.5 w-3.5" /> },
+    { label: t("featurePriority"), key: "priorityRanking", icon: <Zap className="h-3.5 w-3.5" /> },
+    { label: t("featureFeatured"), key: "featuredOnHomepage", icon: <Star className="h-3.5 w-3.5" /> },
   ]
 
   return (
@@ -66,14 +67,14 @@ export default async function BillingPage({
       {searchParams.success && (
         <div className="flex items-center gap-2.5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 dark:border-green-900 dark:bg-green-950/30 dark:text-green-300">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
-          Subscription activated — welcome aboard!
+          {t("successBanner")}
         </div>
       )}
 
       {searchParams.canceled && (
         <div className="flex items-center gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300">
           <AlertCircle className="h-4 w-4 shrink-0" />
-          Checkout was canceled — your subscription was not changed.
+          {t("canceledBanner")}
         </div>
       )}
 
@@ -82,9 +83,7 @@ export default async function BillingPage({
         <div className="flex items-start gap-2.5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>
-            Payment failed. Your plan features remain active until{" "}
-            <strong>{new Date(biz.gracePeriodEndsAt).toLocaleDateString()}</strong> — after that,
-            your account downgrades to Free. Update your payment method to avoid interruption.
+            {t("gracePeriodWarning", { date: new Date(biz.gracePeriodEndsAt).toLocaleDateString() })}
           </span>
         </div>
       )}
@@ -96,20 +95,20 @@ export default async function BillingPage({
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-primary" />
               <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Current plan
+                {t("currentPlanLabel")}
               </span>
             </div>
             <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
               {tierConfig.name}
               <span className="ml-2 text-base font-normal text-muted-foreground">
-                {tierConfig.price === 0 ? "Free" : `$${tierConfig.price}/mo`}
+                {tierConfig.price === 0 ? "" : `$${tierConfig.price}/mo`}
               </span>
             </h2>
             {sub?.currentPeriodEnd && (
               <p className="mt-1 text-sm text-muted-foreground">
                 {sub.cancelAtPeriodEnd
-                  ? `Cancels on ${sub.currentPeriodEnd.toLocaleDateString()}`
-                  : `Renews on ${sub.currentPeriodEnd.toLocaleDateString()}`}
+                  ? t("cancelsOn", { date: sub.currentPeriodEnd.toLocaleDateString() })
+                  : t("renewsOn", { date: sub.currentPeriodEnd.toLocaleDateString() })}
               </p>
             )}
             <span
@@ -122,12 +121,12 @@ export default async function BillingPage({
               }`}
             >
               {!sub || sub.status === "trialing"
-                ? "Active"
+                ? t("statusActive")
                 : sub.status === "active"
-                ? "Active"
+                ? t("statusActive")
                 : sub.status === "past_due"
-                ? "Past due"
-                : "Canceled"}
+                ? t("statusPastDue")
+                : t("statusCanceled")}
             </span>
           </div>
           {isActive && sub && <BillingActions hasSubscription mode="manage" />}
@@ -136,9 +135,9 @@ export default async function BillingPage({
         {/* Deal usage bar */}
         <div className="mt-5 space-y-1.5">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Active deals</span>
+            <span className="text-muted-foreground">{t("activeDealsUsage")}</span>
             <span className="font-medium">
-              {activeDealCount} of {dealLimit === Infinity ? "∞" : dealLimit} used
+              {t("dealsUsed", { count: activeDealCount, limit: dealLimit === Infinity ? "∞" : dealLimit })}
             </span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
@@ -151,7 +150,7 @@ export default async function BillingPage({
           </div>
           {usagePct >= 90 && dealLimit !== Infinity && (
             <p className="text-xs text-destructive">
-              Almost at your deal limit — upgrade to post more.
+              {t("nearLimit")}
             </p>
           )}
         </div>
@@ -196,14 +195,14 @@ export default async function BillingPage({
             >
               {key === "standard" && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-primary/30 bg-primary px-3 py-0.5 text-xs font-semibold text-primary-foreground">
-                  Most popular
+                  {t("mostPopular")}
                 </div>
               )}
               <div className="flex-1">
                 <div className="font-display text-lg font-semibold">{tier.name}</div>
                 <div className="mt-1">
                   {tier.price === 0 ? (
-                    <span className="font-display text-3xl font-bold">Free</span>
+                    <span className="font-display text-3xl font-bold">{tier.price === 0 ? "Free" : ""}</span>
                   ) : (
                     <>
                       <span className="font-display text-3xl font-bold">${tier.price}</span>
@@ -223,14 +222,14 @@ export default async function BillingPage({
               <div className="mt-6">
                 {currentTier === key ? (
                   <div className="w-full rounded-xl bg-primary/10 py-2 text-center text-sm font-medium text-primary">
-                    Current plan
+                    {t("currentPlanLabel")}
                   </div>
                 ) : (
                   <BillingActions
                     hasSubscription={!!sub}
                     mode="subscribe"
                     tier={key}
-                    label={currentTier ? "Switch to " + tier.name : "Get started"}
+                    label={currentTier ? t("switchTo", { name: tier.name }) : t("getStarted")}
                   />
                 )}
               </div>
