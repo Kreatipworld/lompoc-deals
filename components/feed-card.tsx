@@ -1,10 +1,11 @@
 import { Link } from "@/i18n/navigation"
 import { Calendar, MapPin, Tag } from "lucide-react"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
+import { getTranslations } from "next-intl/server"
 
-function formatPrice(cents: number | null): string | null {
+function formatPrice(cents: number | null, freeLabel: string): string | null {
   if (cents === null) return null
-  if (cents === 0) return "Free"
+  if (cents === 0) return freeLabel
   return `$${(cents / 100).toLocaleString(undefined, {
     minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
@@ -22,14 +23,16 @@ function formatEventDate(d: Date | null): string | null {
   })
 }
 
-function typeLabel(type: FeedDisplayItem["type"]): string {
-  if (type === "for_sale") return "For sale"
-  if (type === "info") return "Info"
-  return "Event"
-}
+export async function FeedCard({ item }: { item: FeedDisplayItem }) {
+  const t = await getTranslations("feedCard")
 
-export function FeedCard({ item }: { item: FeedDisplayItem }) {
-  const priceStr = formatPrice(item.priceCents)
+  const typeLabel = (type: FeedDisplayItem["type"]): string => {
+    if (type === "for_sale") return t("forSale")
+    if (type === "info") return t("info")
+    return t("event")
+  }
+
+  const priceStr = formatPrice(item.priceCents, t("free"))
   const eventStr = item.source === "event" ? formatEventDate(item.startsAt) : null
 
   return (
@@ -39,7 +42,7 @@ export function FeedCard({ item }: { item: FeedDisplayItem }) {
     >
       {item.isNew && (
         <span className="animate-feed-new-pulse absolute left-3 top-3 z-10 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow-sm">
-          New
+          {t("new")}
         </span>
       )}
 

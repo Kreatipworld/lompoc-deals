@@ -3,18 +3,14 @@ import { Link } from "@/i18n/navigation"
 import { auth } from "@/auth"
 import { getMyFeedPosts } from "@/lib/feed-queries"
 import { markSoldAction, extendExpirationAction } from "@/lib/feed-actions"
+import { getTranslations } from "next-intl/server"
 
-export const metadata = {
-  title: "My Lompoc Feed posts",
+export async function generateMetadata() {
+  const t = await getTranslations("feedMy")
+  return {
+    title: t("metaTitle"),
+  }
 }
-
-const STATUS_LABEL = {
-  pending: { text: "Pending review", color: "bg-amber-100 text-amber-900 border-amber-200" },
-  approved: { text: "Live", color: "bg-green-100 text-green-900 border-green-200" },
-  rejected: { text: "Rejected", color: "bg-red-100 text-red-900 border-red-200" },
-  expired: { text: "Expired", color: "bg-muted text-muted-foreground border-border" },
-  sold: { text: "Sold", color: "bg-blue-100 text-blue-900 border-blue-200" },
-} as const
 
 async function markSoldFormAction(formData: FormData) {
   "use server"
@@ -31,6 +27,7 @@ export default async function MyFeedPage({
 }: {
   searchParams?: { submitted?: string }
 }) {
+  const t = await getTranslations("feedMy")
   const session = await auth()
   if (!session?.user) {
     redirect("/login?next=/feed/my")
@@ -38,32 +35,40 @@ export default async function MyFeedPage({
   const userId = parseInt(session.user.id, 10)
   const posts = await getMyFeedPosts(userId)
 
+  const STATUS_LABEL = {
+    pending: { text: t("statusPending"), color: "bg-amber-100 text-amber-900 border-amber-200" },
+    approved: { text: t("statusApproved"), color: "bg-green-100 text-green-900 border-green-200" },
+    rejected: { text: t("statusRejected"), color: "bg-red-100 text-red-900 border-red-200" },
+    expired: { text: t("statusExpired"), color: "bg-muted text-muted-foreground border-border" },
+    sold: { text: t("statusSold"), color: "bg-blue-100 text-blue-900 border-blue-200" },
+  } as const
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
       <header className="mb-6 flex items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight">My posts</h1>
+          <h1 className="font-display text-3xl font-semibold tracking-tight">{t("pageTitle")}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Your submissions to the Lompoc Feed.
+            {t("pageSubtitle")}
           </p>
         </div>
         <Link
           href="/feed/post"
           className="inline-flex h-10 items-center gap-1 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
         >
-          + New post
+          {t("newPost")}
         </Link>
       </header>
 
       {searchParams?.submitted && (
         <div className="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900">
-          Submitted! An admin will review and approve within 24h.
+          {t("submittedBanner")}
         </div>
       )}
 
       {posts.length === 0 ? (
         <p className="py-12 text-center text-muted-foreground">
-          You haven&apos;t posted anything yet.
+          {t("emptyState")}
         </p>
       ) : (
         <ul className="space-y-3">
@@ -78,16 +83,16 @@ export default async function MyFeedPage({
                     </span>
                     <h2 className="mt-1.5 truncate text-base font-semibold">{post.title}</h2>
                     <p className="text-xs text-muted-foreground">
-                      {post.type === "for_sale" ? "For sale" : "Info"} · submitted {post.createdAt.toLocaleDateString()}
+                      {post.type === "for_sale" ? t("typeForSale") : t("typeInfo")} · {t("submitted", { date: post.createdAt.toLocaleDateString() })}
                     </p>
                     {post.status === "approved" && (
                       <p className="mt-1 text-xs text-muted-foreground">
-                        Live until {post.expiresAt.toLocaleDateString()}
+                        {t("liveUntil", { date: post.expiresAt.toLocaleDateString() })}
                       </p>
                     )}
                     {post.status === "rejected" && post.rejectionReason && (
                       <p className="mt-1 text-xs italic text-destructive">
-                        Reason: {post.rejectionReason}
+                        {t("reason", { reason: post.rejectionReason })}
                       </p>
                     )}
                   </div>
@@ -99,7 +104,7 @@ export default async function MyFeedPage({
                           type="submit"
                           className="rounded-full border px-3 py-1 text-xs font-medium hover:bg-muted"
                         >
-                          Mark sold
+                          {t("markSold")}
                         </button>
                       </form>
                     )}
@@ -110,7 +115,7 @@ export default async function MyFeedPage({
                           type="submit"
                           className="rounded-full border px-3 py-1 text-xs font-medium hover:bg-muted"
                         >
-                          Still valid
+                          {t("stillValid")}
                         </button>
                       </form>
                     )}

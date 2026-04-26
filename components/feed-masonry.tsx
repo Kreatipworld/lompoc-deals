@@ -1,8 +1,10 @@
 import type { FeedDisplayItem } from "@/lib/feed-queries"
 import { Reveal } from "@/components/reveal"
 import { FeedCard } from "@/components/feed-card"
+import { getTranslations } from "next-intl/server"
 
-export function FeedMasonry({ items }: { items: FeedDisplayItem[] }) {
+export async function FeedMasonry({ items }: { items: FeedDisplayItem[] }) {
+  const t = await getTranslations("feed")
   const featured = items.filter((i) => i.isFeatured).slice(0, 2)
   const featuredIds = new Set(featured.map((i) => i.id))
   const rest = items.filter((i) => !featuredIds.has(i.id))
@@ -21,7 +23,7 @@ export function FeedMasonry({ items }: { items: FeedDisplayItem[] }) {
 
       {rest.length === 0 ? (
         <p className="py-12 text-center text-muted-foreground">
-          No posts yet. Be the first to post!
+          {t("emptyState")}
         </p>
       ) : (
         <Reveal

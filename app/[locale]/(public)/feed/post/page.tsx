@@ -1,10 +1,14 @@
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { FeedPostForm } from "./feed-post-form"
+import { getTranslations } from "next-intl/server"
 
-export const metadata = {
-  title: "Post to the Lompoc Feed",
-  description: "Share something for sale or a neighborhood announcement.",
+export async function generateMetadata() {
+  const t = await getTranslations("feedPost")
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  }
 }
 
 export default async function FeedPostPage({
@@ -12,6 +16,7 @@ export default async function FeedPostPage({
 }: {
   searchParams?: { type?: string }
 }) {
+  const t = await getTranslations("feedPost")
   const session = await auth()
   if (!session?.user) {
     redirect("/login?next=/feed/post")
@@ -24,10 +29,10 @@ export default async function FeedPostPage({
   return (
     <main className="mx-auto max-w-2xl px-4 py-10">
       <h1 className="font-display text-3xl font-semibold tracking-tight">
-        Post to the Lompoc Feed
+        {t("pageTitle")}
       </h1>
       <p className="mt-2 text-muted-foreground">
-        An admin will review your post within 24h before it goes live.
+        {t("pageSubtitle")}
       </p>
       <FeedPostForm initialType={initialType} />
     </main>
