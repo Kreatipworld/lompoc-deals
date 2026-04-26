@@ -927,6 +927,64 @@
       "dealPlural": "deals"
     }
   },
+  "errors": {
+    "auth": {
+      "invalidEmailOrPassword": "Invalid email or password",
+      "accountCreatedSignInFailed": "Account created but auto sign-in failed. Try logging in.",
+      "resetLinkInvalidOrExpired": "This reset link is invalid or has expired.",
+      "invalidInput": "Invalid input",
+      "emailAlreadyExists": "An account with that email already exists",
+      "couldNotCreateCheckout": "Could not create checkout session. Please try again.",
+      "paymentSetupFailed": "Payment setup failed. Your account was created — try upgrading from your dashboard."
+    },
+    "feed": {
+      "pleaseSignIn": "Please sign in to post.",
+      "tooManyPhotos": "You can upload up to 4 photos.",
+      "photoNotImage": "\"{name}\" must be a JPEG, PNG, or WebP image.",
+      "photoTooLarge": "Photo \"{name}\" exceeds 5MB.",
+      "photoUploadFailed": "Photo upload failed: {message}",
+      "missingPostId": "Missing post id.",
+      "postNotFound": "Post not found.",
+      "onlyForSaleCanBeSold": "Only for-sale posts can be marked sold.",
+      "onlyApprovedCanBeExtended": "Only approved posts can be extended.",
+      "invalidInput": "Invalid input",
+      "addressRequired": "Address is required.",
+      "addressNeedsZip": "Address must include a ZIP code — we only serve Lompoc or Vandenberg (ZIP 93436, 93437, or 93438).",
+      "addressNotLompoc": "Sorry, we only serve Lompoc or Vandenberg (ZIP 93436, 93437, or 93438)."
+    },
+    "signupBusiness": {
+      "sessionExpired": "Your session expired. Please go back to step 1 and re-enter your details.",
+      "emailAlreadyExists": "An account with that email already exists. Please sign in instead.",
+      "accountCreatedSignInFailed": "Account created but sign-in failed. Please log in.",
+      "signInFailed": "Sign-in failed. Please sign in and visit your dashboard.",
+      "couldNotCreateCheckout": "Could not create checkout session. Please try again.",
+      "paymentSetupFailed": "Payment setup failed. Please try again or contact support.",
+      "invalidInput": "Invalid input",
+      "emailAlreadyExistsShort": "An account with that email already exists",
+      "notAuthenticated": "Not authenticated",
+      "businessNotFound": "Business not found",
+      "uploadFailed": "Upload failed"
+    },
+    "biz": {
+      "createProfileFirst": "Create your business profile before posting deals",
+      "createProfileFirstShort": "Create your business profile first",
+      "expirationAfterStart": "Expiration must be after the start date",
+      "dealNotFound": "Deal not found",
+      "listingNotFound": "Listing not found",
+      "imageUploadFailed": "Image upload failed",
+      "uploadFailed": "Upload failed",
+      "invalidInput": "Invalid input",
+      "propertyListingsRequirePremium": "Property listings require the Premium plan"
+    },
+    "userSignup": {
+      "emailAlreadyExists": "An account with that email already exists",
+      "accountCreatedSignInFailed": "Account created but sign-in failed. Please log in.",
+      "invalidInput": "Invalid input"
+    },
+    "validation": {
+      "invalidInput": "Invalid input"
+    }
+  },
   "feedAdmin": {
     "metaTitle": "Admin · Feed moderation",
     "pageTitle": "Feed moderation",

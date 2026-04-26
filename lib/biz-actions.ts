@@ -4,13 +4,14 @@ import { z } from "zod"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { and, eq, gt, sql } from "drizzle-orm"
+import { getTranslations } from "next-intl/server"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { businesses, deals, subscriptions, propertyListings, favorites, businessFollows, users } from "@/db/schema"
 import { assertFeature } from "@/lib/plan-features"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
-import { lompocAddressError } from "@/lib/lompoc-zip"
+import { localizedLompocAddressError } from "@/lib/i18n-helpers"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
 import { TIERS } from "@/lib/stripe"
 import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail } from "@/lib/email"
@@ -65,6 +66,7 @@ export async function saveProfileAction(
   _prev: ProfileState,
   formData: FormData
 ): Promise<ProfileState> {
+  const t = await getTranslations("errors.biz")
   const { userId } = await requireBusinessUser()
 
   const parsed = profileSchema.safeParse({
@@ -82,12 +84,12 @@ export async function saveProfileAction(
     googleBusinessUrl: formData.get("googleBusinessUrl") || undefined,
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
   const data = parsed.data
 
   if (data.address) {
-    const addrErr = lompocAddressError(data.address)
+    const addrErr = await localizedLompocAddressError(data.address)
     if (addrErr) return { error: addrErr }
   }
 
@@ -104,7 +106,7 @@ export async function saveProfileAction(
       coverUrl = await uploadImage(coverFile, "covers")
     }
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Upload failed" }
+    return { error: e instanceof Error ? e.message : t("uploadFailed") }
   }
 
   // Geocode address if provided
@@ -207,10 +209,11 @@ export async function saveDealAction(
   _prev: DealState,
   formData: FormData
 ): Promise<DealState> {
+  const t = await getTranslations("errors.biz")
   const { userId } = await requireBusinessUser()
   const biz = await ownedBusiness(userId)
   if (!biz) {
-    return { error: "Create your business profile before posting deals" }
+    return { error: t("createProfileFirst") }
   }
 
   const parsed = dealSchema.safeParse({
@@ -223,14 +226,14 @@ export async function saveDealAction(
     expiresAt: formData.get("expiresAt"),
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
   const data = parsed.data
 
   const startsAt = new Date(data.startsAt)
   const expiresAt = new Date(data.expiresAt)
   if (expiresAt <= startsAt) {
-    return { error: "Expiration must be after the start date" }
+    return { error: t("expirationAfterStart") }
   }
 
   const imageFile = formData.get("image") as File | null
@@ -239,7 +242,7 @@ export async function saveDealAction(
     try {
       imageUrl = await uploadImage(imageFile, "deals")
     } catch (e) {
-      return { error: e instanceof Error ? e.message : "Image upload failed" }
+      return { error: e instanceof Error ? e.message : t("imageUploadFailed") }
     }
   }
 
@@ -277,7 +280,7 @@ export async function saveDealAction(
       where: (d, { eq: e }) => e(d.id, id),
     })
     if (!existing || existing.businessId !== biz.id) {
-      return { error: "Deal not found" }
+      return { error: t("dealNotFound") }
     }
     await db
       .update(deals)
@@ -486,9 +489,10 @@ export async function upsertPropertyAction(
   _prevState: PropertyState,
   formData: FormData
 ): Promise<PropertyState> {
+  const t = await getTranslations("errors.biz")
   const { userId } = await requireBusinessUser()
   const biz = await ownedBusiness(userId)
-  if (!biz) return { error: "Create your business profile first" }
+  if (!biz) return { error: t("createProfileFirstShort") }
 
   // Require premium tier
   const sub = await db.query.subscriptions.findFirst({
@@ -498,7 +502,7 @@ export async function upsertPropertyAction(
   try {
     assertFeature(tierKey, "canListRealEstate")
   } catch {
-    return { error: "Property listings require the Premium plan" }
+    return { error: t("propertyListingsRequirePremium") }
   }
 
   const parsed = propertySchema.safeParse({
@@ -512,7 +516,7 @@ export async function upsertPropertyAction(
     address: formData.get("address") || undefined,
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
   const data = parsed.data
 
@@ -522,7 +526,7 @@ export async function upsertPropertyAction(
     try {
       imageUrl = await uploadImage(imageFile, "listings")
     } catch (e) {
-      return { error: e instanceof Error ? e.message : "Image upload failed" }
+      return { error: e instanceof Error ? e.message : t("imageUploadFailed") }
     }
   }
 
@@ -534,7 +538,7 @@ export async function upsertPropertyAction(
       where: (pl, { eq: e }) => e(pl.id, id),
     })
     if (!existing || existing.businessId !== biz.id) {
-      return { error: "Listing not found" }
+      return { error: t("listingNotFound") }
     }
     await db
       .update(propertyListings)

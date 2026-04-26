@@ -4,12 +4,13 @@ import { z } from "zod"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { and, eq } from "drizzle-orm"
+import { getTranslations } from "next-intl/server"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { feedPosts } from "@/db/schema"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
-import { lompocAddressError } from "@/lib/lompoc-zip"
+import { localizedLompocAddressError } from "@/lib/i18n-helpers"
 import { addDays, computeExpiration } from "@/lib/feed-expiration"
 
 async function requireLocalUser() {
@@ -50,11 +51,13 @@ export async function submitFeedPostAction(
   _prev: FeedActionState,
   formData: FormData
 ): Promise<FeedActionState> {
+  const t = await getTranslations("errors.feed")
+
   let userId: number
   try {
     ;({ userId } = await requireLocalUser())
   } catch {
-    return { error: "Please sign in to post." }
+    return { error: t("pleaseSignIn") }
   }
 
   const parsed = submitSchema.safeParse({
@@ -67,14 +70,14 @@ export async function submitFeedPostAction(
     address: formData.get("address") || null,
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
   const data = parsed.data
 
   // Address validation against Lompoc ZIPs
   if (data.address) {
-    const addrErr = lompocAddressError(data.address)
+    const addrErr = await localizedLompocAddressError(data.address)
     if (addrErr) return { error: addrErr }
   }
 
@@ -88,21 +91,21 @@ export async function submitFeedPostAction(
   const ALLOWED_PHOTO_TYPES = new Set(["image/jpeg", "image/png", "image/webp"])
   const photoFiles = formData.getAll("photos").filter((v): v is File => v instanceof File && v.size > 0)
   if (photoFiles.length > 4) {
-    return { error: "You can upload up to 4 photos." }
+    return { error: t("tooManyPhotos") }
   }
   const photoUrls: string[] = []
   for (const file of photoFiles) {
     if (!ALLOWED_PHOTO_TYPES.has(file.type)) {
-      return { error: `"${file.name}" must be a JPEG, PNG, or WebP image.` }
+      return { error: t("photoNotImage", { name: file.name }) }
     }
     if (file.size > 5 * 1024 * 1024) {
-      return { error: `Photo "${file.name}" exceeds 5MB.` }
+      return { error: t("photoTooLarge", { name: file.name }) }
     }
     try {
       const url = await uploadImage(file, "feed")
       photoUrls.push(url)
     } catch (e) {
-      return { error: `Photo upload failed: ${e instanceof Error ? e.message : "unknown error"}` }
+      return { error: t("photoUploadFailed", { message: e instanceof Error ? e.message : "unknown error" }) }
     }
   }
 
@@ -136,17 +139,18 @@ export async function submitFeedPostAction(
 // ─── Mark for_sale post as sold ─────────────────────────────────────────────
 
 export async function markSoldAction(formData: FormData): Promise<FeedActionState> {
+  const t = await getTranslations("errors.feed")
   const { userId } = await requireLocalUser()
   const id = parseInt(formData.get("postId")?.toString() ?? "0", 10)
-  if (!id) return { error: "Missing post id." }
+  if (!id) return { error: t("missingPostId") }
 
   const [post] = await db
     .select()
     .from(feedPosts)
     .where(and(eq(feedPosts.id, id), eq(feedPosts.postedByUserId, userId)))
     .limit(1)
-  if (!post) return { error: "Post not found." }
-  if (post.type !== "for_sale") return { error: "Only for-sale posts can be marked sold." }
+  if (!post) return { error: t("postNotFound") }
+  if (post.type !== "for_sale") return { error: t("onlyForSaleCanBeSold") }
 
   await db.update(feedPosts).set({ status: "sold" }).where(eq(feedPosts.id, id))
   revalidatePath("/feed/my")
@@ -159,18 +163,19 @@ export async function markSoldAction(formData: FormData): Promise<FeedActionStat
 export async function extendExpirationAction(
   formData: FormData
 ): Promise<FeedActionState> {
+  const t = await getTranslations("errors.feed")
   const { userId } = await requireLocalUser()
   const id = parseInt(formData.get("postId")?.toString() ?? "0", 10)
-  if (!id) return { error: "Missing post id." }
+  if (!id) return { error: t("missingPostId") }
 
   const [post] = await db
     .select()
     .from(feedPosts)
     .where(and(eq(feedPosts.id, id), eq(feedPosts.postedByUserId, userId)))
     .limit(1)
-  if (!post) return { error: "Post not found." }
+  if (!post) return { error: t("postNotFound") }
   if (post.status !== "approved") {
-    return { error: "Only approved posts can be extended." }
+    return { error: t("onlyApprovedCanBeExtended") }
   }
 
   // For yard-sale posts (saleEndsAt set), the original window has usually

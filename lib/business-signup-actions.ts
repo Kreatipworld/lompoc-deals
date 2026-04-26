@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
+import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { users, businesses, subscriptions } from "@/db/schema"
 import { signIn } from "@/auth"
@@ -13,8 +14,7 @@ import type { TierKey } from "@/lib/stripe"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { sendWelcomeEmail } from "@/lib/email"
-import { lompocAddressError } from "@/lib/lompoc-zip"
-import { getCurrentLocale } from "@/lib/i18n-helpers"
+import { localizedLompocAddressError, getCurrentLocale } from "@/lib/i18n-helpers"
 
 // ─── Step 1 — Account creation ──────────────────────────────────────────────
 
@@ -37,6 +37,8 @@ export async function validateStep1Action(
   _prev: BizSignupState,
   formData: FormData
 ): Promise<BizSignupState> {
+  const t = await getTranslations("errors.signupBusiness")
+
   const parsed = step1Schema.safeParse({
     ownerFullName: formData.get("ownerFullName"),
     businessName: formData.get("businessName"),
@@ -47,17 +49,17 @@ export async function validateStep1Action(
     phone: formData.get("phone") || undefined,
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
-  const addrErr = lompocAddressError(parsed.data.address)
+  const addrErr = await localizedLompocAddressError(parsed.data.address)
   if (addrErr) return { error: addrErr }
 
   const existing = await db.query.users.findFirst({
     where: eq(users.email, parsed.data.email),
   })
   if (existing) {
-    return { error: "An account with that email already exists" }
+    return { error: t("emailAlreadyExistsShort") }
   }
 
   // Valid — no error returned (caller advances to step 2)
@@ -80,9 +82,11 @@ export async function businessSignupSubmitAction(
   _prev: BizSignupState,
   formData: FormData
 ): Promise<BizSignupState> {
+  const t = await getTranslations("errors.signupBusiness")
+
   // Guard: if account fields are missing the session was lost — tell the user to restart
   if (!formData.get("email")) {
-    return { error: "Your session expired. Please go back to step 1 and re-enter your details." }
+    return { error: t("sessionExpired") }
   }
 
   const parsed = finalSchema.safeParse({
@@ -97,13 +101,13 @@ export async function businessSignupSubmitAction(
   })
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
   const { ownerFullName, businessName, email, password, categoryId, address, phone, plan } =
     parsed.data
 
-  const addrErr = lompocAddressError(address)
+  const addrErr = await localizedLompocAddressError(address)
   if (addrErr) return { error: addrErr }
 
   const existing = await db.query.users.findFirst({ where: eq(users.email, email) })
@@ -152,7 +156,7 @@ export async function businessSignupSubmitAction(
             })
 
             if (!checkoutSession.url) {
-              return { error: "Could not create checkout session. Please try again." }
+              return { error: t("couldNotCreateCheckout") }
             }
 
             // Sign in the existing user before redirecting
@@ -160,7 +164,7 @@ export async function businessSignupSubmitAction(
               await signIn("credentials", { email, password, redirect: false })
             } catch (err) {
               if (err instanceof AuthError) {
-                return { error: "Sign-in failed. Please sign in and visit your dashboard." }
+                return { error: t("signInFailed") }
               }
               throw err
             }
@@ -168,14 +172,13 @@ export async function businessSignupSubmitAction(
             return { checkoutUrl: checkoutSession.url }
           } catch (err) {
             if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
-            return { error: "Payment setup failed. Please try again or contact support." }
+            return { error: t("paymentSetupFailed") }
           }
         }
       }
     }
     return {
-      error:
-        "An account with that email already exists. Please sign in instead.",
+      error: t("emailAlreadyExists"),
     }
   }
 
@@ -225,7 +228,7 @@ export async function businessSignupSubmitAction(
     await signIn("credentials", { email, password, redirect: false })
   } catch (err) {
     if (err instanceof AuthError) {
-      return { error: "Account created but sign-in failed. Please log in." }
+      return { error: t("accountCreatedSignInFailed") }
     }
     throw err
   }
@@ -282,12 +285,12 @@ export async function businessSignupSubmitAction(
     })
 
     if (!checkoutSession.url) {
-      return { error: "Could not create checkout session. Please try again." }
+      return { error: t("couldNotCreateCheckout") }
     }
     return { checkoutUrl: checkoutSession.url }
   } catch (err) {
     if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
-    return { error: "Payment setup failed. Please try again or contact support." }
+    return { error: t("paymentSetupFailed") }
   }
 }
 
@@ -309,6 +312,7 @@ export async function profileSetupAction(
   _prev: ProfileSetupState,
   formData: FormData
 ): Promise<ProfileSetupState> {
+  const t = await getTranslations("errors.signupBusiness")
   const logoFile = formData.get("logo") as File | null
   const coverFile = formData.get("cover") as File | null
 
@@ -318,7 +322,7 @@ export async function profileSetupAction(
     if (logoFile && logoFile.size > 0) logoUrl = await uploadImage(logoFile, "logos")
     if (coverFile && coverFile.size > 0) coverUrl = await uploadImage(coverFile, "covers")
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Upload failed" }
+    return { error: e instanceof Error ? e.message : t("uploadFailed") }
   }
 
   const parsed = profileSchema.safeParse({
@@ -329,20 +333,20 @@ export async function profileSetupAction(
     tiktokUrl: formData.get("tiktokUrl") || undefined,
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
   const data = parsed.data
 
   // Find the business for the current user (just created)
   const { auth } = await import("@/auth")
   const session = await auth()
-  if (!session?.user) return { error: "Not authenticated" }
+  if (!session?.user) return { error: t("notAuthenticated") }
   const userId = parseInt(session.user.id, 10)
 
   const biz = await db.query.businesses.findFirst({
     where: (b, { eq: e }) => e(b.ownerUserId, userId),
   })
-  if (!biz) return { error: "Business not found" }
+  if (!biz) return { error: t("businessNotFound") }
 
   await db.update(businesses).set({
     description: data.description ?? null,

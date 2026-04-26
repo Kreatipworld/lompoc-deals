@@ -927,6 +927,64 @@
       "dealPlural": "ofertas"
     }
   },
+  "errors": {
+    "auth": {
+      "invalidEmailOrPassword": "Correo o contraseña incorrectos",
+      "accountCreatedSignInFailed": "Cuenta creada pero el inicio de sesión automático falló. Intenta iniciar sesión.",
+      "resetLinkInvalidOrExpired": "Este enlace de restablecimiento no es válido o ha expirado.",
+      "invalidInput": "Entrada no válida",
+      "emailAlreadyExists": "Ya existe una cuenta con ese correo",
+      "couldNotCreateCheckout": "No se pudo crear la sesión de pago. Por favor intenta de nuevo.",
+      "paymentSetupFailed": "La configuración del pago falló. Tu cuenta fue creada — intenta mejorar el plan desde tu panel."
+    },
+    "feed": {
+      "pleaseSignIn": "Por favor inicia sesión para publicar.",
+      "tooManyPhotos": "Puedes subir hasta 4 fotos.",
+      "photoNotImage": "La foto \"{name}\" debe ser una imagen JPEG, PNG o WebP.",
+      "photoTooLarge": "La foto \"{name}\" supera los 5MB.",
+      "photoUploadFailed": "Falló la carga de la foto: {message}",
+      "missingPostId": "Falta el ID de la publicación.",
+      "postNotFound": "Publicación no encontrada.",
+      "onlyForSaleCanBeSold": "Solo las publicaciones en venta pueden marcarse como vendidas.",
+      "onlyApprovedCanBeExtended": "Solo se pueden extender publicaciones aprobadas.",
+      "invalidInput": "Entrada no válida",
+      "addressRequired": "La dirección es obligatoria.",
+      "addressNeedsZip": "La dirección debe incluir un código postal — solo servimos Lompoc o Vandenberg (ZIP 93436, 93437 o 93438).",
+      "addressNotLompoc": "Lo sentimos, solo servimos Lompoc o Vandenberg (ZIP 93436, 93437 o 93438)."
+    },
+    "signupBusiness": {
+      "sessionExpired": "Tu sesión expiró. Por favor regresa al paso 1 y vuelve a ingresar tus datos.",
+      "emailAlreadyExists": "Ya existe una cuenta con ese correo. Por favor inicia sesión.",
+      "accountCreatedSignInFailed": "Cuenta creada pero el inicio de sesión falló. Por favor inicia sesión.",
+      "signInFailed": "Inicio de sesión fallido. Por favor inicia sesión y visita tu panel.",
+      "couldNotCreateCheckout": "No se pudo crear la sesión de pago. Por favor intenta de nuevo.",
+      "paymentSetupFailed": "La configuración del pago falló. Por favor intenta de nuevo o contacta al soporte.",
+      "invalidInput": "Entrada no válida",
+      "emailAlreadyExistsShort": "Ya existe una cuenta con ese correo",
+      "notAuthenticated": "No autenticado",
+      "businessNotFound": "Negocio no encontrado",
+      "uploadFailed": "Error al subir"
+    },
+    "biz": {
+      "createProfileFirst": "Crea tu perfil de negocio antes de publicar ofertas",
+      "createProfileFirstShort": "Crea tu perfil de negocio primero",
+      "expirationAfterStart": "La expiración debe ser después de la fecha de inicio",
+      "dealNotFound": "Oferta no encontrada",
+      "listingNotFound": "Listado no encontrado",
+      "imageUploadFailed": "Error al subir la imagen",
+      "uploadFailed": "Error al subir",
+      "invalidInput": "Entrada no válida",
+      "propertyListingsRequirePremium": "Los listados de propiedades requieren el plan Premium"
+    },
+    "userSignup": {
+      "emailAlreadyExists": "Ya existe una cuenta con ese correo",
+      "accountCreatedSignInFailed": "Cuenta creada pero el inicio de sesión falló. Por favor inicia sesión.",
+      "invalidInput": "Entrada no válida"
+    },
+    "validation": {
+      "invalidInput": "Entrada no válida"
+    }
+  },
   "feedAdmin": {
     "metaTitle": "Administración · Moderación del Vecindario",
     "pageTitle": "Moderación del Vecindario",

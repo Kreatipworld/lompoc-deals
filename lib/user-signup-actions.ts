@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
+import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { users } from "@/db/schema"
 import { signIn } from "@/auth"
@@ -26,6 +27,7 @@ export async function localSignupAction(
   _prev: LocalSignupState,
   formData: FormData
 ): Promise<LocalSignupState> {
+  const t = await getTranslations("errors.userSignup")
   const rawInterests = formData.getAll("interests").map((i) => String(i))
 
   const parsed = localSignupSchema.safeParse({
@@ -38,7 +40,7 @@ export async function localSignupAction(
   })
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
   const { name, email, password, city, zip, interests } = parsed.data
@@ -47,7 +49,7 @@ export async function localSignupAction(
     where: eq(users.email, email),
   })
   if (existing) {
-    return { error: "An account with that email already exists" }
+    return { error: t("emailAlreadyExists") }
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
@@ -73,7 +75,7 @@ export async function localSignupAction(
     await signIn("credentials", { email, password, redirect: false })
   } catch (err) {
     if (err instanceof AuthError) {
-      return { error: "Account created but sign-in failed. Please log in." }
+      return { error: t("accountCreatedSignInFailed") }
     }
     // Unexpected error (e.g. crypto failure, network issue): account was
     // created — fall back to manual login rather than crashing the page.

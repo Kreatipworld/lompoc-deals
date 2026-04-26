@@ -6,6 +6,7 @@ import { eq, and, gt, isNull } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
 import { randomBytes } from "crypto"
+import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { users, businessClaims, subscriptions, passwordResetTokens } from "@/db/schema"
 import { signIn, signOut } from "@/auth"
@@ -26,6 +27,8 @@ export async function signupAction(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
+  const t = await getTranslations("errors.auth")
+
   const parsed = signupSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -34,7 +37,7 @@ export async function signupAction(
   })
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
   const { email, password, claimSlug } = parsed.data
@@ -46,7 +49,7 @@ export async function signupAction(
     where: eq(users.email, email),
   })
   if (existing) {
-    return { error: "An account with that email already exists" }
+    return { error: t("emailAlreadyExists") }
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
@@ -79,7 +82,7 @@ export async function signupAction(
     })
   } catch (err) {
     if (err instanceof AuthError) {
-      return { error: "Account created but auto sign-in failed. Try logging in." }
+      return { error: t("accountCreatedSignInFailed") }
     }
     throw err
   }
@@ -116,12 +119,12 @@ export async function signupAction(
           },
         })
         if (!checkoutSession.url) {
-          return { error: "Could not create checkout session. Please try again." }
+          return { error: t("couldNotCreateCheckout") }
         }
         redirect(checkoutSession.url)
       } catch (err) {
         if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err
-        return { error: "Payment setup failed. Your account was created — try upgrading from your dashboard." }
+        return { error: t("paymentSetupFailed") }
       }
     } else {
       // Stripe price not configured — redirect to billing to set up later
@@ -159,13 +162,15 @@ export async function loginAction(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
+  const t = await getTranslations("errors.auth")
+
   const parsed = loginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   })
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
   try {
@@ -176,7 +181,7 @@ export async function loginAction(
     })
   } catch (err) {
     if (err instanceof AuthError) {
-      return { error: "Invalid email or password" }
+      return { error: t("invalidEmailOrPassword") }
     }
     throw err
   }
@@ -209,11 +214,12 @@ export async function requestPasswordResetAction(
   _prev: RequestResetState,
   formData: FormData
 ): Promise<RequestResetState> {
+  const t = await getTranslations("errors.auth")
   const parsed = requestResetSchema.safeParse({
     email: formData.get("email"),
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
   const { email } = parsed.data
@@ -250,12 +256,13 @@ export async function resetPasswordAction(
   _prev: ResetPasswordState,
   formData: FormData
 ): Promise<ResetPasswordState> {
+  const t = await getTranslations("errors.auth")
   const parsed = resetPasswordSchema.safeParse({
     token: formData.get("token"),
     password: formData.get("password"),
   })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" }
+    return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
   const { token, password } = parsed.data
@@ -271,7 +278,7 @@ export async function resetPasswordAction(
   })
 
   if (!record) {
-    return { error: "This reset link is invalid or has expired." }
+    return { error: t("resetLinkInvalidOrExpired") }
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
