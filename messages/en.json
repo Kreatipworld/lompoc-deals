@@ -629,5 +629,22 @@
     "successSubtitle": "Locals can now find your garage sale on the map.",
     "viewListing": "View your listing",
     "browseAll": "Browse all sales"
+  },
+  "feedAdmin": {
+    "metaTitle": "Admin · Feed moderation",
+    "pageTitle": "Feed moderation",
+    "pageTagline": "Moderate the neighborhood feed",
+    "emptyState": "Nothing pending. The queue is clear.",
+    "queueCount": "{count, plural, one {# post pending review} other {# posts pending review}}",
+    "typeForSale": "For sale",
+    "typeInfo": "Info",
+    "buttonApprove": "Approve",
+    "buttonFeature": "Feature & approve",
+    "buttonReject": "Reject…",
+    "buttonConfirmReject": "Confirm reject",
+    "textareaPlaceholder": "Reason (visible to poster in their email)",
+    "addressMarker": "📍",
+    "byAuthor": "by {name} · {date}",
+    "backToAdmin": "← Back to admin home"
   }
 }

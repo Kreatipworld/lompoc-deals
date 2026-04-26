@@ -629,5 +629,22 @@
     "successSubtitle": "Los vecinos ya pueden encontrar tu venta en el mapa.",
     "viewListing": "Ver tu anuncio",
     "browseAll": "Ver todas las ventas"
+  },
+  "feedAdmin": {
+    "metaTitle": "Administración · Moderación del Vecindario",
+    "pageTitle": "Moderación del Vecindario",
+    "pageTagline": "Modera el feed del vecindario",
+    "emptyState": "Nada pendiente. La cola está vacía.",
+    "queueCount": "{count, plural, one {# publicación pendiente de revisión} other {# publicaciones pendientes de revisión}}",
+    "typeForSale": "En venta",
+    "typeInfo": "Información",
+    "buttonApprove": "Aprobar",
+    "buttonFeature": "Destacar y aprobar",
+    "buttonReject": "Rechazar…",
+    "buttonConfirmReject": "Confirmar rechazo",
+    "textareaPlaceholder": "Motivo (visible para el autor en su correo)",
+    "addressMarker": "📍",
+    "byAuthor": "por {name} · {date}",
+    "backToAdmin": "← Volver al panel de admin"
   }
 }

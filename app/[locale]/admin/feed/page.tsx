@@ -1,4 +1,6 @@
 import { redirect } from "next/navigation"
+import { getTranslations } from "next-intl/server"
+import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
 import { auth } from "@/auth"
 import { getPendingFeedPosts } from "@/lib/feed-queries"
@@ -8,8 +10,11 @@ import {
   featureFeedPostAction,
 } from "@/lib/admin-feed-actions"
 
-export const metadata = {
-  title: "Admin · Feed moderation",
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("feedAdmin")
+  return {
+    title: t("metaTitle"),
+  }
 }
 
 export default async function AdminFeedPage() {
@@ -18,18 +23,19 @@ export default async function AdminFeedPage() {
     redirect("/login")
   }
 
+  const t = await getTranslations("feedAdmin")
   const pending = await getPendingFeedPosts()
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <header className="mb-6">
         <h1 className="font-display text-3xl font-semibold tracking-tight">
-          Feed moderation
+          {t("pageTitle")}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {pending.length === 0
-            ? "Nothing pending. The queue is clear."
-            : `${pending.length} post${pending.length === 1 ? "" : "s"} pending review.`}
+            ? t("emptyState")
+            : t("queueCount", { count: pending.length })}
         </p>
       </header>
 
@@ -41,12 +47,14 @@ export default async function AdminFeedPage() {
               <div className="mb-3 flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <span className="inline-flex rounded-full border bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
-                    {post.type === "for_sale" ? "For sale" : "Info"}
+                    {post.type === "for_sale" ? t("typeForSale") : t("typeInfo")}
                   </span>
                   <h2 className="mt-1.5 text-lg font-semibold">{post.title}</h2>
                   <p className="text-xs text-muted-foreground">
-                    by {poster?.name ?? poster?.email ?? "unknown"} ·{" "}
-                    {post.createdAt.toLocaleString()}
+                    {t("byAuthor", {
+                      name: poster?.name ?? poster?.email ?? "unknown",
+                      date: post.createdAt.toLocaleString(),
+                    })}
                   </p>
                 </div>
                 {post.priceCents !== null && (
@@ -81,7 +89,7 @@ export default async function AdminFeedPage() {
 
               {post.address && (
                 <p className="mb-3 text-xs text-muted-foreground">
-                  📍{" "}
+                  {t("addressMarker")}{" "}
                   <a
                     href={`https://maps.google.com/?q=${encodeURIComponent(post.address)}`}
                     target="_blank"
@@ -100,7 +108,7 @@ export default async function AdminFeedPage() {
                     type="submit"
                     className="rounded-full bg-green-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-green-700"
                   >
-                    Approve
+                    {t("buttonApprove")}
                   </button>
                 </form>
 
@@ -110,20 +118,20 @@ export default async function AdminFeedPage() {
                     type="submit"
                     className="rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
                   >
-                    Feature &amp; approve
+                    {t("buttonFeature")}
                   </button>
                 </form>
 
                 <details className="ml-auto">
                   <summary className="cursor-pointer rounded-full border bg-muted px-4 py-1.5 text-xs font-semibold hover:bg-background">
-                    Reject…
+                    {t("buttonReject")}
                   </summary>
                   <form action={rejectFeedPostAction} className="mt-2 space-y-2 rounded-lg border p-3">
                     <input type="hidden" name="feedPostId" value={post.id} />
                     <textarea
                       name="reason"
                       required
-                      placeholder="Reason (visible to poster in their email)"
+                      placeholder={t("textareaPlaceholder")}
                       rows={2}
                       className="block w-full rounded border px-2 py-1 text-sm"
                     />
@@ -131,7 +139,7 @@ export default async function AdminFeedPage() {
                       type="submit"
                       className="rounded-full bg-red-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-red-700"
                     >
-                      Confirm reject
+                      {t("buttonConfirmReject")}
                     </button>
                   </form>
                 </details>
@@ -143,7 +151,7 @@ export default async function AdminFeedPage() {
 
       <p className="mt-8 text-xs text-muted-foreground">
         <Link href="/admin" className="underline">
-          ← Back to admin home
+          {t("backToAdmin")}
         </Link>
       </p>
     </main>
