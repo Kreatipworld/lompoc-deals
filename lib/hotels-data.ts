@@ -307,25 +307,6 @@ export const HOTELS: Hotel[] = [
     lat: 34.633,
     lng: -120.4615,
   },
-  {
-    slug: "santa-ynez-valley-marriott-solvang",
-    name: "Santa Ynez Valley Marriott",
-    category: "boutique",
-    tagline: "Wine country luxury, 30 min from Lompoc",
-    description:
-      "A premium Marriott property in Solvang, right in the heart of the Santa Ynez Valley wine country. The closest upscale hotel to Lompoc's Santa Rita Hills AVA — perfect for wine enthusiasts who want full-service amenities after a day of tasting.",
-    address: "555 McMurray Rd, Buellton, CA 93427",
-    avenue: "McMurray Road, Buellton",
-    neighborhood: "Santa Ynez Valley — 30 min east of Lompoc via Hwy 246",
-    phone: "(805) 688-1000",
-    website: "https://www.marriott.com",
-    amenities: ["Free Wi-Fi", "Restaurant & Bar", "Outdoor Pool", "Fitness Center", "Free Parking", "Concierge"],
-    priceRange: "$$$",
-    rating: 4.4,
-    coverUrl: null,
-    lat: 34.6139,
-    lng: -120.1897,
-  },
 ]
 
 export function getHotelBySlug(slug: string): Hotel | undefined {
