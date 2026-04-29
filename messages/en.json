@@ -335,8 +335,21 @@
     "ratingVeryGood": "Very Good",
     "cardView": "View",
     "heroEyebrow": "Hotels",
-    "heroTitle": "Where to stay in Lompoc",
-    "heroSubtitle": "{count, plural, one {# curated hotel in Lompoc} other {# curated hotels in Lompoc}}"
+    "heroTitle": "Stay in the Flower Capital",
+    "heroSubtitle": "17 hotels in Lompoc · wine country · Vandenberg Space Force Base",
+    "heroPill": "Visit Lompoc",
+    "heroStats": "17 hotels · 30 min from the beach · 10 min from the Wine Ghetto",
+    "thingsToDoHeading": "What to do while you're here",
+    "mapHeading": "Where they are",
+    "mapSubtitle": "Tap a pin to see the hotel",
+    "hotelsHeading": "All {count} hotels in Lompoc",
+    "aboutHeading": "About Lompoc",
+    "aboutWineTitle": "Wine country",
+    "aboutWineBody": "Closest town to the Sta. Rita Hills AVA. Pinot Noir country, 30+ tasting rooms within 20 miles.",
+    "aboutSpaceTitle": "Space coast",
+    "aboutSpaceBody": "Closest civilian town to Vandenberg Space Force Base. Watch launches from the valley — public viewing at Surf Beach and Renwick.",
+    "aboutFlowerTitle": "Flower capital",
+    "aboutFlowerBody": "Historic seed-growing capital. Bloom season runs April–August across thousands of acres in the valley."
   },
   "locals": {
     "metaTitle": "For Locals — Discover Deals & Support Lompoc Businesses | Lompoc Deals",
@@ -1572,5 +1585,13 @@
     "msg3Action": "are available this weekend",
     "msg4Name": "Maria from Santa Barbara",
     "msg4Action": "checked in at Holiday Inn Express"
+  },
+  "activityCategory": {
+    "outdoors": "Outdoors",
+    "food-wine": "Food & Wine",
+    "history": "History",
+    "arts": "Arts",
+    "family": "Family",
+    "unique": "Unique"
   }
 }

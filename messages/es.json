@@ -335,8 +335,21 @@
     "ratingVeryGood": "Muy bueno",
     "cardView": "Ver",
     "heroEyebrow": "Hoteles",
-    "heroTitle": "Dónde hospedarse en Lompoc",
-    "heroSubtitle": "{count, plural, one {# hotel curado en Lompoc} other {# hoteles curados en Lompoc}}"
+    "heroTitle": "Hospédate en la Capital de las Flores",
+    "heroSubtitle": "17 hoteles en Lompoc · país del vino · Base Espacial Vandenberg",
+    "heroPill": "Visita Lompoc",
+    "heroStats": "17 hoteles · 30 min de la playa · 10 min del Wine Ghetto",
+    "thingsToDoHeading": "Qué hacer mientras estás aquí",
+    "mapHeading": "Dónde están",
+    "mapSubtitle": "Toca un marcador para ver el hotel",
+    "hotelsHeading": "Los {count} hoteles en Lompoc",
+    "aboutHeading": "Acerca de Lompoc",
+    "aboutWineTitle": "País del vino",
+    "aboutWineBody": "El pueblo más cercano a la AVA de Santa Rita Hills. Tierra de Pinot Noir, más de 30 salas de cata a 30 km a la redonda.",
+    "aboutSpaceTitle": "Costa espacial",
+    "aboutSpaceBody": "La ciudad civil más cercana a la Base Espacial Vandenberg. Mira los lanzamientos desde el valle — visualización pública en Surf Beach y Renwick.",
+    "aboutFlowerTitle": "Capital de las flores",
+    "aboutFlowerBody": "Capital histórica del cultivo de semillas. La temporada de floración va de abril a agosto en miles de hectáreas del valle."
   },
   "locals": {
     "metaTitle": "Para Residentes — Descubre Ofertas y Apoya los Negocios de Lompoc | Lompoc Deals",
@@ -1572,5 +1585,13 @@
     "msg3Action": "disponibles este fin de semana",
     "msg4Name": "María desde Santa Bárbara",
     "msg4Action": "se registró en Holiday Inn Express"
+  },
+  "activityCategory": {
+    "outdoors": "Aire libre",
+    "food-wine": "Comida y vino",
+    "history": "Historia",
+    "arts": "Arte",
+    "family": "Familia",
+    "unique": "Únicos"
   }
 }
