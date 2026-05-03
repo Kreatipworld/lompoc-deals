@@ -31,7 +31,11 @@
     "weeklyDigest": "Resumen semanal",
     "copyright": "© {year} Lompoc Deals · Lompoc, CA",
     "madeWith": "Hecho con cariño para la Capital de las Flores.",
-    "blog": "Blog"
+    "blog": "Blog",
+    "legal": "Legal",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos del Servicio",
+    "contact": "Contacto"
   },
   "home": {
     "metaTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer en Lompoc, CA",
@@ -1593,5 +1597,196 @@
     "arts": "Arte",
     "family": "Familia",
     "unique": "Únicos"
+  },
+  "privacy": {
+    "metaTitle": "Política de Privacidad — Lompoc Deals",
+    "metaDescription": "Cómo Lompoc Deals recopila, usa y protege tu información personal. Incluye derechos CCPA/CPRA de California.",
+    "pageTitle": "Política de Privacidad",
+    "lastUpdated": "Última actualización: 30 de abril de 2026",
+    "intro": {
+      "title": "Introducción",
+      "body": "Lompoc Deals (operado por [Nombre del Fundador / Entidad Pendiente]) es un directorio de negocios locales y plataforma de promociones al servicio de la comunidad de Lompoc, California. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos tu información cuando visitas nuestro sitio web o usas nuestros servicios. Al usar Lompoc Deals, aceptas las prácticas descritas en esta política. Si no estás de acuerdo, por favor deja de usar el sitio."
+    },
+    "collection": {
+      "title": "Información que Recopilamos",
+      "body": "Recopilamos información que tú nos proporcionas directamente y también información generada por el uso del sitio.",
+      "accountInfo": "Información de cuenta: Al registrarte, recopilamos tu nombre, correo electrónico y una versión cifrada de tu contraseña (nunca almacenamos contraseñas en texto plano).",
+      "businessInfo": "Información del negocio: Al reclamar o publicar un negocio, recopilamos el nombre, dirección, teléfono, categoría, horarios y cualquier foto o contenido promocional que subas.",
+      "browsingData": "Datos de navegación: Recopilamos automáticamente tu dirección IP, tipo de navegador, URL de referencia, preferencia de idioma y páginas visitadas mediante registros del servidor y cookies de sesión.",
+      "paymentInfo": "Información de pago: Los pagos son procesados exclusivamente por Stripe. No almacenamos tu número de tarjeta completo ni el código CVV. Stripe puede compartir un ID de transacción y los últimos cuatro dígitos con nosotros para registros de facturación."
+    },
+    "usage": {
+      "title": "Cómo Usamos tu Información",
+      "intro": "Usamos la información que recopilamos para:",
+      "items": [
+        "Operar el directorio y mostrar listados de negocios y ofertas",
+        "Enviar el resumen semanal por correo electrónico (solo si te suscribes)",
+        "Procesar pagos por suscripciones premium de negocios mediante Stripe",
+        "Autenticar tu cuenta y mantener la seguridad de la sesión",
+        "Moderar contenido y prevenir listados fraudulentos o spam",
+        "Responder a tus solicitudes de soporte",
+        "Cumplir con las leyes y obligaciones legales aplicables",
+        "Mejorar el rendimiento del sitio y la experiencia del usuario mediante análisis"
+      ]
+    },
+    "thirdParties": {
+      "title": "Servicios de Terceros",
+      "intro": "Compartimos datos limitados con proveedores de servicios confiables que nos ayudan a operar el sitio:",
+      "items": [
+        "Stripe — Gestiona todo el procesamiento de pagos para suscripciones premium. Stripe tiene su propia Política de Privacidad.",
+        "Resend — Envía correos transaccionales (confirmaciones de cuenta, restablecimiento de contraseñas) y el resumen semanal opcional.",
+        "Vercel — Aloja el sitio web y sirve todo el tráfico web.",
+        "Neon — Proporciona nuestra base de datos PostgreSQL en la nube donde se almacenan los datos de cuentas y negocios.",
+        "Mapbox — Impulsa el mapa interactivo de negocios. Mapbox puede recibir tu ubicación aproximada cuando consultas el mapa.",
+        "Anthropic — Impulsa el asistente de chat con inteligencia artificial del sitio. Los mensajes que envíes pueden ser procesados por la API Claude de Anthropic.",
+        "Vercel Blob — Almacena fotos de negocios e imágenes subidas."
+      ],
+      "noSale": "No vendemos tu información personal a ningún tercero."
+    },
+    "cookies": {
+      "title": "Cookies y Seguimiento",
+      "body": "Usamos dos cookies propias: una cookie de sesión de autenticación (para mantenerte conectado) y una cookie de preferencia de idioma (para recordar tu configuración de idioma). No usamos rastreadores publicitarios de terceros, píxeles de retargeting ni cookies de seguimiento entre sitios. Puedes desactivar las cookies en la configuración de tu navegador; hacerlo puede impedir el inicio de sesión y algunas funciones del sitio."
+    },
+    "california": {
+      "title": "Tus Derechos de Privacidad en California (CCPA / CPRA)",
+      "intro": "Si eres residente de California, tienes los siguientes derechos bajo la Ley de Privacidad del Consumidor de California (CCPA) y la Ley de Derechos de Privacidad de California (CPRA):",
+      "items": [
+        "Derecho a saber: Puedes solicitar una copia de la información personal que tenemos sobre ti y cómo la usamos.",
+        "Derecho a eliminar: Puedes solicitar la eliminación de tu información personal, sujeto a ciertas excepciones.",
+        "Derecho a corregir: Puedes solicitar la corrección de información personal inexacta.",
+        "Derecho a excluirte de la venta: No vendemos tu información personal. No hay nada de lo que excluirte.",
+        "Derecho a no ser discriminado: No te discriminaremos por ejercer ninguno de estos derechos."
+      ],
+      "howToExercise": "Para ejercer estos derechos, envíanos un correo a hello@lompocdeals.com. Responderemos dentro de los 45 días requeridos por ley."
+    },
+    "retention": {
+      "title": "Retención de Datos",
+      "body": "Conservamos tu información de cuenta mientras tu cuenta esté activa. Si solicitas la eliminación de tu cuenta, eliminaremos o anonimizaremos tus datos personales en un plazo de 30 días, excepto cuando estemos legalmente obligados a conservar ciertos registros. Los datos de listados de negocios e historial de ofertas pueden conservarse de forma anonimizada con fines históricos y analíticos."
+    },
+    "children": {
+      "title": "Privacidad de Menores",
+      "body": "Lompoc Deals no está dirigido a menores de 13 años. No recopilamos conscientemente información personal de menores de 13 años. Si descubrimos que hemos recopilado dicha información, la eliminaremos de inmediato. Este sitio cumple con la Ley de Protección de la Privacidad en Línea de los Niños (COPPA)."
+    },
+    "security": {
+      "title": "Seguridad",
+      "body": "Tomamos medidas razonables para proteger tu información. Las contraseñas se cifran usando bcrypt antes de almacenarse — nunca guardamos contraseñas en texto plano. Todos los datos transmitidos entre tu navegador y nuestros servidores están cifrados mediante TLS/HTTPS. Nuestra base de datos está alojada en Neon, que proporciona cifrado en reposo. A pesar de estas medidas, ninguna transmisión por Internet es 100% segura."
+    },
+    "changes": {
+      "title": "Cambios a Esta Política",
+      "body": "Podemos actualizar esta Política de Privacidad de vez en cuando. La fecha en la parte superior de esta página refleja cuándo fue revisada por última vez. Para cambios importantes que afecten tus derechos, te notificaremos por correo electrónico (si tienes una cuenta) o mostrando un aviso prominente en el sitio. El uso continuo de Lompoc Deals después de publicar los cambios constituye la aceptación de la política revisada."
+    },
+    "contactSection": {
+      "title": "Contáctanos",
+      "body": "Si tienes preguntas sobre esta Política de Privacidad o deseas ejercer tus derechos, comunícate con nosotros en:"
+    }
+  },
+  "terms": {
+    "metaTitle": "Términos del Servicio — Lompoc Deals",
+    "metaDescription": "Términos que rigen el uso de Lompoc Deals — registro de cuenta, planes de suscripción, reglas de contenido y ley aplicable de California.",
+    "pageTitle": "Términos del Servicio",
+    "lastUpdated": "Última actualización: 30 de abril de 2026",
+    "acceptance": {
+      "title": "Aceptación de los Términos",
+      "body": "Al acceder o usar Lompoc Deals (el \"Sitio\"), aceptas estos Términos del Servicio y nuestra Política de Privacidad. Si no estás de acuerdo, por favor no uses el Sitio. Podemos actualizar estos términos en cualquier momento; el uso continuo después de publicar los cambios constituye su aceptación."
+    },
+    "description": {
+      "title": "Descripción del Servicio",
+      "body": "Lompoc Deals es un directorio de negocios locales y plataforma de promociones al servicio de Lompoc, California y el Valle de Lompoc. El Sitio permite a los negocios locales publicar cupones, especiales y anuncios, y permite a los miembros de la comunidad explorar ofertas, ver un mapa de negocios y suscribirse a un resumen semanal por correo electrónico."
+    },
+    "registration": {
+      "title": "Registro de Cuenta",
+      "body": "Para acceder a ciertas funciones debes registrarte. Aceptas proporcionar información precisa, vigente y completa durante el registro y actualizarla para mantenerla exacta. Eres responsable de mantener la confidencialidad de tu contraseña y de toda la actividad que ocurra bajo tu cuenta. Notifícanos de inmediato a hello@lompocdeals.com si sospechas acceso no autorizado."
+    },
+    "subscriptions": {
+      "title": "Planes de Suscripción",
+      "intro": "Ofrecemos los siguientes planes de suscripción para cuentas de negocios:",
+      "items": [
+        "Gratis — Listado básico sin costo; incluye página de perfil, marcador en el mapa y hasta 3 ofertas activas.",
+        "Estándar ($19.99/mes) — Listado mejorado con ofertas ilimitadas, posicionamiento prioritario y estadísticas.",
+        "Premium ($39.99/mes) — Todas las funciones Estándar más posicionamiento destacado en la página principal, enlaces a redes sociales y listados de propiedades/hoteles."
+      ],
+      "billing": "Los planes de pago se facturan mensualmente y se renuevan automáticamente a través de Stripe. Puedes cancelar tu suscripción en cualquier momento desde el panel de tu cuenta; la cancelación surte efecto al final del período de facturación actual. Los reembolsos son a nuestra discreción y, en general, no se emiten por meses parciales, salvo cuando lo requiera la ley."
+    },
+    "ugc": {
+      "title": "Contenido Generado por el Usuario",
+      "body": "Conservas la propiedad de cualquier contenido que publiques en Lompoc Deals (descripciones de ofertas, fotos, información del negocio, etc.). Al publicar contenido, otorgas a Lompoc Deals una licencia no exclusiva, libre de regalías y mundial para mostrar, reproducir y distribuir ese contenido en relación con la operación del Sitio. Declaras que tu contenido es exacto, legal y relacionado con tu negocio en el área de Lompoc. Nos reservamos el derecho de moderar, editar o eliminar contenido que viole estos Términos o la ley aplicable."
+    },
+    "prohibited": {
+      "title": "Conducta Prohibida",
+      "intro": "Aceptas no:",
+      "items": [
+        "Publicar spam, promociones engañosas o contenido no relacionado con tu negocio en Lompoc",
+        "Raspar, rastrear o descargar sistemáticamente datos del Sitio sin nuestro consentimiento por escrito",
+        "Publicar contenido ilegal, incluyendo contenido que infrinja derechos de propiedad intelectual",
+        "Hacerte pasar por otro negocio, persona o entidad",
+        "Acosar, amenazar o intimidar a otros usuarios",
+        "Intentar eludir, desactivar o burlar controles de seguridad o acceso",
+        "Usar el Sitio con fines ilegales o en violación de cualquier normativa aplicable"
+      ]
+    },
+    "listings": {
+      "title": "Listados de Negocios",
+      "body": "Los listados en Lompoc Deals deben representar negocios legítimos que operen dentro del Valle de Lompoc, incluyendo los códigos postales 93436, 93437 y 93438. Los listados fraudulentos, inactivos o fuera de nuestra área de servicio pueden ser eliminados sin previo aviso. Nos reservamos el derecho de aprobar o rechazar cualquier listado a nuestra entera discreción."
+    },
+    "ip": {
+      "title": "Propiedad Intelectual",
+      "body": "Todo el contenido del Sitio creado por Lompoc Deals — incluyendo diseños, logotipos, código y textos editoriales — es propiedad de o está licenciado a Lompoc Deals y no puede copiarse ni usarse sin permiso. El contenido generado por el usuario sigue siendo propiedad de los respectivos usuarios."
+    },
+    "disclaimers": {
+      "title": "Descargos de Responsabilidad",
+      "body": "El Sitio y todo el contenido se proporcionan \"tal como están\" y \"según disponibilidad\", sin garantías de ningún tipo, expresas o implícitas. No garantizamos un servicio ininterrumpido o sin errores, la exactitud o integridad de los listados de negocios, ni que el uso del Sitio produzca resultados específicos."
+    },
+    "liability": {
+      "title": "Limitación de Responsabilidad",
+      "body": "En la máxima medida permitida por la ley de California, Lompoc Deals y sus operadores no serán responsables de daños indirectos, incidentales, especiales, consecuentes o punitivos derivados del uso del Sitio. En cualquier caso, nuestra responsabilidad total hacia ti no excederá el mayor entre (a) los montos totales que nos hayas pagado en los 12 meses anteriores al reclamo, o (b) $200.00."
+    },
+    "termination": {
+      "title": "Terminación",
+      "body": "Nos reservamos el derecho de suspender o terminar tu cuenta y acceso al Sitio en cualquier momento, con o sin previo aviso, por conductas que razonablemente consideremos violatorias de estos Términos o perjudiciales para otros usuarios, terceros o nuestros intereses comerciales. Tras la terminación, tu derecho a usar el Sitio cesa de inmediato."
+    },
+    "governing": {
+      "title": "Ley Aplicable y Jurisdicción",
+      "body": "Estos Términos se rigen por las leyes del Estado de California, sin consideración a sus principios de conflicto de leyes. Cualquier disputa derivada de o relacionada con estos Términos se resolverá exclusivamente en los tribunales estatales o federales ubicados en el Condado de Santa Bárbara, California. Consientes la jurisdicción personal de esos tribunales."
+    },
+    "changesTerms": {
+      "title": "Cambios a Estos Términos",
+      "body": "Podemos modificar estos Términos en cualquier momento. Para cambios importantes, te notificaremos por correo electrónico (si tienes una cuenta) o mostrando un aviso prominente en el Sitio. El uso continuo de Lompoc Deals después de que los cambios entren en vigor constituye tu aceptación de los nuevos términos."
+    },
+    "contactSection": {
+      "title": "Contáctanos",
+      "body": "¿Preguntas sobre estos Términos? Comunícate con nosotros en:"
+    }
+  },
+  "contactPage": {
+    "metaTitle": "Contacto — Lompoc Deals",
+    "metaDescription": "Ponte en contacto con el equipo de Lompoc Deals — para propietarios de negocios, residentes locales o preguntas generales.",
+    "pageTitle": "Contáctanos",
+    "intro": "¿Tienes una pregunta, encontraste un error en un listado o quieres saber más sobre cómo poner tu negocio en el mapa? Nos encantaría saber de ti.",
+    "emailCard": {
+      "title": "Correo electrónico",
+      "label": "hello@lompocdeals.com",
+      "description": "La mejor manera de comunicarte con nosotros. Generalmente respondemos en un día hábil."
+    },
+    "businessCard": {
+      "title": "Para Propietarios de Negocios",
+      "description": "¿Listo para publicar tu negocio o mejorar tu plan? Visita nuestra página de información para negocios.",
+      "linkLabel": "Más información para negocios"
+    },
+    "localsCard": {
+      "title": "Para Residentes",
+      "description": "Encuentra ofertas, sigue tus lugares favoritos y suscríbete al resumen semanal.",
+      "linkLabel": "Descubre qué hay para ti"
+    },
+    "formSection": {
+      "title": "Envíanos un Mensaje",
+      "subtitle": "Completa el formulario y se abrirá en tu cliente de correo.",
+      "namePlaceholder": "Tu nombre",
+      "emailPlaceholder": "Tu correo electrónico",
+      "messagePlaceholder": "Tu mensaje…",
+      "submitLabel": "Abrir en mi correo",
+      "nameLabel": "Nombre",
+      "emailLabel": "Correo electrónico",
+      "messageLabel": "Mensaje"
+    }
   }
 }

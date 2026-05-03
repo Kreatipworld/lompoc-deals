@@ -10,7 +10,7 @@ export async function SiteFooter() {
   return (
     <footer className="mt-16 border-t bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-12">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           <div className="space-y-3">
             <Link href="/" className="flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
@@ -113,6 +113,29 @@ export async function SiteFooter() {
               <li>
                 <Link href="/subscribe" className="hover:text-foreground">
                   {t("weeklyDigest")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="font-display text-sm font-semibold tracking-tight">
+              {t("legal")}
+            </h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/privacy" className="hover:text-foreground">
+                  {t("privacyPolicy")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-foreground">
+                  {t("termsOfService")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-foreground">
+                  {t("contact")}
                 </Link>
               </li>
             </ul>
