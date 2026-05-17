@@ -302,7 +302,7 @@ export function AIChatWidget() {
           style={{
             borderRadius: "20px",
             background: T.bg,
-            maxHeight: "min(600px, calc(85vh - 6rem))",
+            height: "min(600px, calc(100dvh - 6rem))",
           }}
         >
           {/* Header */}
