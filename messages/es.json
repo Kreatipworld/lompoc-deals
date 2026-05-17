@@ -898,6 +898,8 @@
       "hours": "Horario",
       "openNow": "Abierto ahora",
       "closedNow": "Cerrado",
+      "hoursFromGoogle": "Horarios de Google · actualizado {date}",
+      "hoursClaimCta": "¿Eres el propietario? Reclama y confirma",
       "claimHeading": "¿Es tu negocio?",
       "claimBody": "Reclama tu ficha en 30 segundos y empieza a publicar tus propios cupones, especiales y anuncios.",
       "claimCta": "Reclamar este negocio",

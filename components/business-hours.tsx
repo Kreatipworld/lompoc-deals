@@ -4,18 +4,32 @@ import {
   DAY_LABELS,
   formatHoursLine,
   isOpenNow,
+  isRaw,
   parseHours,
 } from "@/lib/hours"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, getFormatter } from "next-intl/server"
 
-export async function BusinessHours({ hoursJson }: { hoursJson: unknown }) {
+interface Props {
+  hoursJson: unknown
+  hoursSource?: string | null
+  hoursSyncedAt?: Date | string | null
+}
+
+export async function BusinessHours({ hoursJson, hoursSource, hoursSyncedAt }: Props) {
   const hours = parseHours(hoursJson)
   const open = isOpenNow(hours)
   const t = await getTranslations("businesses.profile")
+  const format = await getFormatter()
 
-  // If every day is null, show nothing — we don't fake hours
   const anyDay = DAY_KEYS.some((k) => hours[k] !== null)
   if (!anyDay) return null
+
+  const showGoogleCaption = hoursSource === "google" && hoursSyncedAt
+  const syncedDate = showGoogleCaption
+    ? typeof hoursSyncedAt === "string"
+      ? new Date(hoursSyncedAt)
+      : hoursSyncedAt!
+    : null
 
   return (
     <div className="rounded-2xl border bg-card p-4 shadow-sm">
@@ -35,22 +49,32 @@ export async function BusinessHours({ hoursJson }: { hoursJson: unknown }) {
         </span>
       </div>
       <ul className="space-y-1 text-sm">
-        {DAY_KEYS.map((k) => (
-          <li
-            key={k}
-            className="flex items-center justify-between gap-3"
-          >
-            <span className="text-muted-foreground">{DAY_LABELS[k]}</span>
-            <span
-              className={
-                hours[k] ? "text-foreground" : "text-muted-foreground/60"
-              }
-            >
-              {formatHoursLine(hours[k])}
-            </span>
-          </li>
-        ))}
+        {DAY_KEYS.map((k) => {
+          const d = hours[k]
+          return (
+            <li key={k} className="flex items-center justify-between gap-3">
+              <span className="text-muted-foreground">{DAY_LABELS[k]}</span>
+              <span
+                className={
+                  d
+                    ? isRaw(d)
+                      ? "text-right text-[13px] italic text-foreground"
+                      : "text-foreground"
+                    : "text-muted-foreground/60"
+                }
+              >
+                {formatHoursLine(d)}
+              </span>
+            </li>
+          )
+        })}
       </ul>
+      {showGoogleCaption && syncedDate && (
+        <p className="mt-3 border-t pt-2 text-[11px] leading-snug text-muted-foreground">
+          {t("hoursFromGoogle", { date: format.relativeTime(syncedDate) })}{" "}
+          <span className="text-muted-foreground/80">· {t("hoursClaimCta")}</span>
+        </p>
+      )}
     </div>
   )
 }

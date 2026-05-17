@@ -898,6 +898,8 @@
       "hours": "Hours",
       "openNow": "Open now",
       "closedNow": "Closed now",
+      "hoursFromGoogle": "Hours from Google · updated {date}",
+      "hoursClaimCta": "Business owner? Claim & confirm",
       "claimHeading": "Is this your business?",
       "claimBody": "Claim your listing in 30 seconds and start posting your own coupons, specials, and announcements.",
       "claimCta": "Claim this listing",

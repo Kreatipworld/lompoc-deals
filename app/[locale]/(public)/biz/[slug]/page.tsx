@@ -311,7 +311,11 @@ export default async function BusinessPage({
                 )}
               </div>
             )}
-            <BusinessHours hoursJson={business.hoursJson} />
+            <BusinessHours
+                hoursJson={business.hoursJson}
+                hoursSource={business.hoursSource}
+                hoursSyncedAt={business.hoursSyncedAt}
+              />
           </aside>
         </div>
       </section>
