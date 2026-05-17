@@ -1533,11 +1533,6 @@
     "noWineries": "Aún no hay bodegas listadas. ¡Vuelve pronto!",
     "visitWebsite": "Visitar sitio web"
   },
-  "weatherWidget": {
-    "today": "Hoy",
-    "forecast": "Lompoc, CA · pronóstico de 7 días",
-    "badgeTitle": "{condition} · {max}°F / {min}°F · Lompoc, CA"
-  },
   "garageSaleDetail": {
     "heading": "Venta de garaje",
     "garageSale": "Venta de garaje",
