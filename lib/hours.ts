@@ -39,20 +39,62 @@ export function formatHoursLine(d: DayHours): string {
   return `${format12h(d.open)} – ${format12h(d.close)}`
 }
 
-/** Determine if a business is open right now based on its hours and current local time */
+function toMinutes(hhmm: string): number {
+  const [h, m] = hhmm.split(":").map((s) => parseInt(s, 10))
+  if (Number.isNaN(h) || Number.isNaN(m)) return NaN
+  return h * 60 + m
+}
+
+/** Determine if a business is open right now in Lompoc's timezone (America/Los_Angeles). Handles ranges that cross midnight (e.g. 5 PM – 2 AM). */
 export function isOpenNow(hours: Hours | null | undefined): boolean {
   if (!hours) return false
-  const now = new Date()
-  const dayIdx = now.getDay() // 0 = Sunday
-  const dayKey: (keyof Hours)[] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
-  const today = hours[dayKey[dayIdx]]
-  if (!today) return false
-  const cur = now.getHours() * 60 + now.getMinutes()
-  const [oh, om] = today.open.split(":").map(Number)
-  const [ch, cm] = today.close.split(":").map(Number)
-  const open = oh * 60 + om
-  const close = ch * 60 + cm
-  return cur >= open && cur < close
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date())
+
+  const weekday = parts.find((p) => p.type === "weekday")?.value ?? ""
+  const hour = parseInt(parts.find((p) => p.type === "hour")?.value ?? "NaN", 10)
+  const minute = parseInt(parts.find((p) => p.type === "minute")?.value ?? "NaN", 10)
+  if (Number.isNaN(hour) || Number.isNaN(minute)) return false
+
+  const weekdayMap: Record<string, keyof Hours> = {
+    Sun: "sun", Mon: "mon", Tue: "tue", Wed: "wed", Thu: "thu", Fri: "fri", Sat: "sat",
+  }
+  const todayKey = weekdayMap[weekday]
+  if (!todayKey) return false
+  const todayIdx = DAY_KEYS.indexOf(todayKey)
+  const yesterdayKey = DAY_KEYS[(todayIdx + DAY_KEYS.length - 1) % DAY_KEYS.length]
+  const cur = (hour % 24) * 60 + minute
+
+  // Today's range — if close <= open, it crosses midnight (only the pre-midnight portion applies today).
+  const today = hours[todayKey]
+  if (today) {
+    const open = toMinutes(today.open)
+    const close = toMinutes(today.close)
+    if (!Number.isNaN(open) && !Number.isNaN(close)) {
+      if (close > open) {
+        if (cur >= open && cur < close) return true
+      } else if (close < open) {
+        if (cur >= open) return true
+      }
+    }
+  }
+
+  // Yesterday's range may still cover early-morning hours today.
+  const yesterday = hours[yesterdayKey]
+  if (yesterday) {
+    const open = toMinutes(yesterday.open)
+    const close = toMinutes(yesterday.close)
+    if (!Number.isNaN(open) && !Number.isNaN(close) && close < open) {
+      if (cur < close) return true
+    }
+  }
+
+  return false
 }
 
 /** Best-effort coerce unknown JSON into a valid Hours, missing days = null */
