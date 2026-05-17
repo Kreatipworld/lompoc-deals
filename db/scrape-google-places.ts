@@ -26,6 +26,8 @@ import { db } from "./client"
 import { categories, users, businesses } from "./schema"
 import { eq } from "drizzle-orm"
 import { isLompocAddress } from "../lib/lompoc-zip"
+import { normalizeGoogleHours } from "../lib/hours-normalizer"
+import { DAY_KEYS } from "../lib/hours"
 
 // ---- helpers ---------------------------------------------------------------
 
@@ -60,15 +62,19 @@ function mapCategory(googleCategories: string[]): string {
 }
 
 /**
- * Convert Apify opening hours array to our JSON format.
+ * Convert Apify opening hours array to our canonical Hours shape.
  * Input:  [{ day: "Monday", hours: "9 AM–5 PM" }, …]
- * Output: { monday: "9 AM–5 PM", tuesday: "Closed", … }
+ * Intermediate: { monday: "9 AM–5 PM", tuesday: "Closed", … }
+ * Output: canonical Hours object, or null if no days populated.
  */
-function parseHours(openingHours: Array<{ day: string; hours: string }> | undefined) {
+function buildNormalizedHours(openingHours: Array<{ day: string; hours: string }> | undefined) {
   if (!openingHours || openingHours.length === 0) return null
-  return Object.fromEntries(
+  const longKeyMap = Object.fromEntries(
     openingHours.map(({ day, hours }) => [day.toLowerCase(), hours])
   )
+  const normalized = normalizeGoogleHours(longKeyMap)
+  const anyHours = DAY_KEYS.some((k) => normalized[k] !== null)
+  return anyHours ? normalized : null
 }
 
 // ---- main ------------------------------------------------------------------
@@ -216,8 +222,16 @@ async function main() {
         if (!existing.lng && place.location?.lng) updates.lng = place.location.lng
         if (!existing.phone && place.phone) updates.phone = place.phone
         if (!existing.website && place.website) updates.website = place.website
-        if (!existing.hoursJson && place.openingHours?.length) {
-          updates.hoursJson = parseHours(place.openingHours)
+        // Never overwrite hours that the owner has manually edited
+        if (existing.hoursSource !== "owner" && !existing.hoursJson && place.openingHours?.length) {
+          const normalizedHours = buildNormalizedHours(place.openingHours)
+          updates.hoursJson = normalizedHours
+          updates.hoursSource = normalizedHours ? "google" : null
+          updates.hoursSyncedAt = normalizedHours ? new Date() : null
+        }
+        if (!existing.googlePlaceId && place.placeId) {
+          // placeId is the field Apify's compass/crawler-google-places actor returns (verified in GooglePlaceResult interface)
+          updates.googlePlaceId = place.placeId
         }
         if (!existing.coverUrl && (place.imageUrl || place.photos?.[0]?.imageUrl)) {
           updates.coverUrl = place.imageUrl ?? place.photos![0].imageUrl
@@ -252,6 +266,7 @@ async function main() {
         place.photos?.[0]?.imageUrl ??
         null
 
+      const normalizedHours = buildNormalizedHours(place.openingHours)
       await db.insert(businesses).values({
         ownerUserId: scraperUser.id,
         name,
@@ -263,7 +278,11 @@ async function main() {
         lng: place.location?.lng ?? null,
         phone: place.phone ?? null,
         website: place.website ?? null,
-        hoursJson: parseHours(place.openingHours),
+        hoursJson: normalizedHours,
+        hoursSource: normalizedHours ? "google" : null,
+        hoursSyncedAt: normalizedHours ? new Date() : null,
+        // placeId is the field Apify's compass/crawler-google-places actor returns (verified in GooglePlaceResult interface)
+        googlePlaceId: place.placeId ?? null,
         coverUrl,
         googleBusinessUrl: place.url ?? null,
         status: "approved",
