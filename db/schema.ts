@@ -94,6 +94,9 @@ export const businesses = pgTable(
     phone: varchar("phone", { length: 50 }),
     website: varchar("website", { length: 500 }),
     hoursJson: jsonb("hours_json"),
+    hoursSource: text("hours_source"), // 'google' | 'owner' | null
+    hoursSyncedAt: timestamp("hours_synced_at", { withTimezone: true }),
+    googlePlaceId: varchar("google_place_id", { length: 255 }),
     logoUrl: varchar("logo_url", { length: 1000 }),
     coverUrl: varchar("cover_url", { length: 1000 }),
     photosJson: jsonb("photos_json"),
@@ -115,6 +118,7 @@ export const businesses = pgTable(
   },
   (t) => ({
     slugIdx: uniqueIndex("businesses_slug_idx").on(t.slug),
+    googlePlaceIdIdx: uniqueIndex("businesses_google_place_id_idx").on(t.googlePlaceId),
   })
 )
 

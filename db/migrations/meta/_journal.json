@@ -71,6 +71,13 @@
       "when": 1777145845901,
       "tag": "0009_many_rawhide_kid",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1779046574342,
+      "tag": "0017_business_hours_meta",
+      "breakpoints": true
     }
   ]
 }
