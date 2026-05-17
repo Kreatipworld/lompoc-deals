@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import {
   DAY_KEYS,
   DAY_LABELS,
+  isCanonical,
   parseHours,
   type Hours,
 } from "@/lib/hours"
@@ -49,7 +50,7 @@ function HoursEditor({ initial, labelTo, labelClosed }: { initial: Hours; labelT
             <Input
               type="time"
               name={`hours_${day}_open`}
-              defaultValue={d?.open ?? "09:00"}
+              defaultValue={isCanonical(d) ? d.open : "09:00"}
               className="h-8 max-w-[110px]"
               disabled={isClosed}
             />
@@ -57,7 +58,7 @@ function HoursEditor({ initial, labelTo, labelClosed }: { initial: Hours; labelT
             <Input
               type="time"
               name={`hours_${day}_close`}
-              defaultValue={d?.close ?? "17:00"}
+              defaultValue={isCanonical(d) ? d.close : "17:00"}
               className="h-8 max-w-[110px]"
               disabled={isClosed}
             />

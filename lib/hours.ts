@@ -1,4 +1,6 @@
-export type DayHours = { open: string; close: string } | null
+export type CanonicalDayHours = { open: string; close: string }
+export type RawDayHours = { raw: string }
+export type DayHours = CanonicalDayHours | RawDayHours | null
 
 export type Hours = {
   mon: DayHours
@@ -25,6 +27,14 @@ export function emptyHours(): Hours {
   return { mon: null, tue: null, wed: null, thu: null, fri: null, sat: null, sun: null }
 }
 
+export function isCanonical(d: DayHours): d is CanonicalDayHours {
+  return d !== null && "open" in d && "close" in d
+}
+
+export function isRaw(d: DayHours): d is RawDayHours {
+  return d !== null && "raw" in d
+}
+
 /** "09:00" → "9:00 AM"; "17:30" → "5:30 PM" */
 export function format12h(hhmm: string): string {
   const [h, m] = hhmm.split(":").map((s) => parseInt(s, 10))
@@ -35,7 +45,8 @@ export function format12h(hhmm: string): string {
 }
 
 export function formatHoursLine(d: DayHours): string {
-  if (!d) return "Closed"
+  if (d === null) return "Closed"
+  if (isRaw(d)) return d.raw
   return `${format12h(d.open)} – ${format12h(d.close)}`
 }
 
@@ -45,7 +56,7 @@ function toMinutes(hhmm: string): number {
   return h * 60 + m
 }
 
-/** Determine if a business is open right now in Lompoc's timezone (America/Los_Angeles). Handles ranges that cross midnight (e.g. 5 PM – 2 AM). */
+/** Determine if a business is open right now in Lompoc's timezone. Handles ranges that cross midnight. Returns false for raw-shape days (can't compute). */
 export function isOpenNow(hours: Hours | null | undefined): boolean {
   if (!hours) return false
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -70,9 +81,8 @@ export function isOpenNow(hours: Hours | null | undefined): boolean {
   const yesterdayKey = DAY_KEYS[(todayIdx + DAY_KEYS.length - 1) % DAY_KEYS.length]
   const cur = (hour % 24) * 60 + minute
 
-  // Today's range — if close <= open, it crosses midnight (only the pre-midnight portion applies today).
   const today = hours[todayKey]
-  if (today) {
+  if (isCanonical(today)) {
     const open = toMinutes(today.open)
     const close = toMinutes(today.close)
     if (!Number.isNaN(open) && !Number.isNaN(close)) {
@@ -84,9 +94,8 @@ export function isOpenNow(hours: Hours | null | undefined): boolean {
     }
   }
 
-  // Yesterday's range may still cover early-morning hours today.
   const yesterday = hours[yesterdayKey]
-  if (yesterday) {
+  if (isCanonical(yesterday)) {
     const open = toMinutes(yesterday.open)
     const close = toMinutes(yesterday.close)
     if (!Number.isNaN(open) && !Number.isNaN(close) && close < open) {
@@ -97,24 +106,19 @@ export function isOpenNow(hours: Hours | null | undefined): boolean {
   return false
 }
 
-/** Best-effort coerce unknown JSON into a valid Hours, missing days = null */
+/** Coerce unknown JSON into canonical Hours. Accepts existing canonical shape AND raw-shape entries. Unknown shapes → null per day. */
 export function parseHours(json: unknown): Hours {
   const out = emptyHours()
   if (!json || typeof json !== "object") return out
   const obj = json as Record<string, unknown>
   for (const k of DAY_KEYS) {
     const v = obj[k]
-    if (
-      v &&
-      typeof v === "object" &&
-      "open" in v &&
-      "close" in v &&
-      typeof (v as { open: unknown }).open === "string" &&
-      typeof (v as { close: unknown }).close === "string"
-    ) {
-      out[k] = {
-        open: (v as { open: string }).open,
-        close: (v as { close: string }).close,
+    if (v && typeof v === "object") {
+      const vo = v as Record<string, unknown>
+      if (typeof vo.open === "string" && typeof vo.close === "string") {
+        out[k] = { open: vo.open, close: vo.close }
+      } else if (typeof vo.raw === "string") {
+        out[k] = { raw: vo.raw }
       }
     }
   }
