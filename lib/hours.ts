@@ -1,5 +1,5 @@
 export type CanonicalDayHours = { open: string; close: string }
-export type RawDayHours = { raw: string }
+export type RawDayHours = { raw: string; ranges?: Array<CanonicalDayHours> }
 export type DayHours = CanonicalDayHours | RawDayHours | null
 
 export type Hours = {
@@ -56,7 +56,19 @@ function toMinutes(hhmm: string): number {
   return h * 60 + m
 }
 
-/** Determine if a business is open right now in Lompoc's timezone. Handles ranges that cross midnight. Returns false for raw-shape days (can't compute). */
+function rangeCoversMinute(open: number, close: number, cur: number): boolean {
+  if (Number.isNaN(open) || Number.isNaN(close)) return false
+  if (close > open) return cur >= open && cur < close
+  if (close < open) return cur >= open // pre-midnight portion
+  return false
+}
+
+function rangeWrapsTo(open: number, close: number, cur: number): boolean {
+  if (Number.isNaN(open) || Number.isNaN(close)) return false
+  return close < open && cur < close // post-midnight portion from previous day
+}
+
+/** Determine if a business is open right now in Lompoc's timezone. Handles ranges that cross midnight and multi-range days (e.g. pharmacies with lunch breaks). */
 export function isOpenNow(hours: Hours | null | undefined): boolean {
   if (!hours) return false
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -82,31 +94,27 @@ export function isOpenNow(hours: Hours | null | undefined): boolean {
   const cur = (hour % 24) * 60 + minute
 
   const today = hours[todayKey]
-  if (isCanonical(today)) {
-    const open = toMinutes(today.open)
-    const close = toMinutes(today.close)
-    if (!Number.isNaN(open) && !Number.isNaN(close)) {
-      if (close > open) {
-        if (cur >= open && cur < close) return true
-      } else if (close < open) {
-        if (cur >= open) return true
-      }
-    }
+  const todayRanges = rangesOf(today)
+  for (const r of todayRanges) {
+    if (rangeCoversMinute(toMinutes(r.open), toMinutes(r.close), cur)) return true
   }
 
   const yesterday = hours[yesterdayKey]
-  if (isCanonical(yesterday)) {
-    const open = toMinutes(yesterday.open)
-    const close = toMinutes(yesterday.close)
-    if (!Number.isNaN(open) && !Number.isNaN(close) && close < open) {
-      if (cur < close) return true
-    }
+  const yesterdayRanges = rangesOf(yesterday)
+  for (const r of yesterdayRanges) {
+    if (rangeWrapsTo(toMinutes(r.open), toMinutes(r.close), cur)) return true
   }
 
   return false
 }
 
-/** Coerce unknown JSON into canonical Hours. Accepts existing canonical shape AND raw-shape entries. Unknown shapes → null per day. */
+function rangesOf(d: DayHours): Array<CanonicalDayHours> {
+  if (d === null) return []
+  if (isCanonical(d)) return [d]
+  return d.ranges ?? []
+}
+
+/** Coerce unknown JSON into canonical Hours. Accepts the canonical shape AND raw-shape entries (with optional structured ranges). Unknown shapes → null per day. */
 export function parseHours(json: unknown): Hours {
   const out = emptyHours()
   if (!json || typeof json !== "object") return out
@@ -118,7 +126,16 @@ export function parseHours(json: unknown): Hours {
       if (typeof vo.open === "string" && typeof vo.close === "string") {
         out[k] = { open: vo.open, close: vo.close }
       } else if (typeof vo.raw === "string") {
-        out[k] = { raw: vo.raw }
+        const ranges = Array.isArray(vo.ranges)
+          ? vo.ranges
+              .filter((r): r is { open: string; close: string } =>
+                typeof r === "object" && r !== null &&
+                typeof (r as Record<string, unknown>).open === "string" &&
+                typeof (r as Record<string, unknown>).close === "string"
+              )
+              .map((r) => ({ open: r.open, close: r.close }))
+          : undefined
+        out[k] = ranges && ranges.length > 0 ? { raw: vo.raw, ranges } : { raw: vo.raw }
       }
     }
   }
