@@ -10,6 +10,8 @@
 
 **Reference spec:** `docs/superpowers/specs/2026-05-18-analytics-and-funnel-design.md`
 
+> **Naming note (added after Task 1):** The Drizzle export is **`analyticsEvents`** (DB table **`analytics_events`**), not `events`. The schema already has an `events` table for the community calendar (festival listings) which would have collided. Every reference below to `events` as a Drizzle table or SQL identifier should read as `analyticsEvents` / `analytics_events`. Column names are unchanged.
+
 ---
 
 ## File structure
