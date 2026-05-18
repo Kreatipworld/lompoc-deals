@@ -21,7 +21,8 @@
     "db:fix-chain-logos": "node --env-file=.env.local node_modules/.bin/tsx db/fix-chain-logos.ts",
     "test:hours-normalizer": "node --env-file=.env.local node_modules/.bin/tsx db/test-hours-normalizer.ts",
     "db:normalize-hours": "node --env-file=.env.local node_modules/.bin/tsx db/normalize-hours.ts",
-    "db:backfill-multi-range": "node --env-file=.env.local node_modules/.bin/tsx db/backfill-multi-range.ts"
+    "db:backfill-multi-range": "node --env-file=.env.local node_modules/.bin/tsx db/backfill-multi-range.ts",
+    "test:analytics": "node --env-file=.env.local node_modules/.bin/tsx lib/analytics/test-track.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.71",
