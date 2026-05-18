@@ -1,52 +1,79 @@
 import { auth } from "@/auth"
 import createMiddleware from "next-intl/middleware"
 import { routing } from "@/i18n/routing"
+import { NextResponse } from "next/server"
 
 const intlMiddleware = createMiddleware(routing)
 
-// Paths that require auth checks. With localePrefix: "never" the URLs no
-// longer have /en or /es prefixes, so we match against the raw pathname.
 const protectedPaths = ["/dashboard", "/admin"]
+
+const SESSION_COOKIE = "lompoc_sid"
+const SESSION_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
+
+function ensureSessionCookie(req: Parameters<Parameters<typeof auth>[0]>[0], res: Response): Response {
+  if (req.headers.get("cookie")?.includes(`${SESSION_COOKIE}=`)) return res
+  const sid = crypto.randomUUID()
+  if (res instanceof NextResponse) {
+    res.cookies.set({
+      name: SESSION_COOKIE,
+      value: sid,
+      maxAge: SESSION_MAX_AGE,
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+    })
+    return res
+  }
+  // For Response.redirect (used in protected-path bouncing), wrap with NextResponse to attach a cookie.
+  const wrapped = NextResponse.redirect(res.headers.get("location") ?? "/", res.status)
+  wrapped.cookies.set({
+    name: SESSION_COOKIE,
+    value: sid,
+    maxAge: SESSION_MAX_AGE,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+  })
+  return wrapped
+}
 
 export default auth(function middleware(req) {
   const { pathname } = req.nextUrl
 
   // Skip intl middleware for API routes — they have no locale prefix
   if (pathname.startsWith("/api")) {
-    return
+    const apiPassthrough = NextResponse.next()
+    return ensureSessionCookie(req, apiPassthrough)
   }
 
-  // Also tolerate legacy /en/* and /es/* URLs that may be cached or
-  // bookmarked. Strip the prefix so the auth check still works.
+  // Tolerate legacy /en/* and /es/* URLs that may be cached or bookmarked.
   const pathnameWithoutLocale = pathname.replace(/^\/(en|es)(\/|$)/, "/") || "/"
 
-  const isProtected = protectedPaths.some((p) =>
-    pathnameWithoutLocale.startsWith(p)
-  )
+  const isProtected = protectedPaths.some((p) => pathnameWithoutLocale.startsWith(p))
 
   const intlResponse = intlMiddleware(req)
 
   if (isProtected) {
-    // Use req.auth from the NextAuth v5 session — avoids getToken() which
-    // does not correctly decode NextAuth v5 JWTs in Edge middleware.
     const role = req.auth?.user?.role
 
     if (pathnameWithoutLocale.startsWith("/dashboard") && role !== "business") {
       const url = req.nextUrl.clone()
       url.pathname = "/login"
       url.searchParams.set("from", pathnameWithoutLocale)
-      return Response.redirect(url)
+      return ensureSessionCookie(req, Response.redirect(url))
     }
 
     if (pathnameWithoutLocale.startsWith("/admin") && role !== "admin") {
       const url = req.nextUrl.clone()
       url.pathname = "/login"
       url.searchParams.set("from", pathnameWithoutLocale)
-      return Response.redirect(url)
+      return ensureSessionCookie(req, Response.redirect(url))
     }
   }
 
-  return intlResponse
+  return ensureSessionCookie(req, intlResponse)
 })
 
 export const config = {
