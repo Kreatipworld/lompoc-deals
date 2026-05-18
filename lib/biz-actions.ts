@@ -15,6 +15,8 @@ import { localizedLompocAddressError } from "@/lib/i18n-helpers"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
 import { TIERS } from "@/lib/stripe"
 import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail } from "@/lib/email"
+import { track } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
 
 function slugify(s: string) {
   return s
@@ -148,6 +150,9 @@ export async function saveProfileAction(
   const hoursPayload = anyHours ? hours : null
 
   const existing = await ownedBusiness(userId)
+  const firstSave = !existing
+  let bizId: number | null = existing?.id ?? null
+
   if (existing) {
     await db
       .update(businesses)
@@ -169,7 +174,7 @@ export async function saveProfileAction(
       })
       .where(eq(businesses.id, existing.id))
   } else {
-    await db.insert(businesses).values({
+    const [newBiz] = await db.insert(businesses).values({
       ownerUserId: userId,
       name: data.name,
       slug: slugify(data.name),
@@ -187,8 +192,17 @@ export async function saveProfileAction(
       logoUrl,
       coverUrl,
       status: "pending",
-    })
+    }).returning({ id: businesses.id })
+    bizId = newBiz?.id ?? null
   }
+
+  await track("business_profile_saved", {
+    userId,
+    sessionId: getSessionId(),
+    targetType: "business",
+    targetId: bizId,
+    props: { firstSave },
+  })
 
   revalidatePath("/dashboard/profile")
   revalidatePath("/")
@@ -334,6 +348,22 @@ export async function saveDealAction(
         businessName: biz.name,
         businessSlug: biz.slug,
       })
+
+      // Emit first_deal_posted if this is the business's first deal
+      const dealCount = await db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(deals)
+        .where(eq(deals.businessId, biz.id))
+      const isFirst = (dealCount[0]?.count ?? 0) === 1
+      if (isFirst) {
+        await track("first_deal_posted", {
+          userId,
+          sessionId: getSessionId(),
+          targetType: "business",
+          targetId: biz.id,
+          props: { dealId: inserted.id, type: data.type },
+        })
+      }
     }
   }
 

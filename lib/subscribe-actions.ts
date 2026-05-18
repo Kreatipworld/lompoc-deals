@@ -6,6 +6,8 @@ import { eq } from "drizzle-orm"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendConfirmationEmail } from "@/lib/email"
+import { track } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
 
 const subscribeSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -35,6 +37,7 @@ export async function subscribeAction(
   })
 
   let token: string
+  let newSubscriberId: number | null = null
   if (existing) {
     if (existing.confirmedAt) {
       return { success: "You're already subscribed. Thanks!" }
@@ -43,9 +46,17 @@ export async function subscribeAction(
     token = existing.unsubscribeToken
   } else {
     token = makeToken()
-    await db.insert(subscribers).values({
+    const [newSub] = await db.insert(subscribers).values({
       email,
       unsubscribeToken: token,
+    }).returning({ id: subscribers.id })
+    newSubscriberId = newSub?.id ?? null
+    await track("digest_subscribed", {
+      userId: null,
+      sessionId: getSessionId(),
+      targetType: "subscriber",
+      targetId: newSubscriberId,
+      props: { doubleOptIn: false },
     })
   }
 
@@ -76,6 +87,13 @@ export async function confirmSubscriptionByToken(token: string) {
       .update(subscribers)
       .set({ confirmedAt: new Date() })
       .where(eq(subscribers.id, sub.id))
+    await track("digest_subscribed", {
+      userId: null,
+      sessionId: getSessionId(),
+      targetType: "subscriber",
+      targetId: sub.id,
+      props: { doubleOptIn: true },
+    })
   }
   return { ok: true as const, email: sub.email }
 }

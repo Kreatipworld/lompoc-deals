@@ -15,6 +15,8 @@ import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { sendWelcomeEmail } from "@/lib/email"
 import { localizedLompocAddressError, getCurrentLocale } from "@/lib/i18n-helpers"
+import { track, stitchSession } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
 
 // ─── Step 1 — Account creation ──────────────────────────────────────────────
 
@@ -190,6 +192,17 @@ export async function businessSignupSubmitAction(
     .returning({ id: users.id })
 
   const userId = newUser.id
+
+  // Stitch anonymous session to new user, then track signup
+  const sid = getSessionId()
+  if (sid) await stitchSession(sid, userId)
+  await track("business_signup", {
+    userId,
+    sessionId: sid,
+    targetType: "user",
+    targetId: userId,
+    props: { via: "email" },
+  })
 
   // Slugify business name
   const slug = businessName

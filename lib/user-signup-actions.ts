@@ -11,6 +11,8 @@ import { users } from "@/db/schema"
 import { signIn } from "@/auth"
 import { sendWelcomeEmail } from "@/lib/email"
 import { getCurrentLocale } from "@/lib/i18n-helpers"
+import { track, stitchSession } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
 
 const localSignupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -54,7 +56,7 @@ export async function localSignupAction(
 
   const passwordHash = await bcrypt.hash(password, 10)
   const locale = await getCurrentLocale()
-  await db.insert(users).values({
+  const [newUser] = await db.insert(users).values({
     email,
     passwordHash,
     role: "local",
@@ -63,7 +65,20 @@ export async function localSignupAction(
     zip: zip ?? null,
     interestsJson: interests && interests.length > 0 ? interests : null,
     locale,
-  })
+  }).returning({ id: users.id })
+
+  // Stitch anonymous session to new user, then track signup
+  const sid = getSessionId()
+  if (sid && newUser) await stitchSession(sid, newUser.id)
+  if (newUser) {
+    await track("local_signup", {
+      userId: newUser.id,
+      sessionId: sid,
+      targetType: "user",
+      targetId: newUser.id,
+      props: { via: "email" },
+    })
+  }
 
   // Fire-and-forget welcome email — don't block signup on failure
   sendWelcomeEmail(email, name, "local", locale).catch((err) =>

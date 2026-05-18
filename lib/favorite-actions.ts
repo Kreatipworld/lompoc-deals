@@ -5,6 +5,8 @@ import { and, eq } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { favorites } from "@/db/schema"
+import { track } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
 
 export async function toggleFavoriteAction(formData: FormData) {
   const session = await auth()
@@ -28,6 +30,13 @@ export async function toggleFavoriteAction(formData: FormData) {
       )
   } else {
     await db.insert(favorites).values({ userId, dealId })
+    await track("favorite_added", {
+      userId,
+      sessionId: getSessionId(),
+      targetType: "deal",
+      targetId: dealId,
+      props: {},
+    })
   }
 
   // Revalidate any page that may show this deal
