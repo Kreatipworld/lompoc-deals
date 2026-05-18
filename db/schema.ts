@@ -466,6 +466,27 @@ export const subscribers = pgTable("subscribers", {
     .defaultNow(),
 })
 
+// ---------- analytics events ----------
+export const analyticsEvents = pgTable(
+  "analytics_events",
+  {
+    id: serial("id").primaryKey(),
+    eventName: text("event_name").notNull(),
+    userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
+    sessionId: varchar("session_id", { length: 36 }),
+    targetType: text("target_type"),
+    targetId: integer("target_id"),
+    props: jsonb("props"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    analyticsEventsNameCreatedIdx: index("analytics_events_name_created_idx").on(t.eventName, t.createdAt),
+    analyticsEventsUserCreatedIdx: index("analytics_events_user_created_idx").on(t.userId, t.createdAt),
+    analyticsEventsSessionCreatedIdx: index("analytics_events_session_created_idx").on(t.sessionId, t.createdAt),
+    analyticsEventsTargetIdx: index("analytics_events_target_idx").on(t.targetType, t.targetId),
+  })
+)
+
 // ---------- feed posts ----------
 export const feedPosts = pgTable(
   "feed_posts",
