@@ -5,6 +5,7 @@ import { subscriptions, businesses } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import type { TierKey } from "@/lib/stripe"
 import type Stripe from "stripe"
+import { track } from "@/lib/analytics/track"
 
 /** Map a Stripe price ID back to the tier key it represents. */
 function tierFromPriceId(priceId: string): TierKey | null {
@@ -87,6 +88,23 @@ export async function POST(request: Request) {
           status: "active",
           currentPeriodEnd: periodEnd,
           cancelAtPeriodEnd: 0,
+        })
+      }
+
+      // Emit paid_upgrade — fires exactly once per checkout completion
+      if (tier !== "free") {
+        const lineItem = sub.items?.data?.[0]
+        const priceUsdCents = lineItem?.price?.unit_amount ?? 0
+        const updatedSub = await db.query.subscriptions.findFirst({
+          where: eq(subscriptions.userId, userId),
+          columns: { id: true },
+        })
+        await track("paid_upgrade", {
+          userId,
+          sessionId: null,
+          targetType: "subscription",
+          targetId: updatedSub?.id ?? null,
+          props: { tier: tier as "standard" | "premium", priceUsdCents },
         })
       }
       break

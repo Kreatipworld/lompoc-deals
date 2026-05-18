@@ -1,35 +1,54 @@
 import { sql, inArray } from "drizzle-orm"
 import { db } from "@/db/client"
-import { dealEvents, deals } from "@/db/schema"
+import { deals, analyticsEvents } from "@/db/schema"
+import { getSessionId } from "@/lib/analytics/session"
 
 /**
- * Bump view counts for the given deal ids in a single SQL update.
- * Also inserts view events into deal_events for windowed funnel queries.
+ * Bump view counts for the given deal ids and emit deal_view events.
  * Fire-and-forget — never block the page render on this.
  */
-export async function bumpViewCounts(dealIds: number[]) {
+export async function bumpViewCounts(dealIds: number[], userId: number | null = null) {
   if (dealIds.length === 0) return
   try {
+    const sid = getSessionId()
     await Promise.all([
       db
         .update(deals)
         .set({ viewCount: sql`${deals.viewCount} + 1` })
         .where(inArray(deals.id, dealIds)),
-      db
-        .insert(dealEvents)
-        .values(dealIds.map((id) => ({ dealId: id, eventType: "view" as const }))),
+      db.insert(analyticsEvents).values(
+        dealIds.map((id) => ({
+          eventName: "deal_view" as const,
+          userId,
+          sessionId: sid,
+          targetType: "deal",
+          targetId: id,
+          props: {},
+        }))
+      ),
     ])
   } catch {
     // best-effort
   }
 }
 
-export async function bumpClickCount(dealId: number) {
+export async function bumpClickCount(dealId: number, userId: number | null = null) {
   try {
-    await db
-      .update(deals)
-      .set({ clickCount: sql`${deals.clickCount} + 1` })
-      .where(sql`${deals.id} = ${dealId}`)
+    const sid = getSessionId()
+    await Promise.all([
+      db
+        .update(deals)
+        .set({ clickCount: sql`${deals.clickCount} + 1` })
+        .where(sql`${deals.id} = ${dealId}`),
+      db.insert(analyticsEvents).values({
+        eventName: "deal_click",
+        userId,
+        sessionId: sid,
+        targetType: "deal",
+        targetId: dealId,
+        props: {},
+      }),
+    ])
   } catch {
     // best-effort
   }

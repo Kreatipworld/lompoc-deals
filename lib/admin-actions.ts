@@ -5,6 +5,7 @@ import { eq, sql, and, gt } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { businesses, deals, users, businessClaims, events, dealEvents } from "@/db/schema"
+import { track } from "@/lib/analytics/track"
 
 async function requireAdmin() {
   const session = await auth()
@@ -317,6 +318,17 @@ export async function approveClaimAction(formData: FormData) {
         eq(businessClaims.status, "pending")
       )
     )
+  // Emit analytics event for the claim approval
+  const adminSession = await auth()
+  const adminUserId = adminSession?.user?.id ? parseInt(adminSession.user.id, 10) : 0
+  await track("business_claim_approved", {
+    userId: claim.userId,
+    sessionId: null,
+    targetType: "business",
+    targetId: claim.businessId,
+    props: { adminUserId },
+  })
+
   revalidatePath("/admin")
   if (business?.slug) revalidatePath(`/biz/${business.slug}`)
   revalidatePath("/dashboard/profile")

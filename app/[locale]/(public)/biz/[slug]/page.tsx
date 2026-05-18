@@ -13,6 +13,9 @@ import {
 import { getBusinessBySlug, getListingsByBusinessId } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { bumpViewCounts } from "@/lib/tracking"
+import { track } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
+import { headers } from "next/headers"
 import { DealGrid } from "@/components/deal-card"
 import { PropertyListingGrid } from "@/components/property-listing-card"
 import { BusinessSocialLinks } from "@/components/business-social-links"
@@ -63,7 +66,7 @@ function googleReviewsUrl(business: {
 export default async function BusinessPage({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string; locale: string }
 }) {
   const [data, viewer, t] = await Promise.all([
     getBusinessBySlug(params.slug),
@@ -88,6 +91,17 @@ export default async function BusinessPage({
   if (!isRealEstate && deals.length > 0) {
     void bumpViewCounts(deals.map((d) => d.id))
   }
+
+  // Emit business_page_viewed after 404 check so we don't track missing pages
+  const locale = (params.locale === "es" ? "es" : "en") as "en" | "es"
+  const ref = headers().get("referer") ?? undefined
+  void track("business_page_viewed", {
+    userId: viewer.userId ?? null,
+    sessionId: getSessionId(),
+    targetType: "business",
+    targetId: business.id,
+    props: { locale, referrer: ref },
+  })
 
   const isUnclaimed = business.ownerEmail === SYSTEM_OWNER_EMAIL
   const reviewsUrl = googleReviewsUrl(business)

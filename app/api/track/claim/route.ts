@@ -1,11 +1,12 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { dealEvents } from "@/db/schema"
+import { track } from "@/lib/analytics/track"
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const { dealId, sessionId } = await request.json()
+    const { dealId, sessionId, businessId } = await request.json()
     if (!dealId || typeof dealId !== "number") {
       return NextResponse.json({ error: "Invalid dealId" }, { status: 400 })
     }
@@ -17,6 +18,14 @@ export async function POST(request: Request) {
       userId,
       eventType: "claim",
       sessionId: sessionId ?? null,
+    })
+
+    // Emit analytics event for the claim submission
+    await track("business_claim_submitted", {
+      userId,
+      sessionId: request.cookies.get("lompoc_sid")?.value ?? null,
+      targetType: "business",
+      targetId: typeof businessId === "number" ? businessId : null,
     })
 
     return NextResponse.json({ ok: true })
