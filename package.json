@@ -32,6 +32,7 @@
     "@neondatabase/serverless": "^1.0.2",
     "@turf/distance": "^7.3.4",
     "@types/mapbox-gl": "^3.4.1",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.3.3",
     "ai": "^6.0.168",
     "animejs": "^4.3.6",

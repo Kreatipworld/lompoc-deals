@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
 import { getLocale } from "next-intl/server"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -65,6 +66,7 @@ export default async function RootLayout({
         className={`${plusJakarta.variable} flex min-h-screen flex-col antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   )
