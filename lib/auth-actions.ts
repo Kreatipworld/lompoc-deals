@@ -12,6 +12,8 @@ import { users, businessClaims, subscriptions, passwordResetTokens } from "@/db/
 import { signIn, signOut } from "@/auth"
 import { stripe, TIERS } from "@/lib/stripe"
 import { sendPasswordResetEmail } from "@/lib/email"
+import { track } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
 
 const signupSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -70,6 +72,12 @@ export async function signupAction(
         businessId: biz.id,
         userId: newUserId,
         status: "pending",
+      })
+      await track("business_claim_submitted", {
+        userId: newUserId,
+        sessionId: getSessionId(),
+        targetType: "business",
+        targetId: biz.id,
       })
     }
   }
