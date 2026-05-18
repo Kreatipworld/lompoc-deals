@@ -1644,6 +1644,8 @@
       "title": "Cookies y Seguimiento",
       "body": "Usamos dos cookies propias: una cookie de sesión de autenticación (para mantenerte conectado) y una cookie de preferencia de idioma (para recordar tu configuración de idioma). No usamos rastreadores publicitarios de terceros, píxeles de retargeting ni cookies de seguimiento entre sitios. Puedes desactivar las cookies en la configuración de tu navegador; hacerlo puede impedir el inicio de sesión y algunas funciones del sitio."
     },
+    "sessionCookieHeading": "Identificador de sesión",
+    "sessionCookieBody": "Establecemos una cookie de origen llamada lompoc_sid que contiene un identificador de sesión aleatorio para medir cómo se utilizan las funciones. No contiene información personal, caduca después de un año y no se comparte con terceros.",
     "california": {
       "title": "Tus Derechos de Privacidad en California (CCPA / CPRA)",
       "intro": "Si eres residente de California, tienes los siguientes derechos bajo la Ley de Privacidad del Consumidor de California (CCPA) y la Ley de Derechos de Privacidad de California (CPRA):",

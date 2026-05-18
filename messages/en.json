@@ -1644,6 +1644,8 @@
       "title": "Cookies and Tracking",
       "body": "We use two first-party cookies: an authentication session cookie (to keep you logged in) and a locale preference cookie (to remember your language setting). We do not use third-party advertising trackers, retargeting pixels, or cross-site tracking cookies. You can disable cookies in your browser settings; doing so may prevent login and some site features from working."
     },
+    "sessionCookieHeading": "Session Identifier",
+    "sessionCookieBody": "We set a first-party cookie named lompoc_sid containing a random session identifier so we can measure how features are used. It contains no personal information, expires after one year, and is not shared with third parties.",
     "california": {
       "title": "Your California Privacy Rights (CCPA / CPRA)",
       "intro": "If you are a California resident, you have the following rights under the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA):",

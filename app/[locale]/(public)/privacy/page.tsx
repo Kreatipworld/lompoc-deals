@@ -64,7 +64,11 @@ export default async function PrivacyPage() {
         <h2>{t("cookies.title")}</h2>
         <p>{t("cookies.body")}</p>
 
-        {/* 6. California Privacy Rights */}
+        {/* 6. Session Identifier */}
+        <h2>{t("sessionCookieHeading")}</h2>
+        <p>{t("sessionCookieBody")}</p>
+
+        {/* 7. California Privacy Rights */}
         <h2>{t("california.title")}</h2>
         <p>{t("california.intro")}</p>
         <ul>
