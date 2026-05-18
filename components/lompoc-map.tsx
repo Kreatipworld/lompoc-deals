@@ -46,6 +46,23 @@ function ActivityPin() {
   )
 }
 
+async function trackPinClick(businessId: number) {
+  try {
+    await fetch("/api/track/event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "map_pin_clicked",
+        targetType: "business",
+        targetId: businessId,
+        props: { from: "map" },
+      }),
+    })
+  } catch {
+    // best-effort
+  }
+}
+
 export function LompocMap({
   businesses,
   activities = [],
@@ -86,6 +103,7 @@ export function LompocMap({
             className="cursor-pointer"
             onClick={(e) => {
               e.stopPropagation()
+              void trackPinClick(b.id)
               setSelectedActivity(null)
               setSelectedBusiness(b)
             }}

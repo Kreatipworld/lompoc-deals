@@ -4,6 +4,8 @@ import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
 import { SearchBar } from "@/components/search-bar"
 import { MapPin } from "lucide-react"
+import { track } from "@/lib/analytics/track"
+import { getSessionId } from "@/lib/analytics/session"
 
 export async function generateMetadata({
   params,
@@ -35,6 +37,17 @@ export default async function SearchPage({
   ])
 
   const count = deals.length
+
+  if (q) {
+    const sid = getSessionId()
+    await track("search_run", {
+      userId: viewer?.userId ?? null,
+      sessionId: sid,
+      targetType: "search",
+      targetId: null,
+      props: { query: q, resultCount: count, locale: locale as "en" | "es" },
+    })
+  }
   const word = count === 1 ? t("resultSingular") : t("resultPlural")
 
   return (
