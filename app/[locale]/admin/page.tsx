@@ -19,6 +19,7 @@ import {
   BadgeCheck,
   TrendingUp,
   Play,
+  BarChart2,
 } from "lucide-react"
 import {
   getAdminStats,
@@ -257,6 +258,27 @@ export default async function AdminPage() {
             ))}
           </ul>
         )}
+      </section>
+
+      {/* QUICK LINKS */}
+      <section>
+        <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
+          {t("quickLinksHeading")}
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          <Link
+            href="/admin/analytics"
+            className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm transition-colors hover:bg-muted/40"
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <BarChart2 className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="font-semibold">{t("analyticsTitle")}</p>
+              <p className="text-xs text-muted-foreground">{t("analyticsSubtitle")}</p>
+            </div>
+          </Link>
+        </div>
       </section>
 
       {/* PENDING BUSINESSES */}

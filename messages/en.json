@@ -581,7 +581,10 @@
       "pendingEmpty": "All caught up — nothing to review.",
       "pendingBadge": "Pending",
       "approve": "Approve",
-      "reject": "Reject"
+      "reject": "Reject",
+      "analyticsTitle": "Analytics",
+      "analyticsSubtitle": "Funnel, claims, and 30-day activity.",
+      "quickLinksHeading": "Quick links"
     },
     "events": {
       "metaTitle": "Admin — Events",
@@ -1787,5 +1790,31 @@
       "emailLabel": "Email",
       "messageLabel": "Message"
     }
+  },
+  "adminAnalytics": {
+    "title": "Analytics",
+    "subtitle": "Funnel, claims, and 30-day activity.",
+    "topOfFunnel": "Top of funnel",
+    "vercelHint": "Page views, referrers, and country data live in Vercel Analytics.",
+    "openVercel": "Open Vercel Analytics",
+    "localFunnel": "Local visitor funnel",
+    "businessFunnel": "Business funnel",
+    "claims": "Claim activity",
+    "claimsSummary": "{pending} pending · {approved} approved this month",
+    "business": "Business",
+    "email": "Email",
+    "status": "Status",
+    "submitted": "Submitted",
+    "noClaims": "No claims yet.",
+    "searchGaps": "Search gaps (zero results)",
+    "searchGapsHint": "Searches users ran in the last 30 days that returned nothing. Outreach signal.",
+    "noSearchGaps": "No zero-result searches recorded yet.",
+    "topBusinesses": "Top businesses by interest (30 days)",
+    "views30d": "Views (30d)",
+    "claimStatus": "Claim status",
+    "claimStatus_claimed": "Claimed",
+    "claimStatus_pending": "Pending",
+    "claimStatus_unclaimed": "Unclaimed",
+    "daily": "Daily activity (last 30 days)"
   }
 }

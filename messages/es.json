@@ -581,7 +581,10 @@
       "pendingEmpty": "Todo al día — nada por revisar.",
       "pendingBadge": "Pendiente",
       "approve": "Aprobar",
-      "reject": "Rechazar"
+      "reject": "Rechazar",
+      "analyticsTitle": "Analíticas",
+      "analyticsSubtitle": "Embudo, reclamos y actividad de 30 días.",
+      "quickLinksHeading": "Accesos rápidos"
     },
     "events": {
       "metaTitle": "Admin — Eventos",
@@ -1787,5 +1790,31 @@
       "emailLabel": "Correo electrónico",
       "messageLabel": "Mensaje"
     }
+  },
+  "adminAnalytics": {
+    "title": "Analíticas",
+    "subtitle": "Embudo, reclamos y actividad de 30 días.",
+    "topOfFunnel": "Tope del embudo",
+    "vercelHint": "Las visitas, referentes y países viven en Vercel Analytics.",
+    "openVercel": "Abrir Vercel Analytics",
+    "localFunnel": "Embudo de visitantes locales",
+    "businessFunnel": "Embudo de negocios",
+    "claims": "Actividad de reclamos",
+    "claimsSummary": "{pending} pendientes · {approved} aprobados este mes",
+    "business": "Negocio",
+    "email": "Correo",
+    "status": "Estado",
+    "submitted": "Enviado",
+    "noClaims": "Aún no hay reclamos.",
+    "searchGaps": "Búsquedas sin resultados",
+    "searchGapsHint": "Búsquedas de los últimos 30 días que no devolvieron resultados. Señal para outreach.",
+    "noSearchGaps": "Aún no hay búsquedas sin resultados.",
+    "topBusinesses": "Negocios con más interés (30 días)",
+    "views30d": "Visitas (30d)",
+    "claimStatus": "Estado del reclamo",
+    "claimStatus_claimed": "Reclamado",
+    "claimStatus_pending": "Pendiente",
+    "claimStatus_unclaimed": "Sin reclamar",
+    "daily": "Actividad diaria (últimos 30 días)"
   }
 }
