@@ -9,6 +9,8 @@ import { db } from "@/db/client"
 import { activities } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { BedDouble, MapPin, Star, Wine, Rocket, Flower2 } from "lucide-react"
+// Note: page header used to be a scenic flower image; it's now a Mapbox map showing
+// all 15 hotel pins. Coordinates verified via Mapbox geocoding (all within 6m of address).
 
 export async function generateMetadata({
   params,
@@ -64,40 +66,38 @@ export default async function HotelsPage({
 
   return (
     <main className="pb-20">
-      {/* ── 1. HERO ───────────────────────────────────────────────────── */}
-      <section className="relative h-[50vh] min-h-[320px] overflow-hidden md:h-[50vh]">
-        <Image
-          src="/lompoc-flowers-4.jpg"
-          alt="Lompoc flower fields"
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/40" />
+      {/* ── 1. HERO — Mapbox map with all hotel pins ───────────────────── */}
+      <section className="relative h-[60vh] min-h-[420px] overflow-hidden md:h-[65vh]">
+        {/* The map fills the section. Pointer-events on overlays use pointer-events-none
+            where they shouldn't block panning/clicking pins. */}
+        <div className="absolute inset-0">
+          <HotelsMap hotels={HOTELS} />
+        </div>
+
+        {/* Top gradient — improves overlay legibility against the map tiles */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/45 via-black/15 to-transparent" />
 
         {/* Top-left pill */}
-        <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
-          <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-gray-800 backdrop-blur-sm">
+        <div className="pointer-events-none absolute left-4 top-4 sm:left-6 sm:top-6">
+          <span className="pointer-events-auto rounded-full bg-white/85 px-3 py-1 text-xs font-semibold text-gray-800 shadow backdrop-blur-sm">
             {t("heroPill")}
           </span>
         </div>
 
-        {/* Center text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h1 className="font-display text-3xl font-bold tracking-tight text-white drop-shadow-md sm:text-5xl">
+        {/* Title */}
+        <div className="pointer-events-none absolute inset-x-0 top-16 flex flex-col items-center px-4 text-center sm:top-20">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] sm:text-5xl">
             {t("heroTitle")}
           </h1>
-          <p className="mt-3 max-w-xl text-sm text-white/90 drop-shadow sm:text-base">
-            {t("heroSubtitle")}
+          <p className="mt-3 max-w-xl text-sm text-white/95 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] sm:text-base">
+            {t("heroSubtitle", { count: hotelCount })}
           </p>
         </div>
 
-        {/* Bottom-right stat strip */}
-        <div className="absolute bottom-4 right-4 sm:bottom-5 sm:right-6">
-          <div className="rounded-xl bg-white/95 px-3 py-2 text-xs font-medium text-gray-700 shadow backdrop-blur-sm sm:text-sm">
-            {t("heroStats")}
+        {/* Bottom-left stat card (left so it doesn't collide with Mapbox NavigationControl top-right) */}
+        <div className="pointer-events-none absolute bottom-4 left-4 sm:bottom-5 sm:left-6">
+          <div className="pointer-events-auto rounded-xl bg-white/95 px-3 py-2 text-xs font-medium text-gray-700 shadow backdrop-blur-sm sm:text-sm">
+            {t("heroStats", { count: hotelCount })}
           </div>
         </div>
       </section>
@@ -120,21 +120,7 @@ export default async function HotelsPage({
         </section>
       )}
 
-      {/* ── 3. MAP ───────────────────────────────────────────────────── */}
-      <section className="py-12">
-        <div className="mx-auto max-w-5xl px-4">
-          <h2 className="font-display text-2xl font-semibold tracking-tight">
-            {t("mapHeading")}
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("mapSubtitle")}</p>
-
-          <div className="mt-6 overflow-hidden rounded-2xl border shadow-sm" style={{ height: 440 }}>
-            <HotelsMap hotels={HOTELS} />
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4. HOTELS LIST ───────────────────────────────────────────── */}
+      {/* ── 3. HOTELS LIST ───────────────────────────────────────────── */}
       <section className="py-8">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="font-display text-2xl font-semibold tracking-tight">

@@ -7,7 +7,8 @@ import { Link } from "@/i18n/navigation"
 import type { Hotel } from "@/lib/hotels-data"
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
-const LOMPOC_CENTER = { longitude: -120.4579, latitude: 34.6400 }
+// Center on the actual hotel cluster (N H St corridor + E Ocean Ave) — verified via Mapbox geocoding.
+const LOMPOC_CENTER = { longitude: -120.4530, latitude: 34.6510 }
 
 const PRICE_COLOR: Record<string, string> = {
   $: "#059669",   // emerald
@@ -67,7 +68,7 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
       mapboxAccessToken={MAPBOX_TOKEN}
       initialViewState={{
         ...LOMPOC_CENTER,
-        zoom: 12.5,
+        zoom: 13.2,
         pitch: 30,
         bearing: -5,
       }}
