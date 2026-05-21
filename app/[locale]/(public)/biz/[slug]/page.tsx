@@ -281,6 +281,15 @@ export default async function BusinessPage({
       </section>
 
       {/* ─────────────────────────────────────────────────
+          CLAIM CTA — right under the header so business owners see it first
+         ───────────────────────────────────────────────── */}
+      {isUnclaimed && (
+        <section className="mx-auto mt-6 max-w-6xl px-4">
+          <BusinessClaimCta slug={params.slug} />
+        </section>
+      )}
+
+      {/* ─────────────────────────────────────────────────
           2-COLUMN BODY
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-10">
@@ -325,23 +334,10 @@ export default async function BusinessPage({
                 )}
               </div>
             )}
-            <BusinessHours
-                hoursJson={business.hoursJson}
-                hoursSource={business.hoursSource}
-                hoursSyncedAt={business.hoursSyncedAt}
-              />
+            <BusinessHours hoursJson={business.hoursJson} />
           </aside>
         </div>
       </section>
-
-      {/* ─────────────────────────────────────────────────
-          CLAIM CTA (only when business is owned by system@)
-         ───────────────────────────────────────────────── */}
-      {isUnclaimed && (
-        <section className="mx-auto mb-16 max-w-6xl px-4">
-          <BusinessClaimCta slug={params.slug} />
-        </section>
-      )}
     </>
   )
 }

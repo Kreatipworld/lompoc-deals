@@ -7,29 +7,19 @@ import {
   isRaw,
   parseHours,
 } from "@/lib/hours"
-import { getTranslations, getFormatter } from "next-intl/server"
+import { getTranslations } from "next-intl/server"
 
 interface Props {
   hoursJson: unknown
-  hoursSource?: string | null
-  hoursSyncedAt?: Date | string | null
 }
 
-export async function BusinessHours({ hoursJson, hoursSource, hoursSyncedAt }: Props) {
+export async function BusinessHours({ hoursJson }: Props) {
   const hours = parseHours(hoursJson)
   const open = isOpenNow(hours)
   const t = await getTranslations("businesses.profile")
-  const format = await getFormatter()
 
   const anyDay = DAY_KEYS.some((k) => hours[k] !== null)
   if (!anyDay) return null
-
-  const showGoogleCaption = hoursSource === "google" && hoursSyncedAt
-  const syncedDate = showGoogleCaption
-    ? typeof hoursSyncedAt === "string"
-      ? new Date(hoursSyncedAt)
-      : hoursSyncedAt!
-    : null
 
   return (
     <div className="rounded-2xl border bg-card p-4 shadow-sm">
@@ -69,12 +59,6 @@ export async function BusinessHours({ hoursJson, hoursSource, hoursSyncedAt }: P
           )
         })}
       </ul>
-      {showGoogleCaption && syncedDate && (
-        <p className="mt-3 border-t pt-2 text-[11px] leading-snug text-muted-foreground">
-          {t("hoursFromGoogle", { date: format.relativeTime(syncedDate) })}{" "}
-          <span className="text-muted-foreground/80">· {t("hoursClaimCta")}</span>
-        </p>
-      )}
     </div>
   )
 }
