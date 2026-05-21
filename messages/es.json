@@ -584,6 +584,8 @@
       "reject": "Rechazar",
       "analyticsTitle": "Analíticas",
       "analyticsSubtitle": "Embudo, reclamos y actividad de 30 días.",
+      "missingHoursTitle": "Horarios faltantes",
+      "missingHoursSubtitle": "Edita los horarios de negocios sin horarios listados.",
       "quickLinksHeading": "Accesos rápidos"
     },
     "events": {
@@ -1816,5 +1818,24 @@
     "claimStatus_pending": "Pendiente",
     "claimStatus_unclaimed": "Sin reclamar",
     "daily": "Actividad diaria (últimos 30 días)"
+  },
+  "adminMissingHours": {
+    "title": "Negocios sin horarios",
+    "subtitle": "{count} negocios aprobados no tienen horarios listados. Edita uno para agregarlos manualmente.",
+    "saved": "Horarios guardados.",
+    "colBusiness": "Negocio",
+    "colCategory": "Categoría",
+    "colAddress": "Dirección",
+    "noAddress": "Sin dirección",
+    "editHours": "Editar horarios",
+    "empty": "Todos los negocios aprobados tienen horarios. Buen trabajo."
+  },
+  "adminEditHours": {
+    "back": "Volver a negocios sin horarios",
+    "openWebsite": "Abrir sitio web",
+    "currentSource": "Fuente actual: {source}",
+    "to": "a",
+    "closed": "Cerrado",
+    "save": "Guardar horarios"
   }
 }

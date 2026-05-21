@@ -584,6 +584,8 @@
       "reject": "Reject",
       "analyticsTitle": "Analytics",
       "analyticsSubtitle": "Funnel, claims, and 30-day activity.",
+      "missingHoursTitle": "Missing hours",
+      "missingHoursSubtitle": "Edit hours for businesses with no listed hours.",
       "quickLinksHeading": "Quick links"
     },
     "events": {
@@ -1816,5 +1818,24 @@
     "claimStatus_pending": "Pending",
     "claimStatus_unclaimed": "Unclaimed",
     "daily": "Daily activity (last 30 days)"
+  },
+  "adminMissingHours": {
+    "title": "Businesses missing hours",
+    "subtitle": "{count} approved businesses have no hours listed. Edit one to add hours manually.",
+    "saved": "Hours saved.",
+    "colBusiness": "Business",
+    "colCategory": "Category",
+    "colAddress": "Address",
+    "noAddress": "No address",
+    "editHours": "Edit hours",
+    "empty": "Every approved business has hours. Nice work."
+  },
+  "adminEditHours": {
+    "back": "Back to missing-hours list",
+    "openWebsite": "Open website",
+    "currentSource": "Current source: {source}",
+    "to": "to",
+    "closed": "Closed",
+    "save": "Save hours"
   }
 }

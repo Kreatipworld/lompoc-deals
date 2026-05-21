@@ -278,6 +278,19 @@ export default async function AdminPage() {
               <p className="text-xs text-muted-foreground">{t("analyticsSubtitle")}</p>
             </div>
           </Link>
+
+          <Link
+            href="/admin/businesses/missing-hours"
+            className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm transition-colors hover:bg-muted/40"
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Clock className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="font-semibold">{t("missingHoursTitle")}</p>
+              <p className="text-xs text-muted-foreground">{t("missingHoursSubtitle")}</p>
+            </div>
+          </Link>
         </div>
       </section>
 

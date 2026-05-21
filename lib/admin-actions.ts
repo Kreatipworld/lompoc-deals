@@ -6,6 +6,8 @@ import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { businesses, deals, users, businessClaims, events, dealEvents } from "@/db/schema"
 import { track } from "@/lib/analytics/track"
+import { DAY_KEYS, type DayHours, type Hours } from "@/lib/hours"
+import { redirect } from "next/navigation"
 
 async function requireAdmin() {
   const session = await auth()
@@ -381,3 +383,38 @@ export async function rejectEventAction(formData: FormData) {
   await db.update(events).set({ status: "cancelled" }).where(eq(events.id, id))
   revalidatePath("/admin/events")
 }
+
+export async function saveBusinessHoursAdminAction(formData: FormData) {
+  await requireAdmin()
+  const id = parseInt(formData.get("businessId")?.toString() ?? "0", 10)
+  if (!id) return
+
+  const hours: Hours = { mon: null, tue: null, wed: null, thu: null, fri: null, sat: null, sun: null }
+  for (const day of DAY_KEYS) {
+    const closed = formData.get(`hours_${day}_closed`) === "on"
+    if (closed) continue
+    const open = formData.get(`hours_${day}_open`)?.toString().trim()
+    const close = formData.get(`hours_${day}_close`)?.toString().trim()
+    if (open && close) {
+      hours[day] = { open, close } satisfies DayHours
+    }
+  }
+  const anyHours = DAY_KEYS.some((k) => hours[k] !== null)
+  const hoursPayload = anyHours ? hours : null
+
+  await db
+    .update(businesses)
+    .set({ hoursJson: hoursPayload, hoursSource: "owner", hoursSyncedAt: null })
+    .where(eq(businesses.id, id))
+
+  const biz = await db.query.businesses.findFirst({
+    where: (b, { eq: e }) => e(b.id, id),
+    columns: { slug: true },
+  })
+
+  revalidatePath("/admin/businesses/missing-hours")
+  if (biz?.slug) revalidatePath(`/biz/${biz.slug}`)
+
+  redirect("/admin/businesses/missing-hours?saved=1")
+}
+
