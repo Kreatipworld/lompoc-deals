@@ -1,6 +1,6 @@
 import assert from "node:assert/strict"
 import { db } from "@/db/client"
-import { analyticsEvents, deals } from "@/db/schema"
+import { analyticsEvents } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { getDealFunnel } from "./funnel-queries"
 
