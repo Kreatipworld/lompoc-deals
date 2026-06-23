@@ -1,6 +1,6 @@
-import { and, eq, gte, sql } from "drizzle-orm"
+import { and, eq, gte, inArray, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { dealEvents, deals } from "@/db/schema"
+import { analyticsEvents, deals } from "@/db/schema"
 
 export type FunnelWindow = "7d" | "30d" | "all"
 
@@ -30,69 +30,58 @@ export async function getDealFunnel(
 ): Promise<DealFunnelRow[]> {
   const cutoff = windowCutoff(window)
 
-  // Aggregate event counts per deal from deal_events
-  const eventCounts = await db
+  const bizDeals = await db
+    .select({ id: deals.id, title: deals.title, viewCount: deals.viewCount, clickCount: deals.clickCount })
+    .from(deals)
+    .where(eq(deals.businessId, businessId))
+
+  if (bizDeals.length === 0) return []
+  const dealIds = bizDeals.map((d) => d.id)
+
+  // Count events per deal per type from analytics_events (windowed or all-time).
+  const eventRows = await db
     .select({
-      dealId: dealEvents.dealId,
-      eventType: dealEvents.eventType,
-      count: sql<number>`cast(count(*) as integer)`,
+      dealId: analyticsEvents.targetId,
+      eventName: analyticsEvents.eventName,
+      n: sql<number>`count(*)::int`,
     })
-    .from(dealEvents)
-    .innerJoin(deals, eq(dealEvents.dealId, deals.id))
+    .from(analyticsEvents)
     .where(
       and(
-        eq(deals.businessId, businessId),
-        cutoff ? gte(dealEvents.createdAt, cutoff) : undefined
+        inArray(analyticsEvents.targetId, dealIds),
+        inArray(analyticsEvents.eventName, ["deal_view", "deal_click", "deal_claim", "deal_redeem"]),
+        cutoff ? gte(analyticsEvents.createdAt, cutoff) : undefined
       )
     )
-    .groupBy(dealEvents.dealId, dealEvents.eventType)
+    .groupBy(analyticsEvents.targetId, analyticsEvents.eventName)
 
-  // Also load deals for this business to include view/click counts
-  const bizDeals = await db.query.deals.findMany({
-    where: (d, { eq: e }) => e(d.businessId, businessId),
-    orderBy: (d, { desc }) => [desc(d.createdAt)],
-  })
-
-  // Build a map: dealId -> { views, clicks, claims, redeems }
-  const map = new Map<
-    number,
-    { views: number; clicks: number; claims: number; redeems: number }
-  >()
-
-  for (const d of bizDeals) {
-    // For view/click, use the aggregate columns (not event table) when window is "all"
-    // For windowed queries, use event table counts
-    map.set(d.id, {
-      views: window === "all" ? (d.viewCount ?? 0) : 0,
-      clicks: window === "all" ? (d.clickCount ?? 0) : 0,
-      claims: 0,
-      redeems: 0,
-    })
-  }
-
-  for (const row of eventCounts) {
-    const entry = map.get(row.dealId)
-    if (!entry) continue
-    if (row.eventType === "view") entry.views = row.count
-    else if (row.eventType === "click") entry.clicks = row.count
-    else if (row.eventType === "claim") entry.claims = row.count
-    else if (row.eventType === "redeem") entry.redeems = row.count
+  const counts = new Map<number, { views: number; clicks: number; claims: number; redeems: number }>()
+  for (const d of bizDeals) counts.set(d.id, { views: 0, clicks: 0, claims: 0, redeems: 0 })
+  for (const e of eventRows) {
+    if (e.dealId == null) continue
+    const c = counts.get(e.dealId)
+    if (!c) continue
+    if (e.eventName === "deal_view") c.views = e.n
+    else if (e.eventName === "deal_click") c.clicks = e.n
+    else if (e.eventName === "deal_claim") c.claims = e.n
+    else if (e.eventName === "deal_redeem") c.redeems = e.n
   }
 
   return bizDeals.map((d) => {
-    const counts = map.get(d.id) ?? { views: 0, clicks: 0, claims: 0, redeems: 0 }
-    const ctr = counts.views > 0 ? Math.round((counts.clicks / counts.views) * 100) : 0
-    const claimRate =
-      counts.clicks > 0 ? Math.round((counts.claims / counts.clicks) * 100) : 0
-    const redeemRate =
-      counts.claims > 0 ? Math.round((counts.redeems / counts.claims) * 100) : 0
+    const c = counts.get(d.id)!
+    // For all-time, prefer the denormalized counters (complete history pre-analytics_events).
+    const views = window === "all" ? d.viewCount : c.views
+    const clicks = window === "all" ? d.clickCount : c.clicks
+    const ctr = views > 0 ? Math.round((clicks / views) * 1000) / 10 : 0
+    const claimRate = clicks > 0 ? Math.round((c.claims / clicks) * 1000) / 10 : 0
+    const redeemRate = c.claims > 0 ? Math.round((c.redeems / c.claims) * 1000) / 10 : 0
     return {
       dealId: d.id,
       dealTitle: d.title,
-      views: counts.views,
-      clicks: counts.clicks,
-      claims: counts.claims,
-      redeems: counts.redeems,
+      views,
+      clicks,
+      claims: c.claims,
+      redeems: c.redeems,
       ctr,
       claimRate,
       redeemRate,
