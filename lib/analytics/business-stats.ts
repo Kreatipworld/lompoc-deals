@@ -51,7 +51,7 @@ export async function getTrafficSources(businessId: number, window: FunnelWindow
     tally.set(src, (tally.get(src) ?? 0) + 1)
   }
   const total = rows.length || 1
-  return [...tally.entries()]
+  return Array.from(tally.entries())
     .map(([source, count]) => ({ source, count, pct: Math.round((count / total) * 100) }))
     .sort((a, b) => b.count - a.count)
 }
@@ -99,7 +99,7 @@ export async function getDailySeries(businessId: number, window: FunnelWindow): 
   if (cutoff) {
     start = cutoff
   } else {
-    const allDays = [...profileByDay.keys(), ...dealByDay.keys()].sort()
+    const allDays = [...Array.from(profileByDay.keys()), ...Array.from(dealByDay.keys())].sort()
     start = allDays.length ? new Date(allDays[0] + "T00:00:00Z") : today
   }
 
