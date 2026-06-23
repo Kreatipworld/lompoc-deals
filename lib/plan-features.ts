@@ -2,6 +2,8 @@ import { TIERS, type TierKey, type TierConfig } from "@/lib/stripe"
 
 export type FeatureFlag =
   | "canViewAnalytics"
+  | "canViewTrafficSources"
+  | "canViewTrends"
   | "canShowSocialLinks"
   | "canListRealEstate"
   | "priorityRanking"
@@ -27,6 +29,8 @@ export function getPlanFeatures(tier: TierKey): TierConfig {
 /** The minimum tier that unlocks a given feature flag. */
 const FEATURE_MINIMUM_TIER: Record<FeatureFlag, TierKey> = {
   canViewAnalytics: "standard",
+  canViewTrafficSources: "premium",
+  canViewTrends: "premium",
   canShowSocialLinks: "standard",
   canListRealEstate: "premium",
   priorityRanking: "premium",
