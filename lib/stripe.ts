@@ -68,6 +68,7 @@ export const TIERS = {
     features: [
       "Unlimited deals",
       "Everything in Standard",
+      "Traffic sources & trends — see exactly what's driving visits",
       "Priority listing in search results",
       "Featured placement on homepage",
       "Real estate listings module",
