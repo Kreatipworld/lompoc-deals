@@ -69,6 +69,7 @@ export async function getDailySeries(businessId: number, window: FunnelWindow): 
     .where(
       and(
         eq(analyticsEvents.eventName, "business_page_viewed"),
+        eq(analyticsEvents.targetType, "business"),
         eq(analyticsEvents.targetId, businessId),
         cutoff ? gte(analyticsEvents.createdAt, cutoff) : undefined
       )
@@ -102,9 +103,11 @@ export async function getDailySeries(businessId: number, window: FunnelWindow): 
     start = allDays.length ? new Date(allDays[0] + "T00:00:00Z") : today
   }
 
+  const startMs = Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate())
+  const endMs = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
   const points: DailyPoint[] = []
-  for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
-    const key = d.toISOString().slice(0, 10)
+  for (let ms = startMs; ms <= endMs; ms += 86400000) {
+    const key = new Date(ms).toISOString().slice(0, 10)
     points.push({ date: key, profileViews: profileByDay.get(key) ?? 0, dealViews: dealByDay.get(key) ?? 0 })
   }
   return points
