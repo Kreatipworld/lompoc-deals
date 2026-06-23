@@ -51,6 +51,7 @@ export async function GET(request: Request) {
     discountText: r.discountText,
     terms: null,
     expiresAt: r.expiresAt,
+    featured: false,
     business: {
       id: r.bizId,
       name: r.bizName,

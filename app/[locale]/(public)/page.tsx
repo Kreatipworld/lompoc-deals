@@ -3,7 +3,8 @@ import {
   ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown,
   Building2, ExternalLink, Compass
 } from "lucide-react"
-import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getFeaturedDeals } from "@/lib/queries"
+import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities } from "@/lib/queries"
+import { getFeaturedDeals } from "@/lib/featured"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { DealsCarousel } from "@/components/deals-carousel"
@@ -59,7 +60,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6),
-    getFeaturedDeals(6),
+    getFeaturedDeals({ limit: 6 }),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
 
