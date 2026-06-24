@@ -109,6 +109,7 @@ function rowToCard(r: DealRow): DealCardData {
 
 const activeAndApproved = and(
   gt(deals.expiresAt, sql`now()`),
+  eq(deals.paused, false),
   eq(businesses.status, "approved")
 )
 
