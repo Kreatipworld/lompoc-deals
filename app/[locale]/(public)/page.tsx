@@ -5,6 +5,8 @@ import {
 } from "lucide-react"
 import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities } from "@/lib/queries"
 import { getFeaturedDeals } from "@/lib/featured"
+import { getViewer } from "@/lib/viewer"
+import { FeaturedRow } from "@/components/featured-row"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { DealsCarousel } from "@/components/deals-carousel"
@@ -55,12 +57,13 @@ function getCategoryImage(slug: string): string | null {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals, t] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals, viewer, t] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6),
     getFeaturedDeals({ limit: 6 }),
+    getViewer(),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
 
@@ -114,6 +117,13 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </div>
         </div>
       </section>
+
+      {/* ─────────────────────────────────────────────────
+          PREMIUM FEATURED ROW — renders null when no premium deals
+         ───────────────────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-4 pt-10">
+        <FeaturedRow viewer={viewer} fromPath="/" />
+      </div>
 
       {/* ─────────────────────────────────────────────────
           FEATURED DEALS CAROUSEL
