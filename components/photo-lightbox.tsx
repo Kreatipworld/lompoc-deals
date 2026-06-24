@@ -19,16 +19,54 @@ export function PhotoLightbox({
   const t = useTranslations("businesses.profile")
   const [index, setIndex] = useState(startIndex)
   const touchX = useRef<number | null>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
   const count = photos.length
 
   const prev = useCallback(() => setIndex((i) => (i - 1 + count) % count), [count])
   const next = useCallback(() => setIndex((i) => (i + 1) % count), [count])
+
+  // Focus management: capture opener, focus dialog on mount, restore on close
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null
+    dialogRef.current?.focus()
+    return () => {
+      opener?.focus()
+    }
+  }, [])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
       else if (e.key === "ArrowLeft") prev()
       else if (e.key === "ArrowRight") next()
+      else if (e.key === "Tab") {
+        // Focus trap: keep focus within dialog buttons
+        const focusable = dialogRef.current
+          ? Array.from(dialogRef.current.querySelectorAll<HTMLElement>("button:not([disabled])"))
+          : []
+        if (focusable.length === 0) {
+          e.preventDefault()
+          return
+        }
+        if (focusable.length === 1) {
+          e.preventDefault()
+          focusable[0].focus()
+          return
+        }
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault()
+            last.focus()
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault()
+            first.focus()
+          }
+        }
+      }
     }
     document.addEventListener("keydown", onKey)
     const prevOverflow = document.body.style.overflow
@@ -43,10 +81,12 @@ export function PhotoLightbox({
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label={businessName}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+      tabIndex={-1}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 outline-none"
       onClick={onClose}
       onTouchStart={(e) => {
         touchX.current = e.touches[0].clientX
@@ -78,7 +118,9 @@ export function PhotoLightbox({
       </button>
 
       {/* main image — whole photo, never cropped; click does not close */}
+      {/* key={src} resets SafeImage failed state when navigating to a different photo */}
       <SafeImage
+        key={src}
         src={src}
         alt={businessName}
         onClick={(e) => e.stopPropagation()}

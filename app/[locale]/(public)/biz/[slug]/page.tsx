@@ -132,7 +132,7 @@ export default async function BusinessPage({
         />
 
         <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
-          {/* HEADER CARD — logo overlaps cover when present */}
+          {/* HEADER CARD — logo + name + meta */}
           <div className="rounded-3xl border bg-card p-6 shadow-lg sm:p-8 mt-4">
           {/* Breadcrumb — inside the card to prevent overlap with cover */}
           <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
