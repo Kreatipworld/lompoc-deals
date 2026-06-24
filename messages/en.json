@@ -911,7 +911,13 @@
       "listingSingular": "listing",
       "listingPlural": "listings",
       "dealSingular": "deal",
-      "dealPlural": "deals"
+      "dealPlural": "deals",
+      "photosViewAll": "View all",
+      "photoCounter": "{current} of {total}",
+      "photoPrev": "Previous photo",
+      "photoNext": "Next photo",
+      "photoClose": "Close",
+      "photoOpenAria": "Open photo {n}"
     }
   },
   "locale": {
