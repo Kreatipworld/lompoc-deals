@@ -23,7 +23,7 @@ import { BusinessHours } from "@/components/business-hours"
 import { BusinessMapLoader } from "@/components/business-map-loader"
 import { BusinessClaimCta } from "@/components/business-claim-cta"
 import { FollowBusinessButton } from "@/components/follow-business-button"
-import { BusinessPhotoCarousel } from "@/components/business-photo-carousel"
+import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
@@ -120,11 +120,7 @@ export default async function BusinessPage({
       {/* ─────────────────────────────────────────────────
           COVER IMAGE BANNER (full-width, above header card)
          ───────────────────────────────────────────────── */}
-      {photos.length > 0 ? (
-        <BusinessPhotoCarousel photos={photos} businessName={business.name} />
-      ) : (
-        <div className="h-24 w-full bg-gradient-to-r from-primary/20 via-accent to-primary/10 sm:h-36" />
-      )}
+      <BusinessPhotoGallery photos={photos} businessName={business.name} logoUrl={business.logoUrl} />
 
       {/* ─────────────────────────────────────────────────
           HEADER CARD — logo + name + meta
@@ -136,8 +132,8 @@ export default async function BusinessPage({
         />
 
         <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
-          {/* HEADER CARD — logo overlaps cover when present */}
-          <div className={`rounded-3xl border bg-card p-6 shadow-lg sm:p-8 ${photos.length > 0 ? "-mt-10 sm:-mt-14" : "mt-4"}`}>
+          {/* HEADER CARD — logo + name + meta */}
+          <div className="rounded-3xl border bg-card p-6 shadow-lg sm:p-8 mt-4">
           {/* Breadcrumb — inside the card to prevent overlap with cover */}
           <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
             <Link href="/" className="transition-colors duration-150 hover:text-foreground">

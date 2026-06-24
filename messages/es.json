@@ -911,7 +911,13 @@
       "listingSingular": "listado",
       "listingPlural": "listados",
       "dealSingular": "oferta",
-      "dealPlural": "ofertas"
+      "dealPlural": "ofertas",
+      "photosViewAll": "Ver todas",
+      "photoCounter": "{current} de {total}",
+      "photoPrev": "Foto anterior",
+      "photoNext": "Foto siguiente",
+      "photoClose": "Cerrar",
+      "photoOpenAria": "Abrir foto {n}"
     }
   },
   "locale": {
