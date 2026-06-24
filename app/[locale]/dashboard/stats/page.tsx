@@ -16,6 +16,9 @@ import { subscriptions } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { getMyBusiness } from "@/lib/biz-actions"
 import { getDealFunnel, type FunnelWindow } from "@/lib/funnel-queries"
+import { effectiveTier } from "@/lib/tier"
+import { getProfileViews, getTrafficSources, getDailySeries } from "@/lib/analytics/business-stats"
+import { TrendChart } from "@/components/trend-chart"
 import { Link } from "@/i18n/navigation"
 import { getTranslations } from "next-intl/server"
 
@@ -32,16 +35,28 @@ export default async function StatsPage({
 
   const [t, session] = await Promise.all([getTranslations("dashboardStats"), auth()])
   const userId = Number(session?.user?.id)
-  const sub = await db.query.subscriptions.findFirst({
-    where: eq(subscriptions.userId, userId),
+  const [sub, biz] = await Promise.all([
+    db.query.subscriptions.findFirst({ where: eq(subscriptions.userId, userId) }),
+    getMyBusiness(),
+  ])
+  const currentTier = effectiveTier({
+    planOverride: biz?.planOverride ?? null,
+    subTier: sub?.tier ?? null,
+    subStatus: sub?.status ?? null,
+    gracePeriodEndsAt: biz?.gracePeriodEndsAt ?? null,
   })
-  const currentTier = sub?.tier ?? "free"
   if (currentTier === "free") {
     return <AnalyticsUpgradeGate t={t} />
   }
 
-  const biz = await getMyBusiness()
-  const funnelRows = biz ? await getDealFunnel(biz.id, window) : []
+  const isPremium = currentTier === "premium"
+
+  const [funnelRows, profileViews, trafficSources, dailySeries] = await Promise.all([
+    biz ? getDealFunnel(biz.id, window) : Promise.resolve([]),
+    biz ? getProfileViews(biz.id, window) : Promise.resolve(0),
+    biz && isPremium ? getTrafficSources(biz.id, window) : Promise.resolve([]),
+    biz && isPremium ? getDailySeries(biz.id, window) : Promise.resolve([]),
+  ])
 
   const totalViews = funnelRows.reduce((s, r) => s + r.views, 0)
   const totalClicks = funnelRows.reduce((s, r) => s + r.clicks, 0)
@@ -115,7 +130,14 @@ export default async function StatsPage({
           </div>
 
           {/* Summary stats */}
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+            <BigStat
+              icon={<Eye className="h-5 w-5" />}
+              label={t("profileViews", { window: windowLabel })}
+              value={profileViews}
+              trend={profileViews > 0 ? "up" : "neutral"}
+              trendLabel={t("trendActive")}
+            />
             <BigStat
               icon={<Eye className="h-5 w-5" />}
               label={t("views", { window: windowLabel })}
@@ -235,6 +257,64 @@ export default async function StatsPage({
               </table>
             </div>
           </div>
+
+          {/* Traffic sources + Trends (Premium) or teaser (Standard) */}
+          {isPremium ? (
+            <>
+              <section className="overflow-hidden rounded-3xl border bg-card shadow-sm">
+                <div className="border-b px-6 py-4">
+                  <h2 className="font-display text-lg font-semibold">{t("trafficTitle")}</h2>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{t("trafficSubtitle", { window: windowLabel })}</p>
+                </div>
+                {trafficSources.length === 0 ? (
+                  <p className="px-6 py-8 text-sm text-muted-foreground">{t("trafficEmpty")}</p>
+                ) : (
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-muted-foreground">
+                        <th className="px-6 py-3 text-left font-medium">{t("trafficColSource")}</th>
+                        <th className="px-6 py-3 text-right font-medium">{t("trafficColVisits")}</th>
+                        <th className="px-6 py-3 text-right font-medium">{t("trafficColShare")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {trafficSources.map((s) => (
+                        <tr key={s.source} className="border-t">
+                          <td className="px-6 py-3">{s.source}</td>
+                          <td className="px-6 py-3 text-right tabular-nums">{s.count}</td>
+                          <td className="px-6 py-3 text-right tabular-nums">{s.pct}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </section>
+
+              <section className="overflow-hidden rounded-3xl border bg-card shadow-sm">
+                <div className="border-b px-6 py-4">
+                  <h2 className="font-display text-lg font-semibold">{t("trendsTitle")}</h2>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{t("trendsSubtitle", { window: windowLabel })}</p>
+                </div>
+                <div className="px-6 py-5">
+                  <TrendChart
+                    points={dailySeries}
+                    labels={{ profileViews: t("seriesProfileViews"), dealViews: t("seriesDealViews") }}
+                  />
+                </div>
+              </section>
+            </>
+          ) : (
+            <section className="rounded-3xl border border-dashed bg-muted/20 px-6 py-12 text-center">
+              <h3 className="font-display text-lg font-semibold">{t("premiumTeaserTitle")}</h3>
+              <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">{t("premiumTeaserBody")}</p>
+              <Link
+                href="/dashboard/billing"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground"
+              >
+                {t("premiumTeaserCta")}
+              </Link>
+            </section>
+          )}
         </>
       )}
     </div>

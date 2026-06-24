@@ -1,6 +1,7 @@
 import { and, desc, eq, gt, gte, ilike, inArray, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts } from "@/db/schema"
+import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions } from "@/db/schema"
+import { effectiveTier } from "@/lib/tier"
 
 export type DealCardData = {
   id: number
@@ -11,6 +12,7 @@ export type DealCardData = {
   discountText: string | null
   terms: string | null
   expiresAt: Date
+  featured: boolean
   business: {
     id: number
     name: string
@@ -42,6 +44,11 @@ const baseDealSelect = {
   bizPhone: businesses.phone,
   catName: categories.name,
   catSlug: categories.slug,
+  bizOwnerUserId: businesses.ownerUserId,
+  bizPlanOverride: businesses.planOverride,
+  bizGracePeriodEndsAt: businesses.gracePeriodEndsAt,
+  subTier: subscriptions.tier,
+  subStatus: subscriptions.status,
 }
 
 type DealRow = {
@@ -62,9 +69,20 @@ type DealRow = {
   bizPhone: string | null
   catName: string | null
   catSlug: string | null
+  bizOwnerUserId: number
+  bizPlanOverride: "free" | "standard" | "premium" | null
+  bizGracePeriodEndsAt: Date | null
+  subTier: "free" | "standard" | "premium" | null
+  subStatus: "active" | "past_due" | "canceled" | "trialing" | null
 }
 
 function rowToCard(r: DealRow): DealCardData {
+  const tier = effectiveTier({
+    planOverride: r.bizPlanOverride ?? null,
+    subTier: r.subTier ?? null,
+    subStatus: r.subStatus ?? null,
+    gracePeriodEndsAt: r.bizGracePeriodEndsAt ?? null,
+  })
   return {
     id: r.id,
     type: r.type,
@@ -74,6 +92,7 @@ function rowToCard(r: DealRow): DealCardData {
     discountText: r.discountText,
     terms: r.terms,
     expiresAt: r.expiresAt,
+    featured: tier === "premium",
     business: {
       id: r.bizId,
       name: r.bizName,
@@ -90,6 +109,7 @@ function rowToCard(r: DealRow): DealCardData {
 
 const activeAndApproved = and(
   gt(deals.expiresAt, sql`now()`),
+  eq(deals.paused, false),
   eq(businesses.status, "approved")
 )
 
@@ -99,18 +119,7 @@ export async function getActiveDeals(limit = 50): Promise<DealCardData[]> {
     .from(deals)
     .innerJoin(businesses, eq(deals.businessId, businesses.id))
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
-    .where(activeAndApproved)
-    .orderBy(desc(deals.createdAt))
-    .limit(limit)
-  return rows.map(rowToCard)
-}
-
-export async function getFeaturedDeals(limit = 6): Promise<DealCardData[]> {
-  const rows = await db
-    .select(baseDealSelect)
-    .from(deals)
-    .innerJoin(businesses, eq(deals.businessId, businesses.id))
-    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(activeAndApproved)
     .orderBy(desc(deals.createdAt))
     .limit(limit)
@@ -126,6 +135,7 @@ export async function getDealsByCategorySlug(
     .from(deals)
     .innerJoin(businesses, eq(deals.businessId, businesses.id))
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(and(activeAndApproved, eq(categories.slug, slug)))
     .orderBy(desc(deals.createdAt))
     .limit(limit)
@@ -142,6 +152,7 @@ export async function searchDeals(
     .from(deals)
     .innerJoin(businesses, eq(deals.businessId, businesses.id))
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(
       and(
         activeAndApproved,
@@ -532,6 +543,7 @@ export async function getFavoritedDeals(
     .innerJoin(deals, eq(favorites.dealId, deals.id))
     .innerJoin(businesses, eq(deals.businessId, businesses.id))
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(and(eq(favorites.userId, userId), activeAndApproved))
     .orderBy(desc(deals.createdAt))
   return rows.map(rowToCard)
@@ -565,6 +577,7 @@ export async function getBusinessBySlug(slug: string) {
     .from(deals)
     .innerJoin(businesses, eq(deals.businessId, businesses.id))
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(and(eq(businesses.id, biz.id), gt(deals.expiresAt, sql`now()`)))
     .orderBy(desc(deals.createdAt))
 

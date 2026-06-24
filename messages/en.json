@@ -1204,7 +1204,21 @@
     "upgradeBody": "Upgrade to Standard or Premium to see views, clicks, claims, and funnel analytics for all your deals.",
     "upgradeStandard": "Upgrade to Standard — $19.99/mo",
     "backToOverview": "Back to overview",
-    "createProfile": "business profile"
+    "createProfile": "business profile",
+    "profileViews": "Profile views ({window})",
+    "trafficTitle": "Traffic sources",
+    "trafficSubtitle": "Where your visitors came from ({window})",
+    "trafficColSource": "Source",
+    "trafficColVisits": "Visits",
+    "trafficColShare": "Share",
+    "trafficEmpty": "No visits yet in this window.",
+    "trendsTitle": "Trends",
+    "trendsSubtitle": "Daily profile & deal views ({window})",
+    "seriesProfileViews": "Profile views",
+    "seriesDealViews": "Deal views",
+    "premiumTeaserTitle": "Unlock with Premium",
+    "premiumTeaserBody": "See exactly where your visitors come from and how your traffic trends over time.",
+    "premiumTeaserCta": "Upgrade to Premium"
   },
   "dashboardProperties": {
     "title": "Properties",
@@ -1837,5 +1851,10 @@
     "to": "to",
     "closed": "Closed",
     "save": "Save hours"
+  },
+  "featured": {
+    "title": "Featured",
+    "subtitle": "Top local businesses",
+    "badge": "Featured"
   }
 }

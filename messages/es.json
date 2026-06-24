@@ -1204,7 +1204,21 @@
     "upgradeBody": "Mejora a Standard o Premium para ver visitas, clics, reclamaciones y el embudo de conversión de todas tus ofertas.",
     "upgradeStandard": "Mejorar a Standard — $19.99/mes",
     "backToOverview": "Volver al resumen",
-    "createProfile": "perfil de negocio"
+    "createProfile": "perfil de negocio",
+    "profileViews": "Visitas al perfil ({window})",
+    "trafficTitle": "Fuentes de tráfico",
+    "trafficSubtitle": "De dónde vinieron tus visitantes ({window})",
+    "trafficColSource": "Fuente",
+    "trafficColVisits": "Visitas",
+    "trafficColShare": "Porcentaje",
+    "trafficEmpty": "Aún no hay visitas en este periodo.",
+    "trendsTitle": "Tendencias",
+    "trendsSubtitle": "Visitas diarias al perfil y a las ofertas ({window})",
+    "seriesProfileViews": "Visitas al perfil",
+    "seriesDealViews": "Visitas a ofertas",
+    "premiumTeaserTitle": "Desbloquea con Premium",
+    "premiumTeaserBody": "Mira exactamente de dónde vienen tus visitantes y cómo evoluciona tu tráfico.",
+    "premiumTeaserCta": "Mejorar a Premium"
   },
   "dashboardProperties": {
     "title": "Propiedades",
@@ -1837,5 +1851,10 @@
     "to": "a",
     "closed": "Cerrado",
     "save": "Guardar horarios"
+  },
+  "featured": {
+    "title": "Destacados",
+    "subtitle": "Negocios locales destacados",
+    "badge": "Destacado"
   }
 }

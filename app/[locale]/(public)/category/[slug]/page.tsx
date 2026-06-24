@@ -27,6 +27,7 @@ import {
   getBusinessesByCategorySlug,
 } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
+import { FeaturedRow } from "@/components/featured-row"
 import { DealGrid } from "@/components/deal-card"
 import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
@@ -272,6 +273,9 @@ export default async function CategoryPage({
               </ul>
             )}
           </section>
+
+          {/* PREMIUM FEATURED ROW — scoped to this category; renders null when no premium deals */}
+          <FeaturedRow viewer={viewer} categorySlug={params.slug} fromPath={`/category/${params.slug}`} />
 
           {/* DEALS: secondary section */}
           {deals.length > 0 && (
