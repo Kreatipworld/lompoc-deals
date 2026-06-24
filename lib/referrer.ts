@@ -7,16 +7,33 @@ export type ReferrerSource =
   | "Direct"
   | "Other"
 
-/** Map a raw referrer string to a coarse traffic-source bucket. */
+/**
+ * Map a raw referrer string to a coarse traffic-source bucket.
+ *
+ * Matches on the URL's hostname labels (not raw substrings), so query strings
+ * like `?ref=x.com` and lookalike hosts like `notgoogle.evil.com` don't get
+ * misbucketed.
+ */
 export function normalizeReferrer(raw: string | null | undefined): ReferrerSource {
   if (!raw) return "Direct"
-  const r = raw.toLowerCase()
 
-  if (r.includes("lompoc-deals")) return "Direct" // same-origin navigation
-  if (r.includes("facebook.com") || r.includes("fb.me") || r.includes("fb.com")) return "Facebook"
-  if (r.includes("instagram.com")) return "Instagram"
-  if (r.includes("google.")) return "Google"
-  if (r.includes("t.co") || r.includes("twitter.com") || r.includes("x.com")) return "Twitter/X"
-  if (r.includes("bing.") || r.includes("duckduckgo.") || r.includes("yahoo.")) return "Other search"
+  let host: string
+  try {
+    host = new URL(raw).hostname.toLowerCase()
+  } catch {
+    return "Other" // unparseable referrer
+  }
+  if (!host) return "Direct"
+
+  if (host.includes("lompoc-deals")) return "Direct" // same-origin navigation
+
+  const labels = host.split(".")
+  const has = (label: string) => labels.includes(label)
+
+  if (has("facebook") || has("fb")) return "Facebook"
+  if (has("instagram")) return "Instagram"
+  if (has("google")) return "Google"
+  if (host === "t.co" || has("twitter") || host === "x.com" || host.endsWith(".x.com")) return "Twitter/X"
+  if (has("bing") || has("duckduckgo") || has("yahoo")) return "Other search"
   return "Other"
 }

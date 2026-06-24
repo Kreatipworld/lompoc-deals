@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import { dateSeed, seededShuffle } from "./featured"
+import { dateSeed, seededShuffle } from "./featured-rotation"
 
 // dateSeed: same day → same seed, different day → different seed
 assert.equal(dateSeed(new Date("2026-06-23T01:00:00Z")), dateSeed(new Date("2026-06-23T23:00:00Z")))

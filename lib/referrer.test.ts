@@ -17,4 +17,12 @@ assert.equal(normalizeReferrer(null), "Direct")
 assert.equal(normalizeReferrer(undefined), "Direct")
 assert.equal(normalizeReferrer("https://some-random-blog.com/post"), "Other")
 
+// host-based matching: query strings and lookalike hosts must NOT false-positive
+assert.equal(normalizeReferrer("https://example.com/search?q=x.com"), "Other")
+assert.equal(normalizeReferrer("https://example.com/?ref=facebook.com"), "Other")
+assert.equal(normalizeReferrer("https://notgoogle.evil.com/"), "Other")
+assert.equal(normalizeReferrer("https://x.com/someone"), "Twitter/X")
+assert.equal(normalizeReferrer("https://www.google.co.uk/search"), "Google")
+assert.equal(normalizeReferrer("not a url"), "Other")
+
 console.log("referrer.test: all passed")
