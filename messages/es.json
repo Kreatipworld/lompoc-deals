@@ -1851,5 +1851,10 @@
     "to": "a",
     "closed": "Cerrado",
     "save": "Guardar horarios"
+  },
+  "featured": {
+    "title": "Destacados",
+    "subtitle": "Negocios locales destacados",
+    "badge": "Destacado"
   }
 }

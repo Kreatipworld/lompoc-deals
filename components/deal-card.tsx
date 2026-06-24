@@ -19,6 +19,7 @@ import { trackClaimAction, trackRedeemAction } from "@/lib/tracking-actions"
 import type { DealCardData } from "@/lib/queries"
 import type { Viewer } from "@/lib/viewer"
 import { SafeImage } from "@/components/safe-image"
+import { FeaturedBadge } from "@/components/featured-badge"
 import { getTranslations } from "next-intl/server"
 
 type TypeKey = DealCardData["type"]
@@ -56,6 +57,7 @@ export async function DealCard({
   staggerIndex?: number
 }) {
   const t = await getTranslations("dealCard")
+  const tf = await getTranslations("featured")
   const isFavorited = viewer.favoritedDealIds.has(deal.id)
   const expired = isPast(deal.expiresAt)
   const hoursLeft = differenceInHours(deal.expiresAt, new Date())
@@ -91,6 +93,13 @@ export async function DealCard({
           {deal.discountText && (
             <div className="absolute left-2.5 top-2.5 rounded-full bg-amber px-2.5 py-1 text-xs font-bold text-amber-foreground shadow">
               {deal.discountText}
+            </div>
+          )}
+
+          {/* Featured badge — below discount badge to avoid overlap with top-right expires-soon ribbon */}
+          {deal.featured && (
+            <div className="absolute left-2.5 top-10">
+              <FeaturedBadge label={tf("badge")} />
             </div>
           )}
 
@@ -266,6 +275,13 @@ export async function DealCard({
         {deal.discountText && (
           <div className="absolute left-3 top-3 rounded-full bg-amber px-3 py-1.5 text-sm font-bold text-amber-foreground shadow-md">
             {deal.discountText}
+          </div>
+        )}
+
+        {/* Featured badge — placed below discount badge (left-3 top-12) to avoid overlap with heart button at top-right */}
+        {deal.featured && (
+          <div className="absolute left-3 top-12">
+            <FeaturedBadge label={tf("badge")} />
           </div>
         )}
 

@@ -1851,5 +1851,10 @@
     "to": "to",
     "closed": "Closed",
     "save": "Save hours"
+  },
+  "featured": {
+    "title": "Featured",
+    "subtitle": "Top local businesses",
+    "badge": "Featured"
   }
 }
