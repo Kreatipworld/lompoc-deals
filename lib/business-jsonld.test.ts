@@ -30,6 +30,10 @@ assert.ok(!("telephone" in min))
 assert.ok(!("geo" in min))
 assert.ok(!("address" in min))
 assert.ok(!("aggregateRating" in min))
+assert.ok(!("openingHoursSpecification" in min))
+assert.ok(!("amenityFeature" in min))
+assert.ok(!("sameAs" in min))
+assert.ok(!("image" in min))
 
 // food-drink → Restaurant
 const food = buildLocalBusinessJsonLd(base, { ...opts, categorySlug: "food-drink" })
