@@ -13,11 +13,14 @@ import {
   parseHours,
   type Hours,
 } from "@/lib/hours"
+import { AMENITIES } from "@/lib/amenities"
 import { useTranslations } from "next-intl"
 
 type Biz = {
   name: string
   description: string | null
+  about: string | null
+  amenitiesJson: unknown
   categoryId: number | null
   address: string | null
   phone: string | null
@@ -103,6 +106,7 @@ export function ProfileForm({
   categories: Category[]
 }) {
   const t = useTranslations("dashboardProfile")
+  const tAmenity = useTranslations("businesses.amenities")
   const [state, action] = useFormState<ProfileState, FormData>(
     saveProfileAction,
     undefined
@@ -196,6 +200,44 @@ export function ProfileForm({
             />
           )}
           <Input id="cover" name="cover" type="file" accept="image/*" />
+        </div>
+      </div>
+
+      <div className="space-y-4 border-t pt-6">
+        <div className="space-y-2">
+          <Label htmlFor="about">{t("aboutLabel")}</Label>
+          <Textarea
+            id="about"
+            name="about"
+            rows={6}
+            defaultValue={biz?.about ?? ""}
+          />
+          <p className="text-xs text-muted-foreground">{t("aboutHint")}</p>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="font-display text-base font-semibold tracking-tight">
+            {t("amenitiesTitle")}
+          </h3>
+          <p className="text-xs text-muted-foreground">{t("amenitiesHint")}</p>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {AMENITIES.map((a) => {
+              const checked =
+                Array.isArray(biz?.amenitiesJson) &&
+                (biz!.amenitiesJson as string[]).includes(a.slug)
+              return (
+                <label key={a.slug} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    name="amenities"
+                    value={a.slug}
+                    defaultChecked={checked}
+                  />
+                  {tAmenity(a.slug)}
+                </label>
+              )
+            })}
+          </div>
         </div>
       </div>
 
