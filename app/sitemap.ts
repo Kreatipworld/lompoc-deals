@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}/biz/${b.slug}`,
     lastModified: b.createdAt,
     changeFrequency: "weekly" as const,
-    priority: 0.6,
+    priority: 0.7,
   }))
 
   const catPages = cats.map((c) => ({

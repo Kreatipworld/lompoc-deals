@@ -1,4 +1,4 @@
-import { and, desc, eq, gt, gte, ilike, inArray, or, sql } from "drizzle-orm"
+import { and, desc, eq, gt, gte, ilike, inArray, ne, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions } from "@/db/schema"
 import { effectiveTier } from "@/lib/tier"
@@ -942,6 +942,41 @@ export async function countPublishedBlogPosts(category?: string): Promise<number
 
 export async function getRecentBlogPosts(limit = 3): Promise<BlogPostCard[]> {
   return getPublishedBlogPosts(limit, 0)
+}
+
+export type RelatedBusinessCard = {
+  name: string
+  slug: string
+  logoUrl: string | null
+  categoryName: string | null
+}
+
+/** Other approved businesses in the same category, for internal linking. */
+export async function getRelatedBusinesses(
+  categoryId: number | null,
+  excludeId: number,
+  limit = 4
+): Promise<RelatedBusinessCard[]> {
+  if (categoryId == null) return []
+  const rows = await db
+    .select({
+      name: businesses.name,
+      slug: businesses.slug,
+      logoUrl: businesses.logoUrl,
+      categoryName: categories.name,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .where(
+      and(
+        eq(businesses.status, "approved"),
+        eq(businesses.categoryId, categoryId),
+        ne(businesses.id, excludeId)
+      )
+    )
+    .orderBy(businesses.name)
+    .limit(limit)
+  return rows
 }
 
 // ---------- blog ↔ business recommendations ----------

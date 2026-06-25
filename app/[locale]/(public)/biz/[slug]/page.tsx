@@ -10,7 +10,7 @@ import {
   Sparkles,
   Calendar,
 } from "lucide-react"
-import { getBusinessBySlug, getListingsByBusinessId } from "@/lib/queries"
+import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { bumpViewCounts } from "@/lib/tracking"
 import { track } from "@/lib/analytics/track"
@@ -86,6 +86,12 @@ export default async function BusinessPage({
   if (!data) notFound()
   const { business, deals } = data
   const isRealEstate = business.category?.slug === "real-estate"
+
+  const relatedBusinesses = await getRelatedBusinesses(
+    business.categoryId,
+    business.id,
+    4
+  )
 
   // For real estate businesses, fetch property listings instead
   const listings = isRealEstate
@@ -365,6 +371,25 @@ export default async function BusinessPage({
             <BusinessHours hoursJson={business.hoursJson} />
           </aside>
         </div>
+          {relatedBusinesses.length > 0 && business.category && (
+            <div className="mt-12 border-t pt-8">
+              <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
+                {t("moreInCategory", { category: business.category.name })}
+              </h2>
+              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {relatedBusinesses.map((rb) => (
+                  <li key={rb.slug}>
+                    <Link
+                      href={`/biz/${rb.slug}`}
+                      className="flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm transition-colors hover:bg-secondary"
+                    >
+                      <span className="truncate">{rb.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
       </section>
     </>
   )
