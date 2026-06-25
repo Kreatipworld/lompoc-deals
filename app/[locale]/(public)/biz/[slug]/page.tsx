@@ -24,6 +24,7 @@ import { BusinessMapLoader } from "@/components/business-map-loader"
 import { BusinessClaimCta } from "@/components/business-claim-cta"
 import { FollowBusinessButton } from "@/components/follow-business-button"
 import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
+import { BusinessAbout } from "@/components/business-about"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
@@ -284,6 +285,16 @@ export default async function BusinessPage({
           <BusinessClaimCta slug={params.slug} />
         </section>
       )}
+      {/* ─────────────────────────────────────────────────
+          ABOUT THIS PLACE — long-form copy + amenities
+         ───────────────────────────────────────────────── */}
+      <div className="mt-6">
+        <BusinessAbout
+          about={business.about}
+          amenities={business.amenitiesJson as string[] | null}
+          source={{ about: business.aboutSource, amenities: business.amenitiesSource }}
+        />
+      </div>
 
       {/* ─────────────────────────────────────────────────
           2-COLUMN BODY
