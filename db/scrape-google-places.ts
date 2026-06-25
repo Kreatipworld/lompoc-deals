@@ -282,6 +282,7 @@ async function main() {
         null
 
       const normalizedHours = buildNormalizedHours(place.openingHours)
+      const insertAmenities = mapGoogleAdditionalInfo(place.additionalInfo)
       await db.insert(businesses).values({
         ownerUserId: scraperUser.id,
         name,
@@ -301,11 +302,8 @@ async function main() {
         coverUrl,
         about: place.description ?? null,
         aboutSource: place.description ? "google" : null,
-        amenitiesJson: (() => {
-          const m = mapGoogleAdditionalInfo(place.additionalInfo)
-          return m.length > 0 ? m : null
-        })(),
-        amenitiesSource: mapGoogleAdditionalInfo(place.additionalInfo).length > 0 ? "google" : null,
+        amenitiesJson: insertAmenities.length > 0 ? insertAmenities : null,
+        amenitiesSource: insertAmenities.length > 0 ? "google" : null,
         googleBusinessUrl: place.url ?? null,
         status: "approved",
       })

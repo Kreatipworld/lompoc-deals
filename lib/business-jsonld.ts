@@ -34,6 +34,7 @@ const CATEGORY_TO_TYPE: Record<string, string> = {
   "food-drink": "Restaurant",
 }
 
+// English labels intentionally mirror messages/en.json > businesses.amenities; this pure builder cannot use next-intl, and schema.org names should stay canonical English regardless of page locale.
 const AMENITY_LABEL: Record<string, string> = {
   wheelchair_accessible: "Wheelchair accessible",
   outdoor_seating: "Outdoor seating",
