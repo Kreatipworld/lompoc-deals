@@ -42,15 +42,23 @@ export async function generateMetadata({
     getTranslations("businesses.profile"),
   ])
   if (!data) return { title: t("metaNotFound") }
-  const { name, description } = data.business
+  const { name, description, about } = data.business
   const catLabel = data.business.category?.name ?? "local business"
   const fallbackDescription = t("metaFallbackDescription", { name, catLabel })
+  const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+  // Prefer the longer About copy (truncated) for the meta description.
+  const aboutSnippet = about?.trim()
+    ? about.trim().slice(0, 155).replace(/\s+\S*$/, "") + (about.trim().length > 155 ? "…" : "")
+    : null
+  const metaDescription = aboutSnippet ?? description ?? fallbackDescription
   return {
     title: `${name} — ${t("metaTitleSuffix")}`,
-    description: description ?? fallbackDescription,
+    description: metaDescription,
+    keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
+    alternates: { canonical: `${siteUrl}/biz/${params.slug}` },
     openGraph: {
       title: `${name} ${t("metaOgSuffix")}`,
-      description: description ?? t("metaOgFallback", { name }),
+      description: metaDescription,
     },
   }
 }
