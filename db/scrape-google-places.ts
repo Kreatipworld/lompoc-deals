@@ -28,6 +28,7 @@ import { eq } from "drizzle-orm"
 import { isLompocAddress } from "../lib/lompoc-zip"
 import { normalizeGoogleHours } from "../lib/hours-normalizer"
 import { DAY_KEYS } from "../lib/hours"
+import { mapGoogleAdditionalInfo } from "../lib/amenities"
 
 // ---- helpers ---------------------------------------------------------------
 
@@ -94,6 +95,8 @@ interface GooglePlaceResult {
   totalScore?: number
   reviewsCount?: number
   placeId?: string
+  description?: string
+  additionalInfo?: unknown
 }
 
 async function main() {
@@ -175,6 +178,7 @@ async function main() {
     includeReviews: false,
     maxReviews: 0,
     exportPlaceUrls: true,
+    scrapePlaceDetailPage: true,
   })
 
   if (run.status !== "SUCCEEDED") {
@@ -239,6 +243,17 @@ async function main() {
         if (!existing.googleBusinessUrl && place.url) {
           updates.googleBusinessUrl = place.url
         }
+        if (existing.aboutSource !== "owner" && !existing.about && place.description) {
+          updates.about = place.description
+          updates.aboutSource = "google"
+        }
+        if (existing.amenitiesSource !== "owner") {
+          const mapped = mapGoogleAdditionalInfo(place.additionalInfo)
+          if (mapped.length > 0) {
+            updates.amenitiesJson = mapped
+            updates.amenitiesSource = "google"
+          }
+        }
 
         if (Object.keys(updates).length > 0) {
           await db
@@ -284,6 +299,13 @@ async function main() {
         // placeId is the field Apify's compass/crawler-google-places actor returns (verified in GooglePlaceResult interface)
         googlePlaceId: place.placeId ?? null,
         coverUrl,
+        about: place.description ?? null,
+        aboutSource: place.description ? "google" : null,
+        amenitiesJson: (() => {
+          const m = mapGoogleAdditionalInfo(place.additionalInfo)
+          return m.length > 0 ? m : null
+        })(),
+        amenitiesSource: mapGoogleAdditionalInfo(place.additionalInfo).length > 0 ? "google" : null,
         googleBusinessUrl: place.url ?? null,
         status: "approved",
       })
