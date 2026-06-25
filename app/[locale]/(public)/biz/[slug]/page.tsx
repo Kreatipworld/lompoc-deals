@@ -28,6 +28,7 @@ import { BusinessAbout } from "@/components/business-about"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
+import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
@@ -116,8 +117,20 @@ export default async function BusinessPage({
       ? [business.coverUrl]
       : []
 
+  const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+  const jsonLd = buildLocalBusinessJsonLd(business, {
+    siteUrl,
+    amenities: (business.amenitiesJson as string[] | null) ?? [],
+    photos,
+    categorySlug: business.category?.slug ?? null,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ─────────────────────────────────────────────────
           COVER IMAGE BANNER (full-width, above header card)
          ───────────────────────────────────────────────── */}
