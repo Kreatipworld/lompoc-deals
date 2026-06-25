@@ -1,11 +1,14 @@
-# Business "About this place" + Amenities — Design Spec
+# Business "About this place" + Amenities + Local SEO — Design Spec
 
 **Date:** 2026-06-24
-**Branch:** continues on profile work (`feat/profile-photo-gallery` or a fresh `feat/business-about-amenities` off `main`)
+**Branch:** `feat/business-about-amenities` off `main`
 
 ## Goal
 
-Add richer "info about the place" to the business profile: a long-form **About** write-up and a set of **amenities** (wheelchair accessible, outdoor seating, takeout, etc.). Both are **Google-seeded, owner-editable** — the Google Places scraper fills them in automatically, and the business owner can override them in the dashboard. Owner edits are never clobbered by re-scrapes.
+Two connected goals on one branch:
+
+1. **Richer profile info** — a long-form **About** write-up and a set of **amenities** (wheelchair accessible, outdoor seating, takeout, etc.). Both are **Google-seeded, owner-editable**: the Google Places scraper fills them in automatically, and the business owner can override them in the dashboard. Owner edits are never clobbered by re-scrapes.
+2. **Local SEO / positioning** — feed that scraped + existing data into search-engine signals: **`LocalBusiness` JSON-LD structured data** on every profile, **enhanced page meta** (About-driven description, Lompoc-CA keywords, canonical URLs), and **sitemap + internal-linking** refinements — so Lompoc businesses rank and surface as rich local results.
 
 ## Background / current state
 
@@ -107,6 +110,47 @@ In `lib/biz-actions.ts` `saveProfileAction`:
 - `businesses.amenities`: one key per canonical slug (14), EN + ES.
 - `dashboardProfile`: `aboutLabel`, `aboutHint`, `amenitiesTitle`, `amenitiesHint`, EN + ES.
 
+## Local SEO / positioning
+
+All three sub-parts reuse data we already have plus the new About/amenities. **No new scraping** beyond About + amenities — in particular, no rating/review/price scrape, so JSON-LD omits `aggregateRating` (Google discourages self-asserted review markup without real review data).
+
+### 1. `LocalBusiness` JSON-LD (`lib/business-jsonld.ts`, new — pure)
+
+```ts
+export function buildLocalBusinessJsonLd(
+  business,                       // the profile's business row
+  opts: { siteUrl: string; amenities: string[]; photos: string[]; categorySlug: string | null }
+): Record<string, unknown>
+```
+
+Pure builder returning a schema.org object; the profile page renders it via
+`<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(...) }} />`
+— mirroring the existing pattern in `app/[locale]/(public)/blog/[slug]/page.tsx`.
+
+Mapped fields (omit any whose source value is null/empty — never emit empty keys):
+- `@context: "https://schema.org"`, `@type`: `"LocalBusiness"` by default; map `food-drink` → `"Restaurant"` via a small slug→type table (extensible later).
+- `name`, `description` (`about ?? description`), `url` (`<siteUrl>/biz/<slug>`), `telephone`, `image` (photos array).
+- `address`: `PostalAddress` — full string in `streetAddress`, plus `addressLocality: "Lompoc"`, `addressRegion: "CA"`, `addressCountry: "US"`, and `postalCode` parsed from the address via `\b\d{5}\b` when present.
+- `geo`: `GeoCoordinates` from `lat`/`lng` (only when both present).
+- `openingHoursSpecification`: array built from `hoursJson` (canonical Hours shape → `{ "@type": "OpeningHoursSpecification", dayOfWeek, opens, closes }`).
+- `amenityFeature`: `LocationFeatureSpecification[]` from the canonical amenity slugs (`name` = English label, `value: true`).
+- `sameAs`: the non-null social URLs (instagram/facebook/tiktok/youtube/yelp/googleBusinessUrl).
+
+**Test:** `lib/business-jsonld.test.ts` (`tsx` + `node:assert/strict`). Covers: minimal business (only name/slug) emits valid object with no empty keys; full business emits address/geo/hours/amenities/sameAs; `food-drink` → `"Restaurant"`; postalCode parsed; null lat/lng omits `geo`.
+
+### 2. Enhanced page meta (`generateMetadata` in the profile page)
+
+- `description`: prefer `about` (truncated to ~155 chars) over the short `description`, with the existing localized fallback as last resort.
+- `keywords`: `[name, category name, "Lompoc CA", "Lompoc", ...amenity labels (few)]`.
+- `alternates.canonical`: `<siteUrl>/biz/<slug>` (canonical, locale-agnostic).
+- Keep existing OpenGraph; add `images` from the lead photo when present.
+- `metadataBase` is already set globally in `app/layout.tsx` — reuse it.
+
+### 3. Sitemap + internal links
+
+- **Sitemap** (`app/sitemap.ts`): business profiles are already included. Refinements only — bump biz `priority` to `0.7`, and set `lastModified` to the most recent of `createdAt` / any future `updatedAt`. (Add an `updatedAt` column only if trivially available; otherwise keep `createdAt`. **Decision: keep `createdAt`** to avoid scope creep.)
+- **Internal links**: add a small **"More <category> in Lompoc"** related-businesses strip to the profile body (links to a few same-category approved businesses) — improves crawl depth and on-site engagement. A `getRelatedBusinesses(categoryId, excludeId, limit)` query (reuse/extend existing queries in `lib/queries.ts`). Bilingual heading via i18n.
+
 ## Testing & verification
 
 - `npx tsx lib/amenities.test.ts` — passes.
@@ -117,12 +161,20 @@ In `lib/biz-actions.ts` `saveProfileAction`:
 
 ## Out of scope (YAGNI)
 
-- Google rating / review count / price level / popular times (separate "Google Place facts" feature).
+- Google rating / review count / price level / popular times — and therefore `aggregateRating` in the JSON-LD (no real review data to back it).
 - Owner-defined custom amenities outside the canonical set.
 - Per-amenity verification badges.
+- A new `updatedAt` column on businesses (sitemap keeps `createdAt`).
+
+## Verification (SEO additions)
+
+- `npx tsx lib/business-jsonld.test.ts` — passes.
+- Built profile page contains exactly one valid `application/ld+json` block; paste into Google's Rich Results Test mentally / validate JSON shape.
+- `generateMetadata` emits canonical + About-driven description on a sample profile.
+- Sitemap still lists every approved profile; related-businesses strip links resolve.
 
 ## File structure
 
-- **Migration:** new drizzle migration adding the 4 columns.
-- **Create:** `lib/amenities.ts`, `lib/amenities.test.ts`, `components/business-about.tsx`.
-- **Modify:** `db/schema.ts`, `db/scrape-google-places.ts`, `app/[locale]/(public)/biz/[slug]/page.tsx`, `app/[locale]/dashboard/profile/profile-form.tsx`, `lib/biz-actions.ts`, `messages/en.json`, `messages/es.json`.
+- **Migration:** new drizzle migration adding the 4 columns (`about`, `about_source`, `amenities_json`, `amenities_source`).
+- **Create:** `lib/amenities.ts`, `lib/amenities.test.ts`, `lib/business-jsonld.ts`, `lib/business-jsonld.test.ts`, `components/business-about.tsx`.
+- **Modify:** `db/schema.ts`, `db/scrape-google-places.ts`, `app/[locale]/(public)/biz/[slug]/page.tsx` (display + JSON-LD + `generateMetadata` + related strip), `app/[locale]/dashboard/profile/profile-form.tsx`, `lib/biz-actions.ts`, `lib/queries.ts` (related-businesses query), `app/sitemap.ts` (priority bump), `messages/en.json`, `messages/es.json`.

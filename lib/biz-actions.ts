@@ -13,6 +13,7 @@ import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { localizedLompocAddressError } from "@/lib/i18n-helpers"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
+import { isAmenitySlug } from "@/lib/amenities"
 import { TIERS } from "@/lib/stripe"
 import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail } from "@/lib/email"
 import { track } from "@/lib/analytics/track"
@@ -50,6 +51,7 @@ const optionalUrl = z
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   description: z.string().optional(),
+  about: z.string().optional(),
   categoryId: z.coerce.number().int().positive().optional(),
   address: z.string().optional(),
   phone: z.string().optional(),
@@ -74,6 +76,7 @@ export async function saveProfileAction(
   const parsed = profileSchema.safeParse({
     name: formData.get("name"),
     description: formData.get("description") || undefined,
+    about: formData.get("about") || undefined,
     categoryId: formData.get("categoryId") || undefined,
     address: formData.get("address") || undefined,
     phone: formData.get("phone") || undefined,
@@ -126,6 +129,12 @@ export async function saveProfileAction(
     googleBusinessUrl: data.googleBusinessUrl || null,
   }
 
+  // Amenities — keep only known canonical slugs the owner checked.
+  const amenitiesPayload = formData
+    .getAll("amenities")
+    .map((v) => v.toString())
+    .filter((s) => isAmenitySlug(s))
+
   // Build hours object from form fields. Each day has hours_<day>_open,
   // hours_<day>_close, and hours_<day>_closed (checkbox).
   const hours: Hours = {
@@ -160,6 +169,10 @@ export async function saveProfileAction(
         name: data.name,
         slug: slugify(data.name),
         description: data.description ?? null,
+        about: data.about ?? null,
+        aboutSource: "owner",
+        amenitiesJson: amenitiesPayload,
+        amenitiesSource: "owner",
         categoryId: data.categoryId ?? null,
         address: data.address ?? null,
         phone: data.phone ?? null,
@@ -179,6 +192,10 @@ export async function saveProfileAction(
       name: data.name,
       slug: slugify(data.name),
       description: data.description ?? null,
+      about: data.about ?? null,
+      aboutSource: "owner",
+      amenitiesJson: amenitiesPayload,
+      amenitiesSource: "owner",
       categoryId: data.categoryId ?? null,
       address: data.address ?? null,
       lat: coords?.lat,

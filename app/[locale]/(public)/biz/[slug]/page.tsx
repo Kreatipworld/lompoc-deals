@@ -10,7 +10,7 @@ import {
   Sparkles,
   Calendar,
 } from "lucide-react"
-import { getBusinessBySlug, getListingsByBusinessId } from "@/lib/queries"
+import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
 import { bumpViewCounts } from "@/lib/tracking"
 import { track } from "@/lib/analytics/track"
@@ -24,9 +24,11 @@ import { BusinessMapLoader } from "@/components/business-map-loader"
 import { BusinessClaimCta } from "@/components/business-claim-cta"
 import { FollowBusinessButton } from "@/components/follow-business-button"
 import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
+import { BusinessAbout } from "@/components/business-about"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
+import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
@@ -40,15 +42,23 @@ export async function generateMetadata({
     getTranslations("businesses.profile"),
   ])
   if (!data) return { title: t("metaNotFound") }
-  const { name, description } = data.business
+  const { name, description, about } = data.business
   const catLabel = data.business.category?.name ?? "local business"
   const fallbackDescription = t("metaFallbackDescription", { name, catLabel })
+  const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+  // Prefer the longer About copy (truncated) for the meta description.
+  const aboutSnippet = about?.trim()
+    ? about.trim().slice(0, 155).replace(/\s+\S*$/, "") + (about.trim().length > 155 ? "…" : "")
+    : null
+  const metaDescription = aboutSnippet ?? description ?? fallbackDescription
   return {
     title: `${name} — ${t("metaTitleSuffix")}`,
-    description: description ?? fallbackDescription,
+    description: metaDescription,
+    keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
+    alternates: { canonical: `${siteUrl}/biz/${params.slug}` },
     openGraph: {
       title: `${name} ${t("metaOgSuffix")}`,
-      description: description ?? t("metaOgFallback", { name }),
+      description: metaDescription,
     },
   }
 }
@@ -76,6 +86,12 @@ export default async function BusinessPage({
   if (!data) notFound()
   const { business, deals } = data
   const isRealEstate = business.category?.slug === "real-estate"
+
+  const relatedBusinesses = await getRelatedBusinesses(
+    business.categoryId,
+    business.id,
+    4
+  )
 
   // For real estate businesses, fetch property listings instead
   const listings = isRealEstate
@@ -115,8 +131,20 @@ export default async function BusinessPage({
       ? [business.coverUrl]
       : []
 
+  const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+  const jsonLd = buildLocalBusinessJsonLd(business, {
+    siteUrl,
+    amenities: (business.amenitiesJson as string[] | null) ?? [],
+    photos,
+    categorySlug: business.category?.slug ?? null,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       {/* ─────────────────────────────────────────────────
           COVER IMAGE BANNER (full-width, above header card)
          ───────────────────────────────────────────────── */}
@@ -284,6 +312,16 @@ export default async function BusinessPage({
           <BusinessClaimCta slug={params.slug} />
         </section>
       )}
+      {/* ─────────────────────────────────────────────────
+          ABOUT THIS PLACE — long-form copy + amenities
+         ───────────────────────────────────────────────── */}
+      <div className="mt-6">
+        <BusinessAbout
+          about={business.about}
+          amenities={business.amenitiesJson as string[] | null}
+          source={{ about: business.aboutSource, amenities: business.amenitiesSource }}
+        />
+      </div>
 
       {/* ─────────────────────────────────────────────────
           2-COLUMN BODY
@@ -333,6 +371,25 @@ export default async function BusinessPage({
             <BusinessHours hoursJson={business.hoursJson} />
           </aside>
         </div>
+          {relatedBusinesses.length > 0 && business.category && (
+            <div className="mt-12 border-t pt-8">
+              <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
+                {t("moreInCategory", { category: business.category.name })}
+              </h2>
+              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {relatedBusinesses.map((rb) => (
+                  <li key={rb.slug}>
+                    <Link
+                      href={`/biz/${rb.slug}`}
+                      className="flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm transition-colors hover:bg-secondary"
+                    >
+                      <span className="truncate">{rb.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
       </section>
     </>
   )

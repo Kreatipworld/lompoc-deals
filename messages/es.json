@@ -917,7 +917,27 @@
       "photoPrev": "Foto anterior",
       "photoNext": "Foto siguiente",
       "photoClose": "Cerrar",
-      "photoOpenAria": "Abrir foto {n}"
+      "photoOpenAria": "Abrir foto {n}",
+      "aboutTitle": "Acerca de este lugar",
+      "amenitiesTitle": "Lo que ofrece este lugar",
+      "aboutFromGoogle": "Información de Google",
+      "moreInCategory": "Más {category} en Lompoc"
+    },
+    "amenities": {
+      "wheelchair_accessible": "Accesible para sillas de ruedas",
+      "outdoor_seating": "Asientos al aire libre",
+      "dine_in": "Comer en el lugar",
+      "takeout": "Para llevar",
+      "delivery": "Entrega a domicilio",
+      "accepts_cards": "Acepta tarjetas",
+      "free_wifi": "Wi-Fi gratis",
+      "parking": "Estacionamiento",
+      "family_friendly": "Apto para familias",
+      "pet_friendly": "Admite mascotas",
+      "restroom": "Baño",
+      "reservations": "Reservaciones",
+      "good_for_groups": "Bueno para grupos",
+      "lgbtq_friendly": "Espacio LGBTQ+"
     }
   },
   "locale": {
@@ -1122,6 +1142,10 @@
     "youtubeLabel": "YouTube",
     "yelpLabel": "Yelp",
     "googleBusinessLabel": "Google Business",
+    "aboutLabel": "Acerca de este lugar",
+    "aboutHint": "Una descripción más larga que se muestra en tu perfil. Cuéntales a los visitantes qué te hace especial.",
+    "amenitiesTitle": "Servicios",
+    "amenitiesHint": "Marca todo lo que aplique.",
     "savePending": "Guardando…",
     "saveIdle": "Guardar perfil"
   },
