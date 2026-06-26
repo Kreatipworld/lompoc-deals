@@ -9,7 +9,9 @@
     "forLocals": "Locales",
     "hotels": "Hoteles",
     "home": "Inicio de Lompoc Deals",
-    "neighborhood": "Vecindario"
+    "neighborhood": "Vecindario",
+    "search": "Buscar",
+    "close": "Cerrar"
   },
   "footer": {
     "tagline": "Cupones, especiales y anuncios locales de la Capital de las Flores de América.",
@@ -1554,6 +1556,9 @@
     "placeholder": "Buscar ofertas o negocios…",
     "businesses": "Negocios",
     "deals": "Ofertas",
+    "categories": "Categorías",
+    "discover": "Descubre",
+    "placesCount": "{count} lugares",
     "searching": "Buscando…",
     "searchFor": "Buscar"
   },

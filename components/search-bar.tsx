@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "@/i18n/navigation"
-import { Search, Building2, Tag } from "lucide-react"
+import { Search, Building2, Tag, LayoutGrid } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useTranslations } from "next-intl"
@@ -18,7 +18,9 @@ const EXAMPLE_QUERIES = [
   "local restaurants…",
 ]
 
+type CategoryHit = { name: string; slug: string; count: number }
 type AutocompleteResult = {
+  categories: CategoryHit[]
   businesses: { id: number; name: string; slug: string; logoUrl: string | null; categoryName: string | null }[]
   deals: { id: number; title: string; discountText: string | null; bizId: number; bizName: string; bizSlug: string }[]
 }
@@ -69,9 +71,19 @@ function useTypewriter(examples: string[], active: boolean) {
 export function SearchBar({
   defaultValue = "",
   size = "default",
+  autoFocus = false,
+  scrim = false,
+  onNavigate,
 }: {
   defaultValue?: string
   size?: "default" | "lg"
+  /** Focus the input on mount (used by the header search overlay). */
+  autoFocus?: boolean
+  /** Dim the page behind the suggestions so they read as a floating panel
+   *  instead of colliding with content below (used on the inline hero). */
+  scrim?: boolean
+  /** Called after any navigation, so a wrapping overlay can close itself. */
+  onNavigate?: () => void
 }) {
   const t = useTranslations("searchBar")
   const router = useRouter()
@@ -82,12 +94,30 @@ export function SearchBar({
   const [value, setValue] = useState(defaultValue)
   const [focused, setFocused] = useState(false)
   const [results, setResults] = useState<AutocompleteResult | null>(null)
+  const [popular, setPopular] = useState<CategoryHit[]>([])
   const [loading, setLoading] = useState(false)
   const [activeIdx, setActiveIdx] = useState(-1)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Load popular categories once, for the idle "Discover" state.
+  const fetchPopular = useCallback(async () => {
+    if (popular.length > 0) return
+    try {
+      const res = await fetch(`/api/search/autocomplete?popular=1`)
+      const data: AutocompleteResult = await res.json()
+      setPopular(data.categories ?? [])
+    } catch {
+      /* ignore — idle suggestions are non-critical */
+    }
+  }, [popular.length])
+
   const showTypewriter = focused === false && value === ""
   const typedPlaceholder = useTypewriter(EXAMPLE_QUERIES, showTypewriter)
+
+  // Focus the input on mount when requested (header search overlay).
+  useEffect(() => {
+    if (autoFocus) inputRef.current?.focus()
+  }, [autoFocus])
 
   // Fetch autocomplete suggestions
   const fetchSuggestions = useCallback(async (q: string) => {
@@ -121,6 +151,7 @@ export function SearchBar({
     if (q) {
       setResults(null)
       router.push(`/search?q=${encodeURIComponent(q)}`)
+      onNavigate?.()
     }
   }
 
@@ -128,12 +159,21 @@ export function SearchBar({
     setResults(null)
     setValue("")
     router.push(`/biz/${slug}`)
+    onNavigate?.()
+  }
+
+  const navigateToCategory = (slug: string) => {
+    setResults(null)
+    setValue("")
+    router.push(`/category/${slug}`)
+    onNavigate?.()
   }
 
   const navigateToSearch = (q: string) => {
     setResults(null)
     setValue(q)
     router.push(`/search?q=${encodeURIComponent(q)}`)
+    onNavigate?.()
   }
 
   // Close dropdown on outside click
@@ -147,8 +187,13 @@ export function SearchBar({
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
-  // Build flat suggestion list for keyboard nav
-  const allSuggestions: Array<{ type: "biz" | "deal"; slug: string; label: string; sub?: string }> = [
+  // Build flat suggestion list for keyboard nav (categories first — discovery)
+  const allSuggestions: Array<{ type: "category" | "biz" | "deal"; slug: string; label: string; sub?: string }> = [
+    ...(results?.categories ?? []).map((c) => ({
+      type: "category" as const,
+      slug: c.slug,
+      label: c.name,
+    })),
     ...(results?.businesses ?? []).map((b) => ({
       type: "biz" as const,
       slug: b.slug,
@@ -174,7 +219,8 @@ export function SearchBar({
     } else if (e.key === "Enter" && activeIdx >= 0) {
       e.preventDefault()
       const s = allSuggestions[activeIdx]
-      if (s.type === "biz") navigateToBiz(s.slug)
+      if (s.type === "category") navigateToCategory(s.slug)
+      else if (s.type === "biz") navigateToBiz(s.slug)
       else navigateToSearch(s.label)
     } else if (e.key === "Escape") {
       setResults(null)
@@ -182,10 +228,29 @@ export function SearchBar({
     }
   }
 
-  const showDropdown = focused && results && (results.businesses.length > 0 || results.deals.length > 0)
+  const hasResults =
+    !!results &&
+    (results.categories.length > 0 || results.businesses.length > 0 || results.deals.length > 0)
+  const showDropdown = focused && hasResults
+  // Idle "Discover" panel: focused, nothing typed yet, no live results.
+  const showDiscover = focused && value.trim().length < 2 && !hasResults && popular.length > 0
+
+  const panelOpen = showDropdown || showDiscover
 
   return (
-    <div ref={containerRef} className="relative w-full">
+    <div ref={containerRef} className={`relative w-full ${scrim && panelOpen ? "z-50" : ""}`}>
+      {/* Focus scrim — dims the page behind the suggestions. Lives inside the
+          z-50 container so the input + panel paint above it. */}
+      {scrim && panelOpen && (
+        <div
+          aria-hidden
+          className="fixed inset-0 -z-10 bg-black/30"
+          onMouseDown={() => {
+            setResults(null)
+            setFocused(false)
+          }}
+        />
+      )}
       <form onSubmit={handleSubmit} className="relative w-full">
         <Search
           className={`pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground ${
@@ -213,19 +278,50 @@ export function SearchBar({
           autoComplete="off"
           value={value}
           onChange={handleChange}
-          onFocus={() => setFocused(true)}
+          onFocus={() => {
+            setFocused(true)
+            fetchPopular()
+          }}
           onBlur={() => setFocused(false)}
           onKeyDown={handleKeyDown}
           placeholder={showTypewriter ? "" : t("placeholder")}
           className={`w-full rounded-full border border-border bg-background pl-12 pr-4 shadow-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4 ${
             isLarge ? "h-14 text-base" : "h-11 text-sm"
-          } ${showDropdown ? "rounded-b-none rounded-t-full ring-4" : ""}`}
+          } ${showDropdown || showDiscover ? "rounded-b-none rounded-t-full ring-4" : ""}`}
         />
       </form>
 
       {/* Autocomplete Dropdown */}
       {showDropdown && (
-        <div className="absolute left-0 right-0 z-50 rounded-b-2xl border border-t-0 border-border bg-background shadow-lg overflow-hidden">
+        <div className="absolute left-0 right-0 z-50 max-h-[min(70vh,32rem)] overflow-y-auto rounded-b-2xl border border-t-0 border-border bg-background shadow-xl">
+          {results!.categories.length > 0 && (
+            <div>
+              <div className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {t("categories")}
+              </div>
+              {results!.categories.map((cat, i) => (
+                <button
+                  key={cat.slug}
+                  type="button"
+                  onMouseDown={() => navigateToCategory(cat.slug)}
+                  className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-accent ${
+                    activeIdx === i ? "bg-accent" : ""
+                  }`}
+                >
+                  <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <LayoutGrid className="h-3.5 w-3.5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">{cat.name}</p>
+                  </div>
+                  <span className="flex-shrink-0 text-xs text-muted-foreground">
+                    {t("placesCount", { count: cat.count })}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
           {results!.businesses.length > 0 && (
             <div>
               <div className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -237,7 +333,7 @@ export function SearchBar({
                   type="button"
                   onMouseDown={() => navigateToBiz(biz.slug)}
                   className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-accent ${
-                    activeIdx === i ? "bg-accent" : ""
+                    activeIdx === results!.categories.length + i ? "bg-accent" : ""
                   }`}
                 >
                   {biz.logoUrl ? (
@@ -273,7 +369,7 @@ export function SearchBar({
                 {t("deals")}
               </div>
               {results!.deals.map((deal, i) => {
-                const idx = results!.businesses.length + i
+                const idx = results!.categories.length + results!.businesses.length + i
                 return (
                   <button
                     key={deal.id}
@@ -316,6 +412,28 @@ export function SearchBar({
               <Search className="h-3 w-3" />
               {t("searchFor")} &ldquo;<span className="font-medium text-foreground">{value}</span>&rdquo;
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Idle "Discover" panel — popular categories before anything is typed */}
+      {showDiscover && (
+        <div className="absolute left-0 right-0 z-50 rounded-b-2xl border border-t-0 border-border bg-background shadow-xl overflow-hidden">
+          <div className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            {t("discover")}
+          </div>
+          <div className="flex flex-wrap gap-2 px-4 pb-3 pt-1">
+            {popular.map((cat) => (
+              <button
+                key={cat.slug}
+                type="button"
+                onMouseDown={() => navigateToCategory(cat.slug)}
+                className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:border-primary hover:bg-accent"
+              >
+                <LayoutGrid className="h-3.5 w-3.5 text-primary" />
+                {cat.name}
+              </button>
+            ))}
           </div>
         </div>
       )}

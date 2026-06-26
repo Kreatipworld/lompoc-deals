@@ -103,15 +103,13 @@ export default async function CategoryPage({
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden border-b">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-accent via-background to-background"
-        />
-        <div
-          aria-hidden
-          className="absolute -top-20 right-[-10%] -z-10 h-[360px] w-[360px] rounded-full bg-primary/10 blur-3xl"
-        />
+      {/* No `overflow-hidden` on the section so the search dropdown can extend
+          past the hero; the decorations are clipped by their own wrapper. */}
+      <section className="relative border-b">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-accent via-background to-background" />
+          <div className="absolute -top-20 right-[-10%] h-[360px] w-[360px] rounded-full bg-primary/10 blur-3xl" />
+        </div>
 
         <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
           <Link
@@ -140,7 +138,7 @@ export default async function CategoryPage({
           </div>
 
           <div className="mt-8 max-w-xl">
-            <SearchBar />
+            <SearchBar scrim />
           </div>
         </div>
       </section>

@@ -1,6 +1,7 @@
 import { NavLink } from "@/components/nav-link"
 import { UserMenu } from "@/components/user-menu"
 import { MobileMenu } from "@/components/mobile-menu"
+import { HeaderSearch } from "@/components/header-search"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { Link } from "@/i18n/navigation"
 import { getTranslations } from "next-intl/server"
@@ -41,6 +42,7 @@ export async function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <HeaderSearch />
           <span className="hidden sm:block">
             <LocaleSwitcher />
           </span>

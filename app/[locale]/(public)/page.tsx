@@ -73,10 +73,14 @@ export default async function HomePage({ params }: { params: { locale: string } 
       {/* ─────────────────────────────────────────────────
           HERO — Search-first with Lompoc image background
          ───────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b">
+      {/* `relative` positions the background layers; no `overflow-hidden` here
+          so the search autocomplete dropdown can extend past the hero instead
+          of being clipped. The background layers are `absolute inset-0`, so
+          they stay bounded to the section on their own. */}
+      <section className="relative border-b">
         <div
           aria-hidden
-          className="absolute inset-0 -z-20"
+          className="absolute inset-0 -z-20 overflow-hidden"
           style={{
             backgroundImage: "url('/lompoc-hero.jpg')",
             backgroundSize: "cover",
@@ -103,7 +107,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </p>
 
           <div className="mx-auto mt-8 max-w-xl">
-            <SearchBar size="lg" />
+            <SearchBar size="lg" scrim />
           </div>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
