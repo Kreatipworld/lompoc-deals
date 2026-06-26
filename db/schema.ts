@@ -104,6 +104,9 @@ export const businesses = pgTable(
     aboutSource: text("about_source"), // 'google' | 'owner' | null
     amenitiesJson: jsonb("amenities_json"),
     amenitiesSource: text("amenities_source"), // 'google' | 'owner' | null
+    email: varchar("email", { length: 320 }), // primary contact email
+    emailsJson: jsonb("emails_json"), // string[] of all emails found on the site
+    emailSource: text("email_source"), // 'scraped' | 'owner' | null
     instagramUrl: varchar("instagram_url", { length: 500 }),
     facebookUrl: varchar("facebook_url", { length: 500 }),
     tiktokUrl: varchar("tiktok_url", { length: 500 }),

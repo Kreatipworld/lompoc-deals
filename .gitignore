@@ -37,3 +37,6 @@ next-env.d.ts
 
 # superpowers brainstorming mockups
 .superpowers/
+
+# Scraped contact exports (not for version control)
+exports/
