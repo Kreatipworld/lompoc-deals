@@ -219,7 +219,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
                       logoUrl={biz.logoUrl}
                       photoUrl={biz.photoUrl}
                       name={biz.name}
-                      className="h-14 w-14 rounded-xl"
+                      className="h-14 w-14 overflow-hidden rounded-xl"
                       icon={<Building2 className="h-7 w-7" />}
                     />
                   </div>
