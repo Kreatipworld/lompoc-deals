@@ -140,6 +140,7 @@ async function main() {
 
   // ---- run Apify actor ----
   const searchQueries = [
+    // --- original coverage ---
     "restaurants Lompoc CA",
     "cafes coffee shops Lompoc CA",
     "auto repair Lompoc CA",
@@ -147,7 +148,6 @@ async function main() {
     "retail shops Lompoc CA",
     "services Lompoc CA",
     "entertainment Lompoc CA",
-    // Extended queries for broader coverage
     "winery wine tasting Lompoc CA",
     "bakery dessert Lompoc CA",
     "dentist dental Lompoc CA",
@@ -164,6 +164,56 @@ async function main() {
     "tattoo Lompoc CA",
     "plumber electrician Lompoc CA",
     "real estate Lompoc CA",
+    // --- professional & financial services ---
+    "insurance agency Lompoc CA",
+    "attorney lawyer Lompoc CA",
+    "accountant tax preparation Lompoc CA",
+    "bank credit union Lompoc CA",
+    "mortgage loan office Lompoc CA",
+    "notary Lompoc CA",
+    "printer print shop Lompoc CA",
+    "photographer Lompoc CA",
+    // --- health & medical ---
+    "chiropractor Lompoc CA",
+    "optometrist eye doctor Lompoc CA",
+    "urgent care medical clinic Lompoc CA",
+    "physical therapy Lompoc CA",
+    "doctor physician Lompoc CA",
+    "massage therapy Lompoc CA",
+    // --- home & trade services ---
+    "contractor construction Lompoc CA",
+    "landscaping gardening Lompoc CA",
+    "cleaning service Lompoc CA",
+    "hvac heating air conditioning Lompoc CA",
+    "pest control Lompoc CA",
+    "roofing Lompoc CA",
+    "nursery garden center Lompoc CA",
+    "hardware store Lompoc CA",
+    // --- personal care & lifestyle ---
+    "barber shop Lompoc CA",
+    "nail salon Lompoc CA",
+    "laundromat dry cleaner Lompoc CA",
+    // --- retail & specialty ---
+    "liquor store Lompoc CA",
+    "smoke shop vape Lompoc CA",
+    "cannabis dispensary Lompoc CA",
+    "furniture store Lompoc CA",
+    "jewelry store Lompoc CA",
+    "thrift store Lompoc CA",
+    "auto parts tire shop Lompoc CA",
+    "catering Lompoc CA",
+    // --- auto & misc ---
+    "gas station Lompoc CA",
+    "car wash Lompoc CA",
+    "storage units Lompoc CA",
+    // --- community ---
+    "church Lompoc CA",
+    "daycare preschool Lompoc CA",
+    "nonprofit organization Lompoc CA",
+    // --- geographic variants (still inside 93436/37/38) ---
+    "businesses Vandenberg Village CA",
+    "restaurants Vandenberg Village CA",
+    "shops Mission Hills Lompoc CA",
   ]
 
   console.log(`\n🔍 Running compass/crawler-google-places actor for ${searchQueries.length} queries…`)
@@ -171,7 +221,7 @@ async function main() {
 
   const run = await client.actor("compass/crawler-google-places").call({
     searchStringsArray: searchQueries,
-    maxCrawledPlacesPerSearch: 30,
+    maxCrawledPlacesPerSearch: 15,
     language: "en",
     includeImages: true,
     includeOpeningHours: true,
@@ -214,9 +264,15 @@ async function main() {
     }
 
     try {
-      // Skip if business with this slug already exists
+      // Skip if a business with this slug OR the same Google Place ID already
+      // exists. Matching on placeId too catches the same place returned under a
+      // slightly different title (e.g. "AutoZone Auto Parts" vs "AutoZone
+      // Lompoc"), which would otherwise hit the unique placeId index on insert.
       const existing = await db.query.businesses.findFirst({
-        where: (b, { eq }) => eq(b.slug, slug),
+        where: (b, { eq, or }) =>
+          place.placeId
+            ? or(eq(b.slug, slug), eq(b.googlePlaceId, place.placeId))
+            : eq(b.slug, slug),
       })
       if (existing) {
         // Enrich existing row with Google data if fields are missing
