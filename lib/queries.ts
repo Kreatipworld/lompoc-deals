@@ -177,6 +177,7 @@ export type DirectoryBusiness = {
   phone: string | null
   website: string | null
   logoUrl: string | null
+  photoUrl: string | null
   categoryId: number | null
   categoryName: string | null
   categorySlug: string | null
@@ -194,6 +195,7 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
+      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -219,6 +221,7 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
+      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -244,6 +247,7 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
+      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,

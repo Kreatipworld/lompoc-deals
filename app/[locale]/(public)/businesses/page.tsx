@@ -15,8 +15,8 @@ import {
   getSiteStats,
 } from "@/lib/queries"
 import { SearchBar } from "@/components/search-bar"
-import { SafeImage } from "@/components/safe-image"
 import { AnimeReveal } from "@/components/anime-reveal"
+import { BusinessAvatar } from "@/components/business-avatar"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
@@ -264,18 +264,13 @@ export default async function BusinessesPage() {
                     className="group flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/15 to-accent transition-transform duration-200 group-hover:scale-105">
-                        {b.logoUrl ? (
-                          <SafeImage
-                            src={b.logoUrl}
-                            alt=""
-                            className="h-12 w-12 rounded-xl object-cover"
-                            fallback={<Flower2 className="h-5 w-5 text-primary/70" />}
-                          />
-                        ) : (
-                          <Flower2 className="h-5 w-5 text-primary/70" />
-                        )}
-                      </div>
+                      <BusinessAvatar
+                        logoUrl={b.logoUrl}
+                        photoUrl={b.photoUrl}
+                        name={b.name}
+                        className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl transition-transform duration-200 group-hover:scale-105"
+                        icon={<Flower2 className="h-5 w-5 text-primary/70" />}
+                      />
                       <div className="flex-1 overflow-hidden">
                         <h3 className="font-display text-lg font-bold leading-tight tracking-tight line-clamp-2">
                           {b.name}

@@ -9,6 +9,7 @@ import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
+import { BusinessAvatar } from "@/components/business-avatar"
 import { DealsCarousel } from "@/components/deals-carousel"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
@@ -212,24 +213,15 @@ export default async function HomePage({ params }: { params: { locale: string } 
                   style={{ animationDelay: `${i * 80}ms` }}
                   className="group flex gap-4 rounded-2xl border bg-background p-4 shadow-sm animate-fade-up card-lift hover:shadow-md hover:-translate-y-0.5"
                 >
-                  {/* Logo / placeholder */}
+                  {/* Logo / photo / placeholder */}
                   <div className="flex-shrink-0">
-                    {biz.logoUrl ? (
-                      <SafeImage
-                        src={biz.logoUrl}
-                        alt={biz.name}
-                        className="h-14 w-14 rounded-xl object-cover"
-                        fallback={
-                          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                            <Building2 className="h-7 w-7" />
-                          </div>
-                        }
-                      />
-                    ) : (
-                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <Building2 className="h-7 w-7" />
-                      </div>
-                    )}
+                    <BusinessAvatar
+                      logoUrl={biz.logoUrl}
+                      photoUrl={biz.photoUrl}
+                      name={biz.name}
+                      className="h-14 w-14 overflow-hidden rounded-xl"
+                      icon={<Building2 className="h-7 w-7" />}
+                    />
                   </div>
 
                   <div className="min-w-0 flex-1">
