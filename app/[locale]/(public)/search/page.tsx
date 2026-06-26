@@ -53,11 +53,14 @@ export default async function SearchPage({
   return (
     <div className="space-y-0">
       {/* ─── Search hero with Lompoc background ─── */}
-      <section className="relative overflow-hidden border-b">
+      {/* No `overflow-hidden` on the section so the search dropdown can extend
+          past the hero; the background layers are `absolute inset-0` and stay
+          bounded on their own. */}
+      <section className="relative border-b">
         {/* Lompoc background image */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-20"
+          className="absolute inset-0 -z-20 overflow-hidden"
           style={{
             backgroundImage: "url('/lompoc-flowers-4.jpg')",
             backgroundSize: "cover",
@@ -82,7 +85,7 @@ export default async function SearchPage({
             {t("subheading")}
           </p>
           <div className="mx-auto mt-6 max-w-xl">
-            <SearchBar defaultValue={q} size="lg" />
+            <SearchBar defaultValue={q} size="lg" scrim />
           </div>
         </div>
       </section>

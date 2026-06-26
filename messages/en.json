@@ -9,7 +9,9 @@
     "forLocals": "Locals",
     "hotels": "Hotels",
     "home": "Lompoc Deals home",
-    "neighborhood": "Neighborhood"
+    "neighborhood": "Neighborhood",
+    "search": "Search",
+    "close": "Close"
   },
   "footer": {
     "tagline": "Local coupons, specials, and announcements from the Flower Capital of America.",
@@ -1554,6 +1556,9 @@
     "placeholder": "Search deals or businesses…",
     "businesses": "Businesses",
     "deals": "Deals",
+    "categories": "Categories",
+    "discover": "Discover",
+    "placesCount": "{count} places",
     "searching": "Searching…",
     "searchFor": "Search for"
   },

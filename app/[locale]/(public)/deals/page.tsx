@@ -46,7 +46,7 @@ export default async function DealsPage() {
             {t("subheading", { count: stats.activeDeals })}
           </p>
           <div className="mx-auto mt-6 max-w-xl">
-            <SearchBar size="lg" />
+            <SearchBar size="lg" scrim />
           </div>
         </div>
       </section>
