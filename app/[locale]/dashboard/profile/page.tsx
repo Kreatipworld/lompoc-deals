@@ -3,7 +3,7 @@ import { getCategoriesList, getMyBusiness } from "@/lib/biz-actions"
 import { ProfileForm } from "./profile-form"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Business profile — Lompoc Deals" }
+export const metadata = { title: "Business profile — Lompoc Locals" }
 
 const STATUS_STYLES: Record<string, string> = {
   approved:

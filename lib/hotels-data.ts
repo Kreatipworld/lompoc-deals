@@ -83,7 +83,7 @@ export const HOTELS: Hotel[] = [
     slug: "holiday-inn-express-lompoc",
     name: "Holiday Inn Express & Suites Lompoc",
     category: "mid-range",
-    tagline: "Smart stays in the Flower Capital",
+    tagline: "Smart stays in the Lompoc Valley",
     description:
       "Modern comfort in the heart of Lompoc. Spacious rooms, a complimentary hot breakfast, and easy access to wine tasting rooms and the historic downtown make this a top pick for families and business travelers alike.",
     address: "1417 N H St, Lompoc, CA 93436",

@@ -40,7 +40,7 @@ export async function GET() {
   const feed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Lompoc Deals Blog</title>
+    <title>Lompoc Locals Blog</title>
     <link>${siteUrl}/blog</link>
     <description>Local stories, business spotlights, and community tips for Lompoc, CA.</description>
     <language>en-us</language>

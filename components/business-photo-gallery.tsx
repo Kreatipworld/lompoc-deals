@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useTranslations } from "next-intl"
-import { Flower2, Images } from "lucide-react"
+import { Store, Images } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import { PhotoLightbox } from "@/components/photo-lightbox"
 import { planGallery } from "@/lib/gallery"
@@ -10,7 +10,7 @@ import { planGallery } from "@/lib/gallery"
 function LogoBlock({ logoUrl, businessName }: { logoUrl: string | null; businessName: string }) {
   const fallback = (
     <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-background bg-primary/10 shadow-md">
-      <Flower2 className="h-9 w-9 text-primary/60" />
+      <Store className="h-9 w-9 text-primary/60" />
     </div>
   )
   if (!logoUrl) return fallback

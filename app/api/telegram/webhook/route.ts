@@ -27,7 +27,7 @@ async function handleCommand(chatId: number, command: string, args?: string): Pr
     case "/start":
       await saveChatId(chatId);
       return (
-        "👋 *Welcome to Lompoc Deals Bot!*\n\n" +
+        "👋 *Welcome to Lompoc Locals Bot!*\n\n" +
         "I'm here to help the board stay connected with the platform.\n\n" +
         "Commands:\n" +
         "/status — Platform snapshot\n" +
@@ -63,7 +63,7 @@ async function handleCommand(chatId: number, command: string, args?: string): Pr
           .where(eq(businesses.status, "approved"));
 
         return (
-          "*📊 Lompoc Deals — Platform Status*\n\n" +
+          "*📊 Lompoc Locals — Platform Status*\n\n" +
           `Active deals: *${dealCount?.count ?? 0}*\n` +
           `Approved businesses: *${bizCount?.count ?? 0}*\n\n` +
           `_As of ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}_`

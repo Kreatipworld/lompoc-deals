@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { getMyDealById } from "@/lib/biz-actions"
 import { DealForm } from "../../deal-form"
 
-export const metadata = { title: "Edit deal — Lompoc Deals" }
+export const metadata = { title: "Edit deal — Lompoc Locals" }
 
 export default async function EditDealPage({
   params,

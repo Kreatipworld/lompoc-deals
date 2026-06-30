@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<!--
+  DESIGN MOCKUP — Weekly Lompoc Locals newsletter.
+  Static preview of the email layout. Content is representative/sample
+  (the blog teaser uses a real post title). Not wired to data or sending.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lompoc Locals — Weekly Newsletter (mockup)</title>
+<style>
+  :root{
+    --cream:#FAF7F2; --ink:#241627; --muted:#7a7280; --purple:#650C75;
+    --lav:#f1e6f3; --line:#e9ddec; --green:#0B992F; --gold:#EFC618;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#e9e3ef;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:600px;margin:24px auto;padding:0 12px}
+  .note{max-width:600px;margin:18px auto 0;padding:8px 14px;font-size:12px;color:#6b6475;background:#fff7df;border:1px solid #f4e3a8;border-radius:10px}
+  .card{background:var(--cream);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .pad{padding:26px 28px}
+  /* header */
+  .stripe{display:flex;height:6px}
+  .stripe i{flex:1}
+  .stripe .p{background:var(--purple)} .stripe .g{background:var(--green)} .stripe .y{background:var(--gold)}
+  .head{background:var(--cream);border-bottom:1px solid var(--line);color:var(--ink);padding:24px 28px}
+  .logo{height:58px;width:auto;display:block}
+  .kicker{margin:16px 0 2px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .h1{font-size:30px;font-weight:800;line-height:1.1;margin:0;color:var(--purple)}
+  .h1 em{font-style:normal;color:var(--green)}
+  .date{margin-top:6px;font-size:13px;color:var(--muted)}
+  /* intro */
+  .intro p{font-size:16px;line-height:1.65;margin:0 0 12px}
+  .sig{font-size:15px;color:var(--muted);margin-top:4px}
+  /* section label */
+  .label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin:0 0 14px}
+  .label .ln{height:1px;background:var(--line);flex:1}
+  /* featured */
+  .feat-cover{height:170px;background:linear-gradient(135deg,#b98fd6,#650C75);position:relative}
+  .feat-badge{position:absolute;top:12px;left:12px;background:#fff;color:var(--purple);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+  .feat-body{padding:20px 24px}
+  .feat-row{display:flex;align-items:center;gap:14px}
+  .logo{width:54px;height:54px;border-radius:14px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--purple);font-size:20px;flex:0 0 auto}
+  .feat-name{font-size:20px;font-weight:800;margin:0}
+  .feat-cat{font-size:13px;color:var(--purple);margin-top:2px;font-weight:600}
+  .feat-about{font-size:15px;line-height:1.6;color:#4b4453;margin:14px 0 16px}
+  .btn{display:inline-block;background:var(--purple);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:999px}
+  /* deals */
+  .deal{display:flex;gap:14px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff;margin-bottom:12px}
+  .deal-thumb{width:64px;height:64px;border-radius:12px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--lav)}
+  .deal-t{font-size:15px;font-weight:700;margin:0}
+  .deal-b{font-size:13px;color:var(--muted);margin-top:2px}
+  .chip{display:inline-block;background:var(--purple);color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  /* new biz grid */
+  .nb{display:flex;gap:12px;flex-wrap:wrap}
+  .nb-item{flex:1 1 calc(50% - 6px);min-width:200px;display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .nb-name{font-size:14px;font-weight:700;margin:0}
+  .nb-cat{font-size:12px;color:var(--muted)}
+  /* events */
+  .ev{display:flex;gap:14px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+  .ev:last-child{border-bottom:0}
+  .ev-date{width:54px;text-align:center;flex:0 0 auto}
+  .ev-d{font-size:20px;font-weight:800;color:var(--purple);line-height:1}
+  .ev-m{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .ev-t{font-size:15px;font-weight:700;margin:0}
+  .ev-w{font-size:13px;color:var(--muted);margin-top:2px}
+  /* story */
+  .story{display:flex;gap:16px;align-items:center}
+  .story-img{width:96px;height:72px;border-radius:12px;background:linear-gradient(135deg,#f0c9a8,#caa9e6);flex:0 0 auto}
+  .story-t{font-size:16px;font-weight:800;margin:0;line-height:1.3}
+  .story-x{font-size:13px;color:var(--muted);margin-top:4px}
+  .story-link{font-size:13px;font-weight:700;color:var(--purple);text-decoration:none}
+  /* footer */
+  .foot{text-align:center;color:#9a93a3;font-size:12px;padding:22px 20px 8px;line-height:1.7}
+  .foot a{color:#9a93a3}
+  .gap{height:16px}
+</style>
+</head>
+<body>
+  <div class="note">🎨 <b>Design mockup</b> — this is what the weekly email will look like. Content is representative sample (the story teaser is your real latest blog post). Nothing here is wired to data or sending.</div>
+  <div class="wrap">
+    <div class="card">
+
+      <!-- HEADER -->
+      <div class="stripe"><i class="p"></i><i class="g"></i><i class="y"></i></div>
+      <div class="head">
+        <svg class="logo" viewBox="64 140 612 398" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lompoc Locals">
+          <path fill="#efc618" fill-rule="evenodd" d="M257,161.4c-10-17.2-32.1-23.1-49.4-13.1-17.2,10-23.1,32.1-13.1,49.4,10,17.2,32.1,23.1,49.4,13.1,17.2-10,23.1-32.1,13.1-49.4"/>
+          <path fill="#0b992f" d="M217.6,334.1c40.9-41.5,89.3-69.6,151.4-52.3-49.4-64.1-103.3-64.5-154.4-36.9,5.2,27.4,5.5,58.1,3.1,89.2"/>
+          <g fill="#650c75">
+            <path d="M297.1,394.7c0,29.4-17.8,47.2-44,47.2s-42.2-20.1-42.2-45.6,17.2-47,43.6-47,42.6,20.6,42.6,45.4ZM232.4,395.9c0,17.6,8.2,29.9,21.8,29.9s21.5-13,21.5-30.5-7.7-29.9-21.7-29.9-21.7,13-21.7,30.5Z"/>
+            <path d="M386.3,406.1c-.4-10.8-.8-23.8-.8-36.8h-.4c-2.8,11.4-6.5,24.2-10,34.7l-10.9,35h-15.8l-9.6-34.7c-2.9-10.5-6-23.3-8.1-35h-.3c-.5,12.1-.9,25.9-1.6,37.1l-1.6,34.1h-18.8l5.7-89.6h27l8.8,29.9c2.8,10.4,5.6,21.5,7.6,32.1h.4c2.5-10.4,5.6-22.2,8.5-32.2l9.6-29.8h26.5l4.9,89.6h-19.8l-1.3-34.3Z"/>
+            <path d="M423,352c6.3-1.1,15-1.9,27.4-1.9s21.4,2.4,27.4,7.2c5.7,4.5,9.6,12,9.6,20.7s-2.9,16.2-8.2,21.3c-6.9,6.5-17.2,9.4-29.1,9.4s-5.1-.1-6.9-.4v32.1h-20.1v-88.5ZM443,392.7c1.7.4,3.9.5,6.8.5,10.8,0,17.4-5.5,17.4-14.6s-5.7-13.2-15.8-13.2-6.9.4-8.4.8v26.5Z"/>
+            <path d="M582.3,394.7c0,29.4-17.8,47.2-44,47.2s-42.2-20.1-42.2-45.6,17.2-47,43.6-47,42.6,20.6,42.6,45.4ZM517.5,395.9c0,17.6,8.2,29.9,21.8,29.9s21.5-13,21.5-30.5-7.7-29.9-21.7-29.9-21.7,13-21.7,30.5Z"/>
+            <path d="M661.4,437.9c-3.7,1.9-12.1,3.9-23,3.9-31,0-47-19.3-47-44.8s21.8-47.6,48.9-47.6,18.5,2.1,22.1,4l-4.1,16.1c-4.1-1.7-9.8-3.3-17-3.3-16.1,0-28.6,9.7-28.6,29.7s10.6,29.3,28.7,29.3,12.9-1.3,16.9-2.9l3.1,15.8Z"/>
+          </g>
+          <g fill="#0b992f">
+            <path d="M335.7,467.2h13.9v49.5h24.3v11.6h-38.2v-61.2Z"/>
+            <path d="M439.1,497.1c0,20.1-12.2,32.2-30,32.2s-28.8-13.7-28.8-31.1,11.7-32,29.8-32,29,14.1,29,30.9ZM394.9,497.9c0,12,5.6,20.4,14.9,20.4s14.7-8.9,14.7-20.8-5.3-20.4-14.8-20.4-14.8,8.9-14.8,20.8Z"/>
+            <path d="M497.7,526.6c-2.5,1.3-8.3,2.6-15.7,2.6-21.1,0-32-13.2-32-30.6s14.9-32.5,33.4-32.5,12.6,1.5,15.1,2.7l-2.8,11c-2.8-1.2-6.7-2.3-11.6-2.3-11,0-19.5,6.6-19.5,20.2s7.3,20,19.6,20,8.8-.9,11.5-2l2.1,10.8Z"/>
+            <path d="M526.4,512.6l-4.4,15.7h-14.3l18.7-61.2h18.1l19,61.2h-14.9l-4.7-15.7h-17.5ZM541.9,502.3l-3.8-13c-1.1-3.6-2.2-8.2-3.1-11.8h-.2c-.9,3.6-1.8,8.3-2.8,11.8l-3.6,13h13.5Z"/>
+            <path d="M576.2,467.2h13.9v49.5h24.3v11.6h-38.2v-61.2Z"/>
+            <path d="M627.6,514.1c3.7,1.9,9.4,3.8,15.3,3.8s9.7-2.6,9.7-6.6-2.9-6-10.3-8.6c-10.2-3.5-16.8-9.2-16.8-18.1s8.7-18.4,23.1-18.4,12,1.5,15.6,3.1l-3.1,11.2c-2.4-1.2-6.8-2.9-12.8-2.9s-8.9,2.7-8.9,5.9,3.4,5.6,11.3,8.6c10.8,4,15.9,9.6,15.9,18.2s-7.9,19-24.7,19-13.9-1.8-17.3-3.7l2.8-11.4Z"/>
+          </g>
+          <path fill="#650c75" d="M250.9,465.7h0s-72.8,0-72.8,0c21.8-102.6,83.4-304.7-107.3-296.1,108.1,59.5,27.8,259.1,6.6,359.2h244v-63.1h-70.5Z"/>
+        </svg>
+        <div class="kicker">This week in</div>
+        <h1 class="h1">Lompoc &amp; <em>Vandenberg</em></h1>
+        <div class="date">Monday, June 29, 2026 · Issue #12</div>
+      </div>
+
+      <!-- INTRO / STORY -->
+      <div class="pad intro">
+        <p>Hey neighbor 👋</p>
+        <p>Old Town is buzzing this week. We've got a new winery spotlight you'll want to visit before the weekend rush, a fresh batch of deals, and three new spots that just opened their doors in town.</p>
+        <p>Thanks for being part of what makes Lompoc, Lompoc.</p>
+        <div class="sig">— Andres, Lompoc Locals</div>
+      </div>
+
+      <div style="padding:0 28px"><div class="label"><span>★ Featured this week</span><span class="ln"></span></div></div>
+
+      <!-- FEATURED BUSINESS -->
+      <div style="padding:0 28px 8px">
+        <div class="card" style="background:#fff">
+          <div class="feat-cover"><span class="feat-badge">⭐ Featured</span></div>
+          <div class="feat-body">
+            <div class="feat-row">
+              <div class="logo">B</div>
+              <div>
+                <p class="feat-name">Babcock Winery &amp; Vineyards</p>
+                <div class="feat-cat">Wineries · Sta. Rita Hills</div>
+              </div>
+            </div>
+            <p class="feat-about">A family-run estate on the Sta. Rita Hills wine trail, pouring small-lot Pinot Noir and Chardonnay just minutes from town. Their patio is one of the best sunset spots in the valley — and they're open all weekend.</p>
+            <a class="btn" href="#">Visit their page →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pad">
+        <div class="label"><span>🎟 This week's deals</span><span class="ln"></span></div>
+
+        <div class="deal">
+          <div class="deal-thumb">🍷</div>
+          <div style="flex:1">
+            <p class="deal-t">2-for-1 tasting flight</p>
+            <div class="deal-b">Babcock Winery &amp; Vineyards</div>
+          </div>
+          <span class="chip">2-FOR-1</span>
+        </div>
+        <div class="deal">
+          <div class="deal-thumb">🍔</div>
+          <div style="flex:1">
+            <p class="deal-t">Free side with any plate</p>
+            <div class="deal-b">Pink Pig BBQ</div>
+          </div>
+          <span class="chip">FREE SIDE</span>
+        </div>
+        <div class="deal">
+          <div class="deal-thumb">🚗</div>
+          <div style="flex:1">
+            <p class="deal-t">Now accepting all major insurance carriers</p>
+            <div class="deal-b">Kaizen Collision Center</div>
+          </div>
+          <span class="chip">NEW</span>
+        </div>
+
+        <div class="gap"></div>
+        <div class="label"><span>✨ New in town</span><span class="ln"></span></div>
+        <div class="nb">
+          <div class="nb-item"><div class="logo" style="width:40px;height:40px;font-size:15px">P</div><div><p class="nb-name">Pink Pig BBQ</p><div class="nb-cat">Food &amp; Drink</div></div></div>
+          <div class="nb-item"><div class="logo" style="width:40px;height:40px;font-size:15px">V</div><div><p class="nb-name">Valley Embroidery</p><div class="nb-cat">Retail</div></div></div>
+          <div class="nb-item"><div class="logo" style="width:40px;height:40px;font-size:15px">M</div><div><p class="nb-name">Mariposa Nails</p><div class="nb-cat">Health &amp; Beauty</div></div></div>
+          <div class="nb-item"><div class="logo" style="width:40px;height:40px;font-size:15px">R</div><div><p class="nb-name">Rebel Floral</p><div class="nb-cat">Services</div></div></div>
+        </div>
+
+        <div class="gap"></div>
+        <div class="label"><span>📅 Upcoming events</span><span class="ln"></span></div>
+        <div class="ev">
+          <div class="ev-date"><div class="ev-d">5</div><div class="ev-m">Jul</div></div>
+          <div style="flex:1"><p class="ev-t">Lompoc Certified Farmers Market</p><div class="ev-w">Fridays · Ocean Ave &amp; H St</div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="ev-d">12</div><div class="ev-m">Jul</div></div>
+          <div style="flex:1"><p class="ev-t">Old Town Summer Market</p><div class="ev-w">Saturday · Cypress Ave</div></div>
+        </div>
+
+        <div class="gap"></div>
+        <div class="label"><span>📖 Read this</span><span class="ln"></span></div>
+        <div class="story">
+          <div class="story-img"></div>
+          <div style="flex:1">
+            <p class="story-t">Weekend Trip to Lompoc from Santa Barbara or Los Angeles</p>
+            <div class="story-x">Your two-day guide to wine, murals, and the best tacos in town.</div>
+            <a class="story-link" href="#">Read more →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="foot">
+        You're getting this because you subscribed to the Lompoc Locals weekly digest.<br/>
+        <a href="#">Unsubscribe</a> · Lompoc Locals · Lompoc, CA 93436
+      </div>
+    </div>
+  </div>
+</body>
+</html>

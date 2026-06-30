@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import {
-  Flower2,
+  Store,
   MapPin,
   Phone,
   Globe,
@@ -198,7 +198,7 @@ export default async function BusinessesPage() {
         <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
-              { label: t("statLocalBusinesses"), value: stats.businesses, icon: <Flower2 className="h-4 w-4" /> },
+              { label: t("statLocalBusinesses"), value: stats.businesses, icon: <Store className="h-4 w-4" /> },
               { label: t("statActiveDeals"), value: stats.activeDeals, icon: <Tag className="h-4 w-4" /> },
               { label: t("statCategories"), value: stats.categories, icon: <Sparkles className="h-4 w-4" /> },
               { label: t("statUpdated"), value: null, label2: t("statUpdatedValue"), icon: <TrendingUp className="h-4 w-4" /> },
@@ -269,7 +269,7 @@ export default async function BusinessesPage() {
                         photoUrl={b.photoUrl}
                         name={b.name}
                         className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl transition-transform duration-200 group-hover:scale-105"
-                        icon={<Flower2 className="h-5 w-5 text-primary/70" />}
+                        icon={<Store className="h-5 w-5 text-primary/70" />}
                       />
                       <div className="flex-1 overflow-hidden">
                         <h3 className="font-display text-lg font-bold leading-tight tracking-tight line-clamp-2">
@@ -333,7 +333,7 @@ export default async function BusinessesPage() {
         <AnimeReveal direction="up" delay={0} duration={600}>
           <div className="mx-auto max-w-6xl px-4 py-20 text-center">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Flower2 className="h-5 w-5" />
+              <Store className="h-5 w-5" />
             </div>
             <h2 className="mt-5 font-display text-3xl font-bold tracking-tight sm:text-4xl">
               {t("ctaHeading")}

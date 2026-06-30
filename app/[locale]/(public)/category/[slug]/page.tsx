@@ -12,7 +12,7 @@ import {
   ArrowLeft,
   Sparkles,
   Home,
-  Flower2,
+  Store,
   MapPin,
   Phone,
   Globe,
@@ -54,10 +54,10 @@ export async function generateMetadata({
   const cat = await db.query.categories.findFirst({
     where: (c, { eq }) => eq(c.slug, params.slug),
   })
-  if (!cat) return { title: "Category — Lompoc Deals" }
+  if (!cat) return { title: "Category — Lompoc Locals" }
   const catLower = cat.name.toLowerCase()
   return {
-    title: `Lompoc ${cat.name} Businesses & Deals — Local Directory | Lompoc Deals`,
+    title: `Lompoc ${cat.name} Businesses & Deals — Local Directory | Lompoc Locals`,
     description: `Browse ${catLower} businesses in Lompoc, CA — local listings, active deals, and coupons. Updated daily.`,
     keywords: [`lompoc ${catLower}`, `lompoc ${catLower} businesses`, `lompoc ${catLower} deals`, "lompoc ca"],
   }
@@ -211,7 +211,7 @@ export default async function CategoryPage({
                           photoUrl={b.photoUrl}
                           name={b.name}
                           className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl"
-                          icon={<Flower2 className="h-5 w-5 text-primary/70" />}
+                          icon={<Store className="h-5 w-5 text-primary/70" />}
                         />
                         <div className="flex-1 overflow-hidden">
                           <h3 className="font-display text-lg font-semibold leading-tight tracking-tight line-clamp-2">

@@ -1,6 +1,6 @@
 import { DealForm } from "../deal-form"
 
-export const metadata = { title: "New deal — Lompoc Deals" }
+export const metadata = { title: "New deal — Lompoc Locals" }
 
 export default function NewDealPage() {
   return (

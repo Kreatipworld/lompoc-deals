@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { Flower2 } from "lucide-react"
+import { BrandLogo } from "@/components/brand-logo"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { getTranslations } from "next-intl/server"
 
@@ -12,13 +12,8 @@ export async function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           <div className="space-y-3">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <Flower2 className="h-4 w-4" />
-              </span>
-              <span className="font-display text-lg font-semibold tracking-tight">
-                Lompoc Deals
-              </span>
+            <Link href="/" className="flex items-center" aria-label="Lompoc Locals">
+              <BrandLogo className="h-9 w-auto" />
             </Link>
             <p className="text-sm text-muted-foreground">{t("tagline")}</p>
           </div>

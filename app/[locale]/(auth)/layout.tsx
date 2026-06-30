@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { Flower2 } from "lucide-react"
+import { BrandLogo } from "@/components/brand-logo"
 
 export default function AuthLayout({
   children,
@@ -26,15 +26,10 @@ export default function AuthLayout({
         {/* Brand lockup */}
         <Link
           href="/"
-          className="mx-auto mb-8 flex items-center justify-center gap-2"
-          aria-label="Lompoc Deals home"
+          className="mx-auto mb-8 flex items-center justify-center"
+          aria-label="Lompoc Locals home"
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md">
-            <Flower2 className="h-5 w-5" />
-          </span>
-          <span className="font-display text-xl font-semibold tracking-tight">
-            Lompoc Deals
-          </span>
+          <BrandLogo className="h-12 w-auto" />
         </Link>
 
         {/* Card */}

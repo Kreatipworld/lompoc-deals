@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const sale = await getSale(id)
   if (!sale) return {}
   return {
-    title: `Garage Sale at ${sale.address} — Lompoc Deals`,
+    title: `Garage Sale at ${sale.address} — Lompoc Locals`,
     description: sale.description.slice(0, 160),
   }
 }

@@ -8,7 +8,7 @@ import { CreditCard, Check, AlertCircle, CheckCircle2, BarChart2, ExternalLink, 
 import BillingActions from "./billing-actions"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Billing — Lompoc Deals" }
+export const metadata = { title: "Billing — Lompoc Locals" }
 
 export default async function BillingPage({
   searchParams,

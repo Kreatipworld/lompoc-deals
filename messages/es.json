@@ -8,13 +8,13 @@
     "forBusinesses": "Negocios",
     "forLocals": "Locales",
     "hotels": "Hoteles",
-    "home": "Inicio de Lompoc Deals",
+    "home": "Inicio de Lompoc Locals",
     "neighborhood": "Vecindario",
     "search": "Buscar",
     "close": "Cerrar"
   },
   "footer": {
-    "tagline": "Cupones, especiales y anuncios locales de la Capital de las Flores de América.",
+    "tagline": "Cupones, especiales y anuncios locales del Valle de Lompoc.",
     "browse": "Explorar",
     "latestDeals": "Últimas ofertas",
     "businessDirectory": "Directorio de negocios",
@@ -31,8 +31,8 @@
     "joinFree": "Únete gratis",
     "stayInTouch": "Mantente informado",
     "weeklyDigest": "Resumen semanal",
-    "copyright": "© {year} Lompoc Deals · Lompoc, CA",
-    "madeWith": "Hecho con cariño para la Capital de las Flores.",
+    "copyright": "© {year} Lompoc Locals · Lompoc, CA",
+    "madeWith": "Hecho con cariño para el Valle de Lompoc.",
     "blog": "Blog",
     "legal": "Legal",
     "privacyPolicy": "Política de Privacidad",
@@ -138,8 +138,8 @@
     },
     "faq": {
       "title": "¿Preguntas?",
-      "subtitle": "Todo lo que necesitas saber sobre Lompoc Deals.",
-      "q1": "¿Es gratis usar Lompoc Deals?",
+      "subtitle": "Todo lo que necesitas saber sobre Lompoc Locals.",
+      "q1": "¿Es gratis usar Lompoc Locals?",
       "a1": "Sí, completamente. Explorar ofertas y canjearlas siempre es gratis para los residentes de Lompoc. No se necesita cuenta para explorar.",
       "q2": "¿Cómo canjeo una oferta?",
       "a2": "Haz clic en \"Canjear oferta\" en cualquier promoción. Si requiere cuenta, regístrate en 30 segundos — solo tu correo. Luego muestra tu teléfono en el negocio.",
@@ -158,19 +158,19 @@
     "homeDescription": "Explora el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
     "homeOgTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer",
     "homeOgDescription": "Descubre Lompoc, CA por categoría — restaurantes, boutiques, servicios, salud y belleza, y más. Todo local, todo gratis para explorar.",
-    "categoryTitle": "Lompoc {category} — Negocios y Ofertas Locales | Lompoc Deals",
+    "categoryTitle": "Lompoc {category} — Negocios y Ofertas Locales | Lompoc Locals",
     "categoryDescription": "Explora negocios y ofertas de {category} en Lompoc, CA. Encuentra tiendas, servicios y cupones locales de {categoryLower} — actualizados diariamente.",
     "siteKeywords": "directorio local lompoc, negocios lompoc, qué hacer en lompoc, lompoc ca, ofertas lompoc, lompoc deals"
   },
   "auth": {
     "signup": "Registrarse",
     "signupTitle": "Crear una cuenta",
-    "signupSubtitle": "Únete a Lompoc Deals",
+    "signupSubtitle": "Únete a Lompoc Locals",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "name": "Nombre",
     "forgotPassword": {
-      "metaTitle": "Olvidé mi contraseña — Lompoc Deals"
+      "metaTitle": "Olvidé mi contraseña — Lompoc Locals"
     },
     "noAccount": "¿No tienes una cuenta?",
     "haveAccount": "¿Ya tienes una cuenta?",
@@ -179,10 +179,10 @@
     "businessSignup": "Registrarse como negocio",
     "localSignup": "Registrarse como local",
     "login": {
-      "metaTitle": "Iniciar sesión — Lompoc Deals",
-      "metaDescription": "Inicia sesión en tu cuenta de Lompoc Deals.",
+      "metaTitle": "Iniciar sesión — Lompoc Locals",
+      "metaDescription": "Inicia sesión en tu cuenta de Lompoc Locals.",
       "heading": "Bienvenido de nuevo",
-      "subheading": "Inicia sesión en tu cuenta de Lompoc Deals.",
+      "subheading": "Inicia sesión en tu cuenta de Lompoc Locals.",
       "passwordResetBanner": "¡Contraseña actualizada! Inicia sesión con tu nueva contraseña.",
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "tú@ejemplo.com",
@@ -194,9 +194,9 @@
       "createAccount": "Crear una cuenta"
     },
     "signupLanding": {
-      "metaTitle": "Registrarse — Lompoc Deals",
-      "metaDescription": "Únete a Lompoc Deals — explora ofertas, guarda favoritos o publica tu negocio.",
-      "heading": "Únete a Lompoc Deals",
+      "metaTitle": "Registrarse — Lompoc Locals",
+      "metaDescription": "Únete a Lompoc Locals — explora ofertas, guarda favoritos o publica tu negocio.",
+      "heading": "Únete a Lompoc Locals",
       "subheading": "Sin cargos por oferta. Sin cargos ocultos. Sin anuncios.",
       "localTitle": "Soy un residente",
       "localBody": "Explora ofertas, guarda favoritos y sigue negocios locales. Siempre gratis.",
@@ -212,11 +212,11 @@
       "claimingBadgeBody": "Crea tu cuenta y un administrador revisará tu solicitud."
     },
     "resetPassword": {
-      "metaTitle": "Restablecer contraseña — Lompoc Deals"
+      "metaTitle": "Restablecer contraseña — Lompoc Locals"
     },
     "signupUser": {
-      "metaTitle": "Registrarse como residente — Lompoc Deals",
-      "metaDescription": "Únete gratis a Lompoc Deals — guarda ofertas, sigue negocios y descubre qué pasa en Lompoc.",
+      "metaTitle": "Registrarse como residente — Lompoc Locals",
+      "metaDescription": "Únete gratis a Lompoc Locals — guarda ofertas, sigue negocios y descubre qué pasa en Lompoc.",
       "heading": "Únete como residente",
       "subheading": "Guarda ofertas, sigue negocios y descubre qué pasa en Lompoc. Siempre gratis.",
       "nameLabel": "Tu nombre",
@@ -257,7 +257,7 @@
     "noDeals": "Sin ofertas aún",
     "noDealsSubtitle": "Vuelve pronto para ver nuevas ofertas de negocios locales.",
     "page": {
-      "metaTitle": "Ofertas y Cupones en Lompoc — Especiales Locales | Lompoc Deals",
+      "metaTitle": "Ofertas y Cupones en Lompoc — Especiales Locales | Lompoc Locals",
       "metaDescription": "Explora ofertas y cupones actuales de más de 155 negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Actualizadas a diario, gratis para canjear.",
       "metaKeywords": "ofertas lompoc,cupones lompoc,especiales lompoc,descuentos lompoc,lompoc ca deals,lompoc deals",
       "ogTitle": "Ofertas y Cupones en Lompoc — Especiales Locales Actualizados a Diario",
@@ -294,13 +294,13 @@
     "viewAll": "Ver todos los negocios"
   },
   "activities": {
-    "metaTitle": "Qué hacer en Lompoc, CA — Aventuras y Actividades | Lompoc Deals",
+    "metaTitle": "Qué hacer en Lompoc, CA — Aventuras y Actividades | Lompoc Locals",
     "metaDescription": "Descubre las mejores cosas que hacer en Lompoc, CA — misiones históricas, campos de flores, cata de vinos, playas, murales y aventuras al aire libre. Actualizado por locales.",
     "metaOgTitle": "Qué hacer en Lompoc, CA",
     "metaOgDescription": "Explora Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más."
   },
   "favorites": {
-    "metaTitle": "Mis favoritos — Lompoc Deals"
+    "metaTitle": "Mis favoritos — Lompoc Locals"
   },
   "subscribe": {
     "title": "Recibe el resumen semanal",
@@ -312,15 +312,15 @@
     "successSubtitle": "Recibirás tu primer resumen el próximo domingo.",
     "unsubscribe": "Cancelar suscripción",
     "unsubscribeSuccess": "Tu suscripción fue cancelada.",
-    "confirmMetaTitle": "Confirmar suscripción — Lompoc Deals",
-    "unsubscribeMetaTitle": "Cancelar suscripción — Lompoc Deals"
+    "confirmMetaTitle": "Confirmar suscripción — Lompoc Locals",
+    "unsubscribeMetaTitle": "Cancelar suscripción — Lompoc Locals"
   },
   "search": {
     "placeholder": "Buscar ofertas, negocios…",
     "results": "{count} resultados para \"{query}\"",
     "noResults": "Sin resultados para \"{query}\"",
     "tryAgain": "Prueba con otro término de búsqueda.",
-    "metaTitle": "Buscar en Lompoc Deals — Encuentra Cupones, Descuentos y Especiales Locales",
+    "metaTitle": "Buscar en Lompoc Locals — Encuentra Cupones, Descuentos y Especiales Locales",
     "metaDescription": "Busca ofertas y cupones de más de 155 negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Gratis para canjear, actualizado a diario.",
     "badge": "Lompoc, California",
     "heading": "Encuentra ofertas en Lompoc",
@@ -331,7 +331,7 @@
     "emptyPrompt": "Escribe una palabra clave arriba para buscar entre ofertas y negocios."
   },
   "hotels": {
-    "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse | Lompoc Deals",
+    "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse | Lompoc Locals",
     "metaDescription": "Encuentra hoteles seleccionados en Lompoc, CA. Desde moteles económicos hasta suites de lujo — cerca de Vandenberg Space Force Base, el centro de Lompoc y la región vinícola de Santa Rita Hills.",
     "priceUpscale": "De lujo",
     "priceMidRange": "Precio moderado",
@@ -341,7 +341,7 @@
     "ratingVeryGood": "Muy bueno",
     "cardView": "Ver",
     "heroEyebrow": "Hoteles",
-    "heroTitle": "Hospédate en la Capital de las Flores",
+    "heroTitle": "Hospédate en el Valle de Lompoc",
     "heroSubtitle": "{count} hoteles en Lompoc · país del vino · Base Espacial Vandenberg",
     "heroPill": "Visita Lompoc",
     "heroStats": "{count} hoteles · 30 min de la playa · 10 min del Wine Ghetto",
@@ -358,16 +358,16 @@
     "aboutFlowerBody": "Capital histórica del cultivo de semillas. La temporada de floración va de abril a agosto en miles de hectáreas del valle."
   },
   "locals": {
-    "metaTitle": "Para Residentes — Descubre Ofertas y Apoya los Negocios de Lompoc | Lompoc Deals",
+    "metaTitle": "Para Residentes — Descubre Ofertas y Apoya los Negocios de Lompoc | Lompoc Locals",
     "metaDescription": "Regístrate gratis y accede a ofertas exclusivas de más de 470 negocios en Lompoc. Guarda favoritos, recibe el resumen semanal y descubre qué pasa en tu ciudad.",
     "heroBadge": "Para residentes de Lompoc",
     "heroH1": "Las mejores ofertas de tu ciudad,",
     "heroH1Italic": "todas en un solo lugar.",
-    "heroBody": "Lompoc Deals conecta a los residentes con descuentos exclusivos, especiales y anuncios de los negocios que hacen grande a esta ciudad. Gratis para siempre — sin spam, sin anuncios.",
+    "heroBody": "Lompoc Locals conecta a los residentes con descuentos exclusivos, especiales y anuncios de los negocios que hacen grande a esta ciudad. Gratis para siempre — sin spam, sin anuncios.",
     "heroCtaPrimary": "Únete gratis — toma 30 segundos",
     "heroCtaSecondary": "Ver las ofertas primero",
     "heroTrustLine": "✓ Siempre gratis  ·  ✓ Sin tarjeta de crédito  ·  ✓ Cancela cuando quieras",
-    "statCardEyebrow": "Lompoc Deals · Ahora mismo",
+    "statCardEyebrow": "Lompoc Locals · Ahora mismo",
     "statBusinesses": "negocios locales con listados activos",
     "statDeals": "ofertas y especiales en vivo ahora mismo",
     "statCategories": "categorías — de viñedos a bienestar",
@@ -418,7 +418,7 @@
     "priceFree": "$0",
     "priceForever": "para siempre, para residentes",
     "priceCtaCreate": "Crea tu cuenta gratuita",
-    "categoriesEyebrow": "Qué hay en Lompoc Deals",
+    "categoriesEyebrow": "Qué hay en Lompoc Locals",
     "categoriesH2": "De vinos a bienestar.",
     "categoriesH2Italic": "Todo está aquí.",
     "categoriesBody": "Restaurantes, viñedos, tiendas, servicios, salud, autos — si está en Lompoc, está en el directorio.",
@@ -451,17 +451,17 @@
     "subtitle": "Llega a los locales que buscan activamente descubrir y apoyar los negocios de su comunidad.",
     "getStarted": "Empieza gratis",
     "learnMore": "Ver precios",
-    "metaTitle": "Publica tu negocio en Lompoc gratis — Sé encontrado por los locales | Lompoc Deals",
+    "metaTitle": "Publica tu negocio en Lompoc gratis — Sé encontrado por los locales | Lompoc Locals",
     "metaDescription": "Publica tu negocio de Lompoc en el directorio local gratis — fotos, horarios, ofertas y más. Más de 155 negocios ya descubiertos aquí por los locales. Sin comisión, sin tarjeta de crédito.",
     "hero": {
       "badge": "Para dueños de negocios en Lompoc",
       "h1": "Los locales ya están buscando.",
       "h1Italic": "Sé donde miran.",
-      "subtitle": "Lompoc Deals es el directorio gratuito y enfocado en lo local para la Capital de las Flores. Publica tus cupones, especiales y anuncios en 30 segundos — y llega a quienes ya buscan los negocios que aman.",
+      "subtitle": "Lompoc Locals es el directorio gratuito y enfocado en lo local para el Valle de Lompoc. Publica tus cupones, especiales y anuncios en 30 segundos — y llega a quienes ya buscan los negocios que aman.",
       "ctaGetStarted": "Comienza — es gratis",
       "ctaSeeWho": "Ve quién ya está aquí",
       "trustLine": "✓ Gratis para siempre en lo básico  ·  ✓ Sin tarjeta de crédito  ·  ✓ Configuración en 30 segundos",
-      "statRightNow": "Lompoc Deals · Ahora mismo",
+      "statRightNow": "Lompoc Locals · Ahora mismo",
       "statBusinesses": "negocios locales publicados",
       "statDeals": "ofertas y especiales activos",
       "statCategories": "categorías — de Bienes Raíces a Café",
@@ -526,7 +526,7 @@
     "finalCta": {
       "h2": "Listo en",
       "h2Seconds": "30 segundos.",
-      "subtitle": "Puedes estar en vivo en Lompoc Deals antes de que se enfríe tu café.",
+      "subtitle": "Puedes estar en vivo en Lompoc Locals antes de que se enfríe tu café.",
       "ctaList": "Anuncia tu negocio",
       "ctaBrowse": "o primero explora las ofertas →"
     }
@@ -556,7 +556,7 @@
     "reject": "Rechazar",
     "noNewBusinesses": "No hay negocios nuevos esperando aprobación.",
     "home": {
-      "metaTitle": "Admin — Lompoc Deals",
+      "metaTitle": "Admin — Lompoc Locals",
       "heading": "Resumen",
       "subheading": "Estadísticas generales y actividad reciente.",
       "badge": "Admin",
@@ -657,8 +657,8 @@
     "signUp": "Registrarse"
   },
   "signupBusiness": {
-    "metaTitle": "Publica tu negocio — Lompoc Deals",
-    "metaDescription": "Regístrate como negocio en Lompoc Deals. Llega a clientes locales en Lompoc sin cargos por oferta y sin costos ocultos.",
+    "metaTitle": "Publica tu negocio — Lompoc Locals",
+    "metaDescription": "Regístrate como negocio en Lompoc Locals. Llega a clientes locales en Lompoc sin cargos por oferta y sin costos ocultos.",
     "pageTitle": "Publica tu negocio",
     "pageSubtitle": "Llega a clientes locales en Lompoc. Sin cargos por oferta, sin costos ocultos.",
     "stepBar": {
@@ -739,7 +739,7 @@
       "skipForNow": "Omitir por ahora"
     },
     "firstDeal": {
-      "metaTitle": "Agrega tu primera oferta — Lompoc Deals",
+      "metaTitle": "Agrega tu primera oferta — Lompoc Locals",
       "stepLabel": "Paso 5 de 5",
       "title": "Agrega tu primera oferta",
       "subtitle": "Dale a los clientes una razón para visitar {bizName}. Puedes agregar más desde tu panel.",
@@ -862,14 +862,14 @@
   },
   "businesses": {
     "directory": {
-      "metaTitle": "Directorio de Negocios de Lompoc — Negocios Locales | Lompoc Deals",
+      "metaTitle": "Directorio de Negocios de Lompoc — Negocios Locales | Lompoc Locals",
       "metaDescription": "Explora negocios en Lompoc, CA por categoría — restaurantes, salones, talleres, tiendas, servicios y más. Encuentra ofertas de los negocios locales que ya conoces.",
       "eyebrow": "Directorio",
       "eyebrowLocation": "Lompoc, California",
       "eyebrowEst": "est. 2026",
       "heroLine1": "Lompoc,",
-      "heroLine2": "en plena flor.",
-      "heroBody": "El índice completo de negocios locales de la Capital de las Flores — restaurantes, tiendas, servicios y los lugares que solo conocen los de aquí. Explora por categoría, busca por nombre, encuentra tu próximo favorito en la calle H.",
+      "heroLine2": "en plena marcha.",
+      "heroBody": "El índice completo de negocios locales del Valle de Lompoc — restaurantes, tiendas, servicios y los lugares que solo conocen los de aquí. Explora por categoría, busca por nombre, encuentra tu próximo favorito en la calle H.",
       "statLocalBusinesses": "Negocios locales",
       "statActiveDeals": "Ofertas activas",
       "statCategories": "Categorías",
@@ -891,9 +891,9 @@
       "ctaBrowseDeals": "Explorar ofertas activas"
     },
     "profile": {
-      "metaTitleSuffix": "Ofertas y Cupones en Lompoc, CA | Lompoc Deals",
-      "metaNotFound": "Negocio no encontrado — Lompoc Deals",
-      "metaOgSuffix": "| Lompoc Deals",
+      "metaTitleSuffix": "Ofertas y Cupones en Lompoc, CA | Lompoc Locals",
+      "metaNotFound": "Negocio no encontrado — Lompoc Locals",
+      "metaOgSuffix": "| Lompoc Locals",
       "metaFallbackDescription": "Explora las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
       "metaOgFallback": "Ofertas actuales de {name} en Lompoc, CA. Gratis para canjear.",
       "breadcrumbHome": "Ofertas",
@@ -1050,11 +1050,11 @@
   "dashboardHome": {
     "welcomeBack": "Bienvenido de nuevo, {name}",
     "welcome": "Bienvenido",
-    "overview": "Aquí tienes un resumen de tu negocio en Lompoc Deals.",
+    "overview": "Aquí tienes un resumen de tu negocio en Lompoc Locals.",
     "gracePeriodWarning": "El pago falló. Las funciones de tu plan permanecen activas hasta el {date}. Actualiza tu método de pago en Facturación para evitar interrupciones.",
     "billingLink": "Facturación",
     "pendingWarning": "Tu negocio está pendiente de revisión. Nuestro equipo lo aprobará pronto. Mientras tanto, puedes configurar tu perfil y ofertas.",
-    "approvedBanner": "Tu negocio está aprobado y visible en Lompoc Deals.",
+    "approvedBanner": "Tu negocio está aprobado y visible en Lompoc Locals.",
     "activeDeals": "Ofertas activas",
     "totalViews": "Visitas totales",
     "totalClicks": "Clics totales",
@@ -1254,7 +1254,7 @@
   },
   "dashboardProperties": {
     "title": "Propiedades",
-    "subtitle": "Administra tus listados de bienes raíces en Lompoc Deals.",
+    "subtitle": "Administra tus listados de bienes raíces en Lompoc Locals.",
     "addListing": "Agregar listado",
     "noBusiness": "Necesitas crear un perfil de negocio antes de agregar propiedades.",
     "createProfile": "crear un perfil de negocio",
@@ -1319,7 +1319,7 @@
     "totalEarned": "Total ganado",
     "viewInStripe": "Ver en Stripe",
     "howPayoutsWork": "Cómo funcionan los pagos",
-    "payoutsInfo1": "Lompoc Deals usa Stripe Connect para procesar y distribuir pagos a los dueños de negocios.",
+    "payoutsInfo1": "Lompoc Locals usa Stripe Connect para procesar y distribuir pagos a los dueños de negocios.",
     "payoutsInfo2": "Se aplica una tarifa de plataforma a cada pago — contáctanos para conocer las tarifas actuales.",
     "payoutsInfo3": "Los pagos son procesados por Stripe en un calendario estándar (generalmente 2 días hábiles después de que los fondos estén disponibles).",
     "payoutsInfo4": "Usa el modo de prueba de Stripe durante el desarrollo — no se mueve dinero real.",
@@ -1377,7 +1377,7 @@
     "dealsAvailable": "{count} {label} disponibles ahora"
   },
   "blog": {
-    "eyebrow": "Blog de Lompoc Deals",
+    "eyebrow": "Blog de Lompoc Locals",
     "heading": "Historias locales y consejos comunitarios",
     "subheading": "Destacados de negocios, guías del vecindario y consejos exclusivos para Lompoc, CA.",
     "filterAll": "Todos",
@@ -1389,8 +1389,8 @@
     "lookingForDealsBody": "Explora cupones, especiales y anuncios de negocios locales.",
     "browseDeals": "Ver ofertas",
     "relatedArticles": "Artículos relacionados",
-    "localBusinesses": "Negocios locales en Lompoc Deals",
-    "supportLocal": "Apoya lo local — estos negocios están listados en Lompoc Deals.",
+    "localBusinesses": "Negocios locales en Lompoc Locals",
+    "supportLocal": "Apoya lo local — estos negocios están listados en Lompoc Locals.",
     "activeDealSingular": "{count} oferta activa",
     "activeDealPlural": "{count} ofertas activas",
     "browseAllBusinesses": "Ver todos los negocios de Lompoc",
@@ -1401,7 +1401,7 @@
     "paginationLabel": "Paginación"
   },
   "submitEvent": {
-    "metaTitle": "Envía un evento — Lompoc Deals",
+    "metaTitle": "Envía un evento — Lompoc Locals",
     "metaDescription": "Cuéntale a Lompoc sobre tu próximo evento, festival o apertura de negocio.",
     "heading": "Envía un evento",
     "subtitle": "Gratis publicar. Los eventos se revisan antes de aparecer — generalmente en pocas horas.",
@@ -1428,7 +1428,7 @@
     "successBody": "Lo publicaremos poco después de la aprobación."
   },
   "account": {
-    "metaTitle": "Mi cuenta — Lompoc Deals",
+    "metaTitle": "Mi cuenta — Lompoc Locals",
     "heading": "Mi cuenta",
     "subtitle": "Tus ofertas guardadas, cupones y preferencias",
     "notifDisabledBanner": "Notificaciones de ofertas desactivadas. Puedes reactivarlas abajo.",
@@ -1465,8 +1465,8 @@
     "activeLabel": "Activo"
   },
   "listing": {
-    "metaTitleSuffix": "— Lompoc Deals",
-    "metaNotFound": "Listado no encontrado — Lompoc Deals",
+    "metaTitleSuffix": "— Lompoc Locals",
+    "metaNotFound": "Listado no encontrado — Lompoc Locals",
     "backToListings": "Volver a todos los listados",
     "photoNotAvailable": "Foto no disponible",
     "noPhotos": "No hay fotos disponibles",
@@ -1515,7 +1515,7 @@
     "unique": "Solo en Lompoc"
   },
   "subscribePage": {
-    "metaTitle": "Digest semanal — Lompoc Deals",
+    "metaTitle": "Digest semanal — Lompoc Locals",
     "metaDescription": "Recibe las 10 mejores ofertas locales gratis cada sábado por la mañana. Únete a miles de residentes de Lompoc que ahorran cada semana.",
     "badge": "Digest semanal de ofertas gratis",
     "heading1": "Tu atajo semanal",
@@ -1531,8 +1531,8 @@
     "benefit3Desc": "Un correo por semana, cancela con un clic. Respetamos tu bandeja de entrada.",
     "previewHeading": "Así es un digest típico",
     "previewSubheading": "Ofertas reales. Ahorros reales. Negocios reales de Lompoc.",
-    "previewEmailSubject": "Lompoc Deals — Las mejores ofertas de esta semana",
-    "previewFrom": "Lompoc Deals",
+    "previewEmailSubject": "Lompoc Locals — Las mejores ofertas de esta semana",
+    "previewFrom": "Lompoc Locals",
     "previewEmail": "deals@lompocdeals.com",
     "previewWeekly": "Las 3 mejores ofertas de esta semana en Lompoc",
     "previewMoreDeals": "+ 7 ofertas más en el digest completo",
@@ -1650,13 +1650,13 @@
     "unique": "Únicos"
   },
   "privacy": {
-    "metaTitle": "Política de Privacidad — Lompoc Deals",
-    "metaDescription": "Cómo Lompoc Deals recopila, usa y protege tu información personal. Incluye derechos CCPA/CPRA de California.",
+    "metaTitle": "Política de Privacidad — Lompoc Locals",
+    "metaDescription": "Cómo Lompoc Locals recopila, usa y protege tu información personal. Incluye derechos CCPA/CPRA de California.",
     "pageTitle": "Política de Privacidad",
     "lastUpdated": "Última actualización: 30 de abril de 2026",
     "intro": {
       "title": "Introducción",
-      "body": "Lompoc Deals (operado por [Nombre del Fundador / Entidad Pendiente]) es un directorio de negocios locales y plataforma de promociones al servicio de la comunidad de Lompoc, California. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos tu información cuando visitas nuestro sitio web o usas nuestros servicios. Al usar Lompoc Deals, aceptas las prácticas descritas en esta política. Si no estás de acuerdo, por favor deja de usar el sitio."
+      "body": "Lompoc Locals (operado por [Nombre del Fundador / Entidad Pendiente]) es un directorio de negocios locales y plataforma de promociones al servicio de la comunidad de Lompoc, California. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos tu información cuando visitas nuestro sitio web o usas nuestros servicios. Al usar Lompoc Locals, aceptas las prácticas descritas en esta política. Si no estás de acuerdo, por favor deja de usar el sitio."
     },
     "collection": {
       "title": "Información que Recopilamos",
@@ -1718,7 +1718,7 @@
     },
     "children": {
       "title": "Privacidad de Menores",
-      "body": "Lompoc Deals no está dirigido a menores de 13 años. No recopilamos conscientemente información personal de menores de 13 años. Si descubrimos que hemos recopilado dicha información, la eliminaremos de inmediato. Este sitio cumple con la Ley de Protección de la Privacidad en Línea de los Niños (COPPA)."
+      "body": "Lompoc Locals no está dirigido a menores de 13 años. No recopilamos conscientemente información personal de menores de 13 años. Si descubrimos que hemos recopilado dicha información, la eliminaremos de inmediato. Este sitio cumple con la Ley de Protección de la Privacidad en Línea de los Niños (COPPA)."
     },
     "security": {
       "title": "Seguridad",
@@ -1726,7 +1726,7 @@
     },
     "changes": {
       "title": "Cambios a Esta Política",
-      "body": "Podemos actualizar esta Política de Privacidad de vez en cuando. La fecha en la parte superior de esta página refleja cuándo fue revisada por última vez. Para cambios importantes que afecten tus derechos, te notificaremos por correo electrónico (si tienes una cuenta) o mostrando un aviso prominente en el sitio. El uso continuo de Lompoc Deals después de publicar los cambios constituye la aceptación de la política revisada."
+      "body": "Podemos actualizar esta Política de Privacidad de vez en cuando. La fecha en la parte superior de esta página refleja cuándo fue revisada por última vez. Para cambios importantes que afecten tus derechos, te notificaremos por correo electrónico (si tienes una cuenta) o mostrando un aviso prominente en el sitio. El uso continuo de Lompoc Locals después de publicar los cambios constituye la aceptación de la política revisada."
     },
     "contactSection": {
       "title": "Contáctanos",
@@ -1734,17 +1734,17 @@
     }
   },
   "terms": {
-    "metaTitle": "Términos del Servicio — Lompoc Deals",
-    "metaDescription": "Términos que rigen el uso de Lompoc Deals — registro de cuenta, planes de suscripción, reglas de contenido y ley aplicable de California.",
+    "metaTitle": "Términos del Servicio — Lompoc Locals",
+    "metaDescription": "Términos que rigen el uso de Lompoc Locals — registro de cuenta, planes de suscripción, reglas de contenido y ley aplicable de California.",
     "pageTitle": "Términos del Servicio",
     "lastUpdated": "Última actualización: 30 de abril de 2026",
     "acceptance": {
       "title": "Aceptación de los Términos",
-      "body": "Al acceder o usar Lompoc Deals (el \"Sitio\"), aceptas estos Términos del Servicio y nuestra Política de Privacidad. Si no estás de acuerdo, por favor no uses el Sitio. Podemos actualizar estos términos en cualquier momento; el uso continuo después de publicar los cambios constituye su aceptación."
+      "body": "Al acceder o usar Lompoc Locals (el \"Sitio\"), aceptas estos Términos del Servicio y nuestra Política de Privacidad. Si no estás de acuerdo, por favor no uses el Sitio. Podemos actualizar estos términos en cualquier momento; el uso continuo después de publicar los cambios constituye su aceptación."
     },
     "description": {
       "title": "Descripción del Servicio",
-      "body": "Lompoc Deals es un directorio de negocios locales y plataforma de promociones al servicio de Lompoc, California y el Valle de Lompoc. El Sitio permite a los negocios locales publicar cupones, especiales y anuncios, y permite a los miembros de la comunidad explorar ofertas, ver un mapa de negocios y suscribirse a un resumen semanal por correo electrónico."
+      "body": "Lompoc Locals es un directorio de negocios locales y plataforma de promociones al servicio de Lompoc, California y el Valle de Lompoc. El Sitio permite a los negocios locales publicar cupones, especiales y anuncios, y permite a los miembros de la comunidad explorar ofertas, ver un mapa de negocios y suscribirse a un resumen semanal por correo electrónico."
     },
     "registration": {
       "title": "Registro de Cuenta",
@@ -1762,7 +1762,7 @@
     },
     "ugc": {
       "title": "Contenido Generado por el Usuario",
-      "body": "Conservas la propiedad de cualquier contenido que publiques en Lompoc Deals (descripciones de ofertas, fotos, información del negocio, etc.). Al publicar contenido, otorgas a Lompoc Deals una licencia no exclusiva, libre de regalías y mundial para mostrar, reproducir y distribuir ese contenido en relación con la operación del Sitio. Declaras que tu contenido es exacto, legal y relacionado con tu negocio en el área de Lompoc. Nos reservamos el derecho de moderar, editar o eliminar contenido que viole estos Términos o la ley aplicable."
+      "body": "Conservas la propiedad de cualquier contenido que publiques en Lompoc Locals (descripciones de ofertas, fotos, información del negocio, etc.). Al publicar contenido, otorgas a Lompoc Locals una licencia no exclusiva, libre de regalías y mundial para mostrar, reproducir y distribuir ese contenido en relación con la operación del Sitio. Declaras que tu contenido es exacto, legal y relacionado con tu negocio en el área de Lompoc. Nos reservamos el derecho de moderar, editar o eliminar contenido que viole estos Términos o la ley aplicable."
     },
     "prohibited": {
       "title": "Conducta Prohibida",
@@ -1779,11 +1779,11 @@
     },
     "listings": {
       "title": "Listados de Negocios",
-      "body": "Los listados en Lompoc Deals deben representar negocios legítimos que operen dentro del Valle de Lompoc, incluyendo los códigos postales 93436, 93437 y 93438. Los listados fraudulentos, inactivos o fuera de nuestra área de servicio pueden ser eliminados sin previo aviso. Nos reservamos el derecho de aprobar o rechazar cualquier listado a nuestra entera discreción."
+      "body": "Los listados en Lompoc Locals deben representar negocios legítimos que operen dentro del Valle de Lompoc, incluyendo los códigos postales 93436, 93437 y 93438. Los listados fraudulentos, inactivos o fuera de nuestra área de servicio pueden ser eliminados sin previo aviso. Nos reservamos el derecho de aprobar o rechazar cualquier listado a nuestra entera discreción."
     },
     "ip": {
       "title": "Propiedad Intelectual",
-      "body": "Todo el contenido del Sitio creado por Lompoc Deals — incluyendo diseños, logotipos, código y textos editoriales — es propiedad de o está licenciado a Lompoc Deals y no puede copiarse ni usarse sin permiso. El contenido generado por el usuario sigue siendo propiedad de los respectivos usuarios."
+      "body": "Todo el contenido del Sitio creado por Lompoc Locals — incluyendo diseños, logotipos, código y textos editoriales — es propiedad de o está licenciado a Lompoc Locals y no puede copiarse ni usarse sin permiso. El contenido generado por el usuario sigue siendo propiedad de los respectivos usuarios."
     },
     "disclaimers": {
       "title": "Descargos de Responsabilidad",
@@ -1791,7 +1791,7 @@
     },
     "liability": {
       "title": "Limitación de Responsabilidad",
-      "body": "En la máxima medida permitida por la ley de California, Lompoc Deals y sus operadores no serán responsables de daños indirectos, incidentales, especiales, consecuentes o punitivos derivados del uso del Sitio. En cualquier caso, nuestra responsabilidad total hacia ti no excederá el mayor entre (a) los montos totales que nos hayas pagado en los 12 meses anteriores al reclamo, o (b) $200.00."
+      "body": "En la máxima medida permitida por la ley de California, Lompoc Locals y sus operadores no serán responsables de daños indirectos, incidentales, especiales, consecuentes o punitivos derivados del uso del Sitio. En cualquier caso, nuestra responsabilidad total hacia ti no excederá el mayor entre (a) los montos totales que nos hayas pagado en los 12 meses anteriores al reclamo, o (b) $200.00."
     },
     "termination": {
       "title": "Terminación",
@@ -1803,7 +1803,7 @@
     },
     "changesTerms": {
       "title": "Cambios a Estos Términos",
-      "body": "Podemos modificar estos Términos en cualquier momento. Para cambios importantes, te notificaremos por correo electrónico (si tienes una cuenta) o mostrando un aviso prominente en el Sitio. El uso continuo de Lompoc Deals después de que los cambios entren en vigor constituye tu aceptación de los nuevos términos."
+      "body": "Podemos modificar estos Términos en cualquier momento. Para cambios importantes, te notificaremos por correo electrónico (si tienes una cuenta) o mostrando un aviso prominente en el Sitio. El uso continuo de Lompoc Locals después de que los cambios entren en vigor constituye tu aceptación de los nuevos términos."
     },
     "contactSection": {
       "title": "Contáctanos",
@@ -1811,8 +1811,8 @@
     }
   },
   "contactPage": {
-    "metaTitle": "Contacto — Lompoc Deals",
-    "metaDescription": "Ponte en contacto con el equipo de Lompoc Deals — para propietarios de negocios, residentes locales o preguntas generales.",
+    "metaTitle": "Contacto — Lompoc Locals",
+    "metaDescription": "Ponte en contacto con el equipo de Lompoc Locals — para propietarios de negocios, residentes locales o preguntas generales.",
     "pageTitle": "Contáctanos",
     "intro": "¿Tienes una pregunta, encontraste un error en un listado o quieres saber más sobre cómo poner tu negocio en el mapa? Nos encantaría saber de ti.",
     "emailCard": {

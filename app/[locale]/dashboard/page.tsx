@@ -24,7 +24,7 @@ import {
 import { isPast } from "date-fns"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Dashboard — Lompoc Deals" }
+export const metadata = { title: "Dashboard — Lompoc Locals" }
 
 export default async function DashboardHomePage() {
   const [session, t] = await Promise.all([auth(), getTranslations("dashboardHome")])

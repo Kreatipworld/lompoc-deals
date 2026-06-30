@@ -16,8 +16,8 @@ interface BlogBusinessSpotlightProps {
  */
 export function BlogBusinessSpotlight({
   businesses,
-  title = "Local Businesses on Lompoc Deals",
-  supportLocalText = "Support local — these businesses are listed on Lompoc Deals.",
+  title = "Local Businesses on Lompoc Locals",
+  supportLocalText = "Support local — these businesses are listed on Lompoc Locals.",
   browseAllText = "Browse all Lompoc businesses",
 }: BlogBusinessSpotlightProps) {
   if (businesses.length === 0) return null
