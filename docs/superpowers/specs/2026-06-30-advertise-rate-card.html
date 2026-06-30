@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--
+  Lompoc Deals — "Advertise with us" media kit / rate card (mockup).
+  One-page sales sheet for selling ad inventory in the weekly deals digest/flyer.
+  ALL reach numbers and prices are DRAFT/sample figures — replace with real
+  data before sending to advertisers. Companion to the weekly deals flyer at
+  docs/superpowers/specs/2026-06-30-weekly-deals-flyer.html.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advertise with Lompoc Deals — Rate Card</title>
+<style>
+  :root{
+    --cream:#FAF7F2; --ink:#2b2530; --muted:#7a7280; --purple:#7B4F9E;
+    --purple-d:#5f3b7d; --lav:#efe7f6; --line:#e7e0ee; --yellow:#fde047;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#ece6f1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .note{max-width:880px;margin:18px auto 0;padding:9px 14px;font-size:12px;color:#6b6475;background:#fff7df;border:1px solid #f4e3a8;border-radius:10px}
+  .kit{max-width:880px;margin:14px auto 28px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+
+  /* HEADER */
+  .head{position:relative;background:linear-gradient(135deg,var(--purple),#9a6cc0);color:#fff;padding:30px 36px 32px;overflow:hidden}
+  .head::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 64%,rgba(255,255,255,.10) 64%,rgba(255,255,255,.10) 72%,transparent 72%);pointer-events:none}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.95}
+  .brand .mark{width:24px;height:24px;border-radius:7px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px}
+  .h1{margin:14px 0 0;font-size:38px;line-height:1.04;font-weight:800;letter-spacing:-.5px}
+  .h1 .em{color:var(--yellow)}
+  .lede{margin-top:10px;font-size:15.5px;color:rgba(255,255,255,.92);max-width:560px;line-height:1.55}
+
+  .pad{padding:26px 36px}
+  .label{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin:0 0 16px}
+  .label .ln{height:1px;background:var(--line);flex:1}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .stat{background:var(--lav);border-radius:14px;padding:16px 14px;text-align:center}
+  .stat .big{font-size:26px;font-weight:800;color:var(--purple);line-height:1}
+  .stat .sm{font-size:11.5px;color:#6f6580;margin-top:6px;line-height:1.35}
+
+  /* PLACEMENTS */
+  .place{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:11px}
+  .place .spec{width:96px;flex:0 0 96px;height:58px;border-radius:9px;background:var(--lav);display:flex;align-items:center;justify-content:center;color:var(--purple);font-weight:800;font-size:10px;text-align:center;line-height:1.2;padding:6px}
+  .place .meta{flex:1}
+  .place .pn{font-size:15.5px;font-weight:800;margin:0}
+  .place .pd{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .place .avail{font-size:11px;color:#a08ec0;font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+  .place .price{text-align:right;flex:0 0 auto;white-space:nowrap}
+  .place .price .amt{font-size:24px;font-weight:800;color:var(--purple);line-height:1}
+  .place .price .per{font-size:11px;color:var(--muted);font-weight:700}
+
+  /* PACKAGES */
+  .packs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .pack{border:1px solid var(--line);border-radius:16px;padding:18px 16px;display:flex;flex-direction:column;position:relative}
+  .pack.pop{border:2px solid var(--purple);box-shadow:0 12px 30px -20px rgba(123,79,158,.7)}
+  .pack .tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .pack .pt{font-size:14px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.06em}
+  .pack .amt{font-size:30px;font-weight:800;margin:6px 0 2px}
+  .pack .amt span{font-size:13px;color:var(--muted);font-weight:700}
+  .pack ul{list-style:none;padding:0;margin:12px 0 0;font-size:12.5px;color:#4b4453;line-height:1.7}
+  .pack li::before{content:"✓ ";color:var(--purple);font-weight:800}
+  .pack .save{margin-top:auto;padding-top:12px;font-size:11.5px;color:#2f8f4e;font-weight:700}
+
+  /* BOOK */
+  .book{background:var(--purple-d);color:#fff;padding:24px 36px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .book h3{margin:0;font-size:20px;font-weight:800}
+  .book p{margin:6px 0 0;font-size:13px;color:rgba(255,255,255,.8)}
+  .cta{display:inline-block;background:var(--yellow);color:#3a2a12;text-decoration:none;font-weight:800;font-size:14px;padding:12px 20px;border-radius:999px;white-space:nowrap}
+
+  .fine{padding:16px 36px 24px;font-size:11px;color:var(--muted);line-height:1.6}
+
+  @media(max-width:720px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .packs{grid-template-columns:1fr}
+    .place{flex-wrap:wrap}
+    .place .price{text-align:left;width:100%}
+    .h1{font-size:30px}
+  }
+</style>
+</head>
+<body>
+  <div class="note">📝 <b>Internal draft</b> — all reach numbers and prices below are placeholder/sample figures. Replace with your real subscriber count and rates before sending to advertisers, and delete this note.</div>
+
+  <div class="kit">
+
+    <!-- HEADER -->
+    <div class="head">
+      <div class="brand"><span class="mark">🏷️</span> Lompoc Deals</div>
+      <h1 class="h1">Advertise with <span class="em">Lompoc Deals</span></h1>
+      <div class="lede">Put your business in front of the whole valley — every week, in the inbox of locals who are already looking for places to spend.</div>
+    </div>
+
+    <!-- REACH -->
+    <div class="pad">
+      <div class="label"><span>Our reach</span><span class="ln"></span></div>
+      <div class="stats">
+        <div class="stat"><div class="big">3,000+</div><div class="sm">weekly subscribers<sup>*</sup></div></div>
+        <div class="stat"><div class="big">~45%</div><div class="sm">avg. email open rate<sup>*</sup></div></div>
+        <div class="stat"><div class="big">93436<br>37 · 38</div><div class="sm">Lompoc &amp; Vandenberg ZIPs</div></div>
+        <div class="stat"><div class="big">Mondays</div><div class="sm">new issue, every week</div></div>
+      </div>
+    </div>
+
+    <!-- PLACEMENTS -->
+    <div class="pad" style="padding-top:6px">
+      <div class="label"><span>Ad placements &amp; rates</span><span class="ln"></span></div>
+
+      <div class="place">
+        <div class="spec">FEATURED<br>DEAL</div>
+        <div class="meta">
+          <p class="pn">Featured Deal</p>
+          <div class="pd">Your offer in the hero slot at the top of the deals grid, with a “Featured” ribbon. The first thing readers see.</div>
+          <div class="avail">1 spot per issue</div>
+        </div>
+        <div class="price"><div class="amt">$75</div><div class="per">/ week</div></div>
+      </div>
+
+      <div class="place">
+        <div class="spec">960 × 120<br>BANNER</div>
+        <div class="meta">
+          <p class="pn">Top Banner</p>
+          <div class="pd">Full-width leaderboard directly under the masthead — premium visibility on every open.</div>
+          <div class="avail">1 spot per issue</div>
+        </div>
+        <div class="price"><div class="amt">$60</div><div class="per">/ week</div></div>
+      </div>
+
+      <div class="place">
+        <div class="spec">300 × 250<br>RAIL</div>
+        <div class="meta">
+          <p class="pn">Side Sponsor Rail</p>
+          <div class="pd">A sponsor box in the rail beside the deals — logo, tagline, and a call-to-action button.</div>
+          <div class="avail">4 spots per issue</div>
+        </div>
+        <div class="price"><div class="amt">$40</div><div class="per">/ week</div></div>
+      </div>
+
+      <div class="place">
+        <div class="spec">960 × 90<br>BANNER</div>
+        <div class="meta">
+          <p class="pn">Footer Banner</p>
+          <div class="pd">A wide banner above the footer — a budget-friendly way to stay in front of readers.</div>
+          <div class="avail">1 spot per issue</div>
+        </div>
+        <div class="price"><div class="amt">$30</div><div class="per">/ week</div></div>
+      </div>
+
+      <div class="place">
+        <div class="spec">SOLO<br>EMAIL</div>
+        <div class="meta">
+          <p class="pn">Dedicated Email Blast</p>
+          <div class="pd">A standalone email to our whole list — your message only. Best for a launch, grand opening, or big event.</div>
+          <div class="avail">Limited to 2 per month</div>
+        </div>
+        <div class="price"><div class="amt">$150</div><div class="per">/ send</div></div>
+      </div>
+    </div>
+
+    <!-- PACKAGES -->
+    <div class="pad" style="padding-top:6px">
+      <div class="label"><span>Monthly packages</span><span class="ln"></span></div>
+      <div class="packs">
+        <div class="pack">
+          <div class="pt">Starter</div>
+          <div class="amt">$135<span> / mo</span></div>
+          <ul>
+            <li>Side Sponsor Rail</li>
+            <li>4 weekly issues</li>
+            <li>Free ad design help</li>
+          </ul>
+          <div class="save">Save $25 vs. weekly</div>
+        </div>
+        <div class="pack pop">
+          <div class="tag">Most popular</div>
+          <div class="pt">Growth</div>
+          <div class="amt">$390<span> / mo</span></div>
+          <ul>
+            <li>Featured Deal, all 4 weeks</li>
+            <li>Side Sponsor Rail, all 4 weeks</li>
+            <li>Free ad design help</li>
+          </ul>
+          <div class="save">Save $70 vs. weekly</div>
+        </div>
+        <div class="pack">
+          <div class="pt">Premier</div>
+          <div class="amt">$650<span> / mo</span></div>
+          <ul>
+            <li>Top Banner, all 4 weeks</li>
+            <li>Featured Deal, all 4 weeks</li>
+            <li>1 Dedicated Email Blast</li>
+          </ul>
+          <div class="save">Save $140 vs. weekly</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOK -->
+    <div class="book">
+      <div>
+        <h3>Reserve your spot</h3>
+        <p>Inventory is limited each week and goes fast. Founding advertisers get 20% off the first month.</p>
+      </div>
+      <a class="cta" href="mailto:advertise@lompoc-deals.com">advertise@lompoc-deals.com →</a>
+    </div>
+
+    <div class="fine">
+      <sup>*</sup> Reach figures are current launch targets and will be updated with verified numbers. Rates shown are introductory and subject to change. 4-week prepay discount applies as listed. Ads must be for businesses serving Lompoc &amp; Vandenberg (ZIP 93436/37/38). Lompoc Deals reserves the right to decline ads that don’t fit our community standards.
+    </div>
+
+  </div>
+</body>
+</html>
