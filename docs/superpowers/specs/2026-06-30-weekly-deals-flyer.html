@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--
+  DESIGN MOCKUP — Lompoc Weekly Deals flyer.
+  A grocery-circular-style "weekly ad" of local deals, in Lompoc Deals brand
+  colors. Landscape format, sized to be screenshotted/printed later.
+  Content is representative sample (real Lompoc-area businesses). English only
+  for now. Not wired to data or sending.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lompoc Weekly Deals — flyer (mockup)</title>
+<style>
+  :root{
+    --cream:#FAF7F2; --ink:#2b2530; --muted:#7a7280; --purple:#7B4F9E;
+    --purple-d:#5f3b7d; --lav:#efe7f6; --line:#ece6f1; --yellow:#fde047;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#e9e3ef;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .note{max-width:960px;margin:18px auto 0;padding:8px 14px;font-size:12px;color:#6b6475;background:#fff7df;border:1px solid #f4e3a8;border-radius:10px}
+  .wrap{max-width:960px;margin:14px auto 28px;padding:0 12px}
+  .flyer{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 18px 50px -28px rgba(95,59,125,.55)}
+
+  /* HEADER BAR */
+  .head{position:relative;background:linear-gradient(135deg,var(--purple),#9a6cc0);color:#fff;padding:26px 34px 28px;overflow:hidden}
+  .head::after{content:"🌸";position:absolute;right:-10px;bottom:-26px;font-size:130px;opacity:.14;transform:rotate(-12deg)}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:15px;letter-spacing:.02em;opacity:.92}
+  .brand .mark{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:15px}
+  .h1{margin:12px 0 0;font-size:48px;line-height:.98;font-weight:800;letter-spacing:-.5px}
+  .h1 .em{color:var(--yellow)}
+  .sub{margin-top:10px;font-size:15px;color:rgba(255,255,255,.92);max-width:680px;line-height:1.5}
+  .sub b{color:var(--yellow)}
+
+  /* GRID */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px}
+  .deal{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;display:flex;flex-direction:column;min-height:230px}
+  .thumb{height:74px;border-radius:12px;background:var(--lav);display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:12px}
+  .dt{font-size:16px;font-weight:800;line-height:1.25;margin:0}
+  .biz{font-size:12.5px;color:var(--purple);font-weight:600;margin-top:3px}
+  .cat{font-size:12px;color:var(--muted);margin-top:1px}
+  .hookrow{display:flex;align-items:baseline;gap:8px;margin-top:auto;padding-top:10px}
+  .hook{font-size:38px;font-weight:800;color:var(--purple);line-height:1;letter-spacing:-1px}
+  .hook .u{font-size:14px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+  .badge{display:inline-block;margin-top:9px;background:var(--purple);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;align-self:flex-start}
+  .fine{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.4}
+
+  /* FOOTER STRIP */
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--purple-d);color:#fff;padding:16px 24px}
+  .foot .issue{font-size:13px;letter-spacing:.04em}
+  .foot .issue b{font-weight:800}
+  .foot .center{font-size:11.5px;color:rgba(255,255,255,.7)}
+  .cta{display:inline-block;background:var(--yellow);color:#3a2a12;text-decoration:none;font-weight:800;font-size:13px;padding:10px 16px;border-radius:999px;white-space:nowrap}
+
+  @media(max-width:760px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .h1{font-size:38px}
+  }
+  @media(max-width:480px){
+    .grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <div class="note">🎨 <b>Design mockup</b> — this is what the printable / shareable weekly deals ad will look like. Landscape flyer, English for now. Content is representative sample (real Lompoc-area businesses). Nothing here is wired to data.</div>
+
+  <div class="wrap">
+    <div class="flyer">
+
+      <!-- HEADER BAR -->
+      <div class="head">
+        <div class="brand"><span class="mark">🌸</span> Lompoc Deals</div>
+        <h1 class="h1">LOMPOC <span class="em">WEEKLY DEALS</span></h1>
+        <div class="sub">Fresh local offers from Old Town to the flower fields — <b>new every week</b>. Show the deal at the counter and save. Use them before they're gone.</div>
+      </div>
+
+      <!-- DEALS GRID -->
+      <div class="grid">
+
+        <div class="deal">
+          <div class="thumb">🍷</div>
+          <p class="dt">Tasting flight for two</p>
+          <div class="biz">Babcock Winery &amp; Vineyards</div>
+          <div class="cat">Wineries · Sta. Rita Hills wine trail</div>
+          <div class="hookrow"><span class="hook">2-FOR-1</span></div>
+          <span class="badge">With Lompoc Deals</span>
+          <div class="fine">Sat &amp; Sun only. One per table. Must be 21+.</div>
+        </div>
+
+        <div class="deal">
+          <div class="thumb">🍖</div>
+          <p class="dt">Free side with any plate</p>
+          <div class="biz">Pink Pig BBQ</div>
+          <div class="cat">Food &amp; Drink · Old Town, H St</div>
+          <div class="hookrow"><span class="hook">FREE</span><span class="u">SIDE</span></div>
+          <span class="badge">With Lompoc Deals</span>
+          <div class="fine">Dine-in or takeout. While supplies last.</div>
+        </div>
+
+        <div class="deal">
+          <div class="thumb">💐</div>
+          <p class="dt">Buy one bouquet, get one</p>
+          <div class="biz">Rebel Floral</div>
+          <div class="cat">Florist · City of Arts &amp; Flowers</div>
+          <div class="hookrow"><span class="hook">BOGO</span></div>
+          <span class="badge">With Lompoc Deals</span>
+          <div class="fine">Second bouquet of equal or lesser value.</div>
+        </div>
+
+        <div class="deal">
+          <div class="thumb">💅</div>
+          <p class="dt">Any mani-pedi service</p>
+          <div class="biz">Mariposa Nails</div>
+          <div class="cat">Health &amp; Beauty · Ocean Ave</div>
+          <div class="hookrow"><span class="hook">20%</span><span class="u">OFF</span></div>
+          <span class="badge">With Lompoc Deals</span>
+          <div class="fine">Tue–Thu. Walk-ins welcome, no appointment.</div>
+        </div>
+
+        <div class="deal">
+          <div class="thumb">🚗</div>
+          <p class="dt">Collision repair estimate</p>
+          <div class="biz">Kaizen Collision Center</div>
+          <div class="cat">Auto Services · Lompoc, 93436</div>
+          <div class="hookrow"><span class="hook">FREE</span><span class="u">QUOTE</span></div>
+          <span class="badge">With Lompoc Deals</span>
+          <div class="fine">All major insurance carriers accepted.</div>
+        </div>
+
+        <div class="deal">
+          <div class="thumb">🧵</div>
+          <p class="dt">Custom embroidery order</p>
+          <div class="biz">Valley Embroidery</div>
+          <div class="cat">Retail · serving Vandenberg SFB</div>
+          <div class="hookrow"><span class="hook">$5</span><span class="u">OFF</span></div>
+          <span class="badge">With Lompoc Deals</span>
+          <div class="fine">$25 minimum. Unit &amp; squadron orders welcome.</div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER STRIP -->
+      <div class="foot">
+        <div class="issue"><b>Week of June 30, 2026</b> · Issue #12 · Lompoc &amp; Vandenberg, CA</div>
+        <div class="center">While supplies last. Deals valid in Lompoc (93436/37/38) only.</div>
+        <a class="cta" href="#">Browse all deals → lompoc-deals.vercel.app</a>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
