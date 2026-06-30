@@ -6,7 +6,7 @@ import {
   Phone,
   Globe,
   ArrowLeft,
-  Flower2,
+  Store,
   Sparkles,
   Calendar,
 } from "lucide-react"
@@ -191,13 +191,13 @@ export default async function BusinessPage({
                     className="h-20 w-20 rounded-2xl border-2 border-background bg-background object-cover shadow-md sm:h-24 sm:w-24"
                     fallback={
                       <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-background bg-gradient-to-br from-primary/15 to-accent shadow-md sm:h-24 sm:w-24">
-                        <Flower2 className="h-9 w-9 text-primary/60" />
+                        <Store className="h-9 w-9 text-primary/60" />
                       </div>
                     }
                   />
                 ) : (
                   <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-background bg-gradient-to-br from-primary/15 to-accent shadow-md sm:h-24 sm:w-24">
-                    <Flower2 className="h-9 w-9 text-primary/60" />
+                    <Store className="h-9 w-9 text-primary/60" />
                   </div>
                 )}
               </div>

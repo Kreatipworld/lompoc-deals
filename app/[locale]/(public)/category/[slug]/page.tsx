@@ -12,7 +12,7 @@ import {
   ArrowLeft,
   Sparkles,
   Home,
-  Flower2,
+  Store,
   MapPin,
   Phone,
   Globe,
@@ -211,7 +211,7 @@ export default async function CategoryPage({
                           photoUrl={b.photoUrl}
                           name={b.name}
                           className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl"
-                          icon={<Flower2 className="h-5 w-5 text-primary/70" />}
+                          icon={<Store className="h-5 w-5 text-primary/70" />}
                         />
                         <div className="flex-1 overflow-hidden">
                           <h3 className="font-display text-lg font-semibold leading-tight tracking-tight line-clamp-2">
