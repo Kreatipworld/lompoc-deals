@@ -9,7 +9,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Building2, Plus, Lock, Zap, Bed, Bath, Maximize, MapPin, Pencil } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Properties — Lompoc Deals" }
+export const metadata = { title: "Properties — Lompoc Locals" }
 
 function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
   const dollars = cents / 100

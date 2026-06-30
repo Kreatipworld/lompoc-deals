@@ -27,7 +27,7 @@ export async function generateMetadata({
   const activity = await getActivityBySlug(slug)
   if (!activity) return {}
   return {
-    title: `${activity.title} — Things to Do in Lompoc | Lompoc Deals`,
+    title: `${activity.title} — Things to Do in Lompoc | Lompoc Locals`,
     description: activity.description ?? `Discover ${activity.title} in Lompoc, CA.`,
     openGraph: {
       title: activity.title,

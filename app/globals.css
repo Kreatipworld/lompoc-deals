@@ -18,7 +18,7 @@
     --popover-foreground: 0 0% 12%;
 
     /* Primary — Lompoc Purple #7B4F9E */
-    --primary: 273 33% 47%;
+    --primary: 291 81% 25%;          /* Brand purple #650C75 */
     --primary-foreground: 0 0% 100%;
 
     /* Secondary — Warm Terracotta #C8653A */
@@ -28,27 +28,27 @@
     --muted-foreground: 0 0% 32%;    /* charcoal-600 #525252 */
 
     /* Accent — light purple tint */
-    --accent: 279 44% 96%;           /* purple-50 #F5EEF9 */
-    --accent-foreground: 273 33% 30%;
+    --accent: 291 60% 96%;           /* purple-50 tint */
+    --accent-foreground: 291 75% 28%;
 
     /* Terracotta — secondary brand (deal badges, highlights) */
-    --brand-terracotta: 18 56% 51%;  /* #C8653A */
-    --brand-terracotta-foreground: 0 0% 100%;
+    --brand-terracotta: 49 87% 52%;  /* Brand gold #EFC618 (deal badges) */
+    --brand-terracotta-foreground: 45 90% 12%;
 
     /* Sage — success / savings */
-    --success: 120 14% 49%;          /* Sage Green #6B8F6B */
+    --success: 135 87% 32%;          /* Brand green #0B992F (savings) */
     --success-foreground: 0 0% 100%;
-    --success-muted: 120 20% 91%;    /* sage-100 */
+    --success-muted: 135 40% 91%;    /* green-100 */
 
     /* Gold accent */
-    --gold: 40 87% 71%;              /* #F4C97A */
-    --gold-foreground: 30 50% 12%;
+    --gold: 49 87% 52%;              /* Brand gold #EFC618 */
+    --gold-foreground: 45 90% 12%;
 
     --destructive: 4 72% 56%;        /* error-400 #DC4E41 */
     --destructive-foreground: 0 0% 100%;
     --border: 38 33% 84%;            /* cream-300 #E3DAC9 */
     --input: 38 33% 84%;
-    --ring: 273 33% 47%;
+    --ring: 291 81% 25%;
     --radius: 1rem;                  /* 16px — radius-lg for cards */
   }
 
@@ -59,26 +59,26 @@
     --card-foreground: 279 44% 96%;
     --popover: 270 22% 15%;
     --popover-foreground: 279 44% 96%;
-    --primary: 273 33% 60%;          /* lighter purple for dark bg #9E79BE */
+    --primary: 291 55% 62%;          /* lighter purple for dark bg */
     --primary-foreground: 0 0% 100%;
     --secondary: 270 20% 22%;        /* #2D2638 */
     --secondary-foreground: 279 44% 96%;
     --muted: 270 20% 22%;
     --muted-foreground: 270 14% 55%; /* #7A6B8A */
     --accent: 270 25% 25%;
-    --accent-foreground: 273 44% 88%;
-    --brand-terracotta: 18 56% 60%;
-    --brand-terracotta-foreground: 0 0% 100%;
-    --success: 120 18% 56%;
+    --accent-foreground: 291 50% 86%;
+    --brand-terracotta: 49 80% 58%;
+    --brand-terracotta-foreground: 45 90% 12%;
+    --success: 135 60% 48%;
     --success-foreground: 0 0% 100%;
-    --success-muted: 120 15% 18%;
-    --gold: 40 87% 71%;
-    --gold-foreground: 30 50% 12%;
+    --success-muted: 135 25% 18%;
+    --gold: 49 87% 60%;
+    --gold-foreground: 45 90% 12%;
     --destructive: 4 62% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 270 25% 26%;           /* #3D3348 */
     --input: 270 25% 26%;
-    --ring: 273 33% 60%;
+    --ring: 291 55% 62%;
   }
 }
 

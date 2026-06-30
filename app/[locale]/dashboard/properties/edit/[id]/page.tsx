@@ -9,7 +9,7 @@ import { getMyPropertyById } from "@/lib/biz-actions"
 import { ChevronLeft } from "lucide-react"
 import { PropertyForm } from "../../property-form"
 
-export const metadata = { title: "Edit listing — Lompoc Deals" }
+export const metadata = { title: "Edit listing — Lompoc Locals" }
 
 export default async function EditPropertyPage({
   params,

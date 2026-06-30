@@ -22,7 +22,7 @@ import { TrendChart } from "@/components/trend-chart"
 import { Link } from "@/i18n/navigation"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Stats — Lompoc Deals" }
+export const metadata = { title: "Stats — Lompoc Locals" }
 
 export default async function StatsPage({
   searchParams,

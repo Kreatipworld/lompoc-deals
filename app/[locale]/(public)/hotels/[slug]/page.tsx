@@ -29,9 +29,9 @@ export async function generateMetadata({
   params: { slug: string }
 }): Promise<Metadata> {
   const hotel = getHotelBySlug(params.slug)
-  if (!hotel) return { title: "Hotel — Lompoc Deals" }
+  if (!hotel) return { title: "Hotel — Lompoc Locals" }
   return {
-    title: `${hotel.name} — Lompoc Hotel | Lompoc Deals`,
+    title: `${hotel.name} — Lompoc Hotel | Lompoc Locals`,
     description: `${hotel.tagline}. ${hotel.description.slice(0, 120)}…`,
     keywords: [
       `${hotel.name.toLowerCase()}`,

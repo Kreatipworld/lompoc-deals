@@ -10,7 +10,7 @@ export type DealNotificationData = {
   businessSlug: string
 }
 
-const FROM_ADDRESS = "Lompoc Deals <onboarding@resend.dev>"
+const FROM_ADDRESS = "Lompoc Locals <onboarding@resend.dev>"
 
 function getResend(): Resend | null {
   const key = process.env.RESEND_API_KEY
@@ -38,8 +38,8 @@ export async function sendConfirmationEmail(
 
   const subject =
     locale === "es"
-      ? "Confirma tu suscripción a Lompoc Deals"
-      : "Confirm your Lompoc Deals subscription"
+      ? "Confirma tu suscripción a Lompoc Locals"
+      : "Confirm your Lompoc Locals subscription"
 
   const html =
     locale === "es"
@@ -48,7 +48,7 @@ export async function sendConfirmationEmail(
           <h1 style="font-size: 22px; margin-bottom: 8px;">Confirma tu suscripción</h1>
           <p style="color: #555; line-height: 1.5;">
             Haz clic en el botón de abajo para confirmar tu correo y empezar a recibir
-            el resumen semanal de Lompoc Deals.
+            el resumen semanal de Lompoc Locals.
           </p>
           <p style="margin: 24px 0;">
             <a href="${confirmUrl}"
@@ -67,7 +67,7 @@ export async function sendConfirmationEmail(
           <h1 style="font-size: 22px; margin-bottom: 8px;">Confirm your subscription</h1>
           <p style="color: #555; line-height: 1.5;">
             Click the button below to confirm your email and start receiving the
-            weekly Lompoc Deals digest.
+            weekly Lompoc Locals digest.
           </p>
           <p style="margin: 24px 0;">
             <a href="${confirmUrl}"
@@ -105,8 +105,8 @@ export async function sendPasswordResetEmail(
 
   const subject =
     locale === "es"
-      ? "Restablece tu contraseña de Lompoc Deals"
-      : "Reset your Lompoc Deals password"
+      ? "Restablece tu contraseña de Lompoc Locals"
+      : "Reset your Lompoc Locals password"
 
   const html =
     locale === "es"
@@ -114,7 +114,7 @@ export async function sendPasswordResetEmail(
         <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
           <h1 style="font-size: 22px; margin-bottom: 8px;">Restablece tu contraseña</h1>
           <p style="color: #555; line-height: 1.5;">
-            Recibimos una solicitud para restablecer la contraseña de tu cuenta en Lompoc Deals.
+            Recibimos una solicitud para restablecer la contraseña de tu cuenta en Lompoc Locals.
             Haz clic en el botón de abajo para elegir una nueva contraseña. Este enlace vence en 1 hora.
           </p>
           <p style="margin: 24px 0;">
@@ -134,7 +134,7 @@ export async function sendPasswordResetEmail(
         <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
           <h1 style="font-size: 22px; margin-bottom: 8px;">Reset your password</h1>
           <p style="color: #555; line-height: 1.5;">
-            We received a request to reset the password for your Lompoc Deals account.
+            We received a request to reset the password for your Lompoc Locals account.
             Click the button below to choose a new password. This link expires in 1 hour.
           </p>
           <p style="margin: 24px 0;">
@@ -177,22 +177,22 @@ export async function sendWelcomeEmail(
   const subject =
     locale === "es"
       ? isBusinessRole
-        ? "Bienvenido a Lompoc Deals — ¡tu negocio está casi en línea!"
-        : "¡Bienvenido a Lompoc Deals!"
+        ? "Bienvenido a Lompoc Locals — ¡tu negocio está casi en línea!"
+        : "¡Bienvenido a Lompoc Locals!"
       : isBusinessRole
-        ? "Welcome to Lompoc Deals — your business is almost live!"
-        : "Welcome to Lompoc Deals!"
+        ? "Welcome to Lompoc Locals — your business is almost live!"
+        : "Welcome to Lompoc Locals!"
 
   const html =
     locale === "es"
       ? `
         <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;">
-          <h1 style="font-size:24px;margin-bottom:4px;">¡Bienvenido a Lompoc Deals, ${name}!</h1>
+          <h1 style="font-size:24px;margin-bottom:4px;">¡Bienvenido a Lompoc Locals, ${name}!</h1>
           <p style="color:#555;line-height:1.5;margin:0 0 12px;">
             ${
               isBusinessRole
                 ? "Gracias por registrarte. Estamos emocionados de ayudarte a llegar a clientes locales en Lompoc."
-                : "Gracias por unirte. Lompoc Deals es tu fuente de cupones, especiales y anuncios de negocios locales en Lompoc, California."
+                : "Gracias por unirte. Lompoc Locals es tu fuente de cupones, especiales y anuncios de negocios locales en Lompoc, California."
             }
           </p>
           <p style="font-weight:600;color:#111;margin:16px 0 4px;">Próximos pasos:</p>
@@ -222,12 +222,12 @@ export async function sendWelcomeEmail(
       `
       : `
         <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;">
-          <h1 style="font-size:24px;margin-bottom:4px;">Welcome to Lompoc Deals, ${name}!</h1>
+          <h1 style="font-size:24px;margin-bottom:4px;">Welcome to Lompoc Locals, ${name}!</h1>
           <p style="color:#555;line-height:1.5;margin:0 0 12px;">
             ${
               isBusinessRole
                 ? "Thanks for signing up. We're excited to help your business reach local customers in Lompoc."
-                : "Thanks for joining. Lompoc Deals is your go-to feed for local coupons, specials, and announcements from businesses in Lompoc, California."
+                : "Thanks for joining. Lompoc Locals is your go-to feed for local coupons, specials, and announcements from businesses in Lompoc, California."
             }
           </p>
           <p style="font-weight:600;color:#111;margin:16px 0 4px;">Next steps:</p>
@@ -428,14 +428,14 @@ export async function sendFeedApprovalEmail(
 
   const subject =
     locale === "es"
-      ? `Tu publicación "${postTitle}" está en vivo en Lompoc Deals`
-      : `Your post "${postTitle}" is live on Lompoc Deals`
+      ? `Tu publicación "${postTitle}" está en vivo en Lompoc Locals`
+      : `Your post "${postTitle}" is live on Lompoc Locals`
 
   const html =
     locale === "es"
       ? `
         <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
-          <p>¡Buenas noticias — un administrador aprobó tu publicación <strong>"${escapeHtml(postTitle)}"</strong> y ya está en vivo en Lompoc Deals!</p>
+          <p>¡Buenas noticias — un administrador aprobó tu publicación <strong>"${escapeHtml(postTitle)}"</strong> y ya está en vivo en Lompoc Locals!</p>
           <p style="margin: 24px 0;">
             <a href="${feedUrl}"
                style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
@@ -447,7 +447,7 @@ export async function sendFeedApprovalEmail(
       `
       : `
         <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
-          <p>Good news — an admin approved your post <strong>"${escapeHtml(postTitle)}"</strong> and it's now live on the Lompoc Deals feed.</p>
+          <p>Good news — an admin approved your post <strong>"${escapeHtml(postTitle)}"</strong> and it's now live on the Lompoc Locals feed.</p>
           <p style="margin: 24px 0;">
             <a href="${feedUrl}"
                style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
@@ -546,8 +546,8 @@ export async function sendDigestEmail(
 
   const subject =
     locale === "es"
-      ? `Lompoc Deals — ${deals.length} nuevas esta semana`
-      : `Lompoc Deals — ${deals.length} new this week`
+      ? `Lompoc Locals — ${deals.length} nuevas esta semana`
+      : `Lompoc Locals — ${deals.length} new this week`
 
   const html =
     locale === "es"

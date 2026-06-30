@@ -24,7 +24,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "listing" })
   const id = parseInt(params.id, 10)
-  if (isNaN(id)) return { title: "Listing — Lompoc Deals" }
+  if (isNaN(id)) return { title: "Listing — Lompoc Locals" }
   const listing = await getListingById(id)
   if (!listing) return { title: t("metaNotFound") }
   return {

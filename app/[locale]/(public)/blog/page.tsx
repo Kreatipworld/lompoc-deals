@@ -10,11 +10,11 @@ const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 const PAGE_SIZE = 12
 
 export const metadata: Metadata = {
-  title: "Blog — Lompoc Deals | Local News, Tips & Community Stories",
+  title: "Blog — Lompoc Locals | Local News, Tips & Community Stories",
   description:
     "Discover local stories, business spotlights, community events, and insider tips for Lompoc, CA. Stay connected with what's happening in your city.",
   openGraph: {
-    title: "Blog — Lompoc Deals",
+    title: "Blog — Lompoc Locals",
     description: "Local stories, tips, and community news for Lompoc, CA.",
     url: `${siteUrl}/blog`,
   },

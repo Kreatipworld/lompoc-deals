@@ -17,13 +17,13 @@ export async function generateMetadata({
   params: { slug: string }
 }): Promise<Metadata> {
   const post = await getBlogPostBySlug(params.slug)
-  if (!post) return { title: "Post not found — Lompoc Deals" }
+  if (!post) return { title: "Post not found — Lompoc Locals" }
 
   const description =
-    post.metaDescription ?? post.excerpt ?? `Read ${post.title} on the Lompoc Deals blog.`
+    post.metaDescription ?? post.excerpt ?? `Read ${post.title} on the Lompoc Locals blog.`
 
   return {
-    title: `${post.title} | Lompoc Deals Blog`,
+    title: `${post.title} | Lompoc Locals Blog`,
     description,
     openGraph: {
       title: post.title,
@@ -64,11 +64,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
     dateModified: post.updatedAt.toISOString(),
     author: {
       "@type": "Person",
-      name: post.authorName ?? "Lompoc Deals",
+      name: post.authorName ?? "Lompoc Locals",
     },
     publisher: {
       "@type": "Organization",
-      name: "Lompoc Deals",
+      name: "Lompoc Locals",
       url: siteUrl,
     },
     keywords: post.tags?.join(", "),
@@ -76,7 +76,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
     inLanguage: "en-US",
     isPartOf: {
       "@type": "Blog",
-      name: "Lompoc Deals Blog",
+      name: "Lompoc Locals Blog",
       url: `${siteUrl}/blog`,
     },
   }

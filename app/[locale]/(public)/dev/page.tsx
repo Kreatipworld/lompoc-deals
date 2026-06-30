@@ -38,7 +38,7 @@ const SAMPLE_DEAL = {
 }
 
 export const metadata = {
-  title: "[DEV] Component QA — Lompoc Deals",
+  title: "[DEV] Component QA — Lompoc Locals",
   robots: "noindex",
 }
 

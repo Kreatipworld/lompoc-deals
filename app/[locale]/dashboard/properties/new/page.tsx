@@ -8,7 +8,7 @@ import { TIERS } from "@/lib/stripe"
 import { ChevronLeft } from "lucide-react"
 import { PropertyForm } from "../property-form"
 
-export const metadata = { title: "Add listing — Lompoc Deals" }
+export const metadata = { title: "Add listing — Lompoc Locals" }
 
 export default async function NewPropertyPage() {
   const session = await auth()
