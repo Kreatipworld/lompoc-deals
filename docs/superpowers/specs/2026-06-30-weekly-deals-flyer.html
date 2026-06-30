@@ -1,56 +1,62 @@
 <!DOCTYPE html>
 <!--
-  Lompoc Weekly Deals — full ad-inventory mockup.
-  Shows every placement sold on the rate card: Top Banner, Featured Deal hero,
-  Side Sponsor Rails (sample + open slots), Footer Banner, plus the deals grid.
-  Self-contained single file (photos embedded). Sample Lompoc-area content;
+  Lompoc Locals — Weekly Deals flyer. Synced to the Lompoc Locals brand
+  identity (logo + purple/green/gold palette). Self-contained single file
+  (deal photos embedded, logo inline SVG). Shows full ad inventory: top banner,
+  featured deal, side sponsor rails, footer banner. Sample Lompoc-area content;
   photos are stock placeholders pending real business photography.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Lompoc Weekly Deals</title>
+<title>Lompoc Locals — Weekly Deals</title>
 <style>
   :root{
-    --cream:#FAF7F2; --ink:#2b2530; --muted:#7a7280; --purple:#7B4F9E;
-    --purple-d:#5f3b7d; --lav:#efe7f6; --line:#e7e0ee; --yellow:#fde047;
-    --green:#0B992F; --green-bright:#0B992F;
+    --cream:#FAF7F2; --ink:#241627; --muted:#7a7280;
+    --purple:#650C75; --purple-d:#4d0959; --lav:#f1e6f3; --line:#e9ddec;
+    --green:#0B992F; --gold:#EFC618;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  body{margin:0;background:#efe9f1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
   .flyer{max-width:1240px;margin:0 auto;background:#fff}
 
-  /* HEADER */
-  .head{position:relative;background:linear-gradient(135deg,var(--purple),#9a6cc0);color:#fff;padding:24px 34px 26px;overflow:hidden}
-  .head::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 62%,rgba(255,255,255,.10) 62%,rgba(255,255,255,.10) 70%,transparent 70%);pointer-events:none}
-  .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;opacity:.95}
-  .brand .mark{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px}
-  .h1{margin:12px 0 0;font-size:48px;line-height:.98;font-weight:800;letter-spacing:-.5px}
-  .h1 .em{color:var(--green-bright)}
-  .sub{margin-top:10px;font-size:15px;color:rgba(255,255,255,.92);max-width:680px;line-height:1.5}
-  .sub b{color:var(--green-bright)}
+  /* tri-color brand stripe */
+  .stripe{display:flex;height:6px}
+  .stripe i{flex:1}
+  .stripe .p{background:var(--purple)} .stripe .g{background:var(--green)} .stripe .y{background:var(--gold)}
 
-  /* BANNERS (top + footer) */
+  /* HEADER (light, full-color logo) */
+  .head{background:var(--cream);border-bottom:1px solid var(--line);padding:22px 34px 24px}
+  .head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+  .logo{height:74px;width:auto;display:block}
+  .issue-tag{text-align:right;font-size:12px;color:var(--muted);line-height:1.5;padding-top:6px}
+  .issue-tag b{color:var(--purple);font-weight:800}
+  .h1{margin:18px 0 0;font-size:44px;line-height:.98;font-weight:800;letter-spacing:-.5px;color:var(--purple)}
+  .h1 .em{color:var(--green)}
+  .sub{margin-top:9px;font-size:15px;color:#5b5560;max-width:660px;line-height:1.55}
+  .sub b{color:var(--green)}
+
+  /* BANNERS */
   .banner-top{padding:18px 18px 0}
   .banner-foot{padding:0 18px 18px}
   .banner{position:relative;display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px}
-  .bstag{position:absolute;top:7px;right:13px;font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#b3a9c0}
+  .bstag{position:absolute;top:7px;right:13px;font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#b8a8be}
   .blogo{width:60px;height:60px;flex:0 0 60px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:19px;letter-spacing:.04em}
   .btext{flex:1}
   .bname{font-size:17px;font-weight:800}
   .bsub{font-size:13px;color:var(--muted);margin-top:2px}
-  .bcta{flex:0 0 auto;background:var(--purple);color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 16px;border-radius:999px;white-space:nowrap}
+  .bcta{flex:0 0 auto;background:var(--green);color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 16px;border-radius:999px;white-space:nowrap}
 
-  /* STAGE: left rail | center | right rail */
+  /* STAGE */
   .stage{display:flex;gap:16px;padding:14px 18px;align-items:stretch}
   .rail{width:172px;flex:0 0 172px;display:flex;flex-direction:column;gap:16px}
   .center{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 
-  /* FEATURED DEAL HERO */
+  /* FEATURED HERO */
   .featured{position:relative;display:flex;background:var(--cream);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-  .ribbon{position:absolute;top:16px;left:0;background:var(--green);color:#fff;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:6px 14px;border-radius:0 999px 999px 0;z-index:2}
+  .ribbon{position:absolute;top:16px;left:0;background:var(--gold);color:#3d2f06;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:6px 14px;border-radius:0 999px 999px 0;z-index:2}
   .fphoto{width:300px;flex:0 0 300px;object-fit:cover;display:block;background:var(--lav)}
   .fbody{padding:20px 24px;display:flex;flex-direction:column;flex:1}
   .fdt{font-size:23px;font-weight:800;line-height:1.15;margin:0}
@@ -73,26 +79,26 @@
   .badge{display:inline-block;margin-top:9px;background:var(--purple);color:#fff;font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:5px 10px;border-radius:999px;align-self:flex-start}
   .fine{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.4}
 
-  /* AD RAIL UNITS */
+  /* AD RAILS */
   .ad{flex:1;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-height:240px}
   .ad.sponsor{background:#fff;border:1px solid var(--line)}
-  .ad-tag{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#b3a9c0;padding:10px 12px 0}
+  .ad-tag{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#b8a8be;padding:10px 12px 0}
   .ad-logo{height:72px;margin:10px 12px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:24px;letter-spacing:.04em}
   .ad-name{font-size:14px;font-weight:800;padding:0 12px}
   .ad-pitch{font-size:11.5px;color:var(--muted);padding:5px 12px 0;line-height:1.45;flex:1}
-  .ad-cta{margin:10px 12px 12px;background:var(--purple);color:#fff;text-decoration:none;text-align:center;font-weight:800;font-size:12px;padding:9px 10px;border-radius:999px}
-  .ad.open{border:2px dashed #cbbfdb;background:var(--lav);display:flex;align-items:center;justify-content:center;text-align:center;padding:18px 14px}
-  .open-tag{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#a08ec0}
+  .ad-cta{margin:10px 12px 12px;background:var(--green);color:#fff;text-decoration:none;text-align:center;font-weight:800;font-size:12px;padding:9px 10px;border-radius:999px}
+  .ad.open{border:2px dashed #d3bdd8;background:var(--lav);display:flex;align-items:center;justify-content:center;text-align:center;padding:18px 14px}
+  .open-tag{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#a878b2}
   .open-h{font-size:17px;font-weight:800;color:var(--purple);margin-top:8px;letter-spacing:-.2px}
   .open-p{font-size:11.5px;color:#6f6580;margin-top:8px;line-height:1.5}
   .open-cta{display:inline-block;margin-top:12px;background:var(--green);color:#fff;text-decoration:none;font-weight:800;font-size:12px;padding:8px 14px;border-radius:999px}
 
   /* FOOTER */
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--purple-d);color:#fff;padding:15px 24px}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--purple-d);color:#fff;padding:16px 24px}
   .foot .issue{font-size:13px;letter-spacing:.03em}
   .foot .issue b{font-weight:800}
   .foot .center2{font-size:11.5px;color:rgba(255,255,255,.72)}
-  .cta{display:inline-block;background:var(--green);color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 16px;border-radius:999px;white-space:nowrap}
+  .cta{display:inline-block;background:var(--gold);color:#3d2f06;text-decoration:none;font-weight:800;font-size:13px;padding:10px 16px;border-radius:999px;white-space:nowrap}
 
   @media(max-width:980px){
     .stage{flex-direction:column}
@@ -106,17 +112,44 @@
     .featured{flex-direction:column}
     .fphoto{width:100%;height:160px}
     .banner{flex-wrap:wrap}
-    .h1{font-size:38px}
+    .head-row{flex-direction:column;align-items:flex-start}
+    .issue-tag{text-align:left}
+    .h1{font-size:34px}
   }
 </style>
 </head>
 <body>
   <div class="flyer">
 
+    <div class="stripe"><i class="p"></i><i class="g"></i><i class="y"></i></div>
+
+    <!-- HEADER -->
     <div class="head">
-      <div class="brand"><span class="mark">🏷️</span> Lompoc Deals</div>
-      <h1 class="h1">LOMPOC <span class="em">WEEKLY DEALS</span></h1>
-      <div class="sub">Fresh local offers across Lompoc &amp; Vandenberg — <b>new every week</b>. Show this ad at the counter to save.</div>
+      <div class="head-row">
+        <svg class="logo" viewBox="64 140 612 398" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lompoc Locals">
+  <path fill="#efc618" fill-rule="evenodd" d="M257,161.4c-10-17.2-32.1-23.1-49.4-13.1-17.2,10-23.1,32.1-13.1,49.4,10,17.2,32.1,23.1,49.4,13.1,17.2-10,23.1-32.1,13.1-49.4"/>
+  <path fill="#0b992f" d="M217.6,334.1c40.9-41.5,89.3-69.6,151.4-52.3-49.4-64.1-103.3-64.5-154.4-36.9,5.2,27.4,5.5,58.1,3.1,89.2"/>
+  <g fill="#650c75">
+    <path d="M297.1,394.7c0,29.4-17.8,47.2-44,47.2s-42.2-20.1-42.2-45.6,17.2-47,43.6-47,42.6,20.6,42.6,45.4ZM232.4,395.9c0,17.6,8.2,29.9,21.8,29.9s21.5-13,21.5-30.5-7.7-29.9-21.7-29.9-21.7,13-21.7,30.5Z"/>
+    <path d="M386.3,406.1c-.4-10.8-.8-23.8-.8-36.8h-.4c-2.8,11.4-6.5,24.2-10,34.7l-10.9,35h-15.8l-9.6-34.7c-2.9-10.5-6-23.3-8.1-35h-.3c-.5,12.1-.9,25.9-1.6,37.1l-1.6,34.1h-18.8l5.7-89.6h27l8.8,29.9c2.8,10.4,5.6,21.5,7.6,32.1h.4c2.5-10.4,5.6-22.2,8.5-32.2l9.6-29.8h26.5l4.9,89.6h-19.8l-1.3-34.3Z"/>
+    <path d="M423,352c6.3-1.1,15-1.9,27.4-1.9s21.4,2.4,27.4,7.2c5.7,4.5,9.6,12,9.6,20.7s-2.9,16.2-8.2,21.3c-6.9,6.5-17.2,9.4-29.1,9.4s-5.1-.1-6.9-.4v32.1h-20.1v-88.5ZM443,392.7c1.7.4,3.9.5,6.8.5,10.8,0,17.4-5.5,17.4-14.6s-5.7-13.2-15.8-13.2-6.9.4-8.4.8v26.5Z"/>
+    <path d="M582.3,394.7c0,29.4-17.8,47.2-44,47.2s-42.2-20.1-42.2-45.6,17.2-47,43.6-47,42.6,20.6,42.6,45.4ZM517.5,395.9c0,17.6,8.2,29.9,21.8,29.9s21.5-13,21.5-30.5-7.7-29.9-21.7-29.9-21.7,13-21.7,30.5Z"/>
+    <path d="M661.4,437.9c-3.7,1.9-12.1,3.9-23,3.9-31,0-47-19.3-47-44.8s21.8-47.6,48.9-47.6,18.5,2.1,22.1,4l-4.1,16.1c-4.1-1.7-9.8-3.3-17-3.3-16.1,0-28.6,9.7-28.6,29.7s10.6,29.3,28.7,29.3,12.9-1.3,16.9-2.9l3.1,15.8Z"/>
+  </g>
+  <g fill="#0b992f">
+    <path d="M335.7,467.2h13.9v49.5h24.3v11.6h-38.2v-61.2Z"/>
+    <path d="M439.1,497.1c0,20.1-12.2,32.2-30,32.2s-28.8-13.7-28.8-31.1,11.7-32,29.8-32,29,14.1,29,30.9ZM394.9,497.9c0,12,5.6,20.4,14.9,20.4s14.7-8.9,14.7-20.8-5.3-20.4-14.8-20.4-14.8,8.9-14.8,20.8Z"/>
+    <path d="M497.7,526.6c-2.5,1.3-8.3,2.6-15.7,2.6-21.1,0-32-13.2-32-30.6s14.9-32.5,33.4-32.5,12.6,1.5,15.1,2.7l-2.8,11c-2.8-1.2-6.7-2.3-11.6-2.3-11,0-19.5,6.6-19.5,20.2s7.3,20,19.6,20,8.8-.9,11.5-2l2.1,10.8Z"/>
+    <path d="M526.4,512.6l-4.4,15.7h-14.3l18.7-61.2h18.1l19,61.2h-14.9l-4.7-15.7h-17.5ZM541.9,502.3l-3.8-13c-1.1-3.6-2.2-8.2-3.1-11.8h-.2c-.9,3.6-1.8,8.3-2.8,11.8l-3.6,13h13.5Z"/>
+    <path d="M576.2,467.2h13.9v49.5h24.3v11.6h-38.2v-61.2Z"/>
+    <path d="M627.6,514.1c3.7,1.9,9.4,3.8,15.3,3.8s9.7-2.6,9.7-6.6-2.9-6-10.3-8.6c-10.2-3.5-16.8-9.2-16.8-18.1s8.7-18.4,23.1-18.4,12,1.5,15.6,3.1l-3.1,11.2c-2.4-1.2-6.8-2.9-12.8-2.9s-8.9,2.7-8.9,5.9,3.4,5.6,11.3,8.6c10.8,4,15.9,9.6,15.9,18.2s-7.9,19-24.7,19-13.9-1.8-17.3-3.7l2.8-11.4Z"/>
+  </g>
+  <path fill="#650c75" d="M250.9,465.7h0s-72.8,0-72.8,0c21.8-102.6,83.4-304.7-107.3-296.1,108.1,59.5,27.8,259.1,6.6,359.2h244v-63.1h-70.5Z"/>
+</svg>
+        <div class="issue-tag"><b>Week of June 30, 2026</b><br>Issue #12 · Lompoc &amp; Vandenberg</div>
+      </div>
+      <h1 class="h1">WEEKLY <span class="em">DEALS</span></h1>
+      <div class="sub">Your weekly connection to local Lompoc &amp; Vandenberg — <b>deals, news &amp; neighbors</b>, every Monday. Show this at the counter to save.</div>
     </div>
 
     <!-- TOP BANNER -->
@@ -128,8 +161,6 @@
       </div></div>
 
     <div class="stage">
-
-      <!-- LEFT SPONSOR RAIL -->
       <div class="rail">
         <div class="ad sponsor">
           <div class="ad-tag">Sponsored</div>
@@ -145,8 +176,6 @@
           <a class="open-cta" href="#">Reserve this spot →</a>
         </div>
       </div>
-
-      <!-- CENTER: featured deal + grid -->
       <div class="center">
         <div class="featured">
           <span class="ribbon">★ Featured this week</span>
@@ -156,7 +185,7 @@
             <div class="fbiz">South Side Coffee Co.</div>
             <div class="fcat">Coffee &amp; Café · South H St, Lompoc</div>
             <div class="fhookrow"><span class="fhook">BOGO</span><span class="fu">free latte</span></div>
-            <span class="badge">With Lompoc Deals</span>
+            <span class="badge">With Lompoc Locals</span>
             <div class="ffine">Mon–Fri before noon. Dine-in only. One per customer.</div>
           </div>
         </div>
@@ -168,7 +197,7 @@
                 <div class="biz">Babcock Winery &amp; Vineyards</div>
                 <div class="cat">Wineries · Sta. Rita Hills</div>
                 <div class="hookrow"><span class="hook">2-FOR-1</span></div>
-                <span class="badge">With Lompoc Deals</span>
+                <span class="badge">With Lompoc Locals</span>
                 <div class="fine">Sat &amp; Sun, 11am–5pm. One per table. 21+ only.</div>
               </div>
             </div>
@@ -179,7 +208,7 @@
                 <div class="biz">Pink Pig BBQ</div>
                 <div class="cat">BBQ · 117 N H St, Old Town</div>
                 <div class="hookrow"><span class="hook">FREE</span><span class="u">SIDE</span></div>
-                <span class="badge">With Lompoc Deals</span>
+                <span class="badge">With Lompoc Locals</span>
                 <div class="fine">Mon–Thu. Dine-in or takeout. One per order.</div>
               </div>
             </div>
@@ -190,7 +219,7 @@
                 <div class="biz">Rebel Floral</div>
                 <div class="cat">Florist · North H St</div>
                 <div class="hookrow"><span class="hook">50%</span><span class="u">OFF 2ND</span></div>
-                <span class="badge">With Lompoc Deals</span>
+                <span class="badge">With Lompoc Locals</span>
                 <div class="fine">Mixed seasonal bouquets. While supplies last.</div>
               </div>
             </div>
@@ -201,7 +230,7 @@
                 <div class="biz">Mariposa Nails</div>
                 <div class="cat">Nail Salon · Ocean Ave</div>
                 <div class="hookrow"><span class="hook">20%</span><span class="u">OFF</span></div>
-                <span class="badge">With Lompoc Deals</span>
+                <span class="badge">With Lompoc Locals</span>
                 <div class="fine">Tue–Thu. Walk-ins welcome, no appointment.</div>
               </div>
             </div>
@@ -212,7 +241,7 @@
                 <div class="biz">Kaizen Collision Center</div>
                 <div class="cat">Auto Body · Lompoc, 93436</div>
                 <div class="hookrow"><span class="hook">FREE</span><span class="u">QUOTE</span></div>
-                <span class="badge">With Lompoc Deals</span>
+                <span class="badge">With Lompoc Locals</span>
                 <div class="fine">All major insurance carriers accepted.</div>
               </div>
             </div>
@@ -223,14 +252,12 @@
                 <div class="biz">Valley Embroidery</div>
                 <div class="cat">Custom Apparel · serving Vandenberg SFB</div>
                 <div class="hookrow"><span class="hook">$5</span><span class="u">OFF</span></div>
-                <span class="badge">With Lompoc Deals</span>
+                <span class="badge">With Lompoc Locals</span>
                 <div class="fine">$25 minimum. Unit &amp; squadron orders welcome.</div>
               </div>
             </div>
         </div>
       </div>
-
-      <!-- RIGHT SPONSOR RAIL -->
       <div class="rail">
         <div class="ad open">
           <div class="open-tag">Ad space</div>
@@ -246,7 +273,6 @@
           <a class="ad-cta" href="#">Get my estimate →</a>
         </div>
       </div>
-
     </div>
 
     <!-- FOOTER BANNER -->
@@ -258,7 +284,7 @@
       </div></div>
 
     <div class="foot">
-      <div class="issue"><b>Week of June 30, 2026</b> · Issue #12 · Lompoc &amp; Vandenberg, CA</div>
+      <div class="issue"><b>Lompoc Locals</b> · connecting the valley, one week at a time</div>
       <div class="center2">Advertise with us · advertise@lompoc-deals.com · Valid June 30–July 6 in 93436/37/38.</div>
       <a class="cta" href="#">See every deal → lompoc-deals.vercel.app</a>
     </div>
