@@ -51,7 +51,7 @@ export default async function BlogIndexPage({
     <main className="max-w-6xl mx-auto px-4 py-10">
       {/* Page header */}
       <header className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-1">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">
           {t("eyebrow")}
         </p>
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -69,8 +69,8 @@ export default async function BlogIndexPage({
             href="/blog"
             className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
               !category
-                ? "bg-emerald-600 text-white border-emerald-600"
-                : "bg-white text-gray-600 border-gray-200 hover:border-emerald-400 hover:text-emerald-600"
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary"
             }`}
           >
             {t("filterAll")}
@@ -81,8 +81,8 @@ export default async function BlogIndexPage({
               href={`/blog?category=${encodeURIComponent(cat)}`}
               className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors capitalize ${
                 category === cat
-                  ? "bg-emerald-600 text-white border-emerald-600"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-emerald-400 hover:text-emerald-600"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary"
               }`}
             >
               {cat.replace(/-/g, " ")}
@@ -115,12 +115,12 @@ export default async function BlogIndexPage({
 
                 <div className="relative p-8 sm:p-10">
                   {heroPost.category && (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-emerald-400 mb-3">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-gold mb-3">
                       <Tag className="w-3 h-3" />
                       {heroPost.category.replace(/-/g, " ")}
                     </span>
                   )}
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 leading-tight group-hover:text-emerald-100 transition-colors">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 leading-tight group-hover:text-gold transition-colors">
                     {heroPost.title}
                   </h2>
                   {heroPost.excerpt && (
@@ -142,7 +142,7 @@ export default async function BlogIndexPage({
                       </span>
                     )}
                   </div>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-emerald-400 group-hover:text-emerald-300 transition-colors">
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold/80 group-hover:text-gold transition-colors">
                     {t("readArticle")} <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
@@ -155,7 +155,7 @@ export default async function BlogIndexPage({
             {gridPosts.map((post) => (
               <article
                 key={post.id}
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-emerald-100 transition-all flex flex-col"
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-primary/20 transition-all flex flex-col"
               >
                 {post.imageUrl && (
                   <Link href={`/blog/${post.slug}`} className="block aspect-[16/9] overflow-hidden bg-gray-100">
@@ -170,14 +170,14 @@ export default async function BlogIndexPage({
                   {post.category && (
                     <Link
                       href={`/blog?category=${encodeURIComponent(post.category)}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-emerald-600 mb-2 hover:text-emerald-700 w-fit"
+                      className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-primary mb-2 hover:text-primary/80 w-fit"
                     >
                       <Tag className="w-3 h-3" />
                       {post.category.replace(/-/g, " ")}
                     </Link>
                   )}
                   <h2 className="text-base font-bold text-gray-900 mb-2 leading-snug flex-1">
-                    <Link href={`/blog/${post.slug}`} className="hover:text-emerald-700 transition-colors">
+                    <Link href={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
                       {post.title}
                     </Link>
                   </h2>

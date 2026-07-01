@@ -75,12 +75,12 @@ export default async function GarageSaleDetailPage({ params }: Props) {
 
       <div className="rounded-3xl border bg-card shadow-sm overflow-hidden">
         {/* Orange header band */}
-        <div className="flex items-center gap-3 bg-orange-500 px-6 py-5">
+        <div className="flex items-center gap-3 bg-primary px-6 py-5">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/20">
             <ShoppingBag className="h-5 w-5 text-white" />
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-orange-100">
+            <p className="text-xs font-medium uppercase tracking-wide text-primary-foreground/70">
               {t("garageSale")}
             </p>
             <h1 className="mt-0.5 text-xl font-bold text-white leading-tight">
@@ -92,8 +92,8 @@ export default async function GarageSaleDetailPage({ params }: Props) {
         <div className="space-y-6 p-6">
           {/* Date + time */}
           <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-50">
-              <Clock className="h-4 w-4 text-orange-600" />
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+              <Clock className="h-4 w-4 text-primary" />
             </div>
             <div>
               <p className="text-sm font-semibold">{dateStr}</p>
@@ -105,8 +105,8 @@ export default async function GarageSaleDetailPage({ params }: Props) {
 
           {/* Address + directions */}
           <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-50">
-              <MapPin className="h-4 w-4 text-orange-600" />
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+              <MapPin className="h-4 w-4 text-primary" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold">{sale.address}</p>
@@ -114,7 +114,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-orange-600 hover:underline"
+                className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
               >
                 <Navigation className="h-3 w-3" />
                 {t("getDirections")}
@@ -140,7 +140,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
                 {cats.map((cat) => (
                   <span
                     key={cat}
-                    className="inline-flex items-center gap-1 rounded-full bg-orange-50 border border-orange-200 px-3 py-1 text-xs font-medium capitalize text-orange-700"
+                    className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-medium capitalize text-primary"
                   >
                     <Tag className="h-3 w-3" />
                     {cat}
@@ -158,12 +158,12 @@ export default async function GarageSaleDetailPage({ params }: Props) {
       </div>
 
       {/* CTA — post your own */}
-      <div className="mt-8 rounded-2xl border bg-orange-50 p-5 text-center">
+      <div className="mt-8 rounded-2xl border bg-accent p-5 text-center">
         <p className="text-sm font-medium">{t("gotStuff")}</p>
         <p className="mt-0.5 text-xs text-muted-foreground">{t("postYourOwn")}</p>
         <Link
           href="/garage-sales/post"
-          className="mt-3 inline-flex items-center gap-2 rounded-full bg-orange-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
+          className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
         >
           {t("postCta")}
         </Link>

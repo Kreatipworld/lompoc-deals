@@ -236,7 +236,7 @@ function Step2({
                 </span>
               )}
               {key === "premium" && (
-                <Crown className="absolute right-4 top-4 h-4 w-4 text-amber-500" />
+                <Crown className="absolute right-4 top-4 h-4 w-4 text-gold" />
               )}
               <div className="font-display text-base font-semibold">{tier.name}</div>
               <div className="mt-1">

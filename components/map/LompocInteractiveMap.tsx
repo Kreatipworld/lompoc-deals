@@ -364,9 +364,9 @@ export function LompocInteractiveMap() {
             title={nightMode ? "Switch to day mode" : "Switch to night mode"}
           >
             {nightMode ? (
-              <Sun className="h-5 w-5 text-amber-500" />
+              <Sun className="h-5 w-5 text-gold" />
             ) : (
-              <Moon className="h-5 w-5 text-indigo-600" />
+              <Moon className="h-5 w-5 text-primary" />
             )}
           </button>
 
@@ -378,7 +378,7 @@ export function LompocInteractiveMap() {
             title="Show my location"
           >
             <LocateFixed
-              className={`h-5 w-5 ${geoLoading ? "animate-pulse text-blue-500" : userLocation ? "text-blue-500" : "text-gray-600"}`}
+              className={`h-5 w-5 ${geoLoading ? "animate-pulse text-primary" : userLocation ? "text-primary" : "text-gray-600"}`}
             />
           </button>
 

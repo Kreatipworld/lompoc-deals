@@ -178,12 +178,12 @@ export default async function StatsPage({
 
           {/* Best performing deal */}
           {bestDeal && bestDeal.views > 0 && (
-            <div className="flex items-start gap-4 rounded-3xl border bg-gradient-to-br from-amber-50 to-card p-5 shadow-sm dark:from-amber-950/20">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400">
+            <div className="flex items-start gap-4 rounded-3xl border bg-gradient-to-br from-gold/10 to-card p-5 shadow-sm dark:from-gold/10">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold/10 text-gold dark:bg-gold/20 dark:text-gold">
                 <Trophy className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gold dark:text-gold">
                   {t("bestDeal")}
                 </p>
                 <p className="mt-0.5 truncate font-display text-lg font-semibold">

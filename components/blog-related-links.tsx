@@ -26,7 +26,7 @@ export function BlogRelatedLinks({ posts, title = "Related Articles" }: BlogRela
               className="group flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-800 group-hover:text-emerald-700 transition-colors line-clamp-2">
+                <p className="text-sm font-medium text-gray-800 group-hover:text-primary transition-colors line-clamp-2">
                   {post.title}
                 </p>
                 {post.publishedAt && (
@@ -35,7 +35,7 @@ export function BlogRelatedLinks({ posts, title = "Related Articles" }: BlogRela
                   </p>
                 )}
               </div>
-              <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-emerald-500 shrink-0 mt-0.5 transition-colors" />
+              <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-primary shrink-0 mt-0.5 transition-colors" />
             </Link>
           </li>
         ))}
@@ -58,7 +58,7 @@ export function DealBacklink({
   return (
     <Link
       href={href}
-      className="inline-flex items-center gap-1 text-emerald-600 font-medium hover:text-emerald-700 hover:underline transition-colors"
+      className="inline-flex items-center gap-1 text-primary font-medium hover:text-primary/80 hover:underline transition-colors"
     >
       {children}
       <ArrowRight className="w-3 h-3" />

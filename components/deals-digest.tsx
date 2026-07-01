@@ -83,7 +83,7 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
       <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-stretch">
         {/* Left rail */}
         <aside className="flex gap-4 sm:gap-4 lg:w-44 lg:flex-shrink-0 lg:flex-col">
-          <SponsorCard mono="CC" from="from-teal-500" to="to-emerald-400" name={t("sponsorDentalName")} pitch={t("sponsorDentalPitch")} cta={t("sponsorDentalCta")} />
+          <SponsorCard mono="CC" from="from-primary" to="to-purple-500" name={t("sponsorDentalName")} pitch={t("sponsorDentalPitch")} cta={t("sponsorDentalCta")} />
           {AdSlot}
         </aside>
 

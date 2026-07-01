@@ -2,7 +2,7 @@
 
 export function MapSkeleton() {
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gradient-to-br from-purple-950 to-blue-900">
+    <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gradient-to-br from-purple-950 to-purple-800">
       {/* Shimmer overlay */}
       <div
         className="absolute inset-0 animate-shimmer"

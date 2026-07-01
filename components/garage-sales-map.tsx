@@ -28,7 +28,7 @@ function GaragePin({ selected }: { selected?: boolean }) {
     >
       {selected && (
         <div
-          className="absolute rounded-full animate-ping opacity-30 bg-orange-500"
+          className="absolute rounded-full animate-ping opacity-30 bg-primary"
           style={{ width: 44, height: 44, top: -4, left: -4 }}
         />
       )}
@@ -116,7 +116,7 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
         >
           <div style={{ minWidth: 190, maxWidth: 240 }} className="text-sm">
             <div className="flex items-start gap-1 mb-1">
-              <MapPin className="h-3.5 w-3.5 shrink-0 mt-0.5 text-orange-500" />
+              <MapPin className="h-3.5 w-3.5 shrink-0 mt-0.5 text-primary" />
               <span className="font-semibold leading-tight line-clamp-2">{selected.address}</span>
             </div>
             <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
@@ -129,7 +129,7 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
             {selected.itemCategories && selected.itemCategories.length > 0 && (
               <div className="flex flex-wrap gap-1 mb-2">
                 {selected.itemCategories.slice(0, 3).map((cat) => (
-                  <span key={cat} className="rounded-full bg-orange-50 border border-orange-200 px-2 py-0.5 text-[11px] capitalize text-orange-700">
+                  <span key={cat} className="rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[11px] capitalize text-primary">
                     {cat}
                   </span>
                 ))}
@@ -137,7 +137,7 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
             )}
             <Link
               href={`/garage-sales/${selected.id}`}
-              className="text-xs font-medium text-orange-600 hover:underline"
+              className="text-xs font-medium text-primary hover:underline"
             >
               View details →
             </Link>

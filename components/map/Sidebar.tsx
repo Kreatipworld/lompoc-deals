@@ -77,7 +77,7 @@ export function Sidebar({
                     onClick={() => onSelect(poi)}
                     className={`w-full border-b px-4 py-3 text-left transition-colors duration-150 last:border-0 ${
                       isSelected || isHovered
-                        ? "bg-purple-50"
+                        ? "bg-accent"
                         : "hover:bg-gray-50"
                     }`}
                   >
@@ -114,7 +114,7 @@ export function Sidebar({
                         </p>
                         <div className="mt-1 flex items-center gap-2">
                           {poi.rating && (
-                            <span className="flex items-center gap-0.5 text-xs text-amber-500">
+                            <span className="flex items-center gap-0.5 text-xs text-gold">
                               <Star className="h-3 w-3 fill-current" />
                               {poi.rating}
                             </span>

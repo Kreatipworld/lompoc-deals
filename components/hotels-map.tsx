@@ -142,7 +142,7 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
             {/* Avenue / location context */}
             {selected.avenue && (
               <div className="lompoc-popup-meta flex items-start gap-1">
-                <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-violet-500" />
+                <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
                 <span>{selected.avenue}</span>
               </div>
             )}
@@ -155,7 +155,7 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
 
             {/* Rating */}
             <div className="lompoc-popup-meta flex items-center gap-1 mt-1">
-              <Star className="h-3 w-3 text-amber-400 fill-amber-400" />
+              <Star className="h-3 w-3 text-gold fill-gold" />
               <span>{selected.rating.toFixed(1)} / 5</span>
             </div>
 

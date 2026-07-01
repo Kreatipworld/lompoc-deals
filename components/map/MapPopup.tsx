@@ -47,7 +47,7 @@ export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProp
           </div>
           {poi.rating && (
             <div className="ml-auto flex items-center gap-1 pr-8">
-              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+              <Star className="h-3.5 w-3.5 fill-gold text-gold" />
               <span className="text-sm font-semibold text-gray-700">{poi.rating}</span>
             </div>
           )}

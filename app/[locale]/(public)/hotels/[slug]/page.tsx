@@ -65,9 +65,9 @@ function StarRating({ rating, ariaLabel, outOf5 }: { rating: number; ariaLabel: 
           key={i}
           className={`h-5 w-5 ${
             i < full
-              ? "fill-amber-400 text-amber-400"
+              ? "fill-gold text-gold"
               : i === full && half
-                ? "fill-amber-200 text-amber-400"
+                ? "fill-gold/50 text-gold"
                 : "fill-muted text-muted-foreground/30"
           }`}
         />
