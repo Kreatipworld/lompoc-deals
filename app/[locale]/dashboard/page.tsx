@@ -372,7 +372,7 @@ function PlanFeatureCard({
         <p className="mt-0.5 text-xs text-muted-foreground">{desc}</p>
       </div>
       {available && (
-        <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+        <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
       )}
     </div>
   )

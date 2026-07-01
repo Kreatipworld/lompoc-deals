@@ -86,8 +86,8 @@ export function SignupForm({
               defaultChecked={isPremiumDefault}
               className="peer sr-only"
             />
-            <div className="relative flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-3 transition hover:border-amber-400/60 peer-checked:border-amber-500 peer-checked:bg-amber-50">
-              <Crown className="h-5 w-5 text-amber-500" />
+            <div className="relative flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-3 transition hover:border-gold/60 peer-checked:border-gold peer-checked:bg-gold/10">
+              <Crown className="h-5 w-5 text-gold" />
               <div className="text-xs font-semibold">Go Premium</div>
               <div className="text-[10px] text-muted-foreground text-center">
                 $39.99/mo

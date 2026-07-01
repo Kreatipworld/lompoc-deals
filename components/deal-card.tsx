@@ -114,7 +114,7 @@ export async function DealCard({
 
           {/* Expires-soon badge */}
           {expiresSoon && (
-            <div className="absolute right-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-semibold text-white shadow">
+            <div className="absolute right-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-gold px-2 py-0.5 text-[10px] font-semibold text-gold-foreground shadow">
               <Clock className="h-2.5 w-2.5" />
               {t("endsSoon")}
             </div>
@@ -302,7 +302,7 @@ export async function DealCard({
 
         {/* Expires-soon amber ribbon (< 3 days) */}
         {expiresSoon && (
-          <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm">
+          <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-full bg-gold px-2.5 py-1 text-[11px] font-semibold text-gold-foreground shadow-sm">
             <Clock className="h-3 w-3" />
             {t("endsSoon")}
           </div>

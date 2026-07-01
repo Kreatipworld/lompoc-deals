@@ -93,7 +93,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
         {/* Back nav */}
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 mb-6 transition-colors"
+          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-primary mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> {t("backToBlog")}
         </Link>
@@ -103,7 +103,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
           {post.category && (
             <Link
               href={`/blog?category=${encodeURIComponent(post.category)}`}
-              className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-emerald-600 mb-3 hover:text-emerald-700"
+              className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-primary mb-3 hover:text-primary/80"
             >
               <Tag className="w-3 h-3" />
               {post.category}
@@ -143,14 +143,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
 
           {/* Excerpt/intro */}
           {post.excerpt && (
-            <p className="text-lg text-gray-600 mb-6 font-medium leading-relaxed border-l-4 border-emerald-500 pl-4">
+            <p className="text-lg text-gray-600 mb-6 font-medium leading-relaxed border-l-4 border-primary pl-4">
               {post.excerpt}
             </p>
           )}
 
           {/* Content */}
           <div
-            className="prose prose-gray prose-headings:font-bold prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline max-w-none"
+            className="prose prose-gray prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
@@ -181,16 +181,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
         <BlogBusinessSpotlight businesses={relatedBusinesses} title={t("localBusinesses")} supportLocalText={t("supportLocal")} browseAllText={t("browseAllBusinesses")} />
 
         {/* CTA to deals */}
-        <div className="mt-10 p-6 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
-          <p className="text-emerald-800 font-semibold mb-2">
+        <div className="mt-10 p-6 bg-accent rounded-2xl border border-primary/20 text-center">
+          <p className="text-accent-foreground font-semibold mb-2">
             {t("lookingForDeals")}
           </p>
-          <p className="text-emerald-700 text-sm mb-4">
+          <p className="text-accent-foreground/80 text-sm mb-4">
             {t("lookingForDealsBody")}
           </p>
           <Link
             href="/"
-            className="inline-block px-5 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors"
+            className="inline-block px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             {t("browseDeals")}
           </Link>

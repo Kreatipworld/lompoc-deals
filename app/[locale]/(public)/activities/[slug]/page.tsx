@@ -122,12 +122,12 @@ export default async function ActivityDetailPage({
 
           {/* Tips */}
           {activity.tips && (
-            <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
-              <div className="mb-2 flex items-center gap-2 font-semibold text-amber-800 dark:text-amber-300">
+            <div className="mt-6 rounded-xl border border-gold/20 bg-gold/10 p-4 dark:border-gold/40 dark:bg-gold/20">
+              <div className="mb-2 flex items-center gap-2 font-semibold text-gold dark:text-gold">
                 <Lightbulb className="h-4 w-4" />
                 {t("localTips")}
               </div>
-              <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200">
+              <p className="text-sm leading-relaxed text-foreground">
                 {activity.tips}
               </p>
             </div>

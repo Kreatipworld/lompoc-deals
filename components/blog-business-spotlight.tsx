@@ -25,8 +25,8 @@ export function BlogBusinessSpotlight({
   return (
     <aside className="mt-10 pt-8 border-t border-gray-100">
       <div className="flex items-center gap-2 mb-1">
-        <Store className="w-4 h-4 text-emerald-600" />
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-emerald-600">
+        <Store className="w-4 h-4 text-primary" />
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-primary">
           {title}
         </h2>
       </div>
@@ -39,7 +39,7 @@ export function BlogBusinessSpotlight({
           <li key={biz.id}>
             <Link
               href={`/businesses?highlight=${biz.slug}`}
-              className="group flex items-start gap-3 p-3 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all"
+              className="group flex items-start gap-3 p-3 rounded-xl border border-gray-100 hover:border-primary/20 hover:bg-accent transition-all"
             >
               {/* Logo or fallback icon */}
               <div className="shrink-0 w-10 h-10 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
@@ -55,11 +55,11 @@ export function BlogBusinessSpotlight({
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 group-hover:text-emerald-700 transition-colors leading-snug">
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors leading-snug">
                   {biz.name}
                 </p>
                 {biz.categoryName && (
-                  <span className="inline-flex items-center gap-0.5 text-xs text-emerald-600 mt-0.5">
+                  <span className="inline-flex items-center gap-0.5 text-xs text-primary mt-0.5">
                     <Tag className="w-3 h-3" />
                     {biz.categoryName}
                   </span>
@@ -70,14 +70,14 @@ export function BlogBusinessSpotlight({
                   </p>
                 )}
                 {biz.activeDealCount > 0 && (
-                  <p className="text-xs font-medium text-emerald-600 mt-1">
+                  <p className="text-xs font-medium text-primary mt-1">
                     {biz.activeDealCount} active deal{biz.activeDealCount !== 1 ? "s" : ""}
                     {/* Note: activeDealCount text intentionally kept as-is; parent can pass translated text if needed */}
                   </p>
                 )}
               </div>
 
-              <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-emerald-500 shrink-0 mt-1 transition-colors" />
+              <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-primary shrink-0 mt-1 transition-colors" />
             </Link>
           </li>
         ))}
@@ -86,7 +86,7 @@ export function BlogBusinessSpotlight({
       <div className="mt-4 text-center">
         <Link
           href="/businesses"
-          className="text-xs text-emerald-600 hover:text-emerald-700 font-medium hover:underline transition-colors"
+          className="text-xs text-primary hover:text-primary/80 font-medium hover:underline transition-colors"
         >
           {browseAllText} →
         </Link>

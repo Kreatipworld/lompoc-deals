@@ -104,7 +104,7 @@ export default async function HotelsPage({
 
       {/* ── 2. THINGS TO DO ──────────────────────────────────────────── */}
       {featuredActivities.length > 0 && (
-        <section className="bg-amber-50/60 py-12 dark:bg-amber-950/10">
+        <section className="bg-gold/10 py-12 dark:bg-gold/10">
           <div className="mx-auto max-w-6xl px-4">
             <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
               {t("thingsToDoHeading")}
@@ -255,9 +255,9 @@ function ActivityCard({
 }
 
 const COVER_GRADIENT: Record<string, string> = {
-  $: "from-emerald-500/20 via-teal-400/10 to-cyan-300/10",
-  $$: "from-amber-500/25 via-orange-400/15 to-yellow-300/10",
-  $$$: "from-violet-600/25 via-purple-500/15 to-fuchsia-400/10",
+  $: "from-success/20 via-success/10 to-success/5",
+  $$: "from-gold/25 via-gold/15 to-gold/10",
+  $$$: "from-primary/25 via-primary/15 to-primary/10",
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -270,9 +270,9 @@ function StarRating({ rating }: { rating: number }) {
           key={i}
           className={`h-3.5 w-3.5 ${
             i < full
-              ? "fill-amber-400 text-amber-400"
+              ? "fill-gold text-gold"
               : i === full && half
-                ? "fill-amber-200 text-amber-400"
+                ? "fill-gold/50 text-gold"
                 : "fill-muted text-muted-foreground/30"
           }`}
         />

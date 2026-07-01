@@ -85,7 +85,7 @@ export function PostGarageSaleForm() {
           {newSaleId && (
             <Link
               href={`/garage-sales/${newSaleId}`}
-              className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
+              className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
             >
               {tGarageSales("viewListing")}
             </Link>
@@ -163,8 +163,8 @@ export function PostGarageSaleForm() {
                 onClick={() => toggleCat(cat.value)}
                 className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
                   active
-                    ? "bg-orange-500 border-orange-500 text-white"
-                    : "border-border text-muted-foreground hover:border-orange-300 hover:text-orange-700"
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
                 }`}
               >
                 {t(cat.key)}
@@ -181,7 +181,7 @@ export function PostGarageSaleForm() {
       <Button
         type="submit"
         disabled={formStatus === "submitting"}
-        className="w-full bg-orange-500 hover:bg-orange-600"
+        className="w-full bg-primary hover:bg-primary/90"
       >
         {formStatus === "submitting" ? t("submittingButton") : t("submitButton")}
       </Button>

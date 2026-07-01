@@ -24,15 +24,15 @@ export default async function ProfilePage({
   return (
     <div className="space-y-6">
       {searchParams.claimed && (
-        <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-amber-500 text-white">
+        <div className="flex items-start gap-3 rounded-2xl border border-primary/20 bg-accent p-4">
+          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <Sparkles className="h-4 w-4" />
           </div>
           <div className="text-sm">
-            <p className="font-semibold text-amber-900">
+            <p className="font-semibold text-accent-foreground">
               {t("claimReceived", { name: decodeURIComponent(searchParams.claimed) })}
             </p>
-            <p className="text-amber-800">
+            <p className="text-accent-foreground">
               {t("claimBody")}
             </p>
           </div>

@@ -26,9 +26,9 @@ const AMENITY_FILTERS: FilterChip[] = [
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
 const COVER_GRADIENT: Record<string, string> = {
-  $: "from-emerald-500/20 via-teal-400/10 to-cyan-300/10",
-  $$: "from-amber-500/25 via-orange-400/15 to-yellow-300/10",
-  $$$: "from-violet-600/25 via-purple-500/15 to-fuchsia-400/10",
+  $: "from-success/20 via-success/10 to-success/5",
+  $$: "from-gold/25 via-gold/15 to-gold/10",
+  $$$: "from-primary/25 via-primary/15 to-primary/10",
 }
 
 function ratingLabel(r: number): string {
