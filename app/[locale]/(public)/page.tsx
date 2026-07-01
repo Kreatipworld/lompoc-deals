@@ -3,8 +3,9 @@ import {
   ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown,
   Building2, ExternalLink, Compass
 } from "lucide-react"
-import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities } from "@/lib/queries"
+import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals } from "@/lib/queries"
 import { getFeaturedDeals } from "@/lib/featured"
+import { DealsDigest } from "@/components/deals-digest"
 import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { SearchBar } from "@/components/search-bar"
@@ -58,12 +59,13 @@ function getCategoryImage(slug: string): string | null {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals, viewer, t] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals, activeDeals, viewer, t] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6),
     getFeaturedDeals({ limit: 6 }),
+    getActiveDeals(12),
     getViewer(),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
@@ -136,7 +138,13 @@ export default async function HomePage({ params }: { params: { locale: string } 
       <DealsCarousel deals={featuredDeals} />
 
       {/* ─────────────────────────────────────────────────
-          EXPLORE BY CATEGORY — Image card grid
+          WEEKLY DEALS DIGEST — deals-first flyer layout that
+          sells business membership (sponsor rails + CTAs)
+         ───────────────────────────────────────────────── */}
+      <DealsDigest deals={activeDeals} />
+
+      {/* ─────────────────────────────────────────────────
+          EXPLORE BY CATEGORY — Image card grid (now below the digest)
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-14">
         <AnimeReveal direction="up" delay={0} duration={600} className="mb-8">

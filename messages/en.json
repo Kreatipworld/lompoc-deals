@@ -1,4 +1,27 @@
 {
+  "dealsDigest": {
+    "eyebrow": "This week in Lompoc",
+    "titleA": "This Week's",
+    "titleB": "Deals",
+    "subtitle": "Fresh local offers across Lompoc & Vandenberg — new every week. Show them at the counter to save.",
+    "featuredBadge": "Featured this week",
+    "withBadge": "With Lompoc Locals",
+    "sponsored": "Sponsored",
+    "adSpace": "Ad space",
+    "yourAdHere": "Your ad here",
+    "adPitch": "Reach 3,000+ Lompoc & Vandenberg locals every week.",
+    "claimSpot": "Claim this spot",
+    "featureTitle": "Feature your business here",
+    "featureBody": "Put your deal in front of the whole valley — every week.",
+    "featureCta": "Feature your deal",
+    "seeAll": "See all deals",
+    "sponsorDentalName": "Central Coast Dental",
+    "sponsorDentalPitch": "Gentle family dentistry on North H St. New patients welcome.",
+    "sponsorDentalCta": "Book a visit",
+    "sponsorRealtyName": "Valley Realty Group",
+    "sponsorRealtyPitch": "Thinking of selling in Lompoc? Get a free home valuation.",
+    "sponsorRealtyCta": "Get my estimate"
+  },
   "nav": {
     "feed": "Feed",
     "deals": "Deals",
