@@ -80,19 +80,28 @@ export default async function HomePage({ params }: { params: { locale: string } 
           of being clipped. The background layers are `absolute inset-0`, so
           they stay bounded to the section on their own. */}
       <section className="relative border-b">
-        {/* Brand-gradient hero — purple base (Lompoc Locals), warmed by a
-            gold glow top-right and a green glow bottom-left. Replaces the
-            flower-field photo to match the community brand identity. */}
+        {/* Flower-field photo base, washed in the Lompoc Locals purple brand
+            gradient, then warmed by a gold glow top-right and green glow
+            bottom-left. The photo shows through the semi-transparent purple. */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-br from-[#4a0857] via-[#650C75] to-[#37043f]"
+          className="absolute inset-0 -z-30 overflow-hidden"
+          style={{
+            backgroundImage: "url('/lompoc-hero.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 40%",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-20 bg-gradient-to-br from-[#4a0857]/90 via-[#650C75]/85 to-[#37043f]/90"
         />
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
           style={{
             backgroundImage:
-              "radial-gradient(60% 55% at 85% 0%, rgba(239,198,24,0.28) 0%, transparent 60%), radial-gradient(55% 55% at 0% 100%, rgba(11,153,47,0.30) 0%, transparent 60%)",
+              "radial-gradient(60% 55% at 85% 0%, rgba(239,198,24,0.22) 0%, transparent 60%), radial-gradient(55% 55% at 0% 100%, rgba(11,153,47,0.24) 0%, transparent 60%)",
           }}
         />
 
