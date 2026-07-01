@@ -80,18 +80,20 @@ export default async function HomePage({ params }: { params: { locale: string } 
           of being clipped. The background layers are `absolute inset-0`, so
           they stay bounded to the section on their own. */}
       <section className="relative border-b">
+        {/* Brand-gradient hero — purple base (Lompoc Locals), warmed by a
+            gold glow top-right and a green glow bottom-left. Replaces the
+            flower-field photo to match the community brand identity. */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-20 overflow-hidden"
-          style={{
-            backgroundImage: "url('/lompoc-hero.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center 40%",
-          }}
+          className="absolute inset-0 -z-20 bg-gradient-to-br from-[#4a0857] via-[#650C75] to-[#37043f]"
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/40 to-black/60"
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage:
+              "radial-gradient(60% 55% at 85% 0%, rgba(239,198,24,0.28) 0%, transparent 60%), radial-gradient(55% 55% at 0% 100%, rgba(11,153,47,0.30) 0%, transparent 60%)",
+          }}
         />
 
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
@@ -102,7 +104,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
 
           <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
             {t("heroTitle")} <br className="sm:hidden" />
-            <span className="italic text-yellow-300">{t("heroHighlight")}</span>
+            <span className="italic text-gold">{t("heroHighlight")}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
             {t("heroSubheadline")}
