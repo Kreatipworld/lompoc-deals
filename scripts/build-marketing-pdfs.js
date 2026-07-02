@@ -92,6 +92,41 @@ function htmlToPdf(htmlPath, outName) {
   console.log(`  ✓ ${path.relative(ROOT, out)} (${kb} KB)`)
 }
 
+// Cover page for the combined deck — full A4, brand photo + purple wash
+function buildDeckCover() {
+  const cover = path.join(ROOT, "docs/marketing/assets/cover-lompoc.jpg")
+  const html = `<!doctype html><html><head><meta charset="utf-8"><style>
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .cv{position:relative;width:100%;min-height:257mm;color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:26mm 22mm;
+    background:linear-gradient(135deg,rgba(101,12,117,.92),rgba(125,26,144,.84) 55%,rgba(55,4,63,.94)),url('file://${cover}');
+    background-size:cover;background-position:center 42%}
+  .logo{background:#fff;border-radius:14px;padding:12px 18px;display:inline-flex;width:max-content}
+  h1{font-size:44px;font-weight:800;line-height:1.05;margin:0 0 14px}
+  .sub{font-size:17px;opacity:.92;max-width:60ch;line-height:1.5}
+  .toc{margin-top:26px;font-size:15px;line-height:2.1}
+  .toc b{color:#EFC618}
+  .foot{font-size:13px;opacity:.85;border-top:1px solid rgba(255,255,255,.25);padding-top:14px}
+  .foot .u{color:#EFC618;font-weight:700}
+  </style></head><body><div class="cv">
+    <span class="logo">${LOGO}</span>
+    <div>
+      <h1>Advertising &amp; Brand Kit</h1>
+      <p class="sub">Everything a Lompoc business needs to get found by the whole valley — the platform, the plan, and the brand behind it.</p>
+      <div class="toc">
+        <div><b>01</b> &nbsp;Platform Overview — what Lompoc Locals is</div>
+        <div><b>02</b> &nbsp;Advertising Proposal — the plan, packages &amp; ad spots</div>
+        <div><b>03</b> &nbsp;Brand Guide — logo, palette, voice &amp; tone</div>
+        <div><b>04</b> &nbsp;Engagement Playbook — how we grow &amp; convert</div>
+      </div>
+    </div>
+    <div class="foot">Live local. Love Lompoc. &nbsp;·&nbsp; <span class="u">lompoc-deals.vercel.app</span> &nbsp;·&nbsp; Lompoc &amp; Vandenberg, CA</div>
+  </div></body></html>`
+  const p = path.join(TMP, "deck-cover.html")
+  fs.writeFileSync(p, html)
+  htmlToPdf(p, "deck-cover")
+}
+
 console.log("Building marketing PDFs…")
 // Pre-styled HTML docs — print directly
 htmlToPdf(path.join(ROOT, "docs/marketing/advertise-proposal.html"), "advertise-proposal")
@@ -99,4 +134,17 @@ htmlToPdf(path.join(ROOT, "docs/marketing/platform-overview.html"), "platform-ov
 // Markdown docs — render + wrap + print
 mdToPdf("docs/brand/brand-guide.md", "Brand Guide", "brand-guide")
 mdToPdf("docs/brand/engagement-playbook.md", "Engagement Playbook", "engagement-playbook")
+// Combined deck: cover + the four docs, merged with pdf-lib.
+// pdf-lib is installed to a throwaway prefix (NOT added to the project) and
+// exposed to the merge script via NODE_PATH — keeps package.json untouched.
+buildDeckCover()
+console.log("Merging combined pitch deck…")
+const pdfLibPrefix = fs.mkdtempSync(path.join(os.tmpdir(), "ll-pdflib-"))
+execSync(`npm install pdf-lib --prefix "${pdfLibPrefix}" --no-save --no-audit --no-fund`, { stdio: "ignore" })
+execSync(`node "${path.join(__dirname, "merge-pdf-deck.js")}"`, {
+  cwd: ROOT,
+  stdio: "inherit",
+  env: { ...process.env, NODE_PATH: path.join(pdfLibPrefix, "node_modules") },
+})
+fs.rmSync(pdfLibPrefix, { recursive: true, force: true })
 console.log("Done → docs/marketing/pdf/")
