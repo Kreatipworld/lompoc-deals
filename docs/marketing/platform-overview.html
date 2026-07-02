@@ -177,6 +177,12 @@
     color:var(--purple);
   }
   .tier .star{color:var(--gold);}
+  .tier .tier-tag{
+    font-size:12px;
+    font-weight:600;
+    color:#6a6259;
+    margin-top:2px;
+  }
   .tier .price{
     font-size:24px;
     font-weight:800;
@@ -401,7 +407,8 @@
     <div class="tiers">
       <div class="tier">
         <div class="tier-name">Free</div>
-        <div class="price free">$0</div>
+        <div class="tier-tag">Get found</div>
+        <div class="price free">$0<span>/mo</span></div>
         <ul>
           <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Business listing in the directory</span></li>
           <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Claim and manage your page</span></li>
@@ -410,21 +417,27 @@
       </div>
       <div class="tier featured">
         <span class="badge">Most popular</span>
-        <div class="tier-name">Standard <span class="star">★</span></div>
-        <div class="price">$19.99<span>/mo</span></div>
+        <div class="tier-name">Growth <span class="star">★</span></div>
+        <div class="tier-tag">Sell your deals</div>
+        <div class="price">$39.99<span>/mo</span></div>
         <ul>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Everything in Free</span></li>
           <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Post up to 15 deals</span></li>
           <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Featured in the weekly digest</span></li>
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>View &amp; click analytics</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Views &amp; click analytics</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Social links + Google reviews</span></li>
         </ul>
       </div>
       <div class="tier">
-        <div class="tier-name">Premium</div>
-        <div class="price">$39.99<span>/mo</span></div>
+        <div class="tier-name">Plus</div>
+        <div class="tier-tag">Own the spotlight</div>
+        <div class="price">$99.99<span>/mo</span></div>
         <ul>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Everything in Growth</span></li>
           <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Unlimited deals</span></li>
           <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Featured &amp; priority placement</span></li>
           <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Real-estate listings module</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Digest ad spots included (Featured Deal rotation + Sponsor Spotlight)</span></li>
         </ul>
       </div>
     </div>
@@ -444,7 +457,7 @@
         <tr><td>Digest Banner</td><td>Banner ad across the digest</td><td class="price">$99/mo</td></tr>
       </tbody>
     </table>
-    <div class="deals-note" style="background:#fdf7dc;border-color:#f2e59a;color:#8a6d00;">Premium members include one Featured Deal rotation each month.</div>
+    <div class="deals-note" style="background:#fdf7dc;border-color:#f2e59a;color:#8a6d00;">Plus members include one Featured Deal rotation each month.</div>
   </section>
 
   <!-- 7. WHY IT MATTERS -->

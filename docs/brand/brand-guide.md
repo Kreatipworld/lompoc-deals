@@ -215,8 +215,8 @@ Businesses get discovered by locals and move real deals — not vanity metrics.
 
 **4. Simple & fair pricing**
 Easy to start, honest pricing, nothing tricky — built for busy owners.
-> *Example:* "Simple, fair pricing. Start free and post your first deal in
-> minutes."
+> *Example:* "Simple, fair pricing. List free, then post your first deal for
+> $39.99/mo."
 
 ---
 
