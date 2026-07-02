@@ -247,6 +247,7 @@ export default async function ForBusinessesPage() {
             {/* Free */}
             <div className="flex flex-col rounded-3xl border bg-card p-7 shadow-sm">
               <div className="font-display text-xl font-semibold">Free</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t("pricing.freeBestFor")}</div>
               <div className="mt-2 flex items-baseline gap-1">
                 <span className="font-display text-4xl font-bold">$0</span>
                 <span className="text-sm text-muted-foreground">{t("pricing.perMonth")}</span>
@@ -278,9 +279,10 @@ export default async function ForBusinessesPage() {
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-primary-foreground animate-pop-badge">
                 {t("pricing.mostPopular")}
               </div>
-              <div className="font-display text-xl font-semibold">Standard</div>
+              <div className="font-display text-xl font-semibold">Growth</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t("pricing.growthBestFor")}</div>
               <div className="mt-2 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-bold">$19.99</span>
+                <span className="font-display text-4xl font-bold">$39.99</span>
                 <span className="text-sm text-muted-foreground">{t("pricing.perMonth")}</span>
               </div>
               <ul className="mt-5 flex-1 space-y-2.5">
@@ -308,9 +310,10 @@ export default async function ForBusinessesPage() {
 
             {/* Premium */}
             <div className="flex flex-col rounded-3xl border bg-card p-7 shadow-sm">
-              <div className="font-display text-xl font-semibold">Premium</div>
+              <div className="font-display text-xl font-semibold">Plus</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t("pricing.plusBestFor")}</div>
               <div className="mt-2 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-bold">$39.99</span>
+                <span className="font-display text-4xl font-bold">$99.99</span>
                 <span className="text-sm text-muted-foreground">{t("pricing.perMonth")}</span>
               </div>
               <ul className="mt-5 flex-1 space-y-2.5">
@@ -320,6 +323,9 @@ export default async function ForBusinessesPage() {
                   t("pricing.premiumFeature3"),
                   t("pricing.premiumFeature4"),
                   t("pricing.premiumFeature5"),
+                  t("pricing.premiumFeature6"),
+                  t("pricing.premiumFeature7"),
+                  t("pricing.premiumFeature8"),
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2 text-sm">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -327,14 +333,42 @@ export default async function ForBusinessesPage() {
                   </li>
                 ))}
               </ul>
+              <div className="mt-4 rounded-xl bg-success/10 px-3 py-2.5 text-xs font-medium text-success">
+                {t("pricing.plusValueNote")}
+              </div>
               <Link
                 href="/signup"
-                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-xl border text-sm font-semibold transition hover:bg-accent"
+                className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-xl border text-sm font-semibold transition hover:bg-accent"
               >
                 {t("pricing.premiumCtaLabel")}
               </Link>
             </div>
           </Reveal>
+
+          {/* Decision helper — makes it obvious which plan fits */}
+          <div className="mx-auto mt-12 max-w-3xl rounded-3xl border bg-card p-6 sm:p-8 shadow-sm">
+            <h3 className="text-center font-display text-lg font-semibold sm:text-xl">
+              {t("pricing.helperTitle")}
+            </h3>
+            <div className="mt-5 space-y-3">
+              {[
+                { q: t("pricing.helperFreeQ"), plan: "Free" },
+                { q: t("pricing.helperGrowthQ"), plan: "Growth" },
+                { q: t("pricing.helperPlusQ"), plan: "Plus" },
+              ].map((row) => (
+                <div
+                  key={row.plan}
+                  className="flex items-center justify-between gap-4 rounded-2xl bg-secondary/40 px-4 py-3"
+                >
+                  <span className="text-sm text-muted-foreground">{row.q}</span>
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
+                    {row.plan}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
 
           <p className="mt-8 text-center text-xs text-muted-foreground">
             {t("pricing.footnote")}
