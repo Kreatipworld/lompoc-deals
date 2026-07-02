@@ -1,6 +1,11 @@
 import { Link } from "@/i18n/navigation"
 import { differenceInDays, format, isPast } from "date-fns"
-import { Plus, Eye, MousePointerClick, Tag, Pause, Play } from "lucide-react"
+import { Plus, Eye, MousePointerClick, Tag, Pause, Play, Zap } from "lucide-react"
+import { eq } from "drizzle-orm"
+import { auth } from "@/auth"
+import { db } from "@/db/client"
+import { subscriptions } from "@/db/schema"
+import { TIERS } from "@/lib/stripe"
 import { getMyBusiness, getMyDeals, deleteDealAction, toggleDealPausedAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { StatCard } from "@/components/stat-card"
@@ -61,6 +66,15 @@ export default async function MyDealsPage() {
   const totalViews = deals.reduce((s, d) => s + (d.viewCount ?? 0), 0)
   const totalClicks = deals.reduce((s, d) => s + (d.clickCount ?? 0), 0)
 
+  // Resolve the deal limit exactly as the server enforces it (Free = 0 → gated).
+  const session = await auth()
+  const sub = await db.query.subscriptions.findFirst({
+    where: eq(subscriptions.userId, Number(session?.user?.id)),
+  })
+  const isActive = sub?.status === "active" || sub?.status === "trialing"
+  const dealLimit = isActive ? TIERS[sub?.tier ?? "free"].dealLimit : TIERS.free.dealLimit
+  const canPostDeals = dealLimit !== 0
+
   return (
     <div className="space-y-6">
       <header className="flex items-start justify-between gap-4">
@@ -72,14 +86,40 @@ export default async function MyDealsPage() {
             {t("subtitle", { bizName: biz.name })}
           </p>
         </div>
-        <Link
-          href="/dashboard/deals/new"
-          className={buttonVariants({ className: "rounded-full" })}
-        >
-          <Plus className="h-4 w-4" />
-          {t("newDeal")}
-        </Link>
+        {canPostDeals ? (
+          <Link
+            href="/dashboard/deals/new"
+            className={buttonVariants({ className: "rounded-full" })}
+          >
+            <Plus className="h-4 w-4" />
+            {t("newDeal")}
+          </Link>
+        ) : (
+          <Link
+            href="/dashboard/billing"
+            className={buttonVariants({ className: "rounded-full" })}
+          >
+            <Zap className="h-4 w-4" />
+            Upgrade to post deals
+          </Link>
+        )}
       </header>
+
+      {!canPostDeals && (
+        <div className="flex flex-col items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">You&apos;re on the Free plan.</span>{" "}
+            Post deals, hit the weekly digest, and reach locals by upgrading to Growth.
+          </p>
+          <Link
+            href="/dashboard/billing"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            <Zap className="h-3.5 w-3.5" />
+            See plans
+          </Link>
+        </div>
+      )}
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

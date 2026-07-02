@@ -302,7 +302,10 @@ export async function saveDealAction(
 
       if (activeCount >= limit) {
         return {
-          error: `Your ${TIERS[tierKey].name} plan allows up to ${limit} active deals. Upgrade your plan to post more.`,
+          error:
+            limit === 0
+              ? `Posting deals starts on the Growth plan. Upgrade to post your first deal.`
+              : `Your ${TIERS[tierKey].name} plan allows up to ${limit} active deals. Upgrade to Plus for unlimited deals.`,
         }
       }
     }

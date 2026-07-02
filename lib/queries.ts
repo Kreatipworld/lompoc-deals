@@ -113,6 +113,18 @@ const activeAndApproved = and(
   eq(businesses.status, "approved")
 )
 
+// Rank deals by effective plan so paying businesses surface first:
+// Plus (premium) = 2, Growth (standard) = 1, Free = 0. Admin planOverride wins,
+// otherwise an active/trialing subscription counts. Approximates effectiveTier()
+// for ordering (grace-period nuance is ignored — fine for ranking).
+const tierRank = sql`case
+  when ${businesses.planOverride} = 'premium' then 2
+  when ${businesses.planOverride} = 'standard' then 1
+  when ${businesses.planOverride} = 'free' then 0
+  when ${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} = 'premium' then 2
+  when ${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} = 'standard' then 1
+  else 0 end`
+
 export async function getActiveDeals(limit = 50): Promise<DealCardData[]> {
   const rows = await db
     .select(baseDealSelect)
@@ -121,7 +133,7 @@ export async function getActiveDeals(limit = 50): Promise<DealCardData[]> {
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(activeAndApproved)
-    .orderBy(desc(deals.createdAt))
+    .orderBy(desc(tierRank), desc(deals.createdAt))
     .limit(limit)
   return rows.map(rowToCard)
 }
@@ -137,7 +149,7 @@ export async function getDealsByCategorySlug(
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(and(activeAndApproved, eq(categories.slug, slug)))
-    .orderBy(desc(deals.createdAt))
+    .orderBy(desc(tierRank), desc(deals.createdAt))
     .limit(limit)
   return rows.map(rowToCard)
 }
@@ -163,7 +175,7 @@ export async function searchDeals(
         )
       )
     )
-    .orderBy(desc(deals.createdAt))
+    .orderBy(desc(tierRank), desc(deals.createdAt))
     .limit(limit)
   return rows.map(rowToCard)
 }
