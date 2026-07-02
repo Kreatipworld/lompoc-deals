@@ -11,13 +11,18 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "sk_test_place
   typescript: true,
 })
 
-// Subscription tier config
+// Subscription tier config.
+// NOTE: enum keys stay free/standard/premium (no DB migration); `name` carries
+// the customer-facing plan name (Free / Growth / Plus). `price` is DISPLAY only —
+// the actually-charged amount lives in the Stripe Price object referenced by
+// `priceId` (env STRIPE_PRICE_*), which must be set to match in the Stripe
+// dashboard ($39.99 for standard/Growth, $99.99 for premium/Plus).
 export const TIERS = {
   free: {
     name: "Free",
     priceId: process.env.STRIPE_PRICE_FREE ?? "",
     price: 0,
-    dealLimit: 3,
+    dealLimit: 0, // Free is listing-only — deals start on Growth
     canViewAnalytics: false,
     canViewTrafficSources: false,
     canViewTrends: false,
@@ -26,17 +31,17 @@ export const TIERS = {
     priorityRanking: false,
     featuredOnHomepage: false,
     features: [
-      "Up to 3 active deals",
       "Business profile page",
-      "Logo + cover image",
+      "Logo + cover photo",
       "Map pin + directory listing",
-      "Weekly digest inclusion",
+      "Show up in local search",
+      "Contact info & hours",
     ],
   },
   standard: {
-    name: "Standard",
+    name: "Growth",
     priceId: process.env.STRIPE_PRICE_STANDARD ?? "",
-    price: 19.99,
+    price: 39.99,
     dealLimit: 15,
     canViewAnalytics: true,
     canViewTrafficSources: false,
@@ -46,17 +51,17 @@ export const TIERS = {
     priorityRanking: false,
     featuredOnHomepage: false,
     features: [
-      "Up to 15 active deals",
       "Everything in Free",
-      "View & click analytics",
-      "Social media links on profile",
-      "Hours + Google reviews link",
+      "Post & showcase up to 15 deals",
+      "Featured in the weekly deals digest",
+      "Views & clicks analytics",
+      "Social links + Google reviews",
     ],
   },
   premium: {
-    name: "Premium",
+    name: "Plus",
     priceId: process.env.STRIPE_PRICE_PREMIUM ?? "",
-    price: 39.99,
+    price: 99.99,
     dealLimit: Infinity,
     canViewAnalytics: true,
     canViewTrafficSources: true,
@@ -66,12 +71,14 @@ export const TIERS = {
     priorityRanking: true,
     featuredOnHomepage: true,
     features: [
+      "Everything in Growth",
       "Unlimited deals",
-      "Everything in Standard",
-      "Traffic sources & trends — see exactly what's driving visits",
-      "Priority listing in search results",
-      "Featured placement on homepage",
+      "Featured placement (homepage + digest)",
+      "Priority in search results",
+      "1 Featured Deal of the Week rotation / mo",
+      "Sponsor Spotlight ad included",
       "Real estate listings module",
+      "Priority support",
     ],
   },
 } as const
