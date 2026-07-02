@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Advertise on Lompoc Locals — Proposal for {{business_name}}</title>
+<style>
+  :root{
+    --purple:#650C75;
+    --green:#0B992F;
+    --gold:#EFC618;
+    --cream:#FAF7F2;
+    --charcoal:#1F1F1F;
+    --white:#ffffff;
+    --muted:#6b6b6b;
+    --line:#ece7df;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--cream);
+    color:var(--charcoal);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:820px;
+    margin:0 auto;
+    padding:40px 44px 60px;
+  }
+
+  /* ---------- Cover header ---------- */
+  .cover{
+    background:linear-gradient(135deg,#650C75 0%,#7d1a90 100%);
+    color:var(--white);
+    border-radius:22px;
+    padding:38px 40px 40px;
+    box-shadow:0 10px 30px rgba(101,12,117,0.18);
+  }
+  .logo-mark{
+    background:var(--white);
+    display:inline-block;
+    padding:12px 18px;
+    border-radius:14px;
+    line-height:0;
+  }
+  .cover h1{
+    font-size:34px;
+    line-height:1.15;
+    margin:24px 0 10px;
+    font-weight:800;
+    letter-spacing:-0.5px;
+  }
+  .cover .subhead{
+    font-size:17px;
+    color:#f3e6f6;
+    margin:0 0 20px;
+    max-width:620px;
+  }
+  .cover .contact-line{
+    font-size:13.5px;
+    color:#e8d3ee;
+    border-top:1px solid rgba(255,255,255,0.22);
+    padding-top:16px;
+    margin-top:6px;
+  }
+  .cover .contact-line strong{color:var(--gold);}
+
+  /* ---------- Sections ---------- */
+  section{margin-top:38px;}
+  .section-kicker{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.4px;
+    text-transform:uppercase;
+    color:var(--green);
+    margin-bottom:6px;
+  }
+  h2{
+    font-size:24px;
+    color:var(--purple);
+    margin:2px 0 6px;
+    font-weight:800;
+    letter-spacing:-0.3px;
+  }
+  .section-lede{
+    color:var(--muted);
+    margin:0 0 20px;
+    font-size:15px;
+    max-width:640px;
+  }
+
+  /* ---------- Reason grid ---------- */
+  .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .reason{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-left:4px solid var(--purple);
+    border-radius:14px;
+    padding:18px 20px;
+  }
+  .reason h3{
+    margin:0 0 5px;
+    font-size:16px;
+    color:var(--charcoal);
+    font-weight:700;
+  }
+  .reason p{margin:0;font-size:14px;color:var(--muted);}
+
+  /* ---------- The plan (steps) ---------- */
+  .steps{list-style:none;padding:0;margin:0;counter-reset:step;}
+  .steps li{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 18px;
+    margin-bottom:10px;
+  }
+  .steps .num{
+    flex:0 0 auto;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--purple);
+    color:var(--white);
+    font-weight:800;
+    font-size:15px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .steps .step-body{padding-top:3px;}
+  .steps .step-body strong{color:var(--charcoal);font-size:15px;}
+  .steps .step-body span{color:var(--muted);font-size:14px;}
+
+  /* ---------- Pitch ---------- */
+  .pitch-bullets{
+    list-style:none;padding:0;margin:0 0 22px;
+    display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;
+  }
+  .pitch-bullets li{
+    position:relative;
+    padding-left:26px;
+    font-size:15px;
+  }
+  .pitch-bullets li::before{
+    content:"✓";
+    position:absolute;left:0;top:0;
+    color:var(--green);
+    font-weight:800;
+  }
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+  }
+  .stat{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-top:4px solid var(--gold);
+    border-radius:14px;
+    padding:16px 12px;
+    text-align:center;
+  }
+  .stat .big{
+    display:block;
+    font-size:22px;
+    font-weight:800;
+    color:var(--purple);
+    line-height:1.1;
+  }
+  .stat .lbl{font-size:12.5px;color:var(--muted);margin-top:4px;display:block;}
+
+  /* ---------- Membership cards ---------- */
+  .plans{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    align-items:stretch;
+  }
+  .plan{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px 20px 24px;
+    display:flex;flex-direction:column;
+    position:relative;
+  }
+  .plan.popular{
+    border:2px solid var(--gold);
+    box-shadow:0 8px 22px rgba(239,198,24,0.25);
+  }
+  .badge{
+    position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+    background:var(--gold);
+    color:var(--charcoal);
+    font-size:11px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;
+    white-space:nowrap;
+  }
+  .plan .tier{
+    font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    color:var(--purple);
+  }
+  .plan .tagline{font-size:14px;color:var(--muted);margin:2px 0 12px;font-style:italic;}
+  .plan .price{
+    font-size:30px;font-weight:800;color:var(--charcoal);
+    line-height:1;
+  }
+  .plan .price span{font-size:14px;font-weight:600;color:var(--muted);}
+  .plan .price.free{color:var(--green);}
+  .plan ul{
+    list-style:none;padding:0;margin:16px 0 0;
+    border-top:1px solid var(--line);padding-top:14px;
+    flex:1;
+  }
+  .plan ul li{
+    font-size:13.5px;
+    padding-left:22px;position:relative;
+    margin-bottom:8px;color:var(--charcoal);
+  }
+  .plan ul li::before{
+    content:"✓";position:absolute;left:0;top:0;
+    color:var(--green);font-weight:800;
+  }
+  .plan ul li.no{color:#b23b3b;}
+  .plan ul li.no::before{content:"✕";color:#b23b3b;}
+
+  /* ---------- Rate card table ---------- */
+  .rate-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  .rate-table th{
+    background:var(--purple);
+    color:var(--white);
+    text-align:left;
+    padding:12px 16px;
+    font-size:13px;letter-spacing:0.4px;
+  }
+  .rate-table td{
+    padding:13px 16px;
+    border-top:1px solid var(--line);
+    vertical-align:top;
+  }
+  .rate-table td.placement{font-weight:700;color:var(--purple);width:34%;}
+  .rate-table td.rate{
+    font-weight:800;color:var(--green);white-space:nowrap;text-align:right;
+    width:20%;
+  }
+  .rate-note{
+    font-size:13px;color:var(--muted);
+    margin-top:12px;
+    background:#fdf9ea;
+    border:1px solid #f2e6b8;
+    border-left:4px solid var(--gold);
+    border-radius:10px;
+    padding:11px 15px;
+  }
+  .rate-note strong{color:var(--charcoal);}
+
+  /* ---------- Trust ---------- */
+  .trust{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px 26px;
+  }
+  .trust p{margin:0 0 8px;font-size:15px;}
+  .trust p:last-child{margin-bottom:0;}
+  .trust .tagline-em{color:var(--purple);font-weight:800;font-style:italic;}
+
+  /* ---------- CTA footer ---------- */
+  .cta{
+    margin-top:40px;
+    background:linear-gradient(135deg,#0B992F 0%,#0a8a2b 100%);
+    color:var(--white);
+    border-radius:20px;
+    padding:34px 38px;
+    text-align:center;
+  }
+  .cta h2{color:var(--white);font-size:27px;margin:0 0 8px;}
+  .cta p.lede{color:#e6f7ec;font-size:16px;margin:0 0 20px;}
+  .cta .url{
+    display:inline-block;
+    background:var(--white);
+    color:var(--green);
+    font-weight:800;
+    font-size:16px;
+    padding:12px 26px;
+    border-radius:30px;
+    text-decoration:none;
+  }
+  .cta .contacts{
+    margin-top:22px;
+    font-size:14px;
+    color:#eafaf0;
+    border-top:1px solid rgba(255,255,255,0.25);
+    padding-top:18px;
+  }
+  .cta .contacts span{display:inline-block;margin:0 10px;}
+  .cta .contacts strong{color:var(--gold);}
+
+  .footer-note{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:22px;
+  }
+
+  /* ---------- Print ---------- */
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;margin:0;padding:0.5in 0.55in;}
+    .cover{box-shadow:none;}
+    .cta{box-shadow:none;}
+    .plan.popular{box-shadow:none;}
+    section,.cover,.cta,.trust{page-break-inside:avoid;}
+    .plan,.reason,.steps li,.stat,.rate-table,.rate-note{page-break-inside:avoid;}
+    a{color:inherit;text-decoration:none;}
+    /* keep brand colors when printing */
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+  }
+  @page{margin:14mm;}
+
+  @media (max-width:680px){
+    .grid-2,.plans,.stat-row,.pitch-bullets{grid-template-columns:1fr;}
+    .page{padding:24px 20px 40px;}
+    .cover h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 1. COVER HEADER -->
+  <header class="cover">
+    <span class="logo-mark">
+      <svg viewBox="64 140 612 398" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lompoc Locals" style="height:52px;width:auto">
+        <path fill="#efc618" fill-rule="evenodd" d="M257,161.4c-10-17.2-32.1-23.1-49.4-13.1-17.2,10-23.1,32.1-13.1,49.4,10,17.2,32.1,23.1,49.4,13.1,17.2-10,23.1-32.1,13.1-49.4"/>
+        <path fill="#0b992f" d="M217.6,334.1c40.9-41.5,89.3-69.6,151.4-52.3-49.4-64.1-103.3-64.5-154.4-36.9,5.2,27.4,5.5,58.1,3.1,89.2"/>
+        <g fill="#650c75"><path d="M297.1,394.7c0,29.4-17.8,47.2-44,47.2s-42.2-20.1-42.2-45.6,17.2-47,43.6-47,42.6,20.6,42.6,45.4ZM232.4,395.9c0,17.6,8.2,29.9,21.8,29.9s21.5-13,21.5-30.5-7.7-29.9-21.7-29.9-21.7,13-21.7,30.5Z"/><path d="M386.3,406.1c-.4-10.8-.8-23.8-.8-36.8h-.4c-2.8,11.4-6.5,24.2-10,34.7l-10.9,35h-15.8l-9.6-34.7c-2.9-10.5-6-23.3-8.1-35h-.3c-.5,12.1-.9,25.9-1.6,37.1l-1.6,34.1h-18.8l5.7-89.6h27l8.8,29.9c2.8,10.4,5.6,21.5,7.6,32.1h.4c2.5-10.4,5.6-22.2,8.5-32.2l9.6-29.8h26.5l4.9,89.6h-19.8l-1.3-34.3Z"/><path d="M423,352c6.3-1.1,15-1.9,27.4-1.9s21.4,2.4,27.4,7.2c5.7,4.5,9.6,12,9.6,20.7s-2.9,16.2-8.2,21.3c-6.9,6.5-17.2,9.4-29.1,9.4s-5.1-.1-6.9-.4v32.1h-20.1v-88.5ZM443,392.7c1.7.4,3.9.5,6.8.5,10.8,0,17.4-5.5,17.4-14.6s-5.7-13.2-15.8-13.2-6.9.4-8.4.8v26.5Z"/><path d="M582.3,394.7c0,29.4-17.8,47.2-44,47.2s-42.2-20.1-42.2-45.6,17.2-47,43.6-47,42.6,20.6,42.6,45.4ZM517.5,395.9c0,17.6,8.2,29.9,21.8,29.9s21.5-13,21.5-30.5-7.7-29.9-21.7-29.9-21.7,13-21.7,30.5Z"/><path d="M661.4,437.9c-3.7,1.9-12.1,3.9-23,3.9-31,0-47-19.3-47-44.8s21.8-47.6,48.9-47.6,18.5,2.1,22.1,4l-4.1,16.1c-4.1-1.7-9.8-3.3-17-3.3-16.1,0-28.6,9.7-28.6,29.7s10.6,29.3,28.7,29.3,12.9-1.3,16.9-2.9l3.1,15.8Z"/></g>
+        <g fill="#0b992f"><path d="M335.7,467.2h13.9v49.5h24.3v11.6h-38.2v-61.2Z"/><path d="M439.1,497.1c0,20.1-12.2,32.2-30,32.2s-28.8-13.7-28.8-31.1,11.7-32,29.8-32,29,14.1,29,30.9ZM394.9,497.9c0,12,5.6,20.4,14.9,20.4s14.7-8.9,14.7-20.8-5.3-20.4-14.8-20.4-14.8,8.9-14.8,20.8Z"/><path d="M497.7,526.6c-2.5,1.3-8.3,2.6-15.7,2.6-21.1,0-32-13.2-32-30.6s14.9-32.5,33.4-32.5,12.6,1.5,15.1,2.7l-2.8,11c-2.8-1.2-6.7-2.3-11.6-2.3-11,0-19.5,6.6-19.5,20.2s7.3,20,19.6,20,8.8-.9,11.5-2l2.1,10.8Z"/><path d="M526.4,512.6l-4.4,15.7h-14.3l18.7-61.2h18.1l19,61.2h-14.9l-4.7-15.7h-17.5ZM541.9,502.3l-3.8-13c-1.1-3.6-2.2-8.2-3.1-11.8h-.2c-.9,3.6-1.8,8.3-2.8,11.8l-3.6,13h13.5Z"/><path d="M576.2,467.2h13.9v49.5h24.3v11.6h-38.2v-61.2Z"/><path d="M627.6,514.1c3.7,1.9,9.4,3.8,15.3,3.8s9.7-2.6,9.7-6.6-2.9-6-10.3-8.6c-10.2-3.5-16.8-9.2-16.8-18.1s8.7-18.4,23.1-18.4,12,1.5,15.6,3.1l-3.1,11.2c-2.4-1.2-6.8-2.9-12.8-2.9s-8.9,2.7-8.9,5.9,3.4,5.6,11.3,8.6c10.8,4,15.9,9.6,15.9,18.2s-7.9,19-24.7,19-13.9-1.8-17.3-3.7l2.8-11.4Z"/></g>
+        <path fill="#650c75" d="M250.9,465.7h0s-72.8,0-72.8,0c21.8-102.6,83.4-304.7-107.3-296.1,108.1,59.5,27.8,259.1,6.6,359.2h244v-63.1h-70.5Z"/>
+      </svg>
+    </span>
+    <h1>Get {{business_name}} in front of the whole valley</h1>
+    <p class="subhead">Your {{category}} deserves to be seen by every neighbor searching for local deals in Lompoc and Vandenberg. Let's put you on the map.</p>
+    <div class="contact-line">
+      Prepared for you by <strong>[your name]</strong> · [email] · [phone] · <strong>lompoc-deals.vercel.app</strong>
+    </div>
+  </header>
+
+  <!-- 2. WHY BE PART OF LOMPOC LOCALS -->
+  <section>
+    <span class="section-kicker">Community &amp; communication</span>
+    <h2>Why be part of Lompoc Locals</h2>
+    <p class="section-lede">We're the one place locals check to see what's happening around town. Here's why {{business_name}} belongs here.</p>
+    <div class="grid-2">
+      <div class="reason">
+        <h3>Your neighbors find you here</h3>
+        <p>This is where folks in Lompoc and Vandenberg look first when they want a deal, a bite, or a trusted local shop.</p>
+      </div>
+      <div class="reason">
+        <h3>We're stronger when we shop local</h3>
+        <p>Every dollar that stays in the valley helps a neighbor. When you show up here, more of them stay close to home.</p>
+      </div>
+      <div class="reason">
+        <h3>Locally run, community-first</h3>
+        <p>We're not a faceless national listing site. We're built by locals for Lompoc and Vandenberg, and nowhere else.</p>
+      </div>
+      <div class="reason">
+        <h3>Claim your spot before a competitor does</h3>
+        <p>Own your place in the town's deals hub early. The businesses locals see first are the ones who showed up first.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THE PLAN -->
+  <section>
+    <span class="section-kicker">How it works</span>
+    <h2>The plan</h2>
+    <p class="section-lede">Five simple steps from listed to found by the whole valley.</p>
+    <ol class="steps">
+      <li>
+        <span class="num">1</span>
+        <span class="step-body"><strong>Claim or list your business.</strong> <span>Set up your profile page with your logo, photos, hours, and map pin.</span></span>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <span class="step-body"><strong>Post your deals.</strong> <span>Share your specials, coupons, and announcements so locals have a reason to visit.</span></span>
+      </li>
+      <li>
+        <span class="num">3</span>
+        <span class="step-body"><strong>Show up in the weekly deals digest.</strong> <span>Get featured in the free email that lands in local inboxes every week.</span></span>
+      </li>
+      <li>
+        <span class="num">4</span>
+        <span class="step-body"><strong>Sponsor a featured spot.</strong> <span>Grab the hero placement atop the digest and homepage when you want an extra push.</span></span>
+      </li>
+      <li>
+        <span class="num">5</span>
+        <span class="step-body"><strong>Track views &amp; clicks and refine.</strong> <span>See what locals respond to, then post more of what works.</span></span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 4. THE PITCH -->
+  <section>
+    <span class="section-kicker">The pitch</span>
+    <h2>Get found by the whole valley</h2>
+    <ul class="pitch-bullets">
+      <li>Reach locals who are already looking to spend nearby.</li>
+      <li>Turn a coupon into foot traffic this week, not next quarter.</li>
+      <li>Show up in local search the moment someone needs you.</li>
+      <li>Speak to every neighbor — in English and Spanish.</li>
+    </ul>
+    <div class="stat-row">
+      <div class="stat"><span class="big">470+</span><span class="lbl">local businesses listed</span></div>
+      <div class="stat"><span class="big">New</span><span class="lbl">deals every week</span></div>
+      <div class="stat"><span class="big">Free</span><span class="lbl">weekly email digest</span></div>
+      <div class="stat"><span class="big">EN + ES</span><span class="lbl">English &amp; Spanish</span></div>
+    </div>
+  </section>
+
+  <!-- 5. MEMBERSHIP -->
+  <section>
+    <span class="section-kicker">Membership</span>
+    <h2>Pick the plan that fits {{business_name}}</h2>
+    <p class="section-lede">Free gets you listed. To promote your deals and reach locals in the feed and digest, you upgrade — deals are what drive the signups.</p>
+    <div class="plans">
+
+      <!-- FREE -->
+      <div class="plan">
+        <span class="tier">Free</span>
+        <p class="tagline">Get found</p>
+        <div class="price free">$0<span> /mo</span></div>
+        <ul>
+          <li>Business profile page</li>
+          <li>Logo + cover photo</li>
+          <li>Map pin + directory listing</li>
+          <li>Show up in local search</li>
+          <li>Contact info &amp; hours</li>
+          <li class="no">No deals — you're listed, but invisible in the deals feed</li>
+        </ul>
+      </div>
+
+      <!-- STANDARD -->
+      <div class="plan popular">
+        <span class="badge">★ Most popular</span>
+        <span class="tier">Standard</span>
+        <p class="tagline">Sell your deals</p>
+        <div class="price">$19.99<span> /mo</span></div>
+        <ul>
+          <li>Everything in Free</li>
+          <li>Post &amp; showcase up to 15 deals</li>
+          <li>Featured in the weekly deals digest</li>
+          <li>Views &amp; clicks analytics</li>
+          <li>Social links + Google reviews</li>
+        </ul>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="plan">
+        <span class="tier">Premium</span>
+        <p class="tagline">Own the spotlight</p>
+        <div class="price">$39.99<span> /mo</span></div>
+        <ul>
+          <li>Everything in Standard</li>
+          <li>Unlimited deals</li>
+          <li>Featured placement (homepage + digest)</li>
+          <li>Priority in search results</li>
+          <li>Real estate listings module</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. WEEKLY DIGEST AD SPOTS -->
+  <section>
+    <span class="section-kicker">Weekly digest ad spots</span>
+    <h2>Sponsor the digest locals actually open</h2>
+    <p class="section-lede">Want extra reach? Grab a spot in the free weekly email that goes out to locals across the valley.</p>
+    <table class="rate-table">
+      <thead>
+        <tr>
+          <th>Placement</th>
+          <th>What it is</th>
+          <th style="text-align:right;">Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="placement">Featured Deal of the Week</td>
+          <td>Hero spot atop the weekly digest + homepage</td>
+          <td class="rate">$49 / week</td>
+        </tr>
+        <tr>
+          <td class="placement">Sponsor Spotlight</td>
+          <td>Logo + pitch card in the digest sponsor rail</td>
+          <td class="rate">$79 / month</td>
+        </tr>
+        <tr>
+          <td class="placement">Digest Banner</td>
+          <td>Full-width banner, top or bottom of the digest</td>
+          <td class="rate">$99 / month</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="rate-note"><strong>Premium members</strong> get one Featured Deal of the Week rotation included each month.</p>
+  </section>
+
+  <!-- 7. WHY LOCAL / TRUST -->
+  <section>
+    <span class="section-kicker">Run by locals</span>
+    <h2>Real neighbors, not a faceless chain</h2>
+    <div class="trust">
+      <p>Lompoc Locals is run by locals, for Lompoc and Vandenberg — and only Lompoc and Vandenberg. We know these streets because we live on them.</p>
+      <p>When you advertise with us, you're not feeding a national platform. You're investing in the town you call home.</p>
+      <p class="tagline-em">Live local. Love Lompoc.</p>
+    </div>
+  </section>
+
+  <!-- 8. CTA FOOTER -->
+  <section class="cta">
+    <h2>Claim your spot</h2>
+    <p class="lede">Let's get {{business_name}} in front of the whole valley this week.</p>
+    <a class="url" href="https://lompoc-deals.vercel.app/for-businesses">lompoc-deals.vercel.app/for-businesses</a>
+    <div class="contacts">
+      <span><strong>[your name]</strong></span>·
+      <span>[email]</span>·
+      <span>[phone]</span>
+    </div>
+  </section>
+
+  <p class="footer-note">Lompoc Locals — All of Lompoc, in one place. · Serving Lompoc &amp; Vandenberg SFB (93436 · 93437 · 93438)</p>
+
+</div>
+</body>
+</html>
