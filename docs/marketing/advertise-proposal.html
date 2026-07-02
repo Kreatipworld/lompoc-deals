@@ -320,6 +320,28 @@
     margin-top:22px;
   }
 
+  /* ---------- Icon system ---------- */
+  .ico{width:20px;height:20px;flex:0 0 auto;stroke:currentColor}
+  .ico-chip{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:#f3e9f5;color:#650C75}
+  .ico-chip.green{background:#e6f6ea;color:#0B992F}
+  .ico-chip.gold{background:#fdf6df;color:#b58f09}
+  figure.shot{margin:0;border:1px solid #ece7ef;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(101,12,117,.10);page-break-inside:avoid;background:#fff}
+  figure.shot img{display:block;width:100%;height:auto}
+  figure.shot figcaption{font-size:11px;color:#5b5563;padding:9px 13px;background:#faf7fb;border-top:1px solid #ece7ef}
+  .shot-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+  /* icon layout helpers */
+  .reason-head{display:flex;align-items:flex-start;gap:12px;}
+  .reason-head h3{margin:0;}
+  .steps .step-body strong{display:inline-flex;align-items:center;gap:7px;}
+  .steps .step-body strong .ico{width:16px;height:16px;color:var(--purple);}
+  .plan ul li .ico{position:absolute;left:0;top:1px;width:15px;height:15px;}
+  .plan ul li:has(.ico)::before{content:none;}
+  .plan ul li .ico.check{color:var(--green);}
+  .plan ul li .ico.cross{color:#c0392b;}
+  .rate-table td.placement .ico{width:15px;height:15px;color:var(--purple);vertical-align:-2px;margin-right:6px;}
+  .section-kicker .ico{width:14px;height:14px;vertical-align:-2px;margin-right:5px;}
+
   /* ---------- Print ---------- */
   @media print{
     body{background:#fff;}
@@ -329,6 +351,7 @@
     .plan.popular{box-shadow:none;}
     section,.cover,.cta,.trust{page-break-inside:avoid;}
     .plan,.reason,.steps li,.stat,.rate-table,.rate-note{page-break-inside:avoid;}
+    figure.shot,.shot-row{page-break-inside:avoid;}
     a{color:inherit;text-decoration:none;}
     /* keep brand colors when printing */
     *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
@@ -365,24 +388,36 @@
 
   <!-- 2. WHY BE PART OF LOMPOC LOCALS -->
   <section>
-    <span class="section-kicker">Community &amp; communication</span>
+    <span class="section-kicker"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community &amp; communication</span>
     <h2>Why be part of Lompoc Locals</h2>
     <p class="section-lede">We're the one place locals check to see what's happening around town. Here's why {{business_name}} belongs here.</p>
     <div class="grid-2">
       <div class="reason">
-        <h3>Your neighbors find you here</h3>
+        <div class="reason-head">
+          <span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <h3>Your neighbors find you here</h3>
+        </div>
         <p>This is where folks in Lompoc and Vandenberg look first when they want a deal, a bite, or a trusted local shop.</p>
       </div>
       <div class="reason">
-        <h3>We're stronger when we shop local</h3>
+        <div class="reason-head">
+          <span class="ico-chip green"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <h3>We're stronger when we shop local</h3>
+        </div>
         <p>Every dollar that stays in the valley helps a neighbor. When you show up here, more of them stay close to home.</p>
       </div>
       <div class="reason">
-        <h3>Locally run, community-first</h3>
+        <div class="reason-head">
+          <span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+          <h3>Locally run, community-first</h3>
+        </div>
         <p>We're not a faceless national listing site. We're built by locals for Lompoc and Vandenberg, and nowhere else.</p>
       </div>
       <div class="reason">
-        <h3>Claim your spot before a competitor does</h3>
+        <div class="reason-head">
+          <span class="ico-chip gold"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 2.3a.5.5 0 0 1 .9 0l2.3 4.7 5.2.8a.5.5 0 0 1 .3.9l-3.7 3.6.9 5.1a.5.5 0 0 1-.8.6L12 16.3l-4.6 2.4a.5.5 0 0 1-.8-.6l.9-5.1L3.8 9.4a.5.5 0 0 1 .3-.9l5.2-.8z"/></svg></span>
+          <h3>Claim your spot before a competitor does</h3>
+        </div>
         <p>Own your place in the town's deals hub early. The businesses locals see first are the ones who showed up first.</p>
       </div>
     </div>
@@ -390,36 +425,36 @@
 
   <!-- 3. THE PLAN -->
   <section>
-    <span class="section-kicker">How it works</span>
+    <span class="section-kicker"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>How it works</span>
     <h2>The plan</h2>
     <p class="section-lede">Five simple steps from listed to found by the whole valley.</p>
     <ol class="steps">
       <li>
         <span class="num">1</span>
-        <span class="step-body"><strong>Claim or list your business.</strong> <span>Set up your profile page with your logo, photos, hours, and map pin.</span></span>
+        <span class="step-body"><strong><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.4-4.4A2 2 0 0 1 7.8 2h8.3a2 2 0 0 1 1.4.6L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M2 7h20"/></svg>Claim or list your business.</strong> <span>Set up your profile page with your logo, photos, hours, and map pin.</span></span>
       </li>
       <li>
         <span class="num">2</span>
-        <span class="step-body"><strong>Post your deals.</strong> <span>Share your specials, coupons, and announcements so locals have a reason to visit.</span></span>
+        <span class="step-body"><strong><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>Post your deals.</strong> <span>Share your specials, coupons, and announcements so locals have a reason to visit.</span></span>
       </li>
       <li>
         <span class="num">3</span>
-        <span class="step-body"><strong>Show up in the weekly deals digest.</strong> <span>Get featured in the free email that lands in local inboxes every week.</span></span>
+        <span class="step-body"><strong><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Show up in the weekly deals digest.</strong> <span>Get featured in the free email that lands in local inboxes every week.</span></span>
       </li>
       <li>
         <span class="num">4</span>
-        <span class="step-body"><strong>Sponsor a featured spot.</strong> <span>Grab the hero placement atop the digest and homepage when you want an extra push.</span></span>
+        <span class="step-body"><strong><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 2.3a.5.5 0 0 1 .9 0l2.3 4.7 5.2.8a.5.5 0 0 1 .3.9l-3.7 3.6.9 5.1a.5.5 0 0 1-.8.6L12 16.3l-4.6 2.4a.5.5 0 0 1-.8-.6l.9-5.1L3.8 9.4a.5.5 0 0 1 .3-.9l5.2-.8z"/></svg>Sponsor a featured spot.</strong> <span>Grab the hero placement atop the digest and homepage when you want an extra push.</span></span>
       </li>
       <li>
         <span class="num">5</span>
-        <span class="step-body"><strong>Track views &amp; clicks and refine.</strong> <span>See what locals respond to, then post more of what works.</span></span>
+        <span class="step-body"><strong><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Track views &amp; clicks and refine.</strong> <span>See what locals respond to, then post more of what works.</span></span>
       </li>
     </ol>
   </section>
 
   <!-- 4. THE PITCH -->
   <section>
-    <span class="section-kicker">The pitch</span>
+    <span class="section-kicker"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>The pitch</span>
     <h2>Get found by the whole valley</h2>
     <ul class="pitch-bullets">
       <li>Reach locals who are already looking to spend nearby.</li>
@@ -435,9 +470,30 @@
     </div>
   </section>
 
+  <!-- SEE IT IN ACTION -->
+  <section>
+    <span class="section-kicker"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>See it in action</span>
+    <h2>Where {{business_name}} shows up</h2>
+    <p class="section-lede">A quick look at the pages locals browse every day — and where your deal lands.</p>
+    <figure class="shot" style="margin-bottom:16px;">
+      <img src="assets/screenshot-home.jpg" alt="Lompoc Locals homepage deals digest">
+      <figcaption>The homepage deals digest — your deal, featured in front of the whole valley.</figcaption>
+    </figure>
+    <div class="shot-row">
+      <figure class="shot">
+        <img src="assets/screenshot-deals.jpg" alt="Deals and coupons feed browsable by category">
+        <figcaption>Deals &amp; coupons feed, browsable by category.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/screenshot-directory.jpg" alt="Lompoc and Vandenberg business directory">
+        <figcaption>The Lompoc &amp; Vandenberg business directory.</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- 5. MEMBERSHIP -->
   <section>
-    <span class="section-kicker">Membership</span>
+    <span class="section-kicker"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.4-4.4A2 2 0 0 1 7.8 2h8.3a2 2 0 0 1 1.4.6L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M2 7h20"/></svg>Membership</span>
     <h2>Pick the plan that fits {{business_name}}</h2>
     <p class="section-lede">Free gets you listed. To promote your deals and reach locals in the feed and digest, you upgrade — deals are what drive the signups.</p>
     <div class="plans">
@@ -448,12 +504,12 @@
         <p class="tagline">Get found</p>
         <div class="price free">$0<span> /mo</span></div>
         <ul>
-          <li>Business profile page</li>
-          <li>Logo + cover photo</li>
-          <li>Map pin + directory listing</li>
-          <li>Show up in local search</li>
-          <li>Contact info &amp; hours</li>
-          <li class="no">No deals — you're listed, but invisible in the deals feed</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Business profile page</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Logo + cover photo</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Map pin + directory listing</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Show up in local search</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Contact info &amp; hours</li>
+          <li class="no"><svg class="ico cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>No deals — you're listed, but invisible in the deals feed</li>
         </ul>
       </div>
 
@@ -464,11 +520,11 @@
         <p class="tagline">Sell your deals</p>
         <div class="price">$19.99<span> /mo</span></div>
         <ul>
-          <li>Everything in Free</li>
-          <li>Post &amp; showcase up to 15 deals</li>
-          <li>Featured in the weekly deals digest</li>
-          <li>Views &amp; clicks analytics</li>
-          <li>Social links + Google reviews</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Everything in Free</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Post &amp; showcase up to 15 deals</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Featured in the weekly deals digest</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Views &amp; clicks analytics</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Social links + Google reviews</li>
         </ul>
       </div>
 
@@ -478,11 +534,11 @@
         <p class="tagline">Own the spotlight</p>
         <div class="price">$39.99<span> /mo</span></div>
         <ul>
-          <li>Everything in Standard</li>
-          <li>Unlimited deals</li>
-          <li>Featured placement (homepage + digest)</li>
-          <li>Priority in search results</li>
-          <li>Real estate listings module</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Everything in Standard</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Unlimited deals</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Featured placement (homepage + digest)</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Priority in search results</li>
+          <li><svg class="ico check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Real estate listings module</li>
         </ul>
       </div>
 
@@ -491,7 +547,7 @@
 
   <!-- 6. WEEKLY DIGEST AD SPOTS -->
   <section>
-    <span class="section-kicker">Weekly digest ad spots</span>
+    <span class="section-kicker"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Weekly digest ad spots</span>
     <h2>Sponsor the digest locals actually open</h2>
     <p class="section-lede">Want extra reach? Grab a spot in the free weekly email that goes out to locals across the valley.</p>
     <table class="rate-table">
@@ -504,17 +560,17 @@
       </thead>
       <tbody>
         <tr>
-          <td class="placement">Featured Deal of the Week</td>
+          <td class="placement"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 2.3a.5.5 0 0 1 .9 0l2.3 4.7 5.2.8a.5.5 0 0 1 .3.9l-3.7 3.6.9 5.1a.5.5 0 0 1-.8.6L12 16.3l-4.6 2.4a.5.5 0 0 1-.8-.6l.9-5.1L3.8 9.4a.5.5 0 0 1 .3-.9l5.2-.8z"/></svg>Featured Deal of the Week</td>
           <td>Hero spot atop the weekly digest + homepage</td>
           <td class="rate">$49 / week</td>
         </tr>
         <tr>
-          <td class="placement">Sponsor Spotlight</td>
+          <td class="placement"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>Sponsor Spotlight</td>
           <td>Logo + pitch card in the digest sponsor rail</td>
           <td class="rate">$79 / month</td>
         </tr>
         <tr>
-          <td class="placement">Digest Banner</td>
+          <td class="placement"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Digest Banner</td>
           <td>Full-width banner, top or bottom of the digest</td>
           <td class="rate">$99 / month</td>
         </tr>
@@ -525,7 +581,7 @@
 
   <!-- 7. WHY LOCAL / TRUST -->
   <section>
-    <span class="section-kicker">Run by locals</span>
+    <span class="section-kicker"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Run by locals</span>
     <h2>Real neighbors, not a faceless chain</h2>
     <div class="trust">
       <p>Lompoc Locals is run by locals, for Lompoc and Vandenberg — and only Lompoc and Vandenberg. We know these streets because we live on them.</p>

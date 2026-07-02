@@ -138,18 +138,6 @@
     border:1px solid #eee6dd;
     box-shadow:0 2px 6px rgba(31,31,31,0.04);
   }
-  .feature .ico{
-    font-size:20px;
-    line-height:1;
-    flex-shrink:0;
-    width:30px;
-    height:30px;
-    border-radius:8px;
-    background:var(--cream);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
   .feature .ft-title{
     font-weight:700;
     font-size:14px;
@@ -160,7 +148,6 @@
     color:#6a6259;
     margin-top:2px;
   }
-  .biz .ico{background:#f3e9f5;}
 
   /* ---------- Membership ---------- */
   .tiers{
@@ -200,18 +187,14 @@
     font-size:12.5px;
   }
   .tier ul li{
-    padding:4px 0 4px 18px;
-    position:relative;
+    padding:4px 0;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
     color:#3f3a34;
   }
-  .tier ul li::before{
-    content:"✓";
-    color:var(--green);
-    font-weight:800;
-    position:absolute;
-    left:0;
-  }
-  .tier ul li.no::before{content:"✕";color:#c0392b;}
+  .tier ul li .ico{width:16px;height:16px;margin-top:2px;color:var(--green);}
+  .tier ul li.no .ico{color:#c0392b;}
   .tier .badge{
     position:absolute;
     top:-11px;
@@ -305,6 +288,16 @@
     margin-top:8px;
   }
 
+  /* ---------- Icons & screenshots ---------- */
+  .ico{width:20px;height:20px;flex:0 0 auto;stroke:currentColor}
+  .ico-chip{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:#f3e9f5;color:#650C75}
+  .ico-chip.green{background:#e6f6ea;color:#0B992F}
+  .ico-chip.gold{background:#fdf6df;color:#b58f09}
+  figure.shot{margin:0;border:1px solid #ece7ef;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(101,12,117,.10);page-break-inside:avoid;background:#fff}
+  figure.shot img{display:block;width:100%;height:auto}
+  figure.shot figcaption{font-size:11px;color:#5b5563;padding:9px 13px;background:#faf7fb;border-top:1px solid #ece7ef}
+  .shot-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
   /* ---------- Print ---------- */
   @page{margin:14mm;}
   @media print{
@@ -349,20 +342,39 @@
     <div class="stat"><div class="num green">Free</div><div class="label">Weekly Digest</div></div>
   </div>
 
+  <!-- 2b. SEE IT IN ACTION -->
+  <section>
+    <div class="section-head"><span class="bar"></span><h2>See it in action</h2></div>
+    <figure class="shot" style="margin-bottom:16px;">
+      <img src="assets/screenshot-home.jpg" alt="Lompoc Locals homepage showing this week's deals digest">
+      <figcaption>The homepage — this week's deals digest, live.</figcaption>
+    </figure>
+    <div class="shot-row">
+      <figure class="shot">
+        <img src="assets/screenshot-deals.jpg" alt="Deals and coupons feed">
+        <figcaption>Deals &amp; coupons feed.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/screenshot-directory.jpg" alt="The 474-business directory">
+        <figcaption>The 474-business directory.</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- 3. WHAT LOCALS GET -->
   <section>
     <div class="section-head"><span class="bar"></span><h2>What locals get</h2></div>
     <div class="grid">
-      <div class="feature"><span class="ico">🏷️</span><div><div class="ft-title">Deals &amp; coupons feed</div><div class="ft-desc">Fresh local savings, all in one scroll.</div></div></div>
-      <div class="feature"><span class="ico">📇</span><div><div class="ft-title">Business directory</div><div class="ft-desc">474 Lompoc &amp; Vandenberg businesses.</div></div></div>
-      <div class="feature"><span class="ico">🗺️</span><div><div class="ft-title">Interactive map</div><div class="ft-desc">Find what's near you at a glance.</div></div></div>
-      <div class="feature"><span class="ico">🏨</span><div><div class="ft-title">Hotels &amp; things to do</div><div class="ft-desc">Places to stay and 10 local activities.</div></div></div>
-      <div class="feature"><span class="ico">📰</span><div><div class="ft-title">Local blog &amp; guides</div><div class="ft-desc">48 community stories and how-tos.</div></div></div>
-      <div class="feature"><span class="ico">🏡</span><div><div class="ft-title">Garage sales</div><div class="ft-desc">Neighborhood finds every weekend.</div></div></div>
-      <div class="feature"><span class="ico">📅</span><div><div class="ft-title">Community events</div><div class="ft-desc">What's happening around town.</div></div></div>
-      <div class="feature"><span class="ico">⭐</span><div><div class="ft-title">Save favorites</div><div class="ft-desc">Keep the deals you love close.</div></div></div>
-      <div class="feature"><span class="ico">🔎</span><div><div class="ft-title">Search &amp; discovery</div><div class="ft-desc">Find any business or deal fast.</div></div></div>
-      <div class="feature"><span class="ico">✉️</span><div><div class="ft-title">Free weekly email digest</div><div class="ft-desc">The best of the week, in your inbox.</div></div></div>
+      <div class="feature"><span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 11v2"/><path d="M13 17v2"/></svg></span><div><div class="ft-title">Deals &amp; coupons feed</div><div class="ft-desc">Fresh local savings, all in one scroll.</div></div></div>
+      <div class="feature"><span class="ico-chip green"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.4-4.4A2 2 0 0 1 7.8 2h8.3a2 2 0 0 1 1.4.6L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M2 7h20"/></svg></span><div><div class="ft-title">Business directory</div><div class="ft-desc">474 Lompoc &amp; Vandenberg businesses.</div></div></div>
+      <div class="feature"><span class="ico-chip gold"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.1 5.55a2 2 0 0 0 1.8 0l3.66-1.83A1 1 0 0 1 21 4.62v12.76a1 1 0 0 1-.55.9l-4.55 2.28a2 2 0 0 1-1.8 0l-4.2-2.11a2 2 0 0 0-1.8 0l-3.66 1.83A1 1 0 0 1 3 19.38V6.62a1 1 0 0 1 .55-.9l4.55-2.28a2 2 0 0 1 1.8 0z"/><path d="M15 5.76v15"/><path d="M9 3.24v15"/></svg></span><div><div class="ft-title">Interactive map</div><div class="ft-desc">Find what's near you at a glance.</div></div></div>
+      <div class="feature"><span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg></span><div><div class="ft-title">Hotels &amp; things to do</div><div class="ft-desc">Places to stay and 10 local activities.</div></div></div>
+      <div class="feature"><span class="ico-chip green"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8v4h-8z"/></svg></span><div><div class="ft-title">Local blog &amp; guides</div><div class="ft-desc">48 community stories and how-tos.</div></div></div>
+      <div class="feature"><span class="ico-chip gold"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span><div><div class="ft-title">Garage sales</div><div class="ft-desc">Neighborhood finds every weekend.</div></div></div>
+      <div class="feature"><span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></span><div><div class="ft-title">Community events</div><div class="ft-desc">What's happening around town.</div></div></div>
+      <div class="feature"><span class="ico-chip green"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span><div><div class="ft-title">Save favorites</div><div class="ft-desc">Keep the deals you love close.</div></div></div>
+      <div class="feature"><span class="ico-chip gold"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><div><div class="ft-title">Search &amp; discovery</div><div class="ft-desc">Find any business or deal fast.</div></div></div>
+      <div class="feature"><span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span><div><div class="ft-title">Free weekly email digest</div><div class="ft-desc">The best of the week, in your inbox.</div></div></div>
     </div>
   </section>
 
@@ -370,12 +382,12 @@
   <section>
     <div class="section-head"><span class="bar"></span><h2>What businesses get</h2></div>
     <div class="grid">
-      <div class="feature biz"><span class="ico">🆓</span><div><div class="ft-title">Free business listing</div><div class="ft-desc">Claim your page and show up in the directory.</div></div></div>
-      <div class="feature biz"><span class="ico">🏷️</span><div><div class="ft-title">Post &amp; showcase deals</div><div class="ft-desc">Reach locals in the deals feed (paid).</div></div></div>
-      <div class="feature biz"><span class="ico">✉️</span><div><div class="ft-title">Featured in the weekly digest</div><div class="ft-desc">Land in inboxes across the valley.</div></div></div>
-      <div class="feature biz"><span class="ico">📊</span><div><div class="ft-title">View &amp; click analytics</div><div class="ft-desc">See how many neighbors you reach.</div></div></div>
-      <div class="feature biz"><span class="ico">🌟</span><div><div class="ft-title">Featured &amp; priority placement</div><div class="ft-desc">Rise to the top of the feed and search.</div></div></div>
-      <div class="feature biz"><span class="ico">🏠</span><div><div class="ft-title">Real-estate listings module</div><div class="ft-desc">Post properties for the whole town to see.</div></div></div>
+      <div class="feature biz"><span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.4-4.4A2 2 0 0 1 7.8 2h8.3a2 2 0 0 1 1.4.6L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M2 7h20"/></svg></span><div><div class="ft-title">Free business listing</div><div class="ft-desc">Claim your page and show up in the directory.</div></div></div>
+      <div class="feature biz"><span class="ico-chip green"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></span><div><div class="ft-title">Post &amp; showcase deals</div><div class="ft-desc">Reach locals in the deals feed (paid).</div></div></div>
+      <div class="feature biz"><span class="ico-chip gold"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span><div><div class="ft-title">Featured in the weekly digest</div><div class="ft-desc">Land in inboxes across the valley.</div></div></div>
+      <div class="feature biz"><span class="ico-chip"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span><div><div class="ft-title">View &amp; click analytics</div><div class="ft-desc">See how many neighbors you reach.</div></div></div>
+      <div class="feature biz"><span class="ico-chip gold"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 2.3a.5.5 0 0 1 .9 0l2.3 4.7 5.2.8a.5.5 0 0 1 .3.9l-3.7 3.6.9 5.1a.5.5 0 0 1-.8.6L12 16.3l-4.6 2.4a.5.5 0 0 1-.8-.6l.9-5.1L3.8 9.4a.5.5 0 0 1 .3-.9l5.2-.8z"/></svg></span><div><div class="ft-title">Featured &amp; priority placement</div><div class="ft-desc">Rise to the top of the feed and search.</div></div></div>
+      <div class="feature biz"><span class="ico-chip green"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span><div><div class="ft-title">Real-estate listings module</div><div class="ft-desc">Post properties for the whole town to see.</div></div></div>
     </div>
   </section>
 
@@ -387,9 +399,9 @@
         <div class="tier-name">Free</div>
         <div class="price free">$0</div>
         <ul>
-          <li>Business listing in the directory</li>
-          <li>Claim and manage your page</li>
-          <li class="no">No deals in the feed</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Business listing in the directory</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Claim and manage your page</span></li>
+          <li class="no"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg><span>No deals in the feed</span></li>
         </ul>
       </div>
       <div class="tier featured">
@@ -397,18 +409,18 @@
         <div class="tier-name">Standard <span class="star">★</span></div>
         <div class="price">$19.99<span>/mo</span></div>
         <ul>
-          <li>Post up to 15 deals</li>
-          <li>Featured in the weekly digest</li>
-          <li>View &amp; click analytics</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Post up to 15 deals</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Featured in the weekly digest</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>View &amp; click analytics</span></li>
         </ul>
       </div>
       <div class="tier">
         <div class="tier-name">Premium</div>
         <div class="price">$39.99<span>/mo</span></div>
         <ul>
-          <li>Unlimited deals</li>
-          <li>Featured &amp; priority placement</li>
-          <li>Real-estate listings module</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Unlimited deals</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Featured &amp; priority placement</span></li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Real-estate listings module</span></li>
         </ul>
       </div>
     </div>
