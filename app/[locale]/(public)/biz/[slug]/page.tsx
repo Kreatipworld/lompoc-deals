@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
 import {
@@ -84,7 +84,12 @@ export default async function BusinessPage({
     getViewer(),
     getTranslations("businesses.profile"),
   ])
-  if (!data) notFound()
+  if (!data) {
+    if (params.slug.startsWith("demo-")) {
+      permanentRedirect(`/biz/${params.slug.replace(/^demo-/, "")}`)
+    }
+    notFound()
+  }
   const { business, deals } = data
   const isRealEstate = business.category?.slug === "real-estate"
 
