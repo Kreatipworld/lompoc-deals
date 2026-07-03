@@ -355,7 +355,7 @@
   "search": {
     "placeholder": "Search deals, businesses…",
     "results": "{count} results for \"{query}\"",
-    "noResults": "No results for \"{query}\"",
+    "noResults": "Nothing matched — try a different word, like a cuisine or a service.",
     "tryAgain": "Try a different search term.",
     "metaTitle": "Search Lompoc Locals — Find Coupons, Discounts & Local Specials",
     "metaDescription": "Search deals and coupons from 155+ Lompoc, CA businesses — restaurants, salons, services, retail, and more. Free to claim, updated daily.",
@@ -365,7 +365,10 @@
     "resultSingular": "result",
     "resultPlural": "results",
     "resultsFor": "{count} {word} for",
-    "emptyPrompt": "Type a keyword above to search across deals and businesses."
+    "emptyPrompt": "Type a keyword above to search across deals and businesses.",
+    "sectionCategories": "Categories",
+    "sectionBusinesses": "Businesses",
+    "sectionDeals": "Deals"
   },
   "hotels": {
     "metaTitle": "Lompoc Hotels & Accommodations — Where to Stay | Lompoc Locals",

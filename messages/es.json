@@ -355,7 +355,7 @@
   "search": {
     "placeholder": "Buscar ofertas, negocios…",
     "results": "{count} resultados para \"{query}\"",
-    "noResults": "Sin resultados para \"{query}\"",
+    "noResults": "No hubo coincidencias — prueba otra palabra, como un tipo de comida o servicio.",
     "tryAgain": "Prueba con otro término de búsqueda.",
     "metaTitle": "Buscar en Lompoc Locals — Encuentra Cupones, Descuentos y Especiales Locales",
     "metaDescription": "Busca ofertas y cupones de más de 155 negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Gratis para canjear, actualizado a diario.",
@@ -365,7 +365,10 @@
     "resultSingular": "resultado",
     "resultPlural": "resultados",
     "resultsFor": "{count} {word} para",
-    "emptyPrompt": "Escribe una palabra clave arriba para buscar entre ofertas y negocios."
+    "emptyPrompt": "Escribe una palabra clave arriba para buscar entre ofertas y negocios.",
+    "sectionCategories": "Categorías",
+    "sectionBusinesses": "Negocios",
+    "sectionDeals": "Ofertas"
   },
   "hotels": {
     "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse | Lompoc Locals",
