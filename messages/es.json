@@ -350,7 +350,16 @@
     "unsubscribe": "Cancelar suscripción",
     "unsubscribeSuccess": "Tu suscripción fue cancelada.",
     "confirmMetaTitle": "Confirmar suscripción — Lompoc Locals",
-    "unsubscribeMetaTitle": "Cancelar suscripción — Lompoc Locals"
+    "unsubscribeMetaTitle": "Cancelar suscripción — Lompoc Locals",
+    "confirmedTitle": "¡Ya estás suscrito!",
+    "confirmedBody": "Enviaremos el próximo resumen a {email} el sábado por la mañana.",
+    "confirmFailedTitle": "No se pudo confirmar",
+    "confirmFailedBody": "Ese enlace es inválido o venció — intenta suscribirte de nuevo.",
+    "backHome": "Volver a Lompoc Locals",
+    "alreadySubscribed": "Ya estás suscrito. ¡Gracias!",
+    "checkInbox": "Revisa tu correo y haz clic en el enlace de confirmación para empezar a recibir el resumen semanal.",
+    "emailNotConfigured": "¡Gracias! Guardamos tu correo — la confirmación llegará cuando el envío de correos esté habilitado.",
+    "invalidEmail": "Ingresa un correo válido"
   },
   "search": {
     "placeholder": "Buscar ofertas, negocios…",

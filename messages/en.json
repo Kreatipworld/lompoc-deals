@@ -350,7 +350,16 @@
     "unsubscribe": "Unsubscribe",
     "unsubscribeSuccess": "You've been unsubscribed.",
     "confirmMetaTitle": "Confirm subscription — Lompoc Locals",
-    "unsubscribeMetaTitle": "Unsubscribe — Lompoc Locals"
+    "unsubscribeMetaTitle": "Unsubscribe — Lompoc Locals",
+    "confirmedTitle": "You're subscribed",
+    "confirmedBody": "We'll send the next digest to {email} on Saturday morning.",
+    "confirmFailedTitle": "Couldn't confirm",
+    "confirmFailedBody": "That link is invalid or expired — try subscribing again.",
+    "backHome": "Back to Lompoc Locals",
+    "alreadySubscribed": "You're already subscribed. Thanks!",
+    "checkInbox": "Check your inbox for a confirmation link. Click it to start receiving the weekly digest.",
+    "emailNotConfigured": "Thanks! Your address is saved — confirmation email will arrive once email sending is enabled.",
+    "invalidEmail": "Enter a valid email"
   },
   "search": {
     "placeholder": "Search deals, businesses…",

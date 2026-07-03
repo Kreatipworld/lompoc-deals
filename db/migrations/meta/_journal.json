@@ -99,6 +99,13 @@
       "when": 1782490346444,
       "tag": "0020_wakeful_marten_broadcloak",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1783090196070,
+      "tag": "0021_clear_wolfpack",
+      "breakpoints": true
     }
   ]
 }

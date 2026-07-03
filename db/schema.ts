@@ -464,6 +464,7 @@ export const garageSales = pgTable("garage_sales", {
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),
   email: varchar("email", { length: 255 }).notNull().unique(),
+  locale: varchar("locale", { length: 5 }).notNull().default("en"),
   confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
   unsubscribeToken: varchar("unsubscribe_token", { length: 100 })
     .notNull()
