@@ -691,6 +691,22 @@ export async function getUserRedemptions(userId: number): Promise<UserRedemption
   return rows
 }
 
+export async function getDealEngagement(
+  businessId: number
+): Promise<Array<{ dealId: number; claims: number; redeems: number }>> {
+  const rows = await db
+    .select({
+      dealId: dealEvents.dealId,
+      claims: sql<number>`count(*) filter (where ${dealEvents.eventType} = 'claim')`,
+      redeems: sql<number>`count(*) filter (where ${dealEvents.eventType} = 'redeem')`,
+    })
+    .from(dealEvents)
+    .innerJoin(deals, eq(dealEvents.dealId, deals.id))
+    .where(eq(deals.businessId, businessId))
+    .groupBy(dealEvents.dealId)
+  return rows.map((r) => ({ dealId: r.dealId, claims: Number(r.claims), redeems: Number(r.redeems) }))
+}
+
 // ─── Events ──────────────────────────────────────────────────────────────────
 
 export type EventCardData = {
