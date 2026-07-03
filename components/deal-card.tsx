@@ -15,7 +15,7 @@ import { formatDistanceToNowStrict, isPast, differenceInHours } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { adminSoftDeleteDealAction } from "@/lib/admin-actions"
 import { toggleFavoriteAction } from "@/lib/favorite-actions"
-import { trackClaimAction, trackRedeemAction } from "@/lib/tracking-actions"
+import { trackClaimAction } from "@/lib/tracking-actions"
 import type { DealCardData } from "@/lib/queries"
 import type { Viewer } from "@/lib/viewer"
 import { SafeImage } from "@/components/safe-image"
@@ -218,11 +218,7 @@ export async function DealCard({
             <div className="mt-auto pt-3">
               <form action={trackClaimAction}>
                 <input type="hidden" name="dealId" value={deal.id} />
-                <input
-                  type="hidden"
-                  name="redirectTo"
-                  value={`/api/track/click?dealId=${deal.id}&to=/biz/${deal.business.slug}`}
-                />
+                <input type="hidden" name="redirectTo" value={`/deals/${deal.id}/claim`} />
                 <button
                   type="submit"
                   className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-xs font-semibold text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.98]"
@@ -395,29 +391,16 @@ export async function DealCard({
         </div>
 
         {!expired && (
-          <div className="mt-1 flex flex-col gap-2">
+          <div className="mt-1">
             <form action={trackClaimAction}>
               <input type="hidden" name="dealId" value={deal.id} />
-              <input
-                type="hidden"
-                name="redirectTo"
-                value={`/api/track/click?dealId=${deal.id}&to=/biz/${deal.business.slug}`}
-              />
+              <input type="hidden" name="redirectTo" value={`/deals/${deal.id}/claim`} />
               <button
                 type="submit"
                 className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.98]"
               >
                 {t("getDeal")}
                 <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            </form>
-            <form action={trackRedeemAction}>
-              <input type="hidden" name="dealId" value={deal.id} />
-              <button
-                type="submit"
-                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full border px-4 text-xs font-medium text-muted-foreground [transition:border-color_160ms_ease,color_160ms_ease] hover:border-foreground/30 hover:text-foreground"
-              >
-                {t("markRedeemed")}
               </button>
             </form>
           </div>

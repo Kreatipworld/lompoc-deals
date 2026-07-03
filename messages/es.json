@@ -1056,8 +1056,7 @@
   "dealCard": {
     "expired": "Vencida",
     "endsSoon": "Termina pronto",
-    "getDeal": "Obtener oferta",
-    "markRedeemed": "Marcar como canjeada",
+    "getDeal": "Reclamar oferta",
     "noDeals": "Sin ofertas aún",
     "noDealsSubtitle": "Vuelve pronto — nuevas ofertas llegan cada día de negocios locales.",
     "expiresIn": "Vence en {distance}",

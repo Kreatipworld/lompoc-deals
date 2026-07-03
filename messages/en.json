@@ -1056,8 +1056,7 @@
   "dealCard": {
     "expired": "Expired",
     "endsSoon": "Ends soon",
-    "getDeal": "Get Deal",
-    "markRedeemed": "Mark as Redeemed",
+    "getDeal": "Claim deal",
     "noDeals": "No deals yet",
     "noDealsSubtitle": "Check back soon — new offers drop every day from local businesses.",
     "expiresIn": "Expires in {distance}",
