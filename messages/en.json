@@ -1,4 +1,18 @@
 {
+  "claim": {
+    "metaTitle": "Your deal — Lompoc Locals",
+    "showAtRegister": "Show this screen at the register",
+    "code": "Deal code",
+    "expires": "Expires {distance}",
+    "usedIt": "I used this deal",
+    "usedConfirmed": "Nice! Marked as used — enjoy.",
+    "endedTitle": "This deal has ended",
+    "endedBody": "It's no longer redeemable, but the business may have new offers.",
+    "notFoundTitle": "Deal not found",
+    "notFoundBody": "This deal may have been removed.",
+    "viewBusiness": "View {name}",
+    "browseDeals": "Browse current deals"
+  },
   "dealsDigest": {
     "eyebrow": "This week in Lompoc",
     "titleA": "This Week's",

@@ -43,3 +43,20 @@ export async function trackRedeemAction(formData: FormData) {
     // best-effort
   }
 }
+
+export async function redeemFromClaimAction(formData: FormData) {
+  const dealId = parseInt(formData.get("dealId")?.toString() ?? "0", 10)
+  if (!dealId) return
+  const session = await auth()
+  const userId = session?.user?.id ? parseInt(session.user.id, 10) : null
+  const sessionId = getSessionId()
+  try {
+    await Promise.all([
+      db.insert(dealEvents).values({ dealId, userId, eventType: "redeem" }),
+      track("deal_redeem", { userId, sessionId, targetType: "deal", targetId: dealId }),
+    ])
+  } catch {
+    // best-effort
+  }
+  redirect(`/deals/${dealId}/claim?redeemed=1`)
+}

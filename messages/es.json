@@ -1,4 +1,18 @@
 {
+  "claim": {
+    "metaTitle": "Tu oferta — Lompoc Locals",
+    "showAtRegister": "Muestra esta pantalla en la caja",
+    "code": "Código de oferta",
+    "expires": "Vence {distance}",
+    "usedIt": "Usé esta oferta",
+    "usedConfirmed": "¡Listo! Marcada como usada — que la disfrutes.",
+    "endedTitle": "Esta oferta ha terminado",
+    "endedBody": "Ya no se puede canjear, pero el negocio puede tener nuevas ofertas.",
+    "notFoundTitle": "Oferta no encontrada",
+    "notFoundBody": "Es posible que esta oferta haya sido eliminada.",
+    "viewBusiness": "Ver {name}",
+    "browseDeals": "Ver ofertas actuales"
+  },
   "dealsDigest": {
     "eyebrow": "Esta semana en Lompoc",
     "titleA": "Ofertas de",
