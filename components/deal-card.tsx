@@ -140,6 +140,23 @@ export async function DealCard({
               </button>
             </form>
           )}
+          {/* Heart (logged out) — a <form method="get"> instead of <Link> because this
+              sits inside the image <Link> above; nesting an <a> inside an <a> is invalid
+              HTML, but a <form> (like the logged-in heart above) nests fine. Submitting
+              navigates to /login?from=... exactly like a link would. */}
+          {!viewer.isAuthed && !expired && (
+            <form action="/login" method="get" className="absolute right-2.5 bottom-2.5">
+              <input type="hidden" name="from" value={fromPath ?? `/biz/${deal.business.slug}`} />
+              <button
+                type="submit"
+                aria-label={t("signInToSave")}
+                title={t("signInToSave")}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-background/95 shadow [transition:transform_160ms_cubic-bezier(0.23,1,0.32,1)] hover:scale-110"
+              >
+                <Heart className="h-3.5 w-3.5 text-muted-foreground" />
+              </button>
+            </form>
+          )}
         </Link>
 
         {/* BODY */}
@@ -323,6 +340,16 @@ export async function DealCard({
               />
             </button>
           </form>
+        )}
+        {!viewer.isAuthed && !expired && (
+          <Link
+            href={`/login?from=${encodeURIComponent(fromPath ?? `/biz/${deal.business.slug}`)}`}
+            aria-label={t("signInToSave")}
+            title={t("signInToSave")}
+            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-background/95 shadow-md [transition:transform_160ms_cubic-bezier(0.23,1,0.32,1)] hover:scale-110"
+          >
+            <Heart className="h-4 w-4 text-muted-foreground" />
+          </Link>
         )}
       </div>
 

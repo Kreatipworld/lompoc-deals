@@ -10,6 +10,7 @@ import {
   Sparkles,
   Calendar,
   Navigation,
+  Bell,
 } from "lucide-react"
 import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
@@ -265,6 +266,18 @@ export default async function BusinessPage({
                       />
                     </>
                   )}
+                  {!viewer.isAuthed && (
+                    <>
+                      <span className="text-foreground/30">·</span>
+                      <Link
+                        href={`/login?from=${encodeURIComponent(`/biz/${params.slug}`)}`}
+                        className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs font-medium transition-colors duration-150 hover:bg-secondary"
+                      >
+                        <Bell className="h-3.5 w-3.5" />
+                        {t("follow")}
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 {/* Social links + Google reviews */}
@@ -386,6 +399,15 @@ export default async function BusinessPage({
                     isFollowing={viewer.followedBusinessIds.has(business.id)}
                     labels={{ follow: t("follow"), following: t("following") }}
                   />
+                )}
+                {!viewer.isAuthed && (
+                  <Link
+                    href={`/login?from=${encodeURIComponent(`/biz/${params.slug}`)}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs font-medium transition-colors duration-150 hover:bg-secondary"
+                  >
+                    <Bell className="h-3.5 w-3.5" />
+                    {t("follow")}
+                  </Link>
                 )}
               </div>
             )}
