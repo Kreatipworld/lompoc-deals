@@ -212,6 +212,7 @@ export type DirectoryBusiness = {
   categoryName: string | null
   categorySlug: string | null
   activeDealCount: number
+  hoursJson: unknown
 }
 
 export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
@@ -230,6 +231,7 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
       categoryName: categories.name,
       categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -256,6 +258,7 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
       categoryName: categories.name,
       categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -282,6 +285,7 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
       categoryName: categories.name,
       categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))

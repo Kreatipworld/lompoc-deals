@@ -26,6 +26,7 @@ import {
   getAllRealEstateListings,
   getBusinessesByCategorySlug,
 } from "@/lib/queries"
+import { filterOpenNow } from "@/lib/hours"
 import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { DealGrid } from "@/components/deal-card"
@@ -68,7 +69,7 @@ export default async function CategoryPage({
   searchParams,
 }: {
   params: { slug: string; locale: string }
-  searchParams?: { tab?: string }
+  searchParams?: { tab?: string; open?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "category" })
 
@@ -84,13 +85,23 @@ export default async function CategoryPage({
       : searchParams?.tab === "sale"
         ? "for-sale"
         : null
+  const openNow = searchParams?.open === "1"
 
-  const [categoryBusinesses, deals, listings, viewer] = await Promise.all([
+  const [allCategoryBusinesses, deals, listings, viewer] = await Promise.all([
     isRealEstate ? Promise.resolve([]) : getBusinessesByCategorySlug(params.slug),
     isRealEstate ? Promise.resolve([]) : getDealsByCategorySlug(params.slug),
     isRealEstate ? getAllRealEstateListings(tab ?? undefined) : Promise.resolve([]),
     getViewer(),
   ])
+  const categoryBusinesses = openNow ? filterOpenNow(allCategoryBusinesses) : allCategoryBusinesses
+
+  // Preserve other existing searchParams (e.g. ?tab=) when toggling ?open=1
+  const toggledParams = new URLSearchParams()
+  if (searchParams?.tab) toggledParams.set("tab", searchParams.tab)
+  if (!openNow) toggledParams.set("open", "1")
+  const openToggleHref = `/category/${params.slug}${
+    toggledParams.toString() ? `?${toggledParams.toString()}` : ""
+  }`
 
   const Icon = ICONS[cat.icon ?? ""] ?? Sparkles
 
@@ -193,6 +204,19 @@ export default async function CategoryPage({
       {!isRealEstate && (
         <>
           <section className="mx-auto max-w-6xl px-4 py-10">
+            <div className="mb-6 flex items-center justify-end">
+              <Link
+                href={openToggleHref}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                  openNow
+                    ? "border-success bg-success/10 text-success"
+                    : "bg-card text-muted-foreground hover:border-foreground/30"
+                }`}
+              >
+                <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
+                {t("openNowFilter")}
+              </Link>
+            </div>
             {categoryBusinesses.length === 0 ? (
               <p className="py-16 text-center text-sm text-muted-foreground">
                 {t("noBusinesses")}

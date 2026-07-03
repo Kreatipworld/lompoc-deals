@@ -114,6 +114,15 @@ function rangesOf(d: DayHours): Array<CanonicalDayHours> {
   return d.ranges ?? []
 }
 
+export function filterOpenNow<T extends { hoursJson: unknown }>(items: T[]): T[] {
+  return items.filter((b) => {
+    const hours = parseHours(b.hoursJson)
+    const anyDay = DAY_KEYS.some((k) => hours[k] !== null)
+    // Unknown hours are kept — never falsely claim a business is closed.
+    return !anyDay || isOpenNow(hours)
+  })
+}
+
 /** Coerce unknown JSON into canonical Hours. Accepts the canonical shape AND raw-shape entries (with optional structured ranges). Unknown shapes → null per day. */
 export function parseHours(json: unknown): Hours {
   const out = emptyHours()
