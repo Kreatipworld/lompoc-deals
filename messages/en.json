@@ -1050,7 +1050,7 @@
       "imageUploadFailed": "Image upload failed",
       "uploadFailed": "Upload failed",
       "invalidInput": "Invalid input",
-      "propertyListingsRequirePremium": "Property listings require the Premium plan"
+      "propertyListingsRequirePremium": "Property listings require the Plus plan"
     },
     "userSignup": {
       "emailAlreadyExists": "An account with that email already exists",
@@ -1135,7 +1135,7 @@
     "editProfileDesc": "Update your business info, hours, and images",
     "manageProperties": "Manage properties",
     "managePropertiesDesc": "Add and manage real estate listings",
-    "managePropertiesUpgrade": "Upgrade to Premium to list properties for sale or rent",
+    "managePropertiesUpgrade": "Upgrade to Plus to list properties for sale or rent",
     "planFeatures": "Plan features",
     "analytics": "Analytics",
     "analyticsDesc": "Views, clicks & funnel data",
@@ -1303,9 +1303,9 @@
     "trendsSubtitle": "Daily profile & deal views ({window})",
     "seriesProfileViews": "Profile views",
     "seriesDealViews": "Deal views",
-    "premiumTeaserTitle": "Unlock with Premium",
+    "premiumTeaserTitle": "Unlock with Plus",
     "premiumTeaserBody": "See exactly where your visitors come from and how your traffic trends over time.",
-    "premiumTeaserCta": "Upgrade to Premium"
+    "premiumTeaserCta": "Upgrade to Plus"
   },
   "dashboardProperties": {
     "title": "Properties",
@@ -1322,9 +1322,9 @@
     "sqft": "sqft",
     "edit": "Edit",
     "remove": "Remove",
-    "upgradeTitle": "Property listings are a Premium feature",
-    "upgradeBody": "Upgrade to Premium to add for-sale and for-rent property listings to your business profile. Unlimited deals and priority placement included.",
-    "upgradePremium": "Upgrade to Premium — $39.99/mo",
+    "upgradeTitle": "Property listings are a Plus feature",
+    "upgradeBody": "Upgrade to Plus to add for-sale and for-rent property listings to your business profile. Unlimited deals and priority placement included.",
+    "upgradePremium": "Upgrade to Plus — $99.99/mo",
     "backToOverview": "Back to overview",
     "propertyFormTitle": "Add listing",
     "propertyFormEdit": "Edit listing",

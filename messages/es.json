@@ -1050,7 +1050,7 @@
       "imageUploadFailed": "Error al subir la imagen",
       "uploadFailed": "Error al subir",
       "invalidInput": "Entrada no válida",
-      "propertyListingsRequirePremium": "Los listados de propiedades requieren el plan Premium"
+      "propertyListingsRequirePremium": "Los listados de propiedades requieren el plan Plus"
     },
     "userSignup": {
       "emailAlreadyExists": "Ya existe una cuenta con ese correo",
@@ -1135,7 +1135,7 @@
     "editProfileDesc": "Actualiza la información, horarios e imágenes de tu negocio",
     "manageProperties": "Administrar propiedades",
     "managePropertiesDesc": "Agrega y gestiona listados de bienes raíces",
-    "managePropertiesUpgrade": "Mejora a Premium para publicar propiedades en venta o renta",
+    "managePropertiesUpgrade": "Mejora a Plus para publicar propiedades en venta o renta",
     "planFeatures": "Funciones del plan",
     "analytics": "Estadísticas",
     "analyticsDesc": "Visitas, clics y datos del embudo",
@@ -1303,9 +1303,9 @@
     "trendsSubtitle": "Visitas diarias al perfil y a las ofertas ({window})",
     "seriesProfileViews": "Visitas al perfil",
     "seriesDealViews": "Visitas a ofertas",
-    "premiumTeaserTitle": "Desbloquea con Premium",
+    "premiumTeaserTitle": "Desbloquea con Plus",
     "premiumTeaserBody": "Mira exactamente de dónde vienen tus visitantes y cómo evoluciona tu tráfico.",
-    "premiumTeaserCta": "Mejorar a Premium"
+    "premiumTeaserCta": "Mejorar a Plus"
   },
   "dashboardProperties": {
     "title": "Propiedades",
@@ -1322,9 +1322,9 @@
     "sqft": "pie²",
     "edit": "Editar",
     "remove": "Eliminar",
-    "upgradeTitle": "Los listados de propiedades son una función Premium",
-    "upgradeBody": "Mejora a Premium para agregar propiedades en venta y renta a tu perfil. Incluye ofertas ilimitadas y posicionamiento prioritario.",
-    "upgradePremium": "Mejorar a Premium — $39.99/mes",
+    "upgradeTitle": "Los listados de propiedades son una función Plus",
+    "upgradeBody": "Mejora a Plus para agregar propiedades en venta y renta a tu perfil. Incluye ofertas ilimitadas y posicionamiento prioritario.",
+    "upgradePremium": "Mejorar a Plus — $99.99/mes",
     "backToOverview": "Volver al resumen",
     "propertyFormTitle": "Agregar listado",
     "propertyFormEdit": "Editar listado",
