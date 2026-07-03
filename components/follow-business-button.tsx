@@ -6,8 +6,10 @@ import { Bell, BellOff } from "lucide-react"
 
 function FollowButtonInner({
   isFollowing,
+  labels,
 }: {
   isFollowing: boolean
+  labels: { follow: string; following: string }
 }) {
   const { pending } = useFormStatus()
   return (
@@ -23,12 +25,12 @@ function FollowButtonInner({
       {isFollowing ? (
         <>
           <BellOff className="h-3.5 w-3.5" />
-          Following
+          {labels.following}
         </>
       ) : (
         <>
           <Bell className="h-3.5 w-3.5" />
-          Follow
+          {labels.follow}
         </>
       )}
     </button>
@@ -39,16 +41,18 @@ export function FollowBusinessButton({
   businessId,
   slug,
   isFollowing,
+  labels,
 }: {
   businessId: number
   slug: string
   isFollowing: boolean
+  labels: { follow: string; following: string }
 }) {
   return (
     <form action={toggleFollowBusinessAction}>
       <input type="hidden" name="businessId" value={businessId} />
       <input type="hidden" name="slug" value={slug} />
-      <FollowButtonInner isFollowing={isFollowing} />
+      <FollowButtonInner isFollowing={isFollowing} labels={labels} />
     </form>
   )
 }

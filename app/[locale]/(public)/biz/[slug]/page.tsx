@@ -9,6 +9,7 @@ import {
   Store,
   Sparkles,
   Calendar,
+  Navigation,
 } from "lucide-react"
 import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
@@ -244,6 +245,7 @@ export default async function BusinessPage({
                         businessId={business.id}
                         slug={params.slug}
                         isFollowing={viewer.followedBusinessIds.has(business.id)}
+                        labels={{ follow: t("follow"), following: t("following") }}
                       />
                     </>
                   )}
@@ -279,6 +281,19 @@ export default async function BusinessPage({
                   {business.address}
                 </a>
               )}
+              {business.address && (
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                    business.address
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition-colors duration-150 hover:bg-primary/90"
+                >
+                  <Navigation className="h-3.5 w-3.5" />
+                  {t("getDirections")}
+                </a>
+              )}
               {business.phone && (
                 <a
                   href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
@@ -305,14 +320,6 @@ export default async function BusinessPage({
       </section>
 
       {/* ─────────────────────────────────────────────────
-          CLAIM CTA — right under the header so business owners see it first
-         ───────────────────────────────────────────────── */}
-      {isUnclaimed && (
-        <section className="mx-auto mt-6 max-w-6xl px-4">
-          <BusinessClaimCta slug={params.slug} />
-        </section>
-      )}
-      {/* ─────────────────────────────────────────────────
           ABOUT THIS PLACE — long-form copy + amenities
          ───────────────────────────────────────────────── */}
       <div className="mt-6">
@@ -330,22 +337,41 @@ export default async function BusinessPage({
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
           {/* MAIN — active deals OR listings depending on category */}
           <div>
-            <div className="mb-6 flex items-end justify-between">
-              <h2 className="font-display text-2xl font-semibold tracking-tight">
-                {isRealEstate ? t("sectionActiveListings") : t("sectionActiveDeals")}
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                {t("sectionFrom", { name: business.name })}
-              </p>
-            </div>
+            {(isRealEstate || deals.length > 0) && (
+              <div className="mb-6 flex items-end justify-between">
+                <h2 className="font-display text-2xl font-semibold tracking-tight">
+                  {isRealEstate ? t("sectionActiveListings") : t("sectionActiveDeals")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("sectionFrom", { name: business.name })}
+                </p>
+              </div>
+            )}
             {isRealEstate ? (
               <PropertyListingGrid listings={listings} />
-            ) : (
+            ) : deals.length > 0 ? (
               <DealGrid
                 deals={deals}
                 viewer={viewer}
                 fromPath={`/biz/${params.slug}`}
               />
+            ) : (
+              <div className="flex flex-col items-start gap-3 rounded-2xl border bg-card p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-display text-base font-semibold">{t("noDealsYetTitle")}</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    {t("noDealsYetBody", { name: business.name })}
+                  </p>
+                </div>
+                {viewer.isLocal && (
+                  <FollowBusinessButton
+                    businessId={business.id}
+                    slug={params.slug}
+                    isFollowing={viewer.followedBusinessIds.has(business.id)}
+                    labels={{ follow: t("follow"), following: t("following") }}
+                  />
+                )}
+              </div>
             )}
           </div>
 
@@ -368,29 +394,41 @@ export default async function BusinessPage({
                 )}
               </div>
             )}
-            <BusinessHours hoursJson={business.hoursJson} />
+            <BusinessHours hoursJson={business.hoursJson} phone={business.phone} />
           </aside>
         </div>
-          {relatedBusinesses.length > 0 && business.category && (
-            <div className="mt-12 border-t pt-8">
-              <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
-                {t("moreInCategory", { category: business.category.name })}
-              </h2>
-              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {relatedBusinesses.map((rb) => (
-                  <li key={rb.slug}>
-                    <Link
-                      href={`/biz/${rb.slug}`}
-                      className="flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm transition-colors hover:bg-secondary"
-                    >
-                      <span className="truncate">{rb.name}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
       </section>
+
+      {/* ─────────────────────────────────────────────────
+          CLAIM CTA — demoted below the fold so unclaimed profiles lead with content
+         ───────────────────────────────────────────────── */}
+      {isUnclaimed && (
+        <section className="mx-auto mt-6 max-w-6xl px-4">
+          <BusinessClaimCta slug={params.slug} />
+        </section>
+      )}
+
+      {relatedBusinesses.length > 0 && business.category && (
+        <section className="mx-auto max-w-6xl px-4 pb-10">
+          <div className="mt-12 border-t pt-8">
+            <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
+              {t("moreInCategory", { category: business.category.name })}
+            </h2>
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {relatedBusinesses.map((rb) => (
+                <li key={rb.slug}>
+                  <Link
+                    href={`/biz/${rb.slug}`}
+                    className="flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm transition-colors hover:bg-secondary"
+                  >
+                    <span className="truncate">{rb.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
     </>
   )
 }

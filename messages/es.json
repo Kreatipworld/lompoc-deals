@@ -983,7 +983,14 @@
       "aboutTitle": "Acerca de este lugar",
       "amenitiesTitle": "Lo que ofrece este lugar",
       "aboutFromGoogle": "Información de Google",
-      "moreInCategory": "Más {category} en Lompoc"
+      "moreInCategory": "Más {category} en Lompoc",
+      "follow": "Seguir",
+      "following": "Siguiendo",
+      "noDealsYetTitle": "No hay ofertas por ahora",
+      "noDealsYetBody": "Sigue a {name} para enterarte primero de su próxima oferta.",
+      "getDirections": "Cómo llegar",
+      "hoursUnknown": "Horario no disponible.",
+      "hoursUnknownCall": "Horario no disponible — llama para confirmar:"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",

@@ -11,15 +11,35 @@ import { getTranslations } from "next-intl/server"
 
 interface Props {
   hoursJson: unknown
+  phone?: string | null
 }
 
-export async function BusinessHours({ hoursJson }: Props) {
+export async function BusinessHours({ hoursJson, phone }: Props) {
   const hours = parseHours(hoursJson)
   const open = isOpenNow(hours)
   const t = await getTranslations("businesses.profile")
 
   const anyDay = DAY_KEYS.some((k) => hours[k] !== null)
-  if (!anyDay) return null
+  if (!anyDay)
+    return (
+      <div className="rounded-2xl border bg-card p-4 shadow-sm">
+        <h3 className="flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <Clock className="h-3.5 w-3.5" />
+          {t("hours")}
+        </h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {phone ? t("hoursUnknownCall") : t("hoursUnknown")}
+        </p>
+        {phone && (
+          <a
+            href={`tel:${phone.replace(/[^0-9+]/g, "")}`}
+            className="mt-1 inline-block text-sm font-semibold text-primary hover:underline"
+          >
+            {phone}
+          </a>
+        )}
+      </div>
+    )
 
   return (
     <div className="rounded-2xl border bg-card p-4 shadow-sm">

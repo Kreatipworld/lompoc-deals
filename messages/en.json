@@ -983,7 +983,14 @@
       "aboutTitle": "About this place",
       "amenitiesTitle": "What this place offers",
       "aboutFromGoogle": "Info from Google",
-      "moreInCategory": "More {category} in Lompoc"
+      "moreInCategory": "More {category} in Lompoc",
+      "follow": "Follow",
+      "following": "Following",
+      "noDealsYetTitle": "No deals right now",
+      "noDealsYetBody": "Follow {name} to hear about their next offer first.",
+      "getDirections": "Get directions",
+      "hoursUnknown": "Hours not listed.",
+      "hoursUnknownCall": "Hours not listed — call to confirm:"
     },
     "amenities": {
       "wheelchair_accessible": "Wheelchair accessible",
