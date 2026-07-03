@@ -51,7 +51,7 @@ Medium: fake sponsor cards + empty ad slots in the homepage digest; testimonials
 ## Phase 3 — Unify the two audiences
 
 - Logged-out visitors see favorite ♥ and Follow buttons; tapping prompts sign-in with `redirectTo` back to the page (pattern already exists on the deal claim login flow). Server actions return a redirect instead of silently no-oping.
-- "Open now" toggle on directory (`/businesses`), category pages, and map — computed server-side from `hoursJson`.
+- "Open now" toggle on directory (`/businesses`) and category pages — computed server-side from `hoursJson`. (Map toggle deferred: the client-side POI payload has no hours data; add later if the filter proves useful.)
 - Business profile footer: quiet "Own this business? Get deals in front of locals →" link to `/for-businesses`.
 - Dashboard stats: claims/redemptions funnel per deal (from 1.1), keeping tier gating as-is.
 
