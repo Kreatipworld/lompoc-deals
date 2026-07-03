@@ -3,11 +3,13 @@
 import { randomBytes } from "crypto"
 import { z } from "zod"
 import { eq } from "drizzle-orm"
+import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendConfirmationEmail } from "@/lib/email"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
+import { getCurrentLocale } from "@/lib/i18n-helpers"
 
 const subscribeSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -25,9 +27,12 @@ export async function subscribeAction(
   _prev: SubscribeState,
   formData: FormData
 ): Promise<SubscribeState> {
+  const locale = await getCurrentLocale()
+  const t = await getTranslations("subscribe")
+
   const parsed = subscribeSchema.safeParse({ email: formData.get("email") })
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid email" }
+    return { error: t("invalidEmail") }
   }
   const email = parsed.data.email.toLowerCase()
 
@@ -40,15 +45,21 @@ export async function subscribeAction(
   let newSubscriberId: number | null = null
   if (existing) {
     if (existing.confirmedAt) {
-      return { success: "You're already subscribed. Thanks!" }
+      return { success: t("alreadySubscribed") }
     }
     // Re-issue confirmation
     token = existing.unsubscribeToken
+    // Update stored locale so re-subscribing in Spanish sticks
+    await db
+      .update(subscribers)
+      .set({ locale })
+      .where(eq(subscribers.id, existing.id))
   } else {
     token = makeToken()
     const [newSub] = await db.insert(subscribers).values({
       email,
       unsubscribeToken: token,
+      locale,
     }).returning({ id: subscribers.id })
     newSubscriberId = newSub?.id ?? null
     await track("digest_subscribed", {
@@ -60,20 +71,17 @@ export async function subscribeAction(
     })
   }
 
-  // TODO(i18n): subscribers table has no locale column; default to "en"
-  const result = await sendConfirmationEmail(email, token, "en")
+  const result = await sendConfirmationEmail(email, token, locale)
   if (!result.ok) {
     // If email service isn't configured, still tell the user the
     // address is on file — they just won't receive a confirmation.
     return {
-      success:
-        "Thanks! Email service is not yet configured, so confirmation will be sent later.",
+      success: t("emailNotConfigured"),
     }
   }
 
   return {
-    success:
-      "Check your inbox for a confirmation link. Click it to start receiving the weekly digest.",
+    success: t("checkInbox"),
   }
 }
 

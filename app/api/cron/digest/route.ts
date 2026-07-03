@@ -81,12 +81,12 @@ export async function GET(request: Request) {
   let sent = 0
   let failed = 0
   for (const sub of confirmedSubs) {
-    // TODO(i18n): subscribers table has no locale column; default to "en"
+    const locale: "en" | "es" = sub.locale === "es" ? "es" : "en"
     const result = await sendDigestEmail(
       sub.email,
       sub.unsubscribeToken,
       digestDeals,
-      "en"
+      locale
     )
     if (result.ok) sent++
     else failed++

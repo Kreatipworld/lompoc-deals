@@ -1,4 +1,18 @@
 {
+  "claim": {
+    "metaTitle": "Tu oferta — Lompoc Locals",
+    "showAtRegister": "Muestra esta pantalla en la caja",
+    "code": "Código de oferta",
+    "expires": "Vence {distance}",
+    "usedIt": "Usé esta oferta",
+    "usedConfirmed": "¡Listo! Marcada como usada — que la disfrutes.",
+    "endedTitle": "Esta oferta ha terminado",
+    "endedBody": "Ya no se puede canjear, pero el negocio puede tener nuevas ofertas.",
+    "notFoundTitle": "Oferta no encontrada",
+    "notFoundBody": "Es posible que esta oferta haya sido eliminada.",
+    "viewBusiness": "Ver {name}",
+    "browseDeals": "Ver ofertas actuales"
+  },
   "dealsDigest": {
     "eyebrow": "Esta semana en Lompoc",
     "titleA": "Ofertas de",
@@ -140,8 +154,8 @@
       "subtitle": "Conectando a los locales de Lompoc con sus negocios desde el primer día.",
       "step1Title": "Explora las ofertas locales",
       "step1Body": "Encuentra cupones y especiales de restaurantes, tiendas, salones y más — todo en un solo lugar, todo en Lompoc.",
-      "step2Title": "Canjea tu oferta",
-      "step2Body": "Toca Canjear, muestra tu teléfono en la caja y ahorra. Sin impresiones ni aplicaciones adicionales.",
+      "step2Title": "Reclama tu oferta",
+      "step2Body": "Toca \"Reclamar\", muestra tu teléfono en la caja y ahorra. Sin impresiones ni aplicaciones adicionales.",
       "step3Title": "Apoya lo local",
       "step3Body": "Cada oferta canjeada es una venta hecha en Lompoc. Mantén tu dinero aquí."
     },
@@ -164,8 +178,8 @@
       "subtitle": "Todo lo que necesitas saber sobre Lompoc Locals.",
       "q1": "¿Es gratis usar Lompoc Locals?",
       "a1": "Sí, completamente. Explorar ofertas y canjearlas siempre es gratis para los residentes de Lompoc. No se necesita cuenta para explorar.",
-      "q2": "¿Cómo canjeo una oferta?",
-      "a2": "Haz clic en \"Canjear oferta\" en cualquier promoción. Si requiere cuenta, regístrate en 30 segundos — solo tu correo. Luego muestra tu teléfono en el negocio.",
+      "q2": "¿Cómo reclamo una oferta?",
+      "a2": "Haz clic en \"Reclamar oferta\" en cualquier promoción. Si requiere cuenta, regístrate en 30 segundos — solo tu correo. Luego muestra tu teléfono en el negocio.",
       "q3": "¿Cómo publican ofertas los negocios?",
       "a3": "Regístrate como negocio (gratis), crea tu perfil y publica tu primera oferta en menos de 5 minutos. El plan gratuito incluye 3 ofertas activas.",
       "q4": "¿Cuánto cuesta publicar mi negocio?",
@@ -336,12 +350,21 @@
     "unsubscribe": "Cancelar suscripción",
     "unsubscribeSuccess": "Tu suscripción fue cancelada.",
     "confirmMetaTitle": "Confirmar suscripción — Lompoc Locals",
-    "unsubscribeMetaTitle": "Cancelar suscripción — Lompoc Locals"
+    "unsubscribeMetaTitle": "Cancelar suscripción — Lompoc Locals",
+    "confirmedTitle": "¡Ya estás suscrito!",
+    "confirmedBody": "Enviaremos el próximo resumen a {email} el sábado por la mañana.",
+    "confirmFailedTitle": "No se pudo confirmar",
+    "confirmFailedBody": "Ese enlace es inválido o venció — intenta suscribirte de nuevo.",
+    "backHome": "Volver a Lompoc Locals",
+    "alreadySubscribed": "Ya estás suscrito. ¡Gracias!",
+    "checkInbox": "Revisa tu correo y haz clic en el enlace de confirmación para empezar a recibir el resumen semanal.",
+    "emailNotConfigured": "¡Gracias! Guardamos tu correo — la confirmación llegará cuando el envío de correos esté habilitado.",
+    "invalidEmail": "Ingresa un correo válido"
   },
   "search": {
     "placeholder": "Buscar ofertas, negocios…",
     "results": "{count} resultados para \"{query}\"",
-    "noResults": "Sin resultados para \"{query}\"",
+    "noResults": "No hubo coincidencias — prueba otra palabra, como un tipo de comida o servicio.",
     "tryAgain": "Prueba con otro término de búsqueda.",
     "metaTitle": "Buscar en Lompoc Locals — Encuentra Cupones, Descuentos y Especiales Locales",
     "metaDescription": "Busca ofertas y cupones de más de 155 negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Gratis para canjear, actualizado a diario.",
@@ -351,7 +374,10 @@
     "resultSingular": "resultado",
     "resultPlural": "resultados",
     "resultsFor": "{count} {word} para",
-    "emptyPrompt": "Escribe una palabra clave arriba para buscar entre ofertas y negocios."
+    "emptyPrompt": "Escribe una palabra clave arriba para buscar entre ofertas y negocios.",
+    "sectionCategories": "Categorías",
+    "sectionBusinesses": "Negocios",
+    "sectionDeals": "Ofertas"
   },
   "hotels": {
     "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse | Lompoc Locals",
@@ -957,7 +983,14 @@
       "aboutTitle": "Acerca de este lugar",
       "amenitiesTitle": "Lo que ofrece este lugar",
       "aboutFromGoogle": "Información de Google",
-      "moreInCategory": "Más {category} en Lompoc"
+      "moreInCategory": "Más {category} en Lompoc",
+      "follow": "Seguir",
+      "following": "Siguiendo",
+      "noDealsYetTitle": "No hay ofertas por ahora",
+      "noDealsYetBody": "Sigue a {name} para enterarte primero de su próxima oferta.",
+      "getDirections": "Cómo llegar",
+      "hoursUnknown": "Horario no disponible.",
+      "hoursUnknownCall": "Horario no disponible — llama para confirmar:"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",
@@ -1042,8 +1075,7 @@
   "dealCard": {
     "expired": "Vencida",
     "endsSoon": "Termina pronto",
-    "getDeal": "Obtener oferta",
-    "markRedeemed": "Marcar como canjeada",
+    "getDeal": "Reclamar oferta",
     "noDeals": "Sin ofertas aún",
     "noDealsSubtitle": "Vuelve pronto — nuevas ofertas llegan cada día de negocios locales.",
     "expiresIn": "Vence en {distance}",

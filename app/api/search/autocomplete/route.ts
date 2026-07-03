@@ -2,48 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
 import { and, eq, gt, ilike, or, sql } from "drizzle-orm"
+import { CATEGORY_SYNONYMS } from "@/lib/search"
 
 export const runtime = "nodejs"
-
-/**
- * Keyword → category synonym map. Lets a searcher type what they're looking for
- * ("coffee", "wine", "haircut", "weed") and discover the right category even
- * when no business name contains that word. Keys are category slugs.
- */
-const CATEGORY_SYNONYMS: Record<string, string[]> = {
-  "food-drink": [
-    "food", "drink", "restaurant", "eat", "dinner", "lunch", "breakfast",
-    "coffee", "cafe", "pizza", "taco", "mexican", "burger", "sushi", "bakery",
-    "dessert", "brewery", "beer", "bar", "grill", "deli", "ice cream", "boba",
-  ],
-  wineries: ["wine", "winery", "wineries", "tasting", "vineyard", "vino", "cellar"],
-  retail: [
-    "shop", "store", "retail", "clothing", "clothes", "boutique", "gift",
-    "jewelry", "furniture", "market", "thrift", "books", "flowers", "florist",
-  ],
-  "health-beauty": [
-    "salon", "spa", "beauty", "hair", "haircut", "nails", "nail", "barber",
-    "massage", "gym", "fitness", "yoga", "wellness", "health", "skin", "facial",
-  ],
-  auto: [
-    "auto", "car", "tire", "mechanic", "oil", "repair", "brake", "collision",
-    "body shop", "smog", "detailing", "parts",
-  ],
-  services: [
-    "service", "plumber", "plumbing", "electrician", "cleaning", "clean",
-    "landscaping", "contractor", "insurance", "bank", "legal", "attorney",
-    "lawyer", "accountant", "notary", "printing", "photographer",
-  ],
-  entertainment: [
-    "entertainment", "movie", "theater", "fun", "arcade", "bowling", "music",
-    "event", "games",
-  ],
-  dispensaries: ["dispensary", "dispensaries", "cannabis", "weed", "marijuana", "cbd", "smoke", "vape"],
-  "real-estate": [
-    "real estate", "realtor", "realty", "home", "house", "rent", "lease",
-    "property", "apartment", "mortgage",
-  ],
-}
 
 type CategoryHit = { name: string; slug: string; count: number }
 

@@ -1,4 +1,18 @@
 {
+  "claim": {
+    "metaTitle": "Your deal — Lompoc Locals",
+    "showAtRegister": "Show this screen at the register",
+    "code": "Deal code",
+    "expires": "Expires {distance}",
+    "usedIt": "I used this deal",
+    "usedConfirmed": "Nice! Marked as used — enjoy.",
+    "endedTitle": "This deal has ended",
+    "endedBody": "It's no longer redeemable, but the business may have new offers.",
+    "notFoundTitle": "Deal not found",
+    "notFoundBody": "This deal may have been removed.",
+    "viewBusiness": "View {name}",
+    "browseDeals": "Browse current deals"
+  },
   "dealsDigest": {
     "eyebrow": "This week in Lompoc",
     "titleA": "This Week's",
@@ -336,12 +350,21 @@
     "unsubscribe": "Unsubscribe",
     "unsubscribeSuccess": "You've been unsubscribed.",
     "confirmMetaTitle": "Confirm subscription — Lompoc Locals",
-    "unsubscribeMetaTitle": "Unsubscribe — Lompoc Locals"
+    "unsubscribeMetaTitle": "Unsubscribe — Lompoc Locals",
+    "confirmedTitle": "You're subscribed",
+    "confirmedBody": "We'll send the next digest to {email} on Saturday morning.",
+    "confirmFailedTitle": "Couldn't confirm",
+    "confirmFailedBody": "That link is invalid or expired — try subscribing again.",
+    "backHome": "Back to Lompoc Locals",
+    "alreadySubscribed": "You're already subscribed. Thanks!",
+    "checkInbox": "Check your inbox for a confirmation link. Click it to start receiving the weekly digest.",
+    "emailNotConfigured": "Thanks! Your address is saved — confirmation email will arrive once email sending is enabled.",
+    "invalidEmail": "Enter a valid email"
   },
   "search": {
     "placeholder": "Search deals, businesses…",
     "results": "{count} results for \"{query}\"",
-    "noResults": "No results for \"{query}\"",
+    "noResults": "Nothing matched — try a different word, like a cuisine or a service.",
     "tryAgain": "Try a different search term.",
     "metaTitle": "Search Lompoc Locals — Find Coupons, Discounts & Local Specials",
     "metaDescription": "Search deals and coupons from 155+ Lompoc, CA businesses — restaurants, salons, services, retail, and more. Free to claim, updated daily.",
@@ -351,7 +374,10 @@
     "resultSingular": "result",
     "resultPlural": "results",
     "resultsFor": "{count} {word} for",
-    "emptyPrompt": "Type a keyword above to search across deals and businesses."
+    "emptyPrompt": "Type a keyword above to search across deals and businesses.",
+    "sectionCategories": "Categories",
+    "sectionBusinesses": "Businesses",
+    "sectionDeals": "Deals"
   },
   "hotels": {
     "metaTitle": "Lompoc Hotels & Accommodations — Where to Stay | Lompoc Locals",
@@ -957,7 +983,14 @@
       "aboutTitle": "About this place",
       "amenitiesTitle": "What this place offers",
       "aboutFromGoogle": "Info from Google",
-      "moreInCategory": "More {category} in Lompoc"
+      "moreInCategory": "More {category} in Lompoc",
+      "follow": "Follow",
+      "following": "Following",
+      "noDealsYetTitle": "No deals right now",
+      "noDealsYetBody": "Follow {name} to hear about their next offer first.",
+      "getDirections": "Get directions",
+      "hoursUnknown": "Hours not listed.",
+      "hoursUnknownCall": "Hours not listed — call to confirm:"
     },
     "amenities": {
       "wheelchair_accessible": "Wheelchair accessible",
@@ -1042,8 +1075,7 @@
   "dealCard": {
     "expired": "Expired",
     "endsSoon": "Ends soon",
-    "getDeal": "Get Deal",
-    "markRedeemed": "Mark as Redeemed",
+    "getDeal": "Claim deal",
     "noDeals": "No deals yet",
     "noDealsSubtitle": "Check back soon — new offers drop every day from local businesses.",
     "expiresIn": "Expires in {distance}",

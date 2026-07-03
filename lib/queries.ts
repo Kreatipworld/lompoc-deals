@@ -180,6 +180,24 @@ export async function searchDeals(
   return rows.map(rowToCard)
 }
 
+export async function getDealById(id: number): Promise<DealCardData | null> {
+  const rows = await db
+    .select(baseDealSelect)
+    .from(deals)
+    .innerJoin(businesses, eq(deals.businessId, businesses.id))
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
+    .where(
+      and(
+        eq(deals.id, id),
+        eq(businesses.status, "approved"),
+        eq(deals.paused, false)
+      )
+    )
+    .limit(1)
+  return rows[0] ? rowToCard(rows[0]) : null
+}
+
 export type DirectoryBusiness = {
   id: number
   name: string

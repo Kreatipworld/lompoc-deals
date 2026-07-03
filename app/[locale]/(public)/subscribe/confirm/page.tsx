@@ -13,32 +13,29 @@ export default async function ConfirmPage({
 }: {
   searchParams: { token?: string }
 }) {
+  const t = await getTranslations("subscribe")
   const token = searchParams.token ?? ""
   const result = token
     ? await confirmSubscriptionByToken(token)
-    : { ok: false as const, message: "Missing token" }
+    : { ok: false as const, message: "missing-token" }
 
   return (
     <div className="mx-auto max-w-md px-4 py-12 text-center">
       {result.ok ? (
         <>
-          <h1 className="text-2xl font-bold">You&apos;re subscribed</h1>
+          <h1 className="text-2xl font-bold">{t("confirmedTitle")}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            We&apos;ll send the next digest to <strong>{result.email}</strong> on
-            Saturday at 9am.
+            {t("confirmedBody", { email: result.email })}
           </p>
         </>
       ) : (
         <>
-          <h1 className="text-2xl font-bold">Couldn&apos;t confirm</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{result.message}</p>
+          <h1 className="text-2xl font-bold">{t("confirmFailedTitle")}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{t("confirmFailedBody")}</p>
         </>
       )}
-      <Link
-        href="/"
-        className="mt-6 inline-block text-sm underline"
-      >
-        Back to feed
+      <Link href="/" className="mt-6 inline-block text-sm underline">
+        {t("backHome")}
       </Link>
     </div>
   )
