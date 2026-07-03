@@ -19,7 +19,7 @@ export function AnimatedCounter({
   suffix = "",
   prefix = "",
 }: AnimatedCounterProps) {
-  const [display, setDisplay] = useState(0)
+  const [display, setDisplay] = useState(value)
   const ref = useRef<HTMLSpanElement>(null)
   const triggered = useRef(false)
 
