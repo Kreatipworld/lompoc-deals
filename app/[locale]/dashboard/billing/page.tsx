@@ -173,8 +173,8 @@ export default async function BillingPage({
                 {!enabled && (
                   <span className="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium">
                     {key === "canListRealEstate" || key === "priorityRanking" || key === "featuredOnHomepage"
-                      ? "Premium"
-                      : "Standard+"}
+                      ? "Plus"
+                      : "Growth+"}
                   </span>
                 )}
               </div>

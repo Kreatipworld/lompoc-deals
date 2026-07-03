@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Lompoc Locals — Local Coupons & Things To Do",
     description:
-      "Browse deals from 155+ Lompoc, California businesses — restaurants, salons, services, and more. Free to claim.",
+      "Browse deals from Lompoc, California businesses — restaurants, salons, services, and more. Free to claim.",
     url: siteUrl,
     siteName: "Lompoc Locals",
     locale: "en_US",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Lompoc Locals — Local Coupons & Things To Do",
     description:
-      "Browse deals from 155+ Lompoc, CA businesses — free to claim, updated daily.",
+      "Browse deals from Lompoc, CA businesses — free to claim, updated daily.",
   },
   robots: {
     index: true,

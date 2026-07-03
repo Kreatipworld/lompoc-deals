@@ -236,7 +236,7 @@ export default async function DashboardHomePage() {
               ? t("viewAnalyticsUpgrade")
               : t("viewAnalyticsDesc")
           }
-          badge={currentTier === "free" ? "Standard+" : undefined}
+          badge={currentTier === "free" ? "Growth+" : undefined}
         />
         <QuickAction
           href="/dashboard/profile"
@@ -254,7 +254,7 @@ export default async function DashboardHomePage() {
               ? t("managePropertiesDesc")
               : t("managePropertiesUpgrade")
           }
-          badge={!tierConfig.canListRealEstate ? "Premium" : undefined}
+          badge={!tierConfig.canListRealEstate ? "Plus" : undefined}
         />
       </div>
 
@@ -277,21 +277,21 @@ export default async function DashboardHomePage() {
             title={t("analytics")}
             desc={t("analyticsDesc")}
             available={tierConfig.canViewAnalytics}
-            upgradeLabel="Standard"
+            upgradeLabel="Growth"
           />
           <PlanFeatureCard
             icon={<Share2 className="h-4 w-4" />}
             title={t("socialLinks")}
             desc={t("socialLinksDesc")}
             available={tierConfig.canShowSocialLinks}
-            upgradeLabel="Standard"
+            upgradeLabel="Growth"
           />
           <PlanFeatureCard
             icon={<Building2 className="h-4 w-4" />}
             title={t("propertyListings")}
             desc={t("propertyListingsDesc")}
             available={tierConfig.canListRealEstate}
-            upgradeLabel="Premium"
+            upgradeLabel="Plus"
           />
         </div>
       </div>

@@ -211,7 +211,7 @@ export default async function SubscribePage({
       <section className="bg-background px-4 py-14">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8 text-center">
-            <div className="mb-2 text-4xl font-extrabold text-primary">1,400+</div>
+            <div className="mb-2 text-4xl font-extrabold text-primary">Every Saturday</div>
             <p className="text-sm text-muted-foreground">{t("statLocals")}</p>
           </div>
 

@@ -86,7 +86,18 @@ export default async function BusinessPage({
   ])
   if (!data) {
     if (params.slug.startsWith("demo-")) {
-      permanentRedirect(`/biz/${params.slug.replace(/^demo-/, "")}`)
+      const strippedSlug = params.slug.replace(/^demo-/, "")
+      const suffixedSlug = `${strippedSlug}-lompoc`
+      const [strippedMatch, suffixedMatch] = await Promise.all([
+        getBusinessBySlug(strippedSlug),
+        getBusinessBySlug(suffixedSlug),
+      ])
+      if (strippedMatch) {
+        permanentRedirect(`/biz/${strippedSlug}`)
+      }
+      if (suffixedMatch) {
+        permanentRedirect(`/biz/${suffixedSlug}`)
+      }
     }
     notFound()
   }
