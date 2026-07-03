@@ -3,12 +3,13 @@
 import { randomBytes } from "crypto"
 import { z } from "zod"
 import { eq } from "drizzle-orm"
-import { getLocale, getTranslations } from "next-intl/server"
+import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendConfirmationEmail } from "@/lib/email"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
+import { getCurrentLocale } from "@/lib/i18n-helpers"
 
 const subscribeSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -26,8 +27,7 @@ export async function subscribeAction(
   _prev: SubscribeState,
   formData: FormData
 ): Promise<SubscribeState> {
-  const rawLocale = await getLocale()
-  const locale: "en" | "es" = rawLocale === "es" ? "es" : "en"
+  const locale = await getCurrentLocale()
   const t = await getTranslations("subscribe")
 
   const parsed = subscribeSchema.safeParse({ email: formData.get("email") })

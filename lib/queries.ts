@@ -187,7 +187,13 @@ export async function getDealById(id: number): Promise<DealCardData | null> {
     .innerJoin(businesses, eq(deals.businessId, businesses.id))
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
-    .where(and(eq(deals.id, id), eq(businesses.status, "approved")))
+    .where(
+      and(
+        eq(deals.id, id),
+        eq(businesses.status, "approved"),
+        eq(deals.paused, false)
+      )
+    )
     .limit(1)
   return rows[0] ? rowToCard(rows[0]) : null
 }
