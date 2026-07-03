@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import {
-  ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, Quote, ChevronDown,
+  ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, ChevronDown,
   Building2, ExternalLink, Compass
 } from "lucide-react"
 import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals } from "@/lib/queries"
@@ -423,64 +423,6 @@ export default async function HomePage({ params }: { params: { locale: string } 
               </AnimeReveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
-          TESTIMONIALS — What Lompoc Says
-         ───────────────────────────────────────────────── */}
-      <section className="py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-10 text-center">
-            <h2 className="font-display text-3xl font-bold tracking-tight">
-              {t("testimonials.title")}
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {t("testimonials.subtitle")}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {[
-              {
-                quote: t("testimonials.quote1"),
-                name: t("testimonials.name1"),
-                neighborhood: t("testimonials.neighborhood1"),
-              },
-              {
-                quote: t("testimonials.quote2"),
-                name: t("testimonials.name2"),
-                neighborhood: t("testimonials.neighborhood2"),
-              },
-              {
-                quote: t("testimonials.quote3"),
-                name: t("testimonials.name3"),
-                neighborhood: t("testimonials.neighborhood3"),
-              },
-            ].map(({ quote, name, neighborhood }, i) => (
-              <AnimeReveal key={name} direction="up" delay={i * 80} duration={560}>
-              <figure
-                className="flex flex-col rounded-2xl border bg-accent/40 p-6"
-              >
-                <Quote className="mb-3 h-5 w-5 text-primary/40" />
-                <blockquote className="flex-1 text-sm leading-relaxed text-foreground">
-                  &ldquo;{quote}&rdquo;
-                </blockquote>
-                <figcaption className="mt-4 flex items-center gap-2 border-t pt-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    {name[0]}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold">{name}</p>
-                    <p className="text-xs text-muted-foreground">{neighborhood}</p>
-                  </div>
-                </figcaption>
-              </figure>
-              </AnimeReveal>
-            ))}
-          </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            {t("testimonials.placeholder")}
-          </p>
         </div>
       </section>
 

@@ -105,7 +105,7 @@ export default async function SubscribePage({
 
           <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
             <Users className="h-3.5 w-3.5" />
-            {t("socialProofCount", { count: "1,400" })}
+            {t("socialProofCount")}
           </p>
         </div>
       </section>
@@ -211,7 +211,7 @@ export default async function SubscribePage({
       <section className="bg-background px-4 py-14">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8 text-center">
-            <div className="mb-2 text-4xl font-extrabold text-primary">1,400+</div>
+            <div className="mb-2 text-4xl font-extrabold text-primary">{t("statSaturday")}</div>
             <p className="text-sm text-muted-foreground">{t("statLocals")}</p>
           </div>
 

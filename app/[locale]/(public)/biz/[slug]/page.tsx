@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
 import {
@@ -84,7 +84,23 @@ export default async function BusinessPage({
     getViewer(),
     getTranslations("businesses.profile"),
   ])
-  if (!data) notFound()
+  if (!data) {
+    if (params.slug.startsWith("demo-")) {
+      const strippedSlug = params.slug.replace(/^demo-/, "")
+      const suffixedSlug = `${strippedSlug}-lompoc`
+      const [strippedMatch, suffixedMatch] = await Promise.all([
+        getBusinessBySlug(strippedSlug),
+        getBusinessBySlug(suffixedSlug),
+      ])
+      if (strippedMatch) {
+        permanentRedirect(`/biz/${strippedSlug}`)
+      }
+      if (suffixedMatch) {
+        permanentRedirect(`/biz/${suffixedSlug}`)
+      }
+    }
+    notFound()
+  }
   const { business, deals } = data
   const isRealEstate = business.category?.slug === "real-estate"
 
