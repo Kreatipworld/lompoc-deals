@@ -980,7 +980,8 @@
       "noDealsYetBody": "Follow {name} to hear about their next offer first.",
       "getDirections": "Get directions",
       "hoursUnknown": "Hours not listed.",
-      "hoursUnknownCall": "Hours not listed — call to confirm:"
+      "hoursUnknownCall": "Hours not listed — call to confirm:",
+      "ownerCta": "Own this business? Get your deals in front of Lompoc locals →"
     },
     "amenities": {
       "wheelchair_accessible": "Wheelchair accessible",

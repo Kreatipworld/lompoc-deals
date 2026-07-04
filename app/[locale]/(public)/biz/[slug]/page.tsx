@@ -446,6 +446,18 @@ export default async function BusinessPage({
         </section>
       )}
 
+      {/* ─────────────────────────────────────────────────
+          OWNER CTA — footer link to /for-businesses (all businesses)
+         ───────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 pb-10 text-center">
+        <Link
+          href="/for-businesses"
+          className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+        >
+          {t("ownerCta")}
+        </Link>
+      </section>
+
       {relatedBusinesses.length > 0 && business.category && (
         <section className="mx-auto max-w-6xl px-4 pb-10">
           <div className="mt-12 border-t pt-8">

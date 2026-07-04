@@ -980,7 +980,8 @@
       "noDealsYetBody": "Sigue a {name} para enterarte primero de su próxima oferta.",
       "getDirections": "Cómo llegar",
       "hoursUnknown": "Horario no disponible.",
-      "hoursUnknownCall": "Horario no disponible — llama para confirmar:"
+      "hoursUnknownCall": "Horario no disponible — llama para confirmar:",
+      "ownerCta": "¿Es tu negocio? Pon tus ofertas frente a los vecinos de Lompoc →"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",
