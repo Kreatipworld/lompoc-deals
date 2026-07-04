@@ -6,8 +6,6 @@ import {
   Globe,
   ArrowRight,
   Tag,
-  Sparkles,
-  TrendingUp,
   Flame,
   ArrowUpRight,
 } from "lucide-react"
@@ -20,7 +18,6 @@ import { filterOpenNow } from "@/lib/hours"
 import { SearchBar } from "@/components/search-bar"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { BusinessAvatar } from "@/components/business-avatar"
-import { AnimatedCounter } from "@/components/animated-counter"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
@@ -89,121 +86,45 @@ export default async function BusinessesPage({
   return (
     <>
       {/* ═══════════════════════════════════════════════════
-          HERO — Full-bleed editorial with animated headline
+          HEADER — compact band: title + search + stat line.
+          Kept slim on purpose so the jump-nav and listings
+          land above the fold.
          ═══════════════════════════════════════════════════ */}
       <section className="relative isolate overflow-hidden">
-        {/* Deep gradient background */}
         <div
           aria-hidden
           className="absolute inset-0 -z-20 bg-gradient-to-br from-[hsl(273_33%_12%)] via-[hsl(270_26%_10%)] to-[hsl(273_33%_8%)]"
         />
-
-        {/* Radial glow — primary purple */}
         <div
           aria-hidden
-          className="absolute -left-48 top-0 -z-10 h-[700px] w-[700px] rounded-full bg-primary/25 blur-[120px]"
-        />
-        <div
-          aria-hidden
-          className="absolute -right-48 bottom-0 -z-10 h-[500px] w-[500px] rounded-full bg-primary/15 blur-[100px]"
+          className="absolute -right-24 -top-24 -z-10 h-[320px] w-[320px] rounded-full bg-primary/20 blur-[100px]"
         />
 
-        {/* Animated flower SVG — decorative, clipped top-right */}
-        <svg
-          aria-hidden
-          viewBox="0 0 600 600"
-          className="pointer-events-none absolute -right-24 -top-24 -z-10 h-[700px] w-[700px] text-primary/10 sm:-right-16 sm:-top-16"
-          fill="currentColor"
-        >
-          <g transform="translate(300 300)">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <ellipse
-                key={i}
-                cx="0"
-                cy="-160"
-                rx="90"
-                ry="180"
-                transform={`rotate(${i * 45})`}
-                opacity="0.6"
-              />
-            ))}
-            <circle r="80" fill="currentColor" opacity="0.9" />
-          </g>
-        </svg>
-
-        {/* Grain overlay */}
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-          }}
-        />
-
-        <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-20 sm:pb-24 sm:pt-28 lg:pb-28 lg:pt-36">
-          {/* Eyebrow */}
-          <AnimeReveal direction="up" delay={0} duration={600}>
-            <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">
-              <span className="h-px w-8 bg-white/30" />
-              <span>{t("eyebrow")}</span>
-              <span className="text-white/20">·</span>
-              <span>{t("eyebrowLocation")}</span>
-              <span className="text-white/20">·</span>
-              <span>{t("eyebrowEst")}</span>
-            </div>
-          </AnimeReveal>
-
-          {/* Display headline */}
-          <AnimeReveal direction="up" delay={80} duration={700}>
-            <h1 className="relative mt-6 font-display text-[clamp(3.2rem,11vw,8.5rem)] font-bold leading-[0.9] tracking-[-0.04em] text-white">
-              <span className="block">{t("heroLine1")}</span>
-              <span className="mt-1 block italic text-gold">
-                {t("heroLine2")}
-              </span>
-            </h1>
-          </AnimeReveal>
-
-          {/* Description + stats */}
-          <AnimeReveal direction="up" delay={160} duration={700}>
-            <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-              <p className="max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
+        <div className="relative mx-auto max-w-6xl px-4 py-8 sm:py-10">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                {t("heroLine1")}{" "}
+                <span className="italic text-gold">{t("heroLine2")}</span>
+              </h1>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base">
                 {t("heroBody")}
               </p>
-
-              {/* Stat cluster */}
-              <div className="hidden lg:flex lg:flex-col lg:items-end lg:gap-4">
-                <div className="text-right">
-                  <div className="font-display text-[5rem] font-bold leading-none tracking-tight text-white">
-                    <AnimatedCounter value={stats.businesses} duration={1400} delay={400} />
-                  </div>
-                  <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                    {t("statLocalBusinesses")}
-                  </div>
-                </div>
-              </div>
             </div>
-          </AnimeReveal>
-
-          {/* Search */}
-          <AnimeReveal direction="up" delay={240} duration={700}>
-            <div className="mt-10 max-w-2xl">
+            <div className="w-full flex-shrink-0 lg:max-w-md">
               <SearchBar size="lg" scrim />
             </div>
-          </AnimeReveal>
+          </div>
 
-          {/* Stat bar */}
-          <AnimeReveal direction="up" delay={400} duration={700}>
-            <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/10 pt-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">
-              <span className="text-white/60">{t("statBarBusinesses", { count: stats.businesses })}</span>
-              <span className="text-white/10">·</span>
-              <span>{t("statBarActiveDeals", { count: stats.activeDeals })}</span>
-              <span className="text-white/10">·</span>
-              <span>{t("statBarCategories", { count: stats.categories })}</span>
-              <span className="text-white/10">·</span>
-              <span>{t("statBarUpdatedDaily")}</span>
-            </div>
-          </AnimeReveal>
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/30">
+            <span className="text-white/60">{t("statBarBusinesses", { count: stats.businesses })}</span>
+            <span className="text-white/10">·</span>
+            <span>{t("statBarActiveDeals", { count: stats.activeDeals })}</span>
+            <span className="text-white/10">·</span>
+            <span>{t("statBarCategories", { count: stats.categories })}</span>
+            <span className="text-white/10">·</span>
+            <span>{t("statBarUpdatedDaily")}</span>
+          </div>
         </div>
       </section>
 
@@ -237,40 +158,19 @@ export default async function BusinessesPage({
               </a>
             ))}
           </div>
+          <Link
+            href={openNow ? "/businesses" : "/businesses?open=1"}
+            className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+              openNow
+                ? "border-success bg-success/10 text-success"
+                : "bg-card text-muted-foreground hover:border-foreground/30"
+            }`}
+          >
+            <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
+            {t("openNowFilter")}
+          </Link>
         </div>
       </nav>
-
-      {/* ═══════════════════════════════════════════════════
-          QUICK STATS ROW
-         ═══════════════════════════════════════════════════ */}
-      <div className="border-b bg-secondary/30">
-        <div className="mx-auto max-w-6xl px-4 py-10">
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {[
-              { label: t("statLocalBusinesses"), value: stats.businesses, icon: <Store className="h-4 w-4" /> },
-              { label: t("statActiveDeals"), value: stats.activeDeals, icon: <Tag className="h-4 w-4" /> },
-              { label: t("statCategories"), value: stats.categories, icon: <Sparkles className="h-4 w-4" /> },
-              { label: t("statUpdated"), value: null, label2: t("statUpdatedValue"), icon: <TrendingUp className="h-4 w-4" /> },
-            ].map((s, i) => (
-              <AnimeReveal key={s.label} direction="up" delay={i * 60} duration={600}>
-                <div className="flex flex-col gap-1 rounded-2xl border bg-card p-5 shadow-sm">
-                  <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                    {s.icon}
-                    {s.label}
-                  </div>
-                  <div className="font-display text-3xl font-bold tracking-tight">
-                    {s.value !== null ? (
-                      <AnimatedCounter value={s.value} duration={1200} delay={200 + i * 80} />
-                    ) : (
-                      s.label2
-                    )}
-                  </div>
-                </div>
-              </AnimeReveal>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* ═══════════════════════════════════════════════════
           MOST ACTIVE — featured strip of deal-heavy businesses
@@ -345,22 +245,9 @@ export default async function BusinessesPage({
           DIRECTORY LISTINGS — grouped by category
          ═══════════════════════════════════════════════════ */}
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-16">
-        <div className="flex items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            {businesses.length} {businesses.length === 1 ? t("businessSingular") : t("businessPlural")}
-          </p>
-          <Link
-            href={openNow ? "/businesses" : "/businesses?open=1"}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-              openNow
-                ? "border-success bg-success/10 text-success"
-                : "bg-card text-muted-foreground hover:border-foreground/30"
-            }`}
-          >
-            <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
-            {t("openNowFilter")}
-          </Link>
-        </div>
+        <p className="text-sm text-muted-foreground">
+          {businesses.length} {businesses.length === 1 ? t("businessSingular") : t("businessPlural")}
+        </p>
 
         {populatedCategories.map((g) => {
           const dealCount = g.items.filter((b) => b.activeDealCount > 0).length
