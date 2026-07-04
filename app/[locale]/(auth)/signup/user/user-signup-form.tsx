@@ -21,7 +21,7 @@ function SubmitButton() {
   )
 }
 
-export function UserSignupForm() {
+export function UserSignupForm({ from }: { from?: string }) {
   const [state, action] = useFormState<LocalSignupState, FormData>(
     localSignupAction,
     undefined
@@ -31,6 +31,8 @@ export function UserSignupForm() {
   return (
     <div className="space-y-5">
     <form action={action} className="space-y-5">
+      {from && <input type="hidden" name="from" value={from} />}
+
       {/* Name */}
       <div className="space-y-2">
         <label htmlFor="name" className="text-sm font-medium text-foreground">
