@@ -934,6 +934,7 @@
       "dealPlural": "ofertas",
       "seeAll": "Ver todo",
       "viewProfile": "Ver perfil",
+      "openNowFilter": "Abierto ahora",
       "ctaHeading": "¿Tienes un negocio en Lompoc?",
       "ctaBody": "Aparece en el directorio gratis — agrega tu horario, fotos, ofertas y deja que los locales te encuentren.",
       "ctaListFree": "Publica tu negocio gratis",
@@ -979,7 +980,8 @@
       "noDealsYetBody": "Sigue a {name} para enterarte primero de su próxima oferta.",
       "getDirections": "Cómo llegar",
       "hoursUnknown": "Horario no disponible.",
-      "hoursUnknownCall": "Horario no disponible — llama para confirmar:"
+      "hoursUnknownCall": "Horario no disponible — llama para confirmar:",
+      "ownerCta": "¿Es tu negocio? Pon tus ofertas frente a los vecinos de Lompoc →"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",
@@ -1071,6 +1073,7 @@
     "expired2": "Vencida",
     "unsaveDeal": "Quitar de guardados",
     "saveDeal": "Guardar oferta",
+    "signInToSave": "Inicia sesión para guardar ofertas",
     "adminDelete": "Admin: eliminar",
     "typeCoupon": "Cupón",
     "typeSpecial": "Especial",
@@ -1425,6 +1428,7 @@
     "activeDealsLabel": "{count} {label} activa",
     "noBusinesses": "No se encontraron negocios en esta categoría aún.",
     "viewProfile": "Ver perfil",
+    "openNowFilter": "Abierto ahora",
     "tabAll": "Todos",
     "tabForSale": "En venta",
     "tabForRent": "En renta",

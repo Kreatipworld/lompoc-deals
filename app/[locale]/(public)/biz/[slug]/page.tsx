@@ -10,6 +10,7 @@ import {
   Sparkles,
   Calendar,
   Navigation,
+  Bell,
 } from "lucide-react"
 import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
@@ -265,6 +266,18 @@ export default async function BusinessPage({
                       />
                     </>
                   )}
+                  {!viewer.isAuthed && (
+                    <>
+                      <span className="text-foreground/30">·</span>
+                      <Link
+                        href={`/login?from=${encodeURIComponent(`/biz/${params.slug}`)}`}
+                        className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs font-medium transition-colors duration-150 hover:bg-secondary"
+                      >
+                        <Bell className="h-3.5 w-3.5" />
+                        {t("follow")}
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 {/* Social links + Google reviews */}
@@ -387,6 +400,15 @@ export default async function BusinessPage({
                     labels={{ follow: t("follow"), following: t("following") }}
                   />
                 )}
+                {!viewer.isAuthed && (
+                  <Link
+                    href={`/login?from=${encodeURIComponent(`/biz/${params.slug}`)}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs font-medium transition-colors duration-150 hover:bg-secondary"
+                  >
+                    <Bell className="h-3.5 w-3.5" />
+                    {t("follow")}
+                  </Link>
+                )}
               </div>
             )}
           </div>
@@ -423,6 +445,18 @@ export default async function BusinessPage({
           <BusinessClaimCta slug={params.slug} />
         </section>
       )}
+
+      {/* ─────────────────────────────────────────────────
+          OWNER CTA — footer link to /for-businesses (all businesses)
+         ───────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 pb-10 text-center">
+        <Link
+          href="/for-businesses"
+          className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+        >
+          {t("ownerCta")}
+        </Link>
+      </section>
 
       {relatedBusinesses.length > 0 && business.category && (
         <section className="mx-auto max-w-6xl px-4 pb-10">

@@ -21,13 +21,14 @@ export default async function SignupPage({
   searchParams,
 }: {
   params: { locale: string }
-  searchParams: { claim?: string; plan?: string; canceled?: string }
+  searchParams: { claim?: string; plan?: string; canceled?: string; from?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "auth" })
 
   const claimSlug = searchParams.claim
   const defaultPlan = searchParams.plan ?? null
   const showCanceled = searchParams.canceled === "1"
+  const from = searchParams.from
   let claimingBusinessName: string | null = null
   if (claimSlug) {
     const biz = await db.query.businesses.findFirst({
@@ -87,7 +88,7 @@ export default async function SignupPage({
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {/* Local user CTA */}
         <Link
-          href="/signup/user"
+          href={from ? `/signup/user?from=${encodeURIComponent(from)}` : "/signup/user"}
           className="group flex flex-col gap-3 rounded-3xl border-2 border-border bg-card p-6 shadow-sm transition hover:border-primary/50 hover:shadow-md"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary transition group-hover:bg-primary/20">

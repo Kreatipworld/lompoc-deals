@@ -1,6 +1,7 @@
 import { and, eq, gte, inArray, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { analyticsEvents, deals } from "@/db/schema"
+import { getDealEngagement } from "@/lib/queries"
 
 export type FunnelWindow = "7d" | "30d" | "all"
 
@@ -67,21 +68,30 @@ export async function getDealFunnel(
     else if (e.eventName === "deal_redeem") c.redeems = e.n
   }
 
+  // dealEvents predates analytics_events and is still dual-written by the claim/redeem
+  // flow, so it's the more complete historical source for all-time claim/redeem totals
+  // (analytics_events has no rows before it shipped). Only needed for the "all" window;
+  // 7d/30d windows are fully covered by analytics_events.
+  const engagement = window === "all" ? await getDealEngagement(businessId) : []
+  const engagementMap = new Map(engagement.map((e) => [e.dealId, e]))
+
   return bizDeals.map((d) => {
     const c = counts.get(d.id)!
     // For all-time, prefer the denormalized counters (complete history pre-analytics_events).
     const views = window === "all" ? d.viewCount : c.views
     const clicks = window === "all" ? d.clickCount : c.clicks
+    const claims = window === "all" ? (engagementMap.get(d.id)?.claims ?? 0) : c.claims
+    const redeems = window === "all" ? (engagementMap.get(d.id)?.redeems ?? 0) : c.redeems
     const ctr = views > 0 ? Math.round((clicks / views) * 1000) / 10 : 0
-    const claimRate = clicks > 0 ? Math.round((c.claims / clicks) * 1000) / 10 : 0
-    const redeemRate = c.claims > 0 ? Math.round((c.redeems / c.claims) * 1000) / 10 : 0
+    const claimRate = clicks > 0 ? Math.round((claims / clicks) * 1000) / 10 : 0
+    const redeemRate = claims > 0 ? Math.round((redeems / claims) * 1000) / 10 : 0
     return {
       dealId: d.id,
       dealTitle: d.title,
       views,
       clicks,
-      claims: c.claims,
-      redeems: c.redeems,
+      claims,
+      redeems,
       ctr,
       claimRate,
       redeemRate,

@@ -16,6 +16,7 @@ import {
   getAllCategories,
   getSiteStats,
 } from "@/lib/queries"
+import { filterOpenNow } from "@/lib/hours"
 import { SearchBar } from "@/components/search-bar"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { BusinessAvatar } from "@/components/business-avatar"
@@ -31,13 +32,20 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function BusinessesPage() {
-  const [businesses, cats, stats, t] = await Promise.all([
+export default async function BusinessesPage({
+  searchParams,
+}: {
+  searchParams?: { open?: string }
+}) {
+  const [allBusinesses, cats, stats, t] = await Promise.all([
     getDirectoryBusinesses(),
     getAllCategories(),
     getSiteStats(),
     getTranslations("businesses.directory"),
   ])
+
+  const openNow = searchParams?.open === "1"
+  const businesses = openNow ? filterOpenNow(allBusinesses) : allBusinesses
 
   const grouped = new Map<
     string,
@@ -337,6 +345,23 @@ export default async function BusinessesPage() {
           DIRECTORY LISTINGS — grouped by category
          ═══════════════════════════════════════════════════ */}
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-16">
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">
+            {businesses.length} {businesses.length === 1 ? t("businessSingular") : t("businessPlural")}
+          </p>
+          <Link
+            href={openNow ? "/businesses" : "/businesses?open=1"}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+              openNow
+                ? "border-success bg-success/10 text-success"
+                : "bg-card text-muted-foreground hover:border-foreground/30"
+            }`}
+          >
+            <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
+            {t("openNowFilter")}
+          </Link>
+        </div>
+
         {populatedCategories.map((g) => {
           const dealCount = g.items.filter((b) => b.activeDealCount > 0).length
           return (

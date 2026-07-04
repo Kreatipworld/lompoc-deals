@@ -934,6 +934,7 @@
       "dealPlural": "deals",
       "seeAll": "See all",
       "viewProfile": "View profile",
+      "openNowFilter": "Open now",
       "ctaHeading": "Own a Lompoc business?",
       "ctaBody": "Get listed in the directory free — add your hours, photos, deals, and let locals find you.",
       "ctaListFree": "List your business free",
@@ -979,7 +980,8 @@
       "noDealsYetBody": "Follow {name} to hear about their next offer first.",
       "getDirections": "Get directions",
       "hoursUnknown": "Hours not listed.",
-      "hoursUnknownCall": "Hours not listed — call to confirm:"
+      "hoursUnknownCall": "Hours not listed — call to confirm:",
+      "ownerCta": "Own this business? Get your deals in front of Lompoc locals →"
     },
     "amenities": {
       "wheelchair_accessible": "Wheelchair accessible",
@@ -1071,6 +1073,7 @@
     "expired2": "Expired",
     "unsaveDeal": "Unsave deal",
     "saveDeal": "Save deal",
+    "signInToSave": "Sign in to save deals",
     "adminDelete": "Admin: soft-delete",
     "typeCoupon": "Coupon",
     "typeSpecial": "Special",
@@ -1425,6 +1428,7 @@
     "activeDealsLabel": "{count} active {label}",
     "noBusinesses": "No businesses found in this category yet.",
     "viewProfile": "View profile",
+    "openNowFilter": "Open now",
     "tabAll": "All",
     "tabForSale": "For sale",
     "tabForRent": "For rent",

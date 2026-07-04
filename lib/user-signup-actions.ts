@@ -25,6 +25,21 @@ const localSignupSchema = z.object({
 
 export type LocalSignupState = { error?: string } | undefined
 
+/** Return a redirect destination for a freshly-created local user, mirroring
+ * the safeDestination check in lib/auth-actions.ts — a local user can never
+ * land on /dashboard or /admin, so those are excluded even if requested. */
+function safeLocalDestination(from: string | null): string {
+  if (
+    from &&
+    from.startsWith("/") &&
+    !from.startsWith("/dashboard") &&
+    !from.startsWith("/admin")
+  ) {
+    return from
+  }
+  return "/account"
+}
+
 export async function localSignupAction(
   _prev: LocalSignupState,
   formData: FormData
@@ -46,6 +61,7 @@ export async function localSignupAction(
   }
 
   const { name, email, password, city, zip, interests } = parsed.data
+  const from = (formData.get("from") as string | null) || null
 
   const existing = await db.query.users.findFirst({
     where: eq(users.email, email),
@@ -98,6 +114,10 @@ export async function localSignupAction(
     autoSignInOk = false
   }
 
-  redirect(autoSignInOk ? "/account" : "/login")
+  if (!autoSignInOk) {
+    redirect(from ? `/login?from=${encodeURIComponent(from)}` : "/login")
+  }
+
+  redirect(safeLocalDestination(from))
 }
 

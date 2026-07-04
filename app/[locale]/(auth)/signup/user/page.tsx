@@ -16,10 +16,24 @@ export async function generateMetadata({
 
 export default async function UserSignupPage({
   params,
+  searchParams,
 }: {
   params: { locale: string }
+  searchParams: { from?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "auth" })
+
+  // Only forward `from` if it's a path the new local user could actually land
+  // on (mirrors the safeDestination check in lib/auth-actions.ts for role
+  // "local" — no /dashboard or /admin destinations).
+  const rawFrom = searchParams.from ?? null
+  const from =
+    rawFrom &&
+    rawFrom.startsWith("/") &&
+    !rawFrom.startsWith("/dashboard") &&
+    !rawFrom.startsWith("/admin")
+      ? rawFrom
+      : undefined
 
   return (
     <>
@@ -38,7 +52,7 @@ export default async function UserSignupPage({
       </div>
 
       <div className="mt-8">
-        <UserSignupForm />
+        <UserSignupForm from={from} />
       </div>
     </>
   )

@@ -212,6 +212,7 @@ export type DirectoryBusiness = {
   categoryName: string | null
   categorySlug: string | null
   activeDealCount: number
+  hoursJson: unknown
 }
 
 export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
@@ -230,6 +231,7 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
       categoryName: categories.name,
       categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -256,6 +258,7 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
       categoryName: categories.name,
       categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -282,6 +285,7 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
       categoryName: categories.name,
       categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -685,6 +689,22 @@ export async function getUserRedemptions(userId: number): Promise<UserRedemption
     .orderBy(desc(dealEvents.createdAt))
 
   return rows
+}
+
+export async function getDealEngagement(
+  businessId: number
+): Promise<Array<{ dealId: number; claims: number; redeems: number }>> {
+  const rows = await db
+    .select({
+      dealId: dealEvents.dealId,
+      claims: sql<number>`count(*) filter (where ${dealEvents.eventType} = 'claim')`,
+      redeems: sql<number>`count(*) filter (where ${dealEvents.eventType} = 'redeem')`,
+    })
+    .from(dealEvents)
+    .innerJoin(deals, eq(dealEvents.dealId, deals.id))
+    .where(eq(deals.businessId, businessId))
+    .groupBy(dealEvents.dealId)
+  return rows.map((r) => ({ dealId: r.dealId, claims: Number(r.claims), redeems: Number(r.redeems) }))
 }
 
 // ─── Events ──────────────────────────────────────────────────────────────────

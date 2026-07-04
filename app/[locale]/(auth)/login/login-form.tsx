@@ -86,7 +86,7 @@ export function LoginForm({ from }: { from?: string }) {
       <p className="text-center text-sm text-muted-foreground">
         {t("login.newHere")}{" "}
         <Link
-          href="/signup"
+          href={from ? `/signup?from=${encodeURIComponent(from)}` : "/signup"}
           className="font-medium text-primary hover:underline"
         >
           {t("login.createAccount")}
