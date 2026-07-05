@@ -122,7 +122,7 @@ export default async function CategoryPage({
           <div className="absolute -top-20 right-[-10%] h-[360px] w-[360px] rounded-full bg-primary/10 blur-3xl" />
         </div>
 
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+        <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
           <Link
             href="/businesses"
             className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
@@ -131,33 +131,50 @@ export default async function CategoryPage({
             {t("allBusinesses")}
           </Link>
 
-          <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md">
-              <Icon className="h-8 w-8" />
+          <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md">
+                <Icon className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                  {cat.name}
+                </h1>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {heroCount} {heroLabel} {t("inLompoc")}
+                  {!isRealEstate && deals.length > 0 && (
+                    <> · <span className="text-primary font-medium">{deals.length} {deals.length === 1 ? t("dealSingular") : t("dealPlural")}</span></>
+                  )}
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-                {cat.name}
-              </h1>
-              <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-                {heroCount} {heroLabel} in Lompoc
-                {!isRealEstate && deals.length > 0 && (
-                  <> · <span className="text-primary font-medium">{deals.length} {deals.length === 1 ? t("dealSingular") : t("dealPlural")}</span></>
-                )}
-              </p>
-            </div>
-          </div>
 
-          <div className="mt-8 max-w-xl">
-            <SearchBar scrim />
+            <div className="w-full lg:max-w-md">
+              <SearchBar scrim />
+            </div>
           </div>
         </div>
       </section>
 
       {/* CHIPS */}
       <section className="border-b bg-secondary/30">
-        <div className="mx-auto max-w-6xl px-4 py-4">
-          <CategoryChips activeSlug={params.slug} />
+        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-4">
+          <div className="min-w-0 flex-1">
+            <CategoryChips activeSlug={params.slug} />
+          </div>
+          {!isRealEstate && (
+            <Link
+              href={openToggleHref}
+              className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                openNow
+                  ? "border-success bg-success/10 text-success"
+                  : "bg-card text-muted-foreground hover:border-foreground/30"
+              }`}
+            >
+              <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
+              {t("openNowFilter")}
+            </Link>
+          )}
         </div>
       </section>
 
@@ -204,19 +221,6 @@ export default async function CategoryPage({
       {!isRealEstate && (
         <>
           <section className="mx-auto max-w-6xl px-4 py-10">
-            <div className="mb-6 flex items-center justify-end">
-              <Link
-                href={openToggleHref}
-                className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                  openNow
-                    ? "border-success bg-success/10 text-success"
-                    : "bg-card text-muted-foreground hover:border-foreground/30"
-                }`}
-              >
-                <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
-                {t("openNowFilter")}
-              </Link>
-            </div>
             {categoryBusinesses.length === 0 ? (
               <p className="py-16 text-center text-sm text-muted-foreground">
                 {t("noBusinesses")}
