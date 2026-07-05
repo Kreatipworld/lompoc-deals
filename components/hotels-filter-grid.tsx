@@ -1,44 +1,43 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import Image from "next/image"
 import { Link } from "@/i18n/navigation"
 import { HOTELS, type Hotel } from "@/lib/hotels-data"
-import { MapPin, ArrowRight, BedDouble } from "lucide-react"
+import { MapPin, Star, BedDouble, X } from "lucide-react"
 
-// ── Filter definitions ──────────────────────────────────────────────────────
-
-type FilterChip = { id: string; label: string; icon?: string }
-
-const PRICE_FILTERS: FilterChip[] = [
-  { id: "price-$", label: "$" },
-  { id: "price-$$", label: "$$" },
-  { id: "price-$$$", label: "$$$" },
-]
-
-const AMENITY_FILTERS: FilterChip[] = [
-  { id: "amenity-pool", label: "Pool" },
-  { id: "amenity-breakfast", label: "Breakfast" },
-  { id: "amenity-wifi", label: "Free Wi-Fi" },
-  { id: "amenity-parking", label: "Parking" },
-  { id: "amenity-pets", label: "Pet-Friendly" },
-]
-
-// ── Helpers ─────────────────────────────────────────────────────────────────
-
-const COVER_GRADIENT: Record<string, string> = {
-  $: "from-success/20 via-success/10 to-success/5",
-  $$: "from-gold/25 via-gold/15 to-gold/10",
-  $$$: "from-primary/25 via-primary/15 to-primary/10",
+// Labels arrive from the server page (next-intl lives server-side there);
+// props must stay serializable, so templates carry a {miles} placeholder.
+export type HotelsGridLabels = {
+  amenityPool: string
+  amenityBreakfast: string
+  amenityWifi: string
+  amenityParking: string
+  amenityPets: string
+  milesToDowntown: string // e.g. "{miles} mi to downtown"
+  emptyTitle: string
+  clearFilters: string
 }
 
-function ratingLabel(r: number): string {
-  const v = r * 2 // convert 0-5 → 0-10
-  if (v >= 9.5) return "Exceptional"
-  if (v >= 9.0) return "Superb"
-  if (v >= 8.5) return "Very Good"
-  if (v >= 8.0) return "Good"
-  return "Rated"
+type FilterChip = { id: string; label: string }
+
+// ── Distance to downtown (H St & Ocean Ave) ────────────────────────────────
+const DOWNTOWN = { lat: 34.6392, lng: -120.4579 }
+
+function milesToDowntown(hotel: Hotel): string {
+  const R = 3958.8 // earth radius, miles
+  const dLat = ((hotel.lat - DOWNTOWN.lat) * Math.PI) / 180
+  const dLng = ((hotel.lng - DOWNTOWN.lng) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((DOWNTOWN.lat * Math.PI) / 180) *
+      Math.cos((hotel.lat * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2
+  const miles = 2 * R * Math.asin(Math.sqrt(a))
+  return miles.toFixed(1)
 }
+
+// ── Filtering ────────────────────────────────────────────────────────────────
 
 function matchesFilter(hotel: Hotel, active: Set<string>): boolean {
   if (active.size === 0) return true
@@ -61,191 +60,196 @@ function matchesFilter(hotel: Hotel, active: Set<string>): boolean {
   return true
 }
 
-// ── Hotel card ───────────────────────────────────────────────────────────────
+// ── Card (photo-rich — the single hotel card for this page) ─────────────────
 
-function HotelGridCard({ hotel }: { hotel: Hotel }) {
+const COVER_GRADIENT: Record<string, string> = {
+  $: "from-success/20 via-success/10 to-success/5",
+  $$: "from-gold/25 via-gold/15 to-gold/10",
+  $$$: "from-primary/25 via-primary/15 to-primary/10",
+}
+
+function StarRating({ rating }: { rating: number }) {
+  const full = Math.floor(rating)
+  const half = rating % 1 >= 0.5
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`h-3.5 w-3.5 ${
+            i < full
+              ? "fill-gold text-gold"
+              : i === full && half
+                ? "fill-gold/50 text-gold"
+                : "fill-muted text-muted-foreground/30"
+          }`}
+        />
+      ))}
+      <span className="ml-1 text-xs font-semibold">{rating.toFixed(1)}</span>
+    </div>
+  )
+}
+
+function HotelCard({ hotel, labels }: { hotel: Hotel; labels: HotelsGridLabels }) {
+  const gradient = COVER_GRADIENT[hotel.priceRange] ?? COVER_GRADIENT["$"]
+  const distance = labels.milesToDowntown.replace("{miles}", milesToDowntown(hotel))
+
   return (
     <Link
       href={`/hotels/${hotel.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(123,79,158,0.16),0_4px_12px_rgba(31,31,31,0.08)] hover:border-primary/20"
-      role="listitem"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") e.currentTarget.click() }}
+      className="group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/20"
     >
-      {/* Image placeholder with gradient */}
-      <div className={`relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br ${COVER_GRADIENT[hotel.priceRange]}`}>
-        <BedDouble className="h-10 w-10 text-foreground/10 transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105" />
-        {/* Wishlist button — visible on hover */}
-        <button
-          aria-label={`Save ${hotel.name} to wishlist`}
-          onClick={(e) => e.preventDefault()}
-          className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-background/80 text-muted-foreground/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:text-brand-terracotta group-hover:opacity-100"
-        >
-          <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.75}>
-            <path d="M10 17s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 17 8c0 4.65-7 9-7 9z" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+      {/* Image / cover area (4:3) */}
+      <div className="relative aspect-[4/3] overflow-hidden">
+        {hotel.coverUrl ? (
+          <Image
+            src={hotel.coverUrl}
+            alt={hotel.name}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div
+            className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradient}`}
+          >
+            <BedDouble className="h-10 w-10 text-foreground/10" />
+          </div>
+        )}
+
+        {/* Price tier chip — top right */}
+        <span className="absolute right-2 top-2 rounded-full bg-black/60 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-sm">
+          {hotel.priceRange}
+        </span>
+
+        {/* Hotel name overlay — bottom of image */}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-4 pb-3 pt-8">
+          <h3 className="font-display text-sm font-bold leading-snug text-white sm:text-base">
+            {hotel.name}
+          </h3>
+        </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="text-[10px] font-semibold uppercase tracking-wider text-primary/70">
-          {hotel.category === "boutique" ? "Boutique" : hotel.priceRange === "$$$" ? "Upscale" : hotel.priceRange === "$$" ? "Mid-Range" : "Budget"}
+      {/* Card body */}
+      <div className="flex flex-1 flex-col gap-3 p-4">
+        <div className="flex items-center justify-between gap-2">
+          <StarRating rating={hotel.rating} />
+          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+            {distance}
+          </span>
         </div>
-        <h3 className="font-display text-sm font-bold leading-snug tracking-tight line-clamp-2">{hotel.name}</h3>
-        <div className="flex items-center gap-1.5">
+
+        <p className="line-clamp-1 text-sm text-muted-foreground">{hotel.tagline}</p>
+
+        {hotel.amenities.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {hotel.amenities.slice(0, 3).map((a) => (
+              <span
+                key={a}
+                className="rounded-full border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"
+              >
+                {a}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-auto flex items-center gap-1 text-xs text-muted-foreground">
           <MapPin className="h-3 w-3 shrink-0 text-primary/50" />
-          <span className="text-[11px] text-muted-foreground truncate">{hotel.avenue ?? hotel.address}</span>
-        </div>
-
-        {/* Amenity chips */}
-        <div className="flex flex-wrap gap-1">
-          {hotel.amenities.slice(0, 3).map((a) => (
-            <span key={a} className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-              {a}
-            </span>
-          ))}
-        </div>
-
-        {/* Footer: rating pill + price */}
-        <div className="mt-auto flex items-center justify-between pt-1">
-          <span className="rounded-full bg-sage-100 px-2.5 py-0.5 text-[11px] font-semibold text-sage-800">
-            {(hotel.rating * 2).toFixed(1)} · {ratingLabel(hotel.rating)}
-          </span>
-          <span className="text-[11px] font-semibold text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100 flex items-center gap-0.5">
-            View <ArrowRight className="h-3 w-3" />
-          </span>
+          <span className="truncate">{hotel.avenue ?? hotel.address}</span>
         </div>
       </div>
     </Link>
   )
 }
 
-// ── Main component ───────────────────────────────────────────────────────────
+// ── Main component: chips + single filtered grid ────────────────────────────
 
-export function HotelsFilterGrid() {
+export function HotelsFilterGrid({ labels }: { labels: HotelsGridLabels }) {
   const [active, setActive] = useState<Set<string>>(new Set())
+
+  const priceFilters: FilterChip[] = [
+    { id: "price-$", label: "$" },
+    { id: "price-$$", label: "$$" },
+    { id: "price-$$$", label: "$$$" },
+  ]
+  const amenityFilters: FilterChip[] = [
+    { id: "amenity-pool", label: labels.amenityPool },
+    { id: "amenity-breakfast", label: labels.amenityBreakfast },
+    { id: "amenity-wifi", label: labels.amenityWifi },
+    { id: "amenity-parking", label: labels.amenityParking },
+    { id: "amenity-pets", label: labels.amenityPets },
+  ]
 
   const filtered = useMemo(
     () => HOTELS.filter((h) => matchesFilter(h, active)),
     [active]
   )
 
-  function toggleFilter(id: string) {
+  function toggle(id: string) {
     setActive((prev) => {
       const next = new Set(prev)
-      // Price filters are exclusive
-      if (id.startsWith("price-")) {
-        Array.from(next).forEach((key) => {
-          if (key.startsWith("price-")) next.delete(key)
-        })
-      }
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
     })
   }
 
-  const allActive = active.size === 0
-
   return (
-    <section>
-      {/* ── Sticky filter bar ─────────────────────────────────────────────── */}
-      <div className="sticky top-16 z-40 border-b bg-background/92 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl overflow-x-auto px-4 py-3 scrollbar-none">
-          <div className="flex items-center gap-2 min-w-max">
-            {/* All Hotels chip */}
+    <div>
+      {/* Filter chips */}
+      <div className="flex flex-wrap items-center gap-2">
+        {[...priceFilters, ...amenityFilters].map((chip) => {
+          const isActive = active.has(chip.id)
+          return (
             <button
-              aria-pressed={allActive}
-              onClick={() => setActive(new Set())}
-              className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-150 ${
-                allActive
-                  ? "border-primary bg-primary text-white"
-                  : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
+              key={chip.id}
+              type="button"
+              onClick={() => toggle(chip.id)}
+              aria-pressed={isActive}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                isActive
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "bg-card text-muted-foreground hover:border-foreground/30"
               }`}
             >
-              All Hotels
+              {chip.label}
             </button>
-
-            {/* Divider */}
-            <span className="h-5 w-px shrink-0 bg-border" />
-
-            {/* Price tier chips */}
-            {PRICE_FILTERS.map((f) => (
-              <button
-                key={f.id}
-                aria-pressed={active.has(f.id)}
-                onClick={() => toggleFilter(f.id)}
-                className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-150 ${
-                  active.has(f.id)
-                    ? "border-primary bg-primary text-white"
-                    : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-
-            {/* Divider */}
-            <span className="h-5 w-px shrink-0 bg-border" />
-
-            {/* Amenity chips */}
-            {AMENITY_FILTERS.map((f) => (
-              <button
-                key={f.id}
-                aria-pressed={active.has(f.id)}
-                onClick={() => toggleFilter(f.id)}
-                className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-150 ${
-                  active.has(f.id)
-                    ? "border-primary bg-primary text-white"
-                    : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Hotel grid ────────────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-7xl px-4 py-8">
-        {filtered.length === 0 ? (
-          <div className="py-16 text-center">
-            <p className="text-sm font-medium text-muted-foreground">No hotels match the selected filters.</p>
-            <button
-              onClick={() => setActive(new Set())}
-              className="mt-3 text-xs font-semibold text-primary underline underline-offset-2"
-            >
-              Clear filters
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-xs text-muted-foreground">
-                <span className="font-semibold text-foreground">{filtered.length}</span> hotel{filtered.length !== 1 ? "s" : ""}
-                {active.size > 0 && " matching filters"}
-              </p>
-              {active.size > 0 && (
-                <button
-                  onClick={() => setActive(new Set())}
-                  className="text-[11px] font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground"
-                >
-                  Clear filters
-                </button>
-              )}
-            </div>
-            <div
-              role="list"
-              className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {filtered.map((hotel) => (
-                <HotelGridCard key={hotel.slug} hotel={hotel} />
-              ))}
-            </div>
-          </>
+          )
+        })}
+        {active.size > 0 && (
+          <button
+            type="button"
+            onClick={() => setActive(new Set())}
+            className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium text-primary hover:underline"
+          >
+            <X className="h-3.5 w-3.5" />
+            {labels.clearFilters}
+          </button>
         )}
       </div>
-    </section>
+
+      {/* Grid or empty state */}
+      {filtered.length > 0 ? (
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {filtered.map((hotel) => (
+            <HotelCard key={hotel.slug} hotel={hotel} labels={labels} />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-6 rounded-2xl border border-dashed bg-muted/30 px-6 py-14 text-center">
+          <BedDouble className="mx-auto h-9 w-9 text-muted-foreground/50" />
+          <p className="mt-3 text-sm font-medium">{labels.emptyTitle}</p>
+          <button
+            type="button"
+            onClick={() => setActive(new Set())}
+            className="mt-3 inline-flex items-center gap-1 rounded-full border px-4 py-2 text-sm font-medium text-primary transition-colors hover:border-primary/40"
+          >
+            <X className="h-3.5 w-3.5" />
+            {labels.clearFilters}
+          </button>
+        </div>
+      )}
+    </div>
   )
 }
