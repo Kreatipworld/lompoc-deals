@@ -75,19 +75,23 @@ export default async function SearchPage({
           className="absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/40 to-black/60"
         />
 
-        <div className="mx-auto max-w-3xl px-4 py-12 text-center sm:py-16">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-            <MapPin className="h-3 w-3" />
-            {t("badge")}
-          </div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            {t("heading")}
-          </h1>
-          <p className="mx-auto mt-3 max-w-md text-sm text-white/75 sm:text-base">
-            {t("subheading")}
-          </p>
-          <div className="mx-auto mt-6 max-w-xl">
-            <SearchBar defaultValue={q} size="lg" scrim />
+        <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                <MapPin className="h-3 w-3" />
+                {t("badge")}
+              </div>
+              <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                {t("heading")}
+              </h1>
+              <p className="mt-1 max-w-md text-sm text-white/75">
+                {t("subheading")}
+              </p>
+            </div>
+            <div className="w-full lg:max-w-md">
+              <SearchBar defaultValue={q} size="lg" scrim />
+            </div>
           </div>
         </div>
       </section>
