@@ -393,7 +393,22 @@
     "aboutSpaceTitle": "Costa espacial",
     "aboutSpaceBody": "La ciudad civil más cercana a la Base Espacial Vandenberg. Mira los lanzamientos desde el valle — visualización pública en Surf Beach y Renwick.",
     "aboutFlowerTitle": "Capital de las flores",
-    "aboutFlowerBody": "Capital histórica del cultivo de semillas. La temporada de floración va de abril a agosto en miles de hectáreas del valle."
+    "aboutFlowerBody": "Capital histórica del cultivo de semillas. La temporada de floración va de abril a agosto en miles de hectáreas del valle.",
+    "filterPool": "Alberca",
+    "filterBreakfast": "Desayuno",
+    "filterWifi": "Wi-Fi gratis",
+    "filterParking": "Estacionamiento",
+    "filterPets": "Acepta mascotas",
+    "milesToDowntown": "a {miles} mi del centro",
+    "filterEmptyTitle": "Ningún hotel coincide con esos filtros.",
+    "filterClear": "Quitar filtros",
+    "aboutWineCta": "Explora las vinícolas",
+    "aboutExploreCta": "Ver qué hacer",
+    "dealsHookTitle": "¿De visita esta semana?",
+    "dealsHookBody": "Los restaurantes y tiendas de Lompoc publican ofertas toda la semana — mira qué hay mientras estás aquí.",
+    "dealsHookCta": "Ver ofertas locales",
+    "dealsHookSubscribe": "Recibe el resumen del sábado",
+    "whileHereHeading": "Mientras estás aquí"
   },
   "locals": {
     "metaTitle": "Para Residentes — Descubre Ofertas y Apoya los Negocios de Lompoc | Lompoc Locals",

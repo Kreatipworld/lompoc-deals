@@ -393,7 +393,22 @@
     "aboutSpaceTitle": "Space coast",
     "aboutSpaceBody": "Closest civilian town to Vandenberg Space Force Base. Watch launches from the valley — public viewing at Surf Beach and Renwick.",
     "aboutFlowerTitle": "Flower capital",
-    "aboutFlowerBody": "Historic seed-growing capital. Bloom season runs April–August across thousands of acres in the valley."
+    "aboutFlowerBody": "Historic seed-growing capital. Bloom season runs April–August across thousands of acres in the valley.",
+    "filterPool": "Pool",
+    "filterBreakfast": "Breakfast",
+    "filterWifi": "Free Wi-Fi",
+    "filterParking": "Parking",
+    "filterPets": "Pet-friendly",
+    "milesToDowntown": "{miles} mi to downtown",
+    "filterEmptyTitle": "No hotels match those filters.",
+    "filterClear": "Clear filters",
+    "aboutWineCta": "Explore wineries",
+    "aboutExploreCta": "See things to do",
+    "dealsHookTitle": "In town this week?",
+    "dealsHookBody": "Lompoc restaurants and shops post specials all week — see what's on while you're here.",
+    "dealsHookCta": "See local deals",
+    "dealsHookSubscribe": "Get the Saturday digest",
+    "whileHereHeading": "While you're here"
   },
   "locals": {
     "metaTitle": "For Locals — Discover Deals & Support Lompoc Businesses | Lompoc Locals",
