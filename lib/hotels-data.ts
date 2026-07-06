@@ -37,7 +37,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Breakfast", "Evening Reception", "Indoor Pool", "Fitness Center", "Free Parking"],
     priceRange: "$$$",
     rating: 4.2,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776640369943-d2g8tk.jpeg",
     lat: 34.6558,
     lng: -120.4588,
   },
@@ -56,7 +57,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "On-Site Restaurant", "Outdoor Pool", "Fitness Center", "Free Parking", "24-hr Front Desk"],
     priceRange: "$$$",
     rating: 4.0,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776640268904-ys2qc6.jpeg",
     lat: 34.6559,
     lng: -120.4577,
   },
@@ -75,7 +77,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Outdoor Pool", "Pet-Friendly", "Continental Breakfast"],
     priceRange: "$",
     rating: 3.5,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/quality-inn-lompoc.jpeg",
     lat: 34.6639,
     lng: -120.4588,
   },
@@ -94,7 +97,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Hot Breakfast", "Indoor Pool", "Fitness Center", "Business Center", "Free Parking"],
     priceRange: "$$",
     rating: 4.0,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776641905987-4skvef.jpeg",
     lat: 34.6624,
     lng: -120.4589,
   },
@@ -113,7 +117,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Hot Breakfast", "Pool", "Fitness Center", "Free Parking", "24-hr Front Desk"],
     priceRange: "$$",
     rating: 4.2,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/hampton-inn-lompoc.jpeg",
     lat: 34.6575,
     lng: -120.4588,
   },
@@ -132,7 +137,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Pet-Friendly", "Microwave & Fridge in rooms"],
     priceRange: "$",
     rating: 3.2,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/cabrillo-inn-lompoc.jpeg",
     lat: 34.6389,
     lng: -120.4451,
   },
@@ -151,7 +157,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Outdoor Pool", "Pet-Friendly"],
     priceRange: "$",
     rating: 3.0,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/days-inn-lompoc.jpeg",
     lat: 34.661,
     lng: -120.4578,
   },
@@ -170,7 +177,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Continental Breakfast", "24-hr Front Desk"],
     priceRange: "$",
     rating: 3.3,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/surestay-best-western-lompoc.jpeg",
     lat: 34.664,
     lng: -120.4577,
   },
@@ -189,7 +197,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Microwave & Fridge in rooms"],
     priceRange: "$",
     rating: 2.9,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/civic-center-motel-lompoc.jpeg",
     lat: 34.6389,
     lng: -120.447,
   },
@@ -208,7 +217,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Garden Courtyard", "Continental Breakfast"],
     priceRange: "$$",
     rating: 3.7,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/ocairns-inn-lompoc.jpeg",
     lat: 34.6574,
     lng: -120.4576,
   },
@@ -227,7 +237,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Outdoor Pool", "Pet-Friendly"],
     priceRange: "$",
     rating: 3.3,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776640362707-atna9g.jpeg",
     lat: 34.6389,
     lng: -120.4453,
   },
@@ -246,7 +257,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Microwave & Fridge in rooms"],
     priceRange: "$",
     rating: 3.5,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776640325389-7rpy94.jpeg",
     lat: 34.6392,
     lng: -120.4411,
   },
@@ -265,7 +277,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking"],
     priceRange: "$",
     rating: 3.2,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels/village-inn-lompoc.jpeg",
     lat: 34.6518,
     lng: -120.4578,
   },
@@ -284,7 +297,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Pet-Friendly", "Outdoor Pool"],
     priceRange: "$",
     rating: 3.0,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776640303350-66lerg.jpeg",
     lat: 34.663,
     lng: -120.4587,
   },
@@ -303,7 +317,8 @@ export const HOTELS: Hotel[] = [
     amenities: ["Free Wi-Fi", "Free Parking", "Pet-Friendly", "24-hr Front Desk"],
     priceRange: "$",
     rating: 3.0,
-    coverUrl: null,
+    coverUrl:
+      "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776640339661-25injq.jpeg",
     lat: 34.6609,
     lng: -120.4578,
   },

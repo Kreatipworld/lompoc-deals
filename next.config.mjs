@@ -10,6 +10,7 @@ const nextConfig = {
       { protocol: "https", hostname: "**.evbdn.com" },
       { protocol: "https", hostname: "**.eventbrite.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
 }
