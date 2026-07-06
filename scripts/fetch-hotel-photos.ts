@@ -1,72 +1,60 @@
 /**
- * Populate real cover photos for the static HOTELS list on /hotels.
+ * Fetch Google Places photos for the verified Lompoc hotels and host them on
+ * Vercel Blob. Photo #1 per hotel already lives at hotels/v2-<slug>.jpeg
+ * (the card cover); this script adds up to 5 more as v2-<slug>-2..6.jpeg for
+ * the detail-page gallery and prints the slug → photos[] map.
  *
- * Source 1: the businesses table — the Google Places scrape already stored
- * blob-hosted covers for 9 of the 15 hotels; reuse those URLs directly.
- * Source 2: Google Places photo API (same pipeline as db/fix-business-images.ts)
- * for the rest, uploaded to Vercel Blob under hotels/.
- *
- * Prints a slug → url map to paste into lib/hotels-data.ts coverUrl fields.
+ * Place IDs were verified against the live Google records on 2026-07-06
+ * (see lib/hotels-data.ts header).
  *
  * Usage: node --env-file=.env.local node_modules/.bin/tsx scripts/fetch-hotel-photos.ts
  */
-import { db } from "@/db/client"
-import { businesses } from "@/db/schema"
-import { ilike } from "drizzle-orm"
 import { put } from "@vercel/blob"
-import { HOTELS } from "@/lib/hotels-data"
 
 const GOOGLE_API_KEY = process.env.GOOGLE_MAPS_API_KEY
-const COVER_MAX_WIDTH = 1200
-const DELAY_MS = 600
+const MAX_PHOTOS = 6
+const PHOTO_MAX_WIDTH = 1200
+const DELAY_MS = 400
+const BLOB_BASE = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels"
 
-// Hotel slug → business name pattern in the DB (verified matches with photos).
-const DB_NAME_MATCH: Record<string, string> = {
-  "embassy-suites-lompoc": "Embassy Suites by Hilton Lompoc%",
-  "hilton-garden-inn-lompoc": "Hilton Garden Inn Lompoc",
-  "holiday-inn-express-lompoc": "Holiday Inn Express Lompoc%",
-  "inn-of-lompoc": "Inn of Lompoc",
-  "lotus-of-lompoc": "Lotus Of Lompoc%",
-  "motel-6-lompoc": "Motel 6 Lompoc%",
-  "ocairns-inn-suites": "O'Cairns Inn & Suites",
-  "red-roof-inn-lompoc": "Red Roof Inn Lompoc",
-  "village-inn": "Village Inn",
+const PLACE_IDS: Record<string, string> = {
+  "motel-6-lompoc": "ChIJHZtgWLUe7IARGgL-ZzP42fs",
+  "embassy-suites-lompoc": "ChIJ_TTT17ce7IARX5wkAXTxJiU",
+  "red-roof-inn-lompoc": "ChIJ7U9Ik5oe7IARk8QA-c6UeAE",
+  "lompoc-valley-inn-suites": "ChIJx7eMqkoZ7IAR_eCyNk3RfVo",
+  "hilton-garden-inn-lompoc": "ChIJyXBkO7Ye7IARBMpzPYOslfw",
+  "inn-at-highway-1": "ChIJb-1_SLYe7IARpXGmHVr4efA",
+  "holiday-inn-express-lompoc": "ChIJEa4umrUe7IAR39uRx5o8TwA",
+  "ocairns-inn-lompoc": "ChIJk0Finpoe7IARp2qFAU3FdMM",
+  "lotus-of-lompoc": "ChIJkXUjpJwe7IAR1OHb52BXyZA",
+  "inn-of-lompoc": "ChIJbV6xr7ce7IARmHZtMbwzIeo",
+  "budget-inn-lompoc": "ChIJN5zckbge7IARtMD4R6eglgk",
+  "village-inn-lompoc": "ChIJy1aQi4YZ7IARtUlbhwfhFN4",
+  "star-motel-lompoc": "ChIJ4wQCnZMe7IARZOAMgQE9ucg",
 }
 
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms))
 }
 
-async function findPlaceId(name: string): Promise<string | null> {
-  const q = encodeURIComponent(`${name} Lompoc CA`)
-  const url =
-    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json` +
-    `?input=${q}&inputtype=textquery&fields=place_id,name&key=${GOOGLE_API_KEY}`
-  const res = await fetch(url)
-  if (!res.ok) return null
-  const data = (await res.json()) as { status: string; candidates: Array<{ place_id: string }> }
-  if (data.status !== "OK" || !data.candidates?.length) return null
-  return data.candidates[0].place_id
-}
-
-async function getPhotoReference(placeId: string): Promise<string | null> {
+async function getPhotoReferences(placeId: string): Promise<string[]> {
   const url =
     `https://maps.googleapis.com/maps/api/place/details/json` +
     `?place_id=${placeId}&fields=photos&key=${GOOGLE_API_KEY}`
   const res = await fetch(url)
-  if (!res.ok) return null
+  if (!res.ok) return []
   const data = (await res.json()) as {
     status: string
     result: { photos?: Array<{ photo_reference: string }> }
   }
-  if (data.status !== "OK" || !data.result.photos?.length) return null
-  return data.result.photos[0].photo_reference
+  if (data.status !== "OK") return []
+  return (data.result.photos ?? []).slice(0, MAX_PHOTOS).map((p) => p.photo_reference)
 }
 
 async function downloadPhoto(ref: string): Promise<Buffer | null> {
   const url =
     `https://maps.googleapis.com/maps/api/place/photo` +
-    `?maxwidth=${COVER_MAX_WIDTH}&photo_reference=${ref}&key=${GOOGLE_API_KEY}`
+    `?maxwidth=${PHOTO_MAX_WIDTH}&photo_reference=${ref}&key=${GOOGLE_API_KEY}`
   const res = await fetch(url, { redirect: "follow" })
   if (!res.ok) return null
   const contentType = res.headers.get("content-type") ?? ""
@@ -77,55 +65,30 @@ async function downloadPhoto(ref: string): Promise<Buffer | null> {
 
 async function main() {
   if (!GOOGLE_API_KEY) throw new Error("GOOGLE_MAPS_API_KEY missing")
-  const result: Record<string, string> = {}
+  const out: Record<string, string[]> = {}
 
-  for (const hotel of HOTELS) {
-    // Source 1: existing blob cover on the matching business row
-    const pattern = DB_NAME_MATCH[hotel.slug]
-    if (pattern) {
-      const rows = await db
-        .select({ coverUrl: businesses.coverUrl })
-        .from(businesses)
-        .where(ilike(businesses.name, pattern))
-        .limit(1)
-      const cover = rows[0]?.coverUrl
-      if (cover && cover.includes("vercel-storage.com")) {
-        result[hotel.slug] = cover
-        console.log(`db     ${hotel.slug} → ${cover}`)
-        continue
-      }
-    }
-
-    // Source 2: Google Places photo → Vercel Blob
-    const placeId = await findPlaceId(hotel.name)
+  for (const [slug, placeId] of Object.entries(PLACE_IDS)) {
+    const refs = await getPhotoReferences(placeId)
     await sleep(DELAY_MS)
-    if (!placeId) {
-      console.log(`MISS   ${hotel.slug} — no place found`)
-      continue
+    // Photo #1 already exists as the card cover.
+    const photos = [`${BLOB_BASE}/v2-${slug}.jpeg`]
+    for (let i = 1; i < refs.length; i++) {
+      const buf = await downloadPhoto(refs[i])
+      await sleep(DELAY_MS)
+      if (!buf) continue
+      const blob = await put(`hotels/v2-${slug}-${i + 1}.jpeg`, buf, {
+        access: "public",
+        addRandomSuffix: false,
+        contentType: "image/jpeg",
+      })
+      photos.push(blob.url)
     }
-    const ref = await getPhotoReference(placeId)
-    await sleep(DELAY_MS)
-    if (!ref) {
-      console.log(`MISS   ${hotel.slug} — no photos on place`)
-      continue
-    }
-    const buf = await downloadPhoto(ref)
-    if (!buf) {
-      console.log(`MISS   ${hotel.slug} — photo download failed`)
-      continue
-    }
-    const blob = await put(`hotels/${hotel.slug}.jpeg`, buf, {
-      access: "public",
-      addRandomSuffix: false,
-      contentType: "image/jpeg",
-    })
-    result[hotel.slug] = blob.url
-    console.log(`places ${hotel.slug} → ${blob.url}`)
-    await sleep(DELAY_MS)
+    out[slug] = photos
+    console.log(`${slug}: ${photos.length} photos`)
   }
 
-  console.log("\n// slug → coverUrl map:")
-  console.log(JSON.stringify(result, null, 2))
+  console.log("\n// slug → photos map:")
+  console.log(JSON.stringify(out, null, 2))
 }
 
 main().then(() => process.exit(0))

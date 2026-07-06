@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { HOTELS, getHotelBySlug } from "@/lib/hotels-data"
 import { HotelsMap } from "@/components/hotels-map"
+import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import {
   ArrowLeft,
   BedDouble,
@@ -111,12 +112,9 @@ export default async function HotelPage({ params }: { params: { slug: string; lo
           </Link>
         </div>
 
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <div className="overflow-hidden rounded-2xl">
-            <div className="flex h-52 items-center justify-center bg-gradient-to-br from-primary/10 via-accent to-primary/5 sm:h-64">
-              <BedDouble className="h-16 w-16 text-primary/30" />
-            </div>
-          </div>
+        {/* Photo mosaic — same gallery/lightbox as business profiles */}
+        <div className="pb-8 pt-2">
+          <BusinessPhotoGallery photos={hotel.photos} businessName={hotel.name} logoUrl={null} />
         </div>
       </section>
 

@@ -19,11 +19,17 @@ export type Hotel = {
   priceRange: "$" | "$$" | "$$$"
   rating: number // Google rating, out of 5
   coverUrl: string | null
+  photos: string[] // gallery photos (photo #1 == coverUrl)
   lat: number
   lng: number
 }
 
 const BLOB = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels"
+
+// Every verified hotel has 6 Places photos on blob: v2-<slug>.jpeg + v2-<slug>-2..6.jpeg
+function hotelPhotos(slug: string): string[] {
+  return [`${BLOB}/v2-${slug}.jpeg`, ...[2, 3, 4, 5, 6].map((n) => `${BLOB}/v2-${slug}-${n}.jpeg`)]
+}
 
 export const HOTELS: Hotel[] = [
   // ── Upscale / $$$
@@ -43,6 +49,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$$$",
     rating: 4.0,
     coverUrl: `${BLOB}/v2-embassy-suites-lompoc.jpeg`,
+    photos: hotelPhotos("embassy-suites-lompoc"),
     lat: 34.6558767,
     lng: -120.4587404,
   },
@@ -62,6 +69,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$$$",
     rating: 4.5,
     coverUrl: `${BLOB}/v2-hilton-garden-inn-lompoc.jpeg`,
+    photos: hotelPhotos("hilton-garden-inn-lompoc"),
     lat: 34.6574784,
     lng: -120.4584883,
   },
@@ -83,6 +91,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$$",
     rating: 4.3,
     coverUrl: `${BLOB}/v2-holiday-inn-express-lompoc.jpeg`,
+    photos: hotelPhotos("holiday-inn-express-lompoc"),
     lat: 34.6625023,
     lng: -120.4584662,
   },
@@ -102,6 +111,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$$",
     rating: 4.6,
     coverUrl: `${BLOB}/v2-ocairns-inn-lompoc.jpeg`,
+    photos: hotelPhotos("ocairns-inn-lompoc"),
     lat: 34.6382585,
     lng: -120.446835,
   },
@@ -121,6 +131,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$$",
     rating: 4.1,
     coverUrl: `${BLOB}/v2-inn-at-highway-1.jpeg`,
+    photos: hotelPhotos("inn-at-highway-1"),
     lat: 34.6573958,
     lng: -120.4573313,
   },
@@ -140,6 +151,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$$",
     rating: 3.7,
     coverUrl: `${BLOB}/v2-lompoc-valley-inn-suites.jpeg`,
+    photos: hotelPhotos("lompoc-valley-inn-suites"),
     lat: 34.6636886,
     lng: -120.4590988,
   },
@@ -161,6 +173,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$",
     rating: 3.9,
     coverUrl: `${BLOB}/v2-budget-inn-lompoc.jpeg`,
+    photos: hotelPhotos("budget-inn-lompoc"),
     lat: 34.6508615,
     lng: -120.4582728,
   },
@@ -180,6 +193,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$",
     rating: 4.2,
     coverUrl: `${BLOB}/v2-village-inn-lompoc.jpeg`,
+    photos: hotelPhotos("village-inn-lompoc"),
     lat: 34.6990273,
     lng: -120.4666493,
   },
@@ -199,6 +213,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$",
     rating: 3.5,
     coverUrl: `${BLOB}/v2-motel-6-lompoc.jpeg`,
+    photos: hotelPhotos("motel-6-lompoc"),
     lat: 34.6631786,
     lng: -120.4587194,
   },
@@ -218,6 +233,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$",
     rating: 3.2,
     coverUrl: `${BLOB}/v2-red-roof-inn-lompoc.jpeg`,
+    photos: hotelPhotos("red-roof-inn-lompoc"),
     lat: 34.6387046,
     lng: -120.446034,
   },
@@ -237,6 +253,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$",
     rating: 3.4,
     coverUrl: `${BLOB}/v2-lotus-of-lompoc.jpeg`,
+    photos: hotelPhotos("lotus-of-lompoc"),
     lat: 34.63934,
     lng: -120.4410947,
   },
@@ -256,6 +273,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$",
     rating: 3.1,
     coverUrl: `${BLOB}/v2-inn-of-lompoc.jpeg`,
+    photos: hotelPhotos("inn-of-lompoc"),
     lat: 34.6563436,
     lng: -120.4565108,
   },
@@ -275,6 +293,7 @@ export const HOTELS: Hotel[] = [
     priceRange: "$",
     rating: 3.4,
     coverUrl: `${BLOB}/v2-star-motel-lompoc.jpeg`,
+    photos: hotelPhotos("star-motel-lompoc"),
     lat: 34.6387756,
     lng: -120.4556971,
   },
