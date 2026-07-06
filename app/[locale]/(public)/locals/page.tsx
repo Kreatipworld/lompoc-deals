@@ -52,18 +52,24 @@ export default async function LocalsPage({
     <main>
       {/* ── HERO — flower fields under the purple brand wash ─────────── */}
       <section className="relative isolate overflow-hidden border-b">
+        {/* Community photo — festival crowd at Ryon Park */}
         <div
           aria-hidden
           className="absolute inset-0 -z-20 overflow-hidden"
           style={{
-            backgroundImage: "url('/lompoc-flowers-4.jpg')",
+            backgroundImage: "url('/lompoc-community.jpg')",
             backgroundSize: "cover",
-            backgroundPosition: "center 45%",
+            backgroundPosition: "center 62%",
           }}
+        />
+        {/* Wash: dark behind the copy (left), light over the crowd (right) */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-[hsl(287_81%_14%/0.92)] via-[hsl(287_81%_18%/0.62)] to-[hsl(287_81%_20%/0.22)]"
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-[hsl(287_81%_20%/0.82)] via-[hsl(287_81%_25%/0.72)] to-[hsl(287_81%_15%/0.85)]"
+          className="absolute inset-x-0 bottom-0 -z-10 h-16 bg-gradient-to-t from-black/25 to-transparent"
         />
 
         <div className="mx-auto max-w-6xl px-4 py-14 sm:py-16">
