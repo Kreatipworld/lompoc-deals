@@ -324,6 +324,7 @@ export const activities = pgTable(
     lat: doublePrecision("lat"),
     lng: doublePrecision("lng"),
     imageUrl: varchar("image_url", { length: 1000 }),
+    photosJson: jsonb("photos_json"), // gallery photos (photo #1 == imageUrl when set)
     tips: text("tips"),
     seasonality: varchar("seasonality", { length: 200 }),
     sourceUrl: varchar("source_url", { length: 1000 }),

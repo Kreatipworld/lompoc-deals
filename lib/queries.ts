@@ -783,6 +783,7 @@ export type ActivityData = {
   lat: number | null
   lng: number | null
   imageUrl: string | null
+  photosJson: unknown // string[] when populated
   tips: string | null
   seasonality: string | null
   sourceUrl: string | null
@@ -801,6 +802,7 @@ export async function getActivities(category?: string, limit = 50): Promise<Acti
       lat: activities.lat,
       lng: activities.lng,
       imageUrl: activities.imageUrl,
+      photosJson: activities.photosJson,
       tips: activities.tips,
       seasonality: activities.seasonality,
       sourceUrl: activities.sourceUrl,
@@ -825,6 +827,7 @@ export async function getFeaturedActivities(limit = 6): Promise<ActivityData[]> 
       lat: activities.lat,
       lng: activities.lng,
       imageUrl: activities.imageUrl,
+      photosJson: activities.photosJson,
       tips: activities.tips,
       seasonality: activities.seasonality,
       sourceUrl: activities.sourceUrl,
@@ -849,6 +852,7 @@ export async function getActivityBySlug(slug: string): Promise<ActivityData | nu
       lat: activities.lat,
       lng: activities.lng,
       imageUrl: activities.imageUrl,
+      photosJson: activities.photosJson,
       tips: activities.tips,
       seasonality: activities.seasonality,
       sourceUrl: activities.sourceUrl,

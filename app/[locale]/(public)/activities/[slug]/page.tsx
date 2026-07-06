@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation"
 import { MapPin, ArrowLeft, ExternalLink, Lightbulb, CalendarDays, Compass } from "lucide-react"
 import { getActivityBySlug, getActivities } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
+import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import { getTranslations } from "next-intl/server"
@@ -57,6 +58,12 @@ export default async function ActivityDetailPage({
   const activity = await getActivityBySlug(slug)
   if (!activity) notFound()
 
+  const photos: string[] = Array.isArray(activity.photosJson)
+    ? (activity.photosJson as string[]).filter((p): p is string => typeof p === "string")
+    : activity.imageUrl
+      ? [activity.imageUrl]
+      : []
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       {/* Back link */}
@@ -68,27 +75,35 @@ export default async function ActivityDetailPage({
         {t("thingsToDo")}
       </Link>
 
-      {/* Hero image */}
-      {activity.imageUrl && (
-        <div className="relative mb-6 overflow-hidden rounded-2xl aspect-[16/7]">
-          <SafeImage
-            src={activity.imageUrl}
-            alt={activity.title}
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-          <div className="absolute bottom-4 left-4 flex items-center gap-2">
-            <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-              {CATEGORY_LABELS[activity.category] ?? activity.category}
-            </span>
-            {activity.featured && (
-              <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                {t("featured")}
-              </span>
-            )}
-          </div>
+      {/* Photo gallery (mosaic + lightbox) or single hero image */}
+      {photos.length > 1 ? (
+        <div className="mb-6 -mx-4">
+          <BusinessPhotoGallery photos={photos} businessName={activity.title} logoUrl={null} />
         </div>
+      ) : (
+        activity.imageUrl && (
+          <div className="relative mb-6 overflow-hidden rounded-2xl aspect-[16/7]">
+            <SafeImage
+              src={activity.imageUrl}
+              alt={activity.title}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          </div>
+        )
       )}
+
+      {/* Category / featured chips */}
+      <div className="mb-4 flex items-center gap-2">
+        <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
+          {CATEGORY_LABELS[activity.category] ?? activity.category}
+        </span>
+        {activity.featured && (
+          <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+            {t("featured")}
+          </span>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
         {/* Main content */}
