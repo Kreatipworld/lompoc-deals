@@ -34,18 +34,14 @@ const CATEGORY_LABELS: Record<string, string> = {
   unique: "Only in Lompoc",
 }
 
+// Real Lompoc photos (public/activities/) — never generic stock.
 const CATEGORY_IMAGES: Record<string, string> = {
-  outdoors:
-    "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=800&q=80",
-  history:
-    "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=800&q=80",
-  arts: "https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=800&q=80",
-  "food-wine":
-    "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
-  family:
-    "https://images.unsplash.com/photo-1563865436874-9aef32095fad?auto=format&fit=crop&w=800&q=80",
-  unique:
-    "https://images.unsplash.com/photo-1541185934-01b600ea069c?auto=format&fit=crop&w=800&q=80",
+  outdoors: "/activities/jalama-beach.jpg",
+  history: "/activities/la-purisima-mission.jpg",
+  arts: "/activities/lompoc-murals.jpg",
+  "food-wine": "/activities/wine-ghetto-tasting.jpg",
+  family: "/activities/lompoc-flower-fields.jpg",
+  unique: "/activities/vandenberg-launch.jpg",
 }
 
 export default async function ActivitiesPage({
