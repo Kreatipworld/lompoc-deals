@@ -1,19 +1,11 @@
-import { getTranslations } from "next-intl/server"
 import Image from "next/image"
+import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
-import {
-  ArrowRight,
-  Heart,
-  MapPin,
-  Mail,
-  Bell,
-  Tag,
-  Users,
-  Compass,
-  Zap,
-  Check,
-} from "lucide-react"
-import { getSiteStats } from "@/lib/queries"
+import { getActiveDeals, getSiteStats } from "@/lib/queries"
+import { getViewer } from "@/lib/viewer"
+import { DealGrid } from "@/components/deal-card"
+import { CouponDemo } from "@/components/coupon-demo"
+import { Heart, Bell, Mail, Ticket, ArrowRight, MapPin } from "lucide-react"
 
 export async function generateMetadata({
   params,
@@ -25,17 +17,15 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
-    keywords: [
-      "lompoc locals",
-      "lompoc deals for residents",
-      "lompoc local discounts",
-      "things to do lompoc",
-      "lompoc community",
-      "lompoc ca businesses",
-      "support local lompoc",
-    ],
   }
 }
+
+const EXPERIENCES = [
+  { key: "expFlowers", img: "/activities/lompoc-flower-fields.jpg", href: "/activities/lompoc-flower-fields" },
+  { key: "expWine", img: "/activities/wine-ghetto-tasting.jpg", href: "/activities/lompoc-wine-ghetto" },
+  { key: "expBeach", img: "/activities/jalama-beach.jpg", href: "/activities/jalama-beach" },
+  { key: "expLaunch", img: "/activities/vandenberg-launch.jpg", href: "/activities/vandenberg-launches" },
+] as const
 
 export default async function LocalsPage({
   params,
@@ -44,437 +34,243 @@ export default async function LocalsPage({
 }) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: "locals" })
-  const stats = await getSiteStats()
 
-  const CATEGORIES = [
-    { label: t("cat1"), emoji: "🍽️" },
-    { label: t("cat2"), emoji: "🍷" },
-    { label: t("cat3"), emoji: "🛍️" },
-    { label: t("cat4"), emoji: "💆" },
-    { label: t("cat5"), emoji: "🔧" },
-    { label: t("cat6"), emoji: "🚗" },
-    { label: t("cat7"), emoji: "🏡" },
-    { label: t("cat8"), emoji: "🎭" },
-  ]
+  const [stats, deals, viewer] = await Promise.all([
+    getSiteStats(),
+    getActiveDeals(3),
+    getViewer(),
+  ])
 
-  const FEATURES = [
-    t("feature1"),
-    t("feature2"),
-    t("feature3"),
-    t("feature4"),
-    t("feature5"),
-    t("feature6"),
-    t("feature7"),
-    t("feature8"),
-    t("feature9"),
-    t("feature10"),
+  const benefits = [
+    { icon: <Heart className="h-5 w-5" />, title: t("benefitSaveTitle"), body: t("benefitSaveBody") },
+    { icon: <Bell className="h-5 w-5" />, title: t("benefitFollowTitle"), body: t("benefitFollowBody") },
+    { icon: <Mail className="h-5 w-5" />, title: t("benefitDigestTitle"), body: t("benefitDigestBody") },
+    { icon: <Ticket className="h-5 w-5" />, title: t("benefitHistoryTitle"), body: t("benefitHistoryBody") },
   ]
 
   return (
-    <>
-      {/* ─────────────────────────────────────────────────
-          HERO
-         ───────────────────────────────────────────────── */}
+    <main>
+      {/* ── HERO — flower fields under the purple brand wash ─────────── */}
       <section className="relative isolate overflow-hidden border-b">
-        {/* Background image */}
-        <Image
-          src="/lompoc-hero.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="absolute inset-0 -z-30 object-cover object-center"
-        />
-        {/* Gradient overlay for readability */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-r from-background/95 via-background/80 to-background/60"
+          className="absolute inset-0 -z-20 overflow-hidden"
+          style={{
+            backgroundImage: "url('/lompoc-flowers-4.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 45%",
+          }}
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-b from-transparent via-transparent to-background/90"
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-[hsl(287_81%_20%/0.82)] via-[hsl(287_81%_25%/0.72)] to-[hsl(287_81%_15%/0.85)]"
         />
 
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24 lg:py-32">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
-            {/* Left: copy + CTA */}
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-                <MapPin className="h-3 w-3" />
-                {t("heroBadge")}
-              </div>
-
-              <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                {t("heroH1")}{" "}
-                <br />
-                <span className="italic text-primary">{t("heroH1Italic")}</span>
-              </h1>
-
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                {t("heroBody")}
-              </p>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/signup/user"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
-                >
-                  {t("heroCtaPrimary")}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/deals"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border bg-background px-7 text-base font-semibold transition-colors hover:bg-accent"
-                >
-                  {t("heroCtaSecondary")}
-                </Link>
-              </div>
-
-              <p className="mt-4 text-xs text-muted-foreground">
-                {t("heroTrustLine")}
-              </p>
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:py-16">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+              <MapPin className="h-3 w-3" />
+              {t("heroBadge")}
             </div>
+            <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl">
+              {t("heroH1")} <span className="italic text-gold">{t("heroH1Italic")}</span>
+            </h1>
+            <p className="mt-4 max-w-xl text-base text-white/85 sm:text-lg">{t("heroBody")}</p>
 
-            {/* Right: live stat card */}
-            <div className="relative">
-              <div className="relative rounded-3xl border bg-card p-8 shadow-xl shadow-primary/5">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  {t("statCardEyebrow")}
-                </div>
-                <div className="mt-6 space-y-6">
-                  <BigStat
-                    value={stats.businesses}
-                    label={t("statBusinesses")}
-                  />
-                  <div className="border-t" />
-                  <BigStat
-                    value={stats.activeDeals}
-                    label={t("statDeals")}
-                  />
-                  <div className="border-t" />
-                  <BigStat
-                    value={stats.categories}
-                    label={t("statCategories")}
-                  />
-                </div>
-                <div className="mt-8 rounded-2xl bg-accent p-4 text-xs text-accent-foreground">
-                  <Heart className="mb-1 h-3.5 w-3.5" />
-                  <strong>{t("statCardNote")}</strong> {t("statCardNoteBody")}
-                </div>
-              </div>
-              <div
-                aria-hidden
-                className="absolute -inset-6 -z-10 rounded-[40px] bg-primary/5 blur-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
-          HOW IT WORKS — 3 steps
-         ───────────────────────────────────────────────── */}
-      <section className="border-b bg-secondary/30">
-        <div className="mx-auto max-w-6xl px-4 py-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("howItWorksEyebrow")}
-            </div>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              {t("howItWorksH2")}{" "}
-              <span className="italic text-primary">{t("howItWorksH2Italic")}</span>
-            </h2>
-            <p className="mt-3 text-base text-muted-foreground">
-              {t("howItWorksBody")}
-            </p>
-          </div>
-
-          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-            <Step
-              num={t("step1Num")}
-              title={t("step1Title")}
-              body={t("step1Body")}
-              delay={0}
-            />
-            <Step
-              num={t("step2Num")}
-              title={t("step2Title")}
-              body={t("step2Body")}
-              delay={80}
-            />
-            <Step
-              num={t("step3Num")}
-              title={t("step3Title")}
-              body={t("step3Body")}
-              delay={160}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
-          BENEFITS GRID — 6 reasons
-         ───────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("whyJoinEyebrow")}
-          </div>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            {t("whyJoinH2")}{" "}
-            <br />
-            <span className="italic text-primary">{t("whyJoinH2Italic")}</span>
-          </h2>
-        </div>
-
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Benefit
-            icon={<Tag className="h-5 w-5" />}
-            title={t("b1Title")}
-            body={t("b1Body")}
-            delay={0}
-          />
-          <Benefit
-            icon={<Heart className="h-5 w-5" />}
-            title={t("b2Title")}
-            body={t("b2Body")}
-            delay={60}
-          />
-          <Benefit
-            icon={<Mail className="h-5 w-5" />}
-            title={t("b3Title")}
-            body={t("b3Body")}
-            delay={120}
-          />
-          <Benefit
-            icon={<Compass className="h-5 w-5" />}
-            title={t("b4Title")}
-            body={t("b4Body")}
-            delay={0}
-          />
-          <Benefit
-            icon={<Users className="h-5 w-5" />}
-            title={t("b5Title")}
-            body={t("b5Body")}
-            delay={60}
-          />
-          <Benefit
-            icon={<Bell className="h-5 w-5" />}
-            title={t("b6Title")}
-            body={t("b6Body")}
-            delay={120}
-          />
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
-          WHAT YOU GET — feature checklist
-         ───────────────────────────────────────────────── */}
-      <section className="border-y bg-secondary/30">
-        <div className="mx-auto max-w-5xl px-4 py-20">
-          <div className="text-center">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("whatYouGetEyebrow")}
-            </div>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              {t("whatYouGetH2")} <span className="italic text-primary">{t("whatYouGetH2Free")}</span>
-            </h2>
-            <p className="mt-3 text-base text-muted-foreground">
-              {t("whatYouGetBody")}
-            </p>
-          </div>
-
-          <div className="mx-auto mt-12 max-w-2xl rounded-3xl border bg-card p-8 shadow-sm sm:p-10">
-            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {FEATURES.map((feature) => (
-                <li key={feature} className="flex items-start gap-3 text-sm">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <div className="font-display text-2xl font-bold">{t("priceFree")}</div>
-                <div className="text-sm text-muted-foreground">{t("priceForever")}</div>
-              </div>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
                 href="/signup/user"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
+                className="inline-flex items-center gap-1.5 rounded-full bg-gold px-6 py-3 text-sm font-bold text-gold-foreground shadow-lg transition-transform hover:-translate-y-0.5"
               >
-                {t("priceCtaCreate")}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
-          CATEGORIES TEASER — what's on the platform
-         ───────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("categoriesEyebrow")}
-          </div>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            {t("categoriesH2")}{" "}
-            <span className="italic text-primary">{t("categoriesH2Italic")}</span>
-          </h2>
-          <p className="mt-3 text-base text-muted-foreground">
-            {t("categoriesBody")}
-          </p>
-        </div>
-
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {CATEGORIES.map(({ label, emoji }) => (
-            <div
-              key={label}
-              className="flex flex-col items-center gap-3 rounded-2xl border bg-card p-5 text-center shadow-sm"
-            >
-              <span className="text-3xl" role="img" aria-hidden>
-                {emoji}
-              </span>
-              <span className="text-sm font-medium leading-tight">{label}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 text-center">
-          <Link
-            href="/businesses"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-          >
-            {t("browseAllBusinesses")}
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
-          FINAL CTA
-         ───────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-24">
-        <div className="relative overflow-hidden rounded-[2.5rem] border bg-gradient-to-br from-primary/15 via-accent to-background p-10 sm:p-16">
-          <div
-            aria-hidden
-            className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-primary/15 blur-3xl"
-          />
-          <div className="relative mx-auto max-w-2xl text-center">
-            <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
-              <Zap className="h-6 w-6" />
-            </div>
-            <h2 className="mt-6 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-              {t("finalH2")}{" "}
-              <span className="italic text-primary">{t("finalH2Italic")}</span>
-            </h2>
-            <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-              {t("finalBody")}
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link
-                href="/signup/user"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
-              >
-                {t("finalCtaPrimary")}
+                {t("heroCtaPrimary")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/deals"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+                className="inline-flex items-center rounded-full border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
               >
-                {t("finalCtaSecondary")}
+                {t("heroCtaSecondary")}
               </Link>
             </div>
-            <p className="mt-5 text-xs text-muted-foreground">
-              {t("finalOwnerNote")}{" "}
-              <Link
-                href="/for-businesses"
-                className="font-medium text-primary hover:underline"
-              >
-                {t("finalOwnerCta")}
-              </Link>
-            </p>
+            <p className="mt-4 text-xs font-medium text-white/70">{t("heroTrustLine")}</p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/15 pt-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/50">
+              <span className="text-white/80">{t("statBusinesses", { count: stats.businesses })}</span>
+              <span className="text-white/20">·</span>
+              <span>{t("statDeals", { count: stats.activeDeals })}</span>
+              <span className="text-white/20">·</span>
+              <span>{t("statCategories", { count: stats.categories })}</span>
+            </div>
           </div>
         </div>
       </section>
-    </>
-  )
-}
 
-function BigStat({ value, label }: { value: number; label: string }) {
-  return (
-    <div>
-      <div className="font-display text-5xl font-semibold leading-none tracking-tight">
-        {value}
-      </div>
-      <div className="mt-2 text-xs uppercase tracking-wider text-muted-foreground">
-        {label}
-      </div>
-    </div>
-  )
-}
+      {/* ── TRY A COUPON — interactive demo ──────────────────────────── */}
+      <section className="bg-secondary/30 py-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
+                {t("demoEyebrow")}
+              </p>
+              <h2 className="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                {t("demoH2")} <span className="italic text-primary">{t("demoH2Italic")}</span>
+              </h2>
+              <p className="mt-3 max-w-md text-muted-foreground">{t("demoBody")}</p>
+              <ol className="mt-5 space-y-2 text-sm text-muted-foreground">
+                {[t("demoStep1"), t("demoStep2"), t("demoStep3")].map((step, i) => (
+                  <li key={step} className="flex items-start gap-2.5">
+                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {i + 1}
+                    </span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
 
-function Step({
-  num,
-  title,
-  body,
-  delay = 0,
-}: {
-  num: string
-  title: string
-  body: string
-  delay?: number
-}) {
-  return (
-    <div
-      className="relative rounded-3xl border bg-card p-7 shadow-sm card-enter"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="font-display text-5xl font-semibold leading-none tracking-tight text-primary/30">
-        {num}
-      </div>
-      <h3 className="mt-4 font-display text-xl font-semibold tracking-tight">
-        {title}
-      </h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        {body}
-      </p>
-    </div>
-  )
-}
+            <CouponDemo
+              labels={{
+                demoChip: t("demoChip"),
+                businessName: t("demoBizName"),
+                dealTitle: t("demoDealTitle"),
+                dealDiscount: t("demoDealDiscount"),
+                dealTerms: t("demoDealTerms"),
+                expires: t("demoExpires"),
+                claimCta: t("demoClaimCta"),
+                code: t("demoCode"),
+                showAtRegister: t("demoShowAtRegister"),
+                usedCta: t("demoUsedCta"),
+                usedTitle: t("demoUsedTitle"),
+                usedBody: t("demoUsedBody"),
+                playAgain: t("demoPlayAgain"),
+              }}
+            />
+          </div>
+        </div>
+      </section>
 
-function Benefit({
-  icon,
-  title,
-  body,
-  delay = 0,
-}: {
-  icon: React.ReactNode
-  title: string
-  body: string
-  delay?: number
-}) {
-  return (
-    <div
-      className="rounded-2xl border bg-card p-6 shadow-sm card-enter"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-        {icon}
-      </div>
-      <h3 className="mt-4 font-display text-lg font-semibold tracking-tight">
-        {title}
-      </h3>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-        {body}
-      </p>
-    </div>
+      {/* ── REAL DEALS RIGHT NOW ─────────────────────────────────────── */}
+      {deals.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
+                {t("liveEyebrow")}
+              </p>
+              <h2 className="mt-1 font-display text-3xl font-bold tracking-tight">
+                {t("liveH2")}
+              </h2>
+            </div>
+            <Link
+              href="/deals"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2"
+            >
+              {t("liveSeeAll")} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <DealGrid deals={deals} viewer={viewer} fromPath="/locals" variant="tripadvisor" />
+        </section>
+      )}
+
+      {/* ── MEMBER VALUE — everything the free account does ──────────── */}
+      <section className="border-y bg-secondary/30 py-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="max-w-2xl">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
+              {t("valueEyebrow")}
+            </p>
+            <h2 className="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              {t("valueH2")}
+            </h2>
+            <p className="mt-3 text-muted-foreground">{t("valueBody")}</p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {benefits.map((b) => (
+              <div key={b.title} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  {b.icon}
+                </span>
+                <h3 className="font-display font-semibold">{b.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{b.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8">
+            <Link
+              href="/signup/user"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              {t("valueCta")}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── LOMPOC EXPERIENCES — real photos, real places ────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-14">
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
+          {t("expEyebrow")}
+        </p>
+        <h2 className="mt-1 font-display text-3xl font-bold tracking-tight">{t("expH2")}</h2>
+        <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {EXPERIENCES.map((e) => (
+            <Link
+              key={e.key}
+              href={e.href}
+              className="group relative aspect-[4/5] overflow-hidden rounded-2xl border shadow-sm"
+            >
+              <Image
+                src={e.img}
+                alt={t(e.key)}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 1024px) 50vw, 25vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+              <p className="absolute bottom-3 left-3 right-3 font-display text-sm font-bold text-white sm:text-base">
+                {t(e.key)}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ─────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <div className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-[hsl(287_70%_30%)] to-[hsl(287_81%_18%)] px-6 py-12 text-center sm:px-12">
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(50% 60% at 85% 10%, rgba(239,198,24,0.25) 0%, transparent 60%), radial-gradient(45% 55% at 10% 90%, rgba(11,153,47,0.25) 0%, transparent 60%)",
+            }}
+          />
+          <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            {t("finalH2")}
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-white/80">{t("finalBody")}</p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href="/signup/user"
+              className="inline-flex items-center gap-1.5 rounded-full bg-gold px-7 py-3 text-sm font-bold text-gold-foreground shadow-lg transition-transform hover:-translate-y-0.5"
+            >
+              {t("finalCta")}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/subscribe"
+              className="text-sm font-medium text-white/85 underline-offset-4 hover:underline"
+            >
+              {t("finalSubscribe")}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
   )
 }
