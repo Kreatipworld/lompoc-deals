@@ -585,3 +585,49 @@ export async function sendDigestEmail(
     return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
   }
 }
+
+export async function sendBroadcastEmail(
+  email: string,
+  unsubscribeToken: string,
+  subject: string,
+  bodyText: string,
+  locale: "en" | "es"
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) {
+    return { ok: false, error: "Email service not configured" }
+  }
+
+  const unsubUrl = siteUrl(`/subscribe/unsubscribe?token=${unsubscribeToken}`)
+  const paragraphs = bodyText
+    .split(/\n{2,}/)
+    .map((p) => `<p style="color: #333; line-height: 1.6; margin: 0 0 14px;">${escapeHtml(p).replace(/\n/g, "<br>")}</p>`)
+    .join("")
+
+  const footer =
+    locale === "es"
+      ? `Recibes esto porque estás suscrito al resumen de Lompoc Locals.
+         <a href="${unsubUrl}" style="color: #888;">Cancelar suscripción</a>
+         · <a href="${siteUrl("/es")}" style="color: #888;">Visitar el sitio</a>`
+      : `You're getting this because you subscribe to the Lompoc Locals digest.
+         <a href="${unsubUrl}" style="color: #888;">Unsubscribe</a>
+         · <a href="${siteUrl("/en")}" style="color: #888;">Visit site</a>`
+
+  const html = `
+    <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
+      <p style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #650C75; margin: 0 0 12px;">
+        Lompoc Locals
+      </p>
+      <h1 style="font-size: 22px; margin: 0 0 16px;">${escapeHtml(subject)}</h1>
+      ${paragraphs}
+      <p style="color: #888; font-size: 12px; margin-top: 32px;">${footer}</p>
+    </div>
+  `
+
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}

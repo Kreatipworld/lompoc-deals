@@ -418,3 +418,132 @@ export async function saveBusinessHoursAdminAction(formData: FormData) {
   redirect("/admin/businesses/missing-hours?saved=1")
 }
 
+
+// ── Command-center queries ───────────────────────────────────────────────────
+
+export async function getPulseExtras() {
+  await requireAdmin()
+  const { subscribers, analyticsEvents } = await import("@/db/schema")
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+
+  const [subs, engagement, newUsers] = await Promise.all([
+    db
+      .select({ n: sql<number>`count(*) filter (where confirmed_at is not null)`, total: sql<number>`count(*)` })
+      .from(subscribers),
+    db
+      .select({
+        claims: sql<number>`count(*) filter (where event_name = 'deal_claim')`,
+        redeems: sql<number>`count(*) filter (where event_name = 'deal_redeem')`,
+        views: sql<number>`count(*) filter (where event_name in ('business_page_viewed', 'deal_view'))`,
+      })
+      .from(analyticsEvents)
+      .where(gt(analyticsEvents.createdAt, weekAgo)),
+    db.select({ n: sql<number>`count(*)` }).from(users).where(gt(users.createdAt, weekAgo)),
+  ])
+
+  return {
+    confirmedSubscribers: Number(subs[0].n),
+    totalSubscribers: Number(subs[0].total),
+    claims7d: Number(engagement[0].claims),
+    redeems7d: Number(engagement[0].redeems),
+    views7d: Number(engagement[0].views),
+    newUsers7d: Number(newUsers[0].n),
+  }
+}
+
+export type NewPerson = {
+  kind: "user" | "subscriber"
+  label: string
+  detail: string
+  createdAt: Date
+}
+
+export async function getNewPeople(days = 7): Promise<NewPerson[]> {
+  await requireAdmin()
+  const { subscribers } = await import("@/db/schema")
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
+
+  const [newUsers, newSubs] = await Promise.all([
+    db
+      .select({ name: users.name, email: users.email, role: users.role, createdAt: users.createdAt })
+      .from(users)
+      .where(gt(users.createdAt, since)),
+    db
+      .select({ email: subscribers.email, confirmedAt: subscribers.confirmedAt, createdAt: subscribers.createdAt })
+      .from(subscribers)
+      .where(gt(subscribers.createdAt, since)),
+  ])
+
+  const people: NewPerson[] = [
+    ...newUsers.map((u) => ({
+      kind: "user" as const,
+      label: u.name ?? u.email,
+      detail: `${u.role} · ${u.email}`,
+      createdAt: u.createdAt,
+    })),
+    ...newSubs.map((s) => ({
+      kind: "subscriber" as const,
+      label: s.email,
+      detail: s.confirmedAt ? "digest subscriber · confirmed" : "digest subscriber · not confirmed yet",
+      createdAt: s.createdAt,
+    })),
+  ]
+  return people.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+}
+
+export type GrowthWeek = {
+  weekStart: Date
+  signups: number
+  views: number
+  claims: number
+}
+
+export async function getGrowthWeeks(weeks = 4): Promise<GrowthWeek[]> {
+  await requireAdmin()
+  const { analyticsEvents } = await import("@/db/schema")
+  const since = new Date(Date.now() - weeks * 7 * 24 * 60 * 60 * 1000)
+
+  const [eventRows, userRows] = await Promise.all([
+    db
+      .select({
+        week: sql<string>`date_trunc('week', ${analyticsEvents.createdAt})::text`,
+        views: sql<number>`count(*) filter (where event_name in ('business_page_viewed', 'deal_view'))`,
+        claims: sql<number>`count(*) filter (where event_name = 'deal_claim')`,
+      })
+      .from(analyticsEvents)
+      .where(gt(analyticsEvents.createdAt, since))
+      .groupBy(sql`1`),
+    db
+      .select({
+        week: sql<string>`date_trunc('week', ${users.createdAt})::text`,
+        signups: sql<number>`count(*)`,
+      })
+      .from(users)
+      .where(gt(users.createdAt, since))
+      .groupBy(sql`1`),
+  ])
+
+  const byWeek = new Map<string, GrowthWeek>()
+  for (let i = 0; i < weeks; i++) {
+    const d = new Date(Date.now() - i * 7 * 24 * 60 * 60 * 1000)
+    // normalize to Monday of that week (matches date_trunc('week'))
+    const day = (d.getDay() + 6) % 7
+    d.setDate(d.getDate() - day)
+    d.setHours(0, 0, 0, 0)
+    byWeek.set(d.toISOString().slice(0, 10), { weekStart: d, signups: 0, views: 0, claims: 0 })
+  }
+  for (const r of eventRows) {
+    const key = r.week.slice(0, 10)
+    const w = byWeek.get(key)
+    if (w) {
+      w.views = Number(r.views)
+      w.claims = Number(r.claims)
+    }
+  }
+  for (const r of userRows) {
+    const key = r.week.slice(0, 10)
+    const w = byWeek.get(key)
+    if (w) w.signups = Number(r.signups)
+  }
+  return Array.from(byWeek.values()).sort((a, b) => a.weekStart.getTime() - b.weekStart.getTime())
+}
