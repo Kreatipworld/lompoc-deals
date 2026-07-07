@@ -89,8 +89,9 @@ New file `lib/neighborhoods.ts`:
 - `latLngToNeighborhood(lat, lng): string | null` — first matching zone wins
   (list ordered most-specific first); `null` → display "Lompoc".
 - Applied at query time in `getFeedItems()` to every item that has coordinates
-  (feed posts and events have `lat/lng`; deals and new-business cards use their
-  business's `lat/lng`).
+  (feed posts have `lat/lng`; deals and new-business cards use their business's
+  `lat/lng`). Events have no coordinate columns — they display as "Lompoc" and
+  are excluded from the map view.
 
 Purely derived — **no schema change**. Chips render only for neighborhoods that
 actually have items in the current feed load, so empty zones never show.
@@ -106,8 +107,9 @@ actually have items in the current feed load, so empty zones never show.
   server component reads the same params for first paint, so shared links and
   crawlers see the filtered list. Legacy value `?type=for_sale` (used by the
   `/garage-sales` 308 redirect) keeps working and maps to the For Sale chip.
-- **Map toggle:** card ⇄ map switch in the filter bar. The map is
-  `react-leaflet` behind `next/dynamic` (`ssr: false`), reusing the pattern from
+- **Map toggle:** card ⇄ map switch in the filter bar. The map uses
+  `react-map-gl/mapbox` (the library every existing map component in this repo
+  uses — Leaflet is installed but unused), following the pattern from
   `components/garage-sales-map.tsx`. Pins are color-coded by card type (brand
   palette: purple deals, green community, gold garage sales/events); tapping a
   pin opens a popup mini-card linking to the item. Items without coordinates are
