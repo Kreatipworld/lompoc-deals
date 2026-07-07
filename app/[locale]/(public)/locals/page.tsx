@@ -114,45 +114,39 @@ export default async function LocalsPage({
       {/* ── TRY A COUPON — interactive demo ──────────────────────────── */}
       <section className="bg-secondary/30 py-14">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
-                {t("demoEyebrow")}
-              </p>
-              <h2 className="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-                {t("demoH2")} <span className="italic text-primary">{t("demoH2Italic")}</span>
-              </h2>
-              <p className="mt-3 max-w-md text-muted-foreground">{t("demoBody")}</p>
-              <ol className="mt-5 space-y-2 text-sm text-muted-foreground">
-                {[t("demoStep1"), t("demoStep2"), t("demoStep3")].map((step, i) => (
-                  <li key={step} className="flex items-start gap-2.5">
-                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                      {i + 1}
-                    </span>
-                    {step}
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            <CouponDemo
-              labels={{
-                demoChip: t("demoChip"),
-                businessName: t("demoBizName"),
-                dealTitle: t("demoDealTitle"),
-                dealDiscount: t("demoDealDiscount"),
-                dealTerms: t("demoDealTerms"),
-                expires: t("demoExpires"),
-                claimCta: t("demoClaimCta"),
-                code: t("demoCode"),
-                showAtRegister: t("demoShowAtRegister"),
-                usedCta: t("demoUsedCta"),
-                usedTitle: t("demoUsedTitle"),
-                usedBody: t("demoUsedBody"),
-                playAgain: t("demoPlayAgain"),
-              }}
-            />
+          <div className="mx-auto mb-10 max-w-2xl text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
+              {t("demoEyebrow")}
+            </p>
+            <h2 className="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              {t("demoH2")} <span className="italic text-primary">{t("demoH2Italic")}</span>
+            </h2>
+            <p className="mt-3 text-muted-foreground">{t("demoBody")}</p>
           </div>
+
+          <CouponDemo
+            labels={{
+              scenes: [
+                { title: t("demoScene1Title"), body: t("demoStep1") },
+                { title: t("demoScene2Title"), body: t("demoStep2") },
+                { title: t("demoScene3Title"), body: t("demoStep3") },
+              ],
+              panelLabels: [t("demoPanel1"), t("demoPanel2"), t("demoPanel3")],
+              demoChip: t("demoChip"),
+              businessName: t("demoBizName"),
+              dealTitle: t("demoDealTitle"),
+              dealDiscount: t("demoDealDiscount"),
+              dealTerms: t("demoDealTerms"),
+              expires: t("demoExpires"),
+              claimCta: t("demoClaimCta"),
+              code: t("demoCode"),
+              showAtRegister: t("demoShowAtRegister"),
+              usedCta: t("demoUsedCta"),
+              usedTitle: t("demoUsedTitle"),
+              usedBody: t("demoUsedBody"),
+              playAgain: t("demoPlayAgain"),
+            }}
+          />
         </div>
       </section>
 

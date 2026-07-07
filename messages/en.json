@@ -467,7 +467,13 @@
     "finalH2": "Ready to start saving?",
     "finalBody": "Join your neighbors — claim deals, save favorites, and never miss a Saturday digest.",
     "finalCta": "Join free",
-    "finalSubscribe": "Just want the weekly email? Subscribe here"
+    "finalSubscribe": "Just want the weekly email? Subscribe here",
+    "demoScene1Title": "Claim it",
+    "demoScene2Title": "Show it at the register",
+    "demoScene3Title": "That's it — you saved",
+    "demoPanel1": "Deals near you",
+    "demoPanel2": "Your coupon",
+    "demoPanel3": "All done"
   },
   "map": {
     "title": "Businesses on the map",

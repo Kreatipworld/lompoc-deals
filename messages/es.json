@@ -467,7 +467,13 @@
     "finalH2": "¿Listo para empezar a ahorrar?",
     "finalBody": "Únete a tus vecinos — reclama ofertas, guarda favoritos y no te pierdas ningún resumen del sábado.",
     "finalCta": "Únete gratis",
-    "finalSubscribe": "¿Solo quieres el correo semanal? Suscríbete aquí"
+    "finalSubscribe": "¿Solo quieres el correo semanal? Suscríbete aquí",
+    "demoScene1Title": "Reclámala",
+    "demoScene2Title": "Muéstrala en la caja",
+    "demoScene3Title": "Listo — ahorraste",
+    "demoPanel1": "Ofertas cerca de ti",
+    "demoPanel2": "Tu cupón",
+    "demoPanel3": "Todo listo"
   },
   "map": {
     "title": "Negocios en el mapa",
