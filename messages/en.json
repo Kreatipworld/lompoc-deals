@@ -296,7 +296,21 @@
       "dealSingular": "deal",
       "dealPlural": "deals",
       "dealsAvailable": "{count} {dealWord} available",
-      "seeAll": "See all"
+      "seeAll": "See all",
+      "heroCountSuffix": "live deals from Lompoc businesses right now",
+      "spotlightBadge": "This week's pick",
+      "spotlightCta": "Claim this deal",
+      "endsSoonHeading": "Ends soon",
+      "wallHeading": "All deals",
+      "endsToday": "Ends today",
+      "daysLeft": "{count, plural, =1 {1 day left} other {# days left}}",
+      "digestHeading": "Never miss the good ones",
+      "digestBody": "The week's top 10 deals, in your inbox every Saturday morning.",
+      "demoEyebrow": "First time?",
+      "demoHeading": "Claiming takes ten seconds",
+      "merchantHeading": "Your deal could be on this board",
+      "merchantBody": "470+ businesses are already listed. Post your first deal and put your offer in front of Lompoc this week.",
+      "merchantCta": "Post your deal"
     },
     "categories": {
       "food-drink": "Food & Drink",

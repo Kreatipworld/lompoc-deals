@@ -296,7 +296,21 @@
       "dealSingular": "oferta",
       "dealPlural": "ofertas",
       "dealsAvailable": "{count} {dealWord} disponibles",
-      "seeAll": "Ver todas"
+      "seeAll": "Ver todas",
+      "heroCountSuffix": "ofertas activas de negocios de Lompoc ahora mismo",
+      "spotlightBadge": "La elegida de la semana",
+      "spotlightCta": "Reclamar esta oferta",
+      "endsSoonHeading": "Terminan pronto",
+      "wallHeading": "Todas las ofertas",
+      "endsToday": "Termina hoy",
+      "daysLeft": "{count, plural, =1 {Queda 1 día} other {Quedan # días}}",
+      "digestHeading": "No te pierdas las buenas",
+      "digestBody": "Las 10 mejores ofertas de la semana, en tu correo cada sábado por la mañana.",
+      "demoEyebrow": "¿Primera vez?",
+      "demoHeading": "Reclamar toma diez segundos",
+      "merchantHeading": "Tu oferta podría estar en este tablero",
+      "merchantBody": "Más de 470 negocios ya están listados. Publica tu primera oferta y ponla frente a Lompoc esta semana.",
+      "merchantCta": "Publica tu oferta"
     },
     "categories": {
       "food-drink": "Comida y bebida",
