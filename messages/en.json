@@ -508,7 +508,19 @@
       "step2Title": "Add your details",
       "step2Body": "Logo, hours, social links, and a description. Your profile goes live the moment our admin approves it (usually same-day).",
       "step3Title": "Post deals when you want",
-      "step3Body": "Coupons, specials, announcements — post as many as you want, edit anytime, expire whenever. Locals see them on the feed."
+      "step3Body": "Coupons, specials, announcements — post as many as you want, edit anytime, expire whenever. Locals see them on the feed.",
+      "demoDealTitle": "Taco Tuesday — 2×1 street tacos",
+      "demoFormLabel": "New deal",
+      "demoPublish": "Publish deal",
+      "demoPublished": "Live on Lompoc Locals!",
+      "demoFeedHeader": "What locals see",
+      "demoBizName": "Your business",
+      "demoDiscount": "2×1",
+      "demoClaims": "Claims",
+      "demoViews": "Views",
+      "demoRedeems": "Redeemed at the register",
+      "demoStatsHeader": "Your dashboard",
+      "demoLiveChip": "Real numbers, updated live"
     },
     "benefits": {
       "eyebrow": "Why list with us",

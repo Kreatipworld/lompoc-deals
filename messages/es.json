@@ -508,7 +508,19 @@
       "step2Title": "Agrega tus detalles",
       "step2Body": "Logo, horarios, redes sociales y descripción. Tu perfil se publica en cuanto nuestro equipo lo aprueba (generalmente el mismo día).",
       "step3Title": "Publica ofertas cuando quieras",
-      "step3Body": "Cupones, especiales, anuncios — publica los que quieras, edita en cualquier momento, expíralos cuando desees. Los locales los ven en el feed."
+      "step3Body": "Cupones, especiales, anuncios — publica los que quieras, edita en cualquier momento, expíralos cuando desees. Los locales los ven en el feed.",
+      "demoDealTitle": "Martes de tacos — 2×1 en tacos",
+      "demoFormLabel": "Nueva oferta",
+      "demoPublish": "Publicar oferta",
+      "demoPublished": "¡En vivo en Lompoc Locals!",
+      "demoFeedHeader": "Lo que ven los vecinos",
+      "demoBizName": "Tu negocio",
+      "demoDiscount": "2×1",
+      "demoClaims": "Reclamos",
+      "demoViews": "Vistas",
+      "demoRedeems": "Canjeadas en la caja",
+      "demoStatsHeader": "Tu panel",
+      "demoLiveChip": "Números reales, actualizados en vivo"
     },
     "benefits": {
       "eyebrow": "Por qué publicar con nosotros",

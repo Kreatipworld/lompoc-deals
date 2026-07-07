@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import { getSiteStats } from "@/lib/queries"
 import { Reveal } from "@/components/reveal"
+import { MerchantDemo } from "@/components/merchant-demo"
 import { getTranslations } from "next-intl/server"
 
 export async function generateMetadata({
@@ -53,40 +54,43 @@ export default async function ForBusinessesPage() {
           HERO — bold, conversion-first
          ───────────────────────────────────────────────── */}
       <section className="relative isolate overflow-hidden">
+        {/* Community photo — festival crowd at Ryon Park (these are your customers) */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-b from-accent via-background to-background"
+          className="absolute inset-0 -z-20 overflow-hidden"
+          style={{
+            backgroundImage: "url('/lompoc-community-2.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 38%",
+          }}
         />
+        {/* Wash: dark behind the copy (left), lighter over the crowd (right) */}
         <div
           aria-hidden
-          className="absolute -left-40 -top-24 -z-10 h-[520px] w-[520px] rounded-full bg-primary/20 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="absolute -right-32 top-40 -z-10 h-[420px] w-[420px] rounded-full bg-success/10 blur-3xl"
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-[hsl(287_81%_13%/0.94)] via-[hsl(287_81%_17%/0.78)] to-[hsl(287_81%_20%/0.34)]"
         />
 
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24 lg:py-32">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
             {/* Left: copy + CTA */}
             <Reveal preset="stagger" as="div">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
                 <MapPin className="h-3.5 w-3.5" />
                 {t("hero.badge")}
               </div>
 
-              <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.03] tracking-tight sm:text-5xl lg:text-[4.25rem]">
+              <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.03] tracking-tight text-white sm:text-5xl lg:text-[4.25rem]">
                 {t("hero.h1")}{" "}
-                <span className="relative inline-block italic text-primary">
+                <span className="relative inline-block italic text-gold">
                   {t("hero.h1Italic")}
                   <span
                     aria-hidden
-                    className="absolute -bottom-1 left-0 h-2.5 w-full rounded-full bg-gold/50"
+                    className="absolute -bottom-1 left-0 h-2.5 w-full rounded-full bg-gold/40"
                   />
                 </span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
                 {t("hero.subtitle")}
               </p>
 
@@ -100,13 +104,13 @@ export default async function ForBusinessesPage() {
                 </Link>
                 <Link
                   href="/businesses"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border bg-background px-8 py-3.5 text-base font-semibold transition-colors hover:bg-accent"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-8 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
                 >
                   {t("hero.ctaSeeWho")}
                 </Link>
               </div>
 
-              <p className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
+              <p className="mt-5 flex items-center gap-2 text-xs text-white/75">
                 <ShieldCheck className="h-4 w-4 text-success" />
                 {t("hero.trustLine")}
               </p>
@@ -181,17 +185,28 @@ export default async function ForBusinessesPage() {
             <p className="mt-4 text-base text-muted-foreground">{t("howItWorks.subtitle")}</p>
           </div>
 
-          <div className="relative mt-16">
-            {/* connector line */}
-            <div
-              aria-hidden
-              className="absolute left-0 right-0 top-8 hidden h-px bg-gradient-to-r from-transparent via-border to-transparent md:block"
+          <div className="relative mt-12">
+            <MerchantDemo
+              labels={{
+                scenes: [
+                  { title: t("howItWorks.step1Title"), body: t("howItWorks.step1Body") },
+                  { title: t("howItWorks.step2Title"), body: t("howItWorks.step2Body") },
+                  { title: t("howItWorks.step3Title"), body: t("howItWorks.step3Body") },
+                ],
+                dealTitleTyped: t("howItWorks.demoDealTitle"),
+                formLabel: t("howItWorks.demoFormLabel"),
+                publish: t("howItWorks.demoPublish"),
+                published: t("howItWorks.demoPublished"),
+                feedHeader: t("howItWorks.demoFeedHeader"),
+                demoBizName: t("howItWorks.demoBizName"),
+                demoDiscount: t("howItWorks.demoDiscount"),
+                claimsLabel: t("howItWorks.demoClaims"),
+                viewsLabel: t("howItWorks.demoViews"),
+                redeemsLabel: t("howItWorks.demoRedeems"),
+                statsHeader: t("howItWorks.demoStatsHeader"),
+                liveChip: t("howItWorks.demoLiveChip"),
+              }}
             />
-            <Reveal preset="stagger" className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              <Step num="01" icon={<Store className="h-5 w-5" />} title={t("howItWorks.step1Title")} body={t("howItWorks.step1Body")} />
-              <Step num="02" icon={<Tag className="h-5 w-5" />} title={t("howItWorks.step2Title")} body={t("howItWorks.step2Body")} />
-              <Step num="03" icon={<TrendingUp className="h-5 w-5" />} title={t("howItWorks.step3Title")} body={t("howItWorks.step3Body")} />
-            </Reveal>
           </div>
         </div>
       </section>
@@ -428,31 +443,6 @@ function StatChip({
       <div className="mt-1.5 text-[10px] uppercase tracking-wider text-primary-foreground/70 sm:text-[11px]">
         {label}
       </div>
-    </div>
-  )
-}
-
-function Step({
-  num,
-  icon,
-  title,
-  body,
-}: {
-  num: string
-  icon: React.ReactNode
-  title: string
-  body: string
-}) {
-  return (
-    <div className="relative rounded-3xl border bg-card p-7 shadow-sm">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md shadow-primary/20">
-        {icon}
-      </div>
-      <div className="mt-5 font-display text-sm font-bold tracking-[0.2em] text-primary/40">
-        {num}
-      </div>
-      <h3 className="mt-1 font-display text-xl font-semibold tracking-tight">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
     </div>
   )
 }
