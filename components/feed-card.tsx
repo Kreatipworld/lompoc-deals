@@ -27,9 +27,10 @@ export async function FeedCard({ item }: { item: FeedDisplayItem }) {
   const t = await getTranslations("feedCard")
 
   const typeLabel = (type: FeedDisplayItem["type"]): string => {
-    if (type === "for_sale") return t("forSale")
+    if (type === "for_sale" || type === "garage_sale") return t("forSale")
     if (type === "info") return t("info")
-    return t("event")
+    if (type === "event") return t("event")
+    return t("info")
   }
 
   const priceStr = formatPrice(item.priceCents, t("free"))

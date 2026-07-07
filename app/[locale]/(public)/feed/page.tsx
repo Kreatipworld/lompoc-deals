@@ -26,7 +26,7 @@ export default async function FeedPage({
 }) {
   const t = await getTranslations("feed")
   const typeFilter = isFeedType(searchParams?.type) ? searchParams!.type : undefined
-  const items: FeedDisplayItem[] = await getFeedItems({ type: typeFilter })
+  const items: FeedDisplayItem[] = await getFeedItems()
 
   const filterLink = (val: FeedType | "all", label: string) => {
     const active = (val === "all" && !typeFilter) || val === typeFilter
