@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { isNotNull, gt } from "drizzle-orm"
+import { gt } from "drizzle-orm"
 import { formatDistanceToNow } from "date-fns"
 import {
   Mail,
