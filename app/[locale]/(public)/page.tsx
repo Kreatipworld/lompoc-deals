@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import {
-  ArrowRight, MapPin, Mail, Sparkles, Tag, Search, Heart, ChevronDown,
+  ArrowRight, MapPin, Mail, Sparkles, Tag, ChevronDown,
   Building2, ExternalLink, Compass
 } from "lucide-react"
 import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals } from "@/lib/queries"
@@ -15,6 +15,7 @@ import { DealsCarousel } from "@/components/deals-carousel"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
+import { CouponDemo } from "@/components/coupon-demo"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
@@ -69,6 +70,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getViewer(),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
+  const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
 
   return (
     <>
@@ -388,41 +390,29 @@ export default async function HomePage({ params }: { params: { locale: string } 
               {t("howItWorks.subtitle")}
             </p>
           </AnimeReveal>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-            {[
-              {
-                icon: Search,
-                title: t("howItWorks.step1Title"),
-                body: t("howItWorks.step1Body"),
-                step: "01",
-              },
-              {
-                icon: Tag,
-                title: t("howItWorks.step2Title"),
-                body: t("howItWorks.step2Body"),
-                step: "02",
-              },
-              {
-                icon: Heart,
-                title: t("howItWorks.step3Title"),
-                body: t("howItWorks.step3Body"),
-                step: "03",
-              },
-            ].map(({ icon: Icon, title, body, step }, i) => (
-              <AnimeReveal key={step} direction="up" delay={i * 80} duration={560}>
-                <div className="relative flex flex-col items-center rounded-2xl border bg-background p-8 text-center shadow-sm">
-                  <span className="absolute right-4 top-4 font-display text-5xl font-bold text-muted/30 select-none">
-                    {step}
-                  </span>
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="font-display text-lg font-semibold">{title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{body}</p>
-                </div>
-              </AnimeReveal>
-            ))}
-          </div>
+          <CouponDemo
+            labels={{
+              scenes: [
+                { title: t("howItWorks.step1Title"), body: t("howItWorks.step1Body") },
+                { title: t("howItWorks.step2Title"), body: t("howItWorks.step2Body") },
+                { title: t("howItWorks.step3Title"), body: t("howItWorks.step3Body") },
+              ],
+              panelLabels: [tl("demoPanel1"), tl("demoPanel2"), tl("demoPanel3")],
+              demoChip: tl("demoChip"),
+              businessName: tl("demoBizName"),
+              dealTitle: tl("demoDealTitle"),
+              dealDiscount: tl("demoDealDiscount"),
+              dealTerms: tl("demoDealTerms"),
+              expires: tl("demoExpires"),
+              claimCta: tl("demoClaimCta"),
+              code: tl("demoCode"),
+              showAtRegister: tl("demoShowAtRegister"),
+              usedCta: tl("demoUsedCta"),
+              usedTitle: tl("demoUsedTitle"),
+              usedBody: tl("demoUsedBody"),
+              playAgain: tl("demoPlayAgain"),
+            }}
+          />
         </div>
       </section>
 
