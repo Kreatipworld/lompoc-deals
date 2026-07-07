@@ -20,6 +20,30 @@ const sat = new Date("2026-07-11T09:00:00-07:00")
 assert.equal(isThisWeekend(new Date("2026-07-12T08:00:00-07:00"), null, sat), true)
 assert.equal(isThisWeekend(null, null, tue), false)
 
+// --- isThisWeekend: Pacific-pinned UTC-boundary cases (must pass under any TZ, incl. TZ=UTC)
+// Fri just after midnight Pacific (07:30 UTC) counts as the weekend, even though
+// server-local (UTC) midnight rollover hasn't happened at the equivalent hour.
+assert.equal(
+  isThisWeekend(new Date("2026-07-10T00:30:00-07:00"), null, tue),
+  true
+)
+// Mon just after midnight Pacific must NOT count as weekend.
+assert.equal(
+  isThisWeekend(new Date("2026-07-13T00:30:00-07:00"), null, tue),
+  false
+)
+// Sun 11:30pm Pacific (Mon 06:30 UTC): current weekend is still active — a sale
+// spanning Sat Jul 11 → Sun Jul 12 (Pacific) still counts.
+const sunLateNight = new Date("2026-07-12T23:30:00-07:00")
+assert.equal(
+  isThisWeekend(
+    new Date("2026-07-11T09:00:00-07:00"),
+    new Date("2026-07-12T20:00:00-07:00"),
+    sunLateNight
+  ),
+  true
+)
+
 // --- interleaveDeals: 1 deal after every 4 non-deals, never adjacent, leftovers dropped
 const nd = (n: number) => Array.from({ length: n }, (_, i) => ({ source: "feed", i }))
 const dl = (n: number) => Array.from({ length: n }, (_, i) => ({ source: "deal", i }))
