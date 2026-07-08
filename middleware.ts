@@ -42,6 +42,16 @@ function ensureSessionCookie(req: Parameters<Parameters<typeof auth>[0]>[0], res
 export default auth(function middleware(req) {
   const { pathname } = req.nextUrl
 
+  // Legacy production host → canonical domain (exact match only, so preview
+  // *.vercel.app deployments are untouched). Read the Host header — Auth.js
+  // rewrites req.nextUrl's origin to AUTH_URL, so nextUrl can't be trusted here.
+  if (req.headers.get("host") === "lompoc-deals.vercel.app") {
+    return NextResponse.redirect(
+      new URL(pathname + req.nextUrl.search, "https://www.lompoclocals.com"),
+      308
+    )
+  }
+
   // Skip intl middleware for API routes — they have no locale prefix
   if (pathname.startsWith("/api")) {
     const apiPassthrough = NextResponse.next()
