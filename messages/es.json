@@ -946,7 +946,13 @@
     "event": "Evento",
     "free": "Gratis",
     "freeObo": "Gratis / O mejor oferta",
-    "new": "Nuevo"
+    "new": "Nuevo",
+    "garageSale": "Venta de garaje",
+    "thisWeekend": "Este fin de semana",
+    "deal": "Oferta",
+    "newInTown": "Nuevo en Lompoc",
+    "fromTheBlog": "Del blog",
+    "at": "en {name}"
   },
   "garageSales": {
     "title": "Ventas de Garaje en Lompoc",

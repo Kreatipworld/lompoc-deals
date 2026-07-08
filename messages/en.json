@@ -942,11 +942,17 @@
   },
   "feedCard": {
     "forSale": "For sale",
-    "info": "Info",
+    "info": "Community",
     "event": "Event",
     "free": "Free",
     "freeObo": "Free / OBO",
-    "new": "New"
+    "new": "New",
+    "garageSale": "Garage sale",
+    "thisWeekend": "This weekend",
+    "deal": "Deal",
+    "newInTown": "New in town",
+    "fromTheBlog": "From the blog",
+    "at": "at {name}"
   },
   "garageSales": {
     "title": "Garage Sales in Lompoc",
