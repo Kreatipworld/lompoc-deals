@@ -4,12 +4,14 @@ import { getFeedItems, type FeedDisplayItem } from "@/lib/feed-queries"
 import { FeedExplorer } from "@/components/feed-explorer"
 import { NeighborhoodDemo } from "@/components/neighborhood-demo"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata() {
   const t = await getTranslations("feed")
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    alternates: pageAlternates("/feed"),
   }
 }
 

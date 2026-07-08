@@ -8,6 +8,7 @@ import { SafeImage } from "@/components/safe-image"
 import { BlogRelatedLinks } from "@/components/blog-related-links"
 import { BlogBusinessSpotlight } from "@/components/blog-business-spotlight"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -34,7 +35,7 @@ export async function generateMetadata({
       authors: post.authorName ? [post.authorName] : undefined,
       images: post.imageUrl ? [{ url: post.imageUrl, alt: post.title }] : undefined,
     },
-    alternates: { canonical: `${siteUrl}/blog/${post.slug}` },
+    alternates: pageAlternates(`/blog/${params.slug}`),
   }
 }
 

@@ -9,6 +9,7 @@ import { db } from "@/db/client"
 import { activities } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { ArrowRight, Tag, Wine, Rocket, Flower2 } from "lucide-react"
+import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata({
   params,
@@ -20,6 +21,7 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    alternates: pageAlternates("/hotels"),
   }
 }
 

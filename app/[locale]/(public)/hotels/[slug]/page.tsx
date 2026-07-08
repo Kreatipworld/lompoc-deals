@@ -19,6 +19,7 @@ import {
   Navigation,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 export function generateStaticParams() {
   return HOTELS.map((h) => ({ slug: h.slug }))
@@ -44,6 +45,7 @@ export async function generateMetadata({
       title: `${hotel.name} · Lompoc, CA`,
       description: hotel.tagline,
     },
+    alternates: pageAlternates(`/hotels/${params.slug}`),
   }
 }
 

@@ -4,6 +4,7 @@ import { getActivities, getActivityCategories } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
+import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "activities" })
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       description: t("metaOgDescription"),
       images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
     },
+    alternates: pageAlternates("/activities"),
   }
 }
 

@@ -5,6 +5,7 @@ import { CalendarDays, Tag, ChevronLeft, ChevronRight, User, ArrowRight } from "
 import { getPublishedBlogPosts, getBlogCategories, countPublishedBlogPosts } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 const PAGE_SIZE = 12
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     description: "Local stories, tips, and community news for Lompoc, CA.",
     url: `${siteUrl}/blog`,
   },
-  alternates: { canonical: `${siteUrl}/blog` },
+  alternates: pageAlternates("/blog"),
 }
 
 export default async function BlogIndexPage({
