@@ -869,6 +869,8 @@
     "viewCards": "Tarjetas",
     "viewMap": "Mapa",
     "mapNoLocation": "{count} publicaciones sin ubicación no se muestran",
+    "mapUnavailable": "El mapa no está disponible en este momento.",
+    "mapLoading": "Cargando mapa…",
     "emptyState": "Aún no hay publicaciones. ¡Sé el primero en publicar!",
     "new": "Nuevo",
     "detail": {

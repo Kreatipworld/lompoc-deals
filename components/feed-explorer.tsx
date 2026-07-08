@@ -9,15 +9,20 @@ import { neighborhoodLabel } from "@/lib/neighborhoods"
 import { FeedCard } from "@/components/feed-card"
 import { Reveal } from "@/components/reveal"
 
+function MapLoadingFallback() {
+  const t = useTranslations("feed")
+  return (
+    <div className="flex h-[520px] items-center justify-center rounded-2xl border bg-muted text-xs text-muted-foreground">
+      {t("mapLoading")}
+    </div>
+  )
+}
+
 const FeedMap = dynamic(
   () => import("@/components/feed-map").then((m) => m.FeedMap),
   {
     ssr: false,
-    loading: () => (
-      <div className="flex h-[520px] items-center justify-center rounded-2xl border bg-muted text-xs text-muted-foreground">
-        Loading map…
-      </div>
-    ),
+    loading: () => <MapLoadingFallback />,
   }
 )
 

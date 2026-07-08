@@ -53,7 +53,7 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
   if (!MAPBOX_TOKEN) {
     return (
       <p className="py-12 text-center text-muted-foreground">
-        Map view is currently unavailable.
+        {t("mapUnavailable")}
       </p>
     )
   }
