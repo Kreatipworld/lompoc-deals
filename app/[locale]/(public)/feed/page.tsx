@@ -1,15 +1,9 @@
 import { Link } from "@/i18n/navigation"
 import { Sparkles, ArrowRight } from "lucide-react"
 import { getFeedItems, type FeedDisplayItem } from "@/lib/feed-queries"
-import { FeedMasonry } from "@/components/feed-masonry"
+import { FeedExplorer } from "@/components/feed-explorer"
 import { NeighborhoodDemo } from "@/components/neighborhood-demo"
 import { getTranslations } from "next-intl/server"
-
-type FeedType = "for_sale" | "info" | "event"
-
-function isFeedType(s: string | undefined): s is FeedType {
-  return s === "for_sale" || s === "info" || s === "event"
-}
 
 export async function generateMetadata() {
   const t = await getTranslations("feed")
@@ -22,29 +16,10 @@ export async function generateMetadata() {
 export default async function FeedPage({
   searchParams,
 }: {
-  searchParams?: { type?: string }
+  searchParams?: { type?: string; hood?: string }
 }) {
   const t = await getTranslations("feed")
-  const typeFilter = isFeedType(searchParams?.type) ? searchParams!.type : undefined
-  const items: FeedDisplayItem[] = await getFeedItems({ type: typeFilter })
-
-  const filterLink = (val: FeedType | "all", label: string) => {
-    const active = (val === "all" && !typeFilter) || val === typeFilter
-    const href = val === "all" ? "/feed" : `/feed?type=${val}`
-    return (
-      <Link
-        key={val}
-        href={href}
-        className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
-          active
-            ? "border-primary bg-primary text-primary-foreground"
-            : "border-border bg-background text-muted-foreground hover:bg-accent"
-        }`}
-      >
-        {label}
-      </Link>
-    )
-  }
+  const items: FeedDisplayItem[] = await getFeedItems()
 
   return (
     <main>
@@ -83,14 +58,11 @@ export default async function FeedPage({
 
       {/* ── FEED — content first ─────────────────────────────────────── */}
       <div className="mx-auto max-w-6xl px-4 py-8">
-        <div className="mb-6 flex flex-wrap items-center gap-2">
-          {filterLink("all", t("filterAll"))}
-          {filterLink("for_sale", t("filterForSale"))}
-          {filterLink("info", t("filterInfo"))}
-          {filterLink("event", t("filterEvents"))}
-        </div>
-
-        <FeedMasonry items={items} />
+        <FeedExplorer
+          items={items}
+          initialType={searchParams?.type ?? ""}
+          initialHood={searchParams?.hood ?? ""}
+        />
       </div>
 
       {/* ── HOW IT WORKS — animated storyboard + post CTA ───────────── */}

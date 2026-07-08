@@ -860,8 +860,14 @@
     "postLink": "Publicar en el vecindario →",
     "filterAll": "Todo",
     "filterForSale": "En venta",
-    "filterInfo": "Información",
+    "filterInfo": "Noticias",
     "filterEvents": "Eventos",
+    "filterDeals": "Ofertas",
+    "filterGarageSales": "Ventas de garaje",
+    "filterNews": "Noticias",
+    "hoodAll": "Todo Lompoc",
+    "viewCards": "Tarjetas",
+    "viewMap": "Mapa",
     "emptyState": "Aún no hay publicaciones. ¡Sé el primero en publicar!",
     "new": "Nuevo",
     "detail": {
@@ -942,11 +948,17 @@
   },
   "feedCard": {
     "forSale": "En venta",
-    "info": "Información",
+    "info": "Comunidad",
     "event": "Evento",
     "free": "Gratis",
     "freeObo": "Gratis / O mejor oferta",
-    "new": "Nuevo"
+    "new": "Nuevo",
+    "garageSale": "Venta de garaje",
+    "thisWeekend": "Este fin de semana",
+    "deal": "Oferta",
+    "newInTown": "Nuevo en Lompoc",
+    "fromTheBlog": "Del blog",
+    "at": "en {name}"
   },
   "garageSales": {
     "title": "Ventas de Garaje en Lompoc",
