@@ -7,18 +7,18 @@ import type { FeedDisplayItem } from "@/lib/feed-queries"
 import { isThisWeekend } from "@/lib/feed-interleave"
 import { neighborhoodLabel } from "@/lib/neighborhoods"
 
-function formatPrice(cents: number | null, freeLabel: string): string | null {
+function formatPrice(cents: number | null, freeLabel: string, locale: string): string | null {
   if (cents === null) return null
   if (cents === 0) return freeLabel
-  return `$${(cents / 100).toLocaleString(undefined, {
+  return `$${(cents / 100).toLocaleString(locale, {
     minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`
 }
 
-function formatDate(d: Date | null, withTime: boolean): string | null {
+function formatDate(d: Date | null, withTime: boolean, locale: string): string | null {
   if (!d) return null
-  return d.toLocaleDateString(undefined, {
+  return d.toLocaleDateString(locale, {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -45,12 +45,12 @@ export function FeedCard({ item }: { item: FeedDisplayItem }) {
   const meta = TYPE_META[item.type]
   const Icon = meta.icon
 
-  const priceStr = formatPrice(item.priceCents, t("free"))
+  const priceStr = formatPrice(item.priceCents, t("free"), locale)
   const dateStr =
     item.type === "garage_sale"
-      ? formatDate(item.saleStartsAt, false)
+      ? formatDate(item.saleStartsAt, false, locale)
       : item.source === "event"
-        ? formatDate(item.startsAt, true)
+        ? formatDate(item.startsAt, true, locale)
         : null
   const weekend =
     item.type === "garage_sale" &&
