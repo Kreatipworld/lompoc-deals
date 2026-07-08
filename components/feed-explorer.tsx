@@ -1,12 +1,27 @@
 "use client"
 
 import { useMemo, useState, useTransition } from "react"
+import dynamic from "next/dynamic"
 import { usePathname, useRouter } from "@/i18n/navigation"
 import { useLocale, useTranslations } from "next-intl"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
 import { neighborhoodLabel } from "@/lib/neighborhoods"
 import { FeedCard } from "@/components/feed-card"
 import { Reveal } from "@/components/reveal"
+
+const FeedMap = dynamic(
+  () => import("@/components/feed-map").then((m) => m.FeedMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-[520px] items-center justify-center rounded-2xl border bg-muted text-xs text-muted-foreground">
+        Loading map…
+      </div>
+    ),
+  }
+)
+
+type ViewMode = "cards" | "map"
 
 type TypeFilter = "all" | "deal" | "for_sale" | "garage_sale" | "event" | "news"
 
@@ -51,6 +66,7 @@ export function FeedExplorer({
 
   const [type, setType] = useState<TypeFilter>(normalizeType(initialType))
   const [hood, setHood] = useState<string>(initialHood || "all")
+  const [view, setView] = useState<ViewMode>("cards")
 
   // chips only for neighborhoods that actually have items
   const hoods = useMemo(() => {
@@ -97,18 +113,25 @@ export function FeedExplorer({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-2">
-        {TYPE_FILTERS.map((f) =>
-          chip(
-            type === f.value,
-            t(f.labelKey),
-            () => {
-              setType(f.value)
-              sync(f.value, hood)
-            },
-            `type-${f.value}`
-          )
-        )}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          {TYPE_FILTERS.map((f) =>
+            chip(
+              type === f.value,
+              t(f.labelKey),
+              () => {
+                setType(f.value)
+                sync(f.value, hood)
+              },
+              `type-${f.value}`
+            )
+          )}
+        </div>
+
+        <div className="flex items-center gap-1 rounded-full border border-border p-1">
+          {chip(view === "cards", t("viewCards"), () => setView("cards"), "view-cards")}
+          {chip(view === "map", t("viewMap"), () => setView("map"), "view-map")}
+        </div>
       </div>
 
       {hoods.length > 0 && (
@@ -128,7 +151,13 @@ export function FeedExplorer({
         </div>
       )}
 
-      {rest.length === 0 && featured.length === 0 ? (
+      {view === "map" ? (
+        visible.length === 0 ? (
+          <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>
+        ) : (
+          <FeedMap items={visible} />
+        )
+      ) : rest.length === 0 && featured.length === 0 ? (
         <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>
       ) : (
         <div key={`${type}-${hood}`} className="space-y-8">

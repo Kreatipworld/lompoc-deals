@@ -868,6 +868,7 @@
     "hoodAll": "All of Lompoc",
     "viewCards": "Cards",
     "viewMap": "Map",
+    "mapNoLocation": "{count} items without a map location are hidden",
     "emptyState": "No posts yet. Be the first to post!",
     "new": "New",
     "detail": {

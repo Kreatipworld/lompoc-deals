@@ -868,6 +868,7 @@
     "hoodAll": "Todo Lompoc",
     "viewCards": "Tarjetas",
     "viewMap": "Mapa",
+    "mapNoLocation": "{count} publicaciones sin ubicación no se muestran",
     "emptyState": "Aún no hay publicaciones. ¡Sé el primero en publicar!",
     "new": "Nuevo",
     "detail": {
