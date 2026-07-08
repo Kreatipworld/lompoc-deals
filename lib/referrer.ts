@@ -25,7 +25,8 @@ export function normalizeReferrer(raw: string | null | undefined): ReferrerSourc
   }
   if (!host) return "Direct"
 
-  if (host.includes("lompoc-deals")) return "Direct" // same-origin navigation
+  if (host.includes("lompoc-deals") || host.includes("lompoclocals"))
+    return "Direct" // same-origin navigation (legacy + current domain)
 
   const labels = host.split(".")
   const has = (label: string) => labels.includes(label)

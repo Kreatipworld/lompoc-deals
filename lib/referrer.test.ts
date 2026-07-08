@@ -11,7 +11,8 @@ assert.equal(normalizeReferrer("android-app://com.google.android.googlequicksear
 assert.equal(normalizeReferrer("https://t.co/abc"), "Twitter/X")
 assert.equal(normalizeReferrer("https://twitter.com/x"), "Twitter/X")
 assert.equal(normalizeReferrer("https://duckduckgo.com/"), "Other search")
-assert.equal(normalizeReferrer("https://lompoc-deals.vercel.app/en"), "Direct") // same-origin
+assert.equal(normalizeReferrer("https://lompoc-deals.vercel.app/en"), "Direct") // same-origin (legacy)
+assert.equal(normalizeReferrer("https://www.lompoclocals.com/feed"), "Direct") // same-origin (current)
 assert.equal(normalizeReferrer(""), "Direct")
 assert.equal(normalizeReferrer(null), "Direct")
 assert.equal(normalizeReferrer(undefined), "Direct")

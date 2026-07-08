@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
           r.category ?? "",
           r.phone ?? "",
           r.website ?? "",
-          `https://lompoc-deals.vercel.app/en/biz/${r.slug}`,
+          `${process.env.AUTH_URL ?? "http://localhost:3000"}/biz/${r.slug}`,
           r.status,
         ]
           .map(csvField)
