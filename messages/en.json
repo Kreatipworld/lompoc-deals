@@ -2044,5 +2044,25 @@
     "when": "When",
     "where": "Where",
     "notFoundTitle": "Event not found"
+  },
+  "garageSalesPage": {
+    "metaTitle": "Garage Sales in Lompoc, CA — This Weekend's Yard Sales | Lompoc Locals",
+    "metaDescription": "Find garage sales and yard sales happening in Lompoc this weekend — posted by your neighbors, with map, dates, and photos. Post yours free.",
+    "h1": "Garage Sales in Lompoc",
+    "intro": "Every garage sale and yard sale posted by Lompoc neighbors — updated all week, mapped by neighborhood. Sales happening this weekend are listed first.",
+    "thisWeekend": "This weekend",
+    "upcoming": "More upcoming sales",
+    "empty": "No garage sales posted yet this week. Check back Thursday–Saturday morning, or be the first:",
+    "postCta": "Having a sale? Post it free",
+    "browseAll": "Browse all for-sale posts",
+    "mapHeading": "Sales on the map",
+    "byNeighborhood": "Browse by neighborhood",
+    "faqHeading": "Garage sale questions",
+    "faq1q": "When are garage sales in Lompoc?",
+    "faq1a": "Most Lompoc garage sales run Friday through Sunday mornings, typically 7am–1pm. New sales are posted here all week — the This Weekend section shows what's coming up.",
+    "faq2q": "How do I find garage sales near me in Lompoc?",
+    "faq2a": "Use the map on this page or filter by neighborhood — Old Town, Downtown, Vandenberg Village, Mission Hills, Mesa Oaks and more. Each sale lists its address and dates.",
+    "faq3q": "How do I post my garage sale in Lompoc?",
+    "faq3a": "Posting is free: create a local account, add your address, dates, photos and what you're selling. Your sale appears in the Neighborhood feed and on this page."
   }
 }
