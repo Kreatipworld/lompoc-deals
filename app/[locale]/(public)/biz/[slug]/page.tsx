@@ -31,6 +31,7 @@ import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
+import { pageAlternates } from "@/lib/seo"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
@@ -47,7 +48,6 @@ export async function generateMetadata({
   const { name, description, about } = data.business
   const catLabel = data.business.category?.name ?? "local business"
   const fallbackDescription = t("metaFallbackDescription", { name, catLabel })
-  const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
   // Prefer the longer About copy (truncated) for the meta description.
   const aboutSnippet = about?.trim()
     ? about.trim().slice(0, 155).replace(/\s+\S*$/, "") + (about.trim().length > 155 ? "…" : "")
@@ -57,7 +57,7 @@ export async function generateMetadata({
     title: `${name} — ${t("metaTitleSuffix")}`,
     description: metaDescription,
     keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
-    alternates: { canonical: `${siteUrl}/biz/${params.slug}` },
+    alternates: pageAlternates(`/biz/${params.slug}`),
     openGraph: {
       title: `${name} ${t("metaOgSuffix")}`,
       description: metaDescription,

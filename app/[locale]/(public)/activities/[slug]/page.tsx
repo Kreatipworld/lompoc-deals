@@ -7,6 +7,7 @@ import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 // Lazy-load single-pin map to avoid SSR issues with Leaflet
 const ActivityMapPin = dynamic(
@@ -35,6 +36,7 @@ export async function generateMetadata({
       description: activity.description ?? undefined,
       images: activity.imageUrl ? [{ url: activity.imageUrl }] : undefined,
     },
+    alternates: pageAlternates(`/activities/${slug}`),
   }
 }
 

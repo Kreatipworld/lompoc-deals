@@ -2037,5 +2037,12 @@
     "title": "Featured",
     "subtitle": "Top local businesses",
     "badge": "Featured"
+  },
+  "eventDetail": {
+    "metaTitle": "{title} — Event in Lompoc | Lompoc Locals",
+    "backToFeed": "Back to the Neighborhood feed",
+    "when": "When",
+    "where": "Where",
+    "notFoundTitle": "Event not found"
   }
 }

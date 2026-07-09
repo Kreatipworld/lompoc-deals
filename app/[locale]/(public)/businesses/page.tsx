@@ -20,12 +20,14 @@ import { AnimeReveal } from "@/components/anime-reveal"
 import { BusinessAvatar } from "@/components/business-avatar"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
+import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("businesses.directory")
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    alternates: pageAlternates("/businesses"),
   }
 }
 

@@ -35,6 +35,7 @@ import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 import { BusinessAvatar } from "@/components/business-avatar"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 const ICONS: Record<string, LucideIcon> = {
   utensils: Utensils,
@@ -61,6 +62,7 @@ export async function generateMetadata({
     title: `Lompoc ${cat.name} Businesses & Deals — Local Directory | Lompoc Locals`,
     description: `Browse ${catLower} businesses in Lompoc, CA — local listings, active deals, and coupons. Updated daily.`,
     keywords: [`lompoc ${catLower}`, `lompoc ${catLower} businesses`, `lompoc ${catLower} deals`, "lompoc ca"],
+    alternates: pageAlternates(`/category/${params.slug}`),
   }
 }
 

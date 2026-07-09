@@ -2037,5 +2037,12 @@
     "title": "Destacados",
     "subtitle": "Negocios locales destacados",
     "badge": "Destacado"
+  },
+  "eventDetail": {
+    "metaTitle": "{title} — Evento en Lompoc | Lompoc Locals",
+    "backToFeed": "Volver al feed del vecindario",
+    "when": "Cuándo",
+    "where": "Dónde",
+    "notFoundTitle": "Evento no encontrado"
   }
 }
