@@ -26,7 +26,8 @@ export async function generateMetadata({
   if (!ev) return {}
   const t = await getTranslations("eventDetail")
   return {
-    title: t("metaTitle", { title: ev.title }),
+    // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
+    title: { absolute: t("metaTitle", { title: ev.title }) },
     description: ev.description?.slice(0, 160) ?? undefined,
     alternates: pageAlternates(`/events/${ev.id}`),
   }

@@ -11,7 +11,8 @@ import { pageAlternates } from "@/lib/seo"
 export async function generateMetadata() {
   const t = await getTranslations("garageSalesPage")
   return {
-    title: t("metaTitle"),
+    // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
+    title: { absolute: t("metaTitle") },
     description: t("metaDescription"),
     alternates: pageAlternates("/garage-sales"),
   }
