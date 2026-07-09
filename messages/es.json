@@ -2044,5 +2044,25 @@
     "when": "Cuándo",
     "where": "Dónde",
     "notFoundTitle": "Evento no encontrado"
+  },
+  "garageSalesPage": {
+    "metaTitle": "Ventas de garaje en Lompoc, CA | Lompoc Locals",
+    "metaDescription": "Encuentra ventas de garaje en Lompoc este fin de semana — publicadas por tus vecinos, con mapa, fechas y fotos. Publica la tuya gratis.",
+    "h1": "Ventas de garaje en Lompoc",
+    "intro": "Todas las ventas de garaje publicadas por vecinos de Lompoc — actualizadas toda la semana y organizadas por vecindario. Las ventas de este fin de semana aparecen primero.",
+    "thisWeekend": "Este fin de semana",
+    "upcoming": "Más ventas próximas",
+    "empty": "Aún no hay ventas publicadas esta semana. Vuelve de jueves a sábado por la mañana, o sé el primero:",
+    "postCta": "¿Tienes una venta? Publícala gratis",
+    "browseAll": "Ver todas las publicaciones de venta",
+    "mapHeading": "Ventas en el mapa",
+    "byNeighborhood": "Buscar por vecindario",
+    "faqHeading": "Preguntas sobre ventas de garaje",
+    "faq1q": "¿Cuándo hay ventas de garaje en Lompoc?",
+    "faq1a": "La mayoría de las ventas en Lompoc son de viernes a domingo por la mañana, normalmente de 7am a 1pm. Se publican ventas nuevas toda la semana — la sección Este fin de semana muestra las próximas.",
+    "faq2q": "¿Cómo encuentro ventas de garaje cerca de mí en Lompoc?",
+    "faq2a": "Usa el mapa de esta página o filtra por vecindario — Old Town, Centro, Vandenberg Village, Mission Hills, Mesa Oaks y más. Cada venta muestra su dirección y fechas.",
+    "faq3q": "¿Cómo publico mi venta de garaje en Lompoc?",
+    "faq3a": "Publicar es gratis: crea una cuenta local, agrega tu dirección, fechas, fotos y lo que vendes. Tu venta aparecerá en el feed del vecindario y en esta página."
   }
 }
