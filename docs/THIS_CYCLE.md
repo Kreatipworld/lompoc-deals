@@ -33,7 +33,7 @@ Ranked by revenue impact ÷ effort. Top 3+ from each team.
 
 ### M-C2-1 — Activate All Zero-Cost Social Channels
 **Owner:** Human (CMO Lead assists)
-**What:** First posts on Facebook groups, Nextdoor, and create @LompocDeals Instagram. Lead all posts with Free tier: "List your business FREE" or "Browse free local deals."
+**What:** First posts on Facebook groups, Nextdoor, and create @LompocLocals Instagram. Lead all posts with Free tier: "List your business FREE" or "Browse free local deals."
 **KPI:** 3 channels active, 20 consumer signups within 2 weeks
 **Assets ready:** facebook-post-templates.md, nextdoor-post-templates.md, instagram-content-calendar.md
 **Status:** Ready to execute — human to create accounts and post
@@ -82,7 +82,7 @@ Ranked by revenue impact ÷ effort. Top 3+ from each team.
 ## Cycle 2 Priority Additions
 
 ### M-016 — Dispensary Acquisition Sprint (NEW — HIGH PRIORITY)
-**Why now:** Dispensaries just seeded. Cannabis businesses cannot advertise on Google/Meta. Lompoc Deals is one of their only digital marketing channels — high budget, high need, low competition for their attention.
+**Why now:** Dispensaries just seeded. Cannabis businesses cannot advertise on Google/Meta. Lompoc Locals is one of their only digital marketing channels — high budget, high need, low competition for their attention.
 **Assets:** `/marketing/sales/dispensary-outreach-script.md` (created this cycle)
 **Target:** 3 dispensary signups (Standard or Premium) = ~$60/mo MRR from 1 niche sprint
 
@@ -202,7 +202,7 @@ Ranked by revenue impact ÷ effort. Carry-forward items from Cycle 2 marked ↩.
 
 ### M-C3-1 — Social Channel Activation ↩ (CRITICAL — 3rd attempt)
 **Owner:** Human (CMO Lead provides exact post copy)
-**What:** Create @LompocDeals Instagram, post in 2–3 Facebook groups, post on Nextdoor. Use the pre-filled scripts in the launch playbook. Each task takes 15–30 minutes.
+**What:** Create @LompocLocals Instagram, post in 2–3 Facebook groups, post on Nextdoor. Use the pre-filled scripts in the launch playbook. Each task takes 15–30 minutes.
 **KPI target:** 3 channels active, 20 consumer signups within 2 weeks of first post
 **Assets:** `marketing/pr/launch-playbook.md` (Step-by-step with pre-filled copy) — no prep needed
 **Why still priority 1:** Without social presence, zero organic consumer acquisition. All downstream KPIs depend on traffic. This has been ready since Cycle 1.

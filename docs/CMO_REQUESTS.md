@@ -255,7 +255,7 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 **Why:** Word-of-mouth is the lowest-CAC acquisition channel. A simple referral program turns happy merchants into salespeople. Target: 20% of new merchants acquired via referral by month 3.  
 **KPI it moves:** Merchant CAC, merchant acquisition velocity  
 **Desired behavior:**
-- Each merchant gets a unique referral code / link (`lompoc-deals.vercel.app/join?ref=CODE`)
+- Each merchant gets a unique referral code / link (`www.lompoclocals.com/join?ref=CODE`)
 - When a referred merchant signs up and posts their first deal, both parties get 1 month of subscription credit
 - Dashboard tab shows: referral link, # sent, # activated, credits earned
 - See full spec: `/marketing/sales/referral-program-design.md`  
@@ -269,7 +269,7 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 **Why:** The Telegram bot infrastructure is now live (commits 4a8feaa + 8cf84c0). A public Telegram channel that broadcasts new deals is a zero-CAC consumer acquisition channel. Telegram channels have high open rates (far exceeding email for broadcast content) and Lompoc's tech-forward residents skew toward messaging apps. We can grow this channel organically and use it to drive repeat visits.  
 **KPI it moves:** Consumer DAU, deal claim rate, consumer retention  
 **Desired behavior (plain English):**
-- Create a public Telegram channel (e.g., "@LompocDeals")
+- Create a public Telegram channel (e.g., "@LompocLocals")
 - When a new deal is approved/published, automatically send a formatted message to the channel: business name, deal title, discount text, link to the deal page
 - Message should be bilingual (EN + ES) or at minimum have a bilingual toggle
 - Optional: only broadcast Premium merchant deals (creates upsell incentive for Premium tier)
@@ -332,7 +332,7 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 **KPI it moves:** Organic hotel-category traffic, hotel merchant acquisition close rate (social proof in outreach)  
 **Desired behavior (plain English):**
 - Run `db/seed-blog-posts.mjs` against production Neon DB (or individually upsert the single post with slug `where-to-stay-lompoc-ca`)
-- Confirm post is live at lompoc-deals.vercel.app/blog/where-to-stay-lompoc-ca  
+- Confirm post is live at www.lompoclocals.com/blog/where-to-stay-lompoc-ca  
 **Deadline:** Before hotel outreach emails are sent (human will send via `marketing/sales/hotel-partner-outreach.md`)  
 **Status:** Requested — post written, awaiting CTO seed
 
@@ -342,6 +342,6 @@ STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a
 **Priority:** P0
 **Why:** CTO shipped the community garage sales feature (commits 338d0ac + 02eee95) with a new `garage_sales` table. Migration `db/migrations/0015_garage_sales.sql` must be applied to production before the `/garage-sales` browse page, `/garage-sales/[id]` detail page, and `/garage-sales/post` form will function. Without it, all three routes will error. This is the same pattern as migration 0014 (photo carousel).
 **KPI it moves:** Community UGC posts, return-visit rate, Nextdoor-driven consumer signups
-**Desired behavior:** Apply `db/migrations/0015_garage_sales.sql` to production Neon DB. Confirm garage sale post form works at lompoc-deals.vercel.app/garage-sales/post.
+**Desired behavior:** Apply `db/migrations/0015_garage_sales.sql` to production Neon DB. Confirm garage sale post form works at www.lompoclocals.com/garage-sales/post.
 **Deadline:** Immediately — feature is live in code but dark in production
 **Status:** Requested

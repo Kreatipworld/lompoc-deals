@@ -56,7 +56,7 @@ function extractLinks(text: string): ExtractedLink[] {
 
 function getDomain(url: string): string {
   try {
-    if (url.startsWith("/")) return "lompocdeals.com"
+    if (url.startsWith("/")) return "lompoclocals.com"
     return new URL(url).hostname.replace("www.", "")
   } catch {
     return ""

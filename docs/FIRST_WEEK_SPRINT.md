@@ -19,16 +19,16 @@ This doc cuts through all of it. Five days. One action per day. Each action take
 
 **Step 1 — Create Instagram (15 min):**
 1. Open Instagram on your phone
-2. Create account: username `@LompocDeals`, name "Lompoc Deals"
-3. Bio: `Lompoc's free local business directory 📍 Deals, restaurants, wineries & more → lompoc-deals.vercel.app`
-4. Add profile photo: any purple-toned image or the Lompoc Deals logo
+2. Create account: username `@LompocLocals`, name "Lompoc Locals"
+3. Bio: `Lompoc's free local business directory 📍 Deals, restaurants, wineries & more → www.lompoclocals.com`
+4. Add profile photo: any purple-toned image or the Lompoc Locals logo
 
 **Step 2 — Post Script C (15 min):**
 Film the 30-second Wine Ghetto script from `marketing/social/tiktok-thingstodo-c3-scripts.md` — Script C.
 - Talking head, phone camera, outdoor or well-lit indoor setting
 - Caption is in the file — copy/paste it
 - Post it to Instagram Reels AND TikTok (if account exists)
-- Add lompoc-deals.vercel.app to your bio link
+- Add www.lompoclocals.com to your bio link
 
 **Done.** You have a social presence. First post is live. Cross to Day 2.
 
@@ -43,7 +43,7 @@ Use this script (personalize the `[NAME]` and `[BUSINESS]`):
 
 ```
 Hi [NAME], this is [YOUR NAME]. I built a free local business directory for
-Lompoc — lompoc-deals.vercel.app. I added [BUSINESS] to the directory. You
+Lompoc — www.lompoclocals.com. I added [BUSINESS] to the directory. You
 can claim your free listing and add a deal at any time. No cost, no contract.
 Would you want to take a look? Takes about 5 minutes to set up.
 ```
@@ -68,7 +68,7 @@ Track responses in a notes app or spreadsheet: business name, date sent, reply (
 
 **Groups to find:**
 1. Search Facebook for "Lompoc" — join the largest community group (usually "Lompoc, CA" or "Lompoc Community")
-2. "Lompoc Deals & Freebies" if it exists, or "Lompoc Business Network"
+2. "Lompoc Locals & Freebies" if it exists, or "Lompoc Business Network"
 
 **Post copy (paste directly, no editing needed):**
 
@@ -76,7 +76,7 @@ Track responses in a notes app or spreadsheet: business name, date sent, reply (
 Hey neighbors — I built a free local business directory for Lompoc and wanted
 to share it here.
 
-🏪 lompoc-deals.vercel.app
+🏪 www.lompoclocals.com
 
 It has restaurants, salons, wineries, dispensaries, service businesses — over
 150 Lompoc businesses listed. You can search by category, browse deals, and
@@ -99,7 +99,7 @@ Post in Group 1, wait 5 minutes, post in Group 2. Don't spam the same group twic
 Text everyone who didn't reply on Day 2:
 
 ```
-Hey [NAME] — wanted to follow up on the Lompoc Deals message. Happy to jump on
+Hey [NAME] — wanted to follow up on the Lompoc Locals message. Happy to jump on
 a quick 5-minute call if easier, or I can walk you through it right now over text.
 ```
 
@@ -110,7 +110,7 @@ The script is fully written. You need:
 - Lompoc Valley Chamber of Commerce contact email (find at lompocvalleychamber.com)
 - Your name and title as sender
 
-Subject line: `Free resource for all Lompoc Valley Chamber members — Lompoc Deals`
+Subject line: `Free resource for all Lompoc Valley Chamber members — Lompoc Locals`
 
 This one email, if it gets a response, could deliver 15+ merchant signups from Chamber members.
 
@@ -121,7 +121,7 @@ This one email, if it gets a response, could deliver 15+ merchant signups from C
 **Time required:** 20 minutes  
 **Part A — Instagram post (10 min):**
 Find the most visually appealing deal currently live on the site:
-1. Go to lompoc-deals.vercel.app
+1. Go to www.lompoclocals.com
 2. Find a deal with a photo (restaurant, winery, or salon)
 3. Screenshot the deal card on mobile
 4. Post to Instagram with this caption template:
@@ -131,9 +131,9 @@ Find the most visually appealing deal currently live on the site:
 
 [Brief description of the deal — e.g., "20% off your first haircut"]
 
-Claim it free at lompoc-deals.vercel.app — link in bio
+Claim it free at www.lompoclocals.com — link in bio
 
-#LompocDeals #Lompoc #LompocCA #ShopLocal #LompocBusiness
+#LompocLocals #Lompoc #LompocCA #ShopLocal #LompocBusiness
 ```
 
 **Part B — Log results (10 min):**

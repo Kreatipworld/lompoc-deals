@@ -49,8 +49,8 @@ Is this something you'd be interested in covering? I can send more details or ar
 Best,
 [Contact name]
 [Email / phone]
-Lompoc Deals
-lompoc-deals.vercel.app
+Lompoc Locals
+www.lompoclocals.com
 
 ---
 
@@ -64,7 +64,7 @@ Hi [Editor],
 
 Following up on a story out of Lompoc that may be relevant to SYV readers.
 
-**Lompoc Deals** (lompoc-deals.vercel.app) is a bilingual platform connecting Santa Barbara County residents with deals from local businesses. It launched in Lompoc and is built to expand into the Santa Ynez Valley and Vandenberg Village.
+**Lompoc Locals** (www.lompoclocals.com) is a bilingual platform connecting Santa Barbara County residents with deals from local businesses. It launched in Lompoc and is built to expand into the Santa Ynez Valley and Vandenberg Village.
 
 The pitch: local small businesses in SYV face the same challenge as Lompoc — chains and big-box stores have digital marketing advantages that independent shops don't. This platform is trying to level that.
 
@@ -72,7 +72,7 @@ We'd love to be on your radar as we expand. Happy to arrange an interview or pro
 
 Best,
 [Contact name]
-Lompoc Deals
+Lompoc Locals
 
 ---
 
@@ -88,7 +88,7 @@ Lompoc Deals
 
 1. **The problem:** Lompoc residents have no single place to discover local businesses. And local businesses — restaurants, salons, shops — have no easy, affordable way to be found digitally. Yelp costs money. Google Ads costs money. This is free.
 
-2. **The solution:** Lompoc Deals is Lompoc's free local business directory — a place where residents discover local businesses, and businesses list themselves to be found. Think Yelp, but built for the Flower Capital. Businesses can also post deals and coupons at no cost.
+2. **The solution:** Lompoc Locals is Lompoc's free local business directory — a place where residents discover local businesses, and businesses list themselves to be found. Think Yelp, but built for the Flower Capital. Businesses can also post deals and coupons at no cost.
 
 3. **Why Lompoc:** Lompoc is an underserved market. There's no local discovery layer for this community. The Hispanic community is 63% of the population, so the platform is fully bilingual (EN/ES). We know this town.
 
@@ -96,7 +96,7 @@ Lompoc Deals
 
 5. **The vision:** Start in Lompoc, expand to Santa Maria, Santa Barbara, Vandenberg Village. Build the local directory for the Central Coast.
 
-6. **The ask:** Just browse it. It's free. Go to lompoc-deals.vercel.app.
+6. **The ask:** Just browse it. It's free. Go to www.lompoclocals.com.
 
 ---
 

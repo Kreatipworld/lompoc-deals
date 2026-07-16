@@ -1,4 +1,4 @@
-# Instagram Content Calendar — Lompoc Deals
+# Instagram Content Calendar — Lompoc Locals
 *Owner: CMO / Social & Community Manager*
 *Created: 2026-04-08 | KPI: 500 followers by day 60, 100 profile-link clicks/month*
 
@@ -6,11 +6,11 @@
 
 ## Account Setup Checklist
 
-- [ ] Create Instagram Business account: @LompocDeals (or @lompoc.deals)
-- [ ] Profile photo: Lompoc Deals logo or "LD" icon in brand colors
+- [ ] Create Instagram Business account: @LompocLocals (or @lompoc.locals)
+- [ ] Profile photo: Lompoc Locals logo or "LD" icon in brand colors
 - [ ] Bio (EN): "🏙️ Lompoc's local business directory\n🍽️ Restaurants · shops · services & more\n🎟️ Deals from local businesses — free to browse\n👇 Explore Lompoc"
 - [ ] Bio (ES): "🏙️ El directorio local de negocios de Lompoc\n🍽️ Restaurantes · tiendas · servicios y más\n🎟️ Ofertas de negocios locales — gratis\n👇 Explora Lompoc"
-- [ ] Link in bio: https://lompoc-deals.vercel.app
+- [ ] Link in bio: https://www.lompoclocals.com
 - [ ] Set to Business account (enables analytics)
 - [ ] Connect to Facebook page (for cross-posting M-001 content)
 - [ ] Add location: Lompoc, CA
@@ -33,7 +33,7 @@
 - Sat: 9:00 AM (community post — weekend browse)
 
 **Hashtag strategy:**
-- Always: #LompocDeals #Lompoc #LompocCA
+- Always: #LompocLocals #Lompoc #LompocCA
 - Rotate: #LocalDeals #SantaBarbaraCounty #ShopLocal #OfertasLompoc #ComidaLompoc #SalonLompoc #NegociosLocales
 
 ---
@@ -47,11 +47,11 @@
 **Caption (EN):**
 > 🔥 Deal of the week: [Business Name] is offering [deal description]!
 >
-> Claim it FREE at lompoc-deals.vercel.app — no credit card needed. Just browse, claim, and show at checkout. 👇
+> Claim it FREE at www.lompoclocals.com — no credit card needed. Just browse, claim, and show at checkout. 👇
 >
-> 🇲🇽 ¡Oferta de la semana: [Nombre del negocio] ofrece [descripción]! Reclámala GRATIS en lompoc-deals.vercel.app — sin tarjeta de crédito.
+> 🇲🇽 ¡Oferta de la semana: [Nombre del negocio] ofrece [descripción]! Reclámala GRATIS en www.lompoclocals.com — sin tarjeta de crédito.
 >
-> #LompocDeals #Lompoc #LocalDeals #LompocCA #[Category]Deals
+> #LompocLocals #Lompoc #LocalDeals #LompocCA #[Category]Deals
 
 ---
 
@@ -59,7 +59,7 @@
 
 *Slide 1:* Business name + hero photo  
 *Slide 2:* What they do / what makes them Lompoc  
-*Slide 3:* Current deal (if any) or "Find them on Lompoc Deals"  
+*Slide 3:* Current deal (if any) or "Find them on Lompoc Locals"  
 *Slide 4:* QR or URL + "List your business free"  
 
 **Caption (EN):**
@@ -67,13 +67,13 @@
 >
 > [One sentence about what makes them great / unique to Lompoc.]
 >
-> They're listed on Lompoc Deals — your free local business directory. Find hours, photos, and current deals at lompoc-deals.vercel.app
+> They're listed on Lompoc Locals — your free local business directory. Find hours, photos, and current deals at www.lompoclocals.com
 >
 > Are you a Lompoc business? Get listed FREE → link in bio.
 >
-> 🇲🇽 Conoce a [Nombre] 👋 — [tipo de negocio] local aquí en Lompoc. [Una oración sobre lo que los hace especiales.] Están en Lompoc Deals — el directorio local gratuito. Encuéntralos en lompoc-deals.vercel.app.
+> 🇲🇽 Conoce a [Nombre] 👋 — [tipo de negocio] local aquí en Lompoc. [Una oración sobre lo que los hace especiales.] Están en Lompoc Locals — el directorio local gratuito. Encuéntralos en www.lompoclocals.com.
 >
-> #LompocDeals #ShopLocal #Lompoc #LompocBusiness #SupportLocal #NegociosLocales #DirectorioLompoc
+> #LompocLocals #ShopLocal #Lompoc #LompocBusiness #SupportLocal #NegociosLocales #DirectorioLompoc
 
 ---
 
@@ -93,29 +93,29 @@
 >
 > 🇲🇽 Encuesta rápida para Lompoc 👇 ¿Qué tipo de oferta local usarías MÁS? Responde abajo o usa la encuesta.
 >
-> #Lompoc #LompocDeals #LocalDeals #LompocCA
+> #Lompoc #LompocLocals #LocalDeals #LompocCA
 
 **Option C2 — Local Tip:**
 > Lompoc tip of the week 💡
 >
-> Did you know [Business Name] on [street/area] has been serving Lompoc for [X] years? They just posted a new deal on Lompoc Deals — [deal].
+> Did you know [Business Name] on [street/area] has been serving Lompoc for [X] years? They just posted a new deal on Lompoc Locals — [deal].
 >
-> Claim it free: lompoc-deals.vercel.app
+> Claim it free: www.lompoclocals.com
 >
-> 🇲🇽 Tip local de la semana 💡 ¿Sabías que [nombre] ha servido a Lompoc por [X] años? Tienen una nueva oferta en Lompoc Deals: [oferta]. Reclámala gratis.
+> 🇲🇽 Tip local de la semana 💡 ¿Sabías que [nombre] ha servido a Lompoc por [X] años? Tienen una nueva oferta en Lompoc Locals: [oferta]. Reclámala gratis.
 >
-> #Lompoc #ShopLocal #LompocDeals #ComunidadLompoc
+> #Lompoc #ShopLocal #LompocLocals #ComunidadLompoc
 
 **Option C3 — UGC Repost:**
 > We love seeing Lompoc neighbors supporting local 🙌
 >
 > Reposting @[username]'s experience at [Business Name]!
 >
-> Have you claimed a deal on Lompoc Deals? Tag us or DM us your story — we feature our community. 📲
+> Have you claimed a deal on Lompoc Locals? Tag us or DM us your story — we feature our community. 📲
 >
-> 🇲🇽 Nos encanta ver a los vecinos de Lompoc apoyar lo local 🙌 ¿Ya reclamaste una oferta en Lompoc Deals? Etiquétanos y te presentamos.
+> 🇲🇽 Nos encanta ver a los vecinos de Lompoc apoyar lo local 🙌 ¿Ya reclamaste una oferta en Lompoc Locals? Etiquétanos y te presentamos.
 >
-> #LompocDeals #Lompoc #ComunidadLompoc #ShopLocal
+> #LompocLocals #Lompoc #ComunidadLompoc #ShopLocal
 
 ---
 
@@ -142,7 +142,7 @@
 | Day | Type | Content |
 |-----|------|---------|
 | Tue | Deal Highlight | Feature a salon/beauty deal (high engagement category for IG) |
-| Thu | Merchant Story | "How to list your business free on Lompoc Deals" — merchant acquisition angle |
+| Thu | Merchant Story | "How to list your business free on Lompoc Locals" — merchant acquisition angle |
 | Sat | Community | Repost / shoutout to early adopter merchant (if any UGC exists) |
 
 ### Week 4 — Engagement Push

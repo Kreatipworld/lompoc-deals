@@ -229,7 +229,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$5 off any entree on Mondays",
-      description: "Mention Lompoc Deals at the table. Dine-in only.",
+      description: "Mention Lompoc Locals at the table. Dine-in only.",
       discountText: "$5 OFF",
       days: 30,
     },
@@ -276,7 +276,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$2 off any poke bowl",
-      description: "Build your own. Mention Lompoc Deals.",
+      description: "Build your own. Mention Lompoc Locals.",
       discountText: "$2 OFF",
       days: 21,
     },
@@ -322,7 +322,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$25 off any oil change",
-      description: "Synthetic or conventional. Mention Lompoc Deals.",
+      description: "Synthetic or conventional. Mention Lompoc Locals.",
       discountText: "$25 OFF",
       days: 60,
     },
@@ -419,7 +419,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "20% off any order over $30",
-      description: "Drop off Monday–Friday. Mention Lompoc Deals.",
+      description: "Drop off Monday–Friday. Mention Lompoc Locals.",
       discountText: "20% OFF",
       days: 30,
     },

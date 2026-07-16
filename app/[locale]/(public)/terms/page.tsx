@@ -92,7 +92,7 @@ export default async function TermsPage() {
         <h2>{t("contactSection.title")}</h2>
         <p>{t("contactSection.body")}</p>
         <p>
-          <a href="mailto:hello@lompocdeals.com">hello@lompocdeals.com</a>
+          <a href="mailto:hello@lompoclocals.com">hello@lompoclocals.com</a>
         </p>
       </div>
 

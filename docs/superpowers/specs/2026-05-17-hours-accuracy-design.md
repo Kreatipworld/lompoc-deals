@@ -4,7 +4,7 @@
 
 ## Background
 
-Lompoc Deals is positioned as the local guide. Inaccurate hours erode that promise. Today, only **10 of 430 approved businesses (2.3%)** render hours correctly:
+Lompoc Locals is positioned as the local guide. Inaccurate hours erode that promise. Today, only **10 of 430 approved businesses (2.3%)** render hours correctly:
 
 | State | Count | Why |
 |---|---|---|

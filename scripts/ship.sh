@@ -18,7 +18,7 @@ if git diff --quiet && git diff --cached --quiet && [[ -z "$(git ls-files --othe
   echo "Nothing to commit. Pushing current branch to trigger Vercel redeploy..."
   git push
   echo "✓ Push complete — Vercel will redeploy in ~30s"
-  echo "  Live: https://lompoc-deals.vercel.app/en"
+  echo "  Live: https://www.lompoclocals.com/en"
   exit 0
 fi
 
@@ -33,5 +33,5 @@ git push
 
 echo ""
 echo "✓ Done! Vercel will build and deploy in ~1–2 minutes."
-echo "  Live site: https://lompoc-deals.vercel.app/en"
+echo "  Live site: https://www.lompoclocals.com/en"
 echo "  Vercel dashboard: https://vercel.com/kreatipworlds-projects/lompoc-deals"

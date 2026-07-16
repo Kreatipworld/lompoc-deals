@@ -26,7 +26,7 @@ Add or update `generateMetadata`:
 
 ```ts
 export const metadata: Metadata = {
-  title: "Things to Do in Lompoc, CA — Activities, Attractions & Adventures | Lompoc Deals",
+  title: "Things to Do in Lompoc, CA — Activities, Attractions & Adventures | Lompoc Locals",
   description: "Discover the best things to do in Lompoc, CA. La Purísima Mission, Jalama Beach, the Wine Ghetto, flower fields, rocket launches and more — free local guide.",
   keywords: [
     "things to do in lompoc",
@@ -40,11 +40,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Things to Do in Lompoc, CA",
     description: "La Purísima Mission, Jalama Beach, the Wine Ghetto, flower fields, rocket launches — and 10+ more. Lompoc's free local activity guide.",
-    url: "https://lompoc-deals.vercel.app/activities",
+    url: "https://www.lompoclocals.com/activities",
     type: "website",
   },
   alternates: {
-    canonical: "https://lompoc-deals.vercel.app/activities",
+    canonical: "https://www.lompoclocals.com/activities",
   },
 };
 ```
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!activity) return {};
 
   return {
-    title: `${activity.title} — Things to Do in Lompoc, CA | Lompoc Deals`,
+    title: `${activity.title} — Things to Do in Lompoc, CA | Lompoc Locals`,
     description: activity.shortDescription, // Already optimized in seed data
     keywords: [
       activity.title.toLowerCase(),
@@ -69,14 +69,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "visit lompoc",
     ],
     openGraph: {
-      title: `${activity.title} | Lompoc Deals`,
+      title: `${activity.title} | Lompoc Locals`,
       description: activity.shortDescription,
-      url: `https://lompoc-deals.vercel.app/activities/${activity.slug}`,
+      url: `https://www.lompoclocals.com/activities/${activity.slug}`,
       images: activity.imageUrl ? [{ url: activity.imageUrl }] : [],
       type: "article",
     },
     alternates: {
-      canonical: `https://lompoc-deals.vercel.app/activities/${activity.slug}`,
+      canonical: `https://www.lompoclocals.com/activities/${activity.slug}`,
     },
   };
 }
@@ -125,8 +125,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 ## Detail Page (`/activities/[slug]`) — Copy Spec
 
 ### Breadcrumb (already specced in schema-markup-spec.md)
-`Lompoc Deals > Things to Do in Lompoc > [Activity Title]`
-`Lompoc Deals > Qué Hacer en Lompoc > [Título de Actividad]` (ES)
+`Lompoc Locals > Things to Do in Lompoc > [Activity Title]`
+`Lompoc Locals > Qué Hacer en Lompoc > [Título de Actividad]` (ES)
 
 ### Back Link
 **EN:** `← Back to Things to Do`
@@ -166,11 +166,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 ### CTA Section (below activity details)
 **EN heading:** `While you're in Lompoc`
 **EN body:** `Browse local businesses, restaurants, and deals near [activity name].`
-**EN CTA button:** `Explore Lompoc Deals →`
+**EN CTA button:** `Explore Lompoc Locals →`
 
 **ES heading:** `Mientras estás en Lompoc`
 **ES body:** `Explora negocios locales, restaurantes y ofertas cerca de [nombre de actividad].`
-**ES CTA button:** `Explorar Lompoc Deals →`
+**ES CTA button:** `Explorar Lompoc Locals →`
 
 ### Share Button Labels
 **EN:** `Share this activity`

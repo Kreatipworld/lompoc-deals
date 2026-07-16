@@ -5,7 +5,7 @@
 
 How to read it: every business below is already in the directory as an *unclaimed* listing
 (owned by the scraper account), so onboarding = claiming + posting their first deal. The
-`slug` is their page: `https://lompoc-deals.vercel.app/en/biz/<slug>`.
+`slug` is their page: `https://www.lompoclocals.com/en/biz/<slug>`.
 
 **Chains and medical/real-estate listings were deliberately excluded** — no local
 decision-maker, or not deal-friendly. These 25 are all independent, foot-traffic, and

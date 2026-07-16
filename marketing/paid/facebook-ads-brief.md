@@ -47,7 +47,7 @@ Acquire new merchant signups via hyper-local Facebook/Instagram ads targeting sm
 3. "Give Lompoc locals a reason to walk through your door."
 
 **Primary text (option A):**
-> You work hard running your business. Let Lompoc Deals put your specials in front of hundreds of local shoppers — automatically.
+> You work hard running your business. Let Lompoc Locals put your specials in front of hundreds of local shoppers — automatically.
 > 
 > ✅ Free to start  
 > ✅ No commission on sales  
@@ -59,9 +59,9 @@ Acquire new merchant signups via hyper-local Facebook/Instagram ads targeting sm
 **Primary text (option B — shorter):**
 > Local shoppers in Lompoc are already looking for deals from businesses like yours.
 > 
-> Join Lompoc Deals free. Post your specials. Get more foot traffic.
+> Join Lompoc Locals free. Post your specials. Get more foot traffic.
 
-**CTA button:** Learn More → lompoc-deals.vercel.app/en/sign-up  
+**CTA button:** Learn More → www.lompoclocals.com/en/sign-up  
 
 ---
 
@@ -93,7 +93,7 @@ Acquire new merchant signups via hyper-local Facebook/Instagram ads targeting sm
 3. "Dale a los locales una razón para entrar a tu negocio."
 
 **Primary text:**
-> Trabajas duro para manejar tu negocio. Deja que Lompoc Deals ponga tus especiales frente a cientos de compradores locales — automáticamente.
+> Trabajas duro para manejar tu negocio. Deja que Lompoc Locals ponga tus especiales frente a cientos de compradores locales — automáticamente.
 > 
 > ✅ Gratis para empezar  
 > ✅ Sin comisión en ventas  
@@ -107,7 +107,7 @@ Acquire new merchant signups via hyper-local Facebook/Instagram ads targeting sm
 ## Campaign Structure
 
 ```
-Campaign: Lompoc Deals — Merchant Acquisition
+Campaign: Lompoc Locals — Merchant Acquisition
 ├── Ad Set A: Business Owner (EN) — $25/month
 │   ├── Ad 1A: Problem/Solution (Image)
 │   ├── Ad 1B: Problem/Solution (Short video)

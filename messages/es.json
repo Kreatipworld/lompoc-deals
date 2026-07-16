@@ -1678,7 +1678,7 @@
     "previewSubheading": "Ofertas reales. Ahorros reales. Negocios reales de Lompoc.",
     "previewEmailSubject": "Lompoc Locals — Las mejores ofertas de esta semana",
     "previewFrom": "Lompoc Locals",
-    "previewEmail": "deals@lompocdeals.com",
+    "previewEmail": "deals@lompoclocals.com",
     "previewWeekly": "Las 3 mejores ofertas de esta semana en Lompoc",
     "previewMoreDeals": "+ 7 ofertas más en el digest completo",
     "testimonial1Quote": "Ahorré más de $40 el mes pasado solo con las ofertas del digest. Se ha convertido en mi ritual del sábado.",
@@ -1856,7 +1856,7 @@
         "Derecho a excluirte de la venta: No vendemos tu información personal. No hay nada de lo que excluirte.",
         "Derecho a no ser discriminado: No te discriminaremos por ejercer ninguno de estos derechos."
       ],
-      "howToExercise": "Para ejercer estos derechos, envíanos un correo a hello@lompocdeals.com. Responderemos dentro de los 45 días requeridos por ley."
+      "howToExercise": "Para ejercer estos derechos, envíanos un correo a hello@lompoclocals.com. Responderemos dentro de los 45 días requeridos por ley."
     },
     "retention": {
       "title": "Retención de Datos",
@@ -1894,7 +1894,7 @@
     },
     "registration": {
       "title": "Registro de Cuenta",
-      "body": "Para acceder a ciertas funciones debes registrarte. Aceptas proporcionar información precisa, vigente y completa durante el registro y actualizarla para mantenerla exacta. Eres responsable de mantener la confidencialidad de tu contraseña y de toda la actividad que ocurra bajo tu cuenta. Notifícanos de inmediato a hello@lompocdeals.com si sospechas acceso no autorizado."
+      "body": "Para acceder a ciertas funciones debes registrarte. Aceptas proporcionar información precisa, vigente y completa durante el registro y actualizarla para mantenerla exacta. Eres responsable de mantener la confidencialidad de tu contraseña y de toda la actividad que ocurra bajo tu cuenta. Notifícanos de inmediato a hello@lompoclocals.com si sospechas acceso no autorizado."
     },
     "subscriptions": {
       "title": "Planes de Suscripción",
@@ -1963,7 +1963,7 @@
     "intro": "¿Tienes una pregunta, encontraste un error en un listado o quieres saber más sobre cómo poner tu negocio en el mapa? Nos encantaría saber de ti.",
     "emailCard": {
       "title": "Correo electrónico",
-      "label": "hello@lompocdeals.com",
+      "label": "hello@lompoclocals.com",
       "description": "La mejor manera de comunicarte con nosotros. Generalmente respondemos en un día hábil."
     },
     "businessCard": {

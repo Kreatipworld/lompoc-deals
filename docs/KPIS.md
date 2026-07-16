@@ -1,4 +1,4 @@
-# Lompoc Deals — KPI Board
+# Lompoc Locals — KPI Board
 *Last updated: 2026-04-09 | Updated weekly by: CMO + CTO*
 
 ---
@@ -136,7 +136,7 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 - Merchant close rate expected to increase materially (removing price objection entirely for first 3 deals)
 
 **Dispensary niche opportunity:**
-5 dispensaries now listed. Cannabis businesses cannot advertise on Google/Meta — Lompoc Deals is one of their only marketing channels. CMO adding dedicated dispensary outreach track (see MARKETING_BACKLOG.md M-016).
+5 dispensaries now listed. Cannabis businesses cannot advertise on Google/Meta — Lompoc Locals is one of their only marketing channels. CMO adding dedicated dispensary outreach track (see MARKETING_BACKLOG.md M-016).
 
 **Wine/tourism opportunity:**
 20 wineries listed + dedicated Wineries tab. Shareable content potential. SEO: Santa Rita Hills wine deals long-tail. Adding M-017 (wine tourism content series) to backlog.
@@ -159,7 +159,7 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 
 **Major milestone: Website Rebrand LIVE**
 - Full design system v1.0 implemented and merged to main ([KRE-89](/KRE/issues/KRE-89), [KRE-95](/KRE/issues/KRE-95))
-- New visual identity live at lompoc-deals.vercel.app: Lompoc Purple (#7B4F9E), Cream White (#FAF7F2), Plus Jakarta Sans, sweet pea logo
+- New visual identity live at www.lompoclocals.com: Lompoc Purple (#7B4F9E), Cream White (#FAF7F2), Plus Jakarta Sans, sweet pea logo
 - Homepage redesign complete with all 9 sections per design pod spec ([KRE-77](/KRE/issues/KRE-77))
 - Brand strategy + design system + copy all aligned ✓
 
@@ -179,8 +179,8 @@ The Free/$0 tier is the single biggest marketing lever shift since launch. Previ
 - **Only remaining B-001 blocker:** CTO to set these 2 env vars in Vercel (correct names from `lib/stripe.ts`):
   - `STRIPE_PRICE_STANDARD=price_1TK86XJ5L7dJU4p36CDe0nkX`
   - `STRIPE_PRICE_PREMIUM=price_1TK86YJ5L7dJU4p33KnRIb9a`
-- Active Lompoc Deals subscriptions: **0** — MRR = $0 (confirmed 2026-04-11, Vercel wiring still pending)
-- **Note (2026-04-11):** Stripe account has 2 active subscriptions on old price IDs (`price_1H9OOlJ5L7dJU4p3md8iVpbO`, `smmpro`) — these are from a prior product on the same account, NOT Lompoc Deals revenue. Do not count in MRR.
+- Active Lompoc Locals subscriptions: **0** — MRR = $0 (confirmed 2026-04-11, Vercel wiring still pending)
+- **Note (2026-04-11):** Stripe account has 2 active subscriptions on old price IDs (`price_1H9OOlJ5L7dJU4p3md8iVpbO`, `smmpro`) — these are from a prior product on the same account, NOT Lompoc Locals revenue. Do not count in MRR.
 - Stripe account balance: $10.00 available (from prior product activity)
 
 **Updated baselines (Cycle 2, 2026-04-09):**
@@ -243,7 +243,7 @@ Board confirmed the platform is pivoting from a deals-first coupon platform to a
 **CMO assets updated for pivot:**
 - Homepage meta → "Lompoc Local Directory — Find Businesses, Deals & Things To Do"
 - For-businesses meta → "Get Your Lompoc Business Listed Free — Be Found by Locals"
-- `/deals` page meta → "Lompoc Deals & Coupons — Browse Local Specials"
+- `/deals` page meta → "Lompoc Locals & Coupons — Browse Local Specials"
 - Merchant cold outreach script → rewritten to lead with directory listing value prop
 - North Star KPI → updated to "Active Directory Businesses" (above)
 

@@ -1,4 +1,4 @@
-# Lompoc Deals — Retrospectives
+# Lompoc Locals — Retrospectives
 *Append a new entry after each cycle. CMO + CTO both contribute.*
 
 ---

@@ -1,4 +1,4 @@
-# Competitive Analysis — Lompoc Deals
+# Competitive Analysis — Lompoc Locals
 *CMO | 2026-04-11 | Research: web search + site review*
 
 ---
@@ -14,7 +14,7 @@
 **Mobile UX:** Basic, member directory is desktop-first  
 **Analytics for merchants:** None  
 
-**Assessment:** The Chamber is the incumbent trusted brand for local businesses. Their "Hot Deals" section is the closest functional overlap with Lompoc Deals, but it requires paid membership and posts are static announcements rather than claimable offers. Consumer awareness of the Chamber deals board is low. The Chamber is a referral partner opportunity (we already have outreach script), not a direct threat.
+**Assessment:** The Chamber is the incumbent trusted brand for local businesses. Their "Hot Deals" section is the closest functional overlap with Lompoc Locals, but it requires paid membership and posts are static announcements rather than claimable offers. Consumer awareness of the Chamber deals board is low. The Chamber is a referral partner opportunity (we already have outreach script), not a direct threat.
 
 ---
 
@@ -71,13 +71,13 @@
 **Consumer-facing deals:** No free deal posting  
 **Bilingual:** No  
 
-**Assessment:** Every merchant knows Yelp. Our standard objection response is: "Yelp charges $300+/month for deal visibility. Lompoc Deals is free and local." Complementary, not a replacement.
+**Assessment:** Every merchant knows Yelp. Our standard objection response is: "Yelp charges $300+/month for deal visibility. Lompoc Locals is free and local." Complementary, not a replacement.
 
 ---
 
 ## Competitive Differentiation Matrix
 
-| Feature | Lompoc Deals | Chamber | LompocOnline | Lompoc Record | Yelp |
+| Feature | Lompoc Locals | Chamber | LompocOnline | Lompoc Record | Yelp |
 |---------|-------------|---------|--------------|--------------|------|
 | Free to list | ✅ | ❌ ($300+/yr) | ✅ (basic) | ❌ | ✅ (basic) |
 | Free to post deals | ✅ | ✅ (members only) | Classified-style | ❌ | ❌ ($300+/mo) |
@@ -94,13 +94,13 @@
 ## Key Positioning Statements (from competitive analysis)
 
 **For merchant pitches:**
-> "The Chamber requires a $300+ annual membership before you can post a deal. Lompoc Deals is free. And unlike Yellow Pages or LompocOnline.us, we built this specifically for Lompoc — bilingual, mobile-first, with real deal claims tracked in your dashboard."
+> "The Chamber requires a $300+ annual membership before you can post a deal. Lompoc Locals is free. And unlike Yellow Pages or LompocOnline.us, we built this specifically for Lompoc — bilingual, mobile-first, with real deal claims tracked in your dashboard."
 
 **For consumer-facing copy:**
 > "Not Yelp. Not Yellow Pages. Not a national directory that happens to have a Lompoc page. This is a directory built by and for Lompoc."
 
 **For the press pitch (once milestone hit):**
-> "While national directories treat Lompoc as one of thousands of city pages, Lompoc Deals is the only bilingual, deal-first local business platform built specifically for this community — including the 63% of residents who speak Spanish at home."
+> "While national directories treat Lompoc as one of thousands of city pages, Lompoc Locals is the only bilingual, deal-first local business platform built specifically for this community — including the 63% of residents who speak Spanish at home."
 
 ---
 

@@ -1678,7 +1678,7 @@
     "previewSubheading": "Real deals. Real savings. Real Lompoc businesses.",
     "previewEmailSubject": "Lompoc Locals — This week's top deals",
     "previewFrom": "Lompoc Locals",
-    "previewEmail": "deals@lompocdeals.com",
+    "previewEmail": "deals@lompoclocals.com",
     "previewWeekly": "This week's top 3 deals in Lompoc",
     "previewMoreDeals": "+ 7 more deals in the full digest",
     "testimonial1Quote": "I saved over $40 last month just from deals in the digest. It's become a Saturday morning ritual.",
@@ -1856,7 +1856,7 @@
         "Right to Opt-Out of Sale: We do not sell your personal information. There is nothing to opt out of.",
         "Right to Non-Discrimination: We will not discriminate against you for exercising any of these rights."
       ],
-      "howToExercise": "To exercise these rights, email us at hello@lompocdeals.com. We will respond within 45 days as required by law."
+      "howToExercise": "To exercise these rights, email us at hello@lompoclocals.com. We will respond within 45 days as required by law."
     },
     "retention": {
       "title": "Data Retention",
@@ -1894,7 +1894,7 @@
     },
     "registration": {
       "title": "Account Registration",
-      "body": "To access certain features you must register for an account. You agree to provide accurate, current, and complete information during registration and to update that information to keep it accurate. You are responsible for maintaining the confidentiality of your password and for all activity that occurs under your account. Notify us immediately at hello@lompocdeals.com if you suspect unauthorized access."
+      "body": "To access certain features you must register for an account. You agree to provide accurate, current, and complete information during registration and to update that information to keep it accurate. You are responsible for maintaining the confidentiality of your password and for all activity that occurs under your account. Notify us immediately at hello@lompoclocals.com if you suspect unauthorized access."
     },
     "subscriptions": {
       "title": "Subscription Plans",
@@ -1963,7 +1963,7 @@
     "intro": "Have a question, found a listing error, or want to learn more about getting your business on the map? We'd love to hear from you.",
     "emailCard": {
       "title": "Email",
-      "label": "hello@lompocdeals.com",
+      "label": "hello@lompoclocals.com",
       "description": "The best way to reach us. We typically reply within one business day."
     },
     "businessCard": {

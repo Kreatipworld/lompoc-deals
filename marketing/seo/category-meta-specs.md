@@ -3,7 +3,7 @@
 
 The current `generateMetadata` function in `app/[locale]/(public)/category/[slug]/page.tsx` generates generic meta:
 ```
-title: `Lompoc ${cat.name} Deals & Coupons — Local Discounts | Lompoc Deals`
+title: `Lompoc ${cat.name} Deals & Coupons — Local Discounts | Lompoc Locals`
 description: `Browse current ${catLower} deals and coupons from Lompoc, CA businesses...`
 ```
 
@@ -29,7 +29,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `food-drink`
 
 **Title:**
-`Lompoc Restaurant Deals & Food Coupons — Save at Local Restaurants | Lompoc Deals`
+`Lompoc Restaurant Deals & Food Coupons — Save at Local Restaurants | Lompoc Locals`
 
 **Meta Description (155 chars):**
 `Find restaurant deals, food coupons, and dining specials from Lompoc, CA restaurants and cafés. Free to claim — no app, no printing. Updated daily.`
@@ -56,7 +56,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `services`
 
 **Title:**
-`Lompoc Service Business Deals — Local Discounts on Services | Lompoc Deals`
+`Lompoc Service Business Deals — Local Discounts on Services | Lompoc Locals`
 
 **Meta Description:**
 `Save on plumbing, cleaning, tutoring, pet care, and more. Deals from local Lompoc service businesses. Free to claim, no credit card.`
@@ -82,7 +82,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `dispensaries`
 
 **Title:**
-`Lompoc Dispensary Deals & Cannabis Specials — Licensed CA Dispensaries | Lompoc Deals`
+`Lompoc Dispensary Deals & Cannabis Specials — Licensed CA Dispensaries | Lompoc Locals`
 
 **Meta Description:**
 `Browse current deals and specials from licensed cannabis dispensaries in Lompoc, CA. Age 21+. Free to browse — no account needed.`
@@ -110,7 +110,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `wineries`
 
 **Title:**
-`Lompoc Winery Deals & Wine Tasting Specials — Santa Rita Hills | Lompoc Deals`
+`Lompoc Winery Deals & Wine Tasting Specials — Santa Rita Hills | Lompoc Locals`
 
 **Meta Description:**
 `Discover wine tasting deals and winery specials in Lompoc's Wine Ghetto and Santa Rita Hills AVA. Book your tasting, save on your visit.`
@@ -139,7 +139,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `health-beauty`
 
 **Title:**
-`Lompoc Health & Beauty Deals — Salons, Spas & Wellness Coupons | Lompoc Deals`
+`Lompoc Health & Beauty Deals — Salons, Spas & Wellness Coupons | Lompoc Locals`
 
 **Meta Description:**
 `Save on haircuts, nails, massage, facials, and wellness services in Lompoc, CA. Current deals from local salons and spas. Free to claim.`
@@ -166,7 +166,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `real-estate`
 
 **Title:**
-`Lompoc Real Estate Listings — Homes For Sale & For Rent | Lompoc Deals`
+`Lompoc Real Estate Listings — Homes For Sale & For Rent | Lompoc Locals`
 
 **Meta Description:**
 `Browse homes for sale and apartments for rent in Lompoc, CA. Local listings from Lompoc real estate businesses — updated regularly.`
@@ -192,7 +192,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `retail`
 
 **Title:**
-`Lompoc Retail Deals & Shopping Coupons — Local Stores | Lompoc Deals`
+`Lompoc Retail Deals & Shopping Coupons — Local Stores | Lompoc Locals`
 
 **Meta Description:**
 `Find deals and coupons from local Lompoc retail shops — clothing, home goods, gifts, and more. Shop local and save.`
@@ -217,7 +217,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Slug: `automotive`
 
 **Title:**
-`Lompoc Auto Deals — Car Service Coupons & Auto Shop Specials | Lompoc Deals`
+`Lompoc Auto Deals — Car Service Coupons & Auto Shop Specials | Lompoc Locals`
 
 **Meta Description:**
 `Oil changes, tires, detailing, and auto repair deals in Lompoc, CA. Save on your car at local shops.`
@@ -242,7 +242,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; keywor
 ## Fallback (keep for uncovered slugs)
 
 ```ts
-title: `Lompoc ${cat.name} Deals & Coupons — Local Discounts | Lompoc Deals`
+title: `Lompoc ${cat.name} Deals & Coupons — Local Discounts | Lompoc Locals`
 description: `Browse current ${catLower} deals and coupons from Lompoc, CA businesses. Free to claim, updated daily — no credit card needed.`
 ```
 

@@ -4,7 +4,7 @@
 
 ## Background
 
-Lompoc Deals has 430 approved businesses, 0 claimed by their owners, and the operator currently has no way to answer questions like "how many people viewed Walgreens this week" or "what's our claim conversion rate." The existing telemetry is limited to a `deal_events` table and `view_count`/`click_count` columns on `deals` — the rest of the funnel is blind.
+Lompoc Locals has 430 approved businesses, 0 claimed by their owners, and the operator currently has no way to answer questions like "how many people viewed Walgreens this week" or "what's our claim conversion rate." The existing telemetry is limited to a `deal_events` table and `view_count`/`click_count` columns on `deals` — the rest of the funnel is blind.
 
 `docs/THIS_CYCLE.md` calls out this exact gap as REQ-001 ("Conversion Funnel Analytics — Zero baseline data. Can't prove social works, can't justify paid spend"). The merchant pitch is also blocked by lack of per-business visibility ("How do I know anyone will see my deal?" is the #1 outreach objection per the same doc).
 

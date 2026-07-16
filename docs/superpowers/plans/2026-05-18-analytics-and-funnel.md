@@ -1894,10 +1894,10 @@ git push origin main
 - [ ] **Step 9: Production verification**
 
 After production deploys:
-1. Visit `https://lompoc-deals.vercel.app/en/biz/pali-wine-co` anonymously (a fresh browser/incognito).
+1. Visit `https://www.lompoclocals.com/en/biz/pali-wine-co` anonymously (a fresh browser/incognito).
 2. Confirm `lompoc_sid` cookie is set.
 3. Query the DB to confirm a `business_page_viewed` event landed.
-4. Visit `https://lompoc-deals.vercel.app/en/admin/analytics` (signed in as admin).
+4. Visit `https://www.lompoclocals.com/en/admin/analytics` (signed in as admin).
 5. Confirm the dashboard renders with the new event.
 
 - [ ] **Step 10: Note the one manual step in the final report**

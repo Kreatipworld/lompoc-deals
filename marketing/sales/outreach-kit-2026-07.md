@@ -45,7 +45,7 @@ The paid follow-up (once Stripe is live):
 
 ### SMS / Instagram DM (free claim — send today)
 
-> Hi {name}! Your business is already listed on Lompoc Locals (the local deals site) — here's your page: {profile_url}. You can claim it free to control your photos, hours & info. Takes 2 min: https://lompoc-deals.vercel.app/en/for-businesses — Andres
+> Hi {name}! Your business is already listed on Lompoc Locals (the local deals site) — here's your page: {profile_url}. You can claim it free to control your photos, hours & info. Takes 2 min: https://www.lompoclocals.com/en/for-businesses — Andres
 
 ### Email (free claim + tease)
 
@@ -59,7 +59,7 @@ The paid follow-up (once Stripe is live):
 >
 > When you're ready to go further: businesses on our Growth plan put offers on the Deal Board and in the Saturday Top-10 email that goes to local subscribers, with a dashboard showing views → claims → redemptions.
 >
-> Claim link: https://lompoc-deals.vercel.app/en/for-businesses
+> Claim link: https://www.lompoclocals.com/en/for-businesses
 >
 > — Andres, Lompoc Locals
 
@@ -77,7 +77,7 @@ The paid follow-up (once Stripe is live):
 | They say | You say |
 |---|---|
 | "Does anyone actually see it?" | Show their profile's view count if it's in the CSV. "And every deal shows you views, claims, and register redemptions — you'll know exactly." |
-| "How do coupons even work?" | Open lompoc-deals.vercel.app/locals on your phone — the demo plays itself. "Customer taps Claim, shows the screen at your register. No hardware, nothing to install." |
+| "How do coupons even work?" | Open www.lompoclocals.com/locals on your phone — the demo plays itself. "Customer taps Claim, shows the screen at your register. No hardware, nothing to install." |
 | "I don't have time." | "Claiming is 2 minutes. A deal is a title and an expiry date. I'll sit with you and do the first one." |
 | "Is it really free?" | "The listing, yes — forever, no card. Deals are the paid plan, $39.99/mo, and you only do that when you're ready." |
 | "I'm on Facebook already." | "This is where people go when they've *decided* to spend in Lompoc — searching 'pizza' or 'haircut'. Different moment than scrolling." |

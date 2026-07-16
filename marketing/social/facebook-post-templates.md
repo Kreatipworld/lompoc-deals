@@ -17,9 +17,9 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 > 📍 [Address or neighborhood]
 > ⏰ Valid through [expiration date]
 >
-> Claim it free at 👉 lompoc-deals.vercel.app
+> Claim it free at 👉 www.lompoclocals.com
 >
-> #LompocDeals #ShopLocal #Lompoc #SantaBarbaraCounty
+> #LompocLocals #ShopLocal #Lompoc #SantaBarbaraCounty
 
 ---
 
@@ -32,7 +32,7 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 > 📍 [Dirección o vecindario]
 > ⏰ Válido hasta [fecha de vencimiento]
 >
-> Recláme gratis en 👉 lompoc-deals.vercel.app
+> Recláme gratis en 👉 www.lompoclocals.com
 >
 > #OfertasLompoc #CompraLocal #Lompoc
 
@@ -49,11 +49,11 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 > 📍 [Address or neighborhood, e.g. "Old Town on H Street"]
 > 🕐 [Hours if known, e.g. "Open Tue–Sun 10am–6pm"]
 >
-> They're listed on Lompoc Deals — Lompoc's free local business directory. Find their contact info, photos, and any current deals at 👉 lompoc-deals.vercel.app
+> They're listed on Lompoc Locals — Lompoc's free local business directory. Find their contact info, photos, and any current deals at 👉 www.lompoclocals.com
 >
 > Know a local Lompoc business that should be listed? Drop it below 👇
 >
-> #LompocDeals #LompocBusiness #ShopLocal #Lompoc
+> #LompocLocals #LompocBusiness #ShopLocal #Lompoc
 
 ---
 
@@ -66,11 +66,11 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 > 📍 [Dirección o vecindario]
 > 🕐 [Horarios si se conocen]
 >
-> Están en Lompoc Deals — el directorio gratuito de negocios locales de Lompoc. Encuentra su información, fotos y ofertas actuales en 👉 lompoc-deals.vercel.app
+> Están en Lompoc Locals — el directorio gratuito de negocios locales de Lompoc. Encuentra su información, fotos y ofertas actuales en 👉 www.lompoclocals.com
 >
 > ¿Conoces un negocio local de Lompoc que debería estar en el directorio? ¡Déjalo en los comentarios! 👇
 >
-> #LompocDeals #NegociosLompoc #CompraLocal #Lompoc
+> #LompocLocals #NegociosLompoc #CompraLocal #Lompoc
 
 ---
 
@@ -82,7 +82,7 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 > 2. [Deal 2 — Business + offer]
 > 3. [Deal 3 — Business + offer]
 >
-> See all deals (and add your own business for free) at lompoc-deals.vercel.app
+> See all deals (and add your own business for free) at www.lompoclocals.com
 >
 > Have a great weekend, Lompoc! 🎉
 
@@ -96,7 +96,7 @@ Always post in both EN and ES versions. Pin top comment with signup link.
 > 2. [Oferta 2]
 > 3. [Oferta 3]
 >
-> Ve todas las ofertas en lompoc-deals.vercel.app
+> Ve todas las ofertas en www.lompoclocals.com
 >
 > ¡Buen fin de semana, Lompoc! 🎉
 

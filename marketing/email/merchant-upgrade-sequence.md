@@ -21,7 +21,7 @@ This sequence converts Free-tier merchants to Standard ($19.99/mo) or Premium ($
 | 2 | +3 days after Email 1 (no upgrade) | Your deal slot is waiting | Re-engage with social proof |
 | 3 | +7 days after Email 2 (no upgrade) | Last nudge: what you're leaving on the table | Final push with loss framing |
 | A | Day 7 active, <3 deals | You're halfway there — free tip to get more views | Nurture / engagement warm-up |
-| B | Day 30 no deals posted | Your Lompoc Deals profile is empty — 2-min fix | Win-back dormant merchants |
+| B | Day 30 no deals posted | Your Lompoc Locals profile is empty — 2-min fix | Win-back dormant merchants |
 
 ---
 
@@ -39,7 +39,7 @@ This sequence converts Free-tier merchants to Standard ($19.99/mo) or Premium ($
 
 Hi [First Name],
 
-You just posted your 3rd deal on Lompoc Deals — you've hit the free plan limit.
+You just posted your 3rd deal on Lompoc Locals — you've hit the free plan limit.
 
 That means customers can see your business and your deals right now. But if you want to keep posting new offers, you'll need to upgrade.
 
@@ -50,13 +50,13 @@ That means customers can see your business and your deals right now. But if you 
 - Hours, Google reviews widget, and more
 
 **[Upgrade to Standard — $19.99/month →]**
-*(Link: `lompoc-deals.vercel.app/dashboard/billing`)*
+*(Link: `www.lompoclocals.com/dashboard/billing`)*
 
 Not ready yet? Your 3 current deals stay live — you just can't post new ones until you upgrade.
 
 Questions? Reply to this email and we'll help.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 ---
@@ -65,7 +65,7 @@ Questions? Reply to this email and we'll help.
 
 Hola [Nombre],
 
-Acaba de publicar su 3.ª oferta en Lompoc Deals — ha alcanzado el límite del plan gratuito.
+Acaba de publicar su 3.ª oferta en Lompoc Locals — ha alcanzado el límite del plan gratuito.
 
 Eso significa que los clientes pueden ver su negocio y sus ofertas ahora mismo. Pero para seguir publicando nuevas promociones, necesitará mejorar su plan.
 
@@ -76,13 +76,13 @@ Eso significa que los clientes pueden ver su negocio y sus ofertas ahora mismo. 
 - Horarios, widget de reseñas de Google, y más
 
 **[Mejorar al plan Standard — $19.99/mes →]**
-*(Enlace: `lompoc-deals.vercel.app/dashboard/billing`)*
+*(Enlace: `www.lompoclocals.com/dashboard/billing`)*
 
 ¿No está listo aún? Sus 3 ofertas actuales permanecen activas — solo que no podrá publicar nuevas hasta que mejore su plan.
 
 ¿Preguntas? Responda a este correo y lo ayudaremos.
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 ---
 
@@ -100,7 +100,7 @@ Eso significa que los clientes pueden ver su negocio y sus ofertas ahora mismo. 
 
 Hi [First Name],
 
-A few days ago you hit the free plan limit on Lompoc Deals. Your 3 deals are still live — but you can't post anything new.
+A few days ago you hit the free plan limit on Lompoc Locals. Your 3 deals are still live — but you can't post anything new.
 
 A quick reminder of what you're missing:
 
@@ -109,11 +109,11 @@ A quick reminder of what you're missing:
 Standard is $19.99/month. That's less than a single Facebook boost — with zero ad spend risk.
 
 **[Upgrade now →]**
-*(Link: `lompoc-deals.vercel.app/dashboard/billing`)*
+*(Link: `www.lompoclocals.com/dashboard/billing`)*
 
 Still on the fence? Hit reply and tell us what's holding you back — we'll answer any question honestly.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 ---
@@ -122,7 +122,7 @@ Still on the fence? Hit reply and tell us what's holding you back — we'll answ
 
 Hola [Nombre],
 
-Hace unos días alcanzó el límite del plan gratuito en Lompoc Deals. Sus 3 ofertas aún están activas — pero no puede publicar nada nuevo.
+Hace unos días alcanzó el límite del plan gratuito en Lompoc Locals. Sus 3 ofertas aún están activas — pero no puede publicar nada nuevo.
 
 Un recordatorio rápido de lo que se está perdiendo:
 
@@ -131,11 +131,11 @@ Un recordatorio rápido de lo que se está perdiendo:
 Standard cuesta $19.99/mes. Eso es menos que un único impulso de publicación en Facebook — sin riesgo de gasto en publicidad.
 
 **[Mejorar ahora →]**
-*(Enlace: `lompoc-deals.vercel.app/dashboard/billing`)*
+*(Enlace: `www.lompoclocals.com/dashboard/billing`)*
 
 ¿Aún indeciso? Responda y cuéntenos qué lo detiene — responderemos cualquier pregunta con honestidad.
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 ---
 
@@ -176,9 +176,9 @@ Or if you want to go Premium ($39.99/month): unlimited deals, featured homepage 
 
 Either way — staying Free is fine. We just want you to know what you're leaving behind.
 
-— Lompoc Deals Team
+— Lompoc Locals Team
 
-P.S. If you've decided Lompoc Deals isn't a fit, let us know. We'd rather hear why than lose you quietly.
+P.S. If you've decided Lompoc Locals isn't a fit, let us know. We'd rather hear why than lose you quietly.
 
 ---
 
@@ -209,16 +209,16 @@ O si quiere Premium ($39.99/mes): ofertas ilimitadas, destacado en la página pr
 
 En cualquier caso — el plan gratuito está bien. Solo queremos que sepa lo que deja atrás.
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
-P.D. Si ha decidido que Lompoc Deals no es para usted, háganos saber. Preferimos escuchar el motivo que perderlo en silencio.
+P.D. Si ha decidido que Lompoc Locals no es para usted, háganos saber. Preferimos escuchar el motivo que perderlo en silencio.
 
 ---
 
 ## Email A — Day-7 Nurture (Active, <3 Deals)
 
-**Subject (EN):** 1 tip to get more eyes on your Lompoc Deals listing
-**Subject (ES):** 1 consejo para conseguir más vistas en tu perfil de Lompoc Deals
+**Subject (EN):** 1 tip to get more eyes on your Lompoc Locals listing
+**Subject (ES):** 1 consejo para conseguir más vistas en tu perfil de Lompoc Locals
 
 **Preview text (EN):** The businesses getting the most views do this one thing.
 **Preview text (ES):** Los negocios con más vistas hacen esto.
@@ -229,7 +229,7 @@ P.D. Si ha decidido que Lompoc Deals no es para usted, háganos saber. Preferimo
 
 Hi [First Name],
 
-You've been on Lompoc Deals for a week — nice to have you.
+You've been on Lompoc Locals for a week — nice to have you.
 
 One tip that gets listings more views: **post a deal with a clear expiry date.**
 
@@ -240,9 +240,9 @@ That's it. One small change.
 You're currently on the Free plan (up to 3 deals). If you want to post more or see how many people are viewing your deals, Standard is $19.99/month.
 
 **[Log in and update your deal →]**
-*(Link: `lompoc-deals.vercel.app/dashboard`)*
+*(Link: `www.lompoclocals.com/dashboard`)*
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 ---
@@ -251,7 +251,7 @@ You're currently on the Free plan (up to 3 deals). If you want to post more or s
 
 Hola [Nombre],
 
-Lleva una semana en Lompoc Deals — bienvenido.
+Lleva una semana en Lompoc Locals — bienvenido.
 
 Un consejo para obtener más vistas en su anuncio: **publique una oferta con una fecha de vencimiento clara.**
 
@@ -262,16 +262,16 @@ Eso es todo. Un pequeño cambio.
 Actualmente está en el plan gratuito (hasta 3 ofertas). Si desea publicar más o ver cuántas personas ven sus ofertas, Standard cuesta $19.99/mes.
 
 **[Iniciar sesión y actualizar su oferta →]**
-*(Enlace: `lompoc-deals.vercel.app/dashboard`)*
+*(Enlace: `www.lompoclocals.com/dashboard`)*
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 ---
 
 ## Email B — Day-30 Win-Back (No Deals Posted)
 
-**Subject (EN):** Your Lompoc Deals profile is empty — 2-minute fix
-**Subject (ES):** Tu perfil en Lompoc Deals está vacío — solución de 2 minutos
+**Subject (EN):** Your Lompoc Locals profile is empty — 2-minute fix
+**Subject (ES):** Tu perfil en Lompoc Locals está vacío — solución de 2 minutos
 
 **Preview text (EN):** Your business is listed but no deals are showing. Here's how to fix that fast.
 **Preview text (ES):** Tu negocio está listado pero no hay ofertas. Así se arregla rápido.
@@ -282,7 +282,7 @@ Actualmente está en el plan gratuito (hasta 3 ofertas). Si desea publicar más 
 
 Hi [First Name],
 
-You signed up for Lompoc Deals a month ago but haven't posted any deals yet.
+You signed up for Lompoc Locals a month ago but haven't posted any deals yet.
 
 That means locals searching for businesses like yours will see your profile — but nothing to click on.
 
@@ -297,11 +297,11 @@ Ideas if you're stuck:
 Your 3 free deal slots are waiting.
 
 **[Post your first deal →]**
-*(Link: `lompoc-deals.vercel.app/dashboard/deals/new`)*
+*(Link: `www.lompoclocals.com/dashboard/deals/new`)*
 
-If you're not sure Lompoc Deals is right for your business, reply and let us know — we'll give you an honest answer.
+If you're not sure Lompoc Locals is right for your business, reply and let us know — we'll give you an honest answer.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 ---
@@ -310,7 +310,7 @@ If you're not sure Lompoc Deals is right for your business, reply and let us kno
 
 Hola [Nombre],
 
-Se registró en Lompoc Deals hace un mes pero aún no ha publicado ninguna oferta.
+Se registró en Lompoc Locals hace un mes pero aún no ha publicado ninguna oferta.
 
 Eso significa que los residentes locales que busquen negocios como el suyo verán su perfil — pero no habrá nada en qué hacer clic.
 
@@ -325,11 +325,11 @@ Ideas si no sabe por dónde empezar:
 Sus 3 espacios de oferta gratuitos están esperando.
 
 **[Publicar su primera oferta →]**
-*(Enlace: `lompoc-deals.vercel.app/dashboard/deals/new`)*
+*(Enlace: `www.lompoclocals.com/dashboard/deals/new`)*
 
-Si no está seguro de que Lompoc Deals sea adecuado para su negocio, responda y cuéntenos — le daremos una respuesta honesta.
+Si no está seguro de que Lompoc Locals sea adecuado para su negocio, responda y cuéntenos — le daremos una respuesta honesta.
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 ---
 
@@ -347,9 +347,9 @@ Si no está seguro de que Lompoc Deals sea adecuado para su negocio, responda y 
 **Requires:** REQ-002 (email sequence infra) + B-001 (Stripe activation). Both needed before this sequence goes live.
 
 **CTA links:**
-- Upgrade CTA → `lompoc-deals.vercel.app/dashboard/billing`
-- Post deal CTA → `lompoc-deals.vercel.app/dashboard/deals/new`
-- Dashboard → `lompoc-deals.vercel.app/dashboard`
+- Upgrade CTA → `www.lompoclocals.com/dashboard/billing`
+- Post deal CTA → `www.lompoclocals.com/dashboard/deals/new`
+- Dashboard → `www.lompoclocals.com/dashboard`
 
 ---
 

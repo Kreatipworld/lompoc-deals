@@ -964,7 +964,7 @@ git merge --ff-only feat/hours-accuracy
 git push origin main
 ```
 
-Wait for the production deploy. Re-verify Pali Wine Co. on `https://lompoc-deals.vercel.app`.
+Wait for the production deploy. Re-verify Pali Wine Co. on `https://www.lompoclocals.com`.
 
 - [ ] **Step 9: Clean up the branch**
 

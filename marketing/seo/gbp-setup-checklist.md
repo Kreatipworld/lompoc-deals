@@ -16,12 +16,12 @@ A fully optimized GBP listing is the fastest way to appear in Google's local pac
 
 ### Step 1 — Create / Claim the Profile
 1. Go to: business.google.com
-2. Sign in with the Lompoc Deals Google account (create one if needed — use `hello@lompoc-deals.com` or a board-controlled Gmail)
-3. Search for "Lompoc Deals" — claim if it exists, create new if not
+2. Sign in with the Lompoc Locals Google account (create one if needed — use `hello@lompoclocals.com` or a board-controlled Gmail)
+3. Search for "Lompoc Locals" — claim if it exists, create new if not
 4. Business category: **Internet company** (primary) + **Local business directory** or **Business networking company** (secondary — pick whichever Google offers; avoid "Coupons & deals" which undersells the directory value prop)
 5. Service area: Lompoc, CA (do NOT enter a physical address if you don't have a storefront)
 6. Phone: Optional — add if there's a contact number
-7. Website: https://lompoc-deals.vercel.app
+7. Website: https://www.lompoclocals.com
 
 ### Step 2 — Verify the Listing
 - Google will offer: postcard, phone, email, or video verification
@@ -32,20 +32,20 @@ A fully optimized GBP listing is the fastest way to appear in Google's local pac
 
 #### Business Description (copy-paste ready)
 ```
-Lompoc Deals is Lompoc's free local business directory — discover local 
+Lompoc Locals is Lompoc's free local business directory — discover local 
 restaurants, shops, salons, wineries, services, and more, all in one place. 
 Businesses list for free; residents browse and claim deals at no cost. 
 Bilingual (English / Spanish). Built for the Flower Capital. 
-lompoc-deals.vercel.app
+www.lompoclocals.com
 ```
 
 **Spanish description (add in "Additional info" field):**
 ```
-Lompoc Deals es el directorio gratuito de negocios locales de Lompoc — 
+Lompoc Locals es el directorio gratuito de negocios locales de Lompoc — 
 descubre restaurantes, tiendas, salones, bodegas, servicios y más, todo en 
 un solo lugar. Los negocios se publican gratis; los residentes exploran y 
 reclaman ofertas sin costo. Bilingüe (inglés / español). Construido para la 
-Capital de las Flores. lompoc-deals.vercel.app
+Capital de las Flores. www.lompoclocals.com
 ```
 
 #### Hours
@@ -69,12 +69,12 @@ Capital de las Flores. lompoc-deals.vercel.app
 
 **Post type:** What's New  
 **Post copy:**
-> Lompoc Deals is live — Lompoc's free local business directory! Discover restaurants, shops, salons, wineries, and more in one place. Businesses list free; residents browse free. Bilingual EN/ES. Visit lompoc-deals.vercel.app 🌸
+> Lompoc Locals is live — Lompoc's free local business directory! Discover restaurants, shops, salons, wineries, and more in one place. Businesses list free; residents browse free. Bilingual EN/ES. Visit www.lompoclocals.com 🌸
 > 
-> ¡Lompoc Deals ya está disponible! El directorio gratuito de negocios locales de Lompoc: restaurantes, tiendas, salones, bodegas y más. Explora gratis en lompoc-deals.vercel.app 🌸
+> ¡Lompoc Locals ya está disponible! El directorio gratuito de negocios locales de Lompoc: restaurantes, tiendas, salones, bodegas y más. Explora gratis en www.lompoclocals.com 🌸
 
 **Photo:** Use the banner image  
-**CTA button:** Sign Up → https://lompoc-deals.vercel.app/en/sign-up
+**CTA button:** Sign Up → https://www.lompoclocals.com/en/sign-up
 
 ### Step 5 — Ongoing GBP Maintenance (weekly)
 
@@ -87,7 +87,7 @@ Every Tuesday (or whenever digest sends):
 
 ## GBP SEO Optimization Tips
 
-1. **Business name must match exactly:** "Lompoc Deals" — no keyword stuffing
+1. **Business name must match exactly:** "Lompoc Locals" — no keyword stuffing
 2. **Category selection is critical:** Primary category drives most of the local ranking
 3. **Reviews:** After getting first 10 merchants, ask them to leave GBP reviews
 4. **Posts expire:** GBP posts expire after 7 days. Set a Tuesday reminder to post weekly
@@ -98,14 +98,14 @@ Every Tuesday (or whenever digest sends):
 ## Review Strategy (after first 10 merchants join)
 
 **Script for asking merchants:**
-> "We're building our Google presence for Lompoc Deals. Would you mind leaving us a quick Google review? It helps other local businesses find us. Here's the link: [GBP SHORT LINK]"
+> "We're building our Google presence for Lompoc Locals. Would you mind leaving us a quick Google review? It helps other local businesses find us. Here's the link: [GBP SHORT LINK]"
 
 **Target:** 10 reviews in first 60 days, average rating ≥4.5 stars
 
 ---
 
 ## GBP Short Link (get this after verification)
-Format: `g.page/lompoc-deals` or similar  
+Format: `g.page/lompoc-locals` or similar  
 Share this in all outreach, merchant emails, and social bios
 
 ---

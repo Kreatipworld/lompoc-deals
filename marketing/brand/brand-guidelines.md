@@ -1,4 +1,4 @@
-# Lompoc Deals — Brand Guidelines
+# Lompoc Locals — Brand Guidelines
 *Owner: CMO / Brand & Creative*
 *Created: 2026-04-08 | Version: 1.0*
 
@@ -8,7 +8,7 @@
 
 **Why we exist:** To help Lompoc residents find and support local businesses — and give local businesses a free, bilingual way to reach their neighbors.
 
-**One-sentence brand story:** Lompoc Deals connects neighbors with the best local deals, in their language, from businesses they already know.
+**One-sentence brand story:** Lompoc Locals connects neighbors with the best local deals, in their language, from businesses they already know.
 
 ---
 
@@ -77,7 +77,7 @@
 
 ### Logo Usage
 
-- Full logo: "Lompoc Deals" wordmark + icon (use on headers, splash screens)
+- Full logo: "Lompoc Locals" wordmark + icon (use on headers, splash screens)
 - Icon only: "LD" monogram (use on social profile photos, favicons)
 - Minimum size: 24px height for icon, 80px width for wordmark
 - Clear space: 16px padding on all sides
@@ -149,9 +149,9 @@ Every consumer-facing piece of content must be available in both English and Spa
 - ✅ Lead every piece of content with the benefit, not the feature
 - ✅ Use real deal examples from real Lompoc businesses in copy
 - ✅ Tag and credit merchants in social posts
-- ✅ Celebrate local milestones ("50 Lompoc businesses now on Lompoc Deals!")
+- ✅ Celebrate local milestones ("50 Lompoc businesses now on Lompoc Locals!")
 - ✅ Post in both languages every time
-- ✅ Keep URLs consistent: always lompoc-deals.vercel.app (until custom domain)
+- ✅ Keep URLs consistent: always www.lompoclocals.com (until custom domain)
 
 ### Don't
 - ❌ Promise features the CTO team hasn't shipped
@@ -167,7 +167,7 @@ Every consumer-facing piece of content must be available in both English and Spa
 
 - [ ] Is it bilingual (EN + ES)?
 - [ ] Does it use the correct brand colors and font?
-- [ ] Is the URL correct (lompoc-deals.vercel.app)?
+- [ ] Is the URL correct (www.lompoclocals.com)?
 - [ ] Does it lead with benefit, not feature?
 - [ ] Does it represent a feature that is actually live?
 - [ ] Would a Lompoc neighbor find this useful or trust it?

@@ -1,4 +1,4 @@
-# Structured Data / JSON-LD Schema Spec — Lompoc Deals
+# Structured Data / JSON-LD Schema Spec — Lompoc Locals
 *Owner: CMO / Content & SEO Strategist*
 *Created: 2026-04-10 | Status: Ready for CTO implementation*
 *Related: M-008 (SEO landing pages), M-002 (GBP), REQ-013 (new)*
@@ -40,14 +40,14 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Lompoc Deals",
-  "url": "https://lompoc-deals.vercel.app",
+  "name": "Lompoc Locals",
+  "url": "https://www.lompoclocals.com",
   "description": "Lompoc's free local business directory — restaurants, shops, salons, wineries, services and more. Bilingual EN/ES.",
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://lompoc-deals.vercel.app/search?q={search_term_string}"
+      "urlTemplate": "https://www.lompoclocals.com/search?q={search_term_string}"
     },
     "query-input": "required name=search_term_string"
   },
@@ -69,7 +69,7 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "{{business.name}}",
-  "url": "https://lompoc-deals.vercel.app/biz/{{business.slug}}",
+  "url": "https://www.lompoclocals.com/biz/{{business.slug}}",
   "image": "{{business.coverImageUrl}}",
   "logo": "{{business.logoUrl}}",
   "description": "{{business.description}}",
@@ -97,7 +97,7 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
   ],
   "priceRange": "{{business.priceRange || '$'}}",
   "servesCuisine": "{{business.cuisine || null}}",
-  "hasMap": "https://lompoc-deals.vercel.app/map",
+  "hasMap": "https://www.lompoclocals.com/map",
   "sameAs": [
     "{{business.facebookUrl || null}}",
     "{{business.instagramUrl || null}}"
@@ -134,13 +134,13 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
   "@type": "ItemList",
   "name": "{{category.displayName}} in Lompoc, CA",
   "description": "Discover the best {{category.displayName}} in Lompoc — browse profiles, hours, deals, and contact info.",
-  "url": "https://lompoc-deals.vercel.app/category/{{category.slug}}",
+  "url": "https://www.lompoclocals.com/category/{{category.slug}}",
   "numberOfItems": {{businesses.length}},
   "itemListElement": [
     {
       "@type": "ListItem",
       "position": 1,
-      "url": "https://lompoc-deals.vercel.app/biz/{{business.slug}}",
+      "url": "https://www.lompoclocals.com/biz/{{business.slug}}",
       "name": "{{business.name}}"
     }
   ]
@@ -161,7 +161,7 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
   "@context": "https://schema.org",
   "@type": "TouristAttraction",
   "name": "{{activity.title}}",
-  "url": "https://lompoc-deals.vercel.app/activities/{{activity.slug}}",
+  "url": "https://www.lompoclocals.com/activities/{{activity.slug}}",
   "description": "{{activity.description}}",
   "image": "{{activity.imageUrl}}",
   "touristType": "{{activity.category}}",
@@ -188,7 +188,7 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
 ## Schema 5 — BreadcrumbList (Category + Business + Activity Pages)
 
 **Pages:** `/category/[slug]`, `/biz/[slug]`, `/activities/[slug]`, `/activities`  
-**Purpose:** Shows breadcrumb trail in search results (e.g., "Lompoc Deals > Restaurants > El Rancho"). Increases CTR ~15–25%.
+**Purpose:** Shows breadcrumb trail in search results (e.g., "Lompoc Locals > Restaurants > El Rancho"). Increases CTR ~15–25%.
 
 ### Business page breadcrumb
 
@@ -200,20 +200,20 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
     {
       "@type": "ListItem",
       "position": 1,
-      "name": "Lompoc Deals",
-      "item": "https://lompoc-deals.vercel.app"
+      "name": "Lompoc Locals",
+      "item": "https://www.lompoclocals.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "{{category.displayName}}",
-      "item": "https://lompoc-deals.vercel.app/category/{{category.slug}}"
+      "item": "https://www.lompoclocals.com/category/{{category.slug}}"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "{{business.name}}",
-      "item": "https://lompoc-deals.vercel.app/biz/{{business.slug}}"
+      "item": "https://www.lompoclocals.com/biz/{{business.slug}}"
     }
   ]
 }
@@ -229,14 +229,14 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
     {
       "@type": "ListItem",
       "position": 1,
-      "name": "Lompoc Deals",
-      "item": "https://lompoc-deals.vercel.app"
+      "name": "Lompoc Locals",
+      "item": "https://www.lompoclocals.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "{{category.displayName}} in Lompoc",
-      "item": "https://lompoc-deals.vercel.app/category/{{category.slug}}"
+      "item": "https://www.lompoclocals.com/category/{{category.slug}}"
     }
   ]
 }
@@ -252,20 +252,20 @@ Zero engineering cost beyond adding `<script type="application/ld+json">` tags t
     {
       "@type": "ListItem",
       "position": 1,
-      "name": "Lompoc Deals",
-      "item": "https://lompoc-deals.vercel.app"
+      "name": "Lompoc Locals",
+      "item": "https://www.lompoclocals.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Things to Do in Lompoc",
-      "item": "https://lompoc-deals.vercel.app/activities"
+      "item": "https://www.lompoclocals.com/activities"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "{{activity.title}}",
-      "item": "https://lompoc-deals.vercel.app/activities/{{activity.slug}}"
+      "item": "https://www.lompoclocals.com/activities/{{activity.slug}}"
     }
   ]
 }

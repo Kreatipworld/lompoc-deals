@@ -1,4 +1,4 @@
-# Blog Backlink Map — Lompoc Deals
+# Blog Backlink Map — Lompoc Locals
 
 ## Topic Clusters
 

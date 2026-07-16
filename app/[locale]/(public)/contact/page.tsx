@@ -40,7 +40,7 @@ export default async function ContactPage() {
             {t("emailCard.title")}
           </h2>
           <a
-            href="mailto:hello@lompocdeals.com"
+            href="mailto:hello@lompoclocals.com"
             className="mt-2 text-sm font-medium text-primary hover:underline"
           >
             {t("emailCard.label")}
@@ -99,7 +99,7 @@ export default async function ContactPage() {
         </p>
 
         <form
-          action="mailto:hello@lompocdeals.com"
+          action="mailto:hello@lompoclocals.com"
           method="post"
           encType="text/plain"
           className="mt-6 space-y-4"

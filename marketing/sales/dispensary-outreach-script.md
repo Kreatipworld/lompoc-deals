@@ -12,7 +12,7 @@ Cannabis businesses in California face extreme advertising restrictions:
 - **TikTok:** Cannabis content heavily restricted
 - **Traditional media:** Limited and expensive
 
-**Lompoc Deals is one of very few legitimate, affordable marketing channels** for local dispensaries. This is not a nice-to-have — for many cannabis businesses, it's one of their only options for digital deal promotion.
+**Lompoc Locals is one of very few legitimate, affordable marketing channels** for local dispensaries. This is not a nice-to-have — for many cannabis businesses, it's one of their only options for digital deal promotion.
 
 Lead every conversation with this angle. They have budget. They need channels. We are a channel they can actually use.
 
@@ -33,7 +33,7 @@ Lead every conversation with this angle. They have budget. They need channels. W
 >
 > Most Lompoc dispensaries tell me the same thing — Google won't run your ads, Instagram keeps taking them down, and the local options are limited.
 >
-> I run **Lompoc Deals** (lompoc-deals.vercel.app) — Lompoc's free local business directory. We already list 5 Lompoc dispensaries in the directory, and consumers browse us looking for local businesses, cannabis specials, discounts, and new product drops.
+> I run **Lompoc Locals** (www.lompoclocals.com) — Lompoc's free local business directory. We already list 5 Lompoc dispensaries in the directory, and consumers browse us looking for local businesses, cannabis specials, discounts, and new product drops.
 >
 > **The big difference:** We're not Google. Your deals appear here without getting flagged, removed, or rejected.
 >
@@ -42,7 +42,7 @@ Lead every conversation with this angle. They have budget. They need channels. W
 > Takes about 5 minutes to set up. Want me to send you the signup link?
 >
 > [Name]
-> Lompoc Deals
+> Lompoc Locals
 
 ---
 
@@ -56,7 +56,7 @@ Lead every conversation with this angle. They have budget. They need channels. W
 >
 > La mayoría de los dispensarios en Lompoc me dicen lo mismo — Google no acepta sus anuncios, Instagram los elimina constantemente, y las opciones locales son limitadas.
 >
-> Yo administro **Lompoc Deals** (lompoc-deals.vercel.app) — el directorio gratuito de negocios locales de Lompoc. Ya listamos 5 dispensarios de Lompoc en el directorio, y los consumidores nos visitan buscando negocios locales, especiales de cannabis, descuentos y nuevos productos.
+> Yo administro **Lompoc Locals** (www.lompoclocals.com) — el directorio gratuito de negocios locales de Lompoc. Ya listamos 5 dispensarios de Lompoc en el directorio, y los consumidores nos visitan buscando negocios locales, especiales de cannabis, descuentos y nuevos productos.
 >
 > **La gran diferencia:** No somos Google. Sus ofertas aparecen aquí sin ser bloqueadas, eliminadas o rechazadas.
 >
@@ -65,13 +65,13 @@ Lead every conversation with this angle. They have budget. They need channels. W
 > Toma solo 5 minutos configurar su perfil. ¿Le envío el enlace para registrarse?
 >
 > [Nombre]
-> Lompoc Deals
+> Lompoc Locals
 
 ---
 
 ## Walk-In / Phone Script
 
-> "Hi, I'm [Name] from Lompoc Deals — we're Lompoc's free local business directory. You're already listed — I wanted to reach out because we're one of the only places in town where dispensaries can actually promote their deals and products without Google or Instagram blocking them. Most dispensaries I talk to say that's their biggest frustration. Getting started is free — would it be worth 5 minutes to claim your listing and add your current deals?"
+> "Hi, I'm [Name] from Lompoc Locals — we're Lompoc's free local business directory. You're already listed — I wanted to reach out because we're one of the only places in town where dispensaries can actually promote their deals and products without Google or Instagram blocking them. Most dispensaries I talk to say that's their biggest frustration. Getting started is free — would it be worth 5 minutes to claim your listing and add your current deals?"
 
 ---
 
@@ -116,10 +116,10 @@ Check Google Maps for any unlisted dispensaries before outreach sprint — may b
 ## Follow-Up Sequence
 
 **Day 3 (if no response):**
-> "Hi [Name], just following up on my note about Lompoc Deals. The free tier is genuinely $0 — I just want to make sure you have the option. Reply and I'll send the signup link directly."
+> "Hi [Name], just following up on my note about Lompoc Locals. The free tier is genuinely $0 — I just want to make sure you have the option. Reply and I'll send the signup link directly."
 
 **Day 7 (final):**
-> "Last note — I won't keep following up. If the timing is ever right, we're at lompoc-deals.vercel.app and the dispensaries tab is always there. Free to start."
+> "Last note — I won't keep following up. If the timing is ever right, we're at www.lompoclocals.com and the dispensaries tab is always there. Free to start."
 
 ---
 

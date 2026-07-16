@@ -1,7 +1,7 @@
 # Hotel Partner Outreach
 *Owner: CMO | Created: 2026-04-19 | Triggered by: Hotels expansion to 18 properties (commit 795106b)*
 
-**Goal:** Convert top-tier Lompoc hotels into active Lompoc Deals merchants (deal posting + paid tier).  
+**Goal:** Convert top-tier Lompoc hotels into active Lompoc Locals merchants (deal posting + paid tier).  
 **Why now:** 18 hotels now listed with full Mapbox maps on `/hotels` and `/hotels/[slug]`. Each hotel has a dedicated detail page — free marketing asset we can show them.  
 **Target tier:** Standard ($19.99/mo) or Premium ($39.99/mo)  
 **Primary targets:** Embassy Suites, Hilton Garden Inn (largest properties, most to gain from deal visibility)
@@ -10,42 +10,42 @@
 
 ## Cold Email — Embassy Suites by Hilton Lompoc
 
-**Subject:** Your hotel is already on Lompoc Deals — here's how to turn it into bookings
+**Subject:** Your hotel is already on Lompoc Locals — here's how to turn it into bookings
 
 > Hi [GM / Director of Sales name],
 >
-> I wanted to reach out because Embassy Suites by Hilton Lompoc already has a featured listing on **Lompoc Deals** (lompoc-deals.vercel.app) — including your own detail page with an interactive map, amenities breakdown, and a direct "Get Directions" link.
+> I wanted to reach out because Embassy Suites by Hilton Lompoc already has a featured listing on **Lompoc Locals** (www.lompoclocals.com) — including your own detail page with an interactive map, amenities breakdown, and a direct "Get Directions" link.
 >
-> **[View your listing: lompoc-deals.vercel.app/hotels/embassy-suites-lompoc]**
+> **[View your listing: www.lompoclocals.com/hotels/embassy-suites-lompoc]**
 >
 > We're Lompoc's local deals and discovery platform — 472 Lompoc businesses listed, a new interactive map, and a growing audience of locals and visitors searching for where to stay, eat, and explore in the Flower Capital.
 >
 > Right now your listing is visible but passive. What a Standard or Premium account unlocks:
-> - **Post seasonal deals** — weekend packages, complimentary breakfast upgrades, AAA/military appreciation rates — visible to every Lompoc Deals user
+> - **Post seasonal deals** — weekend packages, complimentary breakfast upgrades, AAA/military appreciation rates — visible to every Lompoc Locals user
 > - **Deal alert emails** — every subscriber who saves your property gets notified when you post a new offer (direct line to warm leads)
 > - **Photo gallery** — showcase your rooms, pool, and event spaces in a carousel on your profile
 >
 > Wine country weekends, Vandenberg visiting families, and Central Coast business travelers are the core audience. Embassy Suites is the obvious top pick for that market. We'd like to help more of them find you.
 >
-> Standard tier is $19.99/month, no commission on bookings. Free tier is also available if you want to start there — just reply or sign up at lompoc-deals.vercel.app/signup.
+> Standard tier is $19.99/month, no commission on bookings. Free tier is also available if you want to start there — just reply or sign up at www.lompoclocals.com/signup.
 >
 > Happy to walk you through it in a quick call.
 >
 > Best,  
 > [Name]  
-> Lompoc Deals
+> Lompoc Locals
 
 ---
 
 ## Cold Email — Hilton Garden Inn Lompoc
 
-**Subject:** Your Hilton Garden Inn listing is live on Lompoc Deals — upgrade to post deals
+**Subject:** Your Hilton Garden Inn listing is live on Lompoc Locals — upgrade to post deals
 
 > Hi [GM / Director of Sales name],
 >
-> Hilton Garden Inn Lompoc is already featured on **Lompoc Deals** with your own dedicated listing page, Mapbox map, and directions link:
+> Hilton Garden Inn Lompoc is already featured on **Lompoc Locals** with your own dedicated listing page, Mapbox map, and directions link:
 >
-> **[View your listing: lompoc-deals.vercel.app/hotels/hilton-garden-inn-lompoc]**
+> **[View your listing: www.lompoclocals.com/hotels/hilton-garden-inn-lompoc]**
 >
 > We're the local platform Lompoc residents and visitors use to find businesses, deals, and things to do — 472 businesses, a live interactive map, and growing.
 >
@@ -53,11 +53,11 @@
 >
 > Standard plan ($19.99/month) gets you unlimited deal posting, subscriber email alerts when you publish, and a full photo gallery. No booking commission.
 >
-> Sign up free and post your first deal at lompoc-deals.vercel.app/signup — or reply here and I'll set it up for you.
+> Sign up free and post your first deal at www.lompoclocals.com/signup — or reply here and I'll set it up for you.
 >
 > Best,  
 > [Name]  
-> Lompoc Deals
+> Lompoc Locals
 
 ---
 
@@ -65,7 +65,7 @@
 
 > Hi [Name],
 >
-> Following up on my note about your Lompoc Deals listing. We just published a "Where to Stay in Lompoc" guide at lompoc-deals.vercel.app/blog/where-to-stay-lompoc-ca that features your property — it ranks for "hotels in Lompoc CA" search traffic.
+> Following up on my note about your Lompoc Locals listing. We just published a "Where to Stay in Lompoc" guide at www.lompoclocals.com/blog/where-to-stay-lompoc-ca that features your property — it ranks for "hotels in Lompoc CA" search traffic.
 >
 > Upgrading to Standard lets you post a deal directly to readers who find you through that article. The upgrade button is on your listing page, or just reply here.
 >

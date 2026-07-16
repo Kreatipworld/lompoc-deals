@@ -8,7 +8,7 @@
 Canva MCP connected. Brand kit `kADbE7Uj1L0` confirmed available.
 
 **3 existing Canva designs in account — NOT production-ready:**
-- DAHGUFRWkbI ("Instagram Post - Spring Special Offer") — placeholder URL `@reallygreatsite`, no Lompoc Deals branding
+- DAHGUFRWkbI ("Instagram Post - Spring Special Offer") — placeholder URL `@reallygreatsite`, no Lompoc Locals branding
 - DAHGUERexMI ("Lavender Spa Deal") — generic template, no Lompoc content
 - DAHGUAn05Ug ("Nature Tour Promotion") — mentions "Explore Lompoc" but no brand colors/identity
 
@@ -62,7 +62,7 @@ Open link → verify date/text → export → post as Instagram Story.
 
 1. Review the preview thumbnails above (click to open)
 2. Tell CMO which candidate letter you prefer for each post (e.g. "Wine Ghetto: B, Things To Do: A")
-3. CMO will save, finalize copy edits (correct URL to `lompoc-deals.vercel.app`), and export
+3. CMO will save, finalize copy edits (correct URL to `www.lompoclocals.com`), and export
 
 ---
 

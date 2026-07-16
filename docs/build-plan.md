@@ -1,4 +1,4 @@
-# Lompoc Deals — Build & Launch Plan
+# Lompoc Locals — Build & Launch Plan
 
 A local promotions feed for Lompoc, CA. Businesses post their own coupons, specials, and announcements. Locals browse a feed, search by category, view a map, and optionally sign up for a weekly email digest.
 
@@ -73,7 +73,7 @@ claude
 
 Then paste this prompt verbatim:
 
-> Build a Next.js 14 app called "Lompoc Deals" — a local promotions feed for Lompoc, California where businesses post coupons, specials, and announcements that locals can browse.
+> Build a Next.js 14 app called "Lompoc Locals" — a local promotions feed for Lompoc, California where businesses post coupons, specials, and announcements that locals can browse.
 >
 > **Stack:** Next.js 14 with the App Router and TypeScript, Tailwind CSS, shadcn/ui components, Drizzle ORM with Postgres (use the `@neondatabase/serverless` driver), Auth.js (NextAuth) v5 for email/password auth with bcrypt, Leaflet + react-leaflet for the map (no API key needed), Resend for transactional and digest email, and Vercel Blob for image uploads.
 >
@@ -147,9 +147,9 @@ Put everything in `.env.local` while developing, and paste the same vars into Ve
 
 A few things will save you weeks later:
 
-1. **Reserve your social handles** — `@lompocdeals` on Instagram, Facebook, TikTok. Local deals sites live or die on social.
+1. **Reserve your social handles** — `@lompoclocals` on Instagram, Facebook, TikTok. Local deals sites live or die on social.
 2. **Make a list of 10 Lompoc businesses you can call personally** — friends, regular spots, anyone who already knows you. They become your seed listings on day one. An empty deals site is dead on arrival.
-3. **Pick a name and check the .com** — "Lompoc Deals" is descriptive; "LompocLocal", "LompocSaves", "VVDeals" (Vandenberg Valley) are alternatives.
+3. **Pick a name and check the .com** — "Lompoc Locals" is descriptive; "LompocLocal", "LompocSaves", "VVDeals" (Vandenberg Valley) are alternatives.
 4. **Decide on a single hero photo** — Lompoc flowers, downtown, the wine scene — something that signals "this is your town" the moment someone lands on the homepage.
 
 ---

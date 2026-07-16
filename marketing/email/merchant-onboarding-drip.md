@@ -8,8 +8,8 @@
 
 - **Trigger event:** `user.signup` where `role = "business"`
 - **Send times:** Immediately (Day 0), Day 1 at 10am, Day 3 at 10am, Day 7 at 10am, Day 14 at 10am (local time)
-- **From address:** `hello@lompoc-deals.com`
-- **From name:** `Lompoc Deals — Merchant Support`
+- **From address:** `hello@lompoclocals.com`
+- **From name:** `Lompoc Locals — Merchant Support`
 - **Reply-to:** Human support inbox (or forward to board user's email)
 - **Unsubscribe:** Required, but with copy that says "you'll miss deal performance updates"
 - **Language:** Default English; Spanish version sent if user's `locale = "es"`
@@ -19,8 +19,8 @@
 
 ## Email 1 — Day 0: Welcome + First Deal CTA
 
-**Subject (EN):** Welcome to Lompoc Deals — let's get your first deal live  
-**Subject (ES):** Bienvenido a Lompoc Deals — publiquemos tu primera oferta
+**Subject (EN):** Welcome to Lompoc Locals — let's get your first deal live  
+**Subject (ES):** Bienvenido a Lompoc Locals — publiquemos tu primera oferta
 
 **Preview text (EN):** Your merchant profile is ready. Here's how to set up your first deal in 5 minutes.  
 **Preview text (ES):** Tu perfil de negocio está listo. Así se configura tu primera oferta en 5 minutos.
@@ -31,13 +31,13 @@
 
 Hi [business_name],
 
-You're now on **Lompoc Deals** — the platform that puts your business in front of Lompoc locals who are actively looking for deals.
+You're now on **Lompoc Locals** — the platform that puts your business in front of Lompoc locals who are actively looking for deals.
 
 **Your next step: create your first deal.**
 
 It takes less than 5 minutes:
 
-1. Go to your **[Merchant Dashboard →](https://lompoc-deals.vercel.app/dashboard)**
+1. Go to your **[Merchant Dashboard →](https://www.lompoclocals.com/dashboard)**
 2. Click **"Add a Deal"**
 3. Set the deal title, discount, and expiration date
 4. Publish
@@ -56,7 +56,7 @@ Your deal will go live immediately and start appearing to local consumers.
 
 Questions? Reply to this email — we read every message.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Manage preferences] · [Unsubscribe]*
@@ -67,13 +67,13 @@ Questions? Reply to this email — we read every message.
 
 Hola [business_name],
 
-Ya estás en **Lompoc Deals** — la plataforma que pone tu negocio frente a los locales de Lompoc que buscan activamente ofertas.
+Ya estás en **Lompoc Locals** — la plataforma que pone tu negocio frente a los locales de Lompoc que buscan activamente ofertas.
 
 **Tu próximo paso: crea tu primera oferta.**
 
 Toma menos de 5 minutos:
 
-1. Ve a tu **[Panel de negocios →](https://lompoc-deals.vercel.app/dashboard)**
+1. Ve a tu **[Panel de negocios →](https://www.lompoclocals.com/dashboard)**
 2. Haz clic en **"Agregar oferta"**
 3. Establece el título, el descuento y la fecha de vencimiento
 4. Publica
@@ -92,7 +92,7 @@ Tu oferta se publicará de inmediato y comenzará a aparecer para los consumidor
 
 ¿Preguntas? Responde a este correo — leemos cada mensaje.
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 *[Gestionar preferencias] · [Cancelar suscripción]*
 
@@ -101,9 +101,9 @@ Tu oferta se publicará de inmediato y comenzará a aparecer para los consumidor
 ## Email 2 — Day 1: Deal Performance Peek (or Nudge if no deal created)
 
 **Subject (EN — has deal):** Your deal is live — here's how it's doing  
-**Subject (EN — no deal):** Your Lompoc Deals profile is waiting for its first deal  
+**Subject (EN — no deal):** Your Lompoc Locals profile is waiting for its first deal  
 **Subject (ES — has deal):** Tu oferta está activa — así va  
-**Subject (ES — no deal):** Tu perfil de Lompoc Deals espera su primera oferta
+**Subject (ES — no deal):** Tu perfil de Lompoc Locals espera su primera oferta
 
 **Preview text (EN — has deal):** View counts, claims, and a quick performance tip.  
 **Preview text (EN — no deal):** Lompoc locals are browsing right now. Take 5 minutes to add your first deal.
@@ -126,19 +126,19 @@ Your deal **"[deal_title]"** has been live for about 24 hours. Here's a quick lo
 
 **Quick tip to increase claims:**
 
-The merchants with the highest claim rates on Lompoc Deals share three traits:
+The merchants with the highest claim rates on Lompoc Locals share three traits:
 
 1. A clear, specific discount (e.g., "Buy 1 get 1 free on boba teas")
 2. A short, friendly deal description (2–3 sentences)
 3. A real photo of the product or storefront
 
-You can update your deal anytime from the [Merchant Dashboard →](https://lompoc-deals.vercel.app/dashboard).
+You can update your deal anytime from the [Merchant Dashboard →](https://www.lompoclocals.com/dashboard).
 
 --- 
 
 Keep it up — we'll check back in a couple of days.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
@@ -149,17 +149,17 @@ Keep it up — we'll check back in a couple of days.
 
 Hi [business_name],
 
-Your Lompoc Deals profile is live — but you haven't added a deal yet.
+Your Lompoc Locals profile is live — but you haven't added a deal yet.
 
 Lompoc locals are browsing the platform right now. Every day without a deal is visibility you're leaving on the table.
 
-**It takes 5 minutes: [Add your first deal →](https://lompoc-deals.vercel.app/dashboard)**
+**It takes 5 minutes: [Add your first deal →](https://www.lompoclocals.com/dashboard)**
 
 **Two quick wins while you're in the dashboard:**
 
 1. **Upload your business logo** — it appears in search autocomplete when locals type anything related to your category.
 2. **Add 3–5 photos** — your profile now supports a full photo gallery (carousel with arrows). Businesses with photo galleries get significantly more profile views. Showcase your space, menu, team, or specials.
-3. **Post a deal with a photo** — active deals with images appear in the **homepage carousel**, right below the hero section. That's the first thing every visitor sees when they land on lompoc-deals.vercel.app.
+3. **Post a deal with a photo** — active deals with images appear in the **homepage carousel**, right below the hero section. That's the first thing every visitor sees when they land on www.lompoclocals.com.
 
 Here's what local merchants are offering that's getting the most views right now:
 
@@ -167,7 +167,7 @@ Here's what local merchants are offering that's getting the most views right now
 
 You don't have to beat those numbers — just get started. The algorithm surfaces new deals to active browsers.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
@@ -194,7 +194,7 @@ Here's the full flow:
 
 1. **Customer claims your deal** — they tap "Claim" on the deal page
 2. **You get a notification** — email or dashboard alert (depending on your settings)
-3. **Customer shows up** — they'll show the deal on their phone or say "I claimed a deal on Lompoc Deals"
+3. **Customer shows up** — they'll show the deal on their phone or say "I claimed a deal on Lompoc Locals"
 4. **You honor the deal** — apply the discount, they leave happy
 5. **Mark it redeemed** — optional, helps your stats; tap "Mark Redeemed" in your dashboard
 
@@ -219,11 +219,11 @@ You're in control. The platform works for you.
 
 Your dashboard now shows you exactly how many people have viewed and clicked your listing since you joined. Log in and take a look:
 
-[See your views & clicks →](https://lompoc-deals.vercel.app/dashboard)
+[See your views & clicks →](https://www.lompoclocals.com/dashboard)
 
-Want to see the full breakdown by deal? That's in the **Stats** tab — available on the Standard plan ($19.99/mo). [Upgrade to unlock →](https://lompoc-deals.vercel.app/dashboard/billing)
+Want to see the full breakdown by deal? That's in the **Stats** tab — available on the Standard plan ($19.99/mo). [Upgrade to unlock →](https://www.lompoclocals.com/dashboard/billing)
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
@@ -240,7 +240,7 @@ Así funciona:
 
 1. **El cliente reclama tu oferta** — toca "Reclamar" en la página de la oferta
 2. **Recibes una notificación** — por correo o alerta en el panel (según tu configuración)
-3. **El cliente se presenta** — mostrará la oferta en su teléfono o dirá "Reclamé una oferta en Lompoc Deals"
+3. **El cliente se presenta** — mostrará la oferta en su teléfono o dirá "Reclamé una oferta en Lompoc Locals"
 4. **Tú honras la oferta** — aplicas el descuento, el cliente se va contento
 5. **Marca como canjeada** — opcional, mejora tus estadísticas; toca "Marcar como canjeada" en tu panel
 
@@ -259,9 +259,9 @@ Si una oferta recibe más reclamaciones de las que puedes manejar, puedes:
 
 Tú tienes el control. La plataforma trabaja para ti.
 
-[Visita tu panel →](https://lompoc-deals.vercel.app/dashboard)
+[Visita tu panel →](https://www.lompoclocals.com/dashboard)
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 *[Cancelar suscripción]*
 
@@ -269,8 +269,8 @@ Tú tienes el control. La plataforma trabaja para ti.
 
 ## Email 4 — Day 7: Performance Stats + Upsell to Featured Placement
 
-**Subject (EN):** Your 7-day Lompoc Deals report  
-**Subject (ES):** Tu informe de 7 días en Lompoc Deals
+**Subject (EN):** Your 7-day Lompoc Locals report  
+**Subject (ES):** Tu informe de 7 días en Lompoc Locals
 
 **Preview text (EN):** See how your deal performed — and a way to get 5x more visibility.  
 **Preview text (ES):** Mira cómo funcionó tu oferta — y una forma de obtener 5x más visibilidad.
@@ -281,7 +281,7 @@ Tú tienes el control. La plataforma trabaja para ti.
 
 Hi [business_name],
 
-It's been one week on Lompoc Deals. Here's your snapshot:
+It's been one week on Lompoc Locals. Here's your snapshot:
 
 **[business_name] — Week 1 Report**
 
@@ -298,7 +298,7 @@ It's been one week on Lompoc Deals. Here's your snapshot:
 
 Your claim rate is a bit below the platform average. The fastest fix is usually the deal headline — try being more specific. Instead of "Discount on services," try "15% off your first manicure, this week only."
 
-Update your deal: [Dashboard →](https://lompoc-deals.vercel.app/dashboard)
+Update your deal: [Dashboard →](https://www.lompoclocals.com/dashboard)
 
 ---
 
@@ -310,13 +310,13 @@ Nice — you're above platform average on claim rate. The next lever is *reach*:
 
 **Want more visibility?**
 
-Lompoc Deals offers **featured placement** — your deal appears at the top of the browse feed and in the weekly digest sent to all [subscriber_count] subscribers.
+Lompoc Locals offers **featured placement** — your deal appears at the top of the browse feed and in the weekly digest sent to all [subscriber_count] subscribers.
 
 This is our paid tier. It's $[price]/month per featured slot.
 
-Interested? [Learn more →](https://lompoc-deals.vercel.app/merchant/upgrade) or reply to this email.
+Interested? [Learn more →](https://www.lompoclocals.com/merchant/upgrade) or reply to this email.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
@@ -325,10 +325,10 @@ Interested? [Learn more →](https://lompoc-deals.vercel.app/merchant/upgrade) o
 
 ## Email 5 — Day 14: Win-Back / Engagement Check
 
-**Subject (EN — has recent activity):** Quick update from Lompoc Deals  
-**Subject (EN — no recent activity):** We miss you at Lompoc Deals — is everything OK?  
-**Subject (ES — has recent activity):** Actualización rápida de Lompoc Deals  
-**Subject (ES — no recent activity):** Te echamos de menos en Lompoc Deals — ¿todo bien?
+**Subject (EN — has recent activity):** Quick update from Lompoc Locals  
+**Subject (EN — no recent activity):** We miss you at Lompoc Locals — is everything OK?  
+**Subject (ES — has recent activity):** Actualización rápida de Lompoc Locals  
+**Subject (ES — no recent activity):** Te echamos de menos en Lompoc Locals — ¿todo bien?
 
 ---
 
@@ -346,13 +346,13 @@ A few things worth knowing:
 - Deals mentioning "this week only" or "limited to X" get 40% higher claim rates
 
 **Ready to add a second deal?**  
-[Add a deal →](https://lompoc-deals.vercel.app/dashboard)
+[Add a deal →](https://www.lompoclocals.com/dashboard)
 
 ---
 
 We're rooting for you.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
@@ -363,22 +363,22 @@ We're rooting for you.
 
 Hi [business_name],
 
-It's been two weeks since you joined Lompoc Deals, and we noticed you haven't had any deal claims yet.
+It's been two weeks since you joined Lompoc Locals, and we noticed you haven't had any deal claims yet.
 
 That's uncommon — most new merchants see their first claim within 3 days. We want to make sure you're set up for success.
 
 **A few things to check:**
 
-- [ ] Is your deal live? ([Check dashboard →](https://lompoc-deals.vercel.app/dashboard))
+- [ ] Is your deal live? ([Check dashboard →](https://www.lompoclocals.com/dashboard))
 - [ ] Does your deal have a clear discount amount?
 - [ ] Does your deal have an expiration date set?
 - [ ] Does your deal have a photo?
 
 If your deal is live and none of that has helped, **reply to this email** — we'll take a look and give you personal feedback.
 
-We want Lompoc Deals to work for you.
+We want Lompoc Locals to work for you.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*

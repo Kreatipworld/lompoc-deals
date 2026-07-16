@@ -1,4 +1,4 @@
-# Launch Announcement Copy — Lompoc Deals
+# Launch Announcement Copy — Lompoc Locals
 *Owner: CMO | Created: 2026-04-09 | Status: Ready for review — hold until launch gate cleared*
 *Use for: Product Hunt, local Facebook groups, Nextdoor, press, email blast, LinkedIn*
 
@@ -15,14 +15,14 @@
 
 ## PRODUCT HUNT LISTING
 
-**Name:** Lompoc Deals  
+**Name:** Lompoc Locals  
 **Tagline:** Lompoc's free local business directory — discover deals & support local
 
 **Description (~300 words):**
 
 Lompoc, California — population 43,800, 63% Hispanic — has never had its own local business directory. Residents searching for "restaurants in Lompoc" get Yelp results from Santa Maria or Santa Barbara. Local shops and salons with no Yelp presence are invisible online.
 
-We built Lompoc Deals to fix that.
+We built Lompoc Locals to fix that.
 
 **What it is:** A free local business directory built specifically for Lompoc. Residents browse local restaurants, shops, salons, auto shops, wineries, dispensaries, and more by category. Businesses get a free listing with photos, hours, contact info, and the ability to post deals and coupons.
 
@@ -44,7 +44,7 @@ We built Lompoc Deals to fix that.
 
 We're the team behind this. We live here. We want this to work.
 
-**→ lompoc-deals.vercel.app**
+**→ www.lompoclocals.com**
 
 ---
 
@@ -52,7 +52,7 @@ We're the team behind this. We live here. We want this to work.
 
 Hey Product Hunt! 👋
 
-We built Lompoc Deals because we kept seeing the same problem: Lompoc's great local businesses were invisible online, and residents had no central place to discover them. Yelp barely covers us. Google Business profiles are inconsistent. There was nothing built *for* Lompoc.
+We built Lompoc Locals because we kept seeing the same problem: Lompoc's great local businesses were invisible online, and residents had no central place to discover them. Yelp barely covers us. Google Business profiles are inconsistent. There was nothing built *for* Lompoc.
 
 We started with deals — then realized what residents actually needed was a directory first, deals second. That's what we built.
 
@@ -74,7 +74,7 @@ Hey Lompoc! 👋
 
 We just launched something I think you'll find useful.
 
-**Lompoc Deals** is a free local business directory for Lompoc — restaurants, shops, salons, services, wineries, dispensaries, and more. All in one place, all Lompoc. 
+**Lompoc Locals** is a free local business directory for Lompoc — restaurants, shops, salons, services, wineries, dispensaries, and more. All in one place, all Lompoc. 
 
 Think of it like a mini Yelp built specifically for the Flower Capital.
 
@@ -84,13 +84,13 @@ Think of it like a mini Yelp built specifically for the Flower Capital.
 ✅ Claim deals and coupons directly on your phone
 ✅ Toggle between English and Spanish
 
-We're at **lompoc-deals.vercel.app** — would love your feedback!
+We're at **www.lompoclocals.com** — would love your feedback!
 
 If you know a local business that should be listed (or you're a business owner and want a free listing), drop it in the comments or go straight to the site.
 
 ¡Y si prefieres en español, el sitio también está en español! 🇲🇽
 
-#LompocDeals #Lompoc #ShopLocal #LompocCA
+#LompocLocals #Lompoc #ShopLocal #LompocCA
 
 ---
 
@@ -104,7 +104,7 @@ If you know a local business that should be listed (or you're a business owner a
 
 Acabamos de lanzar algo que creo que les va a ser útil.
 
-**Lompoc Deals** es un directorio gratuito de negocios locales para Lompoc — restaurantes, tiendas, salones, servicios, bodegas, dispensarios y más. Todo en un solo lugar, todo de Lompoc.
+**Lompoc Locals** es un directorio gratuito de negocios locales para Lompoc — restaurantes, tiendas, salones, servicios, bodegas, dispensarios y más. Todo en un solo lugar, todo de Lompoc.
 
 Piénsenlo como un mini Yelp construido especialmente para la Capital de las Flores.
 
@@ -114,11 +114,11 @@ Piénsenlo como un mini Yelp construido especialmente para la Capital de las Flo
 ✅ Canjear ofertas y cupones directamente desde su teléfono
 ✅ El sitio está disponible en español y en inglés
 
-Estamos en **lompoc-deals.vercel.app** — ¡nos encantaría escuchar sus comentarios!
+Estamos en **www.lompoclocals.com** — ¡nos encantaría escuchar sus comentarios!
 
 Si conocen a un negocio local que debería estar en el directorio, dígannoslo en los comentarios o visiten el sitio directamente.
 
-#LompocDeals #Lompoc #NegociosLocales #OfertasLompoc
+#LompocLocals #Lompoc #NegociosLocales #OfertasLompoc
 
 ---
 
@@ -128,7 +128,7 @@ Si conocen a un negocio local que debería estar en el directorio, dígannoslo e
 
 Hi neighbors,
 
-Sharing something I built for Lompoc: **lompoc-deals.vercel.app** — a free local business directory for our community.
+Sharing something I built for Lompoc: **www.lompoclocals.com** — a free local business directory for our community.
 
 Restaurants, shops, salons, auto shops, wineries, and more — all searchable in one place. Every business listed is actually in Lompoc. Deals and coupons are claimable on your phone.
 
@@ -140,7 +140,7 @@ Would love to hear if this is useful for you, and if you know any local business
 
 — [founder name], Lompoc resident
 
-lompoc-deals.vercel.app
+www.lompoclocals.com
 
 ---
 
@@ -155,7 +155,7 @@ Hi [first_name],
 
 We launched.
 
-**Lompoc Deals** is now live as Lompoc's free local business directory — restaurants, shops, salons, services, wineries, and more, all in one place.
+**Lompoc Locals** is now live as Lompoc's free local business directory — restaurants, shops, salons, services, wineries, and more, all in one place.
 
 Here's what's waiting for you:
 
@@ -164,15 +164,15 @@ Here's what's waiting for you:
 - **Bilingual EN/ES** — click the toggle anytime
 - **Weekly digest** — every Tuesday, top 5 deals to your inbox
 
-**[Browse the directory →](https://lompoc-deals.vercel.app)**
+**[Browse the directory →](https://www.lompoclocals.com)**
 
 ---
 
-Know a local business that should be listed? Send them to lompoc-deals.vercel.app/for-businesses — they can list for free in under 5 minutes.
+Know a local business that should be listed? Send them to www.lompoclocals.com/for-businesses — they can list for free in under 5 minutes.
 
 Thanks for being part of this.
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*

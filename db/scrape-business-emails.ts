@@ -5,7 +5,7 @@
  * extracts publicly-published email addresses, then writes a downloadable CSV.
  *
  * These are emails the businesses themselves publish on their sites — used for
- * B2B outreach inviting them onto Lompoc Deals. When you actually email, follow
+ * B2B outreach inviting them onto Lompoc Locals. When you actually email, follow
  * CAN-SPAM (identify yourself, real address, working unsubscribe).
  *
  * Usage:
@@ -32,7 +32,7 @@ const FETCH_TIMEOUT_MS = 12_000
 // Contact-ish paths we try in addition to the homepage.
 const EXTRA_PATHS = ["contact", "contact-us", "about", "about-us"]
 const UA =
-  "Mozilla/5.0 (compatible; LompocDealsBot/1.0; +https://lompoc-deals.vercel.app)"
+  "Mozilla/5.0 (compatible; LompocLocalsBot/1.0; +https://www.lompoclocals.com)"
 
 // Email regex — conservative; we filter junk afterward.
 const EMAIL_RE = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/gi

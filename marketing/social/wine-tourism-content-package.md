@@ -7,7 +7,7 @@
 
 ## Why This Package
 
-The Lompoc Wine Ghetto and Sta. Rita Hills AVA are legitimate world-class wine destinations. Our 20 wineries listed on Lompoc Deals are sitting on a content goldmine:
+The Lompoc Wine Ghetto and Sta. Rita Hills AVA are legitimate world-class wine destinations. Our 20 wineries listed on Lompoc Locals are sitting on a content goldmine:
 
 - **Wine content is the most shareable content type on Instagram** (saves, shares, "send to friend" all spike)
 - Wine tourists search `lompoc wine tasting` 500–1k/mo — we have no content ranking for this yet
@@ -39,13 +39,13 @@ The Lompoc Wine Ghetto and Sta. Rita Hills AVA are legitimate world-class wine d
 > "Saturday afternoons it turns into kind of a block party. Multiple rooms open, people hanging in the parking lot. It's genuinely one of my favorite spots in the whole state."
 
 **[CTA — 27–30s, screen recording or text]**
-> "All the Wine Ghetto tasting rooms are listed on Lompoc Deals — link in bio, it's free to browse."
+> "All the Wine Ghetto tasting rooms are listed on Lompoc Locals — link in bio, it's free to browse."
 
 **Caption (EN):**
-> Lompoc Wine Ghetto 🍷 One of California's best-kept wine secrets. 20+ world-class Pinot Noir + Chardonnay producers you can walk between. Tasting fees $15–25. Saturdays are the best. All listed at lompoc-deals.vercel.app — free to explore. #lompoc #winegifto #pinotnoir #santaritahills #californiawinecountry #santabarbara #winelovers #hiddengem #centralcoast
+> Lompoc Wine Ghetto 🍷 One of California's best-kept wine secrets. 20+ world-class Pinot Noir + Chardonnay producers you can walk between. Tasting fees $15–25. Saturdays are the best. All listed at www.lompoclocals.com — free to explore. #lompoc #winegifto #pinotnoir #santaritahills #californiawinecountry #santabarbara #winelovers #hiddengem #centralcoast
 
 **Caption (ES):**
-> El Wine Ghetto de Lompoc 🍷 Uno de los secretos vinícolas mejor guardados de California. Más de 20 productores de Pinot Noir y Chardonnay de clase mundial — todos en un parque industrial al que puedes llegar caminando. Cuotas de cata: $15–25. Los sábados son los mejores. Todos están en lompoc-deals.vercel.app — gratis para explorar. #lompoc #vinosenLompoc #pinotnoir #santaritahills #CaliforniaWine
+> El Wine Ghetto de Lompoc 🍷 Uno de los secretos vinícolas mejor guardados de California. Más de 20 productores de Pinot Noir y Chardonnay de clase mundial — todos en un parque industrial al que puedes llegar caminando. Cuotas de cata: $15–25. Los sábados son los mejores. Todos están en www.lompoclocals.com — gratis para explorar. #lompoc #vinosenLompoc #pinotnoir #santaritahills #CaliforniaWine
 
 **Filming notes:**
 - Film on a Saturday afternoon for the authentic block-party energy
@@ -95,9 +95,9 @@ The Lompoc Wine Ghetto and Sta. Rita Hills AVA are legitimate world-class wine d
 > The harvest season brings crush energy and barrel samples. But honestly? Any Saturday afternoon is great.
 > [Photo: golden-hour vineyard shot, Santa Rita Hills rolling hills]
 
-### Slide 7 — Find Them on Lompoc Deals
-> **All 20+ Wine Ghetto tasting rooms are listed on Lompoc Deals — free to browse, deals, hours, and contact info.**
-> lompoc-deals.vercel.app/category/wineries
+### Slide 7 — Find Them on Lompoc Locals
+> **All 20+ Wine Ghetto tasting rooms are listed on Lompoc Locals — free to browse, deals, hours, and contact info.**
+> www.lompoclocals.com/category/wineries
 > [Branded graphic with logo + URL]
 
 ### Slide 8 — Swipe CTA (optional closer)
@@ -107,14 +107,14 @@ The Lompoc Wine Ghetto and Sta. Rita Hills AVA are legitimate world-class wine d
 **Main Caption (EN):**
 > The Lompoc Wine Ghetto 🍷 A walkable collection of 20+ world-class Pinot Noir + Chardonnay tasting rooms in — yes — an industrial park. It's one of the most authentic, affordable wine experiences in California, and almost no one outside the Central Coast knows about it yet.
 >
-> Swipe to plan your visit → or browse all tasting rooms at lompoc-deals.vercel.app (link in bio) — free.
+> Swipe to plan your visit → or browse all tasting rooms at www.lompoclocals.com (link in bio) — free.
 >
 > #lompoc #lompocwineghetto #pinotnoir #chardonnay #santaritahills #californiawinecountry #winewednesday #centralcoast #santabarbara #winelovers #weekendgetaway #hiddengem #winetasting
 
 **Main Caption (ES):**
 > El Wine Ghetto de Lompoc 🍷 Una colección de más de 20 salas de cata de Pinot Noir y Chardonnay de clase mundial — todas en un parque industrial al que puedes llegar caminando. Es una de las experiencias vinícolas más auténticas y accesibles de California, y casi nadie fuera de la Costa Central lo sabe todavía.
 >
-> Desliza para planear tu visita → o explora todas las salas de cata en lompoc-deals.vercel.app (link en bio) — gratis.
+> Desliza para planear tu visita → o explora todas las salas de cata en www.lompoclocals.com (link en bio) — gratis.
 
 ---
 
@@ -155,7 +155,7 @@ Keep it to 3–4 rooms. Tasting fees run $15–25 per room. Saturdays from 11 AM
 
 **Saturday Evening: Dinner and the Valley**
 
-After the Wine Ghetto, drive south into the valley for dinner. The Lompoc dining scene is unpretentious and honest — the kind of place where locals eat. Check Lompoc Deals (lompoc-deals.vercel.app) for current specials at restaurants in town.
+After the Wine Ghetto, drive south into the valley for dinner. The Lompoc dining scene is unpretentious and honest — the kind of place where locals eat. Check Lompoc Locals (www.lompoclocals.com) for current specials at restaurants in town.
 
 For something more scenic, the drive east toward Buellton takes you through the heart of the Santa Ynez Valley, where you can spot the vineyard estates you tasted from earlier in the day. The Foxen Canyon Wine Trail connects several estate wineries if you want to extend the day.
 
@@ -171,7 +171,7 @@ After tastings, drive west to **Jalama Beach**. It's 14 miles down a winding two
 
 **Planning Your Visit**
 
-All Lompoc Wine Ghetto tasting rooms — plus restaurants, activities, and local services — are listed on **Lompoc Deals** at lompoc-deals.vercel.app. It's Lompoc's free local directory, and it's the easiest way to find hours, contact info, and current deals before you arrive.
+All Lompoc Wine Ghetto tasting rooms — plus restaurants, activities, and local services — are listed on **Lompoc Locals** at www.lompoclocals.com. It's Lompoc's free local directory, and it's the easiest way to find hours, contact info, and current deals before you arrive.
 
 ---
 

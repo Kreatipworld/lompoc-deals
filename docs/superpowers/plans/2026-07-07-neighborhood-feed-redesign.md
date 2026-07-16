@@ -1086,7 +1086,7 @@ git push
 vercel deploy --prod
 ```
 
-Then verify production: `https://lompoc-deals.vercel.app/en/feed` filters instantly. **STOP — report Phase 1 to the user for testing before continuing.**
+Then verify production: `https://www.lompoclocals.com/en/feed` filters instantly. **STOP — report Phase 1 to the user for testing before continuing.**
 
 ---
 

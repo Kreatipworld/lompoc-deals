@@ -1,10 +1,10 @@
-# Blog Content Strategy — Lompoc Deals
+# Blog Content Strategy — Lompoc Locals
 *Owner: CMO | Created: 2026-04-17 | Updated: 2026-04-17 | Platform: /blog (live as of commit affda73)*
 
 **Status: 48 posts already published** (commits 31aee2a + 4b5297c). The CTO seeded all 6 topic clusters. This doc is updated to reflect the live state and define the ongoing publishing plan.
 
-**Blog live at:** lompoc-deals.vercel.app/blog  
-**RSS feed:** lompoc-deals.vercel.app/api/blog/rss  
+**Blog live at:** www.lompoclocals.com/blog  
+**RSS feed:** www.lompoclocals.com/api/blog/rss  
 **Backlink map:** `content/blog/backlink-map.md`
 
 ---
@@ -42,7 +42,7 @@ All 6 clusters are live. See `content/blog/backlink-map.md` for the full slug in
 ## Ongoing Publishing Plan (posts 49+)
 
 ### Priority: Business-Linked Posts (highest SEO + platform value)
-Each post should mention specific Lompoc Deals businesses and link to `/biz/[slug]`.
+Each post should mention specific Lompoc Locals businesses and link to `/biz/[slug]`.
 
 **Post 49: "Best Hair Salons & Beauty Services in Lompoc, CA"**
 - Link to 6–8 specific Beauty & Wellness businesses on the platform
@@ -68,12 +68,12 @@ Each post should mention specific Lompoc Deals businesses and link to `/biz/[slu
 
 **Post 54: "How to List Your Lompoc Business Online for Free"** ✅ WRITTEN (2026-04-19)
 - Slug: `list-lompoc-business-free` — added to `content/blog/posts-26-50.json`
-- Covers GBP, Lompoc Deals, Yelp, Bing Places, Facebook — 5-platform guide
-- CTA: lompoc-deals.vercel.app/signup
+- Covers GBP, Lompoc Locals, Yelp, Bing Places, Facebook — 5-platform guide
+- CTA: www.lompoclocals.com/signup
 - Target keyword: "list Lompoc business online free", "free business listing Lompoc CA"
 - Seed to DB: run `db/seed-blog-posts.mjs` (post #50)
 
-**Post 55: "Yelp vs. Lompoc Deals: Which Is Better for Lompoc Businesses?"** ✅ WRITTEN (2026-04-19)
+**Post 55: "Yelp vs. Lompoc Locals: Which Is Better for Lompoc Businesses?"** ✅ WRITTEN (2026-04-19)
 - Slug: `lompoc-deals-vs-yelp` — added to `content/blog/posts-26-50.json`
 - Honest comparison: national scale vs. hyperlocal reach, deal alerts, bilingual gap, pricing ($300+/mo Yelp ads vs $19.99 Standard)
 - Target keyword: "alternatives to Yelp for small business", "best way to advertise Lompoc business"
@@ -91,7 +91,7 @@ The original Priority 1 posts (Posts 1–5 below) are now covered by the 48 live
 - Slug: `/blog/best-restaurants-lompoc-ca`
 - Category: Local Guides
 - Keywords: "best restaurants Lompoc CA", "where to eat in Lompoc", "Lompoc restaurants"
-- Hook: Pull top-rated Food & Dining businesses from the platform. Each mention links to their Lompoc Deals profile.
+- Hook: Pull top-rated Food & Dining businesses from the platform. Each mention links to their Lompoc Locals profile.
 - Internal links: `/businesses?category=food-dining`, `/deals`
 - Schema: BlogPosting + ItemList (for restaurant list)
 
@@ -99,14 +99,14 @@ The original Priority 1 posts (Posts 1–5 below) are now covered by the 48 live
 - Slug: `/blog/best-wineries-lompoc-santa-rita-hills`
 - Category: Santa Rita Hills Wine
 - Keywords: "wineries near Lompoc CA", "Santa Rita Hills wine trail", "Lompoc wineries"
-- Hook: The Santa Rita Hills AVA is world-class Pinot Noir country. Curate the top wineries, link each to their Lompoc Deals profile or deal page.
+- Hook: The Santa Rita Hills AVA is world-class Pinot Noir country. Curate the top wineries, link each to their Lompoc Locals profile or deal page.
 - Internal links: `/businesses?category=wine-wineries`, `/deals?category=wine-wineries`
 
 **Post 3: "New to Vandenberg? Your Lompoc, CA Relocation Guide"**
 - Slug: `/blog/vandenberg-sfb-lompoc-relocation-guide`
 - Category: Vandenberg / Military
 - Keywords: "Vandenberg AFB relocation guide", "living in Lompoc CA", "Lompoc CA military housing"
-- Hook: PCS families search obsessively for relocation content. Cover: housing, schools, dining, things to do, local services, wineries, how to save money with Lompoc Deals.
+- Hook: PCS families search obsessively for relocation content. Cover: housing, schools, dining, things to do, local services, wineries, how to save money with Lompoc Locals.
 - Internal links: `/locals`, `/hotels`, `/businesses`
 - High strategic value: captures military families at the moment of peak need.
 
@@ -121,7 +121,7 @@ The original Priority 1 posts (Posts 1–5 below) are now covered by the 48 live
 - Slug: `/blog/save-money-shopping-local-lompoc`
 - Category: Deals & Savings
 - Keywords: "Lompoc deals", "local discounts Lompoc", "save money Lompoc"
-- Hook: Explain how Lompoc Deals works from a consumer perspective. Showcase real deals, how to claim, why it's free. CTA: sign up at `/locals`.
+- Hook: Explain how Lompoc Locals works from a consumer perspective. Showcase real deals, how to claim, why it's free. CTA: sign up at `/locals`.
 - Internal links: `/locals`, `/deals`
 
 ---
@@ -182,10 +182,10 @@ The original Priority 1 posts (Posts 1–5 below) are now covered by the 48 live
 - Every post about a business category must link to the relevant `/businesses?category=X` filter
 - Every post about deals must link to `/deals`
 - Every post about local activities must link to `/deals` (Things to Do section) or `/activities`
-- Consumer-facing posts end with CTA: "Browse all local deals at lompoc-deals.vercel.app/locals"
-- Merchant-facing posts end with CTA: "List your business free at lompoc-deals.vercel.app/signup"
+- Consumer-facing posts end with CTA: "Browse all local deals at www.lompoclocals.com/locals"
+- Merchant-facing posts end with CTA: "List your business free at www.lompoclocals.com/signup"
 
 ## RSS Feed
 
-Live at: `lompoc-deals.vercel.app/api/blog/rss`  
+Live at: `www.lompoclocals.com/api/blog/rss`  
 Submit to: Google News (when 10+ posts published), Feedly, local blog aggregators.

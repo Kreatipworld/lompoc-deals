@@ -1,4 +1,4 @@
-# Homepage Copy — Lompoc Deals
+# Homepage Copy — Lompoc Locals
 *Owner: CMO | Version: 1.1 | Date: 2026-04-09 | Updated: directory-first pivot (KRE-117)*
 *Status: Updated — hero rewritten for directory-first. Remaining sections TBD.*
 
@@ -16,7 +16,7 @@ Each section lists:
 
 ## 1 — STICKY NAV
 
-**Logo:** Lompoc Deals  
+**Logo:** Lompoc Locals  
 **[ES]:** Ofertas Lompoc
 
 **Nav links:**  
@@ -248,9 +248,9 @@ Body: "Track deal views and claims from your dashboard. Know exactly what's work
 
 ### Q&A (6 questions)
 
-**Q1: Is Lompoc Deals free to use?**  
+**Q1: Is Lompoc Locals free to use?**  
 A: Yes, completely. Browsing deals and claiming them is always free for Lompoc residents. No account required to browse.  
-**[ES] P:** ¿Es gratis usar Lompoc Deals?  
+**[ES] P:** ¿Es gratis usar Lompoc Locals?  
 **[ES] R:** Sí, completamente. Explorar y reclamar ofertas siempre es gratis para residentes de Lompoc. No necesitas cuenta para explorar.
 
 **Q2: How do I claim a deal?**  
@@ -285,7 +285,7 @@ A: Create a free account and opt in to the weekly digest. Every Tuesday morning,
 **Columns:**
 
 **Col 1 — Brand**
-- Lompoc Deals logo
+- Lompoc Locals logo
 - "The local deals feed for Lompoc, California."
 - **[ES]:** "El feed de ofertas locales para Lompoc, California."
 - 📍 Lompoc, CA 93436
@@ -315,8 +315,8 @@ A: Create a free account and opt in to the weekly digest. Every Tuesday morning,
 **Language Toggle placeholder:** EN | ES
 
 **Bottom bar:**
-"© 2026 Lompoc Deals. Made with ❤️ in Lompoc, CA."  
-**[ES]:** "© 2026 Lompoc Deals. Hecho con ❤️ en Lompoc, CA."
+"© 2026 Lompoc Locals. Made with ❤️ in Lompoc, CA."  
+**[ES]:** "© 2026 Lompoc Locals. Hecho con ❤️ en Lompoc, CA."
 
 ---
 

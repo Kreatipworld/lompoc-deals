@@ -1,4 +1,4 @@
-# Lompoc Deals — Architecture
+# Lompoc Locals — Architecture
 *Last updated: 2026-04-07*
 
 ---

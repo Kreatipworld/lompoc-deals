@@ -1,4 +1,4 @@
-# Lompoc Deals — Photography Brief
+# Lompoc Locals — Photography Brief
 *Version: 1.0 | Date: 2026-04-08 | Owner: CMO*
 *Status: Ready for photographer/creative team*
 

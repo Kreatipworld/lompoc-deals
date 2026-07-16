@@ -1,4 +1,4 @@
-# Lompoc Deals — Launch Readiness Checklist
+# Lompoc Locals — Launch Readiness Checklist
 *Owner: CMO | Last updated: 2026-04-09 | For: Pre-launch go/no-go decision*
 
 This is the single source of truth for whether the site is ready to drive traffic. Every item must be checked before paid acquisition or press outreach begins.
@@ -47,7 +47,7 @@ This is the single source of truth for whether the site is ready to drive traffi
 - [ ] ❌ Weekly digest cron live (REQ-004)
 
 ### Social presence
-- [ ] 🔒 @LompocDeals Instagram created and first post live
+- [ ] 🔒 @LompocLocals Instagram created and first post live
 - [ ] 🔒 Facebook community groups joined and seeding posts published
 - [ ] 🔒 Nextdoor profile set up and first post published
 

@@ -216,7 +216,7 @@ export async function sendWelcomeEmail(
             </a>
           </p>
           <p style="color:#888;font-size:12px;margin-top:32px;">
-            <a href="${siteUrl()}" style="color:#888;">lompocdeals.com</a>
+            <a href="${siteUrl()}" style="color:#888;">lompoclocals.com</a>
           </p>
         </div>
       `
@@ -251,7 +251,7 @@ export async function sendWelcomeEmail(
             </a>
           </p>
           <p style="color:#888;font-size:12px;margin-top:32px;">
-            <a href="${siteUrl()}" style="color:#888;">lompocdeals.com</a>
+            <a href="${siteUrl()}" style="color:#888;">lompoclocals.com</a>
           </p>
         </div>
       `

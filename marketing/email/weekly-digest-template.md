@@ -33,7 +33,7 @@
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         LOMPOC DEALS
+         LOMPOC LOCALS
          Your weekly local deals digest
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -77,16 +77,16 @@ this week. Support local and save!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Is your local business not on Lompoc Deals yet?
-List your business free → [lompoc-deals.vercel.app]
+Is your local business not on Lompoc Locals yet?
+List your business free → [www.lompoclocals.com]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 You're receiving this because you subscribed at 
-lompoc-deals.vercel.app. 
+www.lompoclocals.com. 
 [Unsubscribe] | [View in browser]
 
-Lompoc Deals · Lompoc, CA 93436
+Lompoc Locals · Lompoc, CA 93436
 ```
 
 ---
@@ -107,8 +107,8 @@ en Lompoc esta semana. ¡Apoya lo local y ahorra!
 
 [Same deal list in Spanish translation]
 
-¿Tu negocio local todavía no está en Lompoc Deals?
-Lista tu negocio gratis → [lompoc-deals.vercel.app]
+¿Tu negocio local todavía no está en Lompoc Locals?
+Lista tu negocio gratis → [www.lompoclocals.com]
 
 [Cancelar suscripción] | [Ver en el navegador]
 ```
@@ -138,8 +138,8 @@ LIMIT 5
 
 ## Rendering Spec
 
-**From name:** Lompoc Deals  
-**From email:** digest@lompoc-deals.com (or reply-to@resend.dev during MVP)  
+**From name:** Lompoc Locals  
+**From email:** digest@lompoclocals.com (or reply-to@resend.dev during MVP)  
 **Max width:** 600px  
 **Font:** System font stack (no Google Fonts dependency)  
 **Color:** #1a1a1a text, #f97316 CTA buttons (brand orange), #f9fafb background  

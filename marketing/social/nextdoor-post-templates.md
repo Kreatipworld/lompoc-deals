@@ -1,4 +1,4 @@
-# Nextdoor Post Templates — Lompoc Deals
+# Nextdoor Post Templates — Lompoc Locals
 *Owner: CMO / Social & Community Manager*
 *Created: 2026-04-08 | Updated: 2026-04-09 (directory-first pivot) | KPI: +30 signups/month*
 
@@ -24,7 +24,7 @@
 
 Hey Lompoc neighbors! 👋
 
-Sharing this week's top local deals on Lompoc Deals — a free site that lists discounts from businesses right here in town.
+Sharing this week's top local deals on Lompoc Locals — a free site that lists discounts from businesses right here in town.
 
 This week highlights:
 🍽️ [Restaurant name] — [deal description, e.g., "20% off dine-in through Sunday"]
@@ -32,7 +32,7 @@ This week highlights:
 🛍️ [Retail name] — [deal, e.g., "$10 off $50+ purchase"]
 
 All free to claim, no credit card needed. Just visit:
-**lompoc-deals.vercel.app**
+**www.lompoclocals.com**
 
 Know a local business that should be on here? They can list for free too.
 
@@ -46,7 +46,7 @@ Know a local business that should be on here? They can list for free too.
 
 ¡Hola vecinos de Lompoc! 👋
 
-Comparto las mejores ofertas locales de esta semana en Lompoc Deals — un sitio gratuito con descuentos de negocios aquí en nuestra ciudad.
+Comparto las mejores ofertas locales de esta semana en Lompoc Locals — un sitio gratuito con descuentos de negocios aquí en nuestra ciudad.
 
 Destacados de esta semana:
 🍽️ [Nombre del restaurante] — [descripción de la oferta, ej. "20% de descuento al comer aquí hasta el domingo"]
@@ -54,7 +54,7 @@ Destacados de esta semana:
 🛍️ [Nombre de la tienda] — [ej. "$10 de descuento en compras de $50+"]
 
 Todo gratis, sin tarjeta de crédito. Solo visita:
-**lompoc-deals.vercel.app**
+**www.lompoclocals.com**
 
 ¿Conoces un negocio local que debería estar aquí? Pueden registrarse gratis también.
 
@@ -66,12 +66,12 @@ Todo gratis, sin tarjeta de crédito. Solo visita:
 
 ---
 
-Just saw [Business Name] posted a new deal on Lompoc Deals:
+Just saw [Business Name] posted a new deal on Lompoc Locals:
 
 **[Deal title]** — [brief description]
 Valid through [date/condition]
 
-You can claim it free at lompoc-deals.vercel.app (search for "[Business Name]")
+You can claim it free at www.lompoclocals.com (search for "[Business Name]")
 
 I've been using this site to find local deals for a while — there are [X] active deals from Lompoc businesses right now. Free to sign up.
 
@@ -83,12 +83,12 @@ I've been using this site to find local deals for a while — there are [X] acti
 
 ---
 
-Vi que [Nombre del negocio] acaba de publicar una nueva oferta en Lompoc Deals:
+Vi que [Nombre del negocio] acaba de publicar una nueva oferta en Lompoc Locals:
 
 **[Título de la oferta]** — [descripción breve]
 Válida hasta [fecha/condición]
 
-Puedes reclamarla gratis en lompoc-deals.vercel.app (busca "[Nombre del negocio]")
+Puedes reclamarla gratis en www.lompoclocals.com (busca "[Nombre del negocio]")
 
 He estado usando este sitio para encontrar ofertas locales — ahora hay [X] ofertas activas de negocios de Lompoc. Es gratis registrarse.
 
@@ -103,7 +103,7 @@ He estado usando este sitio para encontrar ofertas locales — ahora hay [X] ofe
 
 Hi neighbors,
 
-Wanted to share something I think our community will find useful: **Lompoc Deals** (lompoc-deals.vercel.app) — a free local business directory built specifically for Lompoc.
+Wanted to share something I think our community will find useful: **Lompoc Locals** (www.lompoclocals.com) — a free local business directory built specifically for Lompoc.
 
 Think of it as a mini Yelp for the Flower Capital. You can search for restaurants, salons, services, wineries, and more — all Lompoc businesses, all in one place.
 
@@ -115,7 +115,7 @@ The site is bilingual (English/Spanish) — fits our community well.
 
 Currently listing [Y]+ Lompoc businesses and [X]+ active deals. Happy to answer any questions!
 
-lompoc-deals.vercel.app/locals
+www.lompoclocals.com/locals
 
 *Live Local. Love Lompoc.*
 
@@ -130,7 +130,7 @@ lompoc-deals.vercel.app/locals
 
 Hola vecinos,
 
-Quería compartir algo que creo que nuestra comunidad encontrará útil: **Lompoc Deals** (lompoc-deals.vercel.app) — un directorio gratuito de negocios locales construido específicamente para Lompoc.
+Quería compartir algo que creo que nuestra comunidad encontrará útil: **Lompoc Locals** (www.lompoclocals.com) — un directorio gratuito de negocios locales construido específicamente para Lompoc.
 
 Piénsenlo como un mini Yelp para la Capital de las Flores. Puedes buscar restaurantes, salones, servicios, bodegas y más — todos negocios de Lompoc, todo en un solo lugar.
 
@@ -142,7 +142,7 @@ El sitio es bilingüe (inglés/español) — se adapta bien a nuestra comunidad.
 
 Actualmente tenemos [Y]+ negocios de Lompoc y [X]+ ofertas activas. ¡Con gusto respondo cualquier pregunta!
 
-lompoc-deals.vercel.app/locals
+www.lompoclocals.com/locals
 
 ---
 
@@ -155,12 +155,12 @@ lompoc-deals.vercel.app/locals
 
 Hey neighbors,
 
-Quick share — I came across [Business Name] on Lompoc Deals and thought it was worth highlighting.
+Quick share — I came across [Business Name] on Lompoc Locals and thought it was worth highlighting.
 
 They're a [type of business] in [neighborhood/street], and [one sentence about what makes them worth visiting — specialty, years open, something unique].
 
 You can find their hours, contact info, and any current deals at:
-lompoc-deals.vercel.app (search for "[Business Name]")
+www.lompoclocals.com (search for "[Business Name]")
 
 If you know of a Lompoc business that should be in the directory, drop a comment — they can list for free.
 
@@ -174,12 +174,12 @@ If you know of a Lompoc business that should be in the directory, drop a comment
 
 Hola vecinos,
 
-Quiero compartir algo — encontré [Nombre del negocio] en Lompoc Deals y creo que vale la pena mencionarlo.
+Quiero compartir algo — encontré [Nombre del negocio] en Lompoc Locals y creo que vale la pena mencionarlo.
 
 Es un [tipo de negocio] en [vecindario/calle], y [una oración sobre lo que los hace especiales — especialidad, años abiertos, algo único].
 
 Puedes encontrar sus horarios, información de contacto y ofertas actuales en:
-lompoc-deals.vercel.app (busca "[Nombre del negocio]")
+www.lompoclocals.com (busca "[Nombre del negocio]")
 
 Si conoces algún negocio local de Lompoc que debería estar en el directorio, déjalo en los comentarios — pueden publicarse gratis.
 

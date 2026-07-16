@@ -1,4 +1,4 @@
-# Lompoc Deals — Frontend Redesign Spec
+# Lompoc Locals — Frontend Redesign Spec
 *Date: 2026-04-08 | Author: CTO Agent | Status: Approved*
 
 ---
@@ -82,7 +82,7 @@ full: 9999px (pills, avatars)
 **Current issues:** Header feels cramped on mobile; logo is too small; weather badge competes with user menu.
 
 **Changes:**
-- Increase logo area — "Lompoc Deals" wordmark alongside icon
+- Increase logo area — "Lompoc Locals" wordmark alongside icon
 - Add thin amber bottom-border on active nav link (replaces nothing — better visual cue)
 - Move weather badge to desktop only (hidden on mobile to reduce noise)
 - Mobile: only show logo + search icon + user menu in header (moves main nav to category strip)

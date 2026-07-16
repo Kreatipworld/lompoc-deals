@@ -8,8 +8,8 @@
 
 - **Trigger event:** `user.signup` where `role = "local"`
 - **Send times:** Immediately (Day 0), Day 3 at 9am local time, Day 7 at 9am local time
-- **From address:** `deals@lompoc-deals.com` (or Resend sender)
-- **From name:** `Lompoc Deals`
+- **From address:** `deals@lompoclocals.com` (or Resend sender)
+- **From name:** `Lompoc Locals`
 - **Unsubscribe:** Required in footer of every email
 - **Language:** Default English; if user locale is `es` or user is flagged as Spanish-preferred, send Spanish version
 - **Template format:** These are plain-text-friendly HTML emails. Keep styling minimal.
@@ -30,7 +30,7 @@
 
 Hi [first_name],
 
-Welcome to **Lompoc Deals** — Lompoc's free local business directory. Restaurants, shops, salons, services, wineries, and more — all in one place, built for this community.
+Welcome to **Lompoc Locals** — Lompoc's free local business directory. Restaurants, shops, salons, services, wineries, and more — all in one place, built for this community.
 
 You now have access to **[merchant_count] local businesses** and **[active_deal_count] active deals** — everything free to browse.
 
@@ -46,7 +46,7 @@ You now have access to **[merchant_count] local businesses** and **[active_deal_
 
 **How it works:**
 
-1. Browse the directory at [lompoc-deals.vercel.app](https://lompoc-deals.vercel.app)
+1. Browse the directory at [www.lompoclocals.com](https://www.lompoclocals.com)
 2. Find a business or deal you want
 3. Tap **"Claim Deal"** — show your phone at the register
 4. Support local. Keep your dollars in Lompoc.
@@ -59,10 +59,10 @@ Know a local Lompoc business that should be listed?
 **[Nominate them → contact link]**
 
 Welcome to the community,  
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
-*You're receiving this because you signed up at lompoc-deals.vercel.app. [Unsubscribe]*
+*You're receiving this because you signed up at www.lompoclocals.com. [Unsubscribe]*
 
 ---
 
@@ -70,7 +70,7 @@ Welcome to the community,
 
 Hola [first_name],
 
-Bienvenido/a a **Lompoc Deals** — el único lugar para encontrar descuentos exclusivos de los restaurantes, tiendas y servicios aquí en Lompoc.
+Bienvenido/a a **Lompoc Locals** — el único lugar para encontrar descuentos exclusivos de los restaurantes, tiendas y servicios aquí en Lompoc.
 
 Acabas de obtener acceso a **[active_deal_count] ofertas activas** en [merchant_count] negocios locales.
 
@@ -82,7 +82,7 @@ Acabas de obtener acceso a **[active_deal_count] ofertas activas** en [merchant_
 
 **Cómo funciona:**
 
-1. Navega las ofertas en [lompoc-deals.vercel.app](https://lompoc-deals.vercel.app)
+1. Navega las ofertas en [www.lompoclocals.com](https://www.lompoclocals.com)
 2. Encuentra una oferta que quieras
 3. Toca **"Reclamar oferta"** — el negocio recibe una notificación
 4. Preséntate y ahorra
@@ -91,13 +91,13 @@ Eso es todo. Sin cupones, sin códigos, sin imprimir nada.
 
 ---
 
-¿Tienes un lugar local favorito que te gustaría ver en Lompoc Deals?  
+¿Tienes un lugar local favorito que te gustaría ver en Lompoc Locals?  
 **[Cuéntanos → enlace de contacto]**
 
 Hasta pronto,  
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
-*Recibes esto porque te registraste en lompoc-deals.vercel.app. [Cancelar suscripción]*
+*Recibes esto porque te registraste en www.lompoclocals.com. [Cancelar suscripción]*
 
 ---
 
@@ -115,7 +115,7 @@ Hasta pronto,
 
 Hi [first_name],
 
-A quick heads-up from Lompoc Deals.
+A quick heads-up from Lompoc Locals.
 
 **These deals are expiring soon:**
 
@@ -131,9 +131,9 @@ A quick heads-up from Lompoc Deals.
 
 **Pro tip:** Tap the ⭐ on any deal to save it to your list. We'll remind you before it expires.
 
-See the full deal board → [lompoc-deals.vercel.app](https://lompoc-deals.vercel.app)
+See the full deal board → [www.lompoclocals.com](https://www.lompoclocals.com)
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 *[Unsubscribe]*
@@ -144,7 +144,7 @@ See the full deal board → [lompoc-deals.vercel.app](https://lompoc-deals.verce
 
 Hola [first_name],
 
-Un aviso rápido de Lompoc Deals.
+Un aviso rápido de Lompoc Locals.
 
 **Estas ofertas vencen pronto:**
 
@@ -160,9 +160,9 @@ Un aviso rápido de Lompoc Deals.
 
 **Consejo:** Toca el ⭐ en cualquier oferta para guardarla en tu lista. Te avisaremos antes de que venza.
 
-Ver todas las ofertas → [lompoc-deals.vercel.app](https://lompoc-deals.vercel.app)
+Ver todas las ofertas → [www.lompoclocals.com](https://www.lompoclocals.com)
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 *[Cancelar suscripción]*
 
@@ -170,8 +170,8 @@ Ver todas las ofertas → [lompoc-deals.vercel.app](https://lompoc-deals.vercel.
 
 ## Email 3 — Day 7: Weekly Digest Teaser + Engagement Hook
 
-**Subject (EN):** Your Lompoc Deals weekly digest is here  
-**Subject (ES):** Tu resumen semanal de Lompoc Deals está aquí
+**Subject (EN):** Your Lompoc Locals weekly digest is here  
+**Subject (ES):** Tu resumen semanal de Lompoc Locals está aquí
 
 **Preview text (EN):** Top 5 deals this week — handpicked for Lompoc locals.  
 **Preview text (ES):** Las 5 mejores ofertas esta semana — elegidas para los locales de Lompoc.
@@ -190,16 +190,16 @@ Here are the **top 5 deals in Lompoc this week**, ranked by what locals are clai
 
 **Did you claim your first deal yet?**
 
-If you haven't used Lompoc Deals yet, here's a 30-second walkthrough:
+If you haven't used Lompoc Locals yet, here's a 30-second walkthrough:
 → Browse → Pick a deal → Tap Claim → Show up and save. Done.
 
-**[Claim your first deal →](https://lompoc-deals.vercel.app)**
+**[Claim your first deal →](https://www.lompoclocals.com)**
 
 ---
 
 *Every Tuesday we send this digest to Lompoc locals. You can [manage your preferences] or [unsubscribe] anytime.*
 
-— The Lompoc Deals Team
+— The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 ---
@@ -216,16 +216,16 @@ Aquí están las **5 mejores ofertas en Lompoc esta semana**, clasificadas por l
 
 **¿Ya reclamaste tu primera oferta?**
 
-Si aún no has usado Lompoc Deals, aquí hay un tutorial de 30 segundos:
+Si aún no has usado Lompoc Locals, aquí hay un tutorial de 30 segundos:
 → Navega → Elige una oferta → Toca Reclamar → Preséntate y ahorra. Listo.
 
-**[Reclamar mi primera oferta →](https://lompoc-deals.vercel.app)**
+**[Reclamar mi primera oferta →](https://www.lompoclocals.com)**
 
 ---
 
 *Cada martes enviamos este resumen a los locales de Lompoc. Puedes [gestionar tus preferencias] o [cancelar tu suscripción] en cualquier momento.*
 
-— El equipo de Lompoc Deals
+— El equipo de Lompoc Locals
 
 ---
 
@@ -237,7 +237,7 @@ These subject lines should be A/B tested once volume allows (>200 sends/day):
 |-------|---------------------|-----------|------------|
 | Email 1 | "You're in — here's your first deal 🎉" | "Welcome to Lompoc's best local deals" | Emoji vs. no emoji open rates |
 | Email 2 | "3 deals expiring soon near you" | "Don't miss these Lompoc deals" | Urgency vs. FOMO framing |
-| Email 3 | "Your Lompoc Deals weekly digest is here" | "Top 5 deals in Lompoc this week" | Personalized vs. content-forward |
+| Email 3 | "Your Lompoc Locals weekly digest is here" | "Top 5 deals in Lompoc this week" | Personalized vs. content-forward |
 
 ---
 

@@ -1,4 +1,4 @@
-# Lompoc Deals — SEO Keyword Map
+# Lompoc Locals — SEO Keyword Map
 *Owner: CMO / Content & SEO Strategist | Last updated: 2026-04-09 (directory-first pivot)*
 
 ---
@@ -103,11 +103,11 @@ Capture merchants actively searching for advertising options.
 | Page type | Title pattern |
 |-----------|--------------|
 | Homepage | `Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA` |
-| Category page | `[Category] in Lompoc, CA — Local Businesses & Deals \| Lompoc Deals` |
-| Business profile | `[Business Name] — Deals & Coupons in Lompoc, CA \| Lompoc Deals` |
-| /deals page | `Lompoc Deals & Coupons — Browse Local Specials \| Lompoc Deals` |
-| /for-businesses | `Get Your Lompoc Business Listed Free — Be Found by Locals \| Lompoc Deals` |
-| Search results | `Search Results for "[query]" in Lompoc, CA \| Lompoc Deals` |
+| Category page | `[Category] in Lompoc, CA — Local Businesses & Deals \| Lompoc Locals` |
+| Business profile | `[Business Name] — Deals & Coupons in Lompoc, CA \| Lompoc Locals` |
+| /deals page | `Lompoc Locals & Coupons — Browse Local Specials \| Lompoc Locals` |
+| /for-businesses | `Get Your Lompoc Business Listed Free — Be Found by Locals \| Lompoc Locals` |
+| Search results | `Search Results for "[query]" in Lompoc, CA \| Lompoc Locals` |
 
 **On-Page Checklist (per page):**
 - [ ] `<title>`: follows template above (directory-first, not deals-first)

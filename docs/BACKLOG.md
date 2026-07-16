@@ -1,4 +1,4 @@
-# Lompoc Deals — Engineering Backlog
+# Lompoc Locals — Engineering Backlog
 *Last updated: 2026-04-08 | Sorted by: revenue impact ÷ effort*
 
 ---

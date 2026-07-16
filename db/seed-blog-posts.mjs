@@ -65,7 +65,7 @@ async function main() {
       tags: post.targetKeywords ?? null,
       status: "published",
       published_at: publishedAt(i, allPosts.length),
-      author_name: "Lompoc Deals Team",
+      author_name: "Lompoc Locals Team",
       meta_description: post.metaDescription ?? null,
     }
 

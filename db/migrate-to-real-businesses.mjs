@@ -109,7 +109,7 @@ async function geocode(query) {
   try {
     const res = await fetch(url, {
       headers: {
-        "User-Agent": "LompocDeals/1.0 (lompocdeals.local)",
+        "User-Agent": "LompocLocals/1.0 (https://www.lompoclocals.com)",
       },
     })
     if (!res.ok) return null

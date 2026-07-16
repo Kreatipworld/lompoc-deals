@@ -4,7 +4,7 @@
 
 **Brand essence:** community & communication.
 **Voice:** neighborly, warm, plain-spoken, proud-local, encouraging. Short sentences. Second person. No jargon, no pushy hype.
-**Site:** https://lompoc-deals.vercel.app · Business signup: `/for-businesses`
+**Site:** https://www.lompoclocals.com · Business signup: `/for-businesses`
 
 Taglines to keep handy:
 - Consumer — **"All of Lompoc, in one place."**
@@ -203,7 +203,7 @@ Ready to use. Keep the voice: warm, plain, second person.
 **5. Business-recruiting (owners)**
 > Own a business in Lompoc or on Vandenberg? Get found by the whole valley.
 > List free today. Post deals and reach our weekly email of local shoppers from just $39.99/mo.
-> Simple, fair, and made for local. Start at lompoc-deals.vercel.app/for-businesses
+> Simple, fair, and made for local. Start at www.lompoclocals.com/for-businesses
 
 **6. Bilingual business-recruiting (owners)**
 > Slow week? Fill it. Post a deal and reach hundreds of Lompoc neighbors in our weekly digest.

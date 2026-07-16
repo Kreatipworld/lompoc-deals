@@ -1,4 +1,4 @@
-# Lompoc Deals — Business Acquisition Plan (Concierge Beachhead)
+# Lompoc Locals — Business Acquisition Plan (Concierge Beachhead)
 
 **Date:** 2026-06-23
 **Owner:** Andres (solo, ~3 hrs/week)
@@ -75,7 +75,7 @@ Four pillars, all fed by onboarded businesses (no inventing content):
    reshare to their followers.** This is the free-reach engine.
 3. **Lompoc local** — community flavor ("best breakfast burrito in Lompoc?") to read as a
    local, not an ad.
-4. **Milestones** — "10 Lompoc businesses now on Lompoc Deals" = social proof for the next
+4. **Milestones** — "10 Lompoc businesses now on Lompoc Locals" = social proof for the next
    pitch.
 
 **Channels:** Facebook + Instagram, leaning Facebook. Lompoc's community lives in **local
@@ -99,35 +99,35 @@ proven in person.
 ## Copy-paste templates
 
 ### A. In-person 30-second pitch
-> "Hey — I'm building Lompoc Deals, a site just for Lompoc businesses and locals. It's a
+> "Hey — I'm building Lompoc Locals, a site just for Lompoc businesses and locals. It's a
 > free spot for you to post specials and coupons, and it goes out to locals in a weekly
 > email. I'm setting up the first 25 businesses myself, free, and I'd love to add you.
 > Takes me 10 minutes and I'll even write your first deal — can I set you up right now?"
 
 ### B. Warm-call / DM script
-> "Hi [Name], it's Andres. Quick one — I launched Lompoc Deals, a local deals site just
+> "Hi [Name], it's Andres. Quick one — I launched Lompoc Locals, a local deals site just
 > for Lompoc. I'm hand-setting-up the first 25 businesses for free and thought of [Business]
 > right away. Zero work on your end, I do the whole setup. Can I swing by this week, or set
 > it up over the phone now?"
 
 ### C. Follow-up text (no response / "let me think")
-> "No pressure [Name]! Whenever you've got 10 min I'll get [Business] live on Lompoc Deals
+> "No pressure [Name]! Whenever you've got 10 min I'll get [Business] live on Lompoc Locals
 > and write your first deal for you — still free for founding businesses. Want me to just
 > go ahead and draft it so you can approve it?"
 
 ### D. "You're live" handoff message
 > "[Business] is live 🎉 Here's your page: [link]. Your first deal is [deal]. Two things
 > that really help: (1) reshare the spotlight I'm posting so your followers see it, and
-> (2) text me any new special anytime and I'll post it. Welcome to Lompoc Deals!"
+> (2) text me any new special anytime and I'll post it. Welcome to Lompoc Locals!"
 
 ### E. Content-pillar post formats
 - **Deal of the week:** photo + "🔥 This week in Lompoc: [deal] at [business]. Tap the
-  link in bio. #LompocDeals #Lompoc"
+  link in bio. #LompocLocals #Lompoc"
 - **Business spotlight:** "Meet [business] 👋 [one line of story]. They just joined Lompoc
   Deals — go say hi at [Old Town / location]. @[their handle]"
 - **Lompoc local:** question/poll post — "Best [taco / coffee / breakfast burrito] in
   Lompoc? 👇 Settle it." (engagement bait, builds local following)
-- **Milestone:** "[N] Lompoc businesses are now on Lompoc Deals — and growing. If you run a
+- **Milestone:** "[N] Lompoc businesses are now on Lompoc Locals — and growing. If you run a
   local spot, DM us, it's free to join."
 
 ---

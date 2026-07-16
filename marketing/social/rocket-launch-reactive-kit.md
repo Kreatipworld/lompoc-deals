@@ -62,9 +62,9 @@ SpaceX Falcon 9 just launched from Vandenberg Space Force Base — visible acros
 
 Lompoc is literally one of the best places in California to watch rocket launches. Clear skies, open horizon, and zero crowds.
 
-If you're planning to visit for a launch — we have a guide to local restaurants, wineries, and things to do at lompoc-deals.vercel.app (link in bio)
+If you're planning to visit for a launch — we have a guide to local restaurants, wineries, and things to do at www.lompoclocals.com (link in bio)
 
-#RocketLaunch #SpaceX #Falcon9 #Vandenberg #VandenbergSFB #Lompoc #LompocCA #StarLink #RocketLaunchCalifornia #LompocDeals
+#RocketLaunch #SpaceX #Falcon9 #Vandenberg #VandenbergSFB #Lompoc #LompocCA #StarLink #RocketLaunchCalifornia #LompocLocals
 ```
 
 ---
@@ -83,16 +83,16 @@ Lompoc is one of the best viewing spots in California — clear horizon, usually
 
 Where to watch: head to the west side of town or Ocean Avenue after sunset.
 
-Before or after the launch, explore local Lompoc restaurants and wineries at lompoc-deals.vercel.app — link in bio.
+Before or after the launch, explore local Lompoc restaurants and wineries at www.lompoclocals.com — link in bio.
 
-#RocketLaunch #SpaceX #Vandenberg #VandenbergSFB #Lompoc #LompocCA #LompocDeals #WatchParty #Starlink
+#RocketLaunch #SpaceX #Vandenberg #VandenbergSFB #Lompoc #LompocCA #LompocLocals #WatchParty #Starlink
 ```
 
 **IG Story (same day as pre-launch post):**
 - Slide 1: "🚀 ROCKET LAUNCH TOMORROW" (big text on dark background)
 - Slide 2: "Vandenberg SFB — visible from Lompoc" with launch time
 - Slide 3: Poll — "Will you watch?" Yes / No
-- Slide 4: Link to lompoc-deals.vercel.app for pre-launch restaurant/winery deals
+- Slide 4: Link to www.lompoclocals.com for pre-launch restaurant/winery deals
 
 ---
 
@@ -108,11 +108,11 @@ Last night's Vandenberg rocket launch from Lompoc 🚀
 
 Lompoc sits right next to one of the most active rocket launch sites in the country. Falcon 9, Minotaur, classified NRO payloads — we see them all.
 
-If you're ever in the area for a launch, lompoc-deals.vercel.app has the best local restaurants, wineries, and places to stay.
+If you're ever in the area for a launch, www.lompoclocals.com has the best local restaurants, wineries, and places to stay.
 
 What's your favorite spot in Lompoc to watch launches? Drop it below 👇
 
-#RocketLaunch #VandenbergSFB #Lompoc #LompocCA #SpaceX #LompocDeals #California
+#RocketLaunch #VandenbergSFB #Lompoc #LompocCA #SpaceX #LompocLocals #California
 ```
 
 ---
@@ -121,7 +121,7 @@ What's your favorite spot in Lompoc to watch launches? Drop it below 👇
 
 When a night launch is announced, reach out to any winery or restaurant on the platform:
 
-> "Hey — there's a Falcon 9 launch from Vandenberg next [DAY]. Would you want to post a 'watch party' deal on Lompoc Deals? A lot of people drive to Lompoc for launches and want somewhere to eat/drink beforehand. Takes 5 minutes to post."
+> "Hey — there's a Falcon 9 launch from Vandenberg next [DAY]. Would you want to post a 'watch party' deal on Lompoc Locals? A lot of people drive to Lompoc for launches and want somewhere to eat/drink beforehand. Takes 5 minutes to post."
 
 This is the perfect low-pressure merchant onboarding pitch tied to a real event.
 
@@ -131,7 +131,7 @@ This is the perfect low-pressure merchant onboarding pitch tied to a real event.
 
 **Maximum reach hashtags:**
 ```
-#RocketLaunch #SpaceX #Falcon9 #Vandenberg #VandenbergSFB #Lompoc #LompocCA #Starlink #RocketLaunchCalifornia #LompocDeals #VisitLompoc #SantaBarbaraCounty #CentralCoast
+#RocketLaunch #SpaceX #Falcon9 #Vandenberg #VandenbergSFB #Lompoc #LompocCA #Starlink #RocketLaunchCalifornia #LompocLocals #VisitLompoc #SantaBarbaraCounty #CentralCoast
 ```
 
 **Niche/enthusiast hashtags (higher engagement rate):**

@@ -1,7 +1,7 @@
 /**
  * seed-stripe.ts
  *
- * Creates the three Lompoc Deals Stripe products/prices and prints the price
+ * Creates the three Lompoc Locals Stripe products/prices and prints the price
  * IDs to paste into .env.local.
  *
  * Usage:
@@ -32,21 +32,21 @@ interface PlanDef {
 const PLANS: PlanDef[] = [
   {
     key: "free",
-    name: "Lompoc Deals — Free",
+    name: "Lompoc Locals — Free",
     description: "Up to 3 active deals, business profile, map listing, weekly digest.",
     priceCents: 0,
     interval: null,
   },
   {
     key: "standard",
-    name: "Lompoc Deals — Standard",
+    name: "Lompoc Locals — Standard",
     description: "Up to 15 active deals, analytics, social links. $19.99/mo.",
     priceCents: 1999,
     interval: "month",
   },
   {
     key: "premium",
-    name: "Lompoc Deals — Premium",
+    name: "Lompoc Locals — Premium",
     description: "Unlimited deals, priority listing, homepage featured placement. $39.99/mo.",
     priceCents: 3999,
     interval: "month",

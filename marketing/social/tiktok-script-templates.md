@@ -11,8 +11,8 @@
 - **Hook rule:** First 2 seconds must grab attention — show the deal visually, not a talking head
 - **Bilingual:** EN/ES captions on every video; alternate primary spoken language each week
 - **Posting time:** Tue/Thu/Sat 6–9 PM Pacific (peak Lompoc audience)
-- **Hashtags:** #LompocDeals #Lompoc #LompocCA #SantaBarbaraCounty #LocalDeals #OfertasLompoc
-- **CTA:** Always end with screen-recorded URL + voiceover "link in bio" or "free at lompoc-deals.vercel.app"
+- **Hashtags:** #LompocLocals #Lompoc #LompocCA #SantaBarbaraCounty #LocalDeals #OfertasLompoc
+- **CTA:** Always end with screen-recorded URL + voiceover "link in bio" or "free at www.lompoclocals.com"
 - **Creator note:** When partnering with local creators — provide script + talking points, let them add their own voice
 
 ---
@@ -24,9 +24,9 @@ A repeatable weekly format. Each episode = 1 deal highlight from a Lompoc mercha
 ### Standard Structure (15 sec)
 ```
 0:00–0:02  HOOK — text overlay on deal screenshot: "This Lompoc [business type] is offering [deal]"
-0:02–0:07  SHOW THE DEAL — screen record the deal card on lompoc-deals.vercel.app
-0:07–0:12  EXPLAIN — voiceover: "You can claim this for free, no credit card, just sign up at Lompoc Deals"
-0:12–0:15  CTA — screen record typing lompoc-deals.vercel.app, text overlay: "link in bio • free to join"
+0:02–0:07  SHOW THE DEAL — screen record the deal card on www.lompoclocals.com
+0:07–0:12  EXPLAIN — voiceover: "You can claim this for free, no credit card, just sign up at Lompoc Locals"
+0:12–0:15  CTA — screen record typing www.lompoclocals.com, text overlay: "link in bio • free to join"
 ```
 
 ### Extended Format (30 sec) — For merchant story angle
@@ -35,7 +35,7 @@ A repeatable weekly format. Each episode = 1 deal highlight from a Lompoc mercha
 0:03–0:10  B-ROLL or screen recording — show the business, product, or deal card
 0:10–0:18  EXPLAIN THE VALUE — voiceover explains the deal (savings amount, what you get)
 0:18–0:25  HOW TO CLAIM — brief screen recording of claim flow
-0:25–0:30  CTA — "Lompoc Deals — link in bio, it's free"
+0:25–0:30  CTA — "Lompoc Locals — link in bio, it's free"
 ```
 
 ---
@@ -45,13 +45,13 @@ A repeatable weekly format. Each episode = 1 deal highlight from a Lompoc mercha
 **Hook text overlay:** "This Lompoc restaurant is offering 20% off 🍽️"
 
 **Voiceover script:**
-> "Hey Lompoc — this week's best deal is from [Restaurant Name]. They're offering [deal description, e.g., '20% off your entire order through Sunday']. You can claim it free at Lompoc Deals — no credit card, just make a free account and show them at checkout. There are over a hundred deals from local Lompoc businesses on there right now. Link in bio."
+> "Hey Lompoc — this week's best deal is from [Restaurant Name]. They're offering [deal description, e.g., '20% off your entire order through Sunday']. You can claim it free at Lompoc Locals — no credit card, just make a free account and show them at checkout. There are over a hundred deals from local Lompoc businesses on there right now. Link in bio."
 
 **Caption (EN):**
-> Best deal this week in Lompoc 🙌 [Restaurant Name] is offering [deal]. Free to claim at lompoc-deals.vercel.app — no credit card needed. Over 100 local deals available! #LompocDeals #Lompoc #LocalRestaurant #LompocCA #FoodDeals
+> Best deal this week in Lompoc 🙌 [Restaurant Name] is offering [deal]. Free to claim at www.lompoclocals.com — no credit card needed. Over 100 local deals available! #LompocLocals #Lompoc #LocalRestaurant #LompocCA #FoodDeals
 
 **Caption (ES):**
-> La mejor oferta de esta semana en Lompoc 🙌 [Nombre del restaurante] ofrece [descripción]. Gratis en lompoc-deals.vercel.app — sin tarjeta de crédito. ¡Más de 100 ofertas locales disponibles! #OfertasLompoc #Lompoc #RestauranteLocal #LompocCA
+> La mejor oferta de esta semana en Lompoc 🙌 [Nombre del restaurante] ofrece [descripción]. Gratis en www.lompoclocals.com — sin tarjeta de crédito. ¡Más de 100 ofertas locales disponibles! #OfertasLompoc #Lompoc #RestauranteLocal #LompocCA
 
 ---
 
@@ -60,13 +60,13 @@ A repeatable weekly format. Each episode = 1 deal highlight from a Lompoc mercha
 **Hook text overlay:** "Lompoc salon deal you need to know about 💇"
 
 **Voiceover script:**
-> "If you're in Lompoc and you get your hair or nails done, check this out. [Salon Name] just posted a deal on Lompoc Deals — [deal description, e.g., 'free deep condition with any cut']. You claim it for free, show them on your phone, done. It's a local site for Lompoc deals only — no spam, no subscription. Link in bio to grab this one."
+> "If you're in Lompoc and you get your hair or nails done, check this out. [Salon Name] just posted a deal on Lompoc Locals — [deal description, e.g., 'free deep condition with any cut']. You claim it for free, show them on your phone, done. It's a local site for Lompoc deals only — no spam, no subscription. Link in bio to grab this one."
 
 **Caption (EN):**
-> Lompoc beauty deal alert 💅 [Salon Name] — [deal]. Claim free at lompoc-deals.vercel.app. Local Lompoc deals, no spam, no credit card. #LompocDeals #SalonDeal #Lompoc #BeautyDeals #LompocCA
+> Lompoc beauty deal alert 💅 [Salon Name] — [deal]. Claim free at www.lompoclocals.com. Local Lompoc deals, no spam, no credit card. #LompocLocals #SalonDeal #Lompoc #BeautyDeals #LompocCA
 
 **Caption (ES):**
-> Oferta de belleza en Lompoc 💅 [Nombre del salón] — [oferta]. Reclama gratis en lompoc-deals.vercel.app. Ofertas locales de Lompoc, sin spam, sin tarjeta. #OfertasLompoc #Salon #Lompoc #LompocCA
+> Oferta de belleza en Lompoc 💅 [Nombre del salón] — [oferta]. Reclama gratis en www.lompoclocals.com. Ofertas locales de Lompoc, sin spam, sin tarjeta. #OfertasLompoc #Salon #Lompoc #LompocCA
 
 ---
 
@@ -75,13 +75,13 @@ A repeatable weekly format. Each episode = 1 deal highlight from a Lompoc mercha
 **Hook text overlay:** "Did you know Lompoc has a free local deals site? 👀"
 
 **Voiceover script:**
-> "There's a site called Lompoc Deals where local businesses post deals just for Lompoc. Right now there are [X] active deals from restaurants, salons, retail shops — all free to claim. You just make a free account and browse. No credit card, no spam. I've been using it to save on [category]. Link in bio."
+> "There's a site called Lompoc Locals where local businesses post deals just for Lompoc. Right now there are [X] active deals from restaurants, salons, retail shops — all free to claim. You just make a free account and browse. No credit card, no spam. I've been using it to save on [category]. Link in bio."
 
 **Caption (EN):**
-> Lompoc has its own deals site and most people don't know about it 👀 Over [X] active deals from local businesses — free to claim. lompoc-deals.vercel.app (link in bio) #LompocDeals #Lompoc #LocalDeals #LompocCA #SantaBarbaraCounty
+> Lompoc has its own deals site and most people don't know about it 👀 Over [X] active deals from local businesses — free to claim. www.lompoclocals.com (link in bio) #LompocLocals #Lompoc #LocalDeals #LompocCA #SantaBarbaraCounty
 
 **Caption (ES):**
-> Lompoc tiene su propio sitio de ofertas y la mayoría no lo sabe 👀 Más de [X] ofertas activas de negocios locales — gratis para reclamar. lompoc-deals.vercel.app #OfertasLompoc #Lompoc #LompocCA
+> Lompoc tiene su propio sitio de ofertas y la mayoría no lo sabe 👀 Más de [X] ofertas activas de negocios locales — gratis para reclamar. www.lompoclocals.com #OfertasLompoc #Lompoc #LompocCA
 
 ---
 
@@ -92,7 +92,7 @@ A repeatable weekly format. Each episode = 1 deal highlight from a Lompoc mercha
 **Hook text overlay:** "Supporting local in Lompoc 🤝"
 
 **Voiceover script:**
-> "Shoutout to [Business Name] in Lompoc — they just posted a deal on Lompoc Deals. [What the deal is]. I love supporting local businesses here in Lompoc and this site makes it super easy to find deals from businesses you already know. You can also search by category — there's food, salons, services, retail. Free to sign up, no credit card. Go to lompoc-deals.vercel.app or hit the link in bio."
+> "Shoutout to [Business Name] in Lompoc — they just posted a deal on Lompoc Locals. [What the deal is]. I love supporting local businesses here in Lompoc and this site makes it super easy to find deals from businesses you already know. You can also search by category — there's food, salons, services, retail. Free to sign up, no credit card. Go to www.lompoclocals.com or hit the link in bio."
 
 **Creator note:** This script is a guide — make it your own. Keep the URL and claim it's free. Feel free to add your personal connection to the business.
 
@@ -108,13 +108,13 @@ When reaching out to Lompoc TikTok creators (target: 2k–20k followers, local c
 - Authentic local voice (EN or ES or bilingual)
 
 **What we offer:**
-- Free Lompoc Deals account + early access
+- Free Lompoc Locals account + early access
 - Feature the creator's favorite local deal
 - Tag them in our reposts
 - Revenue share option once platform hits $10k MRR (escalate to CEO)
 
 **Outreach message:**
-> "Hey [Name]! Love your Lompoc content. We run LompocDeals.vercel.app — a free site with local deals from Lompoc businesses. We'd love to collaborate on a short video featuring your fave local deal. We can share the deal card, script, and talking points — you just film it in your style. No charge, no contract. Interested?"
+> "Hey [Name]! Love your Lompoc content. We run LompocLocals.vercel.app — a free site with local deals from Lompoc businesses. We'd love to collaborate on a short video featuring your fave local deal. We can share the deal card, script, and talking points — you just film it in your style. No charge, no contract. Interested?"
 
 ---
 
@@ -127,9 +127,9 @@ When reaching out to Lompoc TikTok creators (target: 2k–20k followers, local c
 ### Standard Structure (20–30 sec)
 ```
 0:00–0:03  HOOK — text overlay on business photo/storefront: "Did you know Lompoc has a [type of business]?"
-0:03–0:10  SHOW THE BUSINESS — screen record the business profile on lompoc-deals.vercel.app
+0:03–0:10  SHOW THE BUSINESS — screen record the business profile on www.lompoclocals.com
 0:10–0:20  TELL THE STORY — voiceover: what they do, what makes them local/unique
-0:20–0:27  DIRECTORY CTA — "Find them + 150 more Lompoc businesses free at lompoc-deals.vercel.app"
+0:20–0:27  DIRECTORY CTA — "Find them + 150 more Lompoc businesses free at www.lompoclocals.com"
 0:27–0:30  Text overlay: "Lompoc's local business directory • link in bio"
 ```
 
@@ -138,13 +138,13 @@ When reaching out to Lompoc TikTok creators (target: 2k–20k followers, local c
 **Hook text overlay:** "Lompoc actually has a [business type] and it's 🔥"
 
 **Voiceover script:**
-> "Okay I had no idea Lompoc had a [business type] — it's called [Business Name] and they're on [street/neighborhood]. [One sentence about what makes them special — a signature dish, the owner's story, how long they've been there.] You can find their hours, photos, and contact info at Lompoc Deals — it's a free local directory for all of Lompoc's businesses. Over 150 listed. Link in bio."
+> "Okay I had no idea Lompoc had a [business type] — it's called [Business Name] and they're on [street/neighborhood]. [One sentence about what makes them special — a signature dish, the owner's story, how long they've been there.] You can find their hours, photos, and contact info at Lompoc Locals — it's a free local directory for all of Lompoc's businesses. Over 150 listed. Link in bio."
 
 **Caption (EN):**
-> Hidden gem alert 🚨 [Business Name] in Lompoc is [what they do]. Find them at lompoc-deals.vercel.app — Lompoc's free local business directory. 470+ businesses listed. #LompocDeals #Lompoc #HiddenGem #ShopLocal #LompocCA
+> Hidden gem alert 🚨 [Business Name] in Lompoc is [what they do]. Find them at www.lompoclocals.com — Lompoc's free local business directory. 470+ businesses listed. #LompocLocals #Lompoc #HiddenGem #ShopLocal #LompocCA
 
 **Caption (ES):**
-> Joya escondida 🚨 [Nombre del negocio] en Lompoc [qué hacen]. Encuéntralos en lompoc-deals.vercel.app — el directorio gratuito de negocios locales de Lompoc. #LompocDeals #Lompoc #NegociosLocales #LompocCA
+> Joya escondida 🚨 [Nombre del negocio] en Lompoc [qué hacen]. Encuéntralos en www.lompoclocals.com — el directorio gratuito de negocios locales de Lompoc. #LompocLocals #Lompoc #NegociosLocales #LompocCA
 
 ---
 
@@ -155,16 +155,16 @@ When reaching out to Lompoc TikTok creators (target: 2k–20k followers, local c
 **Hook text overlay:** "Things to do in Lompoc this weekend 📍"
 
 **Voiceover script:**
-> "If you're in Lompoc this weekend, here are three things you can do that most people don't know about. [#1: local activity/business with deal or event.] [#2: another business.] [#3: a third option — mix food, wine, or local service.] Find all of these plus over 150 more Lompoc businesses at lompoc-deals.vercel.app — link in bio, it's free."
+> "If you're in Lompoc this weekend, here are three things you can do that most people don't know about. [#1: local activity/business with deal or event.] [#2: another business.] [#3: a third option — mix food, wine, or local service.] Find all of these plus over 150 more Lompoc businesses at www.lompoclocals.com — link in bio, it's free."
 
 **Caption (EN):**
-> Things to do in Lompoc this weekend 🌸 [Brief list]. More at lompoc-deals.vercel.app — Lompoc's free local directory. #Lompoc #ThingsToDoInLompoc #LompocCA #LompocDeals #VisitLompoc
+> Things to do in Lompoc this weekend 🌸 [Brief list]. More at www.lompoclocals.com — Lompoc's free local directory. #Lompoc #ThingsToDoInLompoc #LompocCA #LompocLocals #VisitLompoc
 
 ---
 
 ## Video Production Checklist
 
-- [ ] Pick deal of the week from lompoc-deals.vercel.app (look for visual product, strong discount)
+- [ ] Pick deal of the week from www.lompoclocals.com (look for visual product, strong discount)
 - [ ] Screen record deal card on mobile (portrait mode)
 - [ ] Record voiceover using template above (adapt for specific deal)
 - [ ] Add EN captions (TikTok auto-caption, then correct)

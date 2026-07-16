@@ -1,4 +1,4 @@
-# Cycle 2 Plan — Lompoc Deals
+# Cycle 2 Plan — Lompoc Locals
 *Draft: 2026-04-08 | CMO: ready | CTO: pending confirmation*
 *Cycle 2 start: when CTO is back online and confirms E1–E3*
 
@@ -15,7 +15,7 @@
 
 ### M-C2-1 — Activate All Zero-Cost Social Channels
 **Owner:** Social & Community Manager (or CMO Lead)  
-**What:** Publish first posts on Facebook groups (M-001), Nextdoor (M-007), and create @LompocDeals Instagram (M-004). Use all templates from Cycle 1.  
+**What:** Publish first posts on Facebook groups (M-001), Nextdoor (M-007), and create @LompocLocals Instagram (M-004). Use all templates from Cycle 1.  
 **Hypothesis:** 3 channels × first post → 20 signups within 2 weeks at $0 spend  
 **KPI:** 20 new consumer signups, 3 channels active  
 **Assets ready:** facebook-post-templates.md, nextdoor-post-templates.md, instagram-content-calendar.md  

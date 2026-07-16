@@ -1,4 +1,4 @@
-# Lompoc Deals — Marketing Backlog
+# Lompoc Locals — Marketing Backlog
 *Last updated: 2026-04-09 (directory-first pivot — KRE-117) | Owner: CMO | Sorted by: revenue impact ÷ effort*
 
 ---
@@ -29,7 +29,7 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ### M-002 • Google Business Profile (GBP) Claim + Optimize
 **Channel:** SEO / Local Search  
-**Hypothesis:** Claiming and fully completing the Google Business Profile for Lompoc Deals will generate 20+ organic clicks/week within 30 days.  
+**Hypothesis:** Claiming and fully completing the Google Business Profile for Lompoc Locals will generate 20+ organic clicks/week within 30 days.  
 **Target KPI:** 20+ GBP clicks/week by day 30, top-3 for "lompoc business directory" + "lompoc deals" searches  
 **Effort:** S  
 **Status:** this_cycle — blocked on human (board must claim the profile)  
@@ -129,7 +129,7 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ---
 
-### M-011 • Google Ads — "Lompoc Deals" Brand Campaign ($50/month)
+### M-011 • Google Ads — "Lompoc Locals" Brand Campaign ($50/month)
 **Channel:** Paid (Google)  
 **Hypothesis:** A small brand protection campaign on exact-match "Lompoc deals" and "Lompoc coupons" will capture high-intent searchers for $1–2 CPC = 25–50 signups at $50/month spend.  
 **Target KPI:** 25 new signups/month at <$2 CPL  
@@ -191,7 +191,7 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ### M-016 • Dispensary Merchant Acquisition Campaign
 **Channel:** Sales / Direct  
-**Hypothesis:** Cannabis businesses CANNOT advertise on Google Ads or Meta/Instagram. Lompoc Deals is one of their only legal digital marketing channels. A targeted outreach to all 5 Lompoc dispensaries (+ any unlisted ones) with this unique angle will close 3–5 dispensary merchants at Standard/Premium tier.  
+**Hypothesis:** Cannabis businesses CANNOT advertise on Google Ads or Meta/Instagram. Lompoc Locals is one of their only legal digital marketing channels. A targeted outreach to all 5 Lompoc dispensaries (+ any unlisted ones) with this unique angle will close 3–5 dispensary merchants at Standard/Premium tier.  
 **Target KPI:** 3 dispensary merchants signed up (Standard or Premium tier), within Cycle 2  
 **Effort:** S  
 **Status:** this_cycle (Cycle 2)  
@@ -206,7 +206,7 @@ ID • Title • Channel • Hypothesis • Target KPI • Effort (S/M/L) • St
 
 ### M-017 • Wine Tourism Content Series
 **Channel:** Social (Instagram/TikTok) + SEO  
-**Hypothesis:** A "Lompoc Wine Country Deals" content series (winery tasting deals, Santa Rita Hills guides, seasonal posts) will reach wine-tourism audiences who share high-value shareable content, driving 100+ site visits/week and positioning Lompoc Deals as the guide to Lompoc Wine Country.  
+**Hypothesis:** A "Lompoc Wine Country Deals" content series (winery tasting deals, Santa Rita Hills guides, seasonal posts) will reach wine-tourism audiences who share high-value shareable content, driving 100+ site visits/week and positioning Lompoc Locals as the guide to Lompoc Wine Country.  
 **Target KPI:** 100 site visits/week from wine content, 5 winery merchants upgraded to Standard/Premium  
 **Effort:** M  
 **Status:** copy_done — all assets ready, pending human execution (accounts) + winery outreach

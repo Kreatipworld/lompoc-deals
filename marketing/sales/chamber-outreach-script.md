@@ -30,17 +30,17 @@ Dear [Name],
 
 My name is [Founder name], and I'm reaching out about something I think your members would find genuinely useful.
 
-We built **Lompoc Deals** (lompoc-deals.vercel.app) — Lompoc's free local business directory and deals platform. Think of it as a mini Yelp + Google Business built specifically for the Flower Capital: businesses get a free listing with photos, hours, categories, and contact info, plus the ability to post deals and specials for locals to browse. It's bilingual (English/Spanish) and there's no commission.
+We built **Lompoc Locals** (www.lompoclocals.com) — Lompoc's free local business directory and deals platform. Think of it as a mini Yelp + Google Business built specifically for the Flower Capital: businesses get a free listing with photos, hours, categories, and contact info, plus the ability to post deals and specials for locals to browse. It's bilingual (English/Spanish) and there's no commission.
 
 **Why I'm writing to the Chamber:**
 
-Your members are exactly who this is built for — local restaurants, salons, retail shops, service providers. Right now, when a Lompoc resident searches for "restaurants in Lompoc" or "salons near me," your members often don't appear unless they've paid for Yelp or Google Ads. Lompoc Deals gives them a free local presence that surfaces in those searches.
+Your members are exactly who this is built for — local restaurants, salons, retail shops, service providers. Right now, when a Lompoc resident searches for "restaurants in Lompoc" or "salons near me," your members often don't appear unless they've paid for Yelp or Google Ads. Lompoc Locals gives them a free local presence that surfaces in those searches.
 
 **What we'd like to offer Chamber members:**
 
 - **Free Standard upgrade for 3 months** for any Chamber member who claims their listing — normally $19.99/month, free as a thank-you for the partnership
 - A co-branded announcement we can draft for your email newsletter and social media
-- A mention in our "Lompoc Deals Merchant Spotlight" series for Chamber members who post deals
+- A mention in our "Lompoc Locals Merchant Spotlight" series for Chamber members who post deals
 
 **What we'd ask in return:**
 
@@ -55,15 +55,15 @@ Would you be open to a 15-minute call this week to discuss? I'm happy to work ar
 Thank you for your time,
 
 [Founder name]  
-Lompoc Deals  
-lompoc-deals.vercel.app  
+Lompoc Locals  
+www.lompoclocals.com  
 [phone] | [email]
 
 ---
 
 ### Step 2 — Follow-up (5 business days, no response)
 
-**Subject:** Re: Free tool for your members — Lompoc Deals
+**Subject:** Re: Free tool for your members — Lompoc Locals
 
 ---
 
@@ -77,7 +77,7 @@ Happy to share more if useful. Even a quick 10-minute call would help me underst
 
 Thank you,  
 [Founder name]  
-lompoc-deals.vercel.app
+www.lompoclocals.com
 
 ---
 
@@ -95,10 +95,10 @@ Prepare these for the meeting/call:
 
 **Leave-behind (bring to meeting):**
 > One-page PDF or printed sheet (create from this template):
-> - Lompoc Deals logo
+> - Lompoc Locals logo
 > - "Free for Chamber Members: 3-month Pro upgrade"
 > - Screenshot of merchant dashboard
-> - URL: lompoc-deals.vercel.app/business
+> - URL: www.lompoclocals.com/business
 > - "Questions? Contact [email/phone]"
 
 ---
@@ -131,13 +131,13 @@ No formal contract needed at this stage. Once the Chamber agrees, confirm in wri
 
 ## Draft Announcement (for Chamber Newsletter)
 
-**Subject:** Member benefit: 3 months of Lompoc Deals Pro — free
+**Subject:** Member benefit: 3 months of Lompoc Locals Pro — free
 
 ---
 
 **Lompoc Valley Chamber Member Benefit**
 
-We've partnered with **Lompoc Deals** — a new local platform where Lompoc businesses can post deals and specials to reach local customers digitally, for free.
+We've partnered with **Lompoc Locals** — a new local platform where Lompoc businesses can post deals and specials to reach local customers digitally, for free.
 
 As a Chamber member benefit, you get **3 months of the Pro tier free** when you sign up.
 
@@ -148,16 +148,16 @@ As a Chamber member benefit, you get **3 months of the Pro tier free** when you 
 - Featured placement options
 
 **To claim your free Pro access:**
-Visit lompoc-deals.vercel.app/business and use code **[CODE]** at signup, or email [contact] and mention "Chamber member."
+Visit www.lompoclocals.com/business and use code **[CODE]** at signup, or email [contact] and mention "Chamber member."
 
-Questions? Contact [Lompoc Deals contact].
+Questions? Contact [Lompoc Locals contact].
 
 ---
 
 ## Draft Social Post (for Chamber's Social Channels)
 
 **EN:**
-> 🤝 New member benefit! @LompocDeals is offering all Chamber members 3 months of Pro — free. Post your deals, reach local Lompoc customers, track performance. Bilingual EN/ES. Visit lompoc-deals.vercel.app to get started. #LompocBusiness #LompocChamber #ShopLocal
+> 🤝 New member benefit! @LompocLocals is offering all Chamber members 3 months of Pro — free. Post your deals, reach local Lompoc customers, track performance. Bilingual EN/ES. Visit www.lompoclocals.com to get started. #LompocBusiness #LompocChamber #ShopLocal
 
 **ES:**
-> 🤝 ¡Nuevo beneficio para miembros! @LompocDeals ofrece a todos los miembros de la Cámara 3 meses de Pro — gratis. Publica tus ofertas, llega a clientes locales de Lompoc, mide resultados. Bilingüe EN/ES. Visita lompoc-deals.vercel.app para empezar. #NegociosLompoc #CamaraLompoc
+> 🤝 ¡Nuevo beneficio para miembros! @LompocLocals ofrece a todos los miembros de la Cámara 3 meses de Pro — gratis. Publica tus ofertas, llega a clientes locales de Lompoc, mide resultados. Bilingüe EN/ES. Visita www.lompoclocals.com para empezar. #NegociosLompoc #CamaraLompoc

@@ -349,7 +349,7 @@ To:
               </h1>
 
               <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Lompoc Deals is the free, hometown-first directory for the
+                Lompoc Locals is the free, hometown-first directory for the
                 Flower Capital. Post your coupons, specials, and announcements
                 in 30 seconds — and reach the people already searching for the
                 shops they love.

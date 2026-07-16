@@ -1,4 +1,4 @@
-# M-011 • Google Ads — Lompoc Deals Brand + Local Directory Intent Campaign
+# M-011 • Google Ads — Lompoc Locals Brand + Local Directory Intent Campaign
 *Status: Brief updated — execution blocked on REQ-001 (conversion tracking)*  
 *Owner: Growth Marketer | Budget: $50/month | Updated: 2026-04-09 (directory-first pivot)*
 
@@ -6,7 +6,7 @@
 
 ## Campaign Goal
 
-Drive local consumers to discover lompoc-deals.vercel.app by capturing high-intent searches for local businesses, restaurants, services, and deals in Lompoc. Secondary goal: capture merchants searching for advertising/listing options.
+Drive local consumers to discover www.lompoclocals.com by capturing high-intent searches for local businesses, restaurants, services, and deals in Lompoc. Secondary goal: capture merchants searching for advertising/listing options.
 
 **Key insight (KRE-117):** Directory queries (`restaurants in lompoc`, `lompoc business directory`, `wineries lompoc`) have 3–10× higher monthly volume than coupon/deals queries. Primary campaign targets discovery intent; deals intent is secondary.
 
@@ -55,16 +55,16 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 12. Free to Browse — No App Needed
 13. Support Local — Discover Lompoc
 14. Bilingual EN/ES Local Directory
-15. Lompoc Deals — Find Local Now
+15. Lompoc Locals — Find Local Now
 
 **Descriptions (4 — rotate):**
 1. Browse 470+ Lompoc businesses by category — restaurants, wineries, salons, auto shops, and more. Free, bilingual EN/ES, no account needed.
 2. Lompoc's free local business directory. Find hours, photos, contact info, and current deals from businesses right in your community.
 3. Discover local restaurants, shops, services, and things to do in Lompoc, CA. Updated daily. 100% Lompoc businesses only.
-4. Looking for a Lompoc restaurant, salon, or service? Find them all at Lompoc Deals — the local business directory for the Flower Capital.
+4. Looking for a Lompoc restaurant, salon, or service? Find them all at Lompoc Locals — the local business directory for the Flower Capital.
 
-**Final URL:** https://lompoc-deals.vercel.app  
-**Display URL:** lompoc-deals.vercel.app
+**Final URL:** https://www.lompoclocals.com  
+**Display URL:** www.lompoclocals.com
 
 ---
 
@@ -83,7 +83,7 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 - real estate, jobs, cars, housing, rent, loans
 
 **Headlines (15 — use best 3 per rotation):**
-1. Lompoc Deals — Free to Browse
+1. Lompoc Locals — Free to Browse
 2. Save at Local Restaurants & Shops
 3. The Best Deals in Lompoc, CA
 4. Discounts From Local Businesses
@@ -96,17 +96,17 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 11. Restaurants, Salons, Retail & More
 12. No Ads. Just Local Deals.
 13. Join Lompoc Locals — Browse Free
-14. Browse Lompoc Deals → Free
+14. Browse Lompoc Locals → Free
 15. Find Deals Near You in Lompoc
 
 **Descriptions (4 — rotate):**
 1. Browse coupons and specials from restaurants, salons, shops, and services in Lompoc. Free — no app needed.
-2. Local businesses post their best deals. You save. Browse deals at Lompoc Deals and get a free weekly digest.
+2. Local businesses post their best deals. You save. Browse deals at Lompoc Locals and get a free weekly digest.
 3. Support Lompoc small businesses and save money at the same time. New deals every week — all 100% local.
 4. Sign up free and get the top 5 Lompoc deals delivered every Tuesday morning.
 
-**Final URL:** https://lompoc-deals.vercel.app/deals  
-**Display URL:** lompoc-deals.vercel.app/deals
+**Final URL:** https://www.lompoclocals.com/deals  
+**Display URL:** www.lompoclocals.com/deals
 
 ---
 
@@ -144,10 +144,10 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 1. Explora 470+ negocios locales en Lompoc — restaurantes, salones, bodegas, servicios y más. Gratis, bilingüe EN/ES, sin necesidad de cuenta.
 2. El directorio gratuito de negocios locales de Lompoc. Encuentra horarios, fotos, información de contacto y ofertas actuales de negocios en tu comunidad.
 3. Descubre restaurantes, tiendas, servicios y cosas que hacer en Lompoc, CA. Solo negocios 100% locales. Actualizado diariamente.
-4. ¿Buscas un restaurante, salón o servicio en Lompoc? Encuéntralos todos en Lompoc Deals — el directorio local de la Capital de las Flores.
+4. ¿Buscas un restaurante, salón o servicio en Lompoc? Encuéntralos todos en Lompoc Locals — el directorio local de la Capital de las Flores.
 
-**Final URL:** https://lompoc-deals.vercel.app  
-**Display URL:** lompoc-deals.vercel.app
+**Final URL:** https://www.lompoclocals.com  
+**Display URL:** www.lompoclocals.com
 
 ---
 
@@ -176,17 +176,17 @@ Drive local consumers to discover lompoc-deals.vercel.app by capturing high-inte
 4. Affordable Local Business Advertising
 5. Free Business Listing in Lompoc
 6. Promote Deals to Local Shoppers
-7. Lompoc Deals — For Businesses
+7. Lompoc Locals — For Businesses
 8. No Commission. Flat Subscription.
 9. Start Free — No Credit Card Needed
 10. Your Deal in Front of Local Buyers
 
 **Descriptions:**
-1. List your business on Lompoc Deals and reach hundreds of local shoppers looking for deals in Lompoc. Start free today.
+1. List your business on Lompoc Locals and reach hundreds of local shoppers looking for deals in Lompoc. Start free today.
 2. Post coupons and specials directly to local consumers in Lompoc. Dashboard included. Simple setup. Try it free.
 
-**Final URL:** https://lompoc-deals.vercel.app/en/sign-up  
-**Display URL:** lompoc-deals.vercel.app/for-business
+**Final URL:** https://www.lompoclocals.com/en/sign-up  
+**Display URL:** www.lompoclocals.com/for-business
 
 ---
 

@@ -1219,7 +1219,7 @@ gh pr create --title "CX phase 3: unify locals + businesses" --body "Logged-out 
 
 ## Final verification (after each PR merges)
 
-Production deploys need a manual promote (`vercel deploy --prod` — merging to main is NOT enough). After each phase is promoted, smoke on https://lompoc-deals.vercel.app:
+Production deploys need a manual promote (`vercel deploy --prod` — merging to main is NOT enough). After each phase is promoted, smoke on https://www.lompoclocals.com:
 1. Phase 1: claim a deal EN + ES (coupon renders, code visible); `/en/search?q=pizza` returns businesses; subscribe on `/es/subscribe` → Spanish messaging; zero-deal profile looks intentional.
-2. Phase 2: homepage has no fake sponsors/testimonials; `grep`-check rendered HTML for `19.99` (`curl -sL https://lompoc-deals.vercel.app/en/for-businesses | grep -c '19.99'` → 0); `/en/biz/demo-florianos-pizzeria` 308s.
+2. Phase 2: homepage has no fake sponsors/testimonials; `grep`-check rendered HTML for `19.99` (`curl -sL https://www.lompoclocals.com/en/for-businesses | grep -c '19.99'` → 0); `/en/biz/demo-florianos-pizzeria` 308s.
 3. Phase 3: logged-out heart/follow visible; `?open=1` filters; dashboard stats show claims.

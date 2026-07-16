@@ -7,7 +7,7 @@
 ## Why Real Estate Is the Best New Premium Vertical
 
 - **Military relocation market:** Vandenberg SFB brings a constant flow of families relocating to and from Lompoc. Real estate agents and property managers serving military families have a permanent high-intent audience.
-- **Affordable vs. alternatives:** Zillow Premier Agent: $200–$1,000+/mo. Realtor.com leads: $200–$400/mo. Lompoc Deals Premium: $39.99/mo with a local directory listing, deal posts, AND property listings. No-brainer comparison.
+- **Affordable vs. alternatives:** Zillow Premier Agent: $200–$1,000+/mo. Realtor.com leads: $200–$400/mo. Lompoc Locals Premium: $39.99/mo with a local directory listing, deal posts, AND property listings. No-brainer comparison.
 - **No other local platform has this.** LompocOnline.us, Chamber, Patch, Yelp — none offer property listings. This is a unique competitive moat.
 - **Hyper-local SEO advantage:** `/category/real-estate` and property listing pages are indexable. Target keywords: `lompoc homes for rent`, `lompoc real estate`, `apartments lompoc ca`, `houses for rent lompoc` — all low competition, high local intent.
 
@@ -31,7 +31,7 @@
 
 Hi [Contact Name],
 
-I'm reaching out because [Business Name] is already showing up in the Lompoc Deals directory at lompoc-deals.vercel.app — and I wanted to personally introduce a new feature we just launched.
+I'm reaching out because [Business Name] is already showing up in the Lompoc Locals directory at www.lompoclocals.com — and I wanted to personally introduce a new feature we just launched.
 
 We added **property listings** to the platform — homes for sale, rentals, and property management services. It's the only local Lompoc platform where a resident can find a restaurant deal, a winery tasting offer, and a rental listing all in one place.
 
@@ -41,7 +41,7 @@ Given the constant flow of Vandenberg families relocating in and out of Lompoc, 
 - Unlimited property listings (add, edit, remove anytime)
 - Business profile page with your contact info, photos, social links
 - Priority placement in the Lompoc directory
-- Featured on the Lompoc Deals homepage
+- Featured on the Lompoc Locals homepage
 - View and click analytics on every listing
 - No commission — ever
 
@@ -53,7 +53,7 @@ Interested? Just reply and I'll get you set up directly.
 
 Best,
 [Your Name]
-Lompoc Deals — lompoc-deals.vercel.app
+Lompoc Locals — www.lompoclocals.com
 [Your Email] | [Your Phone]
 
 ---
@@ -66,7 +66,7 @@ Hi [Contact Name],
 
 Military families relocating to Vandenberg SFB are some of the most motivated renters in Santa Barbara County — they have a hard move date, a housing allowance, and they're searching locally.
 
-Lompoc Deals just launched a **property listings module** — the first local Lompoc platform where renters can browse available units alongside local restaurant deals, business hours, and community guides.
+Lompoc Locals just launched a **property listings module** — the first local Lompoc platform where renters can browse available units alongside local restaurant deals, business hours, and community guides.
 
 With a Premium business account ($39.99/mo), you can list all your available rentals and update them anytime. Your listings appear in the local directory, in search results, and in the `/category/real-estate` section — all indexed by Google.
 
@@ -80,13 +80,13 @@ With a Premium business account ($39.99/mo), you can list all your available ren
 
 Best,
 [Your Name]
-Lompoc Deals — lompoc-deals.vercel.app
+Lompoc Locals — www.lompoclocals.com
 
 ---
 
 ## Follow-Up / DM Script (Instagram / LinkedIn)
 
-> Hi [Name] — saw you're active in the Lompoc real estate market. We just launched property listings on Lompoc Deals (lompoc-deals.vercel.app) — first local platform to do this. Happy to set you up with a free trial so you can add your listings and see the traffic. Interested?
+> Hi [Name] — saw you're active in the Lompoc real estate market. We just launched property listings on Lompoc Locals (www.lompoclocals.com) — first local platform to do this. Happy to set you up with a free trial so you can add your listings and see the traffic. Interested?
 
 ---
 

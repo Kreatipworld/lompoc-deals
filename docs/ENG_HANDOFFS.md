@@ -24,7 +24,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 **What shipped:** Core platform v1 — consumer feed, business dashboard, deal CRUD, auth, map, email digest infra, Stripe billing code (keys not yet active).
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app
+1. Go to www.lompoclocals.com
 2. Browse the feed — deals visible without login ✅
 3. Search by keyword ✅
 4. Filter by category ✅
@@ -59,7 +59,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 - Added `getDealsGroupedByCategory` query in `lib/queries.ts`
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app — homepage should show category sections (Restaurants, Services, etc.) each with up to 6 deal cards
+1. Go to www.lompoclocals.com — homepage should show category sections (Restaurants, Services, etc.) each with up to 6 deal cards
 2. Click "See all →" on any category section → should go to `/category/[slug]`
 3. Confirm hero image is the Lompoc landscape photo (not flowers)
 4. Confirm tab strip (Events/Wineries tabs) is no longer at top of page
@@ -91,7 +91,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 - **Premium ($39.99/mo):** Unlimited deals, everything in Standard, priority listing, featured homepage placement, real estate listings module
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app/for-businesses — verify the 3-tier pricing cards
+1. Go to www.lompoclocals.com/for-businesses — verify the 3-tier pricing cards
 2. Click "Get started free" — verify no Stripe prompt on Free signup
 3. Click "Get started" on Standard — verify Stripe checkout triggers
 
@@ -115,13 +115,13 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 **What shipped:** New "Dispensaries" category with Leaf icon. 5 verified Lompoc dispensaries seeded: Leaf, Elevate, Oceans, TRD, One Plant.
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app — look for "Dispensaries" in the category strip
+1. Go to www.lompoclocals.com — look for "Dispensaries" in the category strip
 2. Filter by Dispensaries — 5 businesses should appear
 
 **Events it fires:** Standard click/view tracking (same as all categories)
 
 **Marketing surfaces it unlocks:**
-- **High-value niche:** Cannabis businesses CANNOT advertise on Google Ads or Meta/Instagram. Lompoc Deals is one of very few legitimate marketing channels for them. This is a premium value prop for dispensary merchant acquisition.
+- **High-value niche:** Cannabis businesses CANNOT advertise on Google Ads or Meta/Instagram. Lompoc Locals is one of very few legitimate marketing channels for them. This is a premium value prop for dispensary merchant acquisition.
 - Targeted outreach to all 5 (+ any unlisted) Lompoc dispensaries with this angle
 - Potential "Cannabis Deals" editorial content (legal in CA, low competition)
 
@@ -161,9 +161,9 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 - Map page: activities now appear as green pins alongside purple business pins
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app — scroll past Popular Businesses to see "Things to Do" section
+1. Go to www.lompoclocals.com — scroll past Popular Businesses to see "Things to Do" section
 2. Click an activity card → should go to `/activities/[slug]` with map pin + tips
-3. Go to lompoc-deals.vercel.app/activities → full feed with filter chips
+3. Go to www.lompoclocals.com/activities → full feed with filter chips
 4. Go to /map — green activity pins should appear alongside purple business pins
 5. Test filter chips on /activities (outdoor, wine, etc.)
 
@@ -243,7 +243,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 **`2e9f3fa` + `60e74dc` + `63657b7` — `/locals` consumer conversion page:**
 - Full landing page at `/locals` targeting Lompoc residents: hero with live stats, 3-step how-it-works, 6-benefit grid, "free forever" feature checklist, category teaser, final CTA → `/signup/user`
-- SEO metadata: "For Locals — Discover Deals & Support Lompoc Businesses | Lompoc Deals"
+- SEO metadata: "For Locals — Discover Deals & Support Lompoc Businesses | Lompoc Locals"
 - Keywords: `lompoc locals`, `lompoc deals for residents`, `lompoc local discounts`, `things to do lompoc`, `support local lompoc`
 - Already uses "470+" live stats
 - Added to: mobile nav, desktop nav, footer "For Locals" column
@@ -252,16 +252,16 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 **`016628e` — Auth middleware fix:** Uses NextAuth v5 `auth()` instead of deprecated `getToken()`. Internal stability fix.
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app/locals — full consumer landing page with live stats
+1. Go to www.lompoclocals.com/locals — full consumer landing page with live stats
 2. Mobile nav → "For Locals" link
 3. Footer → "For Locals" column link
 4. CTA → `/signup/user` local user signup
 
 **Marketing surfaces it unlocks:**
 
-- **Canonical consumer CTA URL is now `/locals`** (not homepage). Use `lompoc-deals.vercel.app/locals` as the "link in bio" on Instagram/TikTok and in all consumer-facing posts. It's purpose-built to convert browsers → signups.
+- **Canonical consumer CTA URL is now `/locals`** (not homepage). Use `www.lompoclocals.com/locals` as the "link in bio" on Instagram/TikTok and in all consumer-facing posts. It's purpose-built to convert browsers → signups.
 
-- **Nextdoor + Facebook posts**: Replace `lompoc-deals.vercel.app` with `lompoc-deals.vercel.app/locals` in all consumer community posts. The `/locals` page directly answers "what's in it for me as a resident" before asking them to sign up.
+- **Nextdoor + Facebook posts**: Replace `www.lompoclocals.com` with `www.lompoclocals.com/locals` in all consumer community posts. The `/locals` page directly answers "what's in it for me as a resident" before asking them to sign up.
 
 - **SEO**: `/locals` is a new indexable page targeting `lompoc locals` and `support local lompoc` — low competition, high community intent keywords.
 
@@ -378,7 +378,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 - **PRODUCTION DB UPDATED VIA NEON MCP:** Migration 0010 (`name`, `city`, `zip`, `interests_json` on users; `owner_full_name`, `plan_override`, `grace_period_ends_at` on businesses) is now live in production. Migration 0008 events table fix (`source`, `external_id`) also applied.
 
 **How to test it:**
-1. Sign in as admin at lompoc-deals.vercel.app/admin — confirm expanded nav (Overview / Users / Deals / Events)
+1. Sign in as admin at www.lompoclocals.com/admin — confirm expanded nav (Overview / Users / Deals / Events)
 2. `/admin/users` — verify user table with role badges and role change form
 3. `/admin/deals` — verify deal table with pause/remove actions
 4. Try Premium signup — confirm graceful error message if Stripe env vars not yet set
@@ -421,7 +421,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
    - Businesses: `owner_full_name`, `plan_override` (admin override of tier), `grace_period_ends_at`
 
 **How to test it:**
-1. On mobile: go to lompoc-deals.vercel.app — confirm hamburger icon in header. Tap → slide-out drawer with all nav links.
+1. On mobile: go to www.lompoclocals.com — confirm hamburger icon in header. Tap → slide-out drawer with all nav links.
 2. Go to `/signup` → select "I own a business" → multi-step wizard should start
 3. Complete wizard steps → step 3 should show "Post your first deal" form
 4. Complete first deal → land in dashboard
@@ -458,7 +458,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 **What shipped:** A third "Go Premium" option ($39.99/mo, Crown icon) added to the signup role selector. The role selector is now a 3-column grid: "I'm a local" / "I own a business" (Free) / "Go Premium". Selecting "Go Premium" creates a business account and immediately redirects to a Stripe checkout session for the Premium subscription. Cancel URL (`/signup?plan=premium&canceled=1`) returns to signup with Premium pre-selected and a cancellation notice. Falls back to `/dashboard/billing?setup_required=1` if `STRIPE_PRICE_PREMIUM` env var is not set.
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app/signup — confirm 3-column role selector (Local / Business / Go Premium)
+1. Go to www.lompoclocals.com/signup — confirm 3-column role selector (Local / Business / Go Premium)
 2. Select "Go Premium" → fill in name/email/password → submit
 3. Should redirect to Stripe checkout for $39.99/mo
 4. Click "cancel" in Stripe → should return to `/signup?plan=premium&canceled=1` with amber cancellation notice and Premium pre-selected
@@ -468,7 +468,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 
 **Marketing surfaces it unlocks:**
 - **Direct Premium acquisition funnel:** High-intent visitors can now go from homepage → `/signup` → Premium in under 2 minutes. Link to `/signup` (not `/for-businesses`) for Premium-specific outreach.
-- **Winery pitch CTA simplification:** Emails to Brewer-Clifton, Stolpman, etc. can now say: "Go to lompoc-deals.vercel.app/signup, select 'Go Premium', and you're live in 2 minutes." No separate billing step.
+- **Winery pitch CTA simplification:** Emails to Brewer-Clifton, Stolpman, etc. can now say: "Go to www.lompoclocals.com/signup, select 'Go Premium', and you're live in 2 minutes." No separate billing step.
 - **Pre-selected Premium landing:** `/signup?plan=premium` pre-selects the Premium option — use this URL in Premium-targeted social posts, DMs, and email CTAs for high-value merchant acquisition.
 - **Reduced drop-off:** Previous flow required signing up as a business (Free) then upgrading later. Now Premium buyers go straight to checkout without a second step.
 - **Urgency hook:** The cancel/return flow with amber notice is a soft re-engagement — "Your Premium spot is still available."
@@ -494,7 +494,7 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 **What shipped:** Deal cards that have no deal-specific image now fall back to the business's cover photo. Both card variants (compact list card and featured/large card) updated. Alt text also corrected — uses business name when cover photo is shown.
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app — find a deal card that previously showed a grey placeholder
+1. Go to www.lompoclocals.com — find a deal card that previously showed a grey placeholder
 2. Confirm it now shows the business's cover photo instead
 3. Hover the card — zoom animation should still work on the cover photo
 
@@ -524,14 +524,14 @@ Every feature the CTO team ships that has marketing relevance gets a handoff not
 New endpoint: `GET /api/search/autocomplete?q=<query>`
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app — watch the search bar cycle through example queries
+1. Go to www.lompoclocals.com — watch the search bar cycle through example queries
 2. Click the search bar and type "pizza" — autocomplete dropdown should appear with matching businesses and deals
 3. Use arrow keys to navigate, Enter to select, Escape to close
 
 **Events it fires:** No new analytics events (click/navigation events via existing router)
 
 **Marketing surfaces it unlocks:**
-- **First impression at the fold:** Every visitor sees the typewriter cycling through local categories before they even type. This acts as ambient advertising — visitors learn what Lompoc Deals covers without reading any copy. "wine tasting deals" tells a story instantly.
+- **First impression at the fold:** Every visitor sees the typewriter cycling through local categories before they even type. This acts as ambient advertising — visitors learn what Lompoc Locals covers without reading any copy. "wine tasting deals" tells a story instantly.
 - **Discovery engine for deals:** Autocomplete surfaces active deals with discount badges right in the search box — turning passive browsing into active deal discovery.
 - **Merchant logo visibility:** Businesses appear in autocomplete results with their logo. Merchants with a logo uploaded get a visual advantage every time a user searches for anything near their name or category. New merchant upsell hook: "Upload your logo — it appears in search results."
 - **Reduces bounce from "where do I start?"** New visitors no longer face a blank search bar. The typewriter demonstrates the breadth of available deals, increasing the chance they engage.
@@ -566,7 +566,7 @@ New endpoint: `GET /api/search/autocomplete?q=<query>`
 
 **Marketing surfaces it unlocks:**
 - **Operational monitoring:** Board can check `/status` in Telegram to see live deal count and business count at any time — a real-time pulse on platform health.
-- **Future: deal alert channel.** The Telegram infrastructure is now live. A next step (CMO request) would be a public Telegram channel where new deals are broadcast automatically — giving consumers a "subscribe to Lompoc Deals alerts" option on Telegram. High-intent audience, zero cost.
+- **Future: deal alert channel.** The Telegram infrastructure is now live. A next step (CMO request) would be a public Telegram channel where new deals are broadcast automatically — giving consumers a "subscribe to Lompoc Locals alerts" option on Telegram. High-intent audience, zero cost.
 - **Future: merchant alert.** Could send merchants a Telegram message when someone claims their deal or when their deal is expiring soon.
 
 **Known limitations:**
@@ -584,7 +584,7 @@ New endpoint: `GET /api/search/autocomplete?q=<query>`
 2. `forBusinesses` renamed from "For businesses" → "Businesses" (EN) and "Para negocios" → "Negocios" (ES). Mobile menu hardcoded labels updated to match.
 
 **Marketing surfaces it unlocks:**
-- `/locals` consumer page is now properly labeled in the nav — the CTA we use across Nextdoor, Facebook, and social posts ("visit lompoc-deals.vercel.app/locals") now leads to a page that is correctly linked in the header. Before this fix, the nav link was showing a broken key.
+- `/locals` consumer page is now properly labeled in the nav — the CTA we use across Nextdoor, Facebook, and social posts ("visit www.lompoclocals.com/locals") now leads to a page that is correctly linked in the header. Before this fix, the nav link was showing a broken key.
 - Cleaner, shorter nav labels ("Locals" / "Businesses") scan better on mobile — reduces friction for first-time visitors choosing where to go.
 
 **No CMO action needed.** Nav copy now matches all existing marketing materials.
@@ -626,7 +626,7 @@ The category section heading on the homepage changed from "Explore by category" 
 2. **"Things to Do in Lompoc" section on `/deals`:** A new section below the category strip shows up to 6 featured activities (from the activities table). Each card shows: image/icon, description, tips, address, seasonality badge, and a "Learn More" link. Section only renders when activities exist.
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app/deals — confirm deal cards show address + phone
+1. Go to www.lompoclocals.com/deals — confirm deal cards show address + phone
 2. Tap the phone number on mobile — should open dialer
 3. Scroll below the category strip — confirm "Things to Do in Lompoc / Local Attractions & Activities" section renders if activities are loaded
 
@@ -638,7 +638,7 @@ The category section heading on the homepage changed from "Explore by category" 
 - **"Things to Do in Lompoc" — SEO gold:** This section is the exact content that ranks for high-intent local tourism queries: "things to do in Lompoc CA", "Lompoc attractions", "Lompoc activities". This is a programmatic SEO opportunity. The copy "Discover what makes Lompoc special — from wineries to wildflowers" is emotionally resonant and local-specific. **File CMO request: dedicated `/lompoc/things-to-do` SEO landing page.**
 - **Vandenberg relocation angle:** Military families researching Lompoc will hit the "Things to Do" section. This is a passive acquisition touchpoint for a high-value segment (incoming permanent-change-of-station families who need to discover the community fast).
 - **Tourism + visitor acquisition:** The `/deals` page now serves two audiences: deal-hunters AND first-time visitors to Lompoc. Stronger reason to share the URL externally (tourism groups, Facebook travel posts, Nextdoor "what to do this weekend" threads).
-- **Screenshot asset:** The activities section has a distinctive visual card grid with destination-style imagery. Great for Instagram and Nextdoor "here's what Lompoc Deals looks like" posts.
+- **Screenshot asset:** The activities section has a distinctive visual card grid with destination-style imagery. Great for Instagram and Nextdoor "here's what Lompoc Locals looks like" posts.
 
 **Known limitations:**
 - Activities section only renders if `getFeaturedActivities()` returns > 0 results — requires the activities table to be populated.
@@ -655,7 +655,7 @@ The category section heading on the homepage changed from "Explore by category" 
 **What shipped:** The `/locals` consumer landing page hero section now uses `lompoc-hero.jpg` as a full-bleed background image, with gradient overlays (horizontal + vertical) to maintain text readability. Replaces the previous gradient-only background.
 
 **How to test it:**
-1. Go to lompoc-deals.vercel.app/locals — hero should show the Lompoc landscape photo with text overlaid
+1. Go to www.lompoclocals.com/locals — hero should show the Lompoc landscape photo with text overlaid
 
 **Marketing surfaces it unlocks:**
 
@@ -698,7 +698,7 @@ The category section heading on the homepage changed from "Explore by category" 
 - Layout fix: breadcrumb moved inside the header card — eliminates visual overlap with the cover image that existed in the previous layout. Duplicate eyebrow metadata block removed.
 
 **How to test it:**
-1. Visit any business profile at `lompoc-deals.vercel.app/biz/[slug]`
+1. Visit any business profile at `www.lompoclocals.com/biz/[slug]`
 2. If the business has a `coverUrl`, the carousel shows it as a single-image fallback
 3. If `photosJson` is populated with multiple URLs, prev/next arrows and dots appear
 
@@ -706,12 +706,12 @@ The category section heading on the homepage changed from "Explore by category" 
 
 **Marketing surfaces it unlocks:**
 
-- **Merchant value prop — massively upgraded:** Business profiles now support a full photo gallery. "Upload photos of your menu, interior, team, and specials" is now a real, compelling feature pitch. This puts Lompoc Deals on par with Google Business Profile for visual presentation.
+- **Merchant value prop — massively upgraded:** Business profiles now support a full photo gallery. "Upload photos of your menu, interior, team, and specials" is now a real, compelling feature pitch. This puts Lompoc Locals on par with Google Business Profile for visual presentation.
 - **Acquisition hook:** "Your business profile is a mini website — add multiple photos to tell your story" is a much stronger free-tier value prop than "upload one cover photo."
 - **Premium upsell angle (future):** If photo count is limited on Free tier vs. Premium, the carousel becomes a tier differentiator. Worth discussing with CTO (CMO request).
 - **Merchant onboarding Day 1 email:** Update to push multi-photo upload, not just cover photo. "Upload 3–5 photos — businesses with photo galleries get significantly more profile views."
 - **Winery pitch:** Wineries can now showcase their tasting room, vineyards, and bottle labels in a carousel. This is a premium visual experience that justifies $39.99/mo on its own.
-- **Social content:** A carousel on a business profile is screenrecordable as a quick Reel/TikTok — "look how good [Winery Name] looks on Lompoc Deals."
+- **Social content:** A carousel on a business profile is screenrecordable as a quick Reel/TikTok — "look how good [Winery Name] looks on Lompoc Locals."
 
 **Known limitations:**
 - `photosJson` must be manually populated (no upload UI yet in merchant dashboard). CTO needs to add photo management to the dashboard.
@@ -794,13 +794,13 @@ This is the biggest content marketing infrastructure shipped to date. Full impac
 - Static data placeholder until CMO delivers KRE-262 (DB-backed hotel content)
 
 **How to test it:**
-1. Visit `lompoc-deals.vercel.app/hotels` — 4 hotels listed
+1. Visit `www.lompoclocals.com/hotels` — 4 hotels listed
 2. Click any hotel → detail page with amenities, contact info, sidebar
 
 **Marketing surfaces it unlocks:**
 
 - **Lompoc hotel SEO:** The `/hotels` page and individual hotel pages target "hotels in Lompoc CA", "where to stay Lompoc", "Vandenberg hotel" queries. These are transactional searches from tourists and military families — highest-intent traffic.
-- **Vandenberg relocation funnel completion:** Combined with the blog, we can now serve the entire research journey for incoming military families: blog post → `/hotels` → `/businesses` → `/locals` (claim deals). Lompoc Deals becomes the definitive Lompoc newcomer resource.
+- **Vandenberg relocation funnel completion:** Combined with the blog, we can now serve the entire research journey for incoming military families: blog post → `/hotels` → `/businesses` → `/locals` (claim deals). Lompoc Locals becomes the definitive Lompoc newcomer resource.
 - **Blog cross-link:** Post 10 in the content strategy ("Where to Stay in Lompoc, CA") links directly to `/hotels` and all four hotel detail pages. Strong SEO internal linking.
 - **Future monetization:** Hotel listings are a natural fit for affiliate revenue (Booking.com, Hotels.com) or sponsored placement once traffic scales.
 
@@ -831,7 +831,7 @@ Full backlink map at `content/blog/backlink-map.md`.
 
 - **Immediate SEO footprint:** 48 published posts with spread publish dates, Schema.org BlogPosting, canonical URLs, and internal links to `/businesses`, `/deals`, `/biz/[slug]`. Google will index the full cluster.
 - **Topic cluster SEO:** The 6 clusters are designed so posts link to each other. This creates link equity rings that boost the entire domain — not just individual posts.
-- **Business page internal links:** Taqueria post links directly to 9 Lompoc business profiles at `/biz/[slug]`. This is the model for all future "Best X in Lompoc" posts — every business mentioned should link to their Lompoc Deals profile.
+- **Business page internal links:** Taqueria post links directly to 9 Lompoc business profiles at `/biz/[slug]`. This is the model for all future "Best X in Lompoc" posts — every business mentioned should link to their Lompoc Locals profile.
 - **Footer blog link:** Every page on the site now has a footer link to `/blog`. Passive discovery for every visitor.
 - **CMO content strategy (`marketing/content/blog-content-strategy.md`) updated** — the first 5 Priority 1 posts requested are now part of the live 48. Content focus shifts to ongoing publishing, new verticals, and merchant spotlight posts.
 
@@ -858,7 +858,7 @@ Full backlink map at `content/blog/backlink-map.md`.
 
 **Marketing surfaces it unlocks:**
 
-- **Full SEO → platform conversion funnel:** Organic traffic lands on a blog post → reads the article → sees 3 matching Lompoc Deals businesses with active deal counts → clicks through to a business profile → claims a deal. This is the complete top-of-funnel-to-conversion path, fully automated.
+- **Full SEO → platform conversion funnel:** Organic traffic lands on a blog post → reads the article → sees 3 matching Lompoc Locals businesses with active deal counts → clicks through to a business profile → claims a deal. This is the complete top-of-funnel-to-conversion path, fully automated.
 - **Active deal count = urgency signal:** "3 active deals" visible on the spotlight card gives readers a reason to click now, not later.
 - **Zero-maintenance relevance:** The category mapping is automatic — no manual curation needed as new businesses are added to the platform. When a new winery signs up and posts a deal, it can appear in wine blog posts automatically.
 - **Blog index hero redesign:** The featured post treatment (dark hero card) makes the blog feel like a premium editorial publication. This improves first impressions for new visitors and encourages more article clicks.
@@ -927,7 +927,7 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 
 **Marketing surfaces it unlocks:**
 
-- **"Take a Tour" is a hero social media asset.** Screen-record the animated fly-to tour from a desktop browser (1080p/4K) and cut it to a 30–60 second reel. This is our most visually impressive feature to date — 3D terrain flyover of Lompoc wine country and the coast. Post to: Instagram Reels, TikTok, Facebook, Nextdoor. Caption: *"Explore Lompoc from above — 31 local gems, one map. 🗺️ lompoc-deals.vercel.app/map"*
+- **"Take a Tour" is a hero social media asset.** Screen-record the animated fly-to tour from a desktop browser (1080p/4K) and cut it to a 30–60 second reel. This is our most visually impressive feature to date — 3D terrain flyover of Lompoc wine country and the coast. Post to: Instagram Reels, TikTok, Facebook, Nextdoor. Caption: *"Explore Lompoc from above — 31 local gems, one map. 🗺️ www.lompoclocals.com/map"*
 - **Map page = premium brand signal.** A 3D interactive map with Mapbox (same stack as AirBnB, Uber, Snap) communicates this platform is built to last. Use in cold outreach materials and in the merchant signup CTA.
 - **Subscribe page redesign improves conversion.** Previous page was a bare form. New page has benefit copy, testimonials, and social proof. Update any social/email links pointing to `/subscribe` and verify the benefit copy is accurate before sharing.
 - **31 POIs include hotels, wineries, and outdoor sites** — directly feeds the wine tourism and Vandenberg/military blog pillars. Link `/map` from the VanDB relocation guide and the wine country posts.
@@ -978,8 +978,8 @@ Without it, the post form will fail and the browse/detail pages will error.
 
 **Marketing surfaces it unlocks:**
 
-- **Nextdoor is the #1 channel for this feature.** Garage sale discovery is Nextdoor's core use case. Our version adds a map, bilingual support, and zero friction (free, instant, auth-gated but not paywalled). Post on Nextdoor immediately: *"Lompoc now has a free garage sale map — post yours at lompoc-deals.vercel.app/garage-sales"*. This is the highest-urgency Nextdoor post since launch.
-- **Facebook Marketplace crossover.** Many Lompoc residents post garage sales on Facebook Marketplace. Pitch `/garage-sales/post` as a complement: *"Also on Lompoc Deals — locals can find you on the map."* Post in Lompoc Facebook groups.
+- **Nextdoor is the #1 channel for this feature.** Garage sale discovery is Nextdoor's core use case. Our version adds a map, bilingual support, and zero friction (free, instant, auth-gated but not paywalled). Post on Nextdoor immediately: *"Lompoc now has a free garage sale map — post yours at www.lompoclocals.com/garage-sales"*. This is the highest-urgency Nextdoor post since launch.
+- **Facebook Marketplace crossover.** Many Lompoc residents post garage sales on Facebook Marketplace. Pitch `/garage-sales/post` as a complement: *"Also on Lompoc Locals — locals can find you on the map."* Post in Lompoc Facebook groups.
 - **Consumer return-visit driver.** Garage sales change weekly — users who check once will return next weekend. This is the platform's first high-frequency, calendar-driven content type. It trains the weekly check-in habit before the email digest is fully optimized.
 - **Email digest integration.** The Saturday morning digest should add a "Garage Sales This Weekend" section (1–3 nearby sales). This is an easy data source (date-filtered from the garage_sales table) and will significantly increase open rates for digest subscribers.
 - **Merchant crossover.** Any merchant who stages a liquidation sale, warehouse cleanout, or pop-up event can use this feature. Mention it in merchant onboarding: *"Hosting a garage sale or liquidation event? Post it free on our map."*
@@ -987,7 +987,7 @@ Without it, the post form will fail and the browse/detail pages will error.
 - **UGC flywheel.** Every garage sale posted by a consumer is content we didn't have to create. The map fills itself. As listings accumulate, the browse page becomes a reason to visit the site even without a deal.
 
 **CMO next actions (human execution):**
-- Post on Nextdoor (EN + ES): "Free garage sale map for Lompoc — post yours at lompoc-deals.vercel.app/garage-sales"
+- Post on Nextdoor (EN + ES): "Free garage sale map for Lompoc — post yours at www.lompoclocals.com/garage-sales"
 - Post in Lompoc Facebook groups (same copy)
 - Add "Garage Sales This Weekend" section to the weekly digest template
 - Update merchant onboarding Day 0 email to mention garage sale / liquidation posting
@@ -1004,7 +1004,7 @@ Without it, the post form will fail and the browse/detail pages will error.
 **What shipped:** A horizontal snap-scroll deals carousel now appears on the landing page between the hero section and the "Live Lompoc" category grid. `DealsCarousel` component: responsive cards with deal image (gradient fallback if no image), discount badge, business name, and deal title. Fetches up to 6 active + approved deals via `getFeaturedDeals()` query in `lib/queries.ts`. Server-rendered — no client-side loading state.
 
 **How to test it:**
-1. Visit the homepage (lompoc-deals.vercel.app) → confirm a scrollable carousel of deal cards appears below the hero
+1. Visit the homepage (www.lompoclocals.com) → confirm a scrollable carousel of deal cards appears below the hero
 2. If fewer than 6 active deals exist in the DB, carousel shows however many are available (graceful empty state if none)
 3. Each card: deal image or gradient fallback, discount badge (e.g. "20% off"), business name, deal title
 4. Mobile: cards should snap-scroll horizontally
@@ -1015,13 +1015,13 @@ Without it, the post form will fail and the browse/detail pages will error.
 
 - **Homepage deal visibility = top-of-funnel conversion.** First-time visitors now see real active deals immediately below the hero — before scrolling at all on most screens. This is the single most direct path from "just landed on the site" to "I want to come back."
 - **Discount badge = urgency signal.** The badge makes the value proposition concrete on the first page load. This is stronger than any copy — real deals from real Lompoc businesses.
-- **Merchant incentive:** Merchants with active deals now appear on the homepage carousel. This is a compelling upgrade pitch: "Post a deal and your business appears on the Lompoc Deals homepage." Add this line to cold emails and the onboarding drip.
+- **Merchant incentive:** Merchants with active deals now appear on the homepage carousel. This is a compelling upgrade pitch: "Post a deal and your business appears on the Lompoc Locals homepage." Add this line to cold emails and the onboarding drip.
 - **Deal photo quality matters now.** The carousel shows deal images or falls back to a gradient. Merchants with photos look significantly better than those without. Add a note to the onboarding drip: "Add a photo to your deal — deals with photos appear in the homepage carousel."
 - **Screenshot asset:** A homepage carousel showing 5–6 active Lompoc deals is a strong creative for paid Facebook/Instagram ads targeting Lompoc residents. "Look what's on sale in Lompoc this week."
 
 **CMO next actions:**
 - Update `marketing/email/merchant-onboarding-drip.md`: add "post a deal → appear on the homepage" as a Day 1 incentive
-- Update cold email: add homepage carousel as a merchant benefit ("your deal on the Lompoc Deals homepage")
+- Update cold email: add homepage carousel as a merchant benefit ("your deal on the Lompoc Locals homepage")
 - Screenshot the carousel for use as an ad creative once 5+ active deals are live
 
 **Known limitations:** Carousel is empty if no active + approved deals exist in the DB. Priority: get first few merchants to post deals before any social promotion of the homepage.
@@ -1056,7 +1056,7 @@ Without it, the post form will fail and the browse/detail pages will error.
 
 **Marketing surfaces it unlocks:**
 
-- **Hotel outreach email open:** "Your hotel is already on Lompoc Deals" subject line — show them the live listing URL in the first line. Frictionless opener.
+- **Hotel outreach email open:** "Your hotel is already on Lompoc Locals" subject line — show them the live listing URL in the first line. Frictionless opener.
 - **Blog → hotel page → signup funnel:** Organic reader lands on the hotels blog post → clicks a hotel's internal link → sees their full profile page → notices the "Upgrade" CTA. Passive merchant acquisition path.
 - **Follow-up email leverage:** Day 5 follow-up references "we published a hotels guide that ranks for 'hotels in Lompoc CA'" — works as soon as the post is indexed.
 - **No booking commission pitch point** directly counters Expedia/Booking.com dependence — the strongest differentiator for hotel marketers.
@@ -1166,7 +1166,7 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 
 - **18 hotels is a complete Lompoc inventory.** The hotels page is now a definitive resource — use it as a landing page for "hotels in Lompoc CA" SEO (target keyword: ~1,900 searches/mo nationally, low competition locally).
 - **Directions link = micro-conversion.** Every "Get Directions" click is a signal of high purchase intent. When GA is wired (REQ-001), track this event as a top-funnel conversion.
-- **Hotel map on detail pages** makes individual hotel slug pages linkable and shareable. Pitch these pages to hotel partners as a free listing ("your hotel, your map, your directions — all on Lompoc Deals").
+- **Hotel map on detail pages** makes individual hotel slug pages linkable and shareable. Pitch these pages to hotel partners as a free listing ("your hotel, your map, your directions — all on Lompoc Locals").
 - **KRE-262 partially addressed:** The hotel dataset is now comprehensive (18 vs 8). Full KRE-262 completion (pulling from DB instead of static file) is still pending — but the static data is now accurate and complete enough for launch.
 - **Blog integration:** The "Best Hotels in Lompoc" blog post (on the content calendar) should link directly to `/hotels` and to 3–5 individual hotel slug pages. Internal links from a blog post → hotel pages → `/hotels` listing creates a topic cluster for hotel SEO.
 
@@ -1205,7 +1205,7 @@ Must be set in **Vercel → Settings → Environment Variables → Production + 
 
 - **472 businesses on the map is the headline.** This is the single most important upgrade since launch. The map went from a toy demo (31 hardcoded pins) to a real directory (472 verified businesses). Lead with this number in every merchant pitch: *"472 Lompoc businesses are already on the map — is yours?"*
 - **Map → business profile conversion path is now live.** User sees a pin → clicks popup → "View Details" → lands on `/biz/[slug]` with the merchant's full profile and active deals. This is the consumer funnel: Discovery → Profile → Claim Deal. It now works end-to-end from the map.
-- **Merchant acquisition pitch upgrade.** Demo the map to prospective merchants during cold outreach. Showing a real map with 472 local businesses is orders of magnitude more convincing than a demo with 31 generic pins. Update `marketing/sales/merchant-outreach-script.md` to add: *"Pull up lompoc-deals.vercel.app/map — your competitors are already there."*
+- **Merchant acquisition pitch upgrade.** Demo the map to prospective merchants during cold outreach. Showing a real map with 472 local businesses is orders of magnitude more convincing than a demo with 31 generic pins. Update `marketing/sales/merchant-outreach-script.md` to add: *"Pull up www.lompoclocals.com/map — your competitors are already there."*
 - **"Near Me" + real coordinates = hyperlocal utility.** The "Near Me" button now surfaces actual nearby businesses (not fake POIs). This makes the map genuinely useful for Lompoc residents, not just a visual.
 - **Social content angle:** Film a walk-through of the map showing real Lompoc businesses. "Every taqueria, every winery, every shop — all in one place." This is now factually accurate and visually compelling.
 - **SEO:** The `/map` page now represents the full business directory. Consider adding structured data (JSON-LD LocalBusiness array) to the map page or linking it from every `/biz/[slug]` page as "See on map."

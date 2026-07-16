@@ -1,4 +1,4 @@
-# SEO Landing Page Copy Spec — Lompoc Deals
+# SEO Landing Page Copy Spec — Lompoc Locals
 *Owner: CMO / Content & SEO Strategist*
 *Created: 2026-04-08 | Blocking ticket: REQ-005 (CTO to build /lompoc/[category] routes)*
 *KPI: 200 organic sessions/month from these pages by day 90*
@@ -19,9 +19,9 @@ See `CMO_REQUESTS.md` REQ-005 for the technical requirements.
 
 ### Meta
 ```
-<title>Lompoc Food & Restaurant Deals — Save at Local Restaurants | Lompoc Deals</title>
+<title>Lompoc Food & Restaurant Deals — Save at Local Restaurants | Lompoc Locals</title>
 <meta name="description" content="Find the best food deals and restaurant discounts in Lompoc, CA. Browse current offers from local restaurants, cafes, and food businesses — free to claim, no credit card needed." />
-<link rel="canonical" href="https://lompoc-deals.vercel.app/lompoc/food-deals" />
+<link rel="canonical" href="https://www.lompoclocals.com/lompoc/food-deals" />
 ```
 
 ### OpenGraph
@@ -62,7 +62,7 @@ og:image = [featured deal card screenshot]
   "@type": "ItemList",
   "name": "Lompoc Food Deals",
   "description": "Current food and restaurant deals in Lompoc, CA",
-  "url": "https://lompoc-deals.vercel.app/lompoc/food-deals",
+  "url": "https://www.lompoclocals.com/lompoc/food-deals",
   "itemListElement": [
     // server-rendered: one ListItem per active deal with name, url, description
   ]
@@ -75,7 +75,7 @@ og:image = [featured deal card screenshot]
 
 ### Meta
 ```
-<title>Lompoc Salon & Beauty Deals — Haircuts, Nails & Spa Discounts | Lompoc Deals</title>
+<title>Lompoc Salon & Beauty Deals — Haircuts, Nails & Spa Discounts | Lompoc Locals</title>
 <meta name="description" content="Find salon, beauty, and spa deals in Lompoc, CA. Discounts on haircuts, nail appointments, facials, and more from local Lompoc beauty businesses." />
 ```
 
@@ -106,7 +106,7 @@ og:image = [featured deal card screenshot]
 
 ### Meta
 ```
-<title>Lompoc Local Services Deals — Plumbers, Auto, Cleaning & More | Lompoc Deals</title>
+<title>Lompoc Local Services Deals — Plumbers, Auto, Cleaning & More | Lompoc Locals</title>
 <meta name="description" content="Deals and discounts on local services in Lompoc, CA — auto repair, home cleaning, plumbing, fitness, and more. Free to claim from local Lompoc service providers." />
 ```
 
@@ -132,12 +132,12 @@ og:image = [featured deal card screenshot]
 
 ### Meta
 ```
-<title>Lompoc Deals Today — Active Deals Expiring Soon | Lompoc Deals</title>
+<title>Lompoc Locals Today — Active Deals Expiring Soon | Lompoc Locals</title>
 <meta name="description" content="Today's active deals in Lompoc, CA. Deals expiring today or this week from local Lompoc businesses. Free to claim — no credit card needed." />
 ```
 
 ### H1
-`Lompoc Deals Today`
+`Lompoc Locals Today`
 
 ### Intro Paragraph (EN)
 > Deals expiring soon in Lompoc. These offers from local businesses are active now — claim them before they're gone. Updated in real-time as Lompoc merchants post new deals.
@@ -162,12 +162,12 @@ og:image = [featured deal card screenshot]
 
 ### Meta
 ```
-<title>Lompoc Deals — Local Discounts & Specials in Lompoc, CA | Lompoc Deals</title>
+<title>Lompoc Locals — Local Discounts & Specials in Lompoc, CA | Lompoc Locals</title>
 <meta name="description" content="Browse local deals and discounts in Lompoc, CA. Food, salon, services, retail and more — free to claim from Lompoc businesses. Updated daily." />
 ```
 
 ### H1
-`Lompoc Deals & Local Discounts`
+`Lompoc Locals & Local Discounts`
 
 ### Intro Paragraph (EN)
 > Your guide to the best deals in Lompoc, California. Browse current discounts from local restaurants, salons, retail shops, and service providers. All deals are free to claim — no credit card or subscription needed. Updated daily as Lompoc businesses post new offers.
@@ -186,9 +186,9 @@ og:image = [featured deal card screenshot]
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Lompoc Deals",
+  "name": "Lompoc Locals",
   "description": "Local deals and discounts directory for Lompoc, CA",
-  "url": "https://lompoc-deals.vercel.app",
+  "url": "https://www.lompoclocals.com",
   "areaServed": {
     "@type": "City",
     "name": "Lompoc",

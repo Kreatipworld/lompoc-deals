@@ -18,7 +18,7 @@ Everything else is ready to send. Copy → paste → adjust contact name → sen
 
 **Updated 2026-04-13 — Premium signup now instant:**  
 When a winery is ready to sign up for Premium, send them directly to:  
-`lompoc-deals.vercel.app/signup?plan=premium`  
+`www.lompoclocals.com/signup?plan=premium`  
 This pre-selects the "Go Premium" option ($39.99/mo) — they go straight to Stripe checkout, no separate billing step. Use this URL in follow-up emails after a winery agrees to sign up.
 
 **Updated 2026-04-14 — 30-day free trial is now fully deliverable:**  
@@ -39,11 +39,11 @@ The new business signup is a multi-step wizard. Step 3 of the wizard prompts the
 
 ---
 
-**Subject:** Brewer-Clifton is listed on Lompoc Deals — let's feature you this month
+**Subject:** Brewer-Clifton is listed on Lompoc Locals — let's feature you this month
 
 Hi [Contact Name],
 
-Brewer-Clifton is already in the Lompoc Deals directory at lompoc-deals.vercel.app/biz/brewer-clifton — we're building out the Wine Country section and wanted to reach out personally.
+Brewer-Clifton is already in the Lompoc Locals directory at www.lompoclocals.com/biz/brewer-clifton — we're building out the Wine Country section and wanted to reach out personally.
 
 We're launching a "Lompoc Wine Ghetto" content series on TikTok and Instagram this month — the hook is "the most underrated wine destination in California." Brewer-Clifton is the first winery we want to feature. Your single-vineyard approach and Sta. Rita Hills story is exactly the kind of thing wine tourists from LA and the Bay Area are looking for.
 
@@ -58,7 +58,7 @@ Would you be up for a 10-minute call this week to align on timing?
 
 Best,
 [Your Name]  
-Lompoc Deals — lompoc-deals.vercel.app  
+Lompoc Locals — www.lompoclocals.com  
 [Your Phone] | [Your Email]
 
 ---
@@ -89,11 +89,11 @@ The 30-day Premium trial is still open if you want to see the traffic data.
 
 ---
 
-**Subject:** Longoria Wines is on Lompoc Deals — free listing upgrade for Wine Ghetto pioneers
+**Subject:** Longoria Wines is on Lompoc Locals — free listing upgrade for Wine Ghetto pioneers
 
 Hi [Contact Name],
 
-Longoria Wines is listed in the Lompoc Deals directory, and we wanted to reach out because you're exactly the kind of producer this platform was built for.
+Longoria Wines is listed in the Lompoc Locals directory, and we wanted to reach out because you're exactly the kind of producer this platform was built for.
 
 We're building a "Lompoc Wine Country" content series this month — showcasing what makes the Wine Ghetto special for locals and wine tourists visiting from outside the area. As one of the original Wine Ghetto producers, Longoria's story is the story of the neighborhood.
 
@@ -107,7 +107,7 @@ If the traffic is worth it after 30 days, the subscription is $19.99/month. If n
 Would a quick 10-minute call work this week?
 
 [Your Name]  
-Lompoc Deals — lompoc-deals.vercel.app  
+Lompoc Locals — www.lompoclocals.com  
 [Your Phone] | [Your Email]
 
 ---
@@ -137,11 +137,11 @@ We're posting Wine Ghetto content this week and Longoria is on our mention list 
 
 ---
 
-**Subject:** Fiddlehead Cellars on Lompoc Deals — 30-day free trial + Instagram feature
+**Subject:** Fiddlehead Cellars on Lompoc Locals — 30-day free trial + Instagram feature
 
 Hi [Contact Name],
 
-Fiddlehead Cellars is in our local directory at lompoc-deals.vercel.app, and I wanted to reach out personally because your Pinot Noir and your personality on Instagram are exactly what wine tourists are looking for when they search "things to do in Lompoc."
+Fiddlehead Cellars is in our local directory at www.lompoclocals.com, and I wanted to reach out personally because your Pinot Noir and your personality on Instagram are exactly what wine tourists are looking for when they search "things to do in Lompoc."
 
 We're launching a Wine Ghetto content series this month on Instagram and TikTok. The series is aimed at wine curious visitors from LA and the Bay who don't know the Sta. Rita Hills wine scene yet. Fiddlehead's approachable brand voice is a perfect fit for this audience.
 
@@ -155,7 +155,7 @@ No catch — we want to show you real traffic before asking for anything.
 Would you be open to a quick chat, or even just a DM?
 
 [Your Name]  
-Lompoc Deals — lompoc-deals.vercel.app  
+Lompoc Locals — www.lompoclocals.com  
 [Your Phone] | [Your Email]
 
 ---
@@ -170,11 +170,11 @@ Lompoc Deals — lompoc-deals.vercel.app
 
 ---
 
-**Subject:** Stolpman Vineyards on Lompoc Deals — Premium listing for Ballard Canyon's flagship
+**Subject:** Stolpman Vineyards on Lompoc Locals — Premium listing for Ballard Canyon's flagship
 
 Hi [Contact Name],
 
-Stolpman Vineyards is listed in the Lompoc Deals directory — lompoc-deals.vercel.app/category/wineries — and given the investment you've made in the tasting room experience, I wanted to reach out about a partnership.
+Stolpman Vineyards is listed in the Lompoc Locals directory — www.lompoclocals.com/category/wineries — and given the investment you've made in the tasting room experience, I wanted to reach out about a partnership.
 
 We're building out the "Lompoc Wine Country" section and running a social campaign this month targeting wine tourists from LA and the Bay Area. Stolpman's biodynamic story and Sangiovese program are a genuinely differentiated angle for that audience.
 
@@ -188,7 +188,7 @@ At the Premium level, you also get to see competitor deal activity — useful fo
 Would a quick call this week work?
 
 [Your Name]  
-Lompoc Deals — lompoc-deals.vercel.app  
+Lompoc Locals — www.lompoclocals.com  
 [Your Phone] | [Your Email]
 
 ---
@@ -208,7 +208,7 @@ Lompoc Deals — lompoc-deals.vercel.app
 
 Hi [Contact Name],
 
-The Lompoc Wine Factory is listed on Lompoc Deals, and I wanted to reach out because your shared tasting room model is something I haven't seen highlighted well anywhere online.
+The Lompoc Wine Factory is listed on Lompoc Locals, and I wanted to reach out because your shared tasting room model is something I haven't seen highlighted well anywhere online.
 
 For wine tourists who don't know the Wine Ghetto, "6+ producers under one roof, walk-in welcome on Saturdays" is a genuinely compelling pitch — and it's the kind of experience that makes people drive from LA to Lompoc.
 
@@ -219,7 +219,7 @@ I'd like to offer a free 30-day Standard trial — so you can list the upcoming 
 Does this week work for a quick call, or would it be easier to talk in person when you're at the tasting room?
 
 [Your Name]  
-Lompoc Deals — lompoc-deals.vercel.app  
+Lompoc Locals — www.lompoclocals.com  
 [Your Phone] | [Your Email]
 
 ---

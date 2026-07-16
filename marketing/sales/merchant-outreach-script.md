@@ -18,27 +18,27 @@
 >
 > I'm reaching out because [Business Name] is exactly the kind of local gem that Lompoc residents are looking for — and right now, too many people can't find you.
 >
-> **Lompoc Deals** (lompoc-deals.vercel.app) is Lompoc's free local directory — the place locals go to discover restaurants, shops, services, and more, all in one place. Think of it as a mini Yelp, built just for the Flower Capital.
+> **Lompoc Locals** (www.lompoclocals.com) is Lompoc's free local directory — the place locals go to discover restaurants, shops, services, and more, all in one place. Think of it as a mini Yelp, built just for the Flower Capital.
 >
 > Getting listed takes **5 minutes and costs nothing**. Your profile includes your hours, photos, contact info, and a link to your website. Once you're on, locals searching for [category] businesses in Lompoc will find you.
 >
 > Bonus: the signup wizard walks you through posting your **first deal before you even finish signing up** — so you're live with a real offer in under 5 minutes, no extra steps.
 >
-> And when you post a deal, **every Lompoc Deals user who follows your business gets an email notification instantly** — no extra work on your end. It's a direct line to your most loyal customers.
+> And when you post a deal, **every Lompoc Locals user who follows your business gets an email notification instantly** — no extra work on your end. It's a direct line to your most loyal customers.
 >
 > Your **address and phone number appear right on every deal card** — so customers can tap to call you directly without leaving the deals page. No hunting for your number.
 >
 > And your **business profile supports a full photo gallery** — upload photos of your space, menu, or team and they display in a carousel on your profile page. Think of it as a mini website for your business, completely free.
 >
-> One more thing: we just launched an **interactive map** at lompoc-deals.vercel.app/map — 472 Lompoc businesses are already pinned on it with real locations. Locals use it to discover what's nearby. Your business should be on it.
+> One more thing: we just launched an **interactive map** at www.lompoclocals.com/map — 472 Lompoc businesses are already pinned on it with real locations. Locals use it to discover what's nearby. Your business should be on it.
 
 And when you post a deal with a photo, it appears in the **homepage deals carousel** — the first thing every visitor sees when they land on the site. That's prime placement, completely free on the basic plan.
 >
-> Interested? Just reply or sign up directly: lompoc-deals.vercel.app/signup
+> Interested? Just reply or sign up directly: www.lompoclocals.com/signup
 >
 > Best,  
 > [Name]  
-> Lompoc Deals
+> Lompoc Locals
 
 ---
 
@@ -48,7 +48,7 @@ And when you post a deal with a photo, it appears in the **homepage deals carous
 >
 > Me comunico porque [Nombre del Negocio] es exactamente el tipo de negocio local que los residentes de Lompoc están buscando — y hoy en día, muchos no lo pueden encontrar fácilmente.
 >
-> **Lompoc Deals** (lompoc-deals.vercel.app) es el directorio local gratuito de Lompoc — el lugar al que los residentes van para descubrir restaurantes, tiendas, servicios y más, todo en un solo lugar. Como un mini Yelp hecho para la Capital de las Flores.
+> **Lompoc Locals** (www.lompoclocals.com) es el directorio local gratuito de Lompoc — el lugar al que los residentes van para descubrir restaurantes, tiendas, servicios y más, todo en un solo lugar. Como un mini Yelp hecho para la Capital de las Flores.
 >
 > Aparecer en el directorio toma **5 minutos y no cuesta nada**. Su perfil incluye horarios, fotos, información de contacto y un enlace a su sitio web. Una vez publicado, los residentes que busquen negocios de [categoría] en Lompoc lo encontrarán.
 >
@@ -58,7 +58,7 @@ And when you post a deal with a photo, it appears in the **homepage deals carous
 >
 > Saludos,  
 > [Nombre]  
-> Lompoc Deals
+> Lompoc Locals
 
 ---
 
@@ -66,9 +66,9 @@ And when you post a deal with a photo, it appears in the **homepage deals carous
 
 > Hi [First Name],
 >
-> Just following up on my note from a few days ago about Lompoc Deals.
+> Just following up on my note from a few days ago about Lompoc Locals.
 >
-> We already have 472 Lompoc businesses listed — including several [category] businesses — and they're all pinned on our new interactive map at lompoc-deals.vercel.app/map. Would love to add [Business Name] to the mix.
+> We already have 472 Lompoc businesses listed — including several [category] businesses — and they're all pinned on our new interactive map at www.lompoclocals.com/map. Would love to add [Business Name] to the mix.
 >
 > Still free, always will be for the basic listing. 5-minute setup.
 >
@@ -81,7 +81,7 @@ And when you post a deal with a photo, it appears in the **homepage deals carous
 
 ## Phone Script (30-second cold call)
 
-> "Hi, is this [Name]? Great — I'm calling about Lompoc Deals, a free platform I built for local businesses to post coupons and specials. It's completely free to list, takes 5 minutes, and we're already seeing a lot of local traffic. Would you have 5 minutes this week to check it out or would you prefer I send you a quick email?"
+> "Hi, is this [Name]? Great — I'm calling about Lompoc Locals, a free platform I built for local businesses to post coupons and specials. It's completely free to list, takes 5 minutes, and we're already seeing a lot of local traffic. Would you have 5 minutes this week to check it out or would you prefer I send you a quick email?"
 
 ---
 
@@ -93,9 +93,9 @@ And when you post a deal with a photo, it appears in the **homepage deals carous
 | "I don't use social media." | "This isn't social media — it's a local deals directory. Customers come looking for deals, find you, and walk in." |
 | "How do I know anyone will see it?" | "We have [X] active businesses and [Y] subscribers to our weekly deal digest. Your deals go in the feed immediately." *(Once REQ-003 ships: "I can show you view counts right in your dashboard.")* |
 | "Is it really free?" | "Yes. The basic listing is free forever. Standard is $19.99/month and Premium is $39.99/month if you want deal analytics and priority placement — but the free tier is fully functional with unlimited deal posts." |
-| "We already use Yelp / Google." | "Lompoc Deals is hyper-local and free to post deals — you can't post coupons on Yelp or Google for free. It's complementary, not a replacement." |
-| "We're already in the Chamber directory." | "The Chamber is great for B2B referrals. Lompoc Deals is consumer-facing — locals and tourists actively browsing for deals and places to go. Different audience, and free to list alongside your Chamber membership." |
-| "We have a listing on LompocOnline.us." | "LompocOnline.us is a national template site — it's auto-populated and no one locally is maintaining it. Lompoc Deals is built specifically for this community, bilingual, and consumers actually browse it for deals. Two different things." |
+| "We already use Yelp / Google." | "Lompoc Locals is hyper-local and free to post deals — you can't post coupons on Yelp or Google for free. It's complementary, not a replacement." |
+| "We're already in the Chamber directory." | "The Chamber is great for B2B referrals. Lompoc Locals is consumer-facing — locals and tourists actively browsing for deals and places to go. Different audience, and free to list alongside your Chamber membership." |
+| "We have a listing on LompocOnline.us." | "LompocOnline.us is a national template site — it's auto-populated and no one locally is maintaining it. Lompoc Locals is built specifically for this community, bilingual, and consumers actually browse it for deals. Two different things." |
 
 ---
 

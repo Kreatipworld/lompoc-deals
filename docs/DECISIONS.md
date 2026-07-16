@@ -1,4 +1,4 @@
-# Lompoc Deals — Architecture Decision Records
+# Lompoc Locals — Architecture Decision Records
 *Last updated: 2026-04-07*
 
 ---

@@ -263,7 +263,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$2 off any combo meal",
-      description: "Dine-in or takeout. Mention Lompoc Deals.",
+      description: "Dine-in or takeout. Mention Lompoc Locals.",
       discountText: "$2 OFF",
       days: 21,
     },
@@ -299,7 +299,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "3 tacos for $9",
-      description: "Any combination. Mention Lompoc Deals at the counter.",
+      description: "Any combination. Mention Lompoc Locals at the counter.",
       discountText: "3 FOR $9",
       days: 14,
     },
@@ -314,7 +314,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$1 off any burrito",
-      description: "All burritos included. Mention Lompoc Deals.",
+      description: "All burritos included. Mention Lompoc Locals.",
       discountText: "$1 OFF",
       days: 21,
     },
@@ -348,7 +348,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "Free garlic bread with any large pizza",
-      description: "In-store pickup only. Mention Lompoc Deals.",
+      description: "In-store pickup only. Mention Lompoc Locals.",
       discountText: "FREE",
       days: 21,
     },
@@ -373,7 +373,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$2 off any noodle dish",
-      description: "Pad Thai, Pad See Ew, and more. Mention Lompoc Deals.",
+      description: "Pad Thai, Pad See Ew, and more. Mention Lompoc Locals.",
       discountText: "$2 OFF",
       days: 21,
     },
@@ -407,7 +407,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$1 off any boba drink",
-      description: "All sizes. Mention Lompoc Deals at the counter.",
+      description: "All sizes. Mention Lompoc Locals at the counter.",
       discountText: "$1 OFF",
       days: 14,
     },
@@ -440,7 +440,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "$5 off any BBQ platter",
-      description: "Brisket, pulled pork, or ribs platter. Mention Lompoc Deals.",
+      description: "Brisket, pulled pork, or ribs platter. Mention Lompoc Locals.",
       discountText: "$5 OFF",
       days: 21,
     },
@@ -449,7 +449,7 @@ const DEALS = {
     {
       type: "coupon",
       title: "10 wings for the price of 8",
-      description: "Any flavor combo. Carryout only. Mention Lompoc Deals.",
+      description: "Any flavor combo. Carryout only. Mention Lompoc Locals.",
       discountText: "10 FOR 8",
       days: 14,
     },

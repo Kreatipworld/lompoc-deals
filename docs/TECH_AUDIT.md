@@ -1,4 +1,4 @@
-# Lompoc Deals — Tech Audit
+# Lompoc Locals — Tech Audit
 *Generated: 2026-04-08 | Auditor: CTO Agent*
 
 ---

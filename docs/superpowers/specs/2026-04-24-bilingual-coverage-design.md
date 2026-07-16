@@ -10,7 +10,7 @@
 
 The Lompoc community has a large Spanish-speaking population. Reaching them — both residents and Latin American visitors — is a significant growth opportunity. The directory currently presents English-only to every visitor, even though `messages/es.json` already contains 190 partially-translated keys. This phase ships full bilingual coverage in one PR: every visible string is translatable, browser-language detection works, a locale switcher is visible in the header + footer, and emails send in the recipient's preferred language.
 
-**Personality / tone:** Spanish copy should feel native (not a literal English translation). Tone is warm-local, matching the brand voice already established on the English side. Brand names ("Lompoc Deals", "Lompoc", "Vandenberg", proper place names) stay untranslated everywhere — they are not translated.
+**Personality / tone:** Spanish copy should feel native (not a literal English translation). Tone is warm-local, matching the brand voice already established on the English side. Brand names ("Lompoc Locals", "Lompoc", "Vandenberg", proper place names) stay untranslated everywhere — they are not translated.
 
 **Non-goals:** auto-translating user-generated content, RTL language support, adding a third language, hreflang sitemap (deferred), per-page Spanish-only featured content (the `feed_posts.locale` filter is explicitly NOT added — both feeds show all posts).
 
@@ -181,7 +181,7 @@ Replaces every `export const metadata = {...}` on pages whose titles/description
 - Replace JSX text: `Submit for review` → `{t("submit")}`
 - Replace string props (placeholder, aria-label, alt): `placeholder="Enter address"` → `placeholder={t("addressPlaceholder")}`
 - Don't touch identifiers, class names, route paths, or data values — only user-visible English copy.
-- Brand names — "Lompoc Deals", "Lompoc", "Vandenberg," etc. — stay literal, NOT in `t()` calls. They appear as plain strings in JSX.
+- Brand names — "Lompoc Locals", "Lompoc", "Vandenberg," etc. — stay literal, NOT in `t()` calls. They appear as plain strings in JSX.
 - Currency formatting (`$120`) and date formatting use existing `Intl.NumberFormat` / `Intl.DateTimeFormat` calls already in the codebase. Locale-aware automatically.
 
 ---
@@ -221,8 +221,8 @@ export async function sendFeedApprovalEmail(
   locale: "en" | "es"
 ): Promise<void> {
   const subject = locale === "es"
-    ? `Tu publicación "${postTitle}" está en vivo en Lompoc Deals`
-    : `Your post "${postTitle}" is live on Lompoc Deals`
+    ? `Tu publicación "${postTitle}" está en vivo en Lompoc Locals`
+    : `Your post "${postTitle}" is live on Lompoc Locals`
 
   const body = locale === "es"
     ? `<p>Buenas noticias — un administrador aprobó tu publicación...</p>`
@@ -364,7 +364,7 @@ No index on `locale` — the column is read-only on the per-user lookup that alr
 5. **Routing prefix?** → `localePrefix: "as-needed"` so existing English URLs are unchanged.
 6. **Browser detection?** → `localeDetection: true` so Spanish browsers auto-route to `/es`.
 7. **Locale switcher placement?** → Header (next to UserMenu), footer (bottom row), and inside MobileMenu.
-8. **Brand name handling?** → Untranslated. "Lompoc Deals", "Lompoc", "Vandenberg", proper place names stay literal.
+8. **Brand name handling?** → Untranslated. "Lompoc Locals", "Lompoc", "Vandenberg", proper place names stay literal.
 
 ---
 

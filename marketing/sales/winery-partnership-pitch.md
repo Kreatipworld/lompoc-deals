@@ -1,4 +1,4 @@
-# Winery Partnership Pitch — Lompoc Deals
+# Winery Partnership Pitch — Lompoc Locals
 *Owner: CMO / Merchant Acquisition Lead*
 *Created: 2026-04-08 | Updated: 2026-04-09 | M-017 | Target: 5 winery upgrades to Standard ($19.99/mo) or Premium ($39.99/mo)*
 
@@ -24,13 +24,13 @@
 
 ## Initial Outreach Email
 
-**Subject:** Your winery is listed on Lompoc Deals — claim your free upgrade
+**Subject:** Your winery is listed on Lompoc Locals — claim your free upgrade
 
 ---
 
 Hi [Name],
 
-[Winery Name] is already in Lompoc Deals' local business directory (lompoc-deals.vercel.app/category/wineries) — locals and tourists browsing the Lompoc wine scene can already find you there.
+[Winery Name] is already in Lompoc Locals' local business directory (www.lompoclocals.com/category/wineries) — locals and tourists browsing the Lompoc wine scene can already find you there.
 
 I wanted to reach out personally because I think we can do a lot more for you, and I'd love to offer you something to get started.
 
@@ -50,15 +50,15 @@ Would you be open to a quick 10-minute call this week?
 
 Best,
 [Name]  
-Lompoc Deals  
-lompoc-deals.vercel.app/wineries  
+Lompoc Locals  
+www.lompoclocals.com/wineries  
 [phone] | [email]
 
 ---
 
 ## Follow-up Email (5 days, no response)
 
-**Subject:** Re: Lompoc Deals — free 30-day Standard trial for [Winery Name]
+**Subject:** Re: Lompoc Locals — free 30-day Standard trial for [Winery Name]
 
 ---
 
@@ -73,14 +73,14 @@ The free 30-day Standard trial is still available — no strings attached.
 Happy to answer any questions. Worth a 10-minute call?
 
 [Name]  
-lompoc-deals.vercel.app
+www.lompoclocals.com
 
 ---
 
 ## In-Person / Phone Talking Points
 
 1. **We have 20 wineries listed — you're already there.** The question is whether you want to be featured or just listed.
-2. **Wine tourists search for deals.** Someone planning a trip to Santa Rita Hills will check lompoc-deals.vercel.app if we do this right.
+2. **Wine tourists search for deals.** Someone planning a trip to Santa Rita Hills will check www.lompoclocals.com if we do this right.
 3. **Free first.** Start on the free tier, see views. Upgrade only if the traffic is worth it to you.
 4. **Social content.** We're building wine country content. Wineries on Standard/Premium get featured. Free tier stays in the directory.
 5. **Your competitors will be there.** Every winery in the Wine Ghetto that upgrades gets ahead of those that don't.
@@ -121,7 +121,7 @@ Help wineries brainstorm deal types that work on the platform:
 - Wineries with active social presence (already value content)
 - Wineries without a strong Yelp/TripAdvisor presence (need the exposure more)
 
-**First 5 to contact:** [Fill in from lompoc-deals.vercel.app/wineries — pick highest-profile names]
+**First 5 to contact:** [Fill in from www.lompoclocals.com/wineries — pick highest-profile names]
 
 ---
 

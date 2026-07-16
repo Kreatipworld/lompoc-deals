@@ -1,5 +1,5 @@
 # Merchant First-30-Days Success Kit
-*For: New Lompoc Deals merchants | Owner: CMO*
+*For: New Lompoc Locals merchants | Owner: CMO*
 *Created: 2026-04-10 | Send: Link in Day-0 welcome email + merchant dashboard*
 
 ---
@@ -8,9 +8,9 @@
 
 ---
 
-# Your First 30 Days on Lompoc Deals
+# Your First 30 Days on Lompoc Locals
 
-Welcome to Lompoc Deals — Lompoc's free local business directory. This guide covers exactly what to do in your first month to get real visibility, real foot traffic, and real results.
+Welcome to Lompoc Locals — Lompoc's free local business directory. This guide covers exactly what to do in your first month to get real visibility, real foot traffic, and real results.
 
 It takes about 2 hours total. Most of it you do once and never touch again.
 
@@ -51,7 +51,7 @@ Deals are what drive consumer clicks. You don't need a big discount — even a m
 
 | Type | Easy first deal |
 |------|----------------|
-| Restaurant / Café | "Free dessert with any entrée — mention Lompoc Deals" |
+| Restaurant / Café | "Free dessert with any entrée — mention Lompoc Locals" |
 | Salon / Beauty | "10% off first visit for new clients" |
 | Retail | "Buy 2, get 1 free on [product category]" |
 | Auto / Service | "Free inspection with any service over $50" |
@@ -62,7 +62,7 @@ Deals are what drive consumer clicks. You don't need a big discount — even a m
 **Deal writing tips:**
 - Keep it simple — one clear offer, one clear action
 - Set an expiration date (creates urgency, even if you renew it)
-- Include "mention Lompoc Deals" or "show this deal" so you know it's working
+- Include "mention Lompoc Locals" or "show this deal" so you know it's working
 - EN + ES if possible (reach both audiences)
 
 ---
@@ -72,14 +72,14 @@ Deals are what drive consumer clicks. You don't need a big discount — even a m
 Your regulars are your best early reviewers and referrers. Let them know you're on the directory:
 
 **Instagram Story / Facebook post:**
-> "We're now on Lompoc Deals! Browse our profile and grab our current deal — link in bio." (tag @lompocdeals if the account exists)
+> "We're now on Lompoc Locals! Browse our profile and grab our current deal — link in bio." (tag @lompoclocals if the account exists)
 
 **Text to loyal customers (if you have their numbers):**
-> "Hey, we just joined Lompoc Deals — Lompoc's local business directory. Check out our profile and grab our current deal: [your direct URL]. Thanks for your support!"
+> "Hey, we just joined Lompoc Locals — Lompoc's local business directory. Check out our profile and grab our current deal: [your direct URL]. Thanks for your support!"
 
 **In-store sign or table card:**
-> "Find us on Lompoc Deals → lompoc-deals.vercel.app/biz/[your-slug]"
-> "Encuéntranos en Lompoc Deals → lompoc-deals.vercel.app/biz/[your-slug]"
+> "Find us on Lompoc Locals → www.lompoclocals.com/biz/[your-slug]"
+> "Encuéntranos en Lompoc Locals → www.lompoclocals.com/biz/[your-slug]"
 
 ---
 
@@ -101,13 +101,13 @@ On the **Free tier**, you can post up to 3 active deals. Use all 3 if you can �
 
 ### ✅ Step 5: Add Your Business to Google (if not already done)
 
-Lompoc Deals lists you locally, but Google Business Profile (GBP) reaches people searching the whole web. They work together — not in competition.
+Lompoc Locals lists you locally, but Google Business Profile (GBP) reaches people searching the whole web. They work together — not in competition.
 
 **5-minute GBP check:**
 1. Search your business name on Google
 2. If a Knowledge Panel appears on the right: great, you're claimed
 3. If not: go to business.google.com and claim your listing
-4. Make sure your name, address, phone, and hours on GBP **exactly match** Lompoc Deals
+4. Make sure your name, address, phone, and hours on GBP **exactly match** Lompoc Locals
 
 Consistent NAP (Name, Address, Phone) across both platforms improves your local SEO ranking.
 
@@ -118,10 +118,10 @@ Consistent NAP (Name, Address, Phone) across both platforms improves your local 
 Businesses with reviews get more clicks. You don't need many — even 3–5 genuine reviews make a difference.
 
 **Script for asking in person:**
-> "Thanks for coming in! We just joined Lompoc Deals — if you have 2 minutes, a quick review on our profile would really help us out. You can find it at lompoc-deals.vercel.app/biz/[your-slug]."
+> "Thanks for coming in! We just joined Lompoc Locals — if you have 2 minutes, a quick review on our profile would really help us out. You can find it at www.lompoclocals.com/biz/[your-slug]."
 
 **Text/WhatsApp message:**
-> "Hi [Name], thanks for your recent visit! We'd love a quick review on our Lompoc Deals profile if you have a moment: [your URL]. Means a lot — gracias!"
+> "Hi [Name], thanks for your recent visit! We'd love a quick review on our Lompoc Locals profile if you have a moment: [your URL]. Means a lot — gracias!"
 
 ---
 
@@ -186,7 +186,7 @@ Print this or bookmark it. Check off each item as you complete it.
 **Optional but high-impact:**
 - [ ] Spanish description added
 - [ ] Social links (Instagram, Facebook) connected
-- [ ] In-store sign with your Lompoc Deals URL
+- [ ] In-store sign with your Lompoc Locals URL
 
 ---
 
@@ -211,9 +211,9 @@ Start with your cover photo — it's the #1 driver of clicks on category browse 
 
 ---
 
-# Guía de Éxito — Tus Primeros 30 Días en Lompoc Deals
+# Guía de Éxito — Tus Primeros 30 Días en Lompoc Locals
 
-Bienvenido a Lompoc Deals — el directorio local gratuito de negocios de Lompoc. Esta guía cubre exactamente qué hacer en tu primer mes para obtener visibilidad real, clientes reales y resultados reales.
+Bienvenido a Lompoc Locals — el directorio local gratuito de negocios de Lompoc. Esta guía cubre exactamente qué hacer en tu primer mes para obtener visibilidad real, clientes reales y resultados reales.
 
 En total toma unas 2 horas. La mayor parte la haces una sola vez.
 
@@ -242,17 +242,17 @@ Un perfil completo recibe 3 veces más vistas que uno incompleto.
 
 Las ofertas son lo que genera clics. No necesitas un descuento grande — incluso una oferta modesta hace que la gente haga clic y te recuerde.
 
-**Consejo:** Incluye "menciona Lompoc Deals" o "muestra esta oferta" para saber que está funcionando.
+**Consejo:** Incluye "menciona Lompoc Locals" o "muestra esta oferta" para saber que está funcionando.
 
 ---
 
 ### ✅ Paso 3: Avisa a Tus Clientes Actuales (10 min)
 
 **Mensaje de texto / WhatsApp:**
-> "Hola [Nombre], ya estamos en Lompoc Deals — el directorio local de negocios de Lompoc. Revisa nuestro perfil y aprovecha nuestra oferta actual: [tu URL]. ¡Gracias por tu apoyo!"
+> "Hola [Nombre], ya estamos en Lompoc Locals — el directorio local de negocios de Lompoc. Revisa nuestro perfil y aprovecha nuestra oferta actual: [tu URL]. ¡Gracias por tu apoyo!"
 
 **Historia de Instagram / publicación de Facebook:**
-> "¡Ya estamos en Lompoc Deals! Encuentra nuestro perfil y nuestra oferta del momento — link en bio."
+> "¡Ya estamos en Lompoc Locals! Encuentra nuestro perfil y nuestra oferta del momento — link en bio."
 
 ---
 
@@ -287,4 +287,4 @@ Las ofertas son lo que genera clics. No necesitas un descuento grande — inclus
 
 ---
 
-*¿Preguntas? Escríbenos a [support email — TBD] o visita lompoc-deals.vercel.app*
+*¿Preguntas? Escríbenos a [support email — TBD] o visita www.lompoclocals.com*

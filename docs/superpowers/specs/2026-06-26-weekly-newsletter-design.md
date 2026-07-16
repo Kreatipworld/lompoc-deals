@@ -5,7 +5,7 @@
 
 ## Problem
 
-Lompoc Deals already has a weekly email system — a cron (`app/api/cron/digest/route.ts`) that emails the **top 10 deals from the past 7 days** to confirmed subscribers, with a complete double-opt-in flow (`subscribe` / `confirm` / `unsubscribe`) and Resend wiring in `lib/email.ts`.
+Lompoc Locals already has a weekly email system — a cron (`app/api/cron/digest/route.ts`) that emails the **top 10 deals from the past 7 days** to confirmed subscribers, with a complete double-opt-in flow (`subscribe` / `confirm` / `unsubscribe`) and Resend wiring in `lib/email.ts`.
 
 Three gaps stop it from building an engaged audience:
 

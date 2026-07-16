@@ -8,7 +8,7 @@
 ## Asset 1 — "Take a Tour" Screen Recording (Instagram Reels + TikTok)
 
 **What to record:**
-1. Open lompoc-deals.vercel.app/map on desktop Chrome, full screen (1080p or 4K)
+1. Open www.lompoclocals.com/map on desktop Chrome, full screen (1080p or 4K)
 2. Click "Take a Tour" button
 3. Let the animated fly-to sequence play through all 6 Lompoc highlights (wine country, flower fields, coast, etc.)
 4. End on the map with pins visible
@@ -31,9 +31,9 @@ Lompoc from above. 🗺️
 We built an interactive 3D map of every local spot — wineries, restaurants, outdoor trails, hotels, and more. Hit "Take a Tour" and it flies you through the highlights.
 
 472 Lompoc businesses. One map. Free to explore. 👇
-lompoc-deals.vercel.app/map
+www.lompoclocals.com/map
 
-#Lompoc #LompocCA #LompocDeals #WineCountry #SantaRitaHills #CentralCoast #LompocWineGhetto #LocalDeals
+#Lompoc #LompocCA #LompocLocals #WineCountry #SantaRitaHills #CentralCoast #LompocWineGhetto #LocalDeals
 ```
 
 **Option B (EN — discovery angle):**
@@ -42,9 +42,9 @@ Did you know Lompoc has 18 wineries, 8 breweries, and dozens of local restaurant
 
 We mapped all of it. ↓
 
-Explore the interactive 3D map → lompoc-deals.vercel.app/map
+Explore the interactive 3D map → www.lompoclocals.com/map
 
-#Lompoc #LompocCA #LompocDeals #VisitLompoc #CentralCoastCA
+#Lompoc #LompocCA #LompocLocals #VisitLompoc #CentralCoastCA
 ```
 
 **Option C (ES — bilingual):**
@@ -54,9 +54,9 @@ Así se ve Lompoc desde arriba. 🗺️
 Creamos un mapa interactivo en 3D con cada negocio local — bodegas, restaurantes, hoteles, y más. Dale clic a "Take a Tour" y vuela por los mejores lugares.
 
 472 negocios en Lompoc. Un mapa. Gratis. 👇
-lompoc-deals.vercel.app/map
+www.lompoclocals.com/map
 
-#Lompoc #LompocCA #LompocDeals #VinoCentralCoast #NegociosLocales
+#Lompoc #LompocCA #LompocLocals #VinoCentralCoast #NegociosLocales
 ```
 
 ---
@@ -70,7 +70,7 @@ Wine country, restaurants, hotels, outdoor spots — all pinned.
 
 Hit "Take a Tour" and it flies you through the whole city.
 
-Link in bio → lompoc-deals.vercel.app/map
+Link in bio → www.lompoclocals.com/map
 
 #Lompoc #LompocCA #CentralCoast #HiddenGem #WineCountry #LocalDeals #SmallTownCalifornia
 ```
@@ -90,7 +90,7 @@ The best part: click "Take a Tour" and it flies you through the highlights autom
 
 472 local businesses. All Lompoc. All free.
 
-👉 lompoc-deals.vercel.app/map
+👉 www.lompoclocals.com/map
 ```
 
 ---
@@ -101,7 +101,7 @@ The best part: click "Take a Tour" and it flies you through the highlights autom
 This is a human-narrated or text-overlay walkthrough — more educational than the Take a Tour flyover. Ideal for Facebook and Nextdoor audiences who want to understand what the map does before clicking.
 
 **Recording flow (60–90 seconds):**
-1. Open lompoc-deals.vercel.app/map — show the full 472-pin view
+1. Open www.lompoclocals.com/map — show the full 472-pin view
 2. Click the "Wineries" category filter → show only winery pins
 3. Click one winery pin → show popup card with "View Details"
 4. Click "View Details" → show the business profile page (name, deal, hours)
@@ -109,7 +109,7 @@ This is a human-narrated or text-overlay walkthrough — more educational than t
 6. Optional: show search field, type "taco" → relevant businesses surface
 
 **Narration (if adding voiceover):**
-> "This is the Lompoc Deals map. Every local business in Lompoc is pinned here — 472 of them. You can filter by category, click any pin to see the business, and tap Get Directions. It's free to use. Just go to lompoc-deals.vercel.app/map."
+> "This is the Lompoc Locals map. Every local business in Lompoc is pinned here — 472 of them. You can filter by category, click any pin to see the business, and tap Get Directions. It's free to use. Just go to www.lompoclocals.com/map."
 
 ---
 
@@ -124,7 +124,7 @@ Filter by category, click any pin, get directions, see their deals.
 
 Zero ads. Free to use. Built for Lompoc.
 
-Try it: lompoc-deals.vercel.app/map
+Try it: www.lompoclocals.com/map
 
 📌 Share this with someone who just moved to Lompoc — they'll thank you.
 ```
@@ -139,7 +139,7 @@ Try it: lompoc-deals.vercel.app/map
 ### Nextdoor Caption (Map Walkthrough)
 
 ```
-Neighbor tip: lompoc-deals.vercel.app/map
+Neighbor tip: www.lompoclocals.com/map
 
 It's a free interactive map of 472 Lompoc businesses — restaurants, salons, wine tasting, auto shops, you name it. Filter by category, get directions, see current deals.
 
@@ -169,7 +169,7 @@ Your profile shows your hours, photos, deals, and your exact location on the map
 
 No monthly fees to get started. No commissions. Just a free listing that helps Lompoc customers find you.
 
-👉 List your business: lompoc-deals.vercel.app/signup
+👉 List your business: www.lompoclocals.com/signup
 
 Tag a Lompoc business owner who should be on here. 👇
 ```

@@ -4,7 +4,7 @@
 
 **Goal:** Ship full English + Spanish coverage per `docs/superpowers/specs/2026-04-24-bilingual-coverage-design.md` — enable Spanish routing + browser auto-detection, add a locale switcher, extract ~260 hardcoded strings into `messages/en.json` + `messages/es.json`, thread `users.locale` through transactional emails, and seed 15 Spanish demo posts alongside the existing 15 English ones.
 
-**Architecture:** `next-intl` v3 with `localePrefix: "as-needed"` + `localeDetection: true`. All visible strings (page copy, metadata, form labels, email bodies, error messages, mobile nav) become translation keys. Brand names ("Lompoc Deals", "Lompoc", "Vandenberg," proper place names) stay literal. User-generated content stays in whatever language the poster wrote — only the UI shell translates. Bilingual emails branch on `users.locale` captured at signup.
+**Architecture:** `next-intl` v3 with `localePrefix: "as-needed"` + `localeDetection: true`. All visible strings (page copy, metadata, form labels, email bodies, error messages, mobile nav) become translation keys. Brand names ("Lompoc Locals", "Lompoc", "Vandenberg," proper place names) stay literal. User-generated content stays in whatever language the poster wrote — only the UI shell translates. Bilingual emails branch on `users.locale` captured at signup.
 
 **Tech Stack:** Next.js 14 App Router · TypeScript · `next-intl` (already installed) · Drizzle + Neon (one new migration for `users.locale`) · Resend (existing).
 
@@ -467,17 +467,17 @@ export async function sendFeedApprovalEmail(
   const safeTitle = escapeHtml(postTitle)
 
   const subject = locale === "es"
-    ? `Tu publicación "${safeTitle}" está en vivo en Lompoc Deals`
-    : `Your post "${safeTitle}" is live on Lompoc Deals`
+    ? `Tu publicación "${safeTitle}" está en vivo en Lompoc Locals`
+    : `Your post "${safeTitle}" is live on Lompoc Locals`
 
   const feedUrl = locale === "es" ? `${baseUrl}/es/feed` : `${baseUrl}/en/feed`
 
   const html = locale === "es" ? `
-    <p>Buenas noticias — un administrador aprobó tu publicación <strong>"${safeTitle}"</strong> y ahora está en vivo en el feed de Lompoc Deals.</p>
+    <p>Buenas noticias — un administrador aprobó tu publicación <strong>"${safeTitle}"</strong> y ahora está en vivo en el feed de Lompoc Locals.</p>
     <p><a href="${feedUrl}">Ver el feed →</a></p>
     <p style="color:#888;font-size:12px;margin-top:32px">Si no publicaste esto, responde a este correo — lo eliminaremos.</p>
   ` : `
-    <p>Good news — an admin approved your post <strong>"${safeTitle}"</strong> and it's now live on the Lompoc Deals feed.</p>
+    <p>Good news — an admin approved your post <strong>"${safeTitle}"</strong> and it's now live on the Lompoc Locals feed.</p>
     <p><a href="${feedUrl}">View the feed →</a></p>
     <p style="color:#888;font-size:12px;margin-top:32px">If you didn't post this, please reply to this email — we'll remove it.</p>
   `
@@ -486,7 +486,7 @@ export async function sendFeedApprovalEmail(
 }
 ```
 
-Apply the same pattern to every other send function. **You'll need to write Spanish versions of all the email templates currently in `lib/email.ts`** — read the file first, identify each send function and its current English copy, then write a Spanish equivalent. Tone: warm-local, brand consistent ("Lompoc Deals" stays untranslated).
+Apply the same pattern to every other send function. **You'll need to write Spanish versions of all the email templates currently in `lib/email.ts`** — read the file first, identify each send function and its current English copy, then write a Spanish equivalent. Tone: warm-local, brand consistent ("Lompoc Locals" stays untranslated).
 
 - [ ] **Step 2: Update every email call site**
 
@@ -595,7 +595,7 @@ Both 200.
 8. **Commit** with message `feat(i18n): translate <namespace> namespace + <route> page`.
 
 **Brand names that MUST remain literal** (never wrap in `t()`):
-- "Lompoc Deals" (the brand)
+- "Lompoc Locals" (the brand)
 - "Lompoc" (the city)
 - "Vandenberg" (the base)
 - "Ryon Park", "Calle Real", "H Street", "N Street" (proper place names)

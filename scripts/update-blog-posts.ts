@@ -82,31 +82,31 @@ const TAQUERIAS_CONTENT = `
 <p>Whether you're a lifelong local or visiting for the Wine Ghetto, these are the spots worth knowing.</p>
 
 <h3>Taqueria La Mision</h3>
-<p>A loyal local institution on Burton Mesa Blvd with a following built on carne asada and al pastor made the right way. Hand-pressed tortillas, fresh salsas, and a menu that rewards repeat visits. <a href="/biz/taqueria-la-mision">See their listing on Lompoc Deals →</a></p>
+<p>A loyal local institution on Burton Mesa Blvd with a following built on carne asada and al pastor made the right way. Hand-pressed tortillas, fresh salsas, and a menu that rewards repeat visits. <a href="/biz/taqueria-la-mision">See their listing on Lompoc Locals →</a></p>
 
 <h3>Tacos Santa Fe</h3>
-<p>Beloved for its carne asada, carnitas, and weekend birria with homemade salsas and horchata made from scratch. This is the spot locals bring visitors when they want to show off what Lompoc actually eats. <a href="/biz/tacos-santa-fe">See their listing on Lompoc Deals →</a></p>
+<p>Beloved for its carne asada, carnitas, and weekend birria with homemade salsas and horchata made from scratch. This is the spot locals bring visitors when they want to show off what Lompoc actually eats. <a href="/biz/tacos-santa-fe">See their listing on Lompoc Locals →</a></p>
 
 <h3>Floriano's Mexican Food</h3>
-<p>A family-owned taqueria and butcher shop serving authentic Mexican — tacos, burritos, menudo, and tri-tip — from a team that's been part of this community for years. The combination of carnicería and taqueria under one roof is exactly what the neighborhood wants. <a href="/biz/florianos-mexican-food">See their listing on Lompoc Deals →</a></p>
+<p>A family-owned taqueria and butcher shop serving authentic Mexican — tacos, burritos, menudo, and tri-tip — from a team that's been part of this community for years. The combination of carnicería and taqueria under one roof is exactly what the neighborhood wants. <a href="/biz/florianos-mexican-food">See their listing on Lompoc Locals →</a></p>
 
 <h3>Mr. Taco</h3>
-<p>A popular family taqueria on Constellation Road known for street tacos, burritos, quesadillas, and fresh aguas frescas. The kind of place that's always busy for a reason — the food is consistent, the prices are fair, and the tortillas are made in-house. <a href="/biz/mr-taco-lompoc">See their listing on Lompoc Deals →</a></p>
+<p>A popular family taqueria on Constellation Road known for street tacos, burritos, quesadillas, and fresh aguas frescas. The kind of place that's always busy for a reason — the food is consistent, the prices are fair, and the tortillas are made in-house. <a href="/biz/mr-taco-lompoc">See their listing on Lompoc Locals →</a></p>
 
 <h3>Taqueria Don Tacho</h3>
-<p>A local favorite for straightforward, honest Mexican food. No frills, no shortcuts — just well-made tacos and burritos at the kind of prices that make sense in a working-class town. <a href="/biz/taqueria-don-tacho">See their listing on Lompoc Deals →</a></p>
+<p>A local favorite for straightforward, honest Mexican food. No frills, no shortcuts — just well-made tacos and burritos at the kind of prices that make sense in a working-class town. <a href="/biz/taqueria-don-tacho">See their listing on Lompoc Locals →</a></p>
 
 <h3>Tacos y Mariscos El Culichi</h3>
-<p>Specializes in the Sinaloan-style seafood tacos and mariscos that have become one of Lompoc's most underrated food traditions. The ceviche tostadas and shrimp tacos here are the real deal. <a href="/biz/tacos-y-mariscos-el-culichi">See their listing on Lompoc Deals →</a></p>
+<p>Specializes in the Sinaloan-style seafood tacos and mariscos that have become one of Lompoc's most underrated food traditions. The ceviche tostadas and shrimp tacos here are the real deal. <a href="/biz/tacos-y-mariscos-el-culichi">See their listing on Lompoc Locals →</a></p>
 
 <h3>Tacos y Mariscos La Michoacana</h3>
-<p>Another strong entry in Lompoc's mariscos scene, serving seafood and taco combinations with the flavor of the Pacific coast. Great for the fish taco enthusiast and anyone who wants variety beyond the standard beef-and-chicken menu. <a href="/biz/tacos-y-mariscos-la-michoacana">See their listing on Lompoc Deals →</a></p>
+<p>Another strong entry in Lompoc's mariscos scene, serving seafood and taco combinations with the flavor of the Pacific coast. Great for the fish taco enthusiast and anyone who wants variety beyond the standard beef-and-chicken menu. <a href="/biz/tacos-y-mariscos-la-michoacana">See their listing on Lompoc Locals →</a></p>
 
 <h3>Burritos Lalo</h3>
-<p>Focused on doing burritos right — generously filled, tightly wrapped, and made with proteins that have been cooked with actual attention. A dependable option when you want something filling without a wait. <a href="/biz/burritos-lalo">See their listing on Lompoc Deals →</a></p>
+<p>Focused on doing burritos right — generously filled, tightly wrapped, and made with proteins that have been cooked with actual attention. A dependable option when you want something filling without a wait. <a href="/biz/burritos-lalo">See their listing on Lompoc Locals →</a></p>
 
 <h3>Tacos El Tizon</h3>
-<p>Known for tizón-style grilled meats — the name refers to the ember heat used in traditional preparation. The smoky, charred character of the proteins here sets it apart from the average street taco lineup. <a href="/biz/tacos-el-tizon-1">See their listing on Lompoc Deals →</a></p>
+<p>Known for tizón-style grilled meats — the name refers to the ember heat used in traditional preparation. The smoky, charred character of the proteins here sets it apart from the average street taco lineup. <a href="/biz/tacos-el-tizon-1">See their listing on Lompoc Locals →</a></p>
 
 <h3>What to Order</h3>
 <p>The signature items in Lompoc's Mexican food landscape: <strong>carne asada</strong> (grilled beef, fresh-cut and seasoned, not pre-packaged), <strong>al pastor</strong> (spit-roasted pork with pineapple — best from the spots that use an actual trompo), <strong>birria</strong> (slow-braised beef, served as tacos with consomé on weekends — places that offer it daily are cutting corners), and <strong>tamales</strong> (seasonal and special, often sold from homes and church lots during the holidays).</p>
@@ -118,7 +118,7 @@ const TAQUERIAS_CONTENT = `
 <p>Food trucks and loncheras operate throughout Lompoc, particularly near construction sites and industrial areas on weekday mornings. The roster changes — follow local Instagram accounts to track the best ones. Some of the most honest food on this list doesn't have a brick-and-mortar address.</p>
 
 <h3>A Note on Finding the Best Spots</h3>
-<p>The best taquerias in Lompoc operate with minimal marketing. The signals that matter: a handwritten specials board, tortillas pressed on-site (you'll hear the press), lines of large families on Saturday morning, and a menu that changes based on what was delivered that day. Check <a href="/category/food-drink">Lompoc Deals food listings</a> for current deals and announcements from local businesses.</p>
+<p>The best taquerias in Lompoc operate with minimal marketing. The signals that matter: a handwritten specials board, tortillas pressed on-site (you'll hear the press), lines of large families on Saturday morning, and a menu that changes based on what was delivered that day. Check <a href="/category/food-drink">Lompoc Locals food listings</a> for current deals and announcements from local businesses.</p>
 `.trim()
 
 // ── Main ─────────────────────────────────────────────────────────────────────

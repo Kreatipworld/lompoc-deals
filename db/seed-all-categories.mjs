@@ -503,7 +503,7 @@ const OTHER = [
 const DEALS = {
   // Retail
   "lompoc-valley-feed-pet": [
-    { type: "coupon", title: "10% off any bag of dog food", description: "Any brand, any size. Mention Lompoc Deals at checkout.", discountText: "10% OFF", days: 30 },
+    { type: "coupon", title: "10% off any bag of dog food", description: "Any brand, any size. Mention Lompoc Locals at checkout.", discountText: "10% OFF", days: 30 },
   ],
   "walmart-lompoc": [
     { type: "announcement", title: "Weekly rollback specials", description: "New price rollbacks every week on groceries, electronics, and household items. Check in-store signs.", days: 7 },
@@ -512,7 +512,7 @@ const DEALS = {
     { type: "special", title: "Circle Week deals up to 30% off", description: "Download the Target app and sign up for Target Circle to unlock exclusive weekly discounts.", discountText: "UP TO 30% OFF", days: 7 },
   ],
   "lompoc-furniture-mattress": [
-    { type: "coupon", title: "$100 off any mattress set", description: "Queen, king, or full. Mention Lompoc Deals. Valid on in-stock mattresses only.", discountText: "$100 OFF", days: 30 },
+    { type: "coupon", title: "$100 off any mattress set", description: "Queen, king, or full. Mention Lompoc Locals. Valid on in-stock mattresses only.", discountText: "$100 OFF", days: 30 },
   ],
   "big-5-lompoc": [
     { type: "special", title: "Buy one get one 50% off footwear", description: "Select athletic shoes. Mix and match. In-store only.", discountText: "BOGO 50%", days: 14 },
@@ -529,30 +529,30 @@ const DEALS = {
 
   // Services
   "hr-block-lompoc": [
-    { type: "coupon", title: "$25 off tax preparation", description: "New clients only. Bring your prior-year return. Mention Lompoc Deals.", discountText: "$25 OFF", days: 60 },
+    { type: "coupon", title: "$25 off tax preparation", description: "New clients only. Bring your prior-year return. Mention Lompoc Locals.", discountText: "$25 OFF", days: 60 },
   ],
   "ups-store-lompoc": [
-    { type: "coupon", title: "15% off packing services", description: "We'll pack it for you — fragile items, artwork, or awkward shapes. Mention Lompoc Deals.", discountText: "15% OFF", days: 30 },
+    { type: "coupon", title: "15% off packing services", description: "We'll pack it for you — fragile items, artwork, or awkward shapes. Mention Lompoc Locals.", discountText: "15% OFF", days: 30 },
   ],
   "snap-fitness-lompoc": [
-    { type: "special", title: "First month free — no contract", description: "Start your fitness journey with zero commitment. New members only. Mention Lompoc Deals.", discountText: "1ST MONTH FREE", days: 30 },
+    { type: "special", title: "First month free — no contract", description: "Start your fitness journey with zero commitment. New members only. Mention Lompoc Locals.", discountText: "1ST MONTH FREE", days: 30 },
   ],
 
   // Health & Beauty
   "salon-innovations-lompoc": [
-    { type: "coupon", title: "$10 off any color service", description: "Full color, highlights, or balayage. New clients only. Mention Lompoc Deals.", discountText: "$10 OFF", days: 30 },
+    { type: "coupon", title: "$10 off any color service", description: "Full color, highlights, or balayage. New clients only. Mention Lompoc Locals.", discountText: "$10 OFF", days: 30 },
   ],
   "fantastic-sams-lompoc": [
-    { type: "coupon", title: "$5 off adult haircut", description: "Any adult cut. Walk-ins welcome. Mention Lompoc Deals.", discountText: "$5 OFF", days: 21 },
+    { type: "coupon", title: "$5 off adult haircut", description: "Any adult cut. Walk-ins welcome. Mention Lompoc Locals.", discountText: "$5 OFF", days: 21 },
   ],
   "lompoc-dental-group": [
-    { type: "coupon", title: "Free new patient exam & X-rays", description: "For uninsured new patients. Includes cleaning. Mention Lompoc Deals when you call.", discountText: "FREE", days: 60 },
+    { type: "coupon", title: "Free new patient exam & X-rays", description: "For uninsured new patients. Includes cleaning. Mention Lompoc Locals when you call.", discountText: "FREE", days: 60 },
   ],
   "rite-aid-lompoc": [
     { type: "special", title: "Wellness+ members save an extra 20%", description: "Sign up for free Wellness+ membership to unlock prescription savings and weekly sale bonuses.", discountText: "20% OFF", days: 30 },
   ],
   "pure-radiance-spa-lompoc": [
-    { type: "coupon", title: "$15 off any facial service", description: "60-minute or longer facial. New clients only. Mention Lompoc Deals.", discountText: "$15 OFF", days: 30 },
+    { type: "coupon", title: "$15 off any facial service", description: "60-minute or longer facial. New clients only. Mention Lompoc Locals.", discountText: "$15 OFF", days: 30 },
     { type: "special", title: "Couples massage package — $120", description: "Two 60-minute massages. Perfect for date night or a gift. By appointment.", discountText: "$120", days: 30 },
   ],
   "elements-massage-lompoc": [
@@ -562,7 +562,7 @@ const DEALS = {
     { type: "coupon", title: "$5.99 haircut for kids under 10", description: "Must be accompanied by a paying adult. Walk-in or check in online.", discountText: "$5.99", days: 21 },
   ],
   "nails-lounge-lompoc": [
-    { type: "coupon", title: "$5 off any full-set acrylic", description: "New clients only. Any shape or length. Mention Lompoc Deals.", discountText: "$5 OFF", days: 21 },
+    { type: "coupon", title: "$5 off any full-set acrylic", description: "New clients only. Any shape or length. Mention Lompoc Locals.", discountText: "$5 OFF", days: 21 },
   ],
 
   // Auto
@@ -576,13 +576,13 @@ const DEALS = {
     { type: "special", title: "Free battery test & installation", description: "We'll test your battery and install a new one for free with purchase. No appointment needed.", discountText: "FREE", days: 30 },
   ],
   "autozone-lompoc": [
-    { type: "coupon", title: "$20 off any purchase of $100+", description: "Online or in-store. Enter code or mention Lompoc Deals. Excludes gift cards.", discountText: "$20 OFF", days: 21 },
+    { type: "coupon", title: "$20 off any purchase of $100+", description: "Online or in-store. Enter code or mention Lompoc Locals. Excludes gift cards.", discountText: "$20 OFF", days: 21 },
   ],
   "midas-lompoc": [
-    { type: "coupon", title: "$29.99 oil change + tire rotation", description: "Conventional oil. Up to 5 quarts. Plus free brake inspection. Mention Lompoc Deals.", discountText: "$29.99", days: 30 },
+    { type: "coupon", title: "$29.99 oil change + tire rotation", description: "Conventional oil. Up to 5 quarts. Plus free brake inspection. Mention Lompoc Locals.", discountText: "$29.99", days: 30 },
   ],
   "lompoc-car-wash-detail": [
-    { type: "coupon", title: "$5 off full interior detail", description: "Vacuum, wipe-down, and window cleaning included. Mention Lompoc Deals.", discountText: "$5 OFF", days: 21 },
+    { type: "coupon", title: "$5 off full interior detail", description: "Vacuum, wipe-down, and window cleaning included. Mention Lompoc Locals.", discountText: "$5 OFF", days: 21 },
     { type: "special", title: "Monthly unlimited wash — $25/mo", description: "Wash as often as you like. First month prorated. Cancel anytime.", discountText: "$25/MO", days: 30 },
   ],
 
@@ -591,7 +591,7 @@ const DEALS = {
     { type: "special", title: "Tuesday discount tickets — $6", description: "All standard showtimes on Tuesdays. Excludes 3D and premium formats. No code needed.", discountText: "$6 TUESDAYS", days: 30 },
   ],
   "lompoc-valley-golf-course": [
-    { type: "coupon", title: "$5 off 18-hole green fee", description: "Weekdays only. Present at check-in. Mention Lompoc Deals.", discountText: "$5 OFF", days: 30 },
+    { type: "coupon", title: "$5 off 18-hole green fee", description: "Weekdays only. Present at check-in. Mention Lompoc Locals.", discountText: "$5 OFF", days: 30 },
     { type: "special", title: "Twilight golf — $18 after 3pm", description: "Play as many holes as daylight allows. Cart not included.", discountText: "$18", days: 30 },
   ],
   "lompoc-museum": [

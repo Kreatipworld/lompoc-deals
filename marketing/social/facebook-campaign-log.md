@@ -20,7 +20,7 @@ Posting schedule: Tue/Thu/Sat, 6–8 PM Pacific.
 
 **EN Version — paste this:**
 ```
-🎉 Lompoc Deals is LIVE — and it's FREE for locals!
+🎉 Lompoc Locals is LIVE — and it's FREE for locals!
 
 Hey Lompoc! We just launched a free local deals platform for our community. Lompoc businesses are posting exclusive discounts, specials, and coupons — all in one place.
 
@@ -28,16 +28,16 @@ Hey Lompoc! We just launched a free local deals platform for our community. Lomp
 ✅ New deals added every week
 ✅ 100% free for shoppers — no app needed
 
-Browse all deals at 👉 lompoc-deals.vercel.app
+Browse all deals at 👉 www.lompoclocals.com
 
 Know a local business? Tell them to list their deals for free too!
 
-#LompocDeals #ShopLocal #Lompoc #SupportLocalBusiness #SantaBarbaraCounty
+#LompocLocals #ShopLocal #Lompoc #SupportLocalBusiness #SantaBarbaraCounty
 ```
 
 **ES Version — paste this:**
 ```
-🎉 ¡Lompoc Deals está en VIVO — y es GRATIS para la comunidad!
+🎉 ¡Lompoc Locals está en VIVO — y es GRATIS para la comunidad!
 
 ¡Hola Lompoc! Acabamos de lanzar una plataforma gratuita de ofertas locales para nuestra comunidad. Los negocios de Lompoc están publicando descuentos exclusivos, especiales y cupones — todo en un solo lugar.
 
@@ -45,7 +45,7 @@ Know a local business? Tell them to list their deals for free too!
 ✅ Nuevas ofertas cada semana
 ✅ 100% gratis para compradores — no necesita app
 
-Ve todas las ofertas en 👉 lompoc-deals.vercel.app
+Ve todas las ofertas en 👉 www.lompoclocals.com
 
 ¿Conoces un negocio local? ¡Diles que registren sus ofertas gratis también!
 
@@ -71,26 +71,26 @@ Ve todas las ofertas en 👉 lompoc-deals.vercel.app
 ```
 🏪 Deal Alert — Lompoc Local Businesses
 
-Did you know Lompoc businesses are posting exclusive deals on lompoc-deals.vercel.app?
+Did you know Lompoc businesses are posting exclusive deals on www.lompoclocals.com?
 
 Right now you can find discounts from local restaurants, salons, shops, and services — all curated for our community.
 
-👉 Check out this week's deals: lompoc-deals.vercel.app
+👉 Check out this week's deals: www.lompoclocals.com
 
 It's free, no account needed to browse. Sign up to save your favorites and get the weekly digest!
 
-#LompocDeals #Lompoc #ShopLocal #LocalDeals
+#LompocLocals #Lompoc #ShopLocal #LocalDeals
 ```
 
 **ES Version — paste this:**
 ```
 🏪 ¡Alerta de Ofertas — Negocios Locales de Lompoc!
 
-¿Sabías que los negocios de Lompoc están publicando ofertas exclusivas en lompoc-deals.vercel.app?
+¿Sabías que los negocios de Lompoc están publicando ofertas exclusivas en www.lompoclocals.com?
 
 Ahora puedes encontrar descuentos de restaurantes, salones, tiendas y servicios locales — todo para nuestra comunidad.
 
-👉 Mira las ofertas de esta semana: lompoc-deals.vercel.app
+👉 Mira las ofertas de esta semana: www.lompoclocals.com
 
 ¡Es gratis! No necesitas cuenta para ver las ofertas. Regístrate para guardar tus favoritas y recibir el resumen semanal.
 
@@ -118,7 +118,7 @@ Ahora puedes encontrar descuentos de restaurantes, salones, tiendas y servicios 
 
 Happy weekend, Lompoc! Here are some local deals to check out:
 
-🛍️ Browse 89+ active deals from local businesses at lompoc-deals.vercel.app
+🛍️ Browse 89+ active deals from local businesses at www.lompoclocals.com
 
 Categories include:
 • Restaurants & Food
@@ -128,9 +128,9 @@ Categories include:
 
 New deals are added every week. Sign up free to get the weekly digest delivered to your inbox!
 
-👉 lompoc-deals.vercel.app
+👉 www.lompoclocals.com
 
-Have a great weekend! 🎉 #LompocDeals #ShopLocal #Lompoc #SantaBarbaraCounty
+Have a great weekend! 🎉 #LompocLocals #ShopLocal #Lompoc #SantaBarbaraCounty
 ```
 
 **ES Version — paste this:**
@@ -139,7 +139,7 @@ Have a great weekend! 🎉 #LompocDeals #ShopLocal #Lompoc #SantaBarbaraCounty
 
 ¡Buen fin de semana, Lompoc! Aquí hay algunas ofertas locales para revisar:
 
-🛍️ Más de 89 ofertas activas de negocios locales en lompoc-deals.vercel.app
+🛍️ Más de 89 ofertas activas de negocios locales en www.lompoclocals.com
 
 Categorías incluyen:
 • Restaurantes y Comida
@@ -149,7 +149,7 @@ Categorías incluyen:
 
 Se agregan nuevas ofertas cada semana. ¡Regístrate gratis para recibir el resumen semanal!
 
-👉 lompoc-deals.vercel.app
+👉 www.lompoclocals.com
 
 ¡Buen fin de semana! 🎉 #OfertasLompoc #CompraLocal #Lompoc
 ```

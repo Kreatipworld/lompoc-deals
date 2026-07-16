@@ -8,7 +8,7 @@
 
 The Lompoc Flower Festival is the city's signature annual event. It brings:
 - Visitors from outside Lompoc → potential consumers who discover local businesses
-- Merchants who need to be found by those visitors → urgency to list on Lompoc Deals
+- Merchants who need to be found by those visitors → urgency to list on Lompoc Locals
 - High-interest seasonal content → organic TikTok/IG reach from the wine/travel audience
 
 **Double opportunity:** Use the festival to (a) acquire merchants with urgency framing and (b) drive consumer content that builds the social following before summer peak season.
@@ -30,7 +30,7 @@ The Lompoc Flower Festival is the city's signature annual event. It brings:
 ## Asset 1 — Pre-Festival Merchant Acquisition Email
 
 **Send date:** ~May 28 (4 weeks before festival)  
-**Target:** Any Lompoc business NOT yet listed on lompoc-deals.vercel.app  
+**Target:** Any Lompoc business NOT yet listed on www.lompoclocals.com  
 **Subject:** Lompoc Flower Festival brings 10,000+ visitors to your neighborhood
 
 ---
@@ -39,19 +39,19 @@ Hi [Name],
 
 The Lompoc Flower Festival is coming up in late June — and every year it brings thousands of visitors to Lompoc who are looking for restaurants, shops, wineries, and services.
 
-If your business isn't on Lompoc Deals yet, you're missing that audience.
+If your business isn't on Lompoc Locals yet, you're missing that audience.
 
 We're the only free, bilingual local business directory for Lompoc. Listing takes 5 minutes, it's completely free, and festival visitors who search "restaurants in Lompoc" or "things to do near me" will find you.
 
 **Claim your free listing before the festival:**
-→ lompoc-deals.vercel.app
+→ www.lompoclocals.com
 
 No credit card. No contract. 100% free.
 
 If you want to post a special deal for festival weekend (discount, complimentary item, wine tasting offer), you can do that too — also free.
 
 [Your Name]  
-Lompoc Deals — lompoc-deals.vercel.app
+Lompoc Locals — www.lompoclocals.com
 
 ---
 
@@ -65,7 +65,7 @@ Quick follow-up — the Flower Festival is 3 weeks out and we're adding business
 
 Takes 5 minutes to claim your listing. It's free.
 
-→ lompoc-deals.vercel.app
+→ www.lompoclocals.com
 
 [Your Name]
 
@@ -83,7 +83,7 @@ Lompoc Flower Festival is coming 🌸
 **Voiceover:**
 > "Lompoc's biggest event of the year is coming up — the Lompoc Flower Festival. It's a weekend parade, carnival, craft fair, and live music in late June. Every year thousands of people come to Lompoc for it — and most of them want to know where to eat, drink, and explore while they're here.
 >
-> If you're visiting for the festival, the best resource is lompoc-deals.vercel.app — it has restaurants, wineries, activities, and deals for the whole Lompoc area. Bilingual, free, no app needed.
+> If you're visiting for the festival, the best resource is www.lompoclocals.com — it has restaurants, wineries, activities, and deals for the whole Lompoc area. Bilingual, free, no app needed.
 >
 > And if you live in Lompoc — the wine harvest, the flower fields, the mission — this town has more going on than people realize. Check the link in bio."
 
@@ -93,11 +93,11 @@ Lompoc Flower Festival is coming 🌸
 ```
 Lompoc Flower Festival is coming 🌸 One of California's most underrated annual events — parade, carnival, craft fair, live music.
 
-If you're visiting, find local restaurants, wineries, activities, and deals at lompoc-deals.vercel.app (link in bio, free)
+If you're visiting, find local restaurants, wineries, activities, and deals at www.lompoclocals.com (link in bio, free)
 
 If you live here — what's your favorite part of festival weekend? Drop it below 👇
 
-#LompocFlowerFestival #Lompoc #LompocCA #VisitLompoc #CaliforniaEvents #FlowerFestival #LompocDeals #ThingsToDoInLompoc
+#LompocFlowerFestival #Lompoc #LompocCA #VisitLompoc #CaliforniaEvents #FlowerFestival #LompocLocals #ThingsToDoInLompoc
 ```
 
 ---
@@ -110,7 +110,7 @@ If you live here — what's your favorite part of festival weekend? Drop it belo
 ```
 Happy Lompoc Flower Festival weekend! 🌸🎪
 
-If you're visiting Lompoc for the first time (or just exploring more of the city), lompoc-deals.vercel.app has:
+If you're visiting Lompoc for the first time (or just exploring more of the city), www.lompoclocals.com has:
 
 🍷 Wine Ghetto tasting rooms open today
 🍔 Local restaurant deals
@@ -121,7 +121,7 @@ All free to browse. No app. Link in bio.
 
 What are you most excited about this weekend? Let us know in the comments 👇
 
-#LompocFlowerFestival #Lompoc #LompocCA #LompocDeals #VisitLompoc #FlowerFestival2026
+#LompocFlowerFestival #Lompoc #LompocCA #LompocLocals #VisitLompoc #FlowerFestival2026
 ```
 
 **Photo:** The flower fields (from free stock or sourced from the festival organizer) OR a collage of festival activities
@@ -133,7 +133,7 @@ What are you most excited about this weekend? Let us know in the comments 👇
 ```
 With the Lompoc Flower Festival coming up, we wanted to share a resource for visitors and locals alike.
 
-Lompoc Deals (lompoc-deals.vercel.app) is a free local business directory for Lompoc — restaurants, wineries, salons, services, dispensaries, and more. Bilingual English + Spanish.
+Lompoc Locals (www.lompoclocals.com) is a free local business directory for Lompoc — restaurants, wineries, salons, services, dispensaries, and more. Bilingual English + Spanish.
 
 If you're hosting out-of-town guests for the festival, it's a great way to show them what Lompoc has to offer.
 

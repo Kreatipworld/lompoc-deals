@@ -30,7 +30,7 @@ Things to do in Lompoc this weekend 📍
 
 > **Number three:** Jalama Beach. It's a 15-mile drive down a winding road to a wild stretch of coast. Famous for the Jalama Burger. World-class surf. No crowds.
 
-> Find all of these — plus deals at 470+ local businesses — at lompoc-deals.vercel.app. Link in bio. It's completely free."
+> Find all of these — plus deals at 470+ local businesses — at www.lompoclocals.com. Link in bio. It's completely free."
 
 **Duration:** ~35 seconds at normal speaking pace
 
@@ -46,7 +46,7 @@ Things to do in Lompoc this weekend 📍
 | 20–23s | `Most restored mission in CA. 25 mi trails.` |
 | 24–28s | `🌊 Jalama Beach` |
 | 28–31s | `Wild coast. Legendary burger.` |
-| 31–35s | `lompoc-deals.vercel.app 🔗 link in bio` |
+| 31–35s | `www.lompoclocals.com 🔗 link in bio` |
 
 ---
 
@@ -58,9 +58,9 @@ Things to do in Lompoc this weekend 🍷🏛️🌊
 2. La Purísima Mission — most restored mission in CA, 25 miles of trails
 3. Jalama Beach — wild coast, legendary Jalama Burger, world-class surf
 
-Find deals at 470+ Lompoc businesses → lompoc-deals.vercel.app (link in bio)
+Find deals at 470+ Lompoc businesses → www.lompoclocals.com (link in bio)
 
-#Lompoc #ThingsToDoInLompoc #LompocCA #WineGhetto #LompocDeals #SantaBarbaraCo #VisitLompoc #HiddenGemCalifornia #WineCountry #JalamaBeach
+#Lompoc #ThingsToDoInLompoc #LompocCA #WineGhetto #LompocLocals #SantaBarbaraCo #VisitLompoc #HiddenGemCalifornia #WineCountry #JalamaBeach
 ```
 
 ---
@@ -69,7 +69,7 @@ Find deals at 470+ Lompoc businesses → lompoc-deals.vercel.app (link in bio)
 - **Location option A:** Film at Wine Ghetto parking lot on Industrial Way (best visual — barrels, tasting rooms)
 - **Location option B:** Film walking selfie-style in front of La Purísima Mission entrance gate
 - **No location needed:** Talking head with text overlays works fine for first post
-- **B-roll ideas:** Screen record lompoc-deals.vercel.app/activities on mobile (portrait)
+- **B-roll ideas:** Screen record www.lompoclocals.com/activities on mobile (portrait)
 - **Duration check:** Practice once out loud. Should land at 33–38 seconds.
 - **Caption:** Post EN caption. If IG account is live, post identical content to Reels.
 
@@ -98,7 +98,7 @@ Qué hacer en Lompoc este fin de semana 📍
 
 > **Número tres:** Jalama Beach. Son 15 millas por una carretera sinuosa hasta una playa salvaje en la costa. Famosa por la hamburguesa Jalama. Surf de talla mundial. Sin gente.
 
-> Encuentra todo esto — y descuentos en más de 470 negocios locales de Lompoc — en lompoc-deals.vercel.app. El enlace está en el bio. Es completamente gratis."
+> Encuentra todo esto — y descuentos en más de 470 negocios locales de Lompoc — en www.lompoclocals.com. El enlace está en el bio. Es completamente gratis."
 
 ---
 
@@ -110,9 +110,9 @@ Qué hacer en Lompoc este fin de semana 🍷🏛️🌊
 2. Misión La Purísima — la más restaurada de CA, 25 millas de senderos
 3. Jalama Beach — costa salvaje, la legendaria hamburguesa Jalama, surf de talla mundial
 
-Descuentos en 470+ negocios locales → lompoc-deals.vercel.app (enlace en el bio)
+Descuentos en 470+ negocios locales → www.lompoclocals.com (enlace en el bio)
 
-#Lompoc #LompocCA #LompocDeals #QuéHacer #FinDeSemana #WineGhetto #JalamaBeach #NegociosLocales #VisitaLompoc #CaliforniaHispana
+#Lompoc #LompocCA #LompocLocals #QuéHacer #FinDeSemana #WineGhetto #JalamaBeach #NegociosLocales #VisitaLompoc #CaliforniaHispana
 ```
 
 ---
@@ -139,7 +139,7 @@ I found the most underrated wine destination in California 🍷
 
 > Tasting fees are 15 to 25 dollars. You walk between tasting rooms. Saturdays have a block-party energy. There is nothing like it in California.
 
-> Find it — and deals at every winery — at lompoc-deals.vercel.app. Link in bio."
+> Find it — and deals at every winery — at www.lompoclocals.com. Link in bio."
 
 **Duration:** ~30 seconds
 
@@ -153,9 +153,9 @@ The Lompoc Wine Ghetto is the most underrated wine destination in California and
 
 These wines compete with Burgundy. The prices don't.
 
-Deals and directory → lompoc-deals.vercel.app (link in bio)
+Deals and directory → www.lompoclocals.com (link in bio)
 
-#LompocWineGhetto #WineGhetto #Lompoc #PinotNoir #StaRitaHills #SantaRitaHills #WineCountry #CaliforniaWine #HiddenGemCalifornia #WineTok #WineLovers #LompocDeals
+#LompocWineGhetto #WineGhetto #Lompoc #PinotNoir #StaRitaHills #SantaRitaHills #WineCountry #CaliforniaWine #HiddenGemCalifornia #WineTok #WineLovers #LompocLocals
 ```
 
 ---
@@ -170,7 +170,7 @@ Deals and directory → lompoc-deals.vercel.app (link in bio)
 | C3 W4 | Script B (Things To Do ES) | Thursday 7pm PT | TikTok + IG Reels |
 
 *Post at 6–9 PM Pacific for best organic reach.*
-*After posting, drop the lompoc-deals.vercel.app/activities URL in first comment.*
+*After posting, drop the www.lompoclocals.com/activities URL in first comment.*
 
 ---
 

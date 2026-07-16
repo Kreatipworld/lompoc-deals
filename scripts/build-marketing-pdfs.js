@@ -120,7 +120,7 @@ function buildDeckCover() {
         <div><b>04</b> &nbsp;Engagement Playbook — how we grow &amp; convert</div>
       </div>
     </div>
-    <div class="foot">Live local. Love Lompoc. &nbsp;·&nbsp; <span class="u">lompoc-deals.vercel.app</span> &nbsp;·&nbsp; Lompoc &amp; Vandenberg, CA</div>
+    <div class="foot">Live local. Love Lompoc. &nbsp;·&nbsp; <span class="u">www.lompoclocals.com</span> &nbsp;·&nbsp; Lompoc &amp; Vandenberg, CA</div>
   </div></body></html>`
   const p = path.join(TMP, "deck-cover.html")
   fs.writeFileSync(p, html)

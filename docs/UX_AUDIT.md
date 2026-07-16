@@ -1,5 +1,5 @@
-# Lompoc Deals — UX Audit
-*Auditor: UX Lead (Design Pod) | Date: 2026-04-08 | Site: https://lompoc-deals.vercel.app*
+# Lompoc Locals — UX Audit
+*Auditor: UX Lead (Design Pod) | Date: 2026-04-08 | Site: https://www.lompoclocals.com*
 
 ---
 

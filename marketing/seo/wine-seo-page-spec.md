@@ -1,4 +1,4 @@
-# Wine Tourism SEO Pages — Lompoc Deals
+# Wine Tourism SEO Pages — Lompoc Locals
 *Owner: CMO / Content & SEO Strategist*
 *Created: 2026-04-08 | M-017 | Blocking ticket: CTO to build /lompoc/wine-deals and /lompoc/wineries routes*
 *KPI: 100 organic sessions/week from wine content by day 90*
@@ -18,9 +18,9 @@ CTO needs to build the routes and inject the deal data server-side.
 
 ### Meta
 ```
-<title>Lompoc Wine Deals — Tasting Discounts & Winery Specials in Santa Rita Hills | Lompoc Deals</title>
+<title>Lompoc Wine Deals — Tasting Discounts & Winery Specials in Santa Rita Hills | Lompoc Locals</title>
 <meta name="description" content="Browse current wine deals and tasting discounts from Lompoc wineries in the Santa Rita Hills AVA. Claim deals free — no credit card needed. Updated by local wineries." />
-<link rel="canonical" href="https://lompoc-deals.vercel.app/lompoc/wine-deals" />
+<link rel="canonical" href="https://www.lompoclocals.com/lompoc/wine-deals" />
 ```
 
 ### OpenGraph
@@ -47,7 +47,7 @@ og:image = [winery deal card or vineyard photo]
 ### Editorial Copy: "About Lompoc Wine Country"
 > The Santa Rita Hills AVA, located just west of Lompoc, is one of California's premier cool-climate wine regions. Known for world-class Pinot Noir and Chardonnay, the area attracts wine enthusiasts from across California and beyond. The nearby Lompoc Wine Ghetto — a cluster of urban tasting rooms in a former industrial district — offers a unique and accessible wine tasting experience without the crowds of Napa or Sonoma.
 >
-> Lompoc Deals partners with local wineries to bring you exclusive tasting deals, bottle discounts, and special offers. Browse current deals above and plan your Santa Rita Hills wine country visit.
+> Lompoc Locals partners with local wineries to bring you exclusive tasting deals, bottle discounts, and special offers. Browse current deals above and plan your Santa Rita Hills wine country visit.
 
 ### Target Keywords
 - `lompoc wine deals` (primary — near-zero competition)
@@ -64,7 +64,7 @@ og:image = [winery deal card or vineyard photo]
   "@type": "ItemList",
   "name": "Lompoc Wine Deals",
   "description": "Current wine deals and tasting discounts from Lompoc wineries",
-  "url": "https://lompoc-deals.vercel.app/lompoc/wine-deals",
+  "url": "https://www.lompoclocals.com/lompoc/wine-deals",
   "itemListElement": [
     // server-rendered: one ListItem per active wine deal
   ]
@@ -82,9 +82,9 @@ og:image = [winery deal card or vineyard photo]
 
 ### Meta
 ```
-<title>Lompoc Wineries — Santa Rita Hills & Wine Ghetto Directory | Lompoc Deals</title>
+<title>Lompoc Wineries — Santa Rita Hills & Wine Ghetto Directory | Lompoc Locals</title>
 <meta name="description" content="Discover Lompoc-area wineries in the Santa Rita Hills AVA and Lompoc Wine Ghetto. Browse winery profiles, current deals, and tasting hours. Free to browse." />
-<link rel="canonical" href="https://lompoc-deals.vercel.app/lompoc/wineries" />
+<link rel="canonical" href="https://www.lompoclocals.com/lompoc/wineries" />
 ```
 
 ### H1
@@ -110,7 +110,7 @@ og:image = [winery deal card or vineyard photo]
 >
 > **Santa Rita Hills:** Drive west on CA-246 toward Buellton to find vineyard estate wineries. More rural setting, reservations often recommended.
 >
-> **Save on tastings:** Many Lompoc wineries post tasting deals on Lompoc Deals. Browse the deals tab on each winery's profile before you visit.
+> **Save on tastings:** Many Lompoc wineries post tasting deals on Lompoc Locals. Browse the deals tab on each winery's profile before you visit.
 
 ### Target Keywords
 - `lompoc wineries` (primary — moderate volume, low competition)
@@ -127,7 +127,7 @@ og:image = [winery deal card or vineyard photo]
   "@type": "ItemList",
   "name": "Lompoc Wineries Directory",
   "description": "Wineries in Lompoc CA — Santa Rita Hills AVA and Lompoc Wine Ghetto",
-  "url": "https://lompoc-deals.vercel.app/lompoc/wineries",
+  "url": "https://www.lompoclocals.com/lompoc/wineries",
   "itemListElement": [
     // server-rendered: one ListItem per listed winery with name, url, address
   ]

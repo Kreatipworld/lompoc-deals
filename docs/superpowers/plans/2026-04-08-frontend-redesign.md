@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Elevate Lompoc Deals from functional MVP to a polished, community-first hyperlocal deals platform through phased UI improvements.
+**Goal:** Elevate Lompoc Locals from functional MVP to a polished, community-first hyperlocal deals platform through phased UI improvements.
 
 **Architecture:** All changes are purely UI/CSS — no schema changes, no new dependencies, no API changes. We layer new amber color tokens on top of the existing Iris violet palette, then apply the design system to components in priority order (highest impact first).
 
@@ -399,7 +399,7 @@ Find the `<WeatherBadge />` or weather badge component in the header. Add `hidde
 
 - [ ] **Step 3: Ensure logo has visible wordmark**
 
-The logo currently shows `Flower2` icon + "Lompoc Deals" text. Ensure both are visible even on small phones (no truncation). If the text is `hidden` at any breakpoint, make it always visible with a minimum font size.
+The logo currently shows `Flower2` icon + "Lompoc Locals" text. Ensure both are visible even on small phones (no truncation). If the text is `hidden` at any breakpoint, make it always visible with a minimum font size.
 
 - [ ] **Step 4: Commit**
 

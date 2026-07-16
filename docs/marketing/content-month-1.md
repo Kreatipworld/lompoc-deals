@@ -13,7 +13,7 @@ business goes live** so the tag-and-reshare loop fires while they're excited.
 rules allow promo. Facebook is the priority — that's where Lompoc's community actually is.
 
 **Hashtag block (reuse, trim to ~8 on IG):**
-`#LompocDeals #Lompoc #LompocCA #OldTownLompoc #ShopLocalLompoc #SupportLocal #CentralCoast #805 #VandenbergSFB`
+`#LompocLocals #Lompoc #LompocCA #OldTownLompoc #ShopLocalLompoc #SupportLocal #CentralCoast #805 #VandenbergSFB`
 
 > Anything in **[brackets]** is a swap-in — replace with the actual business that went live
 > that week. The spotlight order below assumes you land the three social-ready Tier-1 spots
@@ -25,13 +25,13 @@ rules allow promo. Facebook is the priority — that's where Lompoc's community 
 
 ### Post 1.1 — Announcement (the "we exist" post)
 - **Pillar:** Announcement / Milestone
-- **Image:** Simple branded graphic — "Lompoc Deals" logo + tagline over an Old Town / flower
+- **Image:** Simple branded graphic — "Lompoc Locals" logo + tagline over an Old Town / flower
   fields photo.
 - **Caption:**
   > Lompoc, meet your new deals feed. 🌼
   > We're rounding up the best coupons, specials, and happy hours from *local* Lompoc spots —
   > all in one place, free to browse.
-  > 👉 Check it out: lompoc-deals.vercel.app
+  > 👉 Check it out: www.lompoclocals.com
   > Local business owner? Get your spot listed free — DM us. We're setting up the first 25
   > businesses ourselves. 🤝
 - **Notes:** Pin this to the top of your FB page. Post to all three groups.
@@ -54,7 +54,7 @@ rules allow promo. Facebook is the priority — that's where Lompoc's community 
 - **Pillar:** Business spotlight
 - **Image:** Photo of their storefront / a latte. Ask them for one when you onboard.
 - **Caption:**
-  > 👋 Meet **[South Side Coffee Co.]** on H Street — and one of our very first Lompoc Deals
+  > 👋 Meet **[South Side Coffee Co.]** on H Street — and one of our very first Lompoc Locals
   > founding businesses. ☕
   > Stop in, say hi, and grab their deal on the app.
   > 📍 [105 S H St] · @[southsidecoffeeco_lompoc]
@@ -67,7 +67,7 @@ rules allow promo. Facebook is the priority — that's where Lompoc's community 
 - **Caption:**
   > 🔥 This week's Lompoc deal: **$1 off any espresso drink at [South Side Coffee Co.]**
   > Show the deal at the counter. That's it.
-  > 👉 Grab it: lompoc-deals.vercel.app/en/biz/[south-side-coffee-co]
+  > 👉 Grab it: www.lompoclocals.com/en/biz/[south-side-coffee-co]
 - **Notes:** Pulls straight from the first-deal draft. Post to groups Thursday/Friday (weekend
   coffee runs).
 
@@ -79,7 +79,7 @@ rules allow promo. Facebook is the priority — that's where Lompoc's community 
 - **Pillar:** Business spotlight
 - **Image:** Their food / dining room.
 - **Caption:**
-  > New on Lompoc Deals: **[Old Town Kitchen & Bar]** 🍽️
+  > New on Lompoc Locals: **[Old Town Kitchen & Bar]** 🍽️
   > Old Town's spot for [a good meal and a drink] — now with a deal for locals on the app.
   > 📍 [319 E Ocean Ave] · @[oldtownkitchen_805]
 - **Notes:** Tag them. If they have a signature dish, name it — specifics get shares.
@@ -102,7 +102,7 @@ rules allow promo. Facebook is the priority — that's where Lompoc's community 
 - **Pillar:** Business spotlight
 - **Image:** Their shop / a fresh cut.
 - **Caption:**
-  > Fresh cut, local spot. 💈 **[Lompoc Barber Lounge]** is now on Lompoc Deals.
+  > Fresh cut, local spot. 💈 **[Lompoc Barber Lounge]** is now on Lompoc Locals.
   > New clients — there's a deal waiting for you on the app.
   > 📍 [137 N H St] · @[lompocbarberlounge]
 - **Notes:** Tag them. Barbers' clients love repping their shop — good reshare odds.
@@ -111,9 +111,9 @@ rules allow promo. Facebook is the priority — that's where Lompoc's community 
 - **Pillar:** Milestone
 - **Image:** Grid/collage of the logos or storefronts of everyone who's joined.
 - **Caption:**
-  > [10] Lompoc businesses are now on Lompoc Deals — and we're just getting started. 🌼
+  > [10] Lompoc businesses are now on Lompoc Locals — and we're just getting started. 🌼
   > Coffee, food, drinks, cuts, and more, all with local deals in one place.
-  > 👉 Browse them: lompoc-deals.vercel.app
+  > 👉 Browse them: www.lompoclocals.com
   > Run a Lompoc spot? It's free to join — DM us. 🤝
 - **Notes:** Swap [10] for the real count. **This post is also a sales tool** — screenshot it
   and show it to the next business you pitch ("here's who's already on").

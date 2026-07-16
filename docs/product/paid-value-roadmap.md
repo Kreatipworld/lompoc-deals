@@ -1,7 +1,7 @@
 # Paid Plan Appeal — Value Roadmap for Showcase Businesses
 
 **Date:** 2026-06-23
-**Question:** Why does a local business pay to put themselves + a deal on Lompoc Deals?
+**Question:** Why does a local business pay to put themselves + a deal on Lompoc Locals?
 **Answer framework:** A business pays when the platform makes them **(1) more seen, (2) look
 better, (3) bring repeat customers, (4) able to prove it worked.** Analytics covers #4. This
 roadmap covers #1–#3 — and corrects a gap where we already *charge* for value we don't deliver.
@@ -64,7 +64,7 @@ Beachhead 25 regardless of tier (rewards early adopters).
 **Touches:** `businesses` boolean field, badge component.
 
 ### Operational (no code) — Guaranteed social spotlight
-**Value to business:** A paid business gets a **guaranteed spotlight post** on Lompoc Deals'
+**Value to business:** A paid business gets a **guaranteed spotlight post** on Lompoc Locals'
 Instagram/Facebook. This ties the [content plan](../marketing/content-month-1.md) directly to
 the paid offer: "Upgrade and we feature you to our followers." Pure operations — fold it into
 the Premium pitch now, zero engineering.

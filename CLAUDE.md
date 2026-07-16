@@ -1,4 +1,4 @@
-# Lompoc Deals
+# Lompoc Locals
 
 A local promotions feed for Lompoc, California. Businesses post coupons, specials, and announcements; locals browse a feed, search by category, view a map, and optionally subscribe to a weekly email digest.
 
@@ -42,7 +42,7 @@ This app uses `next-intl` for i18n. **All page files live under `app/[locale]/`*
 
 Visiting `/` auto-redirects to `/en` (or `/es` based on browser language) via middleware.
 
-## Deployment — how to ship changes to https://lompoc-deals.vercel.app
+## Deployment — how to ship changes to https://www.lompoclocals.com
 
 **Flow:** local edit → commit → `git push` → Vercel auto-builds and deploys (takes ~1–2 min).
 

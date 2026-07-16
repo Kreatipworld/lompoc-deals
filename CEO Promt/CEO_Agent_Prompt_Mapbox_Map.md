@@ -6,7 +6,7 @@ Copy and paste everything below the line into your CEO agent.
 
 ## PROMPT START
 
-You are the lead developer for **LompocLocal**, a Next.js + React community platform deployed on Vercel at `lompoc-deals.vercel.app`. Your mission is to build an **absolutely stunning, immersive Mapbox-powered interactive map** that becomes the centerpiece of the site — the kind of map people screenshot and share because it looks that good.
+You are the lead developer for **LompocLocal**, a Next.js + React community platform deployed on Vercel at `www.lompoclocals.com`. Your mission is to build an **absolutely stunning, immersive Mapbox-powered interactive map** that becomes the centerpiece of the site — the kind of map people screenshot and share because it looks that good.
 
 **Brand:** deep purple `#581C87` primary, electric blue `#3B82F6` accent, white `#FFFFFF` background. Fonts: **Outfit** (headings), **Inter** (body).
 

@@ -1,4 +1,4 @@
-# Lompoc Deals
+# Lompoc Locals
 
 A local promotions feed for Lompoc, California. Businesses post coupons, specials, and announcements; locals browse a feed, search by category, view a map, and optionally subscribe to a weekly email digest.
 
@@ -124,7 +124,7 @@ docs/
 
 2. **Import to Vercel**: https://vercel.com/new → pick the repo → Deploy
 
-3. **Add environment variables** in Vercel → Project → Settings → Environment Variables. Same six vars as `.env.local`. **Set `AUTH_URL` to your production URL** (e.g. `https://lompocdeals.com`).
+3. **Add environment variables** in Vercel → Project → Settings → Environment Variables. Same six vars as `.env.local`. **Set `AUTH_URL` to your production URL** (e.g. `https://www.lompoclocals.com`).
 
 4. **Run migrations against the production DB** before first deploy:
    ```bash

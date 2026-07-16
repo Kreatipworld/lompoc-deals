@@ -1,4 +1,4 @@
-# Launch Day Execution Playbook — Lompoc Deals
+# Launch Day Execution Playbook — Lompoc Locals
 *Owner: CMO | Created: 2026-04-09*
 *For: The human who presses "go" on launch day*
 *Estimated total time: 3–4 hours (can be split across 2 days)*
@@ -11,7 +11,7 @@ Do NOT start this playbook until all items below are green:
 
 - [ ] Stripe env vars set in Vercel (`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_STANDARD`, `STRIPE_PRICE_PREMIUM`)
 - [ ] REQ-009 Spanish copy fixes deployed (2 required text changes)
-- [ ] Site loads at lompoc-deals.vercel.app in both EN and ES
+- [ ] Site loads at www.lompoclocals.com in both EN and ES
 - [ ] Sign-up flow works (create a test account)
 - [ ] Merchant dashboard accessible after login
 - [ ] At least 10 businesses listed in the directory
@@ -22,10 +22,10 @@ Once all are green: proceed.
 
 ## STEP 1 — Create Social Accounts (60 min)
 
-### 1A — Instagram: @LompocDeals
+### 1A — Instagram: @LompocLocals
 
 1. Go to instagram.com → Create account
-2. Username: `lompoc.deals` (try `lompocdeals` if taken)
+2. Username: `lompoc.locals` (try `lompoclocals` if taken)
 3. Switch to **Business Account**: Settings → Account → Switch to Professional → Business → Local Business
 4. **Bio (copy-paste):**
    ```
@@ -34,21 +34,21 @@ Once all are green: proceed.
    🎟️ Deals from local businesses — free to browse
    👇 Explore Lompoc
    ```
-5. **Link in bio:** https://lompoc-deals.vercel.app
-6. **Profile photo:** Upload the Lompoc Deals logo (purple/cream brand)
+5. **Link in bio:** https://www.lompoclocals.com
+6. **Profile photo:** Upload the Lompoc Locals logo (purple/cream brand)
 7. **Add location:** Lompoc, CA
 8. Connect to Facebook page (do Facebook first if possible)
 
-### 1B — Facebook Page: Lompoc Deals
+### 1B — Facebook Page: Lompoc Locals
 
 1. Go to facebook.com/pages/create
-2. **Page name:** Lompoc Deals
+2. **Page name:** Lompoc Locals
 3. **Category:** Local Business → Internet Company (or "Website")
 4. **Bio (copy-paste):**
    ```
    Lompoc's free local business directory — restaurants, shops, salons, services, wineries, and more. All in one place, built for the Flower Capital. Bilingual EN/ES.
    ```
-5. **Website:** https://lompoc-deals.vercel.app
+5. **Website:** https://www.lompoclocals.com
 6. **Location:** Lompoc, CA 93436
 7. **Profile photo + cover:** Upload brand assets
 8. Connect to Instagram (in Instagram → Settings → Account → Linked Accounts)
@@ -56,13 +56,13 @@ Once all are green: proceed.
 ### 1C — Nextdoor Business Page
 
 1. Go to nextdoor.com/business
-2. Create a free business page for "Lompoc Deals"
+2. Create a free business page for "Lompoc Locals"
 3. **Category:** Website / Internet Company
 4. **Description (copy-paste):**
    ```
    Lompoc's free local business directory. Discover restaurants, shops, salons, wineries, and services in Lompoc, CA. Browse by category, find hours and contact info, and claim deals — free. Bilingual EN/ES.
    ```
-5. **Website:** lompoc-deals.vercel.app
+5. **Website:** www.lompoclocals.com
 6. **Service area:** Lompoc, CA
 
 ---
@@ -73,11 +73,11 @@ Full instructions: `/marketing/seo/gbp-setup-checklist.md`
 
 Quick version:
 1. Go to business.google.com
-2. Search "Lompoc Deals" → create new if not found
+2. Search "Lompoc Locals" → create new if not found
 3. **Category:** Internet company (primary) + Local business directory (secondary)
 4. **Description (copy-paste):**
    ```
-   Lompoc Deals is Lompoc's free local business directory — discover local restaurants, shops, salons, wineries, services, and more, all in one place. Businesses list for free; residents browse and claim deals at no cost. Bilingual (English / Spanish). Built for the Flower Capital. lompoc-deals.vercel.app
+   Lompoc Locals is Lompoc's free local business directory — discover local restaurants, shops, salons, wineries, services, and more, all in one place. Businesses list for free; residents browse and claim deals at no cost. Bilingual (English / Spanish). Built for the Flower Capital. www.lompoclocals.com
    ```
 5. Verify (email fastest; postcard takes 5–14 days)
 6. Upload: logo, homepage screenshot, category browse screenshot, deal card screenshot
@@ -101,7 +101,7 @@ Join these groups first (request membership a few days before launch):
 >
 > We just launched something I think you'll find useful.
 >
-> **Lompoc Deals** is a free local business directory for Lompoc — restaurants, shops, salons, services, wineries, dispensaries, and more. All in one place, all Lompoc.
+> **Lompoc Locals** is a free local business directory for Lompoc — restaurants, shops, salons, services, wineries, dispensaries, and more. All in one place, all Lompoc.
 >
 > Think of it like a mini Yelp built specifically for the Flower Capital.
 >
@@ -110,16 +110,16 @@ Join these groups first (request membership a few days before launch):
 > ✅ Claim deals and coupons directly on your phone
 > ✅ Toggle between English and Spanish
 >
-> We're at **lompoc-deals.vercel.app** — would love your feedback!
+> We're at **www.lompoclocals.com** — would love your feedback!
 >
 > If you know a local business that should be listed, drop it below or go straight to the site.
 >
 > ¡Y si prefieres en español, el sitio también está en español! 🇲🇽
 >
-> #LompocDeals #Lompoc #ShopLocal #LompocCA
+> #LompocLocals #Lompoc #ShopLocal #LompocCA
 
 **Pin a comment with the direct signup link:**
-> → Sign up free: lompoc-deals.vercel.app/sign-up
+> → Sign up free: www.lompoclocals.com/sign-up
 
 **Post the Spanish version** in any Spanish-language groups (full copy in `/marketing/pr/launch-announcement.md`).
 
@@ -137,11 +137,11 @@ Post EN version → reply immediately with ES version in the same thread.
 **Caption:**
 > Lompoc finally has its own local business directory 🏙️
 >
-> Lompoc Deals is live — browse 150+ local restaurants, shops, salons, wineries, and more. Free. Bilingual EN/ES. No account needed to browse.
+> Lompoc Locals is live — browse 150+ local restaurants, shops, salons, wineries, and more. Free. Bilingual EN/ES. No account needed to browse.
 >
-> Link in bio → lompoc-deals.vercel.app
+> Link in bio → www.lompoclocals.com
 >
-> #LompocDeals #Lompoc #LompocCA #ShopLocal #LocalDirectory #ThingsToDoInLompoc
+> #LompocLocals #Lompoc #LompocCA #ShopLocal #LocalDirectory #ThingsToDoInLompoc
 
 ---
 
@@ -180,7 +180,7 @@ Full email: `/marketing/sales/chamber-outreach-script.md`
 
 **To:** Lompoc Valley Chamber of Commerce  
 **Contact:** Find at lompocvalleychamber.com → Contact/Staff  
-**Subject:** Partnership opportunity — Lompoc Deals + the Chamber
+**Subject:** Partnership opportunity — Lompoc Locals + the Chamber
 
 ---
 

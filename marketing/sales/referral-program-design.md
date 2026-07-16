@@ -38,7 +38,7 @@ Evaluate upgrading to cash reward ($10 cash via Stripe payout) if referral volum
 ```
 Existing merchant logs in
 → Dashboard → "Refer a Neighbor" tab
-→ Gets unique URL: lompoc-deals.vercel.app/join?ref=MERCHANTCODE
+→ Gets unique URL: www.lompoclocals.com/join?ref=MERCHANTCODE
 → Copies link / shares via text, social, or in person
 
 New merchant visits referral URL
@@ -58,7 +58,7 @@ New merchant visits referral URL
 **What needs to be built:**
 1. `referral_code` field on `businesses` table (unique, 8-char alphanumeric)
 2. `referrer_id` field on `businesses` table (nullable FK → businesses)
-3. Referral link generation: `lompoc-deals.vercel.app/join?ref={code}`
+3. Referral link generation: `www.lompoclocals.com/join?ref={code}`
 4. Middleware: on signup, capture `ref` param and store referrer_id
 5. Trigger: when new merchant posts first deal, fire reward logic
 6. Reward logic: add `subscription_credits` (+1 month) to referrer and referee
@@ -82,7 +82,7 @@ New merchant visits referral URL
 
 > Hey [Merchant Name],
 > 
-> You've been on Lompoc Deals for 2 weeks — we hope you're seeing results!
+> You've been on Lompoc Locals for 2 weeks — we hope you're seeing results!
 > 
 > Quick ask: do you know another Lompoc business that could benefit from posting deals? Send them your personal link and **both of you get a free month** when they post their first deal.
 > 
@@ -90,7 +90,7 @@ New merchant visits referral URL
 > 
 > Just share it by text, social, or in person. We'll take care of the rest.
 > 
-> — The Lompoc Deals Team
+> — The Lompoc Locals Team
 *Live Local. Love Lompoc.*
 
 ---
@@ -107,13 +107,13 @@ New merchant visits referral URL
 ### Social Share Templates
 
 **Facebook (referrer shares):**
-> Hey Lompoc business owners — I've been using Lompoc Deals to post my specials and get in front of local customers. If you want to try it, use my link and we BOTH get a free month: [REFERRAL_LINK] 🎉
+> Hey Lompoc business owners — I've been using Lompoc Locals to post my specials and get in front of local customers. If you want to try it, use my link and we BOTH get a free month: [REFERRAL_LINK] 🎉
 
 **Text message (short):**
-> Hey! Check out Lompoc Deals — free way to post your specials to local shoppers. Use my link and you get your first month free: [LINK]
+> Hey! Check out Lompoc Locals — free way to post your specials to local shoppers. Use my link and you get your first month free: [LINK]
 
 **Spanish (Facebook):**
-> ¡Dueños de negocios en Lompoc! Estoy usando Lompoc Deals para publicar mis ofertas y llegar a clientes locales. Si quieres probarlo, usa mi enlace y los dos obtenemos un mes gratis: [REFERRAL_LINK] 🎉
+> ¡Dueños de negocios en Lompoc! Estoy usando Lompoc Locals para publicar mis ofertas y llegar a clientes locales. Si quieres probarlo, usa mi enlace y los dos obtenemos un mes gratis: [REFERRAL_LINK] 🎉
 
 ---
 

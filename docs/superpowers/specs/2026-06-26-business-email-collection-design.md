@@ -64,7 +64,7 @@ Mirrors the structure of `db/scrape-google-places.ts` (dotenv, drizzle `db` clie
 Behavior:
 1. Select approved businesses with a non-empty `website` and (`contact_email IS NULL` OR a `--refresh` flag) — re-runnable; skips ones already done unless refreshing.
 2. For each, normalize the website URL; derive `siteHost`. Fetch the homepage and up to two likely contact paths (`/contact`, `/about`) — stop early once a good email is found.
-   - Per fetch: custom `User-Agent` (e.g. `LompocDealsBot/1.0 (+https://<site>/about; contact@…)`), `AbortController` timeout (~10s), follow redirects, only parse `text/html`.
+   - Per fetch: custom `User-Agent` (e.g. `LompocLocalsBot/1.0 (+https://<site>/about; contact@…)`), `AbortController` timeout (~10s), follow redirects, only parse `text/html`.
    - Best-effort `robots.txt`: skip a path that is `Disallow`ed for our UA; on any robots fetch error, proceed (don't block on it).
 3. Run `extractEmails` → `pickBestEmail(…, siteHost)`.
 4. Write back: on hit → `contactEmail`, `contactEmailSource='website'`, `contactEmailStatus='found'`, `contactEmailScrapedAt=now()`. On no email → status `'none'`. On fetch/parse failure → status `'error'`. Always set `scrapedAt` so re-runs can target only `null`/`error` rows.
