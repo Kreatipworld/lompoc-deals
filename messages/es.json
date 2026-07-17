@@ -40,7 +40,7 @@
     "close": "Cerrar"
   },
   "footer": {
-    "tagline": "Cupones, especiales y anuncios locales del Valle de Lompoc.",
+    "tagline": "Conectando a vecinos, negocios y visitantes en todo el Valle de Lompoc.",
     "browse": "Explorar",
     "latestDeals": "Últimas ofertas",
     "businessDirectory": "Directorio de negocios",
@@ -71,7 +71,7 @@
     "location": "Lompoc, California",
     "heroTitle": "Todo Lompoc",
     "heroHighlight": "en un solo lugar",
-    "heroSubheadline": "Descubre restaurantes, tiendas, servicios y más — todo en un solo lugar.",
+    "heroSubheadline": "Conectamos a vecinos, negocios y visitantes — todos los restaurantes, tiendas, eventos y ofertas de Lompoc en un solo lugar.",
     "statActiveDeals": "ofertas activas",
     "statLocalBusinesses": "negocios locales",
     "statCategories": "categorías",
@@ -191,7 +191,7 @@
   "auth": {
     "signup": "Registrarse",
     "signupTitle": "Crear una cuenta",
-    "signupSubtitle": "Únete a Lompoc Locals",
+    "signupSubtitle": "Únete a la plataforma que conecta a los vecinos, negocios y visitantes de Lompoc.",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "name": "Nombre",

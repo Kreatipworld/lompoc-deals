@@ -40,7 +40,7 @@
     "close": "Close"
   },
   "footer": {
-    "tagline": "Local coupons, specials, and announcements from the Lompoc Valley.",
+    "tagline": "Connecting locals, businesses, and visitors across the Lompoc Valley.",
     "browse": "Browse",
     "latestDeals": "Latest deals",
     "businessDirectory": "Business directory",
@@ -71,7 +71,7 @@
     "location": "Lompoc, California",
     "heroTitle": "All of Lompoc",
     "heroHighlight": "in One Place",
-    "heroSubheadline": "Discover local restaurants, shops, services, and more — all in one place.",
+    "heroSubheadline": "Connecting locals, businesses, and visitors — every restaurant, shop, event, and deal in Lompoc, in one place.",
     "statActiveDeals": "active deals",
     "statLocalBusinesses": "local businesses",
     "statCategories": "categories",
@@ -191,7 +191,7 @@
   "auth": {
     "signup": "Sign up",
     "signupTitle": "Create an account",
-    "signupSubtitle": "Join Lompoc Locals",
+    "signupSubtitle": "Join the platform connecting Lompoc's locals, businesses, and visitors.",
     "email": "Email",
     "password": "Password",
     "name": "Name",
