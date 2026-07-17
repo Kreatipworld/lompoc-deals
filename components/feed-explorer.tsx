@@ -74,6 +74,9 @@ export function FeedExplorer({
   const [hood, setHood] = useState<string>(initialHood || "all")
   const [view, setView] = useState<ViewMode>("cards")
 
+  const PAGE_SIZE = 24
+  const [shown, setShown] = useState(PAGE_SIZE)
+
   // chips only for neighborhoods that actually have items
   const hoods = useMemo(() => {
     const present = new Set(items.map((i) => i.neighborhood).filter(Boolean) as string[])
@@ -89,6 +92,7 @@ export function FeedExplorer({
   )
 
   function sync(nextType: TypeFilter, nextHood: string) {
+    setShown(PAGE_SIZE)
     const params = new URLSearchParams()
     if (nextType !== "all") params.set("type", nextType)
     if (nextHood !== "all") params.set("hood", nextHood)
@@ -97,6 +101,19 @@ export function FeedExplorer({
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false })
     )
   }
+
+  const showMoreButton = (total: number) =>
+    total > shown ? (
+      <div className="flex justify-center pt-2">
+        <button
+          type="button"
+          onClick={() => setShown((s) => s + PAGE_SIZE)}
+          className="rounded-full border border-primary/30 bg-background px-6 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+        >
+          {t("showMore")} ({total - shown})
+        </button>
+      </div>
+    ) : null
 
   const chip = (active: boolean, label: string, onClick: () => void, key: string) => (
     <button
@@ -210,14 +227,15 @@ export function FeedExplorer({
               </div>
             )}
             {eventsView.city.length > 0 && (
-              <Reveal preset="stagger" stagger={60} className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-                {eventsView.city.map((item) => (
-                  <div key={item.id} className="mb-4 break-inside-avoid">
+              <Reveal preset="stagger" stagger={60} className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {eventsView.city.slice(0, shown).map((item) => (
+                  <div key={item.id}>
                     <FeedCard item={item} />
                   </div>
                 ))}
               </Reveal>
             )}
+            {showMoreButton(eventsView.city.length)}
           </div>
         )
       ) : rest.length === 0 && featured.length === 0 ? (
@@ -234,14 +252,15 @@ export function FeedExplorer({
             </Reveal>
           )}
           {rest.length > 0 && (
-            <Reveal preset="stagger" stagger={60} className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-              {rest.map((item) => (
-                <div key={item.id} className="mb-4 break-inside-avoid">
+            <Reveal preset="stagger" stagger={60} className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {rest.slice(0, shown).map((item) => (
+                <div key={item.id}>
                   <FeedCard item={item} />
                 </div>
               ))}
             </Reveal>
           )}
+          {showMoreButton(rest.length)}
         </div>
       )}
     </div>

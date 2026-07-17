@@ -1,8 +1,7 @@
 import { Link } from "@/i18n/navigation"
-import { Sparkles, ArrowRight } from "lucide-react"
+import { Sparkles } from "lucide-react"
 import { getFeedItems, type FeedDisplayItem } from "@/lib/feed-queries"
 import { FeedExplorer } from "@/components/feed-explorer"
-import { NeighborhoodDemo } from "@/components/neighborhood-demo"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 
@@ -26,7 +25,7 @@ export default async function FeedPage({
   searchParams?: { type?: string; hood?: string }
 }) {
   const t = await getTranslations("feed")
-  const items: FeedDisplayItem[] = await getFeedItems()
+  const items: FeedDisplayItem[] = await getFeedItems({ limit: 120 })
 
   return (
     <main>
@@ -72,51 +71,6 @@ export default async function FeedPage({
         />
       </div>
 
-      {/* ── HOW IT WORKS — animated storyboard + post CTA ───────────── */}
-      <section className="border-t bg-secondary/30 py-14">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mx-auto mb-10 max-w-2xl text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
-              {t("demoEyebrow")}
-            </p>
-            <h2 className="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("demoH2")}
-            </h2>
-            <p className="mt-3 text-muted-foreground">{t("demoBody")}</p>
-          </div>
-
-          <NeighborhoodDemo
-            labels={{
-              scenes: [
-                { title: t("demoScene1Title"), body: t("demoScene1Body") },
-                { title: t("demoScene2Title"), body: t("demoScene2Body") },
-                { title: t("demoScene3Title"), body: t("demoScene3Body") },
-              ],
-              panelLabels: [t("demoPanel1"), t("demoPanel2"), t("demoPanel3")],
-              formLabel: t("demoFormLabel"),
-              postTyped: t("demoPostTyped"),
-              publish: t("demoPublish"),
-              published: t("demoPublished"),
-              postChip: t("demoPostChip"),
-              seenLabel: t("demoSeenLabel"),
-              chatMsg1: t("demoChatMsg1"),
-              chatMsg2: t("demoChatMsg2"),
-              chatMsg3: t("demoChatMsg3"),
-              doneChip: t("demoDoneChip"),
-            }}
-          />
-
-          <div className="mt-10 text-center">
-            <Link
-              href="/feed/post"
-              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              {t("demoCta")}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
     </main>
   )
 }
