@@ -63,7 +63,8 @@
     "legal": "Legal",
     "privacyPolicy": "Política de Privacidad",
     "termsOfService": "Términos del Servicio",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "events": "Eventos"
   },
   "home": {
     "metaTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer en Lompoc, CA",
@@ -2064,5 +2065,16 @@
     "faq2a": "Usa el mapa de esta página o filtra por vecindario — Old Town, Centro, Vandenberg Village, Mission Hills, Mesa Oaks y más. Cada venta muestra su dirección y fechas.",
     "faq3q": "¿Cómo publico mi venta de garaje en Lompoc?",
     "faq3a": "Publicar es gratis: crea una cuenta local, agrega tu dirección, fechas, fotos y lo que vendes. Tu venta aparecerá en el feed del vecindario y en esta página."
+  },
+  "eventsPage": {
+    "metaTitle": "Eventos en Lompoc y Lanzamientos de Vandenberg | Lompoc Locals",
+    "metaDescription": "Próximos eventos en Lompoc, CA — lanzamientos de cohetes de Vandenberg, mercados, festivales, música en vivo y actividades comunitarias. Actualizado a diario.",
+    "heading": "Eventos en Lompoc",
+    "subheading": "Lanzamientos de cohetes, mercados, festivales y todo lo que pasa en el Valle de Lompoc — actualizado a diario.",
+    "launchesHeading": "🚀 Próximos lanzamientos de Vandenberg",
+    "launchesSub": "Los horarios de lanzamiento cambian con frecuencia — verifica antes de salir.",
+    "upcomingHeading": "Pasando en la ciudad",
+    "noEvents": "No hay eventos próximos por ahora — vuelve pronto.",
+    "moreDates": "+{count} fechas más"
   }
 }

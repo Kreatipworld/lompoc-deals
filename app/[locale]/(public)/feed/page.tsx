@@ -6,6 +6,11 @@ import { NeighborhoodDemo } from "@/components/neighborhood-demo"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 
+// The feed is live data (events sync daily, deals expire). Without this the
+// page is frozen at build time — one failed stream at build = empty tab until
+// the next deploy.
+export const revalidate = 300
+
 export async function generateMetadata() {
   const t = await getTranslations("feed")
   return {
