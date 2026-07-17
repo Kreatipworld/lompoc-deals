@@ -6,6 +6,7 @@ import {
 import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals } from "@/lib/queries"
 import { getFeaturedDeals } from "@/lib/featured"
 import { DealsDigest } from "@/components/deals-digest"
+import { EventsSection } from "@/components/events-section"
 import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { SearchBar } from "@/components/search-bar"
@@ -291,6 +292,11 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </div>
         </section>
       )}
+
+      {/* ─────────────────────────────────────────────────
+          EVENTS — upcoming around Lompoc (synced daily)
+         ───────────────────────────────────────────────── */}
+      <EventsSection />
 
       {/* ─────────────────────────────────────────────────
           THINGS TO DO — Featured activities

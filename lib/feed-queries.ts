@@ -25,6 +25,8 @@ export type FeedDisplayItem = {
   isNew: boolean
   approvedAt: Date
   href: string
+  /** For source "event": where the event was synced from ("launch-library" = Vandenberg launch). */
+  eventSource?: string | null
 }
 
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000
@@ -131,6 +133,7 @@ export async function getFeedItems(opts?: { limit?: number }): Promise<FeedDispl
         isNew: now.getTime() - row.createdAt.getTime() < TWENTY_FOUR_HOURS_MS,
         approvedAt: row.createdAt,
         href: `/events/${row.id}`,
+        eventSource: row.source,
       }))
     }),
 

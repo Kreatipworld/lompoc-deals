@@ -2,7 +2,8 @@
 
 import { useMemo, useState, useTransition } from "react"
 import dynamic from "next/dynamic"
-import { usePathname, useRouter } from "@/i18n/navigation"
+import { ArrowRight } from "lucide-react"
+import { Link, usePathname, useRouter } from "@/i18n/navigation"
 import { useLocale, useTranslations } from "next-intl"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
 import { neighborhoodLabel } from "@/lib/neighborhoods"
@@ -116,6 +117,24 @@ export function FeedExplorer({
   const featuredIds = new Set(featured.map((i) => i.id))
   const rest = visible.filter((i) => !featuredIds.has(i.id))
 
+  // Events tab gets the /events treatment: launches first, recurring series
+  // collapsed to their next occurrence, everything sorted by date
+  const eventsView = useMemo(() => {
+    if (type !== "event") return null
+    const sorted = [...visible].sort(
+      (a, b) => (a.startsAt?.getTime() ?? 0) - (b.startsAt?.getTime() ?? 0)
+    )
+    const launches = sorted.filter((i) => i.eventSource === "launch-library")
+    const seen = new Set<string>()
+    const city = sorted.filter((i) => {
+      if (i.eventSource === "launch-library") return false
+      if (seen.has(i.title)) return false
+      seen.add(i.title)
+      return true
+    })
+    return { launches, city }
+  }, [visible, type])
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -161,6 +180,45 @@ export function FeedExplorer({
           <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>
         ) : (
           <FeedMap items={visible} />
+        )
+      ) : eventsView ? (
+        eventsView.launches.length === 0 && eventsView.city.length === 0 ? (
+          <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>
+        ) : (
+          <div key={`${type}-${hood}`} className="space-y-8">
+            <div className="flex justify-end">
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+              >
+                {t("fullCalendar")}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            {eventsView.launches.length > 0 && (
+              <div>
+                <h2 className="mb-3 font-display text-lg font-semibold tracking-tight">
+                  {t("launchesHeading")}
+                </h2>
+                <Reveal preset="scaleIn" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {eventsView.launches.slice(0, 6).map((item) => (
+                    <div key={item.id}>
+                      <FeedCard item={item} />
+                    </div>
+                  ))}
+                </Reveal>
+              </div>
+            )}
+            {eventsView.city.length > 0 && (
+              <Reveal preset="stagger" stagger={60} className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+                {eventsView.city.map((item) => (
+                  <div key={item.id} className="mb-4 break-inside-avoid">
+                    <FeedCard item={item} />
+                  </div>
+                ))}
+              </Reveal>
+            )}
+          </div>
         )
       ) : rest.length === 0 && featured.length === 0 ? (
         <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>

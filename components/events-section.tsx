@@ -1,5 +1,5 @@
-import Image from "next/image"
 import { getUpcomingEvents } from "@/lib/queries"
+import { SafeImage } from "@/components/safe-image"
 import { Link } from "@/i18n/navigation"
 import {
   CalendarDays,
@@ -80,12 +80,10 @@ function EventCard({
       {/* Image or placeholder */}
       {event.imageUrl ? (
         <div className="relative h-36 overflow-hidden bg-muted">
-          <Image
+          <SafeImage
             src={event.imageUrl}
             alt={event.title}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 33vw"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
       ) : (
@@ -183,7 +181,13 @@ export async function EventsSection() {
 
   let evts: Awaited<ReturnType<typeof getUpcomingEvents>> = []
   try {
-    evts = await getUpcomingEvents(undefined, 8)
+    // Over-fetch, then collapse recurring series (same title) to their next
+    // occurrence so a daily gallery show doesn't fill the whole row
+    const raw = await getUpcomingEvents(undefined, 24)
+    const seen = new Set<string>()
+    evts = raw
+      .filter((e) => (seen.has(e.title) ? false : (seen.add(e.title), true)))
+      .slice(0, 8)
   } catch {
     // If DB is unavailable, skip gracefully
     return null
@@ -202,10 +206,10 @@ export async function EventsSection() {
           </p>
         </div>
         <Link
-          href="/submit-event"
+          href="/events"
           className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
         >
-          {t("submitEvent")}
+          {t("viewAll")}
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>

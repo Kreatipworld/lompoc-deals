@@ -901,7 +901,9 @@
     "demoChatMsg2": "We do — two of them. Come by early!",
     "demoChatMsg3": "Perfect, see you Saturday 🙌",
     "demoDoneChip": "That's the neighborhood at work.",
-    "demoCta": "Post something"
+    "demoCta": "Post something",
+    "launchesHeading": "🚀 Upcoming Vandenberg launches",
+    "fullCalendar": "Full events calendar"
   },
   "feedPost": {
     "metaTitle": "Post to the Lompoc Feed",
@@ -1728,7 +1730,8 @@
     "food": "Food",
     "sports": "Sports",
     "market": "Market",
-    "event": "Event"
+    "event": "Event",
+    "viewAll": "See all events"
   },
   "wineriesSection": {
     "heading": "Lompoc Wine Ghetto & Santa Rita Hills",
