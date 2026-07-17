@@ -35,6 +35,10 @@ import { pageAlternates } from "@/lib/seo"
 
 const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
 
+// Profiles are living data (enrichment sweeps, claims, unpublishes). Without
+// revalidation, a page cached while approved keeps serving after unpublish.
+export const revalidate = 300
+
 export async function generateMetadata({
   params,
 }: {

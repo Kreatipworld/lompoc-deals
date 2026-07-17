@@ -9,6 +9,9 @@ import { pageAlternates } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
+// Launch times slip and events cancel — keep detail pages fresh
+export const revalidate = 300
+
 async function getApprovedEvent(id: number) {
   if (Number.isNaN(id)) return null
   const rows = await db.select().from(events).where(eq(events.id, id)).limit(1)
