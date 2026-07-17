@@ -64,11 +64,7 @@ export default async function FeedPage({
 
       {/* ── FEED — content first ─────────────────────────────────────── */}
       <div className="mx-auto max-w-6xl px-4 py-8">
-        <FeedExplorer
-          items={items}
-          initialType={searchParams?.type ?? ""}
-          initialHood={searchParams?.hood ?? ""}
-        />
+        <FeedExplorer items={items} initialType={searchParams?.type ?? ""} />
       </div>
 
     </main>

@@ -81,11 +81,14 @@ export function Reveal({
 
       if (preset === "stagger") {
         const targets = Array.from(root.children) as HTMLElement[]
+        // Cap the total stagger window so long lists (e.g. 100 feed cards)
+        // finish revealing in ~1s instead of one-per-interval forever
+        const perChild = Math.min(stagger, Math.max(15, 1000 / targets.length))
         animate(targets, {
           opacity: [0, 1],
           translateY: [16, 0],
           duration: DURATION.entrance,
-          delay: animeStagger(stagger, { start: delay }),
+          delay: animeStagger(perChild, { start: delay }),
           easing: EASE.standard,
         })
       } else {
@@ -101,6 +104,10 @@ export function Reveal({
       }
     }
 
+    // threshold 0: fire as soon as any pixel is visible. A fractional
+    // threshold breaks on tall containers (a 5000px card grid never gets 15%
+    // of itself into the viewport, so the reveal never fires and the content
+    // stays at opacity 0 — an invisible, fully-rendered page).
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -108,7 +115,7 @@ export function Reveal({
           observer.disconnect()
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -32px 0px" }
+      { threshold: 0, rootMargin: "0px 0px -32px 0px" }
     )
 
     observer.observe(root)

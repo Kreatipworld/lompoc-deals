@@ -4,9 +4,8 @@ import { useMemo, useState, useTransition } from "react"
 import dynamic from "next/dynamic"
 import { ArrowRight } from "lucide-react"
 import { Link, usePathname, useRouter } from "@/i18n/navigation"
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
-import { neighborhoodLabel } from "@/lib/neighborhoods"
 import { FeedCard } from "@/components/feed-card"
 import { Reveal } from "@/components/reveal"
 
@@ -55,47 +54,60 @@ function matchesType(item: FeedDisplayItem, f: TypeFilter): boolean {
   return item.type === f
 }
 
+/**
+ * Round-robin across content buckets so the All scroll is a varied mix
+ * (deal → sale → event → news → …) instead of a wall of whichever category
+ * currently dominates the data.
+ */
+function mixAll(list: FeedDisplayItem[]): FeedDisplayItem[] {
+  const deals: FeedDisplayItem[] = []
+  const sales: FeedDisplayItem[] = []
+  const evts: FeedDisplayItem[] = []
+  const news: FeedDisplayItem[] = []
+  for (const item of list) {
+    if (item.type === "deal") deals.push(item)
+    else if (item.type === "for_sale" || item.type === "garage_sale") sales.push(item)
+    else if (item.type === "event") evts.push(item)
+    else news.push(item)
+  }
+  const buckets = [deals, sales, evts, news]
+  const out: FeedDisplayItem[] = []
+  while (buckets.some((b) => b.length > 0)) {
+    for (const b of buckets) {
+      const item = b.shift()
+      if (item) out.push(item)
+    }
+  }
+  return out
+}
+
 export function FeedExplorer({
   items,
   initialType,
-  initialHood,
 }: {
   items: FeedDisplayItem[]
   initialType: string
-  initialHood: string
 }) {
   const t = useTranslations("feed")
-  const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
   const [, startTransition] = useTransition()
 
   const [type, setType] = useState<TypeFilter>(normalizeType(initialType))
-  const [hood, setHood] = useState<string>(initialHood || "all")
   const [view, setView] = useState<ViewMode>("cards")
 
   const PAGE_SIZE = 24
   const [shown, setShown] = useState(PAGE_SIZE)
 
-  // chips only for neighborhoods that actually have items
-  const hoods = useMemo(() => {
-    const present = new Set(items.map((i) => i.neighborhood).filter(Boolean) as string[])
-    return Array.from(present)
-  }, [items])
-
   const visible = useMemo(
-    () =>
-      items.filter(
-        (i) => matchesType(i, type) && (hood === "all" || i.neighborhood === hood)
-      ),
-    [items, type, hood]
+    () => items.filter((i) => matchesType(i, type)),
+    [items, type]
   )
 
-  function sync(nextType: TypeFilter, nextHood: string) {
+  function sync(nextType: TypeFilter) {
     setShown(PAGE_SIZE)
     const params = new URLSearchParams()
     if (nextType !== "all") params.set("type", nextType)
-    if (nextHood !== "all") params.set("hood", nextHood)
     const qs = params.toString()
     startTransition(() =>
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false })
@@ -132,7 +144,8 @@ export function FeedExplorer({
 
   const featured = visible.filter((i) => i.isFeatured).slice(0, 2)
   const featuredIds = new Set(featured.map((i) => i.id))
-  const rest = visible.filter((i) => !featuredIds.has(i.id))
+  const restRaw = visible.filter((i) => !featuredIds.has(i.id))
+  const rest = type === "all" ? mixAll(restRaw) : restRaw
 
   // Events tab gets the /events treatment: launches first, recurring series
   // collapsed to their next occurrence, everything sorted by date
@@ -162,7 +175,7 @@ export function FeedExplorer({
               t(f.labelKey),
               () => {
                 setType(f.value)
-                sync(f.value, hood)
+                sync(f.value)
               },
               `type-${f.value}`
             )
@@ -175,23 +188,6 @@ export function FeedExplorer({
         </div>
       </div>
 
-      {hoods.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          {chip(hood === "all", t("hoodAll"), () => { setHood("all"); sync(type, "all") }, "hood-all")}
-          {hoods.map((h) =>
-            chip(
-              hood === h,
-              neighborhoodLabel(h, locale),
-              () => {
-                setHood(h)
-                sync(type, h)
-              },
-              `hood-${h}`
-            )
-          )}
-        </div>
-      )}
-
       {view === "map" ? (
         visible.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>
@@ -202,7 +198,7 @@ export function FeedExplorer({
         eventsView.launches.length === 0 && eventsView.city.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>
         ) : (
-          <div key={`${type}-${hood}`} className="space-y-8">
+          <div key={type} className="space-y-8">
             <div className="flex justify-end">
               <Link
                 href="/events"
@@ -241,7 +237,7 @@ export function FeedExplorer({
       ) : rest.length === 0 && featured.length === 0 ? (
         <p className="py-12 text-center text-muted-foreground">{t("emptyState")}</p>
       ) : (
-        <div key={`${type}-${hood}`} className="space-y-8">
+        <div key={type} className="space-y-8">
           {featured.length > 0 && (
             <Reveal preset="scaleIn" className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {featured.map((item) => (
