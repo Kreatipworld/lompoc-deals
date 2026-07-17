@@ -3,7 +3,7 @@ import { isNotNull } from "drizzle-orm"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendDigestEmail } from "@/lib/email"
-import { getDigestDeals } from "@/lib/digest"
+import { getDigestDeals, getDigestEvents } from "@/lib/digest"
 
 export async function GET(request: Request) {
   const auth = request.headers.get("authorization")
@@ -13,11 +13,12 @@ export async function GET(request: Request) {
   }
 
   const digestDeals = await getDigestDeals()
+  const digestEvents = await getDigestEvents()
 
-  if (digestDeals.length === 0) {
+  if (digestDeals.length === 0 && digestEvents.length === 0) {
     return NextResponse.json({
       sent: 0,
-      skipped: "no deals this week",
+      skipped: "no deals or events this week",
     })
   }
 
@@ -35,7 +36,8 @@ export async function GET(request: Request) {
       sub.email,
       sub.unsubscribeToken,
       digestDeals,
-      locale
+      locale,
+      digestEvents
     )
     if (result.ok) sent++
     else failed++
@@ -45,6 +47,7 @@ export async function GET(request: Request) {
     sent,
     failed,
     deals: digestDeals.length,
+    events: digestEvents.length,
     subscribers: confirmedSubs.length,
   })
 }

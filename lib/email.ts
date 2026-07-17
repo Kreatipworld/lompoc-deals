@@ -1,5 +1,6 @@
 import { Resend } from "resend"
 import type { DealCardData } from "@/lib/queries"
+import type { DigestEvent } from "@/lib/digest"
 
 export type DealNotificationData = {
   id: number
@@ -514,7 +515,8 @@ export async function sendDigestEmail(
   email: string,
   unsubscribeToken: string,
   deals: DealCardData[],
-  locale: "en" | "es"
+  locale: "en" | "es",
+  upcomingEvents: DigestEvent[] = []
 ): Promise<{ ok: boolean; error?: string }> {
   const resend = getResend()
   if (!resend) {
@@ -522,6 +524,38 @@ export async function sendDigestEmail(
   }
 
   const unsubUrl = siteUrl(`/subscribe/unsubscribe?token=${unsubscribeToken}`)
+
+  const eventDate = (d: Date) =>
+    d.toLocaleDateString(locale === "es" ? "es-US" : "en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      timeZone: "America/Los_Angeles",
+    })
+
+  const eventsHtml = upcomingEvents.length
+    ? `
+      <h2 style="font-size: 17px; margin: 28px 0 4px;">
+        ${locale === "es" ? "📅 Esta semana en Lompoc" : "📅 Happening this week"}
+      </h2>
+      ${upcomingEvents
+        .map(
+          (ev) => `
+        <div style="padding: 10px 0; border-bottom: 1px solid #eee;">
+          <span style="color: #650C75; font-weight: 600; font-size: 13px;">
+            ${eventDate(ev.startsAt)}
+          </span>
+          <a href="${siteUrl(`/events/${ev.id}`)}"
+             style="color: #111; text-decoration: none; font-size: 15px; font-weight: 600; display: block;">
+            ${ev.title}
+          </a>
+          ${ev.location ? `<span style="color: #888; font-size: 13px;">${ev.location}</span>` : ""}
+        </div>
+      `
+        )
+        .join("")}
+    `
+    : ""
 
   const dealsHtml = deals
     .map(
@@ -558,6 +592,7 @@ export async function sendDigestEmail(
             Las ${deals.length} mejores ofertas de negocios locales.
           </p>
           ${dealsHtml}
+          ${eventsHtml}
           <p style="margin-top: 32px; color: #888; font-size: 12px;">
             <a href="${unsubUrl}" style="color: #888;">Cancelar suscripción</a>
             · <a href="${siteUrl()}" style="color: #888;">Visitar el sitio</a>
@@ -571,6 +606,7 @@ export async function sendDigestEmail(
             Top ${deals.length} deals from local businesses.
           </p>
           ${dealsHtml}
+          ${eventsHtml}
           <p style="margin-top: 32px; color: #888; font-size: 12px;">
             <a href="${unsubUrl}" style="color: #888;">Unsubscribe</a>
             · <a href="${siteUrl()}" style="color: #888;">Visit site</a>

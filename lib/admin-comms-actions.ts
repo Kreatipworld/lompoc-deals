@@ -5,7 +5,7 @@ import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendDigestEmail, sendBroadcastEmail } from "@/lib/email"
-import { getDigestDeals } from "@/lib/digest"
+import { getDigestDeals, getDigestEvents } from "@/lib/digest"
 
 async function requireAdmin(): Promise<{ email: string }> {
   const session = await auth()
@@ -26,12 +26,13 @@ export type CommsResult = {
 export async function sendTestDigestAction(): Promise<CommsResult> {
   const admin = await requireAdmin()
   const digestDeals = await getDigestDeals()
-  if (digestDeals.length === 0) {
-    return { ok: false, message: "No deals from the past 7 days — the digest would be skipped this week." }
+  const digestEvents = await getDigestEvents()
+  if (digestDeals.length === 0 && digestEvents.length === 0) {
+    return { ok: false, message: "No deals or events from the past 7 days — the digest would be skipped this week." }
   }
-  const result = await sendDigestEmail(admin.email, "admin-test", digestDeals, "en")
+  const result = await sendDigestEmail(admin.email, "admin-test", digestDeals, "en", digestEvents)
   return result.ok
-    ? { ok: true, message: `Test digest (${digestDeals.length} deals) sent to ${admin.email}.` }
+    ? { ok: true, message: `Test digest (${digestDeals.length} deals, ${digestEvents.length} events) sent to ${admin.email}.` }
     : { ok: false, message: result.error ?? "Send failed" }
 }
 

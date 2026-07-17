@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server"
 import { syncEventbriteEvents } from "@/lib/event-sync"
+import { syncVandenbergLaunches } from "@/lib/launch-sync"
+import { syncExploreLompocEvents } from "@/lib/city-events-sync"
 
-export const maxDuration = 60
+export const maxDuration = 120
 
 export async function GET(request: Request) {
   const auth = request.headers.get("authorization")
@@ -10,23 +12,21 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  if (!process.env.EVENTBRITE_PRIVATE_TOKEN) {
-    return NextResponse.json(
-      { error: "EVENTBRITE_PRIVATE_TOKEN not configured" },
-      { status: 503 }
-    )
+  const reports = []
+  const failures = []
+
+  // Each source syncs independently — one failing must not block the others
+  for (const sync of [
+    syncVandenbergLaunches,
+    syncExploreLompocEvents,
+    syncEventbriteEvents,
+  ]) {
+    try {
+      reports.push(await sync())
+    } catch (e) {
+      failures.push(e instanceof Error ? e.message : "sync failed")
+    }
   }
 
-  try {
-    const report = await syncEventbriteEvents()
-    return NextResponse.json({ ok: true, report })
-  } catch (e) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: e instanceof Error ? e.message : "Sync failed",
-      },
-      { status: 500 }
-    )
-  }
+  return NextResponse.json({ ok: failures.length === 0, reports, failures })
 }

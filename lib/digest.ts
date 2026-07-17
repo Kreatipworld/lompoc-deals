@@ -1,6 +1,6 @@
-import { gt, and, eq, desc, sql } from "drizzle-orm"
+import { gt, lt, asc, and, eq, desc, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses } from "@/db/schema"
+import { deals, businesses, events } from "@/db/schema"
 import type { DealCardData } from "@/lib/queries"
 
 /**
@@ -59,4 +59,40 @@ export async function getDigestDeals(): Promise<DealCardData[]> {
       phone: null,
     },
   }))
+}
+
+/** Shape of an event row rendered in the weekly digest email. */
+export type DigestEvent = {
+  id: number
+  title: string
+  location: string | null
+  startsAt: Date
+}
+
+/**
+ * Upcoming approved events for the Monday digest: everything happening in
+ * the next 7 days, soonest first. Rocket launches and city events land here
+ * via the daily sync-events cron.
+ */
+export async function getDigestEvents(): Promise<DigestEvent[]> {
+  const sevenDaysAhead = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  const rows = await db
+    .select({
+      id: events.id,
+      title: events.title,
+      location: events.location,
+      startsAt: events.startsAt,
+    })
+    .from(events)
+    .where(
+      and(
+        eq(events.status, "approved"),
+        gt(events.startsAt, sql`now()`),
+        lt(events.startsAt, sevenDaysAhead)
+      )
+    )
+    .orderBy(asc(events.startsAt))
+    .limit(8)
+
+  return rows
 }

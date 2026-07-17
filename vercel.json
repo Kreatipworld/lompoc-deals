@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/digest",
-      "schedule": "0 9 * * 6"
+      "schedule": "0 16 * * 1"
     },
     {
       "path": "/api/cron/sync-listings",
@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/cron/sync-events",
-      "schedule": "0 * * * *"
+      "schedule": "0 13 * * *"
     },
     {
       "path": "/api/cron/expire-feed-posts",
