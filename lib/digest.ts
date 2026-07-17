@@ -76,8 +76,10 @@ export type DigestEvent = {
  */
 export async function getDigestEvents(): Promise<DigestEvent[]> {
   const sevenDaysAhead = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  // DISTINCT ON title: recurring series (weekly markets, daily gallery shows)
+  // collapse to their next occurrence instead of filling every digest slot
   const rows = await db
-    .select({
+    .selectDistinctOn([events.title], {
       id: events.id,
       title: events.title,
       location: events.location,
@@ -91,8 +93,9 @@ export async function getDigestEvents(): Promise<DigestEvent[]> {
         lt(events.startsAt, sevenDaysAhead)
       )
     )
-    .orderBy(asc(events.startsAt))
-    .limit(8)
+    .orderBy(asc(events.title), asc(events.startsAt))
 
   return rows
+    .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
+    .slice(0, 8)
 }
