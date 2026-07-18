@@ -155,7 +155,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </p>
         </AnimeReveal>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((cat, i) => {
             const image = getCategoryImage(cat.slug)
             return (
@@ -163,29 +163,24 @@ export default async function HomePage({ params }: { params: { locale: string } 
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
                 style={{ animationDelay: `${i * 55}ms` }}
-                className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col items-center justify-center text-white shadow-sm animate-fade-up card-lift hover:shadow-lg hover:-translate-y-1"
+                className="group animate-fade-up"
               >
-                {/* Photo background */}
-                {image ? (
-                  <SafeImage
-                    src={image}
-                    alt={cat.name}
-                    className="absolute inset-0 h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
-                    fallback={<div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600" />}
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600" />
-                )}
-                {/* Dark overlay for text readability */}
-                <div className="absolute inset-0 bg-black/35 group-hover:bg-black/45 [transition:background-color_220ms_ease]" />
-                {/* Stronger bottom gradient for label */}
-                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" />
-
-                <div className="relative flex flex-col items-end justify-end h-full w-full px-4 pb-4">
-                  <span className="font-display text-base font-bold leading-tight drop-shadow-sm">
-                    {cat.name}
-                  </span>
+                {/* Clean photo card — no overlay, label sits below */}
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-accent shadow-sm ring-1 ring-black/[0.06] [transition:box-shadow_220ms_ease] group-hover:shadow-md">
+                  {image ? (
+                    <SafeImage
+                      src={image}
+                      alt={cat.name}
+                      className="h-full w-full object-cover [transition:transform_320ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
+                      fallback={<div className="h-full w-full bg-gradient-to-br from-muted to-accent" />}
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gradient-to-br from-muted to-accent" />
+                  )}
                 </div>
+                <p className="mt-2.5 px-0.5 text-sm font-semibold tracking-tight text-foreground [transition:color_180ms_ease] group-hover:text-primary">
+                  {cat.name}
+                </p>
               </Link>
             )
           })}
