@@ -1,0 +1,58 @@
+import { getTranslations } from "next-intl/server"
+import { Sparkles } from "lucide-react"
+import { Link } from "@/i18n/navigation"
+import { SafeImage } from "@/components/safe-image"
+import { getSponsoredBusinesses } from "@/lib/sponsors"
+
+/**
+ * Plus-tier sponsor carousel — a horizontal card row ("Popular right now"
+ * style) shown at the bottom of search. Renders nothing with no sponsors.
+ */
+export async function SponsorRow() {
+  const sponsors = await getSponsoredBusinesses({ limit: 8 })
+  if (sponsors.length === 0) return null
+  const t = await getTranslations("sponsors")
+
+  return (
+    <section className="mt-12 border-t pt-8">
+      <div className="mb-4 flex items-center gap-2">
+        <Sparkles className="h-4 w-4 text-primary" />
+        <h2 className="font-display text-lg font-semibold tracking-tight">
+          {t("rowHeading")}
+        </h2>
+        <span className="rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          {t("sponsored")}
+        </span>
+      </div>
+
+      <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:thin]">
+        {sponsors.map((s) => (
+          <Link
+            key={s.id}
+            href={`/biz/${s.slug}`}
+            className="group relative h-56 w-64 flex-shrink-0 snap-start overflow-hidden rounded-2xl border bg-muted shadow-sm transition-shadow hover:shadow-lg sm:w-72"
+          >
+            {s.coverUrl && (
+              <SafeImage
+                src={s.coverUrl}
+                alt={s.name}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <p className="line-clamp-2 font-display text-lg font-semibold leading-snug text-white">
+                {s.name}
+              </p>
+              {s.categoryName && (
+                <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-white/75">
+                  {s.categoryName}
+                </p>
+              )}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}

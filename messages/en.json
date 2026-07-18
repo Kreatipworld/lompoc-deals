@@ -2080,5 +2080,10 @@
     "upcomingHeading": "Happening around town",
     "noEvents": "No upcoming events right now — check back soon.",
     "moreDates": "+{count} more dates"
+  },
+  "sponsors": {
+    "sponsored": "Sponsored",
+    "visit": "Visit profile",
+    "rowHeading": "From our local sponsors"
   }
 }

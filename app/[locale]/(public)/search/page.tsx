@@ -8,6 +8,7 @@ import { MapPin, Store, ArrowRight } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
+import { SponsorRow } from "@/components/sponsor-row"
 
 export async function generateMetadata({
   params,
@@ -179,6 +180,9 @@ export default async function SearchPage({
             {t("emptyPrompt")}
           </p>
         )}
+
+        {/* PLUS-TIER SPONSOR — ad row at the bottom of search */}
+        <SponsorRow />
       </section>
     </div>
   )

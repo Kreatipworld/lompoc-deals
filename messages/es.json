@@ -2080,5 +2080,10 @@
     "upcomingHeading": "Pasando en la ciudad",
     "noEvents": "No hay eventos próximos por ahora — vuelve pronto.",
     "moreDates": "+{count} fechas más"
+  },
+  "sponsors": {
+    "sponsored": "Patrocinado",
+    "visit": "Ver perfil",
+    "rowHeading": "De nuestros patrocinadores locales"
   }
 }
