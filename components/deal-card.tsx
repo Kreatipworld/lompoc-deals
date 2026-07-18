@@ -269,20 +269,22 @@ export async function DealCard({
     >
       {/* MEDIA */}
       <div className="relative h-52 overflow-hidden">
-        <SafeImage
-          src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
-          alt={deal.imageUrl ? deal.title : deal.business.name}
-          className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
-          fallback={
-            <div
-              className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradientFor(
-                deal.id
-              )}`}
-            >
-              <TypeIcon className="h-14 w-14 text-foreground/20" strokeWidth={1.25} />
-            </div>
-          }
-        />
+        <Link href={`/biz/${deal.business.slug}`} className="block h-full w-full" aria-label={deal.title}>
+          <SafeImage
+            src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
+            alt={deal.imageUrl ? deal.title : deal.business.name}
+            className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+            fallback={
+              <div
+                className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradientFor(
+                  deal.id
+                )}`}
+              >
+                <TypeIcon className="h-14 w-14 text-foreground/20" strokeWidth={1.25} />
+              </div>
+            }
+          />
+        </Link>
 
         {/* Discount badge (top-left, amber California gold) */}
         {deal.discountText && (
@@ -362,9 +364,11 @@ export async function DealCard({
           >
             {deal.business.name}
           </Link>
-          <h3 className="font-display text-lg font-semibold leading-snug tracking-tight line-clamp-2">
-            {deal.title}
-          </h3>
+          <Link href={`/biz/${deal.business.slug}`} className="block">
+            <h3 className="font-display text-lg font-semibold leading-snug tracking-tight line-clamp-2 transition-colors hover:text-primary">
+              {deal.title}
+            </h3>
+          </Link>
         </div>
 
         {deal.description && (

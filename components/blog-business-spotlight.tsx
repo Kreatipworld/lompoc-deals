@@ -38,7 +38,7 @@ export function BlogBusinessSpotlight({
         {businesses.map((biz) => (
           <li key={biz.id}>
             <Link
-              href={`/businesses?highlight=${biz.slug}`}
+              href={`/biz/${biz.slug}`}
               className="group flex items-start gap-3 p-3 rounded-xl border border-gray-100 hover:border-primary/20 hover:bg-accent transition-all"
             >
               {/* Logo or fallback icon */}

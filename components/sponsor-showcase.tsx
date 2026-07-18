@@ -50,7 +50,7 @@ export async function SponsorShowcase({
 
         {useMarquee ? (
           /* Ambient marquee — cards drift continuously, pause on hover */
-          <div className="marquee-group marquee-mask -mx-4 overflow-hidden px-4">
+          <div className="marquee-group -mx-4 overflow-hidden px-4">
             <div className="animate-marquee flex w-max gap-4 pb-1">
               {[...members, ...members].map((s, i) => card(s, `${s.id}-${i}`))}
             </div>
@@ -70,16 +70,16 @@ export async function SponsorShowcase({
       <Link
         key={key}
         href={`/biz/${s.slug}`}
-        className="group relative h-72 w-56 flex-shrink-0 snap-start overflow-hidden rounded-2xl border bg-muted shadow-sm transition-shadow hover:shadow-lg sm:w-60"
+        className="group relative h-72 w-56 flex-shrink-0 snap-start overflow-hidden rounded-2xl bg-muted shadow-[0_1px_2px_rgba(0,0,0,0.06),0_8px_24px_-12px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.06] [transition:transform_260ms_ease,box-shadow_260ms_ease] hover:-translate-y-1 hover:shadow-[0_2px_4px_rgba(0,0,0,0.08),0_18px_40px_-14px_rgba(0,0,0,0.4)] sm:w-60"
       >
         {s.coverUrl && (
           <SafeImage
             src={s.coverUrl}
             alt={s.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+            className="h-full w-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/[0.04]" />
 
         {s.exclusive && (
           <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground shadow">
@@ -93,15 +93,15 @@ export async function SponsorShowcase({
             <SafeImage
               src={s.logoUrl}
               alt=""
-              className="h-10 w-10 flex-shrink-0 rounded-lg border-2 border-white/80 bg-white object-cover shadow-md"
+              className="h-11 w-11 flex-shrink-0 rounded-xl bg-white object-contain p-1 shadow-md ring-1 ring-black/5"
             />
           )}
           <div className="min-w-0">
-            <p className="truncate font-display text-lg font-semibold leading-snug text-white">
+            <p className="truncate font-display text-lg font-semibold leading-snug text-white drop-shadow-sm">
               {s.name}
             </p>
             {s.categoryName && (
-              <p className="truncate text-xs font-medium uppercase tracking-wide text-white/75">
+              <p className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70">
                 {s.categoryName}
               </p>
             )}

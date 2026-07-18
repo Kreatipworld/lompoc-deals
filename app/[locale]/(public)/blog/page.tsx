@@ -159,7 +159,7 @@ export default async function BlogIndexPage({
                 className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-primary/20 transition-all flex flex-col"
               >
                 {post.imageUrl && (
-                  <Link href={`/blog/${post.slug}`} className="block aspect-[16/9] overflow-hidden bg-gray-100">
+                  <Link href={`/blog/${post.slug}`} className="group block aspect-[16/9] overflow-hidden bg-gray-100">
                     <SafeImage
                       src={post.imageUrl}
                       alt={post.title}

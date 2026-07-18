@@ -155,8 +155,9 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </p>
         </AnimeReveal>
 
-        {/* Two rows that scroll sideways — cards flow down-then-across. */}
-        <div className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:auto-cols-[23%] lg:auto-cols-[15.5%]">
+        {/* Mobile: two rows that scroll sideways. Desktop: filling 5-col grid
+            (two full rows), centered across the section. */}
+        <div className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0">
           {categories.map((cat, i) => {
             const image = getCategoryImage(cat.slug)
             return (
