@@ -141,6 +141,26 @@
   animation: fade-up 380ms var(--ease-out) both;
 }
 
+/* ── Ambient marquee (Featured Members row): gentle continuous drift ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 55s linear infinite;
+  will-change: transform;
+}
+/* Pause when the visitor engages, so they can read + click */
+.marquee-group:hover .animate-marquee,
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+/* Soft fade at both edges so cards drift in/out instead of hard-cutting */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
 /* ── Card hover lift: specific properties only, expo easing ── */
 /* Apply .card-lift to cards; use Tailwind hover: utilities for the visual state */
 .card-lift {
@@ -212,6 +232,7 @@
 /* Honour reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up { animation: none; }
+  .animate-marquee { animation: none; }
   .skeleton { animation: none; }
   .card-lift { transition: none; }
   .form-message-enter { animation: none; }
