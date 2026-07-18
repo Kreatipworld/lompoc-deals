@@ -6,6 +6,37 @@ scarce by design: only one business can own each category.
 
 ---
 
+## The methodology: we sell placements, not clicks
+
+Lompoc Locals is a **placement seller**. Every page has spaces ("placements"),
+and a paid member's presence fills them to buy awareness. The product is *being
+seen across the whole town's hub*. The more placements, the more valuable
+membership — so we build inventory everywhere and one membership lights it all up.
+
+### Placement inventory (what's live)
+
+| Placement | Where | Who fills it | Sold as |
+|---|---|---|---|
+| **Featured Members** row | Homepage (top) + top of every category page | All Plus members (daily-shuffled, fair) | Plus |
+| **Category Spotlight / lead** | First slot of a category's member slide | The Category-Exclusive owner (always) | Category Exclusive |
+| **Featured Deals** strip | Bottom of profiles, blog posts, events, events list, garage-sales | Premium members' live deals (daily-shuffled) | Plus |
+| **Search sponsor row** | Bottom of every search result | All Plus members (exclusive-first) | Plus |
+| **Business profile page** | The member's own enriched page + claimable coupon | The member | Plus |
+| **Weekly digest** | Monday email to all subscribers | Members' deals + events | Plus / digest ad |
+
+**The pitch this unlocks:** "One membership, and your deal shows up on every
+blog post, every business page, every event page, in search, and in the weekly
+email — the whole hub works for you." That's awareness a $99/mo local ad never
+buys, and $249/mo Category Exclusive means you *own* the top of your category.
+
+### Rules that keep it honest (and sellable)
+- A member's own profile never features its own deal (no wasted slot).
+- Empty placements render nothing — no "your ad here" clutter.
+- Consumer-facing copy stays neighborly ("Featured members", "Featured deals"),
+  never "buy an ad". We sell the space to businesses; locals just see value.
+
+---
+
 ## The product ladder
 
 The three subscription tiers already exist (`lib/stripe.ts`). Sponsorship layers
