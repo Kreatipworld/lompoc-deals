@@ -265,7 +265,13 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
     .leftJoin(deals, eq(deals.businessId, businesses.id))
     .where(and(eq(businesses.status, "approved"), eq(categories.slug, categorySlug)))
     .groupBy(businesses.id, categories.id)
-    .orderBy(businesses.name)
+    // Official Partners get priority in their category: the Category-Exclusive
+    // owner first, then Plus partners, then everyone else — alphabetical within.
+    .orderBy(
+      desc(businesses.sponsorExclusive),
+      desc(sql`coalesce(${businesses.planOverride} = 'premium', false)`),
+      businesses.name
+    )
   return rows
 }
 

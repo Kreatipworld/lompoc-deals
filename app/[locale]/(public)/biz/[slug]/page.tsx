@@ -12,6 +12,7 @@ import {
   Calendar,
   Navigation,
   Bell,
+  BadgeCheck,
 } from "lucide-react"
 import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
@@ -85,10 +86,11 @@ export default async function BusinessPage({
 }: {
   params: { slug: string; locale: string }
 }) {
-  const [data, viewer, t] = await Promise.all([
+  const [data, viewer, t, tsp] = await Promise.all([
     getBusinessBySlug(params.slug),
     getViewer(),
     getTranslations("businesses.profile"),
+    getTranslations("sponsors"),
   ])
   if (!data) {
     if (params.slug.startsWith("demo-")) {
@@ -228,6 +230,14 @@ export default async function BusinessPage({
               {/* Title block */}
               <div className="flex-1 space-y-3">
                 <div>
+                  {business.planOverride === "premium" && (
+                    <span className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground shadow-sm">
+                      <BadgeCheck className="h-3.5 w-3.5" />
+                      {business.sponsorExclusive
+                        ? tsp("officialPartner", { category: business.category?.name ?? "" })
+                        : tsp("officialPartnerGeneric")}
+                    </span>
+                  )}
                   <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
                     {business.name}
                   </h1>
