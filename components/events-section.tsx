@@ -76,7 +76,10 @@ function EventCard({
   const Icon = categoryIcon(event.category)
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
+    <Link
+      href={`/events/${event.id}`}
+      className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md hover:-translate-y-0.5 [transition:transform_200ms_ease,box-shadow_200ms_ease]"
+    >
       {/* Image or placeholder */}
       {event.imageUrl ? (
         <div className="relative h-36 overflow-hidden bg-muted">
@@ -127,19 +130,16 @@ function EventCard({
           </p>
         )}
 
-        {/* Business link */}
+        {/* Host business (card links to the event detail) */}
         {event.business && (
           <div className="mt-auto pt-2">
-            <Link
-              href={`/businesses/${event.business.slug}`}
-              className="text-[11px] font-medium text-primary hover:underline"
-            >
+            <span className="text-[11px] font-medium text-primary">
               {event.business.name}
-            </Link>
+            </span>
           </div>
         )}
       </div>
-    </div>
+    </Link>
   )
 }
 
