@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     openGraph: {
       title: t("metaTitle"),
       description: t("metaDescription"),
-      images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
+      // Branded share cover comes from app/opengraph-image.tsx
     },
     alternates: pageAlternates("/"),
   }
