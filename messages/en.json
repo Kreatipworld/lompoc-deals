@@ -2098,7 +2098,8 @@
     "becomePartner": "List your business",
     "showcaseCategoryHeading": "Featured members here",
     "showcaseCategorySub": "Local favorites in this part of town.",
-    "dealAvailable": "Coupon available"
+    "dealAvailable": "Coupon available",
+    "officialPartnerGeneric": "Official Partner"
   },
   "featuredDeals": {
     "heading": "Featured Deals",

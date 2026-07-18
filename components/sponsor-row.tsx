@@ -40,12 +40,10 @@ export async function SponsorRow() {
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            {s.exclusive && (
-              <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground shadow">
-                <BadgeCheck className="h-3 w-3" />
-                {t("officialPartner", { category: s.categoryName ?? "" })}
-              </span>
-            )}
+            <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground shadow">
+              <BadgeCheck className="h-3 w-3" />
+              {s.exclusive ? t("officialPartner", { category: s.categoryName ?? "" }) : t("officialPartnerGeneric")}
+            </span>
             <div className="absolute inset-x-0 bottom-0 p-4">
               <p className="line-clamp-2 font-display text-lg font-semibold leading-snug text-white">
                 {s.name}
