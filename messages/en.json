@@ -2089,6 +2089,9 @@
     "showcaseEyebrow": "Featured Members",
     "showcaseHeading": "Meet some of your neighbors",
     "showcaseSub": "A few of the local businesses that call Lompoc home.",
-    "becomePartner": "List your business"
+    "becomePartner": "List your business",
+    "showcaseCategoryHeading": "Featured members here",
+    "showcaseCategorySub": "Local favorites — some with a coupon waiting.",
+    "dealAvailable": "Coupon available"
   }
 }

@@ -29,7 +29,7 @@ import {
 import { filterOpenNow } from "@/lib/hours"
 import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
-import { SponsorSpotlight } from "@/components/sponsor-spotlight"
+import { SponsorShowcase } from "@/components/sponsor-showcase"
 import { DealGrid } from "@/components/deal-card"
 import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
@@ -181,10 +181,8 @@ export default async function CategoryPage({
         </div>
       </section>
 
-      {/* PLUS-TIER SPONSOR — category landing spotlight */}
-      <div className="mx-auto max-w-6xl px-4 pt-8">
-        <SponsorSpotlight categorySlug={params.slug} />
-      </div>
+      {/* FEATURED MEMBERS — category member slide (like the landing page) */}
+      <SponsorShowcase categorySlug={params.slug} />
 
       {/* REAL ESTATE: tabs + property grid */}
       {isRealEstate && (

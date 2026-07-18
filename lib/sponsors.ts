@@ -1,6 +1,6 @@
-import { and, eq, sql, desc } from "drizzle-orm"
+import { and, eq, sql, desc, gt, inArray, isNotNull } from "drizzle-orm"
 import { db } from "@/db/client"
-import { businesses, categories, subscriptions } from "@/db/schema"
+import { businesses, categories, subscriptions, deals } from "@/db/schema"
 
 export type SponsorBusiness = {
   id: number
@@ -12,6 +12,8 @@ export type SponsorBusiness = {
   categoryName: string | null
   categorySlug: string | null
   exclusive: boolean
+  /** The member's live coupon, if any — showcases the value of membership. */
+  deal: { id: number; discountText: string | null; title: string } | null
 }
 
 // A business is a "Plus" sponsor when its effective tier is premium:
@@ -73,7 +75,43 @@ export async function getSponsoredBusinesses(opts?: {
     ? shared.slice(day % shared.length).concat(shared.slice(0, day % shared.length))
     : shared
 
-  return exclusive.concat(rotatedShared).slice(0, limit)
+  const ordered = exclusive.concat(rotatedShared).slice(0, limit)
+  return attachDeals(ordered)
+}
+
+/** Attach each member's soonest-expiring live coupon (one per business). */
+async function attachDeals(
+  rows: Omit<SponsorBusiness, "deal">[]
+): Promise<SponsorBusiness[]> {
+  if (rows.length === 0) return []
+  const ids = rows.map((r) => r.id)
+  const dealRows = await db
+    .select({
+      id: deals.id,
+      businessId: deals.businessId,
+      discountText: deals.discountText,
+      title: deals.title,
+      expiresAt: deals.expiresAt,
+    })
+    .from(deals)
+    .where(
+      and(
+        inArray(deals.businessId, ids),
+        eq(deals.paused, false),
+        gt(deals.expiresAt, sql`now()`),
+        isNotNull(deals.discountText)
+      )
+    )
+    .orderBy(deals.expiresAt)
+
+  // First hit per business = soonest to expire (most urgent to surface)
+  const byBiz = new Map<number, { id: number; discountText: string | null; title: string }>()
+  for (const d of dealRows) {
+    if (!byBiz.has(d.businessId))
+      byBiz.set(d.businessId, { id: d.id, discountText: d.discountText, title: d.title })
+  }
+
+  return rows.map((r) => ({ ...r, deal: byBiz.get(r.id) ?? null }))
 }
 
 /**

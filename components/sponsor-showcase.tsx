@@ -1,32 +1,40 @@
 import { getTranslations } from "next-intl/server"
-import { BadgeCheck, Sparkles, ArrowRight } from "lucide-react"
+import { BadgeCheck, Sparkles, ArrowRight, Ticket } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { SafeImage } from "@/components/safe-image"
 import { getSponsoredBusinesses } from "@/lib/sponsors"
 
 /**
- * Homepage "Featured Local Partners" showcase — the landing-page space that
- * Plus / Category-Exclusive sponsors pay for. Exclusive owners lead (with the
- * Official Partner badge). Renders nothing when there are no sponsors.
+ * "Featured Members" showcase — a single horizontal row of Plus / Category-
+ * Exclusive members, each with their live coupon. Used on the homepage (all
+ * members) and, with categorySlug, at the top of a category page (that
+ * category's members). Renders nothing when there are no members.
  */
-export async function SponsorShowcase() {
-  const sponsors = await getSponsoredBusinesses({ limit: 20 })
-  if (sponsors.length === 0) return null
+export async function SponsorShowcase({
+  categorySlug,
+}: {
+  categorySlug?: string
+} = {}) {
+  const members = await getSponsoredBusinesses({ categorySlug, limit: 20 })
+  if (members.length === 0) return null
   const t = await getTranslations("sponsors")
+  const scoped = Boolean(categorySlug)
 
   return (
-    <section className="border-y bg-gradient-to-b from-accent/30 to-transparent py-12">
+    <section className="border-y bg-gradient-to-b from-accent/30 to-transparent py-10">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="mb-6 flex items-end justify-between gap-4">
+        <div className="mb-5 flex items-end justify-between gap-4">
           <div>
             <div className="mb-1 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary">
               <Sparkles className="h-3.5 w-3.5" />
               {t("showcaseEyebrow")}
             </div>
-            <h2 className="font-display text-3xl font-bold tracking-tight">
-              {t("showcaseHeading")}
+            <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+              {scoped ? t("showcaseCategoryHeading") : t("showcaseHeading")}
             </h2>
-            <p className="mt-1 text-muted-foreground">{t("showcaseSub")}</p>
+            <p className="mt-1 text-muted-foreground">
+              {scoped ? t("showcaseCategorySub") : t("showcaseSub")}
+            </p>
           </div>
           <Link
             href="/for-businesses"
@@ -37,9 +45,9 @@ export async function SponsorShowcase() {
           </Link>
         </div>
 
-        {/* Single horizontal row — scroll right for more sponsors */}
+        {/* Single horizontal row — scroll right for more members */}
         <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:thin]">
-          {sponsors.map((s) => (
+          {members.map((s) => (
             <Link
               key={s.id}
               href={`/biz/${s.slug}`}
@@ -53,12 +61,22 @@ export async function SponsorShowcase() {
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+
               {s.exclusive && (
                 <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground shadow">
                   <BadgeCheck className="h-3 w-3" />
                   {t("officialPartner", { category: s.categoryName ?? "" })}
                 </span>
               )}
+
+              {/* Live coupon — the visible payoff of membership */}
+              {s.deal?.discountText && (
+                <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-[#EFC618] px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wide text-black shadow-md">
+                  <Ticket className="h-3.5 w-3.5" />
+                  {s.deal.discountText}
+                </span>
+              )}
+
               <div className="absolute inset-x-0 bottom-0 flex items-end gap-2.5 p-4">
                 {s.logoUrl && (
                   <SafeImage
@@ -71,11 +89,9 @@ export async function SponsorShowcase() {
                   <p className="truncate font-display text-lg font-semibold leading-snug text-white">
                     {s.name}
                   </p>
-                  {s.categoryName && (
-                    <p className="truncate text-xs font-medium uppercase tracking-wide text-white/75">
-                      {s.categoryName}
-                    </p>
-                  )}
+                  <p className="truncate text-xs font-medium uppercase tracking-wide text-white/75">
+                    {s.deal ? t("dealAvailable") : s.categoryName ?? ""}
+                  </p>
                 </div>
               </div>
             </Link>
