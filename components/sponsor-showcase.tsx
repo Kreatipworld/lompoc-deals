@@ -10,7 +10,7 @@ import { getSponsoredBusinesses } from "@/lib/sponsors"
  * Official Partner badge). Renders nothing when there are no sponsors.
  */
 export async function SponsorShowcase() {
-  const sponsors = await getSponsoredBusinesses({ limit: 8 })
+  const sponsors = await getSponsoredBusinesses({ limit: 20 })
   if (sponsors.length === 0) return null
   const t = await getTranslations("sponsors")
 
@@ -37,43 +37,46 @@ export async function SponsorShowcase() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {/* Single horizontal row — scroll right for more sponsors */}
+        <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:thin]">
           {sponsors.map((s) => (
             <Link
               key={s.id}
               href={`/biz/${s.slug}`}
-              className="group relative overflow-hidden rounded-2xl border bg-card shadow-sm transition-shadow hover:shadow-lg"
+              className="group relative h-72 w-56 flex-shrink-0 snap-start overflow-hidden rounded-2xl border bg-muted shadow-sm transition-shadow hover:shadow-lg sm:w-60"
             >
-              <div className="relative aspect-[4/3] w-full bg-muted">
-                {s.coverUrl && (
-                  <SafeImage
-                    src={s.coverUrl}
-                    alt={s.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                {s.exclusive && (
-                  <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground shadow">
-                    <BadgeCheck className="h-3 w-3" />
-                    {t("officialPartner", { category: s.categoryName ?? "" })}
-                  </span>
-                )}
+              {s.coverUrl && (
+                <SafeImage
+                  src={s.coverUrl}
+                  alt={s.name}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+              {s.exclusive && (
+                <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground shadow">
+                  <BadgeCheck className="h-3 w-3" />
+                  {t("officialPartner", { category: s.categoryName ?? "" })}
+                </span>
+              )}
+              <div className="absolute inset-x-0 bottom-0 flex items-end gap-2.5 p-4">
                 {s.logoUrl && (
                   <SafeImage
                     src={s.logoUrl}
                     alt=""
-                    className="absolute bottom-2.5 left-2.5 h-10 w-10 rounded-lg border-2 border-white/80 bg-white object-cover shadow-md"
+                    className="h-10 w-10 flex-shrink-0 rounded-lg border-2 border-white/80 bg-white object-cover shadow-md"
                   />
                 )}
-              </div>
-              <div className="p-3">
-                <p className="truncate font-semibold leading-snug">{s.name}</p>
-                {s.categoryName && (
-                  <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                    {s.categoryName}
+                <div className="min-w-0">
+                  <p className="truncate font-display text-lg font-semibold leading-snug text-white">
+                    {s.name}
                   </p>
-                )}
+                  {s.categoryName && (
+                    <p className="truncate text-xs font-medium uppercase tracking-wide text-white/75">
+                      {s.categoryName}
+                    </p>
+                  )}
+                </div>
               </div>
             </Link>
           ))}
