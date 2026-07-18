@@ -155,8 +155,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </p>
         </AnimeReveal>
 
-        {/* Mobile: one horizontal swipe row. Desktop: 2-column grid. */}
-        <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-x-5 sm:gap-y-7 sm:overflow-visible sm:px-0 sm:pb-0">
+        {/* Two rows that scroll sideways — cards flow down-then-across. */}
+        <div className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:auto-cols-[23%] lg:auto-cols-[15.5%]">
           {categories.map((cat, i) => {
             const image = getCategoryImage(cat.slug)
             return (
@@ -164,11 +164,10 @@ export default async function HomePage({ params }: { params: { locale: string } 
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
                 style={{ animationDelay: `${i * 55}ms` }}
-                className="group w-[78%] flex-shrink-0 snap-start animate-fade-up sm:w-auto"
+                className="group snap-start animate-fade-up"
               >
-                {/* Clean photo card — no overlay, label sits below. Compact wide
-                    cards on desktop (2-col) so the section stays tidy. */}
-                <div className="relative overflow-hidden rounded-2xl aspect-[16/10] bg-accent shadow-sm ring-1 ring-black/[0.06] [transition:box-shadow_220ms_ease] group-hover:shadow-md sm:aspect-[21/9]">
+                {/* Clean photo card — no overlay, label sits below. */}
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-accent shadow-sm ring-1 ring-black/[0.06] [transition:box-shadow_220ms_ease] group-hover:shadow-md">
                   {image ? (
                     <SafeImage
                       src={image}
