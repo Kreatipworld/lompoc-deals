@@ -495,7 +495,13 @@
     "subtitle": "Explore local businesses in Lompoc, CA",
     "viewDeal": "View deal",
     "metaTitle": "Explore Lompoc — Interactive Map",
-    "metaDescription": "Discover Lompoc, California on an immersive 3D map. Hotels, wineries, historic sites, outdoor adventures, and more — all in one place."
+    "metaDescription": "Discover Lompoc, California on an immersive 3D map. Hotels, wineries, historic sites, outdoor adventures, and more — all in one place.",
+    "exploreHeading": "Explore Lompoc another way",
+    "exploreSub": "Prefer to browse? Jump into the directory, deals, or events.",
+    "browseByCategory": "Browse by category",
+    "linkBusinesses": "All businesses",
+    "linkDeals": "Latest deals",
+    "linkEvents": "What's on"
   },
   "forBusinesses": {
     "title": "Grow your Lompoc business",
