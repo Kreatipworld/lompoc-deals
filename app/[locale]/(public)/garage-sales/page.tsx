@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server"
+import { FeaturedDeals } from "@/components/featured-deals"
 import { ArrowRight, MapPin } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { getFeedItems, type FeedDisplayItem } from "@/lib/feed-queries"
@@ -58,6 +59,7 @@ export default async function GarageSalesPage({
   )
 
   return (
+    <>
     <main className="mx-auto max-w-6xl px-4 py-10">
       <script
         type="application/ld+json"
@@ -143,5 +145,7 @@ export default async function GarageSalesPage({
         </dl>
       </section>
     </main>
+    <FeaturedDeals />
+    </>
   )
 }

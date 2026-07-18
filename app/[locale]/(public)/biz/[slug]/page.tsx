@@ -1,4 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation"
+import { FeaturedDeals } from "@/components/featured-deals"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
 import {
@@ -483,6 +484,7 @@ export default async function BusinessPage({
           </div>
         </section>
       )}
+      <FeaturedDeals excludeBusinessId={business.id} />
     </>
   )
 }

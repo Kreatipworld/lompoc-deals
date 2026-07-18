@@ -2093,5 +2093,9 @@
     "showcaseCategoryHeading": "Featured members here",
     "showcaseCategorySub": "Local favorites in this part of town.",
     "dealAvailable": "Coupon available"
+  },
+  "featuredDeals": {
+    "heading": "Featured Deals",
+    "sub": "Today's best offers from Lompoc businesses"
   }
 }

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import { FeaturedDeals } from "@/components/featured-deals"
 import { eq } from "drizzle-orm"
 import { ArrowLeft, Calendar, MapPin } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -78,6 +79,7 @@ export default async function EventDetailPage({
   }
 
   return (
+    <>
     <main className="mx-auto max-w-4xl px-4 py-10">
       <script
         type="application/ld+json"
@@ -123,5 +125,7 @@ export default async function EventDetailPage({
         </p>
       )}
     </main>
+    <FeaturedDeals />
+    </>
   )
 }

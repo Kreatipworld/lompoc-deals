@@ -65,7 +65,15 @@ function DealsCarouselCard({ deal, index }: { deal: DealCardData; index: number 
   )
 }
 
-export function DealsCarousel({ deals }: { deals: DealCardData[] }) {
+export function DealsCarousel({
+  deals,
+  heading = "Featured Deals",
+  sub = "Today's best offers from Lompoc businesses",
+}: {
+  deals: DealCardData[]
+  heading?: string
+  sub?: string
+}) {
   if (deals.length === 0) return null
 
   return (
@@ -74,11 +82,9 @@ export function DealsCarousel({ deals }: { deals: DealCardData[] }) {
         <div className="mb-5 flex items-end justify-between">
           <div>
             <h2 className="font-display text-2xl font-bold tracking-tight">
-              Featured Deals
+              {heading}
             </h2>
-            <p className="mt-0.5 text-sm text-muted-foreground">
-              Today&apos;s best offers from Lompoc businesses
-            </p>
+            <p className="mt-0.5 text-sm text-muted-foreground">{sub}</p>
           </div>
           <Link
             href="/deals"

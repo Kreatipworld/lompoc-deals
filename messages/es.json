@@ -2093,5 +2093,9 @@
     "showcaseCategoryHeading": "Miembros destacados",
     "showcaseCategorySub": "Favoritos locales en esta categoría.",
     "dealAvailable": "Cupón disponible"
+  },
+  "featuredDeals": {
+    "heading": "Ofertas Destacadas",
+    "sub": "Las mejores ofertas de negocios de Lompoc hoy"
   }
 }

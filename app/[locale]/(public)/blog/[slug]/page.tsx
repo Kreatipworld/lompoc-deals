@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import { FeaturedDeals } from "@/components/featured-deals"
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
@@ -197,6 +198,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
           </Link>
         </div>
       </main>
+      <FeaturedDeals />
     </>
   )
 }

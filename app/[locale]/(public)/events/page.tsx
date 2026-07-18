@@ -1,4 +1,5 @@
 import { and, eq, gte } from "drizzle-orm"
+import { FeaturedDeals } from "@/components/featured-deals"
 import { Calendar, MapPin, Rocket } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
@@ -76,6 +77,7 @@ export default async function EventsPage({
   }
 
   return (
+    <>
     <main className="mx-auto max-w-5xl px-4 py-10">
       <script
         type="application/ld+json"
@@ -165,5 +167,7 @@ export default async function EventsPage({
         )}
       </section>
     </main>
+    <FeaturedDeals />
+    </>
   )
 }
