@@ -1,18 +1,21 @@
 import { getTranslations } from "next-intl/server"
-import { ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRight, Sparkles, BadgeCheck } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { SafeImage } from "@/components/safe-image"
-import { getSponsoredBusinesses } from "@/lib/sponsors"
+import { getCategorySpotlight } from "@/lib/sponsors"
 
 /**
- * Plus-tier sponsor spotlight — a landing banner at the top of a category
- * page for the sponsoring business in that category. Renders nothing when the
- * category has no Plus sponsor.
+ * Sponsor spotlight — a landing banner at the top of a category page. Shows the
+ * Category-Exclusive owner ("Official Partner") when one exists, otherwise the
+ * daily-rotated Plus sponsor. Renders nothing when the category is unsponsored.
  */
 export async function SponsorSpotlight({ categorySlug }: { categorySlug: string }) {
-  const [sponsor] = await getSponsoredBusinesses({ categorySlug, limit: 1 })
+  const sponsor = await getCategorySpotlight(categorySlug)
   if (!sponsor) return null
   const t = await getTranslations("sponsors")
+  const badgeLabel = sponsor.exclusive
+    ? t("officialPartner", { category: sponsor.categoryName ?? "" })
+    : t("sponsored")
 
   return (
     <Link
@@ -30,8 +33,8 @@ export async function SponsorSpotlight({ categorySlug }: { categorySlug: string 
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
 
         <span className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow">
-          <Sparkles className="h-3 w-3" />
-          {t("sponsored")}
+          {sponsor.exclusive ? <BadgeCheck className="h-3 w-3" /> : <Sparkles className="h-3 w-3" />}
+          {badgeLabel}
         </span>
 
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-5">

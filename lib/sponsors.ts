@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm"
+import { and, eq, sql, desc } from "drizzle-orm"
 import { db } from "@/db/client"
 import { businesses, categories, subscriptions } from "@/db/schema"
 
@@ -11,12 +11,37 @@ export type SponsorBusiness = {
   logoUrl: string | null
   categoryName: string | null
   categorySlug: string | null
+  exclusive: boolean
+}
+
+// A business is a "Plus" sponsor when its effective tier is premium:
+// admin plan_override, or an active/trialing premium subscription.
+const IS_PREMIUM = sql`(
+  ${businesses.planOverride} = 'premium'
+  or (
+    ${businesses.planOverride} is null
+    and ${subscriptions.tier} = 'premium'
+    and ${subscriptions.status} in ('active', 'trialing')
+  )
+)`
+
+const SPONSOR_SELECT = {
+  id: businesses.id,
+  name: businesses.name,
+  slug: businesses.slug,
+  description: businesses.description,
+  coverUrl: businesses.coverUrl,
+  logoUrl: businesses.logoUrl,
+  categoryName: categories.name,
+  categorySlug: categories.slug,
+  exclusive: businesses.sponsorExclusive,
 }
 
 /**
- * Businesses on the Plus (premium) tier — the $99.99 plan's sponsor placements.
- * Effective tier follows lib/tier.ts precedence: admin plan_override first,
- * then an active/trialing premium subscription.
+ * Sponsor businesses for the search ad row and (via categorySlug) a category
+ * page. Ordering: Category-Exclusive owners first, then Plus sponsors. Within
+ * each group we apply a deterministic daily rotation so non-exclusive sponsors
+ * share top billing fairly without the layout reshuffling every request.
  */
 export async function getSponsoredBusinesses(opts?: {
   categorySlug?: string
@@ -24,44 +49,41 @@ export async function getSponsoredBusinesses(opts?: {
 }): Promise<SponsorBusiness[]> {
   const limit = opts?.limit ?? 8
 
-  const isPremium = sql`(
-    ${businesses.planOverride} = 'premium'
-    or (
-      ${businesses.planOverride} is null
-      and ${subscriptions.tier} = 'premium'
-      and ${subscriptions.status} in ('active', 'trialing')
-    )
-  )`
-
   const rows = await db
-    .select({
-      id: businesses.id,
-      name: businesses.name,
-      slug: businesses.slug,
-      description: businesses.description,
-      coverUrl: businesses.coverUrl,
-      logoUrl: businesses.logoUrl,
-      categoryName: categories.name,
-      categorySlug: categories.slug,
-    })
+    .select(SPONSOR_SELECT)
     .from(businesses)
     .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .leftJoin(categories, eq(categories.id, businesses.categoryId))
     .where(
       and(
         eq(businesses.status, "approved"),
-        isPremium,
+        IS_PREMIUM,
         opts?.categorySlug ? eq(categories.slug, opts.categorySlug) : undefined
       )
     )
+    .orderBy(desc(businesses.sponsorExclusive))
     .limit(50)
 
-  // Deterministic daily rotation so every sponsor gets fair top billing
-  // without the layout reshuffling on every request.
-  const day = Math.floor(Date.now() / 86_400_000)
-  const rotated = rows.length
-    ? rows.slice(day % rows.length).concat(rows.slice(0, day % rows.length))
-    : rows
+  const exclusive = rows.filter((r) => r.exclusive)
+  const shared = rows.filter((r) => !r.exclusive)
 
-  return rotated.slice(0, limit)
+  // Daily rotation only applies to the shared (non-exclusive) pool.
+  const day = Math.floor(Date.now() / 86_400_000)
+  const rotatedShared = shared.length
+    ? shared.slice(day % shared.length).concat(shared.slice(0, day % shared.length))
+    : shared
+
+  return exclusive.concat(rotatedShared).slice(0, limit)
+}
+
+/**
+ * The single sponsor to feature at the top of a category page. Prefers the
+ * Category-Exclusive owner (always, no rotation); falls back to the daily-rotated
+ * Plus sponsor when no one owns the category exclusively. Null if unsponsored.
+ */
+export async function getCategorySpotlight(
+  categorySlug: string
+): Promise<SponsorBusiness | null> {
+  const [top] = await getSponsoredBusinesses({ categorySlug, limit: 1 })
+  return top ?? null
 }

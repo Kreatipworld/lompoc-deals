@@ -2084,6 +2084,7 @@
   "sponsors": {
     "sponsored": "Patrocinado",
     "visit": "Ver perfil",
-    "rowHeading": "De nuestros patrocinadores locales"
+    "rowHeading": "De nuestros patrocinadores locales",
+    "officialPartner": "Socio Oficial · {category}"
   }
 }

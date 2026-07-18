@@ -115,6 +115,11 @@ export const businesses = pgTable(
     googleBusinessUrl: varchar("google_business_url", { length: 500 }),
     ownerFullName: varchar("owner_full_name", { length: 200 }),
     planOverride: subscriptionTier("plan_override"),
+    // Category Exclusive product: at most one approved business per category may
+    // set this true (enforced by partial unique index businesses_exclusive_category_idx).
+    // An exclusive owner always wins its category spotlight and is pinned first
+    // in the search sponsor row.
+    sponsorExclusive: boolean("sponsor_exclusive").notNull().default(false),
     gracePeriodEndsAt: timestamp("grace_period_ends_at", { withTimezone: true }),
     status: businessStatus("status").notNull().default("pending"),
     stripeConnectAccountId: varchar("stripe_connect_account_id", { length: 200 }),

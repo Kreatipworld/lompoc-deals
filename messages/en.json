@@ -2084,6 +2084,7 @@
   "sponsors": {
     "sponsored": "Sponsored",
     "visit": "Visit profile",
-    "rowHeading": "From our local sponsors"
+    "rowHeading": "From our local sponsors",
+    "officialPartner": "Official {category} Partner"
   }
 }
