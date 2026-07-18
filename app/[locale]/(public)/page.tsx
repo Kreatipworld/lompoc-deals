@@ -4,16 +4,12 @@ import {
   Building2, ExternalLink, Compass
 } from "lucide-react"
 import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals } from "@/lib/queries"
-import { getFeaturedDeals } from "@/lib/featured"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
-import { getViewer } from "@/lib/viewer"
-import { FeaturedRow } from "@/components/featured-row"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { BusinessAvatar } from "@/components/business-avatar"
-import { DealsCarousel } from "@/components/deals-carousel"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
@@ -64,14 +60,12 @@ function getCategoryImage(slug: string): string | null {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, featuredDeals, activeDeals, viewer, t] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, t] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6),
-    getFeaturedDeals({ limit: 6 }),
     getActiveDeals(12),
-    getViewer(),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
@@ -149,25 +143,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
       <SponsorShowcase />
 
       {/* ─────────────────────────────────────────────────
-          PREMIUM FEATURED ROW — renders null when no premium deals
-         ───────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-7xl px-4 pt-10">
-        <FeaturedRow viewer={viewer} fromPath="/" />
-      </div>
-
-      {/* ─────────────────────────────────────────────────
-          FEATURED DEALS CAROUSEL
-         ───────────────────────────────────────────────── */}
-      <DealsCarousel deals={featuredDeals} />
-
-      {/* ─────────────────────────────────────────────────
-          WEEKLY DEALS DIGEST — deals-first flyer layout that
-          sells business membership (sponsor rails + CTAs)
-         ───────────────────────────────────────────────── */}
-      <DealsDigest deals={activeDeals} />
-
-      {/* ─────────────────────────────────────────────────
-          EXPLORE BY CATEGORY — Image card grid (now below the digest)
+          EXPLORE BY CATEGORY — the hub's front door: browse first
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-14">
         <AnimeReveal direction="up" delay={0} duration={600} className="mb-8">
@@ -215,6 +191,11 @@ export default async function HomePage({ params }: { params: { locale: string } 
           })}
         </div>
       </section>
+
+      {/* ─────────────────────────────────────────────────
+          THIS WEEK'S DEALS — single deals section (purple flyer)
+         ───────────────────────────────────────────────── */}
+      <DealsDigest deals={activeDeals} />
 
       {/* ─────────────────────────────────────────────────
           FEATURED BUSINESSES — "Popular in Lompoc"

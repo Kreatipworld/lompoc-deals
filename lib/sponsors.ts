@@ -67,13 +67,27 @@ export async function getSponsoredBusinesses(opts?: {
   const exclusive = rows.filter((r) => r.exclusive)
   const shared = rows.filter((r) => !r.exclusive)
 
-  // Daily rotation only applies to the shared (non-exclusive) pool.
-  const day = Math.floor(Date.now() / 86_400_000)
-  const rotatedShared = shared.length
-    ? shared.slice(day % shared.length).concat(shared.slice(0, day % shared.length))
-    : shared
+  // Exclusive owners keep top billing (they paid for it); the shared pool is
+  // shuffled with a per-day seed so every member gets an equal, fair turn at
+  // the front. Stable within a day (no layout jank, plays nice with caching),
+  // reshuffled each day.
+  const daySeed = Math.floor(Date.now() / 86_400_000)
+  const shuffledShared = seededShuffle(shared, daySeed)
 
-  return exclusive.concat(rotatedShared).slice(0, limit)
+  return exclusive.concat(shuffledShared).slice(0, limit)
+}
+
+/** Deterministic Fisher-Yates shuffle — same seed → same order (stable per day). */
+function seededShuffle<T>(arr: T[], seed: number): T[] {
+  const a = [...arr]
+  let s = seed % 2147483647
+  if (s <= 0) s += 2147483646
+  const next = () => (s = (s * 16807) % 2147483647) / 2147483647
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
 }
 
 /**
