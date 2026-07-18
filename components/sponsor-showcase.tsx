@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server"
-import { BadgeCheck, Sparkles, ArrowRight, Ticket } from "lucide-react"
+import { BadgeCheck, Sparkles, ArrowRight } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { SafeImage } from "@/components/safe-image"
 import { getSponsoredBusinesses } from "@/lib/sponsors"
@@ -69,14 +69,6 @@ export async function SponsorShowcase({
                 </span>
               )}
 
-              {/* Live coupon — the visible payoff of membership */}
-              {s.deal?.discountText && (
-                <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-[#EFC618] px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wide text-black shadow-md">
-                  <Ticket className="h-3.5 w-3.5" />
-                  {s.deal.discountText}
-                </span>
-              )}
-
               <div className="absolute inset-x-0 bottom-0 flex items-end gap-2.5 p-4">
                 {s.logoUrl && (
                   <SafeImage
@@ -89,9 +81,11 @@ export async function SponsorShowcase({
                   <p className="truncate font-display text-lg font-semibold leading-snug text-white">
                     {s.name}
                   </p>
-                  <p className="truncate text-xs font-medium uppercase tracking-wide text-white/75">
-                    {s.deal ? t("dealAvailable") : s.categoryName ?? ""}
-                  </p>
+                  {s.categoryName && (
+                    <p className="truncate text-xs font-medium uppercase tracking-wide text-white/75">
+                      {s.categoryName}
+                    </p>
+                  )}
                 </div>
               </div>
             </Link>
