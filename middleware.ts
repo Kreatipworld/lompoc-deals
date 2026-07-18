@@ -88,7 +88,9 @@ export default auth(function middleware(req) {
 
 export const config = {
   matcher: [
-    // Match all paths except internals and static files
-    "/((?!_next|_vercel|.*\\..*).*)",
+    // Match all paths except internals, static files, and the extensionless
+    // metadata image routes (opengraph-image / twitter-image), which must be
+    // served directly instead of being locale-rewritten by the intl middleware.
+    "/((?!_next|_vercel|opengraph-image|twitter-image|.*\\..*).*)",
   ],
 }
