@@ -2085,6 +2085,10 @@
     "sponsored": "Sponsored",
     "visit": "Visit profile",
     "rowHeading": "From our local sponsors",
-    "officialPartner": "Official {category} Partner"
+    "officialPartner": "Official {category} Partner",
+    "showcaseEyebrow": "Featured Partners",
+    "showcaseHeading": "Local businesses we're proud to feature",
+    "showcaseSub": "Our founding partners — the best of Lompoc, front and center.",
+    "becomePartner": "Become a partner"
   }
 }

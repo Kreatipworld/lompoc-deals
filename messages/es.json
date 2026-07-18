@@ -2085,6 +2085,10 @@
     "sponsored": "Patrocinado",
     "visit": "Ver perfil",
     "rowHeading": "De nuestros patrocinadores locales",
-    "officialPartner": "Socio Oficial · {category}"
+    "officialPartner": "Socio Oficial · {category}",
+    "showcaseEyebrow": "Socios Destacados",
+    "showcaseHeading": "Negocios locales que nos enorgullece destacar",
+    "showcaseSub": "Nuestros socios fundadores — lo mejor de Lompoc, en primer plano.",
+    "becomePartner": "Conviértete en socio"
   }
 }

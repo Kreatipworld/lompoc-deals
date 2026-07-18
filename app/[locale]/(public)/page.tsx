@@ -7,6 +7,7 @@ import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActiv
 import { getFeaturedDeals } from "@/lib/featured"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
+import { SponsorShowcase } from "@/components/sponsor-showcase"
 import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { SearchBar } from "@/components/search-bar"
@@ -140,6 +141,12 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </div>
         </div>
       </section>
+
+      {/* ─────────────────────────────────────────────────
+          FEATURED LOCAL PARTNERS — homepage sponsor showcase
+          (Plus / Category-Exclusive sponsors). Renders null when none.
+         ───────────────────────────────────────────────── */}
+      <SponsorShowcase />
 
       {/* ─────────────────────────────────────────────────
           PREMIUM FEATURED ROW — renders null when no premium deals
