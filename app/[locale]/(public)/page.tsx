@@ -3,7 +3,7 @@ import {
   ArrowRight, MapPin, Mail, Sparkles, Tag, ChevronDown,
   Building2, ExternalLink, Compass
 } from "lucide-react"
-import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals } from "@/lib/queries"
+import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages } from "@/lib/queries"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
@@ -60,12 +60,13 @@ function getCategoryImage(slug: string): string | null {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, t] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, t] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6),
     getActiveDeals(12),
+    getCategoryCoverImages(),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
@@ -159,7 +160,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
             (two full rows), centered across the section. */}
         <div className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0">
           {categories.map((cat, i) => {
-            const image = getCategoryImage(cat.slug)
+            // Real business photo when available, else the static category image
+            const image = categoryCovers[cat.slug] ?? getCategoryImage(cat.slug)
             return (
               <Link
                 key={cat.slug}

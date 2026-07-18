@@ -497,6 +497,31 @@ export async function getAllCategories() {
   return rows
 }
 
+/**
+ * One representative real-business cover photo per category, for the homepage
+ * category cards. Prefers premium members, then website-enriched businesses,
+ * then the best-photographed — so each category shows an authentic local photo.
+ * Returns { categorySlug: coverUrl }.
+ */
+export async function getCategoryCoverImages(): Promise<Record<string, string>> {
+  const res = await db.execute(sql`
+    SELECT DISTINCT ON (c.slug) c.slug AS slug, b.cover_url AS cover_url
+    FROM businesses b
+    JOIN categories c ON c.id = b.category_id
+    WHERE b.status = 'approved' AND b.cover_url LIKE 'http%'
+    ORDER BY c.slug,
+      COALESCE(b.plan_override = 'premium', false) DESC,
+      (b.about_source = 'website') DESC,
+      jsonb_array_length(COALESCE(b.photos_json, '[]'::jsonb)) DESC,
+      b.id
+  `)
+  const rows = (res as unknown as { rows?: Array<{ slug: string; cover_url: string }> }).rows
+    ?? (res as unknown as Array<{ slug: string; cover_url: string }>)
+  const map: Record<string, string> = {}
+  for (const r of rows) map[r.slug] = r.cover_url
+  return map
+}
+
 export type CategoryWithDeals = {
   id: number
   name: string
