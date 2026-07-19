@@ -80,6 +80,7 @@ export type DigestEvent = {
   title: string
   location: string | null
   startsAt: Date
+  imageUrl: string | null
 }
 
 /**
@@ -97,6 +98,7 @@ export async function getDigestEvents(days = 7, limit = 8): Promise<DigestEvent[
       title: events.title,
       location: events.location,
       startsAt: events.startsAt,
+      imageUrl: events.imageUrl,
     })
     .from(events)
     .where(
@@ -207,4 +209,22 @@ export async function getThemedDigestContent(theme: DigestTheme): Promise<Themed
 /** True when the themed digest has enough to send. */
 export function themedDigestHasContent(c: ThemedDigestContent): boolean {
   return c.events.length + c.deals.length + c.things.length + c.partners.length > 0
+}
+
+/** All four content types for the magazine-style master digest. */
+export type MasterDigestContent = {
+  events: DigestEvent[]
+  deals: DealCardData[]
+  things: DigestThing[]
+  partners: DigestPartner[]
+}
+
+export async function getMasterDigestContent(): Promise<MasterDigestContent> {
+  const [events, deals, things, partners] = await Promise.all([
+    getDigestEvents(21, 6),
+    getDigestDeals(),
+    getDigestThingsToDo(6),
+    getDigestPartners(6),
+  ])
+  return { events, deals: deals.slice(0, 6), things, partners }
 }

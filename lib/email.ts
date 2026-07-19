@@ -1,6 +1,6 @@
 import { Resend } from "resend"
 import type { DealCardData } from "@/lib/queries"
-import type { DigestEvent, ThemedDigestContent } from "@/lib/digest"
+import type { DigestEvent, ThemedDigestContent, MasterDigestContent } from "@/lib/digest"
 
 export type DealNotificationData = {
   id: number
@@ -722,6 +722,105 @@ export async function sendThemedDigestEmail(
 
   try {
     await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: copy.subject, html })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
+// ─── Master magazine digest (all four sections, image-rich) ──────────────
+
+/** Make a relative image path absolute so email clients can load it. */
+function absImg(u: string | null | undefined): string | null {
+  if (!u) return null
+  return u.startsWith("/") ? siteUrl(u) : u
+}
+
+function magSection(label: string, title: string): string {
+  return `
+    <div style="margin:30px 0 14px;">
+      <div style="font-size:12px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#650C75;">${label}</div>
+      <div style="font-size:21px;font-weight:800;color:#111;margin-top:2px;">${title}</div>
+      <div style="height:3px;width:46px;background:#EFC618;border-radius:2px;margin-top:8px;"></div>
+    </div>`
+}
+
+function magCard(href: string, img: string | null, badge: string, title: string, meta: string): string {
+  return `
+    <a href="${siteUrl(href)}" style="display:block;text-decoration:none;color:#111;border:1px solid #eee;border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+      ${img ? `<img src="${img}" alt="" width="100%" style="display:block;width:100%;height:190px;object-fit:cover;background:#f2eef6;" />` : `<div style="height:120px;background:linear-gradient(135deg,#650C75,#37043f);"></div>`}
+      <div style="padding:14px 16px;">
+        ${badge ? `<div style="display:inline-block;background:#EFC618;color:#3a2600;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:7px;">${badge}</div>` : ""}
+        <div style="font-size:17px;font-weight:700;line-height:1.25;">${title}</div>
+        ${meta ? `<div style="font-size:13px;color:#666;margin-top:4px;">${meta}</div>` : ""}
+      </div>
+    </a>`
+}
+
+/**
+ * Send the magazine-style master digest — all four sections (events, deals,
+ * things to do, featured partners) in one image-rich email. Bilingual.
+ */
+export async function sendMasterDigestEmail(
+  email: string,
+  unsubscribeToken: string,
+  c: MasterDigestContent,
+  locale: "en" | "es"
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) return { ok: false, error: "Email service not configured" }
+
+  const es = locale === "es"
+  const unsubUrl = siteUrl(`/subscribe/unsubscribe?token=${unsubscribeToken}`)
+  const dateLabel = (d: Date) =>
+    d.toLocaleDateString(es ? "es-US" : "en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
+
+  const eventsHtml = c.events.length
+    ? magSection(es ? "Esta semana" : "This week", es ? "📅 Qué pasa en Lompoc" : "📅 What's happening") +
+      c.events.map((e) => magCard(`/events/${e.id}`, absImg(e.imageUrl), dateLabel(e.startsAt), e.title, e.location ?? "")).join("")
+    : ""
+
+  const dealsHtml = c.deals.length
+    ? magSection(es ? "Ahorra local" : "Save local", es ? "🎟️ Ofertas de la semana" : "🎟️ Deals of the week") +
+      c.deals.map((d) => magCard(`/biz/${d.business.slug}`, absImg(d.imageUrl ?? d.business.coverUrl), d.discountText ?? "", d.title, d.business.name)).join("")
+    : ""
+
+  const thingsHtml = c.things.length
+    ? magSection(es ? "Explora" : "Explore", es ? "🌟 Qué hacer en Lompoc" : "🌟 Things to do in Lompoc") +
+      c.things.map((t) => magCard(t.href, absImg(t.imageUrl), t.subtitle ?? "", t.title, "")).join("")
+    : ""
+
+  const partnersHtml = c.partners.length
+    ? magSection(es ? "Negocios locales" : "Local businesses", es ? "🤝 Destacados de Lompoc" : "🤝 Featured in Lompoc") +
+      c.partners.map((p) => magCard(`/biz/${p.slug}`, absImg(p.coverUrl), es ? "Socio Oficial" : "Official Partner", p.name, p.discountText ? `${es ? "Oferta" : "Deal"}: ${p.dealTitle}` : (p.categoryName ?? ""))).join("")
+    : ""
+
+  const html = `
+    <div style="font-family:system-ui,-apple-system,sans-serif;max-width:620px;margin:0 auto;background:#ffffff;">
+      <div style="background:linear-gradient(135deg,#4a0857,#650C75 55%,#37043f);padding:30px 26px 26px;">
+        <div style="color:#EFC618;font-weight:800;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;">Lompoc Locals</div>
+        <div style="color:#ffffff;font-size:28px;font-weight:800;margin-top:4px;line-height:1.1;">${es ? "Tu semana en Lompoc" : "Your Lompoc Weekly"}</div>
+        <div style="color:rgba(255,255,255,0.8);font-size:15px;margin-top:6px;">${es ? "Eventos, ofertas, qué hacer y negocios locales — todo en un lugar." : "Events, deals, things to do & local businesses — all in one place."}</div>
+      </div>
+      <div style="padding:8px 22px 24px;">
+        ${eventsHtml}${dealsHtml}${thingsHtml}${partnersHtml}
+        <p style="margin:30px 0 0;text-align:center;">
+          <a href="${siteUrl()}" style="display:inline-block;background:#650C75;color:#fff;padding:13px 26px;border-radius:999px;text-decoration:none;font-weight:700;font-size:15px;">${es ? "Explorar Lompoc Locals" : "Explore Lompoc Locals"} →</a>
+        </p>
+        <p style="margin-top:28px;color:#aaa;font-size:12px;text-align:center;line-height:1.6;">
+          ${es ? "Recibes esto porque te suscribiste a Lompoc Locals." : "You're getting this because you subscribe to Lompoc Locals."}<br>
+          <a href="${unsubUrl}" style="color:#aaa;">${es ? "Cancelar suscripción" : "Unsubscribe"}</a> ·
+          <a href="${siteUrl()}" style="color:#aaa;">lompoclocals.com</a>
+        </p>
+      </div>
+    </div>`
+
+  const subject = es
+    ? "📬 Tu semana en Lompoc — eventos, ofertas y más"
+    : "📬 Your Lompoc Weekly — events, deals & things to do"
+
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })
     return { ok: true }
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
