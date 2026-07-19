@@ -31,11 +31,9 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       "lompoc ca",
       "lompoc deals",
     ],
-    openGraph: {
-      title: t("metaTitle"),
-      description: t("metaDescription"),
-      // Branded share cover comes from app/opengraph-image.tsx
-    },
+    // No openGraph override here — inherit the layout's branded openGraph +
+    // the branded cover from app/opengraph-image.tsx. (Defining openGraph on the
+    // page suppresses the file-based image.)
     alternates: pageAlternates("/"),
   }
 }
