@@ -1,15 +1,16 @@
 # Enrichment Wave 2A — Food & Drink (25 businesses)
 
 **Run:** 2026-07-17 · 5 parallel agents (F–J) using the `enrich-business` skill.
-**Result: 22 of 25 fully enriched** (curated photos, factual about, contacts, socials).
-1 exposed as fake seed data, 2 interrupted by session limits (queued to finish).
+**Result: 23 of 25 fully enriched** (curated photos, factual about, contacts, socials).
+2 exposed as non-Lompoc / fake seed data (Flower Field Coffee Co. id 125; Cattaneo Bros.
+id 171 — the SLO jerky brand). Real Lompoc Food & Drink ceiling for this set = 23.
 
 ## Status
 
 | Batch | Businesses | Status |
 |---|---|---|
 | F Restaurants | Alfie's, American Host, Angela's, Big Jayke's, Burritos Lalo | ✅ all 5 |
-| G Grills/delis | Carbaugh's ✅, Dave's Place ✅, Eddie's Grill ✅, Cattaneo Bros ⏳, Eye on I ⏳ | 3 of 5 (agent hit session limit) |
+| G Grills/delis | Carbaugh's ✅, Dave's Place ✅, Eddie's Grill ✅, Eye on I ✅ · Cattaneo Bros ❌ not Lompoc | 4 of 5 |
 | H Pizza/cafés | Fatte's, Grill & Chill/Señor Taco, Izzie's, Jasper's ✅ · Flower Field ❌ fake | 4 of 5 |
 | I Mexican/cafés | La Botte, La Reyna, Mama's Caffè, Mariscos El Palmar, Mr. Taco | ✅ all 5 |
 | J Wine Ghetto | Brewer-Clifton, Civilization, Dierberg, Foley, Lompoc Wine Factory | ✅ all 5 |
@@ -78,11 +79,18 @@
    SB County Public Health center (266). Recategorize.
 6. **Big Jayke's address is fluid** (VSFB vs 112 S I St vs food-truck pop-ups) — confirm
    with owner. Angela's posted hours may be stale (COVID-era site).
+7. **Cattaneo Bros. (id 171) — not a Lompoc business; fabricated seed row.** This is the
+   San Luis Obispo beef-jerky brand (real: 769 Caudill St, SLO 93401 · (805) 543-7188 ·
+   cattaneobros.com · est. 1947). The row stapled that identity onto invented Lompoc data:
+   address "769 W Ocean Ave, Lompoc" (no such business there), phone (805) 736-1441,
+   dead website cattaneobrothers.com (HTTP 000), and "Lompoc institution since 1952."
+   Status is `pending`, so it never went live. Out of scope (SB-county brand, not Lompoc/
+   Vandenberg). Recommend unpublish/delete — do NOT enrich.
 
 ## Remaining Food & Drink queue
 
-- **Finish wave 2A:** Cattaneo Bros. (171 — verify it's genuinely Lompoc, may be the SLO
-  jerky brand), Eye on I (62).
+- **Wave 2A is complete.** Eye on I (62) enriched and live; Cattaneo Bros. (171) resolved
+  as non-Lompoc seed data — see cleanup queue item 7.
 - **Wave 2B (~30 with websites):** Montemar, Sandhi, Spear, Zotovich, Sake Sushi, Umami ya,
   taquerias (Don Tacho, El Culichi, La Michoacana, El Tizon), Thai Cuisine, Rice Bowl,
   Pink Pig BBQ, PJ's Deli, Sweet Baking Co., Santi's Bakery, Susi's Kitchen, Toro Loco,
