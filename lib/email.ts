@@ -1,6 +1,6 @@
 import { Resend } from "resend"
 import type { DealCardData } from "@/lib/queries"
-import type { DigestEvent } from "@/lib/digest"
+import type { DigestEvent, ThemedDigestContent } from "@/lib/digest"
 
 export type DealNotificationData = {
   id: number
@@ -616,6 +616,112 @@ export async function sendDigestEmail(
 
   try {
     await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
+// ─── Themed weekly digest (events / deals / things-to-do / partners) ──────
+
+type ThemeCopy = { subject: string; title: string; intro: string; cta: string; ctaPath: string }
+const THEME_COPY: Record<ThemedDigestContent["theme"], { en: ThemeCopy; es: ThemeCopy }> = {
+  events: {
+    en: { subject: "📅 What's happening in Lompoc", title: "📅 This month in Lompoc", intro: "Here's what's coming up around town — plan ahead.", cta: "See the full calendar", ctaPath: "/events" },
+    es: { subject: "📅 Qué pasa en Lompoc", title: "📅 Este mes en Lompoc", intro: "Esto es lo que viene en la ciudad — planea con tiempo.", cta: "Ver el calendario completo", ctaPath: "/events" },
+  },
+  deals: {
+    en: { subject: "🎟️ This week's best local deals", title: "🎟️ Deals of the week", intro: "Save a little this week, close to home.", cta: "Browse all deals", ctaPath: "/feed?type=deal" },
+    es: { subject: "🎟️ Las mejores ofertas de la semana", title: "🎟️ Ofertas de la semana", intro: "Ahorra esta semana, cerquita de casa.", cta: "Ver todas las ofertas", ctaPath: "/feed?type=deal" },
+  },
+  thingsToDo: {
+    en: { subject: "🌟 Things to do in Lompoc this week", title: "🌟 Things to do in Lompoc", intro: "Looking for something to do? Here's the good stuff.", cta: "Explore things to do", ctaPath: "/activities" },
+    es: { subject: "🌟 Qué hacer en Lompoc esta semana", title: "🌟 Qué hacer en Lompoc", intro: "¿Buscas algo que hacer? Aquí está lo bueno.", cta: "Explorar qué hacer", ctaPath: "/activities" },
+  },
+  partners: {
+    en: { subject: "🤝 Meet a few of your Lompoc neighbors", title: "🤝 Featured locals", intro: "A few local businesses worth knowing.", cta: "Meet all our featured members", ctaPath: "/" },
+    es: { subject: "🤝 Conoce a tus vecinos de Lompoc", title: "🤝 Negocios destacados", intro: "Algunos negocios locales que vale la pena conocer.", cta: "Conoce a todos los destacados", ctaPath: "/" },
+  },
+}
+
+function eventDateLabel(d: Date, locale: "en" | "es") {
+  return d.toLocaleDateString(locale === "es" ? "es-US" : "en-US", {
+    weekday: "short", month: "short", day: "numeric", timeZone: "America/Los_Angeles",
+  })
+}
+
+function themedSectionHtml(c: ThemedDigestContent, locale: "en" | "es"): string {
+  const row = (inner: string) => `<div style="border-bottom:1px solid #eee;padding:14px 0;">${inner}</div>`
+  const imgCard = (href: string, img: string | null, title: string, sub: string) => `
+    <a href="${siteUrl(href)}" style="display:block;text-decoration:none;color:#111;border:1px solid #eee;border-radius:14px;overflow:hidden;margin-bottom:12px;">
+      ${img ? `<img src="${img}" alt="" width="100%" style="display:block;width:100%;height:170px;object-fit:cover;" />` : ""}
+      <div style="padding:12px 14px;">
+        <div style="font-size:16px;font-weight:700;">${title}</div>
+        ${sub ? `<div style="font-size:13px;color:#650C75;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-top:2px;">${sub}</div>` : ""}
+      </div>
+    </a>`
+
+  if (c.theme === "events") {
+    return c.events.map((e) => row(`
+      <span style="color:#650C75;font-weight:700;font-size:13px;">${eventDateLabel(e.startsAt, locale)}</span>
+      <a href="${siteUrl(`/events/${e.id}`)}" style="display:block;font-size:16px;font-weight:600;color:#111;text-decoration:none;">${e.title}</a>
+      ${e.location ? `<span style="font-size:13px;color:#888;">${e.location}</span>` : ""}`)).join("")
+  }
+  if (c.theme === "deals") {
+    return c.deals.map((d) => row(`
+      <div style="font-size:12px;color:#888;text-transform:uppercase;">${d.business.name}${d.discountText ? " · " + d.discountText : ""}</div>
+      <a href="${siteUrl(`/biz/${d.business.slug}`)}" style="font-size:16px;font-weight:600;color:#111;text-decoration:none;">${d.title}</a>
+      ${d.description ? `<div style="font-size:14px;color:#555;line-height:1.4;">${d.description}</div>` : ""}`)).join("")
+  }
+  if (c.theme === "thingsToDo") {
+    return c.things.map((t) => imgCard(t.href, t.imageUrl, t.title, t.subtitle ?? "")).join("")
+  }
+  // partners
+  return c.partners.map((p) => imgCard(
+    `/biz/${p.slug}`, p.coverUrl, p.name,
+    `${locale === "es" ? "Socio Oficial" : "Official Partner"}${p.discountText ? " · " + p.discountText : p.categoryName ? " · " + p.categoryName : ""}`
+  )).join("")
+}
+
+/**
+ * Send one themed weekly digest (events / deals / things-to-do / partners).
+ * Branded shell + the active theme's content; bilingual by subscriber locale.
+ */
+export async function sendThemedDigestEmail(
+  email: string,
+  unsubscribeToken: string,
+  content: ThemedDigestContent,
+  locale: "en" | "es"
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) return { ok: false, error: "Email service not configured" }
+
+  const copy = THEME_COPY[content.theme][locale]
+  const unsubUrl = siteUrl(`/subscribe/unsubscribe?token=${unsubscribeToken}`)
+  const section = themedSectionHtml(content, locale)
+
+  const html = `
+    <div style="font-family:system-ui,-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;">
+      <div style="background:#650C75;padding:22px 24px;border-radius:0 0 4px 4px;">
+        <div style="color:#EFC618;font-weight:800;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;">Lompoc Locals</div>
+        <div style="color:#ffffff;font-size:22px;font-weight:800;margin-top:2px;">${copy.title}</div>
+      </div>
+      <div style="padding:20px 24px;">
+        <p style="color:#555;margin:0 0 16px;font-size:15px;">${copy.intro}</p>
+        ${section}
+        <p style="margin:22px 0 0;text-align:center;">
+          <a href="${siteUrl(copy.ctaPath)}" style="display:inline-block;background:#650C75;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px;">${copy.cta} →</a>
+        </p>
+        <p style="margin-top:28px;color:#aaa;font-size:12px;text-align:center;">
+          ${locale === "es" ? "Recibes esto porque te suscribiste a Lompoc Locals." : "You're getting this because you subscribe to Lompoc Locals."}<br>
+          <a href="${unsubUrl}" style="color:#aaa;">${locale === "es" ? "Cancelar suscripción" : "Unsubscribe"}</a> ·
+          <a href="${siteUrl()}" style="color:#aaa;">${locale === "es" ? "Visitar el sitio" : "Visit site"}</a>
+        </p>
+      </div>
+    </div>`
+
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: copy.subject, html })
     return { ok: true }
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Send failed" }

@@ -4,8 +4,8 @@ import { isNotNull } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
-import { sendDigestEmail, sendBroadcastEmail } from "@/lib/email"
-import { getDigestDeals, getDigestEvents } from "@/lib/digest"
+import { sendThemedDigestEmail, sendBroadcastEmail } from "@/lib/email"
+import { digestThemeForDate, getThemedDigestContent, themedDigestHasContent } from "@/lib/digest"
 
 async function requireAdmin(): Promise<{ email: string }> {
   const session = await auth()
@@ -22,17 +22,20 @@ export type CommsResult = {
   failed?: number
 }
 
-/** Email the real Saturday digest to the signed-in admin so they can preview it. */
+/** Email this week's themed digest to the signed-in admin so they can preview it. */
 export async function sendTestDigestAction(): Promise<CommsResult> {
   const admin = await requireAdmin()
-  const digestDeals = await getDigestDeals()
-  const digestEvents = await getDigestEvents()
-  if (digestDeals.length === 0 && digestEvents.length === 0) {
-    return { ok: false, message: "No deals or events from the past 7 days — the digest would be skipped this week." }
+  const theme = digestThemeForDate(new Date())
+  let content = await getThemedDigestContent(theme)
+  if (!themedDigestHasContent(content) && theme !== "events") {
+    content = await getThemedDigestContent("events")
   }
-  const result = await sendDigestEmail(admin.email, "admin-test", digestDeals, "en", digestEvents)
+  if (!themedDigestHasContent(content)) {
+    return { ok: false, message: "No content for this week's digest theme yet." }
+  }
+  const result = await sendThemedDigestEmail(admin.email, "admin-test", content, "en")
   return result.ok
-    ? { ok: true, message: `Test digest (${digestDeals.length} deals, ${digestEvents.length} events) sent to ${admin.email}.` }
+    ? { ok: true, message: `Test digest (theme: ${content.theme}) sent to ${admin.email}.` }
     : { ok: false, message: result.error ?? "Send failed" }
 }
 

@@ -2,8 +2,12 @@ import { NextResponse } from "next/server"
 import { isNotNull } from "drizzle-orm"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
-import { sendDigestEmail } from "@/lib/email"
-import { getDigestDeals, getDigestEvents } from "@/lib/digest"
+import { sendThemedDigestEmail } from "@/lib/email"
+import {
+  digestThemeForDate,
+  getThemedDigestContent,
+  themedDigestHasContent,
+} from "@/lib/digest"
 
 export async function GET(request: Request) {
   const auth = request.headers.get("authorization")
@@ -12,17 +16,17 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const digestDeals = await getDigestDeals()
-  const digestEvents = await getDigestEvents()
-
-  if (digestDeals.length === 0 && digestEvents.length === 0) {
-    return NextResponse.json({
-      sent: 0,
-      skipped: "no deals or events this week",
-    })
+  // This Monday's theme rotates by week of the month (events → deals →
+  // things-to-do → featured partners). Fall back to events if the theme is thin.
+  const theme = digestThemeForDate(new Date())
+  let content = await getThemedDigestContent(theme)
+  if (!themedDigestHasContent(content) && theme !== "events") {
+    content = await getThemedDigestContent("events")
+  }
+  if (!themedDigestHasContent(content)) {
+    return NextResponse.json({ sent: 0, theme, skipped: "no content this week" })
   }
 
-  // All confirmed subscribers
   const confirmedSubs = await db
     .select()
     .from(subscribers)
@@ -32,12 +36,11 @@ export async function GET(request: Request) {
   let failed = 0
   for (const sub of confirmedSubs) {
     const locale: "en" | "es" = sub.locale === "es" ? "es" : "en"
-    const result = await sendDigestEmail(
+    const result = await sendThemedDigestEmail(
       sub.email,
       sub.unsubscribeToken,
-      digestDeals,
-      locale,
-      digestEvents
+      content,
+      locale
     )
     if (result.ok) sent++
     else failed++
@@ -46,8 +49,7 @@ export async function GET(request: Request) {
   return NextResponse.json({
     sent,
     failed,
-    deals: digestDeals.length,
-    events: digestEvents.length,
+    theme: content.theme,
     subscribers: confirmedSubs.length,
   })
 }
