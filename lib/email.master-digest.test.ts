@@ -58,4 +58,34 @@ const htmlEmpty = renderMasterDigestHtml(empty, "en", opts)
 assert.ok(htmlEmpty.includes("The Lompoc Locals"), "empty still renders masthead")
 assert.ok(!htmlEmpty.includes("Deals of the Week"), "empty omits deals header")
 
+// single-column Around Town/Neighbors row: only `things` present -> full-width,
+// no empty sibling cell (no width="50%" two-col markup should appear)
+const onlyThings: MasterDigestContent = {
+  events: [],
+  deals: [],
+  things: [
+    { title: "Wine Tasting", href: "/activities/wine", imageUrl: "/img/wine.jpg", subtitle: "Wine" },
+  ],
+  partners: [],
+}
+const htmlOnlyThings = renderMasterDigestHtml(onlyThings, "en", opts)
+assert.ok(!htmlOnlyThings.includes('width="50%"'), "single-column row has no 50% cell")
+assert.ok(htmlOnlyThings.includes("Wine Tasting"), "things content present")
+assert.ok(htmlOnlyThings.includes("Around Town"), "things section header present")
+
+// single-column row: only `partners` present -> same full-width behavior
+const onlyPartners: MasterDigestContent = {
+  events: [],
+  deals: [],
+  things: [],
+  partners: [
+    { name: "One Plant", slug: "one-plant", coverUrl: "/img/op.jpg",
+      categoryName: "Dispensary", dealTitle: null, discountText: null },
+  ],
+}
+const htmlOnlyPartners = renderMasterDigestHtml(onlyPartners, "en", opts)
+assert.ok(!htmlOnlyPartners.includes('width="50%"'), "single-column row has no 50% cell (partners-only)")
+assert.ok(htmlOnlyPartners.includes("One Plant"), "partners content present")
+assert.ok(htmlOnlyPartners.includes("Neighbors"), "partners section header present")
+
 console.log("renderMasterDigestHtml: all assertions passed")

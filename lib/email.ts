@@ -769,6 +769,7 @@ export function renderMasterDigestHtml(
   let leadHtml = ""
   if (lead?.kind === "event") {
     const e = lead.event
+    const img = absImg(e.imageUrl)
     leadHtml = `
     <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;border-bottom:2px solid #1a1712;"><tr>
       <td width="58%" style="vertical-align:top;padding:0 12px 14px 0;">
@@ -776,7 +777,7 @@ export function renderMasterDigestHtml(
         <a href="${siteUrl(`/events/${e.id}`)}" style="display:block;font-size:25px;line-height:1.1;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;margin-bottom:5px;">${escapeHtml(e.title)}</a>
         <div style="font-size:12px;color:#7a6f60;font-style:italic;">${dateLabel(e.startsAt)}${e.location ? " · " + escapeHtml(e.location) : ""}</div>
       </td>
-      ${absImg(e.imageUrl) ? `<td width="42%" style="vertical-align:top;padding-bottom:14px;"><img src="${absImg(e.imageUrl)}" alt="" width="100%" style="display:block;width:100%;height:150px;object-fit:cover;border:1px solid #d8cfc0;" /></td>` : ""}
+      ${img ? `<td width="42%" style="vertical-align:top;padding-bottom:14px;"><img src="${img}" alt="" width="100%" style="display:block;width:100%;height:150px;object-fit:cover;border:1px solid #d8cfc0;" /></td>` : ""}
     </tr></table>`
   } else if (lead?.kind === "deal") {
     const d = lead.deal
@@ -820,11 +821,16 @@ export function renderMasterDigestHtml(
   const partnersCol = c.partners.length ? `
     <div style="border-bottom:1px solid #650C75;margin-bottom:8px;padding-bottom:4px;"><span style="color:#650C75;font-size:11px;font-weight:bold;letter-spacing:0.16em;text-transform:uppercase;">🤝 ${es ? "Vecinos" : "Neighbors"}</span></div>
     ${c.partners.slice(0, 4).map((p, i, arr) => `<a href="${siteUrl(`/biz/${p.slug}`)}" style="display:block;padding:5px 0;text-decoration:none;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}"><span style="font-size:14px;font-weight:bold;color:#1a1712;">${escapeHtml(p.name)}</span>${p.categoryName ? `<span style="font-size:11px;color:#7a6f60;"> · ${escapeHtml(p.categoryName)}</span>` : ""}</a>`).join("")}` : ""
-  const twoColHtml = (thingsCol || partnersCol) ? `
+  const twoColHtml =
+    thingsCol && partnersCol
+      ? `
     <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;margin-top:20px;"><tr>
-      <td width="50%" style="vertical-align:top;padding-right:12px;${thingsCol && partnersCol ? "border-right:1px solid #d8cfc0;" : ""}">${thingsCol}</td>
+      <td width="50%" style="vertical-align:top;padding-right:12px;border-right:1px solid #d8cfc0;">${thingsCol}</td>
       <td width="50%" style="vertical-align:top;padding-left:12px;">${partnersCol}</td>
-    </tr></table>` : ""
+    </tr></table>`
+      : thingsCol || partnersCol
+        ? `<div style="margin-top:20px;">${thingsCol || partnersCol}</div>`
+        : ""
 
   return `
     <div style="font-family:Georgia,'Times New Roman',serif;max-width:620px;margin:0 auto;background:#f7f3ec;">

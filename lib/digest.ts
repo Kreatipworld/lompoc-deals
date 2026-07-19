@@ -240,3 +240,8 @@ export function selectLead(c: MasterDigestContent): DigestLead {
   if (c.deals.length > 0) return { kind: "deal", deal: c.deals[0] }
   return null
 }
+
+/** True when the master digest has enough content across all four sections to send. */
+export function hasMasterDigestContent(c: MasterDigestContent): boolean {
+  return c.events.length + c.deals.length + c.things.length + c.partners.length > 0
+}

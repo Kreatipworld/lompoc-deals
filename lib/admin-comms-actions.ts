@@ -5,7 +5,7 @@ import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendMasterDigestEmail, sendBroadcastEmail } from "@/lib/email"
-import { getMasterDigestContent } from "@/lib/digest"
+import { getMasterDigestContent, hasMasterDigestContent } from "@/lib/digest"
 
 async function requireAdmin(): Promise<{ email: string }> {
   const session = await auth()
@@ -26,8 +26,7 @@ export type CommsResult = {
 export async function sendTestDigestAction(): Promise<CommsResult> {
   const admin = await requireAdmin()
   const content = await getMasterDigestContent()
-  const total = content.events.length + content.deals.length + content.things.length + content.partners.length
-  if (total === 0) {
+  if (!hasMasterDigestContent(content)) {
     return { ok: false, message: "No content for this week's edition yet." }
   }
   const result = await sendMasterDigestEmail(admin.email, "admin-test", content, "en")

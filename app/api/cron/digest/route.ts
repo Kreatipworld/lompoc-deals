@@ -3,7 +3,7 @@ import { isNotNull } from "drizzle-orm"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendMasterDigestEmail } from "@/lib/email"
-import { getMasterDigestContent } from "@/lib/digest"
+import { getMasterDigestContent, hasMasterDigestContent } from "@/lib/digest"
 
 export async function GET(request: Request) {
   const auth = request.headers.get("authorization")
@@ -13,8 +13,7 @@ export async function GET(request: Request) {
   }
 
   const content = await getMasterDigestContent()
-  const total = content.events.length + content.deals.length + content.things.length + content.partners.length
-  if (total === 0) {
+  if (!hasMasterDigestContent(content)) {
     return NextResponse.json({ sent: 0, skipped: "no content this week" })
   }
 
