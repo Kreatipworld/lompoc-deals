@@ -11,7 +11,7 @@ const content: MasterDigestContent = {
       startsAt: new Date("2026-07-25T17:00:00Z"), imageUrl: null },
   ],
   deals: [
-    { id: 9, type: "deal", title: "Two-for-One Tri-Tip", description: "All week",
+    { id: 9, type: "coupon", title: "Two-for-One Tri-Tip", description: "All week",
       imageUrl: null, discountText: "20% Off", terms: null,
       expiresAt: new Date("2026-08-01T00:00:00Z"), featured: false,
       business: { id: 1, name: "Big Jayke's", slug: "big-jaykes", logoUrl: null,
