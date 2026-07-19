@@ -268,9 +268,11 @@ export function LompocInteractiveMap() {
 
           <NavigationControl position="bottom-right" />
 
-          {/* Markers */}
+          {/* Markers — Partners render last so they sit on top of the crowd */}
           {markersVisible &&
-            pois.map((poi, index) => {
+            [...pois]
+              .sort((a, b) => Number(a.partner ?? false) - Number(b.partner ?? false))
+              .map((poi, index) => {
               const cat = CATEGORY_MAP[poi.category]
               const isFiltered = !filteredPois.some((p) => p.id === poi.id)
               return (

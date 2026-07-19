@@ -11,4 +11,6 @@ export interface POI {
   rating?: number
   price?: string
   type?: string
+  /** Official Partner (premium) — gets a distinct, prominent marker. */
+  partner?: boolean
 }

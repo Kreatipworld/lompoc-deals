@@ -36,6 +36,7 @@ export async function GET() {
         lng: businesses.lng,
         description: businesses.description,
         categorySlug: categories.slug,
+        planOverride: businesses.planOverride,
       })
       .from(businesses)
       .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -50,6 +51,7 @@ export async function GET() {
       lng: row.lng as number,
       category: toMapCategory(row.categorySlug ?? null),
       highlight: row.description?.slice(0, 120) ?? row.name,
+      partner: row.planOverride === "premium",
     }))
 
     return NextResponse.json(pois, {
