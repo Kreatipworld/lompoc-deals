@@ -85,7 +85,7 @@ export async function SponsorShowcase({
             owners get the category-specific version. */}
         <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground shadow">
           <BadgeCheck className="h-3 w-3" />
-          {s.exclusive ? t("officialPartner", { category: s.categoryName ?? "" }) : t("officialPartnerGeneric")}
+          {t("officialPartnerGeneric")}
         </span>
 
         <div className="absolute inset-x-0 bottom-0 flex items-end gap-2.5 p-4">

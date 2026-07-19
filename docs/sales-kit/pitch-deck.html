@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lompoc Locals — Partner Pitch Deck</title>
+<style>
+  :root{
+    --purple:#650C75;
+    --purple-deep:#43075A;
+    --purple-ink:#2A1230;
+    --green:#0B992F;
+    --gold:#EFC618;
+    --paper:#FAF7F2;
+    --paper-warm:#FCF9F4;
+    --ink:#2A1230;
+    --muted:#6E5A72;
+    --muted-light:#E7CFEC;
+    --line:#E7DFDF;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;font-family:var(--sans);color:var(--ink);
+    background:var(--purple-ink);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    scroll-snap-type:y mandatory;overflow-x:hidden;
+  }
+
+  .slide{
+    min-height:100vh;width:100%;
+    scroll-snap-align:start;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:8vh 9vw;position:relative;overflow:hidden;
+  }
+  .inner{width:100%;max-width:1000px;margin:0 auto;position:relative;z-index:2;}
+
+  /* grounds */
+  .s-purple{
+    background:
+      radial-gradient(70% 90% at 85% 8%, rgba(239,198,24,.22) 0%, rgba(239,198,24,0) 45%),
+      radial-gradient(60% 80% at 8% 100%, rgba(11,153,47,.28) 0%, rgba(11,153,47,0) 50%),
+      linear-gradient(150deg,var(--purple) 0%,var(--purple-deep) 100%);
+    color:#fff;
+  }
+  .s-paper{background:var(--paper);color:var(--ink);}
+  .s-paper-warm{background:var(--paper-warm);color:var(--ink);}
+
+  /* shared type */
+  .eyebrow{
+    font-size:clamp(11px,1vw,13px);font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:12px;margin-bottom:26px;
+  }
+  .s-purple .eyebrow{color:var(--gold);}
+  .s-paper .eyebrow,.s-paper-warm .eyebrow{color:var(--purple);}
+  .eyebrow::before{content:"";width:34px;height:2px;background:currentColor;border-radius:2px;}
+
+  h1,h2{margin:0;letter-spacing:-.025em;text-wrap:balance;font-weight:800;line-height:1.02;}
+  h1{font-size:clamp(38px,6.6vw,76px);}
+  h2{font-size:clamp(30px,5vw,56px);line-height:1.05;}
+
+  .lead{
+    font-size:clamp(17px,2vw,23px);line-height:1.5;font-weight:500;max-width:42ch;text-wrap:pretty;
+    margin-top:26px;
+  }
+  .s-purple .lead{color:#EFE0F1;}
+  .s-paper .lead,.s-paper-warm .lead{color:var(--muted);}
+  .lead b{color:inherit;font-weight:700;}
+  .s-paper .lead b,.s-paper-warm .lead b{color:var(--ink);}
+  .s-purple .lead b{color:#fff;}
+  .gold{color:var(--gold);}
+  .grn{color:var(--green);}
+
+  /* slide counter */
+  .count{
+    position:absolute;bottom:5vh;right:9vw;z-index:3;
+    font-size:12px;font-weight:700;letter-spacing:.16em;font-variant-numeric:tabular-nums;
+    opacity:.6;
+  }
+  .s-purple .count{color:#fff;}
+  .s-paper .count,.s-paper-warm .count{color:var(--muted);}
+
+  /* progress dots */
+  .dots{
+    position:fixed;top:50%;right:26px;transform:translateY(-50%);z-index:50;
+    display:flex;flex-direction:column;gap:11px;
+  }
+  .dots a{
+    width:9px;height:9px;border-radius:50%;
+    background:rgba(120,90,130,.35);border:1px solid rgba(120,90,130,.15);
+    transition:transform .2s ease,background .2s ease;
+  }
+  .dots a:hover{background:var(--gold);transform:scale(1.25);}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}.dots a{transition:none;}}
+
+  /* ---- SLIDE 1 : TITLE ---- */
+  .title-brand{display:flex;align-items:center;gap:22px;margin-bottom:44px;}
+  .title-logo{width:88px;height:88px;border-radius:22px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.4);flex:none;}
+  .title-logo svg{display:block;width:100%;height:100%;}
+  .title-name{font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:-.02em;}
+  .title-name .sub{
+    display:block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);
+  }
+  .title-hair{height:1px;background:linear-gradient(90deg,rgba(239,198,24,.7),rgba(255,255,255,0));margin:36px 0;max-width:620px;}
+  .title-foot{
+    margin-top:40px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    font-size:13px;font-weight:600;letter-spacing:.03em;color:#EFE0F1;
+  }
+  .chip{
+    display:inline-block;padding:7px 15px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07);
+    font-size:12px;font-weight:700;letter-spacing:.02em;color:#fff;
+  }
+  .chip.gold{background:var(--gold);color:#3A2A00;border-color:var(--gold);}
+
+  /* ---- SLIDE 2 : PROBLEM ---- */
+  .scatter{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+  .scard{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 20px;
+    box-shadow:0 6px 18px rgba(42,18,48,.05);
+  }
+  .scard .st{font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.01em;}
+  .scard .sd{margin-top:9px;font-size:13.5px;line-height:1.5;color:var(--muted);font-weight:500;}
+  .punch{
+    margin-top:38px;font-size:clamp(19px,2.4vw,28px);font-weight:800;letter-spacing:-.02em;color:var(--purple);
+    text-wrap:balance;
+  }
+  .punch .u{background:linear-gradient(transparent 60%,rgba(239,198,24,.6) 60%);}
+
+  /* ---- SLIDE 3 : SOLUTION ---- */
+  .hub{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:44px;}
+  .hnode{
+    text-align:center;padding:24px 12px;border-radius:16px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+  }
+  .hnode .hi{
+    width:46px;height:46px;margin:0 auto 14px;border-radius:13px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--gold);color:var(--purple-ink);font-size:22px;font-weight:900;
+  }
+  .hnode:nth-child(2) .hi{background:var(--green);color:#fff;}
+  .hnode:nth-child(4) .hi{background:#fff;color:var(--purple);}
+  .hnode .hn{font-size:14px;font-weight:800;letter-spacing:-.01em;}
+  .hnode .hs{margin-top:6px;font-size:11px;line-height:1.35;color:#E4D2E7;font-weight:500;}
+
+  /* ---- SLIDE 4 : PROOF ---- */
+  .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:26px 20px;margin-top:44px;}
+  .pstat .pn{
+    font-size:clamp(52px,7vw,88px);font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--gold);
+    font-variant-numeric:tabular-nums;
+  }
+  .pstat .pl{
+    margin-top:12px;font-size:14px;font-weight:600;line-height:1.35;color:#EFE0F1;letter-spacing:.01em;
+  }
+  .proof-foot{
+    margin-top:44px;padding-top:24px;border-top:1px solid rgba(255,255,255,.18);
+    font-size:15px;font-weight:600;color:#EFE0F1;letter-spacing:.01em;
+  }
+  .proof-foot b{color:#fff;}
+
+  /* ---- SLIDE 5 : PLACEMENTS ---- */
+  .place{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;margin-top:34px;align-items:center;}
+  .placelist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+  .placelist li{display:flex;gap:14px;align-items:flex-start;font-size:15.5px;line-height:1.4;font-weight:500;color:var(--ink);}
+  .placelist li .pk{
+    flex:none;width:24px;height:24px;border-radius:8px;background:var(--green);color:#fff;
+    font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px;
+  }
+  .placelist li b{font-weight:800;}
+  .badgecard{
+    background:linear-gradient(155deg,var(--purple) 0%,var(--purple-deep) 100%);
+    border-radius:22px;padding:34px 30px;color:#fff;text-align:center;
+    box-shadow:0 20px 50px rgba(101,12,117,.28);
+  }
+  .badgecard .star{font-size:44px;line-height:1;color:var(--gold);}
+  .badgecard .bt{margin-top:16px;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+  .badgecard .bn{margin-top:8px;font-size:26px;font-weight:800;letter-spacing:-.02em;}
+  .badgecard .bd{margin-top:12px;font-size:13.5px;line-height:1.5;color:#EAD9EC;font-weight:500;}
+  .badgepill{
+    display:inline-flex;align-items:center;gap:8px;margin-top:20px;
+    background:var(--gold);color:#3A2A00;padding:9px 16px;border-radius:999px;
+    font-size:13px;font-weight:800;letter-spacing:.02em;
+  }
+
+  /* ---- SLIDE 6 : TIERS ---- */
+  .decktiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px;}
+  .dt{
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 18px;
+    display:flex;flex-direction:column;position:relative;box-shadow:0 8px 22px rgba(42,18,48,.05);
+  }
+  .dt .dtn{font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--ink);}
+  .dt .dtp{margin-top:12px;font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1;}
+  .dt .dtp small{font-size:13px;font-weight:600;color:var(--muted);}
+  .dt .dtd{margin-top:14px;font-size:12.5px;line-height:1.45;color:var(--muted);font-weight:500;}
+  .dt.free .dtp{color:var(--green);}
+  .dt.rec{background:linear-gradient(160deg,var(--purple),var(--purple-deep));border-color:var(--purple);color:#fff;box-shadow:0 16px 34px rgba(101,12,117,.3);}
+  .dt.rec .dtn{color:var(--gold);}
+  .dt.rec .dtp,.dt.rec .dtp small{color:#fff;}
+  .dt.rec .dtd{color:#EEDDF0;}
+  .dt .dtrib{
+    position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+    background:var(--gold);color:#3A2A00;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    padding:5px 12px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 14px rgba(0,0,0,.2);
+  }
+  .dt.excl{background:linear-gradient(160deg,#1F0A26,#3A0E44);border-color:#3A0E44;color:#fff;}
+  .dt.excl .dtn{color:var(--gold);}
+  .dt.excl .dtp,.dt.excl .dtp small{color:#fff;}
+  .dt.excl .dtd{color:#D8C6DC;}
+  .dt.excl .scarce{margin-top:14px;align-self:flex-start;background:var(--gold);color:#1F0A26;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;}
+
+  /* ---- SLIDE 7 : ASK ---- */
+  .ask h2{font-size:clamp(34px,5.6vw,66px);}
+  .ask .lead{max-width:40ch;}
+  .askcta{
+    margin-top:44px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  }
+  .askbtn{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--gold);color:#3A2A00;padding:16px 28px;border-radius:999px;
+    font-size:18px;font-weight:800;letter-spacing:-.01em;
+    box-shadow:0 14px 34px rgba(239,198,24,.28);
+  }
+  .askurl{font-size:17px;font-weight:700;letter-spacing:.02em;color:#fff;}
+  .askurl .sm{display:block;margin-top:6px;font-size:12px;font-weight:600;letter-spacing:.03em;color:#E4D2E7;}
+  .scarcity-note{
+    margin-top:34px;display:inline-flex;align-items:center;gap:10px;
+    font-size:13px;font-weight:700;letter-spacing:.04em;color:#fff;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.24);
+    padding:10px 18px;border-radius:999px;
+  }
+  .scarcity-note .d{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(11,153,47,.25);}
+
+  @media (max-width:760px){
+    .scatter,.hub,.proof,.decktiers{grid-template-columns:1fr 1fr;}
+    .place{grid-template-columns:1fr;}
+    .dots{display:none;}
+    .slide{padding:8vh 7vw;}
+  }
+  @media (max-width:460px){
+    .scatter,.hub,.proof,.decktiers{grid-template-columns:1fr;}
+  }
+
+  @page{ size:landscape; margin:0; }
+  @media print{
+    body{scroll-snap-type:none;background:#fff;}
+    .dots{display:none;}
+    .slide{min-height:100vh;page-break-after:always;break-after:page;}
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+  }
+</style>
+</head>
+<body>
+
+  <nav class="dots" aria-label="Slides">
+    <a href="#s1" aria-label="Slide 1"></a>
+    <a href="#s2" aria-label="Slide 2"></a>
+    <a href="#s3" aria-label="Slide 3"></a>
+    <a href="#s4" aria-label="Slide 4"></a>
+    <a href="#s5" aria-label="Slide 5"></a>
+    <a href="#s6" aria-label="Slide 6"></a>
+    <a href="#s7" aria-label="Slide 7"></a>
+  </nav>
+
+  <!-- 1 · TITLE -->
+  <section class="slide s-purple" id="s1">
+    <div class="inner">
+      <div class="title-brand">
+        <span class="title-logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><rect width="512" height="512" rx="112" fill="#650C75"/><g transform="translate(61.8 -45.8) scale(0.8955)"><path fill="#efc618" fill-rule="evenodd" d="M257,161.4c-10-17.2-32.1-23.1-49.4-13.1-17.2,10-23.1,32.1-13.1,49.4,10,17.2,32.1,23.1,49.4,13.1,17.2-10,23.1-32.1,13.1-49.4"/><path fill="#0b992f" d="M217.6,334.1c40.9-41.5,89.3-69.6,151.4-52.3-49.4-64.1-103.3-64.5-154.4-36.9,5.2,27.4,5.5,58.1,3.1,89.2"/><path fill="#ffffff" d="M250.9,465.7h0s-72.8,0-72.8,0c21.8-102.6,83.4-304.7-107.3-296.1,108.1,59.5,27.8,259.1,6.6,359.2h244v-63.1h-70.5Z"/></g></svg></span>
+        <span class="title-name">Lompoc Locals<span class="sub">The #1 Local Hub for Lompoc, CA</span></span>
+      </div>
+      <h1>Connecting <span class="gold">locals</span>, <span class="grn">businesses</span> &amp; <span class="gold">visitors</span>.</h1>
+      <div class="title-hair"></div>
+      <div class="title-foot">
+        <span class="chip gold">Official Partner Program</span>
+        <span class="chip">Lompoc &amp; Vandenberg</span>
+        <span class="chip">www.lompoclocals.com</span>
+      </div>
+    </div>
+    <span class="count">01 / 07</span>
+  </section>
+
+  <!-- 2 · PROBLEM -->
+  <section class="slide s-paper" id="s2">
+    <div class="inner">
+      <span class="eyebrow">The Problem</span>
+      <h2>Local life is scattered — and nobody owns "local."</h2>
+      <div class="scatter">
+        <div class="scard"><div class="st">Facebook &amp; Nextdoor</div><div class="sd">Your news buried in an endless feed, gone by tomorrow and impossible to search.</div></div>
+        <div class="scard"><div class="st">Stale directories</div><div class="sd">Wrong hours, dead links, no photos — listings that make great businesses look closed.</div></div>
+        <div class="scard"><div class="st">Word of mouth alone</div><div class="sd">Visitors and new neighbors have no single, trusted place to discover what's here.</div></div>
+      </div>
+      <p class="punch">When a neighbor or visitor asks <span class="u">"where do I go for this in Lompoc?"</span> — there's no one place with the answer.</p>
+    </div>
+    <span class="count">02 / 07</span>
+  </section>
+
+  <!-- 3 · SOLUTION -->
+  <section class="slide s-purple" id="s3">
+    <div class="inner">
+      <span class="eyebrow">The Solution</span>
+      <h2>One connected hub for everything Lompoc.</h2>
+      <p class="lead">A single, trusted home locals actually use — and visitors find first. Every part feeds the next.</p>
+      <div class="hub">
+        <div class="hnode"><div class="hi">▤</div><div class="hn">Directory</div><div class="hs">476 verified businesses, 10 categories</div></div>
+        <div class="hnode"><div class="hi">◎</div><div class="hn">Map</div><div class="hs">Find who's near, at a glance</div></div>
+        <div class="hnode"><div class="hi">◆</div><div class="hn">Events</div><div class="hs">96 upcoming — incl. rocket launches</div></div>
+        <div class="hnode"><div class="hi">✉</div><div class="hn">Digest</div><div class="hs">The week's best, straight to inboxes</div></div>
+        <div class="hnode"><div class="hi">✍</div><div class="hn">Blog</div><div class="hs">48 posts pulling search traffic in</div></div>
+      </div>
+    </div>
+    <span class="count">03 / 07</span>
+  </section>
+
+  <!-- 4 · PROOF -->
+  <section class="slide s-purple" id="s4">
+    <div class="inner">
+      <span class="eyebrow">By the Numbers · July 2026</span>
+      <h2>Already the town's front door.</h2>
+      <div class="proof">
+        <div class="pstat"><div class="pn">476</div><div class="pl">Approved businesses on the hub</div></div>
+        <div class="pstat"><div class="pn">38</div><div class="pl">Wineries — the full Wine Ghetto</div></div>
+        <div class="pstat"><div class="pn">96</div><div class="pl">Upcoming events &amp; Vandenberg launches</div></div>
+        <div class="pstat"><div class="pn">144</div><div class="pl">Hand-curated business profiles</div></div>
+        <div class="pstat"><div class="pn">48</div><div class="pl">SEO blog posts drawing search traffic</div></div>
+        <div class="pstat"><div class="pn">10</div><div class="pl">Categories covering the whole town</div></div>
+      </div>
+      <p class="proof-foot"><b>9 founding Official Partners</b> already claimed their place. The map is filling in.</p>
+    </div>
+    <span class="count">04 / 07</span>
+  </section>
+
+  <!-- 5 · PLACEMENTS -->
+  <section class="slide s-paper-warm" id="s5">
+    <div class="inner">
+      <span class="eyebrow">How Your Business Shows Up</span>
+      <h2>Everywhere it counts — done for you.</h2>
+      <div class="place">
+        <ul class="placelist">
+          <li><span class="pk">✓</span><span><b>Priority ranking</b> — first in your category, above everyone else</span></li>
+          <li><span class="pk">✓</span><span><b>Featured Members marquee</b> on the homepage</span></li>
+          <li><span class="pk">✓</span><span><b>Top-of-category slide</b> &amp; a branded category cover photo</span></li>
+          <li><span class="pk">✓</span><span><b>Site-wide Featured Deals</b> placement</span></li>
+          <li><span class="pk">✓</span><span><b>Gold-star map marker</b> that stands out on the map</span></li>
+          <li><span class="pk">✓</span><span><b>A done-for-you curated profile</b> — photos, story, contacts</span></li>
+        </ul>
+        <div class="badgecard">
+          <div class="star">★</div>
+          <div class="bt">Official Partner</div>
+          <div class="bn">The badge that says<br>"trusted here."</div>
+          <div class="bd">Shown on your profile, the homepage, search, and the map — wherever locals are looking.</div>
+          <span class="badgepill">★ Official Partner</span>
+        </div>
+      </div>
+    </div>
+    <span class="count">05 / 07</span>
+  </section>
+
+  <!-- 6 · TIERS -->
+  <section class="slide s-paper" id="s6">
+    <div class="inner">
+      <span class="eyebrow">Membership</span>
+      <h2>Pick the spot that fits.</h2>
+      <div class="decktiers">
+        <div class="dt free">
+          <div class="dtn">Free</div>
+          <div class="dtp">$0</div>
+          <div class="dtd">A verified listing on the map, in search, and in your category.</div>
+        </div>
+        <div class="dt">
+          <div class="dtn">Growth</div>
+          <div class="dtp">$39.99<small>/mo</small></div>
+          <div class="dtd">Post deals &amp; specials — your standing hook in the feed.</div>
+        </div>
+        <div class="dt rec">
+          <span class="dtrib">★ Recommended</span>
+          <div class="dtn">Official Partner</div>
+          <div class="dtp">$99.99<small>/mo</small></div>
+          <div class="dtd">The badge, priority ranking, and every premium placement.</div>
+        </div>
+        <div class="dt excl">
+          <div class="dtn">Category Exclusive</div>
+          <div class="dtp">$249<small>/mo</small></div>
+          <div class="dtd">Own your category outright — everything in Partner, alone at the top.</div>
+          <span class="scarce">One per category · ever</span>
+        </div>
+      </div>
+    </div>
+    <span class="count">06 / 07</span>
+  </section>
+
+  <!-- 7 · THE ASK -->
+  <section class="slide s-purple ask" id="s7">
+    <div class="inner">
+      <span class="eyebrow">The Ask</span>
+      <h2>Become an Official Partner.</h2>
+      <p class="lead">Claim your place while it's open. <b>Category Exclusive is one business per category — ever.</b> Once your competitor takes it, it's gone.</p>
+      <div class="askcta">
+        <span class="askbtn">★ Become an Official Partner</span>
+        <span class="askurl">www.lompoclocals.com<span class="sm">Connecting locals, businesses &amp; visitors · Lompoc &amp; Vandenberg</span></span>
+      </div>
+      <span class="scarcity-note"><span class="d"></span>10 categories · one exclusive spot each · 9 partners already in</span>
+    </div>
+    <span class="count">07 / 07</span>
+  </section>
+
+</body>
+</html>

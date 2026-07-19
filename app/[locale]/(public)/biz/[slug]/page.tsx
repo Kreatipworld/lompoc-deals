@@ -233,9 +233,7 @@ export default async function BusinessPage({
                   {business.planOverride === "premium" && (
                     <span className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground shadow-sm">
                       <BadgeCheck className="h-3.5 w-3.5" />
-                      {business.sponsorExclusive
-                        ? tsp("officialPartner", { category: business.category?.name ?? "" })
-                        : tsp("officialPartnerGeneric")}
+                      {tsp("officialPartnerGeneric")}
                     </span>
                   )}
                   <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">

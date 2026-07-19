@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lompoc Locals — Official Partner One-Pager</title>
+<style>
+  :root{
+    --purple:#650C75;
+    --purple-deep:#4A0857;
+    --green:#0B992F;
+    --gold:#EFC618;
+    --paper:#FAF7F2;
+    --ink:#2A1230;          /* purple-biased near-black */
+    --muted:#6E5A72;        /* warm mauve grey */
+    --line:#E7DFDF;         /* warm hairline */
+    --card:#FFFFFF;
+    --card-warm:#FCF9F4;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#e9e3db;
+    font-family:var(--sans);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    padding:24px;
+  }
+
+  /* ---- Letter page ---- */
+  .page{
+    width:8.5in;
+    min-height:11in;
+    margin:0 auto;
+    background:var(--paper);
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 18px 60px rgba(42,18,48,.22);
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- HEADER ---------- */
+  .masthead{
+    position:relative;
+    background:
+      radial-gradient(120% 160% at 88% -30%, rgba(239,198,24,.30) 0%, rgba(239,198,24,0) 46%),
+      linear-gradient(120deg,var(--purple) 0%,var(--purple-deep) 100%);
+    color:#fff;
+    padding:0.46in 0.62in 0.44in;
+    overflow:hidden;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:0;height:4px;
+    background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 34%,var(--green) 34%,var(--green) 100%);
+  }
+  .brandrow{display:flex;align-items:center;gap:16px;position:relative;z-index:2;}
+  .logo{width:56px;height:56px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.28);}
+  .logo svg{display:block;width:100%;height:100%;}
+  .brandtext .name{
+    font-size:26px;font-weight:800;letter-spacing:-.015em;line-height:1;
+  }
+  .brandtext .kicker{
+    margin-top:5px;font-size:9.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);
+  }
+  .promise{
+    position:relative;z-index:2;
+    margin-top:16px;
+    font-size:15px;font-weight:500;letter-spacing:-.01em;color:#F3E9F4;
+  }
+  .promise b{color:#fff;font-weight:700;}
+  .masthead .url{
+    position:absolute;top:0.5in;right:0.62in;z-index:2;
+    font-size:11px;font-weight:700;letter-spacing:.02em;color:#fff;
+    padding:6px 12px;border:1px solid rgba(255,255,255,.35);border-radius:999px;
+    background:rgba(255,255,255,.08);
+  }
+
+  /* ---------- BODY ---------- */
+  .body{padding:0.34in 0.62in 0;flex:1;display:flex;flex-direction:column;}
+
+  .hook{
+    font-size:16.5px;line-height:1.4;font-weight:600;letter-spacing:-.012em;
+    color:var(--ink);text-wrap:balance;
+    padding-bottom:16px;border-bottom:1px solid var(--line);
+  }
+  .hook .hl{
+    background:linear-gradient(transparent 62%,rgba(239,198,24,.55) 62%);
+    padding:0 1px;
+  }
+
+  /* ---------- STATS ---------- */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    margin-top:16px;
+  }
+  .stat{background:var(--card-warm);padding:13px 12px 12px;text-align:center;}
+  .stat .num{
+    font-size:29px;font-weight:800;line-height:1;color:var(--purple);
+    letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+  }
+  .stat .lbl{
+    margin-top:6px;font-size:9px;font-weight:600;line-height:1.25;
+    letter-spacing:.055em;text-transform:uppercase;color:var(--muted);
+  }
+  .substats{
+    margin-top:9px;text-align:center;
+    font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+  }
+  .substats b{color:var(--green);font-weight:800;}
+  .substats .dot{color:var(--gold);padding:0 6px;font-weight:800;}
+
+  /* ---------- SECTION HEADS ---------- */
+  .eyebrow{
+    display:flex;align-items:center;gap:10px;
+    margin:20px 0 12px;
+    font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  /* ---------- PRICING ---------- */
+  .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+  .tier{
+    background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:14px 13px 15px;display:flex;flex-direction:column;position:relative;
+  }
+  .tier .tname{font-size:11px;font-weight:700;letter-spacing:.02em;color:var(--ink);}
+  .tier .price{
+    margin-top:8px;font-size:23px;font-weight:800;letter-spacing:-.02em;color:var(--ink);
+    font-variant-numeric:tabular-nums;line-height:1;
+  }
+  .tier .price small{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0;}
+  .tier .tdesc{
+    margin-top:9px;font-size:9.5px;line-height:1.42;color:var(--muted);font-weight:500;
+  }
+  .tier.free .price{color:var(--green);}
+
+  .tier.rec{
+    background:linear-gradient(160deg,var(--purple) 0%,var(--purple-deep) 100%);
+    border-color:var(--purple);color:#fff;
+    box-shadow:0 12px 26px rgba(101,12,117,.30);
+  }
+  .tier.rec .tname{color:var(--gold);}
+  .tier.rec .price{color:#fff;}
+  .tier.rec .price small{color:#E7CFEC;}
+  .tier.rec .tdesc{color:#EEDDF0;}
+  .ribbon{
+    position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+    background:var(--gold);color:#3A2A00;
+    font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    padding:4px 10px;border-radius:999px;white-space:nowrap;
+    box-shadow:0 4px 10px rgba(0,0,0,.18);
+  }
+  .tier.excl{
+    background:linear-gradient(160deg,#1F0A26 0%,#3A0E44 100%);
+    border-color:#3A0E44;color:#fff;
+  }
+  .tier.excl .tname{color:var(--gold);}
+  .tier.excl .price{color:#fff;}
+  .tier.excl .price small{color:#C9B0CE;}
+  .tier.excl .tdesc{color:#D8C6DC;}
+  .tier.excl .scarce{
+    margin-top:9px;display:inline-flex;align-self:flex-start;align-items:center;gap:5px;
+    font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:#1F0A26;background:var(--gold);padding:3px 8px;border-radius:999px;
+  }
+
+  /* ---------- BENEFITS ---------- */
+  .benefits{
+    background:var(--card-warm);border:1px solid var(--line);border-radius:13px;
+    padding:15px 18px 16px;
+  }
+  .benefits .bhead{
+    font-size:12px;font-weight:800;letter-spacing:-.01em;color:var(--purple);margin-bottom:10px;
+  }
+  .blist{
+    display:grid;grid-template-columns:1fr 1fr;gap:7px 26px;
+    list-style:none;margin:0;padding:0;
+  }
+  .blist li{
+    display:flex;gap:9px;align-items:flex-start;
+    font-size:10.5px;line-height:1.32;font-weight:500;color:var(--ink);
+  }
+  .blist li .ck{
+    flex:none;width:15px;height:15px;margin-top:.5px;border-radius:5px;
+    background:var(--green);color:#fff;font-size:9px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .blist li b{font-weight:700;}
+
+  /* ---------- CTA FOOTER ---------- */
+  .cta{
+    margin-top:auto;
+    background:
+      radial-gradient(90% 200% at 12% 120%, rgba(11,153,47,.34) 0%, rgba(11,153,47,0) 55%),
+      linear-gradient(100deg,var(--purple-deep) 0%,var(--purple) 100%);
+    color:#fff;
+    padding:0.28in 0.62in;
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    margin-left:-0.62in;margin-right:-0.62in;
+  }
+  .cta .lead{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+  .cta .big{font-size:20px;font-weight:800;letter-spacing:-.015em;margin-top:3px;}
+  .cta .right{text-align:right;}
+  .cta .urlpill{
+    display:inline-block;font-size:13px;font-weight:800;letter-spacing:.01em;
+    padding:9px 16px;border-radius:999px;background:var(--gold);color:#3A2A00;
+  }
+  .cta .sub{margin-top:7px;font-size:9.5px;color:#EAD9EC;font-weight:500;}
+
+  @page{ size:Letter; margin:0; }
+  @media print{
+    body{background:#fff;padding:0;}
+    .page{box-shadow:none;margin:0;width:8.5in;min-height:11in;}
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <header class="masthead">
+      <span class="url">www.lompoclocals.com</span>
+      <div class="brandrow">
+        <span class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><rect width="512" height="512" rx="112" fill="#650C75"/><g transform="translate(61.8 -45.8) scale(0.8955)"><path fill="#efc618" fill-rule="evenodd" d="M257,161.4c-10-17.2-32.1-23.1-49.4-13.1-17.2,10-23.1,32.1-13.1,49.4,10,17.2,32.1,23.1,49.4,13.1,17.2-10,23.1-32.1,13.1-49.4"/><path fill="#0b992f" d="M217.6,334.1c40.9-41.5,89.3-69.6,151.4-52.3-49.4-64.1-103.3-64.5-154.4-36.9,5.2,27.4,5.5,58.1,3.1,89.2"/><path fill="#ffffff" d="M250.9,465.7h0s-72.8,0-72.8,0c21.8-102.6,83.4-304.7-107.3-296.1,108.1,59.5,27.8,259.1,6.6,359.2h244v-63.1h-70.5Z"/></g></svg></span>
+        <span class="brandtext">
+          <div class="name">Lompoc Locals</div>
+          <div class="kicker">The #1 Local Hub for Lompoc, CA</div>
+        </span>
+      </div>
+      <p class="promise">Connecting <b>locals</b>, <b>businesses</b>, and <b>visitors</b> — one neighborly hub for everything happening in Lompoc &amp; Vandenberg.</p>
+    </header>
+
+    <div class="body">
+
+      <p class="hook">When someone in Lompoc searches for what you do, they should find <span class="hl">you</span> — first, with a photo, a story, and a way to say hello.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="num">476</div><div class="lbl">Approved<br>Businesses</div></div>
+        <div class="stat"><div class="num">38</div><div class="lbl">Wineries · Full<br>Wine Ghetto</div></div>
+        <div class="stat"><div class="num">96</div><div class="lbl">Upcoming Events<br>&amp; Launches</div></div>
+        <div class="stat"><div class="num">48</div><div class="lbl">SEO Blog<br>Posts</div></div>
+      </div>
+      <div class="substats">
+        <b>10</b> categories <span class="dot">·</span> <b>144</b> curated profiles <span class="dot">·</span> <b>9</b> founding Official Partners
+      </div>
+
+      <div class="eyebrow">Membership</div>
+      <div class="tiers">
+        <div class="tier free">
+          <div class="tname">Free</div>
+          <div class="price">$0</div>
+          <div class="tdesc">A verified listing on the map, in search, and in your category.</div>
+        </div>
+        <div class="tier">
+          <div class="tname">Growth</div>
+          <div class="price">$39.99<small>/mo</small></div>
+          <div class="tdesc">Post deals &amp; specials — your standing hook in the feed.</div>
+        </div>
+        <div class="tier rec">
+          <span class="ribbon">★ Recommended</span>
+          <div class="tname">Official Partner</div>
+          <div class="price">$99.99<small>/mo</small></div>
+          <div class="tdesc">The badge, priority ranking, and every premium placement.</div>
+        </div>
+        <div class="tier excl">
+          <div class="tname">Category Exclusive</div>
+          <div class="price">$249<small>/mo</small></div>
+          <div class="tdesc">Own your category outright — everything in Partner, alone at the top.</div>
+          <span class="scarce">One per category · ever</span>
+        </div>
+      </div>
+
+      <div class="eyebrow">What an Official Partner gets</div>
+      <div class="benefits">
+        <div class="bhead">Every placement working for you — done for you.</div>
+        <ul class="blist">
+          <li><span class="ck">✓</span><span><b>Official Partner badge</b> on your profile, the homepage, search &amp; map</span></li>
+          <li><span class="ck">✓</span><span><b>Priority ranking</b> — first in your category</span></li>
+          <li><span class="ck">✓</span><span><b>Featured Members marquee</b> on the homepage</span></li>
+          <li><span class="ck">✓</span><span><b>Top-of-category slide</b> above every other listing</span></li>
+          <li><span class="ck">✓</span><span><b>Site-wide Featured Deals</b> placement</span></li>
+          <li><span class="ck">✓</span><span><b>Category cover photo</b> that puts your brand on the shelf</span></li>
+          <li><span class="ck">✓</span><span><b>Done-for-you curated profile</b> — photos, story, contacts</span></li>
+          <li><span class="ck">✓</span><span><b>Gold-star map marker</b> that stands out at a glance</span></li>
+        </ul>
+      </div>
+
+      <div class="cta">
+        <div class="left">
+          <div class="lead">Let's put you on the map</div>
+          <div class="big">Become an Official Partner</div>
+        </div>
+        <div class="right">
+          <span class="urlpill">www.lompoclocals.com</span>
+          <div class="sub">Serving Lompoc &amp; Vandenberg · Connecting locals, businesses &amp; visitors</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>
