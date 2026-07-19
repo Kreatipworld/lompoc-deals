@@ -1,15 +1,14 @@
 import { Link } from "@/i18n/navigation"
 import {
-  ArrowRight, MapPin, Mail, Sparkles, Tag, ChevronDown,
-  Building2, ExternalLink, Compass
+  ArrowRight, MapPin, Mail, Sparkles, ChevronDown, Compass
 } from "lucide-react"
 import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages } from "@/lib/queries"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
+import { FeaturedBusinessesMarquee } from "@/components/featured-businesses-marquee"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
-import { BusinessAvatar } from "@/components/business-avatar"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
@@ -218,52 +217,13 @@ export default async function HomePage({ params }: { params: { locale: string } 
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredBusinesses.map((biz, i) => (
-                <Link
-                  key={biz.id}
-                  href={`/biz/${biz.slug}`}
-                  style={{ animationDelay: `${i * 80}ms` }}
-                  className="group flex gap-4 rounded-2xl border bg-background p-4 shadow-sm animate-fade-up card-lift hover:shadow-md hover:-translate-y-0.5"
-                >
-                  {/* Logo / photo / placeholder */}
-                  <div className="flex-shrink-0">
-                    <BusinessAvatar
-                      logoUrl={biz.logoUrl}
-                      photoUrl={biz.photoUrl}
-                      name={biz.name}
-                      className="h-14 w-14 overflow-hidden rounded-xl"
-                      icon={<Building2 className="h-7 w-7" />}
-                    />
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="truncate font-semibold leading-tight group-hover:text-primary transition-colors">
-                        {biz.name}
-                      </h3>
-                      <ExternalLink className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground/50 mt-0.5 group-hover:text-primary transition-colors" />
-                    </div>
-                    {biz.categoryName && (
-                      <p className="mt-0.5 text-xs text-muted-foreground">
-                        {biz.categoryName}
-                      </p>
-                    )}
-                    {biz.description && (
-                      <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
-                        {biz.description}
-                      </p>
-                    )}
-                    {biz.activeDealCount > 0 && (
-                      <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
-                        <Tag className="h-2.5 w-2.5" />
-                        {biz.activeDealCount} {biz.activeDealCount === 1 ? t("deal") : t("deals")}
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <FeaturedBusinessesMarquee
+              businesses={featuredBusinesses}
+              dealLabel={t("deal")}
+              dealsLabel={t("deals")}
+              prevLabel={t("carouselPrev")}
+              nextLabel={t("carouselNext")}
+            />
 
             <div className="mt-6 text-center sm:hidden">
               <Link

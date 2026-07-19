@@ -90,6 +90,8 @@
     "directorySubheadline": "Browse Lompoc by category — restaurants, shops, services, and more.",
     "exploreCategories": "Explore by category",
     "popularInLompoc": "Popular in Lompoc",
+    "carouselPrev": "Scroll back",
+    "carouselNext": "Scroll forward",
     "seeAllCategory": "See all {category}",
     "activeDeals": "{count} active deals",
     "localBusinesses": "{count} local businesses",
