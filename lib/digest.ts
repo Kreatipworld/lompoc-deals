@@ -228,3 +228,15 @@ export async function getMasterDigestContent(): Promise<MasterDigestContent> {
   ])
   return { events, deals: deals.slice(0, 6), things, partners }
 }
+
+/** The front-page lead: soonest event, else top deal, else nothing. */
+export type DigestLead =
+  | { kind: "event"; event: DigestEvent }
+  | { kind: "deal"; deal: DealCardData }
+  | null
+
+export function selectLead(c: MasterDigestContent): DigestLead {
+  if (c.events.length > 0) return { kind: "event", event: c.events[0] }
+  if (c.deals.length > 0) return { kind: "deal", deal: c.deals[0] }
+  return null
+}
