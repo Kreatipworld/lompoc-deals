@@ -93,6 +93,7 @@ export default async function ClaimPage({
             dealId={deal.id}
             isSignedIn={Boolean(userId)}
             existingCode={myClaim?.code ?? null}
+            existingStatus={myClaim?.status ?? null}
             labels={{
               signIn: t("signInToGetCode"),
               signInWhy: t("signInWhy"),
@@ -100,6 +101,7 @@ export default async function ClaimPage({
               yourCode: t("yourCode"),
               codeIsYours: t("codeIsYours"),
               showAtRegister: t("showAtRegister"),
+              usedConfirmed: t("usedConfirmed"),
               expired: t("blockedExpired"),
               paused: t("blockedPaused"),
               soldOut: t("blockedSoldOut"),

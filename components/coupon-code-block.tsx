@@ -7,9 +7,11 @@ import { claimCoupon } from "@/lib/coupon-actions"
 
 type Labels = {
   signIn: string; signInWhy: string; getCode: string; yourCode: string
-  codeIsYours: string; showAtRegister: string
+  codeIsYours: string; showAtRegister: string; usedConfirmed: string
   expired: string; paused: string; soldOut: string; dailyLimit: string; error: string
 }
+
+type ClaimStatus = "claimed" | "redeemed" | "void"
 
 /**
  * The only part of a deal that requires an account. Everything else about the
@@ -17,8 +19,14 @@ type Labels = {
  * untouched and the sign-in ask lands at the moment of real intent.
  */
 export function CouponCodeBlock({
-  dealId, isSignedIn, existingCode, labels,
-}: { dealId: number; isSignedIn: boolean; existingCode: string | null; labels: Labels }) {
+  dealId, isSignedIn, existingCode, existingStatus, labels,
+}: {
+  dealId: number
+  isSignedIn: boolean
+  existingCode: string | null
+  existingStatus: ClaimStatus | null
+  labels: Labels
+}) {
   const [code, setCode] = useState(existingCode)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -31,18 +39,34 @@ export function CouponCodeBlock({
     : labels.error
 
   if (code) {
+    // A code that's already been redeemed (or voided) is still the
+    // customer's — worth showing for reference — but "show it at the
+    // register" actively invites re-presenting an already-used coupon.
+    const isUsed = existingStatus === "redeemed" || existingStatus === "void"
     return (
       <div className="mt-6">
-        <div className="mx-auto w-fit rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 px-8 py-4">
+        <div
+          className={
+            isUsed
+              ? "mx-auto w-fit rounded-2xl border-2 border-dashed border-muted-foreground/30 bg-muted/40 px-8 py-4 opacity-70"
+              : "mx-auto w-fit rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 px-8 py-4"
+          }
+        >
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
             {labels.yourCode}
           </p>
           <p className="mt-1 font-mono text-3xl font-bold tracking-[0.2em] text-foreground">{code}</p>
         </div>
-        <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium">
-          <Ticket className="h-4 w-4 text-primary" /> {labels.showAtRegister}
-        </p>
-        <p className="mt-1 text-xs text-muted-foreground">{labels.codeIsYours}</p>
+        {isUsed ? (
+          <p className="mt-3 text-sm font-medium text-muted-foreground">{labels.usedConfirmed}</p>
+        ) : (
+          <>
+            <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium">
+              <Ticket className="h-4 w-4 text-primary" /> {labels.showAtRegister}
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">{labels.codeIsYours}</p>
+          </>
+        )}
       </div>
     )
   }

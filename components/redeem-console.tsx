@@ -16,6 +16,7 @@ export function RedeemConsole({ labels, locale }: { labels: Labels; locale: stri
   const [result, setResult] = useState<CouponLookup | null>(null)
   const [redeemed, setRedeemed] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [warning, setWarning] = useState<string | null>(null)
   // React 18: useTransition's `pending` flag does not await an async transition
   // callback, so it clears before the request finishes. Track submitting state
   // explicitly instead — set before the await, cleared in `finally`. (Same bug
@@ -28,7 +29,9 @@ export function RedeemConsole({ labels, locale }: { labels: Labels; locale: stri
       dateStyle: "medium", timeStyle: "short", timeZone: "America/Los_Angeles",
     })
 
-  const reset = () => { setInput(""); setResult(null); setRedeemed(false); setError(null) }
+  const reset = () => {
+    setInput(""); setResult(null); setRedeemed(false); setError(null); setWarning(null)
+  }
 
   if (redeemed) {
     return (
@@ -48,6 +51,7 @@ export function RedeemConsole({ labels, locale }: { labels: Labels; locale: stri
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setWarning(null)
     setResult(null)
     setChecking(true)
     try {
@@ -62,13 +66,22 @@ export function RedeemConsole({ labels, locale }: { labels: Labels; locale: stri
   const handleRedeem = async () => {
     if (!result?.ok) return
     setError(null)
+    setWarning(null)
     setRedeeming(true)
     try {
       const res = await redeemCoupon(result.claimId)
-      if (res.ok) setRedeemed(true)
-      else {
+      if (!res.ok) {
         setResult(null)
         setError(res.reason === "expired" ? labels.expiredCoupon : labels.error)
+      } else if (res.alreadyRedeemed) {
+        // The claim was already redeemed by someone else between lookup and
+        // this press (two registers, a distracted staffer, etc). This must
+        // NOT show the success screen — that would let a second person hand
+        // over the same discount. Surface it as a warning instead.
+        setResult(null)
+        setWarning(labels.alreadyRedeemed)
+      } else {
+        setRedeemed(true)
       }
     } catch {
       setError(labels.error)
@@ -102,6 +115,13 @@ export function RedeemConsole({ labels, locale }: { labels: Labels; locale: stri
       </form>
 
       {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+
+      {warning && (
+        <div className="flex items-center gap-3 rounded-xl border-2 border-amber-500/30 bg-amber-500/5 p-5">
+          <AlertTriangle className="h-7 w-7 shrink-0 text-amber-600 dark:text-amber-400" />
+          <p className="font-semibold">{warning}</p>
+        </div>
+      )}
 
       {result && !result.ok && (
         <div className="flex items-center gap-3 rounded-xl border-2 border-destructive/30 bg-destructive/5 p-5">

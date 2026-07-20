@@ -29,12 +29,19 @@ export type CouponLookup =
  * caller," so both collapse to a caught null here, keeping lookupCoupon and
  * redeemCoupon true to their documented signatures (typed results, never a
  * thrown exception reaching the caller).
+ *
+ * The "Not authorized" throw fires for every logged-out or non-business
+ * visitor — ordinary traffic, not a failure — so it's swallowed silently.
+ * Anything else is a genuine error (DB, session decode, etc.) and still
+ * gets logged so real infrastructure failures aren't buried in noise.
  */
 async function resolveBiz() {
   try {
     return await getMyBusiness()
   } catch (e) {
-    console.error("resolveBiz: failed to get business context", { cause: e })
+    if (!(e instanceof Error) || e.message !== "Not authorized") {
+      console.error("resolveBiz: failed to get business context", { cause: e })
+    }
     return null
   }
 }
