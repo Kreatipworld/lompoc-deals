@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useState } from "react"
 import { Link } from "@/i18n/navigation"
 import { Ticket, LogIn } from "lucide-react"
 import { claimCoupon } from "@/lib/coupon-actions"
@@ -21,7 +21,7 @@ export function CouponCodeBlock({
 }: { dealId: number; isSignedIn: boolean; existingCode: string | null; labels: Labels }) {
   const [code, setCode] = useState(existingCode)
   const [error, setError] = useState<string | null>(null)
-  const [pending, start] = useTransition()
+  const [submitting, setSubmitting] = useState(false)
 
   const reasonLabel = (r: string) =>
     r === "expired" ? labels.expired
@@ -65,15 +65,20 @@ export function CouponCodeBlock({
     <div className="mt-6">
       <button
         type="button"
-        disabled={pending}
-        onClick={() =>
-          start(async () => {
-            setError(null)
+        disabled={submitting}
+        onClick={async () => {
+          setError(null)
+          setSubmitting(true)
+          try {
             const res = await claimCoupon(dealId)
             if (res.ok) setCode(res.code)
             else setError(reasonLabel(res.reason))
-          })
-        }
+          } catch {
+            setError(labels.error)
+          } finally {
+            setSubmitting(false)
+          }
+        }}
         className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
       >
         <Ticket className="h-4 w-4" /> {labels.getCode}
