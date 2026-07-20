@@ -1342,7 +1342,14 @@
     "inThePast": "En el pasado",
     "today": "Hoy",
     "tomorrow": "Mañana",
-    "inDays": "En {days} días"
+    "inDays": "En {days} días",
+    "limitsTitle": "Límites (opcional)",
+    "limitsHelp": "Déjalo en blanco para no poner límite. Los límites aplican cuando el cliente reclama el cupón, así que un código que ya tiene siempre funciona en tu caja.",
+    "maxRedemptionsLabel": "Cupones en total",
+    "maxRedemptionsHelp": "ej. 50 — solo los primeros 50 clientes",
+    "maxPerDayLabel": "Por día",
+    "maxPerDayHelp": "ej. 10 por día",
+    "onePerCustomerNote": "Cada cliente puede reclamar este cupón una vez."
   },
   "dashboardBilling": {
     "title": "Facturación",

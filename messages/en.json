@@ -1342,7 +1342,14 @@
     "inThePast": "In the past",
     "today": "Today",
     "tomorrow": "Tomorrow",
-    "inDays": "In {days} days"
+    "inDays": "In {days} days",
+    "limitsTitle": "Limits (optional)",
+    "limitsHelp": "Leave blank for no limit. Limits apply when a customer claims the coupon, so a code someone already has always works at your register.",
+    "maxRedemptionsLabel": "Total coupons",
+    "maxRedemptionsHelp": "e.g. 50 — first 50 customers only",
+    "maxPerDayLabel": "Per day",
+    "maxPerDayHelp": "e.g. 10 per day",
+    "onePerCustomerNote": "Each customer can claim this coupon once."
   },
   "dashboardBilling": {
     "title": "Billing",

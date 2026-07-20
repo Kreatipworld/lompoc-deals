@@ -236,6 +236,8 @@ const dealSchema = z.object({
   terms: z.string().optional(),
   startsAt: z.string().min(1, "Start date required"),
   expiresAt: z.string().min(1, "Expiration date required"),
+  maxRedemptions: z.coerce.number().int().min(1).optional().nullable(),
+  maxPerDay: z.coerce.number().int().min(1).optional().nullable(),
 })
 
 export type DealState = { error?: string; success?: string; fieldErrors?: Record<string, string> } | undefined
@@ -259,6 +261,8 @@ export async function saveDealAction(
     terms: formData.get("terms") || undefined,
     startsAt: formData.get("startsAt"),
     expiresAt: formData.get("expiresAt"),
+    maxRedemptions: formData.get("maxRedemptions") ? Number(formData.get("maxRedemptions")) : null,
+    maxPerDay: formData.get("maxPerDay") ? Number(formData.get("maxPerDay")) : null,
   })
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
@@ -330,6 +334,8 @@ export async function saveDealAction(
         terms: data.terms ?? null,
         startsAt,
         expiresAt,
+        maxRedemptions: data.maxRedemptions ?? null,
+        maxPerDay: data.maxPerDay ?? null,
         ...(imageUrl ? { imageUrl } : {}),
       })
       .where(eq(deals.id, id))
@@ -354,6 +360,8 @@ export async function saveDealAction(
         terms: data.terms ?? null,
         startsAt,
         expiresAt,
+        maxRedemptions: data.maxRedemptions ?? null,
+        maxPerDay: data.maxPerDay ?? null,
         imageUrl,
       })
       .returning({ id: deals.id })

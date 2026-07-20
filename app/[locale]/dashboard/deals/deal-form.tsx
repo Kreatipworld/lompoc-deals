@@ -20,6 +20,8 @@ type Deal = {
   startsAt: Date
   expiresAt: Date
   imageUrl: string | null
+  maxRedemptions: number | null
+  maxPerDay: number | null
 }
 
 function toLocalDateInput(d: Date) {
@@ -189,6 +191,38 @@ export function DealForm({ deal }: { deal?: Deal }) {
             onChange={(e) => setExpiresVal(e.target.value)}
           />
         </div>
+      </div>
+
+      <div className="space-y-3 rounded-lg border p-4">
+        <div>
+          <h3 className="text-sm font-medium">{t("limitsTitle")}</h3>
+          <p className="mt-1 text-xs text-muted-foreground">{t("limitsHelp")}</p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="maxRedemptions">{t("maxRedemptionsLabel")}</Label>
+            <Input
+              id="maxRedemptions"
+              name="maxRedemptions"
+              type="number"
+              min="1"
+              defaultValue={deal?.maxRedemptions ?? ""}
+            />
+            <p className="text-xs text-muted-foreground">{t("maxRedemptionsHelp")}</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="maxPerDay">{t("maxPerDayLabel")}</Label>
+            <Input
+              id="maxPerDay"
+              name="maxPerDay"
+              type="number"
+              min="1"
+              defaultValue={deal?.maxPerDay ?? ""}
+            />
+            <p className="text-xs text-muted-foreground">{t("maxPerDayHelp")}</p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">{t("onePerCustomerNote")}</p>
       </div>
 
       <div className="space-y-2">
