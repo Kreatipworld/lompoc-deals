@@ -1,6 +1,6 @@
 import { and, eq, gte, inArray, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { analyticsEvents, deals } from "@/db/schema"
+import { analyticsEvents, couponClaims, deals } from "@/db/schema"
 import { getDealEngagement } from "@/lib/queries"
 
 export type FunnelWindow = "7d" | "30d" | "all"
@@ -40,6 +40,7 @@ export async function getDealFunnel(
   const dealIds = bizDeals.map((d) => d.id)
 
   // Count events per deal per type from analytics_events (windowed or all-time).
+  // deal_redeem is intentionally excluded here — see the coupon_claims query below.
   const eventRows = await db
     .select({
       dealId: analyticsEvents.targetId,
@@ -50,14 +51,14 @@ export async function getDealFunnel(
     .where(
       and(
         inArray(analyticsEvents.targetId, dealIds),
-        inArray(analyticsEvents.eventName, ["deal_view", "deal_click", "deal_claim", "deal_redeem"]),
+        inArray(analyticsEvents.eventName, ["deal_view", "deal_click", "deal_claim"]),
         cutoff ? gte(analyticsEvents.createdAt, cutoff) : undefined
       )
     )
     .groupBy(analyticsEvents.targetId, analyticsEvents.eventName)
 
-  const counts = new Map<number, { views: number; clicks: number; claims: number; redeems: number }>()
-  for (const d of bizDeals) counts.set(d.id, { views: 0, clicks: 0, claims: 0, redeems: 0 })
+  const counts = new Map<number, { views: number; clicks: number; claims: number }>()
+  for (const d of bizDeals) counts.set(d.id, { views: 0, clicks: 0, claims: 0 })
   for (const e of eventRows) {
     if (e.dealId == null) continue
     const c = counts.get(e.dealId)
@@ -65,13 +66,33 @@ export async function getDealFunnel(
     if (e.eventName === "deal_view") c.views = e.n
     else if (e.eventName === "deal_click") c.clicks = e.n
     else if (e.eventName === "deal_claim") c.claims = e.n
-    else if (e.eventName === "deal_redeem") c.redeems = e.n
   }
 
-  // dealEvents predates analytics_events and is still dual-written by the claim/redeem
-  // flow, so it's the more complete historical source for all-time claim/redeem totals
-  // (analytics_events has no rows before it shipped). Only needed for the "all" window;
-  // 7d/30d windows are fully covered by analytics_events.
+  // Redemptions are now counter-verified: a coupon_claims row only reaches
+  // 'redeemed' when staff confirm the code at checkout (see Task 6). The old
+  // self-reported deal_events/analytics_events "deal_redeem" rows are retained
+  // for historical continuity but are no longer authoritative and are not read
+  // here. Windowed by redeemedAt (when the redemption happened), not claimedAt.
+  const redeemRows = await db
+    .select({
+      dealId: couponClaims.dealId,
+      n: sql<number>`count(*)::int`,
+    })
+    .from(couponClaims)
+    .where(
+      and(
+        inArray(couponClaims.dealId, dealIds),
+        eq(couponClaims.status, "redeemed"),
+        cutoff ? gte(couponClaims.redeemedAt, cutoff) : undefined
+      )
+    )
+    .groupBy(couponClaims.dealId)
+  const redeemsMap = new Map(redeemRows.map((r) => [r.dealId, r.n]))
+
+  // dealEvents predates analytics_events and is still dual-written by the claim
+  // flow, so it's the more complete historical source for all-time claim totals
+  // (analytics_events has no rows before it shipped). Only needed for the "all"
+  // window; 7d/30d windows are fully covered by analytics_events.
   const engagement = window === "all" ? await getDealEngagement(businessId) : []
   const engagementMap = new Map(engagement.map((e) => [e.dealId, e]))
 
@@ -81,7 +102,7 @@ export async function getDealFunnel(
     const views = window === "all" ? d.viewCount : c.views
     const clicks = window === "all" ? d.clickCount : c.clicks
     const claims = window === "all" ? (engagementMap.get(d.id)?.claims ?? 0) : c.claims
-    const redeems = window === "all" ? (engagementMap.get(d.id)?.redeems ?? 0) : c.redeems
+    const redeems = redeemsMap.get(d.id) ?? 0
     const ctr = views > 0 ? Math.round((clicks / views) * 1000) / 10 : 0
     const claimRate = clicks > 0 ? Math.round((claims / clicks) * 1000) / 10 : 0
     const redeemRate = claims > 0 ? Math.round((redeems / claims) * 1000) / 10 : 0
