@@ -66,7 +66,10 @@ export function RedeemConsole({ labels, locale }: { labels: Labels; locale: stri
     try {
       const res = await redeemCoupon(result.claimId)
       if (res.ok) setRedeemed(true)
-      else setError(res.reason === "expired" ? labels.expiredCoupon : labels.error)
+      else {
+        setResult(null)
+        setError(res.reason === "expired" ? labels.expiredCoupon : labels.error)
+      }
     } catch {
       setError(labels.error)
     } finally {
@@ -110,9 +113,9 @@ export function RedeemConsole({ labels, locale }: { labels: Labels; locale: stri
       {result?.ok && (
         <div className="rounded-2xl border-2 p-5">
           {result.status === "redeemed" ? (
-            <p className="mb-3 inline-flex items-center gap-2 font-semibold text-amber-600">
+            <p className="mb-3 inline-flex items-center gap-2 font-semibold text-amber-600 dark:text-amber-400">
               <AlertTriangle className="h-5 w-5" /> {labels.alreadyRedeemed}
-              {result.redeemedAt ? ` · ${fmt(result.redeemedAt)}` : ""}
+              {result.redeemedAt ? ` · ${labels.redeemedOn} ${fmt(result.redeemedAt)}` : ""}
             </p>
           ) : result.status === "void" ? (
             <p className="mb-3 inline-flex items-center gap-2 font-semibold text-destructive">
