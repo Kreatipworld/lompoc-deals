@@ -45,6 +45,11 @@ export const feedPostStatus = pgEnum("feed_post_status", [
   "expired",
   "sold",
 ])
+export const couponClaimStatus = pgEnum("coupon_claim_status", [
+  "claimed",
+  "redeemed",
+  "void",
+])
 
 // ---------- users ----------
 export const users = pgTable("users", {
@@ -153,10 +158,43 @@ export const deals = pgTable("deals", {
   viewCount: integer("view_count").notNull().default(0),
   clickCount: integer("click_count").notNull().default(0),
   paused: boolean("paused").notNull().default(false),
+  // Caps are evaluated at CLAIM time so a code in a customer's hand always works.
+  maxRedemptions: integer("max_redemptions"),
+  maxPerDay: integer("max_per_day"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
 })
+
+/**
+ * One row per customer per coupon. This is the source of truth for redemption —
+ * unlike the old self-reported deal_events, a row only reaches "redeemed" when a
+ * staff member confirms it at the counter.
+ */
+export const couponClaims = pgTable(
+  "coupon_claims",
+  {
+    id: serial("id").primaryKey(),
+    dealId: integer("deal_id")
+      .notNull()
+      .references(() => deals.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    code: varchar("code", { length: 12 }).notNull(),
+    status: couponClaimStatus("status").notNull().default("claimed"),
+    claimedAt: timestamp("claimed_at", { withTimezone: true }).notNull().defaultNow(),
+    redeemedAt: timestamp("redeemed_at", { withTimezone: true }),
+    // which staff account confirmed it — the audit trail that makes counts trustworthy
+    redeemedBy: integer("redeemed_by").references(() => users.id, { onDelete: "set null" }),
+  },
+  (t) => ({
+    // Guarantees enforced by the database, not by application logic, so they
+    // cannot be raced or bypassed by a double-submit.
+    codeUnique: uniqueIndex("coupon_claims_code_unique").on(t.code),
+    onePerCustomer: uniqueIndex("coupon_claims_deal_user_unique").on(t.dealId, t.userId),
+  })
+)
 
 // ---------- favorites ----------
 export const favorites = pgTable(

@@ -106,6 +106,13 @@
       "when": 1783090196070,
       "tag": "0021_clear_wolfpack",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1784579372729,
+      "tag": "0022_overjoyed_monster_badoon",
+      "breakpoints": true
     }
   ]
 }
