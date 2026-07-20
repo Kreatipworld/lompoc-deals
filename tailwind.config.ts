@@ -66,6 +66,10 @@ const config: Config = {
         sans: ["var(--font-jakarta)", "system-ui", "sans-serif"],
         display: ["var(--font-jakarta)", "system-ui", "sans-serif"],
         mono: ["ui-monospace", "monospace"],
+        // Newspaper voice for the weekly edition — deliberately Georgia so the
+        // web edition reads as the same publication as the digest email, which
+        // can only use email-safe fonts.
+        edition: ["Georgia", "Times New Roman", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

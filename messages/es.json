@@ -2106,5 +2106,30 @@
   "featuredDeals": {
     "heading": "Ofertas Destacadas",
     "sub": "Las mejores ofertas de negocios de Lompoc hoy"
+  },
+  "thisWeek": {
+    "metaTitle": "Esta semana en Lompoc — Eventos, ofertas y qué hacer",
+    "metaDescription": "La edición semanal de Lompoc Locals: qué pasa en la ciudad, las ofertas locales de la semana, qué hacer y los negocios detrás de todo.",
+    "kicker": "Desde 2026 · Lompoc y Vandenberg",
+    "nameplate": "The Lompoc Locals",
+    "dateline": "Edición de esta semana",
+    "leadStory": "Nota principal",
+    "eventDetails": "Ver el evento",
+    "viewDeal": "Ver esta oferta",
+    "calendarTitle": "El calendario",
+    "dealsTitle": "Ofertas de la semana",
+    "thingsTitle": "Qué hacer",
+    "neighborsTitle": "Conoce a los vecinos",
+    "officialPartner": "Socio Oficial",
+    "swipeHint": "Desliza para ver más",
+    "prev": "Desplazar atrás",
+    "next": "Desplazar adelante",
+    "allEvents": "Ver el calendario completo",
+    "allDeals": "Ver todas las ofertas",
+    "allThings": "Explorar qué hacer",
+    "emptyEdition": "La edición de esta semana aún se está armando. Vuelve pronto — publicamos eventos y ofertas toda la semana.",
+    "subscribeTitle": "Recíbelo en tu correo",
+    "subscribeBody": "Un correo por semana con todo lo que pasa en Lompoc. Gratis, y puedes cancelar cuando quieras.",
+    "subscribeCta": "Suscribirme al semanal"
   }
 }

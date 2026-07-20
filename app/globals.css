@@ -242,6 +242,13 @@
   .animate-feed-new-pulse { animation: none; }
 }
 
+/* ── Weekly edition gallery: momentum swipe that settles on a card ── */
+.edition-track {
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-left: 1rem;
+  overscroll-behavior-x: contain; /* swiping the row must not navigate back */
+}
+
 /* ── Hide scrollbars on horizontal scroll containers ── */
 .scrollbar-none {
   scrollbar-width: none;

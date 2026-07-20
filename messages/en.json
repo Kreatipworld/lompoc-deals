@@ -2106,5 +2106,30 @@
   "featuredDeals": {
     "heading": "Featured Deals",
     "sub": "Today's best offers from Lompoc businesses"
+  },
+  "thisWeek": {
+    "metaTitle": "This Week in Lompoc — Events, Deals & Things to Do",
+    "metaDescription": "The Lompoc Locals weekly edition: what's happening around town, this week's local deals, things to do, and the businesses behind them.",
+    "kicker": "Est. 2026 · Lompoc & Vandenberg",
+    "nameplate": "The Lompoc Locals",
+    "dateline": "This Week's Edition",
+    "leadStory": "Lead Story",
+    "eventDetails": "Event details",
+    "viewDeal": "See this deal",
+    "calendarTitle": "The Calendar",
+    "dealsTitle": "Deals of the Week",
+    "thingsTitle": "Things to Do",
+    "neighborsTitle": "Meet the Neighbors",
+    "officialPartner": "Official Partner",
+    "swipeHint": "Swipe to see more",
+    "prev": "Scroll back",
+    "next": "Scroll forward",
+    "allEvents": "See the full calendar",
+    "allDeals": "Browse all deals",
+    "allThings": "Explore things to do",
+    "emptyEdition": "This week's edition is still coming together. Check back soon — new events and deals are posted all week.",
+    "subscribeTitle": "Get this in your inbox",
+    "subscribeBody": "One email a week with everything happening around Lompoc. Free, and you can unsubscribe any time.",
+    "subscribeCta": "Subscribe to the weekly"
   }
 }
