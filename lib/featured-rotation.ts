@@ -50,6 +50,43 @@ export function fairShuffleByRank<T>(items: T[], rankOf: (item: T) => number): T
     .flatMap((rank) => fairShuffle(groups.get(rank) as T[]))
 }
 
+/**
+ * Fill `limit` showcase slots from two pools, giving the preferred pool (paying
+ * partners) a weighted chance at each slot rather than a hard reservation.
+ *
+ * Each slot is drawn independently: `preferredChance` of the time from `preferred`,
+ * otherwise from `others`. Partners dominate on average, but every business keeps a
+ * genuine shot at the homepage.
+ *
+ * Deliberately weights the SLOT, not the individual business. Per-business weighting
+ * looks equivalent today but silently decays as the directory grows — 11 partners at
+ * 60x beat 340 free listings, but the same weights lose badly against 3,400. Slot
+ * probability is stable at any catalogue size.
+ *
+ * When one pool runs out, the remaining slots fall through to the other so we never
+ * return fewer items than we could fill.
+ */
+export function weightedSlots<T>(
+  preferred: T[],
+  others: T[],
+  limit: number,
+  preferredChance = 0.7
+): T[] {
+  const p = fairShuffle(preferred)
+  const o = fairShuffle(others)
+  const out: T[] = []
+  let pi = 0
+  let oi = 0
+  while (out.length < limit && (pi < p.length || oi < o.length)) {
+    const wantPreferred = Math.random() < preferredChance
+    if (wantPreferred && pi < p.length) out.push(p[pi++])
+    else if (!wantPreferred && oi < o.length) out.push(o[oi++])
+    else if (pi < p.length) out.push(p[pi++])
+    else out.push(o[oi++])
+  }
+  return out
+}
+
 /** Deterministic, non-mutating shuffle (mulberry32 PRNG). */
 export function seededShuffle<T>(items: T[], seed: number): T[] {
   const out = [...items]

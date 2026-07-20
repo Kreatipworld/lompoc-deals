@@ -2,6 +2,14 @@ import { and, desc, eq, gt, gte, ilike, inArray, ne, or, sql } from "drizzle-orm
 import { db } from "@/db/client"
 import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions } from "@/db/schema"
 import { effectiveTier } from "@/lib/tier"
+import { weightedSlots } from "@/lib/featured-rotation"
+
+/**
+ * Share of homepage showcase slots that lean to paying partners. Paid listings must
+ * be clearly worth paying for, but not to the point that free businesses vanish from
+ * the homepage entirely — the feed should still look like the whole town.
+ */
+const PARTNER_SLOT_CHANCE = 0.7
 
 export type DealCardData = {
   id: number
@@ -293,6 +301,7 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
       // distinct: the subscriptions join below can multiply rows per business
       activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
+      tierRank: sql<number>`max(${tierRank})::int`,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -300,13 +309,19 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
     .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(eq(businesses.status, "approved"))
     .groupBy(businesses.id, categories.id)
-    // Paying tiers keep top billing, but the order WITHIN a tier is random on
-    // every request. Previously this sorted by deal count then name, which meant
-    // businesses early in the alphabet permanently owned the homepage and the
-    // rest were structurally invisible. Requires a dynamic render to take effect.
+    // Paying tiers sort first only so every partner is guaranteed to be IN the
+    // sampled pool; the visible order is decided by weightedSlots below. The
+    // random() tiebreak means the free businesses in the pool differ each request,
+    // so it is never the same handful competing for the open slots.
     .orderBy(sql`max(${tierRank}) desc`, sql`random()`)
-    .limit(limit)
-  return rows
+    .limit(Math.max(limit * 10, 60))
+
+  // Balance paid against unpaid: partners are preferred (they are paying for
+  // visibility) but free listings still surface, so the homepage reflects the
+  // whole town rather than only the subscriber list.
+  const partners = rows.filter((r) => r.tierRank > 0)
+  const unpaid = rows.filter((r) => r.tierRank === 0)
+  return weightedSlots(partners, unpaid, limit, PARTNER_SLOT_CHANCE)
 }
 
 export type PropertyListing = {
