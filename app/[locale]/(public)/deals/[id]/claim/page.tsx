@@ -1,10 +1,13 @@
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { isPast, formatDistanceToNowStrict } from "date-fns"
-import { MapPin, Phone, Clock, FileText, CheckCircle2, Ticket } from "lucide-react"
+import { MapPin, Phone, Clock, FileText } from "lucide-react"
 import { getDealById } from "@/lib/queries"
-import { claimCodeFor } from "@/lib/claim-code"
-import { redeemFromClaimAction } from "@/lib/tracking-actions"
+import { auth } from "@/auth"
+import { and, eq } from "drizzle-orm"
+import { db } from "@/db/client"
+import { couponClaims } from "@/db/schema"
+import { CouponCodeBlock } from "@/components/coupon-code-block"
 
 export async function generateMetadata() {
   const t = await getTranslations("claim")
@@ -13,10 +16,8 @@ export async function generateMetadata() {
 
 export default async function ClaimPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>
-  searchParams: { redeemed?: string }
 }) {
   const { id } = await params
   const t = await getTranslations("claim")
@@ -50,7 +51,13 @@ export default async function ClaimPage({
     )
   }
 
-  const redeemed = searchParams.redeemed === "1"
+  const session = await auth()
+  const userId = session?.user?.id ? Number(session.user.id) : null
+  const myClaim = userId
+    ? await db.query.couponClaims.findFirst({
+        where: and(eq(couponClaims.dealId, deal.id), eq(couponClaims.userId, userId)),
+      })
+    : null
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
@@ -82,18 +89,24 @@ export default async function ClaimPage({
             <p className="mt-2 text-sm text-muted-foreground">{deal.description}</p>
           )}
 
-          {/* The code */}
-          <div className="mx-auto mt-6 w-fit rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 px-8 py-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              {t("code")}
-            </p>
-            <p className="mt-1 font-mono text-2xl font-bold tracking-widest text-foreground">
-              {claimCodeFor(deal.id)}
-            </p>
-          </div>
-          <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
-            <Ticket className="h-4 w-4 text-primary" /> {t("showAtRegister")}
-          </p>
+          <CouponCodeBlock
+            dealId={deal.id}
+            isSignedIn={Boolean(userId)}
+            existingCode={myClaim?.code ?? null}
+            labels={{
+              signIn: t("signInToGetCode"),
+              signInWhy: t("signInWhy"),
+              getCode: t("getMyCode"),
+              yourCode: t("yourCode"),
+              codeIsYours: t("codeIsYours"),
+              showAtRegister: t("showAtRegister"),
+              expired: t("blockedExpired"),
+              paused: t("blockedPaused"),
+              soldOut: t("blockedSoldOut"),
+              dailyLimit: t("blockedDailyLimit"),
+              error: t("claimError"),
+            }}
+          />
 
           {/* Meta */}
           <div className="mt-5 space-y-1 text-xs text-muted-foreground">
@@ -115,25 +128,6 @@ export default async function ClaimPage({
               </a>
             )}
           </div>
-        </div>
-
-        {/* Redeem confirmation */}
-        <div className="border-t bg-muted/30 px-6 py-4">
-          {redeemed ? (
-            <p className="inline-flex w-full items-center justify-center gap-1.5 text-sm font-semibold text-success">
-              <CheckCircle2 className="h-4 w-4" /> {t("usedConfirmed")}
-            </p>
-          ) : (
-            <form action={redeemFromClaimAction}>
-              <input type="hidden" name="dealId" value={deal.id} />
-              <button
-                type="submit"
-                className="inline-flex h-10 w-full items-center justify-center rounded-full border px-4 text-sm font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
-              >
-                {t("usedIt")}
-              </button>
-            </form>
-          )}
         </div>
       </div>
     </div>
