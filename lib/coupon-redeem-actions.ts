@@ -33,7 +33,8 @@ export type CouponLookup =
 async function resolveBiz() {
   try {
     return await getMyBusiness()
-  } catch {
+  } catch (e) {
+    console.error("resolveBiz: failed to get business context", { cause: e })
     return null
   }
 }
@@ -46,25 +47,43 @@ export async function lookupCoupon(rawCode: string): Promise<CouponLookup> {
   const code = normalizeCouponCode(rawCode)
   if (!code) return { ok: false, reason: "not_found" }
 
-  const [row] = await db
-    .select({
-      claimId: couponClaims.id,
-      code: couponClaims.code,
-      status: couponClaims.status,
-      claimedAt: couponClaims.claimedAt,
-      redeemedAt: couponClaims.redeemedAt,
-      dealTitle: deals.title,
-      discountText: deals.discountText,
-      expiresAt: deals.expiresAt,
-      customerName: users.name,
-    })
-    .from(couponClaims)
-    .innerJoin(deals, eq(deals.id, couponClaims.dealId))
-    .leftJoin(users, eq(users.id, couponClaims.userId))
-    // Ownership scope: a code from another business is indistinguishable from
-    // one that does not exist. Do not leak its existence.
-    .where(and(eq(couponClaims.code, code), eq(deals.businessId, biz.id)))
-    .limit(1)
+  type CouponRow = {
+    claimId: number
+    code: string
+    status: "claimed" | "redeemed" | "void"
+    claimedAt: Date
+    redeemedAt: Date | null
+    dealTitle: string
+    discountText: string | null
+    expiresAt: Date
+    customerName: string | null
+  }
+  let row: CouponRow | undefined
+  try {
+    const result = await db
+      .select({
+        claimId: couponClaims.id,
+        code: couponClaims.code,
+        status: couponClaims.status,
+        claimedAt: couponClaims.claimedAt,
+        redeemedAt: couponClaims.redeemedAt,
+        dealTitle: deals.title,
+        discountText: deals.discountText,
+        expiresAt: deals.expiresAt,
+        customerName: users.name,
+      })
+      .from(couponClaims)
+      .innerJoin(deals, eq(deals.id, couponClaims.dealId))
+      .leftJoin(users, eq(users.id, couponClaims.userId))
+      // Ownership scope: a code from another business is indistinguishable from
+      // one that does not exist. Do not leak its existence.
+      .where(and(eq(couponClaims.code, code), eq(deals.businessId, biz.id)))
+      .limit(1)
+    row = result[0]
+  } catch (e) {
+    console.error("lookupCoupon: query failed", { cause: e })
+    return { ok: false, reason: "not_found" }
+  }
 
   if (!row) return { ok: false, reason: "not_found" }
 
@@ -98,18 +117,30 @@ export async function redeemCoupon(
   const staffId = session?.user?.id ? Number(session.user.id) : null
   if (!staffId || !Number.isFinite(staffId)) return { ok: false, reason: "auth" }
 
-  const [row] = await db
-    .select({
-      id: couponClaims.id,
-      status: couponClaims.status,
-      expiresAt: deals.expiresAt,
-    })
-    .from(couponClaims)
-    .innerJoin(deals, eq(deals.id, couponClaims.dealId))
-    // Ownership scope: same guarantee as lookupCoupon — a claim id belonging
-    // to another business is indistinguishable from a nonexistent one.
-    .where(and(eq(couponClaims.id, claimId), eq(deals.businessId, biz.id)))
-    .limit(1)
+  type RedeemRow = {
+    id: number
+    status: "claimed" | "redeemed" | "void"
+    expiresAt: Date
+  }
+  let row: RedeemRow | undefined
+  try {
+    const result = await db
+      .select({
+        id: couponClaims.id,
+        status: couponClaims.status,
+        expiresAt: deals.expiresAt,
+      })
+      .from(couponClaims)
+      .innerJoin(deals, eq(deals.id, couponClaims.dealId))
+      // Ownership scope: same guarantee as lookupCoupon — a claim id belonging
+      // to another business is indistinguishable from a nonexistent one.
+      .where(and(eq(couponClaims.id, claimId), eq(deals.businessId, biz.id)))
+      .limit(1)
+    row = result[0]
+  } catch (e) {
+    console.error("redeemCoupon: query failed", { cause: e })
+    return { ok: false, reason: "error" }
+  }
 
   if (!row) return { ok: false, reason: "not_found" }
   if (row.status === "redeemed") return { ok: true, alreadyRedeemed: true }
