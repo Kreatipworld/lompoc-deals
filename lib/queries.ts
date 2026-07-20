@@ -290,15 +290,21 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
-      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      // distinct: the subscriptions join below can multiply rows per business
+      activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(eq(businesses.status, "approved"))
     .groupBy(businesses.id, categories.id)
-    .orderBy(sql`count(${deals.id}) filter (where ${deals.expiresAt} > now()) desc`, businesses.name)
+    // Paying tiers keep top billing, but the order WITHIN a tier is random on
+    // every request. Previously this sorted by deal count then name, which meant
+    // businesses early in the alphabet permanently owned the homepage and the
+    // rest were structurally invisible. Requires a dynamic render to take effect.
+    .orderBy(sql`max(${tierRank}) desc`, sql`random()`)
     .limit(limit)
   return rows
 }

@@ -56,6 +56,12 @@ function getCategoryImage(slug: string): string | null {
   return CATEGORY_IMAGES[slug] ?? null
 }
 
+// Rendered per request so the showcase rows (featured businesses, partner deals,
+// sponsors) reshuffle on every visit and every business gets an equal turn at the
+// top slot. Under static prerendering the shuffle would freeze at build time and
+// the same few businesses would own the homepage forever.
+export const dynamic = "force-dynamic"
+
 export default async function HomePage({ params }: { params: { locale: string } }) {
   const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, t] = await Promise.all([
     getAllCategories(),

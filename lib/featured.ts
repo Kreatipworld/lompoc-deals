@@ -1,10 +1,11 @@
 import type { DealCardData } from "@/lib/queries"
 import { getActiveDeals, getDealsByCategorySlug } from "@/lib/queries"
-import { dateSeed, seededShuffle } from "@/lib/featured-rotation"
+import { fairShuffle } from "@/lib/featured-rotation"
 
 /**
  * Featured row: Premium businesses' active deals, deduped one-per-business,
- * rotated by a date-seeded shuffle, capped at `limit`.
+ * reshuffled on every request so each partner gets an equal turn at the top
+ * slot, capped at `limit`.
  */
 export async function getFeaturedDeals(opts: { categorySlug?: string; limit?: number } = {}): Promise<DealCardData[]> {
   const { categorySlug, limit = 6 } = opts
@@ -21,5 +22,5 @@ export async function getFeaturedDeals(opts: { categorySlug?: string; limit?: nu
     onePerBiz.push(d)
   }
 
-  return seededShuffle(onePerBiz, dateSeed(new Date())).slice(0, limit)
+  return fairShuffle(onePerBiz).slice(0, limit)
 }
