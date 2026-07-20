@@ -82,26 +82,28 @@ export async function claimCoupon(dealId: number): Promise<ClaimResult> {
   })
   if (block) return { ok: false, reason: block }
 
-  // neon-http has no interactive transactions, so two concurrent claims from
-  // different users can both pass the pre-check above and both insert,
-  // overshooting the cap. Make the count-and-write atomic: the cap
-  // conditions live in the INSERT itself, so only claims that are still
-  // under cap at insert time actually land a row.
+  // neon-http has no interactive transactions, and a bare COUNT(*) predicate
+  // does not serialize concurrent statements under READ COMMITTED: two claims
+  // arriving milliseconds apart each take their own MVCC snapshot, both read
+  // the same pre-insert count, and both pass. Locking the parent `deals` row
+  // with FOR UPDATE inside the same statement (via a CTE) makes concurrent
+  // claims for the same deal queue behind each other, so the second
+  // statement's count subquery sees the first one's committed row.
   const capConditions: SQL[] = []
   if (deal.maxRedemptions !== null) {
     capConditions.push(
-      sql`(SELECT count(*) FROM coupon_claims WHERE deal_id = ${dealId}) < ${deal.maxRedemptions}`
+      sql`(SELECT count(*) FROM ${couponClaims} WHERE ${couponClaims.dealId} = ${dealId}) < ${deal.maxRedemptions}`
     )
   }
   if (deal.maxPerDay !== null) {
     capConditions.push(
-      sql`(SELECT count(*) FROM coupon_claims
-           WHERE deal_id = ${dealId}
-             AND (claimed_at AT TIME ZONE 'America/Los_Angeles')::date
+      sql`(SELECT count(*) FROM ${couponClaims}
+           WHERE ${couponClaims.dealId} = ${dealId}
+             AND (${couponClaims.claimedAt} AT TIME ZONE 'America/Los_Angeles')::date
                = (now() AT TIME ZONE 'America/Los_Angeles')::date) < ${deal.maxPerDay}`
     )
   }
-  const capWhere = capConditions.length > 0 ? sql`WHERE ${sql.join(capConditions, sql` AND `)}` : sql``
+  const capWhere = capConditions.length > 0 ? sql`AND ${sql.join(capConditions, sql` AND `)}` : sql``
 
   // Retry on the astronomically-unlikely code collision; the unique index is the
   // real guarantee, this loop just turns a collision into a retry instead of a 500.
@@ -109,8 +111,10 @@ export async function claimCoupon(dealId: number): Promise<ClaimResult> {
     const code = generateCouponCode()
     try {
       const result = await db.execute(sql`
+        WITH locked AS (SELECT id FROM ${deals} WHERE ${deals.id} = ${dealId} FOR UPDATE)
         INSERT INTO coupon_claims (deal_id, user_id, code)
-        SELECT ${dealId}, ${userId}, ${code}
+        SELECT ${dealId}, ${userId}, ${code} FROM locked
+        WHERE true
         ${capWhere}
         RETURNING code
       `)
