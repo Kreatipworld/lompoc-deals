@@ -6,6 +6,10 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    // lib/ holds shared class-name constants (see lib/layout-constants.ts).
+    // Without this glob Tailwind never sees those literals, so the class lands
+    // in the HTML with no CSS rule behind it — silently doing nothing.
+    "./lib/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     container: {

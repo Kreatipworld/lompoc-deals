@@ -26,7 +26,6 @@ const NAV_ITEMS = [
  * nothing at `sm:` and up, where BottomNav is hidden (`sm:hidden`) and the
  * FAB relocates to `sm:bottom-6`.
  */
-export const MOBILE_BOTTOM_CLEARANCE = "pb-[7.5rem] sm:pb-0"
 
 export function BottomNav() {
   const t = useTranslations("bottomNav")
