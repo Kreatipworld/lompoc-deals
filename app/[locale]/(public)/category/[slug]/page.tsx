@@ -161,23 +161,15 @@ export default async function CategoryPage({
 
       {/* CHIPS */}
       <section className="border-b bg-secondary/30">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-4">
-          <div className="min-w-0 flex-1">
-            <CategoryChips activeSlug={params.slug} />
-          </div>
-          {!isRealEstate && (
-            <Link
-              href={openToggleHref}
-              className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
-                openNow
-                  ? "border-success bg-success/10 text-success"
-                  : "bg-card text-muted-foreground hover:border-foreground/30"
-              }`}
-            >
-              <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
-              {t("openNowFilter")}
-            </Link>
-          )}
+        <div className="mx-auto max-w-6xl px-4 py-4">
+          <CategoryChips
+            activeSlug={params.slug}
+            openNow={
+              isRealEstate
+                ? undefined
+                : { active: openNow, href: openToggleHref, label: t("openNowFilter") }
+            }
+          />
         </div>
       </section>
 
