@@ -15,6 +15,19 @@ const NAV_ITEMS = [
   { href: "/account", icon: User, labelKey: "account" },
 ] as const
 
+/**
+ * Single source of truth for how much bottom clearance mobile page content
+ * needs so it never sits underneath this nav or the chat FAB above it.
+ *
+ * BottomNav is `h-16` (64px). The chat FAB sits at `bottom-[4.5rem]` (72px)
+ * with a 48px (`w-12 h-12`) footprint on mobile, so its top edge lands at
+ * 72px + 48px = 120px (7.5rem) — the taller of the two fixed elements.
+ * Apply this to a page's outermost scrollable container; it collapses to
+ * nothing at `sm:` and up, where BottomNav is hidden (`sm:hidden`) and the
+ * FAB relocates to `sm:bottom-6`.
+ */
+export const MOBILE_BOTTOM_CLEARANCE = "pb-[7.5rem] sm:pb-0"
+
 export function BottomNav() {
   const t = useTranslations("bottomNav")
   const pathname = usePathname()
