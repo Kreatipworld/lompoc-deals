@@ -296,7 +296,7 @@
     "noDeals": "Sin ofertas aún",
     "noDealsSubtitle": "Vuelve pronto para ver nuevas ofertas de negocios locales.",
     "page": {
-      "metaTitle": "Ofertas y Cupones en Lompoc — Especiales Locales | Lompoc Locals",
+      "metaTitle": "Ofertas y Cupones en Lompoc — Especiales Locales",
       "metaDescription": "Explora ofertas y cupones actuales de negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Actualizadas a diario, gratis para canjear.",
       "metaKeywords": "ofertas lompoc,cupones lompoc,especiales lompoc,descuentos lompoc,lompoc ca deals,lompoc deals",
       "ogTitle": "Ofertas y Cupones en Lompoc — Especiales Locales Actualizados a Diario",
@@ -341,7 +341,7 @@
     "viewAll": "Ver todos los negocios"
   },
   "activities": {
-    "metaTitle": "Qué hacer en Lompoc, CA — Aventuras y Actividades | Lompoc Locals",
+    "metaTitle": "Qué hacer en Lompoc, CA — Aventuras y Actividades",
     "metaDescription": "Descubre las mejores cosas que hacer en Lompoc, CA — misiones históricas, campos de flores, cata de vinos, playas, murales y aventuras al aire libre. Actualizado por locales.",
     "metaOgTitle": "Qué hacer en Lompoc, CA",
     "metaOgDescription": "Explora Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más."
@@ -390,7 +390,7 @@
     "sectionDeals": "Ofertas"
   },
   "hotels": {
-    "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse | Lompoc Locals",
+    "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse",
     "metaDescription": "Encuentra hoteles seleccionados en Lompoc, CA. Desde moteles económicos hasta suites de lujo — cerca de Vandenberg Space Force Base, el centro de Lompoc y la región vinícola de Santa Rita Hills.",
     "priceUpscale": "De lujo",
     "priceMidRange": "Precio moderado",
@@ -432,7 +432,7 @@
     "whileHereHeading": "Mientras estás aquí"
   },
   "locals": {
-    "metaTitle": "Para residentes — Lompoc Locals",
+    "metaTitle": "Para residentes",
     "metaDescription": "Membresía gratis para residentes de Lompoc: reclama cupones en la caja, guarda favoritos, sigue negocios y recibe el resumen del sábado.",
     "heroBadge": "Hecho para Lompoc y Vandenberg",
     "heroH1": "Tu ciudad.",
@@ -514,7 +514,7 @@
     "subtitle": "Llega a los locales que buscan activamente descubrir y apoyar los negocios de su comunidad.",
     "getStarted": "Empieza gratis",
     "learnMore": "Ver precios",
-    "metaTitle": "Publica tu negocio en Lompoc gratis — Sé encontrado por los locales | Lompoc Locals",
+    "metaTitle": "Publica tu negocio en Lompoc gratis — Sé encontrado por los locales",
     "metaDescription": "Publica tu negocio de Lompoc en el directorio local gratis — fotos, horarios, ofertas y más. Más de 470 negocios ya descubiertos aquí por los locales. Sin comisión, sin tarjeta de crédito.",
     "hero": {
       "badge": "Para dueños de negocios en Lompoc",
@@ -985,7 +985,7 @@
   },
   "businesses": {
     "directory": {
-      "metaTitle": "Directorio de Negocios de Lompoc — Negocios Locales | Lompoc Locals",
+      "metaTitle": "Directorio de Negocios de Lompoc — Negocios Locales",
       "metaDescription": "Explora negocios en Lompoc, CA por categoría — restaurantes, salones, talleres, tiendas, servicios y más. Encuentra ofertas de los negocios locales que ya conoces.",
       "statBarBusinesses": "{count} negocios",
       "statBarActiveDeals": "{count} ofertas activas",
@@ -1665,7 +1665,7 @@
     "unique": "Solo en Lompoc"
   },
   "subscribePage": {
-    "metaTitle": "Digest semanal — Lompoc Locals",
+    "metaTitle": "Digest semanal",
     "metaDescription": "Recibe las 10 mejores ofertas locales gratis cada sábado por la mañana. Únete a tus vecinos de Lompoc que ahorran cada semana.",
     "badge": "Digest semanal de ofertas gratis",
     "heading1": "Tu atajo semanal",
@@ -1802,7 +1802,7 @@
     "unique": "Únicos"
   },
   "privacy": {
-    "metaTitle": "Política de Privacidad — Lompoc Locals",
+    "metaTitle": "Política de Privacidad",
     "metaDescription": "Cómo Lompoc Locals recopila, usa y protege tu información personal. Incluye derechos CCPA/CPRA de California.",
     "pageTitle": "Política de Privacidad",
     "lastUpdated": "Última actualización: 30 de abril de 2026",
@@ -1886,7 +1886,7 @@
     }
   },
   "terms": {
-    "metaTitle": "Términos del Servicio — Lompoc Locals",
+    "metaTitle": "Términos del Servicio",
     "metaDescription": "Términos que rigen el uso de Lompoc Locals — registro de cuenta, planes de suscripción, reglas de contenido y ley aplicable de California.",
     "pageTitle": "Términos del Servicio",
     "lastUpdated": "Última actualización: 30 de abril de 2026",
@@ -1963,7 +1963,7 @@
     }
   },
   "contactPage": {
-    "metaTitle": "Contacto — Lompoc Locals",
+    "metaTitle": "Contacto",
     "metaDescription": "Ponte en contacto con el equipo de Lompoc Locals — para propietarios de negocios, residentes locales o preguntas generales.",
     "pageTitle": "Contáctanos",
     "intro": "¿Tienes una pregunta, encontraste un error en un listado o quieres saber más sobre cómo poner tu negocio en el mapa? Nos encantaría saber de ti.",
