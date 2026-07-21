@@ -1,7 +1,8 @@
 import { Link } from "@/i18n/navigation"
-import { Sparkles } from "lucide-react"
 import { getFeedItems, type FeedDisplayItem } from "@/lib/feed-queries"
 import { FeedExplorer } from "@/components/feed-explorer"
+import { PageHeader } from "@/components/page-header"
+import { PAGE_CONTAINER } from "@/lib/layout-constants"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 
@@ -29,41 +30,17 @@ export default async function FeedPage({
 
   return (
     <main>
-      {/* ── HEADER — community photo band ────────────────────────────── */}
-      <section className="relative isolate overflow-hidden border-b">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-20 overflow-hidden"
-          style={{
-            backgroundImage: "url('/lompoc-community.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center 40%",
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-[hsl(287_81%_14%/0.92)] via-[hsl(287_81%_18%/0.65)] to-[hsl(287_81%_20%/0.25)]"
-        />
-
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
-          <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
-            <Sparkles className="h-3 w-3" />
-            {t("badge")}
-          </div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            {t("heading")}
-          </h1>
-          <p className="mt-2 max-w-2xl text-base text-white/85">
-            {t("subheading")}{" "}
-            <Link href="/feed/post" className="font-medium text-gold underline underline-offset-4">
-              {t("postLink")}
-            </Link>
-          </p>
-        </div>
-      </section>
+      <PageHeader title={t("heading")} meta={t("itemCount", { count: items.length })}>
+        <Link
+          href="/feed/post"
+          className="inline-flex h-11 flex-shrink-0 items-center gap-1.5 rounded-full bg-gold px-5 text-sm font-semibold text-gold-foreground shadow-sm transition-transform hover:-translate-y-0.5"
+        >
+          {t("postLink")}
+        </Link>
+      </PageHeader>
 
       {/* ── FEED — content first ─────────────────────────────────────── */}
-      <div className="mx-auto max-w-6xl px-4 py-8">
+      <div className={`${PAGE_CONTAINER} py-8`}>
         <FeedExplorer items={items} initialType={searchParams?.type ?? ""} />
       </div>
 

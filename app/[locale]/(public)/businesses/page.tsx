@@ -18,6 +18,7 @@ import { filterOpenNow } from "@/lib/hours"
 import { SearchBar } from "@/components/search-bar"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { BusinessAvatar } from "@/components/business-avatar"
+import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
@@ -87,48 +88,20 @@ export default async function BusinessesPage({
 
   return (
     <>
-      {/* ═══════════════════════════════════════════════════
-          HEADER — compact band: title + search + stat line.
-          Kept slim on purpose so the jump-nav and listings
-          land above the fold.
-         ═══════════════════════════════════════════════════ */}
-      <section className="relative isolate overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-br from-[hsl(273_33%_12%)] via-[hsl(270_26%_10%)] to-[hsl(273_33%_8%)]"
-        />
-        <div
-          aria-hidden
-          className="absolute -right-24 -top-24 -z-10 h-[320px] w-[320px] rounded-full bg-primary/20 blur-[100px]"
-        />
-
-        <div className="relative mx-auto max-w-6xl px-4 py-8 sm:py-10">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                {t("heroLine1")}{" "}
-                <span className="italic text-gold">{t("heroLine2")}</span>
-              </h1>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base">
-                {t("heroBody")}
-              </p>
-            </div>
-            <div className="w-full flex-shrink-0 lg:max-w-md">
-              <SearchBar size="lg" scrim />
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/30">
-            <span className="text-white/60">{t("statBarBusinesses", { count: stats.businesses })}</span>
-            <span className="text-white/10">·</span>
-            <span>{t("statBarActiveDeals", { count: stats.activeDeals })}</span>
-            <span className="text-white/10">·</span>
-            <span>{t("statBarCategories", { count: stats.categories })}</span>
-            <span className="text-white/10">·</span>
-            <span>{t("statBarUpdatedDaily")}</span>
-          </div>
+      <PageHeader
+        title={t("heading")}
+        meta={
+          <>
+            {t("statBarBusinesses", { count: stats.businesses })}
+            {" · "}
+            {t("statBarActiveDeals", { count: stats.activeDeals })}
+          </>
+        }
+      >
+        <div className="w-full flex-shrink-0 sm:w-80">
+          <SearchBar size="lg" scrim />
         </div>
-      </section>
+      </PageHeader>
 
       {/* ═══════════════════════════════════════════════════
           STICKY JUMP-NAV — anchor to each category with counts

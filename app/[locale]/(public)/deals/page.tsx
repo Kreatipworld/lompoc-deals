@@ -12,6 +12,7 @@ import { SafeImage } from "@/components/safe-image"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { CouponDemo } from "@/components/coupon-demo"
 import { SubscribeForm } from "../subscribe/subscribe-form"
+import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import type { DealCardData } from "@/lib/queries"
@@ -58,38 +59,19 @@ export default async function DealsPage() {
 
   return (
     <>
-      {/* ─── HERO — market energy ─── */}
-      <section className="relative isolate overflow-hidden border-b">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-br from-[#4a0857] via-[#650C75] to-[#37043f]"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            backgroundImage:
-              "radial-gradient(55% 55% at 90% 0%, rgba(239,198,24,0.25) 0%, transparent 60%), radial-gradient(50% 55% at 5% 100%, rgba(11,153,47,0.22) 0%, transparent 60%)",
-          }}
-        />
-
-        <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:py-12">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-            <Tag className="h-3 w-3" />
-            {t("badge")}
-          </div>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            {t("heading")}
-          </h1>
-          <p className="mt-3 text-white/80">
+      <PageHeader
+        title={t("heading")}
+        meta={
+          <>
             <AnimatedCounter value={stats.activeDeals} duration={1200} delay={300} />{" "}
             {t("heroCountSuffix")}
-          </p>
-          <div className="mx-auto mt-6 max-w-xl">
-            <SearchBar size="lg" scrim />
-          </div>
+          </>
+        }
+      >
+        <div className="w-full flex-shrink-0 sm:w-80">
+          <SearchBar size="lg" scrim />
         </div>
-      </section>
+      </PageHeader>
 
       {/* ─── CATEGORY STRIP ─── */}
       <CategoryStrip />
