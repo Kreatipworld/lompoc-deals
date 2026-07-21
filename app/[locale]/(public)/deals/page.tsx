@@ -79,7 +79,7 @@ export default async function DealsPage() {
       {hasDeals && spotlight && (
         <>
           {/* ─── DEAL OF THE WEEK ─── */}
-          <section className="mx-auto max-w-6xl px-4 pt-10">
+          <section className="mx-auto max-w-6xl px-4 pt-8 sm:pt-10">
             <div className="relative overflow-visible">
               <span className="absolute -top-3.5 left-6 z-10 inline-flex items-center gap-1 rounded-full bg-gold px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-gold-foreground shadow-sm">
                 <Star className="h-3.5 w-3.5 fill-current" />
@@ -143,7 +143,7 @@ export default async function DealsPage() {
 
           {/* ─── ENDS SOON RAIL ─── */}
           {endsSoon.length > 0 && (
-            <section className="mx-auto max-w-6xl px-4 pt-12">
+            <section className="mx-auto max-w-6xl px-4 pt-8 sm:pt-10">
               <div className="mb-4 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-gold-foreground" />
                 <h2 className="font-display text-2xl font-bold tracking-tight">
@@ -165,7 +165,7 @@ export default async function DealsPage() {
 
           {/* ─── THE DEAL WALL ─── */}
           {wall.length > 0 && (
-            <section className="mx-auto max-w-6xl px-4 pt-12">
+            <section className="mx-auto max-w-6xl px-4 pt-8 sm:pt-10">
               <h2 className="mb-5 font-display text-2xl font-bold tracking-tight">
                 {t("wallHeading")}
               </h2>
@@ -187,13 +187,13 @@ export default async function DealsPage() {
       )}
 
       {!hasDeals && (
-        <section className="mx-auto max-w-3xl px-4 py-14 text-center text-muted-foreground">
+        <section className="mx-auto max-w-3xl px-4 py-8 text-center text-muted-foreground sm:py-10">
           <p>{t("noDeals")}</p>
         </section>
       )}
 
       {/* ─── SATURDAY DIGEST BAND ─── */}
-      <section className="mt-14 border-y bg-secondary/30 py-12">
+      <section className="mt-8 border-y bg-secondary/30 py-8 sm:mt-10 sm:py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 sm:flex-row sm:justify-between">
           <div className="flex items-start gap-4">
             <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -213,7 +213,7 @@ export default async function DealsPage() {
       </section>
 
       {/* ─── FIRST TIME? STORYBOARD ─── */}
-      <section className="mx-auto max-w-6xl px-4 py-14">
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">
             {t("demoEyebrow")}
@@ -248,7 +248,7 @@ export default async function DealsPage() {
       </section>
 
       {/* ─── MERCHANT BAND ─── */}
-      <section className="mx-auto max-w-6xl px-4 pb-16">
+      <section className="mx-auto max-w-6xl px-4 pb-8 sm:pb-10">
         <div className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-[hsl(287_70%_30%)] to-[hsl(287_81%_18%)] px-6 py-10 text-center sm:px-12">
           <div
             aria-hidden

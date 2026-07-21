@@ -95,7 +95,7 @@ export default async function ActivitiesPage({
       </div>
 
       {/* ─── ACTIVITY GRID ─── */}
-      <section className={`${PAGE_CONTAINER} py-10`}>
+      <section className={`${PAGE_CONTAINER} py-8 sm:py-10`}>
         {allActivities.length === 0 ? (
           <p className="py-16 text-center text-muted-foreground">
             No activities found. Check back soon!

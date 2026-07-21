@@ -81,14 +81,14 @@ export default async function EventsPage({
   return (
     <>
     <PageHeader title={t("heading")} />
-    <main className={`${PAGE_CONTAINER} py-10`}>
+    <main className={`${PAGE_CONTAINER} py-8 sm:py-10`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       {launches.length > 0 && (
-        <section className="mt-10">
+        <section className="mt-8 sm:mt-10">
           <h2 className="font-display text-xl font-semibold tracking-tight">
             {t("launchesHeading")}
           </h2>
@@ -124,7 +124,7 @@ export default async function EventsPage({
         </section>
       )}
 
-      <section className="mt-10">
+      <section className="mt-8 sm:mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight">
           {t("upcomingHeading")}
         </h2>

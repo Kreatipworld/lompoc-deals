@@ -6,6 +6,7 @@ import { getMasterDigestContent, selectLead } from "@/lib/digest"
 import { SafeImage } from "@/components/safe-image"
 import { EditionGallery } from "@/components/edition-gallery"
 import { pageAlternates } from "@/lib/seo"
+import { PAGE_CONTAINER } from "@/lib/layout-constants"
 
 // The edition tracks live content (events expire, deals rotate), so render fresh
 // rather than serving a stale week from the build.
@@ -79,7 +80,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
     <div className="min-h-screen bg-[#f7f3ec] text-[#1a1712]">
       {/* ── Masthead: the same nameplate readers just saw in their inbox ── */}
       <header className="border-b-4 border-[#650C75] bg-[#650C75] text-center">
-        <div className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
+        <div className={`${PAGE_CONTAINER} py-8 sm:py-10`}>
           <p className="font-edition text-[11px] font-bold uppercase tracking-[0.34em] text-[#EFC618] sm:text-xs">
             {t("kicker")}
           </p>
@@ -93,7 +94,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
+      <main className={`${PAGE_CONTAINER} pb-8 sm:pb-10`}>
         {isEmpty ? (
           <p className="font-edition mx-auto max-w-xl py-24 text-center text-xl leading-relaxed text-[#7a6f60]">
             {t("emptyEdition")}
@@ -324,7 +325,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
         )}
 
         {/* ── Subscribe: this page is the digest's landing spot ── */}
-        <section className="mt-6 border-2 border-[#650C75] bg-white px-6 py-10 text-center">
+        <section className="mt-6 border-2 border-[#650C75] bg-white px-6 py-8 text-center sm:py-10">
           <h2 className="font-edition text-2xl font-bold sm:text-3xl">{t("subscribeTitle")}</h2>
           <p className="font-edition mx-auto mt-2 max-w-md text-base text-[#7a6f60] sm:text-lg">
             {t("subscribeBody")}

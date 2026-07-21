@@ -130,7 +130,7 @@ export default async function CategoryPage({
 
       {/* REAL ESTATE: tabs + property grid */}
       {isRealEstate && (
-        <section className="mx-auto max-w-6xl px-4 py-10 pb-16">
+        <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
           <div className="mb-6 flex items-center gap-2 border-b">
             <Link
               href={`/category/${params.slug}`}
@@ -170,7 +170,7 @@ export default async function CategoryPage({
       {/* NON-REAL-ESTATE: business listings (primary) */}
       {!isRealEstate && (
         <>
-          <section className="mx-auto max-w-6xl px-4 py-10">
+          <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
             {categoryBusinesses.length === 0 ? (
               <p className="py-16 text-center text-sm text-muted-foreground">
                 {t("noBusinesses")}
@@ -250,8 +250,8 @@ export default async function CategoryPage({
 
           {/* DEALS: secondary section */}
           {deals.length > 0 && (
-            <section className="mx-auto max-w-6xl px-4 pb-16">
-              <div className="mb-6 border-t pt-10">
+            <section className="mx-auto max-w-6xl px-4 pb-8 sm:pb-10">
+              <div className="mb-6 border-t pt-8 sm:pt-10">
                 <h2 className="font-display text-2xl font-semibold tracking-tight">
                   {t("activeDealsIn", { name: cat.name })}
                 </h2>

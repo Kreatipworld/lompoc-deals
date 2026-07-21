@@ -152,7 +152,7 @@ export default async function BusinessesPage({
          ═══════════════════════════════════════════════════ */}
       {mostActive.length > 0 && (
         <section id="most-active" className="scroll-mt-20 border-b bg-gradient-to-b from-gold/[0.06] to-transparent">
-          <div className="mx-auto max-w-6xl px-4 py-14">
+          <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
             <AnimeReveal direction="up" duration={560}>
               <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                 <div>
@@ -221,7 +221,7 @@ export default async function BusinessesPage({
       {/* ═══════════════════════════════════════════════════
           DIRECTORY LISTINGS — grouped by category
          ═══════════════════════════════════════════════════ */}
-      <div className="mx-auto max-w-6xl space-y-16 px-4 py-16">
+      <div className="mx-auto max-w-6xl space-y-16 px-4 py-8 sm:py-10">
         <p className="text-sm text-muted-foreground">
           {businesses.length} {businesses.length === 1 ? t("businessSingular") : t("businessPlural")}
         </p>
@@ -348,7 +348,7 @@ export default async function BusinessesPage({
          ═══════════════════════════════════════════════════ */}
       <section className="border-t bg-secondary/30">
         <AnimeReveal direction="up" delay={0} duration={600}>
-          <div className="mx-auto max-w-6xl px-4 py-20 text-center">
+          <div className="mx-auto max-w-6xl px-4 py-8 text-center sm:py-10">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Store className="h-5 w-5" />
             </div>

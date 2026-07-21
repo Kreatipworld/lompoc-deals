@@ -40,7 +40,7 @@ export default async function FeedPage({
       </PageHeader>
 
       {/* ── FEED — content first ─────────────────────────────────────── */}
-      <div className={`${PAGE_CONTAINER} py-8`}>
+      <div className={`${PAGE_CONTAINER} py-8 sm:py-10`}>
         <FeedExplorer items={items} initialType={searchParams?.type ?? ""} />
       </div>
 
