@@ -4,6 +4,7 @@ import { z } from "zod"
 import bcrypt from "bcryptjs"
 import { eq, and, gt, isNull } from "drizzle-orm"
 import { redirect } from "next/navigation"
+import { safeInternalPath } from "@/lib/safe-redirect"
 import { AuthError } from "next-auth"
 import { randomBytes } from "crypto"
 import { getTranslations } from "next-intl/server"
@@ -146,15 +147,23 @@ export async function signupAction(
   redirect(dbRole === "business" ? "/dashboard/profile" : "/account")
 }
 
-/** Return a redirect destination that the given role is actually allowed to visit. */
+/**
+ * Return a redirect destination that the given role is actually allowed to visit.
+ *
+ * `from` is attacker-controlled, so it is validated as an internal path BEFORE any
+ * role check. Previously any value that was not `/dashboard*` or `/admin*` was
+ * returned verbatim, which meant `?from=https://evil.com` redirected the user
+ * off-site right after login — an open redirect.
+ */
 function safeDestination(from: string | null, role: string): string {
-  if (from) {
-    const isMerchantOnly = from.startsWith("/dashboard")
-    const isAdminOnly = from.startsWith("/admin")
-    if (isMerchantOnly && role === "business") return from
-    if (isAdminOnly && role === "admin") return from
+  const path = safeInternalPath(from)
+  if (path) {
+    const isMerchantOnly = path.startsWith("/dashboard")
+    const isAdminOnly = path.startsWith("/admin")
+    if (isMerchantOnly && role === "business") return path
+    if (isAdminOnly && role === "admin") return path
     // `from` leads somewhere the user can't access — fall through to default
-    if (!isMerchantOnly && !isAdminOnly) return from
+    if (!isMerchantOnly && !isAdminOnly) return path
   }
   if (role === "business") return "/dashboard/profile"
   if (role === "admin") return "/admin"

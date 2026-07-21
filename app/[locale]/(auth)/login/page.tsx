@@ -1,5 +1,6 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
+import { safeInternalPath } from "@/lib/safe-redirect"
 import { getTranslations } from "next-intl/server"
 import { LoginForm } from "./login-form"
 
@@ -29,12 +30,15 @@ export default async function LoginPage({
     const role = session.user.role as string
     const from = searchParams.from ?? null
     let destination: string
-    if (from && from.startsWith("/dashboard") && role === "business") {
-      destination = from
-    } else if (from && from.startsWith("/admin") && role === "admin") {
-      destination = from
-    } else if (from && !from.startsWith("/dashboard") && !from.startsWith("/admin")) {
-      destination = from
+    // `from` is attacker-controlled — validate it is an internal path before use,
+    // otherwise ?from=https://evil.com would redirect the user straight off-site.
+    const safeFrom = safeInternalPath(from)
+    if (safeFrom && safeFrom.startsWith("/dashboard") && role === "business") {
+      destination = safeFrom
+    } else if (safeFrom && safeFrom.startsWith("/admin") && role === "admin") {
+      destination = safeFrom
+    } else if (safeFrom && !safeFrom.startsWith("/dashboard") && !safeFrom.startsWith("/admin")) {
+      destination = safeFrom
     } else if (role === "business") {
       destination = "/dashboard"
     } else if (role === "admin") {

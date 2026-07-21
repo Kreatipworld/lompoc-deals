@@ -1,6 +1,7 @@
 import { Heart } from "lucide-react"
 import { UserSignupForm } from "./user-signup-form"
 import { getTranslations } from "next-intl/server"
+import { safeInternalPath } from "@/lib/safe-redirect"
 
 export async function generateMetadata({
   params,
@@ -26,12 +27,9 @@ export default async function UserSignupPage({
   // Only forward `from` if it's a path the new local user could actually land
   // on (mirrors the safeDestination check in lib/auth-actions.ts for role
   // "local" — no /dashboard or /admin destinations).
-  const rawFrom = searchParams.from ?? null
+  const rawFrom = safeInternalPath(searchParams.from ?? null)
   const from =
-    rawFrom &&
-    rawFrom.startsWith("/") &&
-    !rawFrom.startsWith("/dashboard") &&
-    !rawFrom.startsWith("/admin")
+    rawFrom && !rawFrom.startsWith("/dashboard") && !rawFrom.startsWith("/admin")
       ? rawFrom
       : undefined
 

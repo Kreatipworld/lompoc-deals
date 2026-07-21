@@ -4,6 +4,7 @@ import { z } from "zod"
 import bcrypt from "bcryptjs"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
+import { safeInternalPath } from "@/lib/safe-redirect"
 import { AuthError } from "next-auth"
 import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
@@ -29,13 +30,11 @@ export type LocalSignupState = { error?: string } | undefined
  * the safeDestination check in lib/auth-actions.ts — a local user can never
  * land on /dashboard or /admin, so those are excluded even if requested. */
 function safeLocalDestination(from: string | null): string {
-  if (
-    from &&
-    from.startsWith("/") &&
-    !from.startsWith("/dashboard") &&
-    !from.startsWith("/admin")
-  ) {
-    return from
+  // `from` is attacker-controlled. A bare startsWith("/") is not enough — "//evil.com"
+  // also starts with a slash and browsers resolve it as an external URL.
+  const path = safeInternalPath(from)
+  if (path && !path.startsWith("/dashboard") && !path.startsWith("/admin")) {
+    return path
   }
   return "/account"
 }
