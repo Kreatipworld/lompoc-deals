@@ -10,11 +10,11 @@ import { useTranslations } from "next-intl"
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const T = {
-  brand: "#4F46E5",
-  brandShadow: "rgba(79,70,229,0.35)",
-  brandBubbleShadow: "rgba(79,70,229,0.25)",
-  brandLight: "#EEF2FF",
-  accent: "#0D9488",
+  brand: "#650C75",
+  brandShadow: "rgba(101,12,117,0.35)",
+  brandBubbleShadow: "rgba(101,12,117,0.25)",
+  brandLight: "#F3E5F8",
+  accent: "#0B992F",
   bg: "#F3F4F6",
   surface: "#FFFFFF",
   text: "#111827",
@@ -127,8 +127,8 @@ function LinkChip({ link, isOutgoing }: { link: ExtractedLink; isOutgoing: boole
       onClick={(e) => e.stopPropagation()}
       className="flex items-center gap-3 rounded-xl min-h-[48px] px-3 py-2.5 w-full active:opacity-75 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2"
       style={{
-        background: isOutgoing ? "rgba(79,70,229,0.1)" : T.surface,
-        border: `1px solid ${isOutgoing ? "rgba(79,70,229,0.2)" : T.border}`,
+        background: isOutgoing ? "rgba(101,12,117,0.1)" : T.surface,
+        border: `1px solid ${isOutgoing ? "rgba(101,12,117,0.2)" : T.border}`,
         outlineColor: T.brand,
       }}
       aria-label={link.label}
@@ -547,7 +547,7 @@ export function AIChatWidget() {
       <button
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "fixed bottom-[4.5rem] right-3 sm:bottom-6 sm:right-4 z-50 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2",
+          "fixed bottom-[4.5rem] right-3 sm:bottom-6 sm:right-4 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2",
           open && "hidden"
         )}
         style={{
@@ -558,7 +558,7 @@ export function AIChatWidget() {
         }}
         aria-label={t("open")}
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
     </>
   )
