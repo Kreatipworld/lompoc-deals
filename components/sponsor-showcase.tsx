@@ -28,14 +28,17 @@ export async function SponsorShowcase({
       <div className="mx-auto max-w-7xl px-4">
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
-            <div className="mb-1 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary">
+            {/* Eyebrow + subtitle are decorative editorial flourish — collapse
+                them away on mobile so the header reads as one line before the
+                first card; full treatment returns at sm: and up. */}
+            <div className="mb-1 hidden items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary sm:inline-flex">
               <Sparkles className="h-3.5 w-3.5" />
               {t("showcaseEyebrow")}
             </div>
             <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
               {scoped ? t("showcaseCategoryHeading") : t("showcaseHeading")}
             </h2>
-            <p className="mt-1 text-muted-foreground">
+            <p className="mt-1 hidden text-muted-foreground sm:block">
               {scoped ? t("showcaseCategorySub") : t("showcaseSub")}
             </p>
           </div>

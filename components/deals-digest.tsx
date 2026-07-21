@@ -38,11 +38,13 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
       {/* Heading */}
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-success">{t("eyebrow")}</p>
+          {/* Eyebrow + subtitle collapse on mobile so this reads as one line
+              before the deal grid; unchanged at sm: and up. */}
+          <p className="hidden text-xs font-bold uppercase tracking-[0.16em] text-success sm:block">{t("eyebrow")}</p>
           <h2 className="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">
             {t("titleA")} <span className="text-success">{t("titleB")}</span>
           </h2>
-          <p className="mt-2 max-w-2xl text-muted-foreground">{t("subtitle")}</p>
+          <p className="mt-2 hidden max-w-2xl text-muted-foreground sm:block">{t("subtitle")}</p>
         </div>
         <Link href="/deals" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2">
           {t("seeAll")} <ArrowRight className="h-4 w-4" />

@@ -183,14 +183,16 @@ export default async function BusinessesPage({
             <AnimeReveal direction="up" duration={560}>
               <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 rounded-full bg-gold px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-gold-foreground">
+                  {/* Eyebrow + subtitle collapse on mobile so this reads as one
+                      line before the business strip; unchanged at sm: and up. */}
+                  <div className="hidden items-center gap-1.5 rounded-full bg-gold px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-gold-foreground sm:inline-flex">
                     <Flame className="h-3.5 w-3.5" />
                     Most active
                   </div>
                   <h2 className="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">
                     Where the deals are right now
                   </h2>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <p className="mt-1 hidden text-sm text-muted-foreground sm:block">
                     Local businesses with the most live offers this week.
                   </p>
                 </div>
