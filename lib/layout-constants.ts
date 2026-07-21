@@ -18,3 +18,15 @@
  * the nav is hidden and the FAB moves to `sm:bottom-6`.
  */
 export const MOBILE_BOTTOM_CLEARANCE = "pb-[7.5rem] sm:pb-0"
+
+/**
+ * Single container width + horizontal gutter for every content page.
+ *
+ * Chosen because `max-w-6xl` is already the most common width in the
+ * codebase (businesses directory, feed, and most `deals` sections all use
+ * it) and it's wide enough for 3-column card grids without feeling
+ * cavernous on narrower content. Pages previously ranged from `max-w-3xl`
+ * to `max-w-7xl`; this is the convergence point every page adopts so
+ * column edges line up when navigating between them.
+ */
+export const PAGE_CONTAINER = "mx-auto max-w-6xl px-4"
