@@ -6,6 +6,8 @@ import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
 import { events } from "@/db/schema"
 import { pageAlternates } from "@/lib/seo"
+import { PageHeader } from "@/components/page-header"
+import { PAGE_CONTAINER } from "@/lib/layout-constants"
 
 // Events sync daily via cron — keep the page fresh without a redeploy
 export const revalidate = 300
@@ -78,16 +80,12 @@ export default async function EventsPage({
 
   return (
     <>
-    <main className="mx-auto max-w-5xl px-4 py-10">
+    <PageHeader title={t("heading")} />
+    <main className={`${PAGE_CONTAINER} py-10`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-        {t("heading")}
-      </h1>
-      <p className="mt-2 max-w-2xl text-muted-foreground">{t("subheading")}</p>
 
       {launches.length > 0 && (
         <section className="mt-10">

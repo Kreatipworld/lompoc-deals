@@ -1,10 +1,12 @@
 import { Link } from "@/i18n/navigation"
-import { MapPin, ArrowRight, Compass } from "lucide-react"
+import { MapPin, ArrowRight } from "lucide-react"
 import { getActivities, getActivityCategories } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
+import { PageHeader } from "@/components/page-header"
+import { PAGE_CONTAINER } from "@/lib/layout-constants"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "activities" })
@@ -59,26 +61,11 @@ export default async function ActivitiesPage({
 
   return (
     <>
-      {/* ─── PAGE HEADER ─── */}
-      <section className="border-b bg-accent/30 py-10">
-        <div className="mx-auto max-w-3xl px-4 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Compass className="h-3 w-3 text-primary" />
-            Local adventures, curated by neighbors
-          </div>
-          <h1 className="font-display text-4xl font-bold tracking-tight">
-            Things to Do in Lompoc
-          </h1>
-          <p className="mt-3 text-muted-foreground">
-            From historic missions and world-famous flower fields to rocket launches and wine tasting —
-            there&apos;s more to Lompoc than you think.
-          </p>
-        </div>
-      </section>
+      <PageHeader title="Things to Do in Lompoc" />
 
       {/* ─── CATEGORY FILTER CHIPS ─── */}
       <div className="border-b bg-background">
-        <div className="mx-auto max-w-7xl overflow-x-auto px-4">
+        <div className={`${PAGE_CONTAINER} overflow-x-auto`}>
           <div className="flex gap-2 py-3">
             <Link
               href="/activities"
@@ -108,7 +95,7 @@ export default async function ActivitiesPage({
       </div>
 
       {/* ─── ACTIVITY GRID ─── */}
-      <section className="mx-auto max-w-7xl px-4 py-10">
+      <section className={`${PAGE_CONTAINER} py-10`}>
         {allActivities.length === 0 ? (
           <p className="py-16 text-center text-muted-foreground">
             No activities found. Check back soon!

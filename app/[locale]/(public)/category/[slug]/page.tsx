@@ -2,23 +2,12 @@ import { Link } from "@/i18n/navigation"
 import { notFound } from "next/navigation"
 export const dynamic = "force-dynamic"
 import {
-  Utensils,
-  ShoppingBag,
-  Wrench,
-  Heart,
-  Car,
-  Ticket,
-  MoreHorizontal,
-  ArrowLeft,
-  Sparkles,
-  Home,
   Store,
   MapPin,
   Phone,
   Globe,
   ArrowRight,
   Tag,
-  type LucideIcon,
 } from "lucide-react"
 import { db } from "@/db/client"
 import {
@@ -35,19 +24,9 @@ import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 import { BusinessAvatar } from "@/components/business-avatar"
+import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
-
-const ICONS: Record<string, LucideIcon> = {
-  utensils: Utensils,
-  "shopping-bag": ShoppingBag,
-  wrench: Wrench,
-  heart: Heart,
-  car: Car,
-  ticket: Ticket,
-  "more-horizontal": MoreHorizontal,
-  home: Home,
-}
 
 export async function generateMetadata({
   params,
@@ -106,8 +85,6 @@ export default async function CategoryPage({
     toggledParams.toString() ? `?${toggledParams.toString()}` : ""
   }`
 
-  const Icon = ICONS[cat.icon ?? ""] ?? Sparkles
-
   // For real-estate, show listing count; for others, show business count
   const heroCount = isRealEstate ? listings.length : categoryBusinesses.length
   const heroLabel = isRealEstate
@@ -116,48 +93,23 @@ export default async function CategoryPage({
 
   return (
     <>
-      {/* HERO */}
-      {/* No `overflow-hidden` on the section so the search dropdown can extend
-          past the hero; the decorations are clipped by their own wrapper. */}
-      <section className="relative border-b">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-accent via-background to-background" />
-          <div className="absolute -top-20 right-[-10%] h-[360px] w-[360px] rounded-full bg-primary/10 blur-3xl" />
+      <PageHeader
+        title={cat.name}
+        backHref="/businesses"
+        backLabel={t("allBusinesses")}
+        meta={
+          <>
+            {heroCount} {heroLabel} {t("inLompoc")}
+            {!isRealEstate && deals.length > 0 && (
+              <> · {deals.length} {deals.length === 1 ? t("dealSingular") : t("dealPlural")}</>
+            )}
+          </>
+        }
+      >
+        <div className="w-full lg:max-w-md">
+          <SearchBar scrim />
         </div>
-
-        <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
-          <Link
-            href="/businesses"
-            className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-3 w-3" />
-            {t("allBusinesses")}
-          </Link>
-
-          <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md">
-                <Icon className="h-6 w-6" />
-              </div>
-              <div>
-                <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-                  {cat.name}
-                </h1>
-                <p className="mt-0.5 text-sm text-muted-foreground">
-                  {heroCount} {heroLabel} {t("inLompoc")}
-                  {!isRealEstate && deals.length > 0 && (
-                    <> · <span className="text-primary font-medium">{deals.length} {deals.length === 1 ? t("dealSingular") : t("dealPlural")}</span></>
-                  )}
-                </p>
-              </div>
-            </div>
-
-            <div className="w-full lg:max-w-md">
-              <SearchBar scrim />
-            </div>
-          </div>
-        </div>
-      </section>
+      </PageHeader>
 
       {/* CHIPS */}
       <section className="border-b bg-secondary/30">
