@@ -338,7 +338,9 @@
     "deals": "Ofertas",
     "about": "Acerca de",
     "claimBusiness": "¿Es tu negocio?",
-    "viewAll": "Ver todos los negocios"
+    "viewAll": "Ver todos los negocios",
+    "mobileBusiness": "Móvil · Sirviendo a Lompoc",
+    "mobileFollowSocial": "Síguelos para ver dónde están hoy"
   },
   "activities": {
     "metaTitle": "Qué hacer en Lompoc, CA — Aventuras y Actividades",
@@ -797,7 +799,8 @@
       "continueToPlan": "Continuar a la selección de plan",
       "haveAccount": "¿Ya tienes una cuenta?",
       "signIn": "Iniciar sesión",
-      "signInLink": "Inicia sesión en su lugar"
+      "signInLink": "Inicia sesión en su lugar",
+      "noAddressToggle": "No tengo dirección pública (móvil, desde casa o con cita)"
     },
     "step2": {
       "mostPopular": "Más popular",

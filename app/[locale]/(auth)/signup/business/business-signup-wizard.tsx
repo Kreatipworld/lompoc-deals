@@ -77,6 +77,9 @@ function Step1({
     undefined
   )
   const [isPending, startTransition] = useTransition()
+  // Mobile vendors, home-based and PO-box businesses opt out of the address
+  // field entirely rather than being forced to invent one.
+  const [noAddress, setNoAddress] = useState(false)
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -162,10 +165,22 @@ function Step1({
       </div>
 
       {field("address", t("step1.addressLabel"), <MapPin className="h-4 w-4" />, {
-        required: true,
+        required: !noAddress,
+        disabled: noAddress,
         placeholder: t("step1.addressPlaceholder"),
         autoComplete: "street-address",
+        // A disabled input submits no value, so opting out sends no address.
       })}
+      <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
+        <input
+          type="checkbox"
+          name="noAddress"
+          checked={noAddress}
+          onChange={(e) => setNoAddress(e.target.checked)}
+          className="h-4 w-4 rounded border-input text-primary focus:ring-2 focus:ring-primary/30"
+        />
+        {t("step1.noAddressToggle")}
+      </label>
       {field("phone", t("step1.phoneLabel"), <Phone className="h-4 w-4" />, {
         type: "tel",
         autoComplete: "tel",

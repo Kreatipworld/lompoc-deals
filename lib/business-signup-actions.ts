@@ -26,7 +26,8 @@ const step1Schema = z.object({
   email: z.string().email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   categoryId: z.coerce.number().int().positive().optional(),
-  address: z.string().min(5, "Enter a valid address"),
+  // Optional: mobile vendors, home-based and PO-box businesses have no public address.
+  address: z.string().min(5, "Enter a valid address").optional().or(z.literal("")),
   phone: z.string().optional(),
 })
 
@@ -54,8 +55,13 @@ export async function validateStep1Action(
     return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
-  const addrErr = await localizedLompocAddressError(parsed.data.address)
-  if (addrErr) return { error: addrErr }
+  // Only enforce the Lompoc check when an address was supplied. A business with
+  // no public address is verified by the admin approval step instead — every
+  // signup already lands as status "pending".
+  if (parsed.data.address) {
+    const addrErr = await localizedLompocAddressError(parsed.data.address)
+    if (addrErr) return { error: addrErr }
+  }
 
   const existing = await db.query.users.findFirst({
     where: eq(users.email, parsed.data.email),
@@ -75,7 +81,7 @@ const finalSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   categoryId: z.coerce.number().int().positive().optional(),
-  address: z.string().min(5),
+  address: z.string().min(5).optional().or(z.literal("")),
   phone: z.string().optional(),
   plan: z.enum(["free", "standard", "premium"]),
 })
@@ -109,8 +115,10 @@ export async function businessSignupSubmitAction(
   const { ownerFullName, businessName, email, password, categoryId, address, phone, plan } =
     parsed.data
 
-  const addrErr = await localizedLompocAddressError(address)
-  if (addrErr) return { error: addrErr }
+  if (address) {
+    const addrErr = await localizedLompocAddressError(address)
+    if (addrErr) return { error: addrErr }
+  }
 
   const existing = await db.query.users.findFirst({ where: eq(users.email, email) })
   if (existing) {
@@ -213,7 +221,7 @@ export async function businessSignupSubmitAction(
   // Geocode address
   let coords: { lat: number; lng: number } | null = null
   try {
-    coords = await geocodeAddress(address)
+    if (address) coords = await geocodeAddress(address)
   } catch {
     // non-fatal — continue without coords
   }
@@ -223,9 +231,11 @@ export async function businessSignupSubmitAction(
     ownerFullName,
     name: businessName,
     slug,
-    address,
-    lat: coords?.lat,
-    lng: coords?.lng,
+    // Empty string would masquerade as "has an address"; store NULL so every
+    // downstream check (map filter, profile render) treats it as absent.
+    address: address || null,
+    lat: coords?.lat ?? null,
+    lng: coords?.lng ?? null,
     phone: phone ?? null,
     categoryId: categoryId ?? null,
     status: "pending",

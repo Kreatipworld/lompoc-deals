@@ -338,7 +338,9 @@
     "deals": "Deals",
     "about": "About",
     "claimBusiness": "Is this your business?",
-    "viewAll": "View all businesses"
+    "viewAll": "View all businesses",
+    "mobileBusiness": "Mobile · Serving Lompoc",
+    "mobileFollowSocial": "Follow for today's location"
   },
   "activities": {
     "metaTitle": "Things to Do in Lompoc, CA — Adventures & Activities",
@@ -797,7 +799,8 @@
       "continueToPlan": "Continue to plan selection",
       "haveAccount": "Already have an account?",
       "signIn": "Sign in",
-      "signInLink": "Sign in instead"
+      "signInLink": "Sign in instead",
+      "noAddressToggle": "I don't have a public address (mobile, home-based, or by appointment)"
     },
     "step2": {
       "mostPopular": "Most popular",

@@ -310,6 +310,18 @@ export default async function BusinessPage({
 
             {/* Contact chips inside the header card */}
             <div className="mt-6 flex flex-wrap gap-2 border-t pt-5">
+              {/* Mobile vendors, home-based and PO-box businesses have no public
+                  address. Say so plainly rather than leaving a gap that reads as
+                  an incomplete listing — and point at where they can be found. */}
+              {!business.address && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground">
+                  <MapPin className="h-3.5 w-3.5 text-primary" />
+                  {t("mobileBusiness")}
+                  {business.instagramUrl || business.facebookUrl ? (
+                    <span className="text-muted-foreground">· {t("mobileFollowSocial")}</span>
+                  ) : null}
+                </span>
+              )}
               {business.address && (
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
