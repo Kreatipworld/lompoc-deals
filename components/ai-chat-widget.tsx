@@ -315,7 +315,7 @@ export function AIChatWidget() {
               <div className="relative flex-shrink-0">
                 <div
                   className="w-[38px] h-[38px] rounded-full flex items-center justify-center text-sm font-bold text-white select-none"
-                  style={{ background: "linear-gradient(135deg, #667EEA 0%, #764BA2 100%)" }}
+                  style={{ background: "linear-gradient(135deg, #7D1A91 0%, #650C75 55%, #4A0857 100%)" }}
                   aria-hidden="true"
                 >
                   LG
