@@ -1425,7 +1425,15 @@
     "mostPopular": "Más popular",
     "switchTo": "Cambiar a {name}",
     "getStarted": "Comenzar",
-    "plusContact": "Consulta sobre Plus"
+    "plusContact": "Consulta sobre Plus",
+    "historyTitle": "Historial de pagos",
+    "colDate": "Fecha",
+    "colAmount": "Monto",
+    "colStatus": "Estado",
+    "colInvoice": "Factura",
+    "paid": "Pagado",
+    "view": "Ver",
+    "historyHint": "Tus facturas recientes. Usa Gestionar suscripción para el historial completo, actualizar tu tarjeta o cancelar."
   },
   "dashboardStats": {
     "title": "Estadísticas",

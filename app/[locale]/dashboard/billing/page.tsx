@@ -1,10 +1,10 @@
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { subscriptions, deals } from "@/db/schema"
-import { TIERS } from "@/lib/stripe"
+import { TIERS, stripe } from "@/lib/stripe"
 import { getPlanFeatures } from "@/lib/plan-features"
 import { eq, and, gt, sql } from "drizzle-orm"
-import { CreditCard, Check, AlertCircle, CheckCircle2, BarChart2, ExternalLink, Star, Zap } from "lucide-react"
+import { CreditCard, Check, AlertCircle, CheckCircle2, BarChart2, ExternalLink, Star, Zap, FileText } from "lucide-react"
 import BillingActions from "./billing-actions"
 import { getTranslations } from "next-intl/server"
 
@@ -26,6 +26,25 @@ export default async function BillingPage({
     where: (b, { eq: e }) => e(b.ownerUserId, userId),
     columns: { id: true, gracePeriodEndsAt: true },
   })
+
+  // Recent invoices, straight from Stripe, so members see their statements and
+  // payments without leaving the dashboard. Read-only; the full history + card
+  // management + cancel live in the Stripe portal behind "Manage subscription".
+  let invoices: { id: string; date: string; amount: string; status: string; url: string | null }[] = []
+  if (sub?.stripeCustomerId) {
+    try {
+      const list = await stripe.invoices.list({ customer: sub.stripeCustomerId, limit: 6 })
+      invoices = list.data.map((inv) => ({
+        id: inv.id,
+        date: new Date(inv.created * 1000).toLocaleDateString(),
+        amount: `$${((inv.total ?? 0) / 100).toFixed(2)}`,
+        status: inv.status ?? "—",
+        url: inv.hosted_invoice_url ?? inv.invoice_pdf ?? null,
+      }))
+    } catch (err) {
+      console.error("[billing] invoice list failed:", err)
+    }
+  }
 
   const isActive = sub?.status === "active" || sub?.status === "trialing"
   const currentTier = sub?.tier ?? "free"
@@ -182,6 +201,64 @@ export default async function BillingPage({
           })}
         </div>
       </div>
+
+      {/* Billing history — invoices & payments, in-app */}
+      {invoices.length > 0 && (
+        <div className="rounded-3xl border bg-card p-6 shadow-sm">
+          <div className="flex items-center gap-2">
+            <FileText className="h-4 w-4 text-primary" />
+            <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              {t("historyTitle")}
+            </span>
+          </div>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
+                  <th className="pb-2 font-medium">{t("colDate")}</th>
+                  <th className="pb-2 font-medium">{t("colAmount")}</th>
+                  <th className="pb-2 font-medium">{t("colStatus")}</th>
+                  <th className="pb-2 text-right font-medium">{t("colInvoice")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoices.map((inv) => (
+                  <tr key={inv.id} className="border-t">
+                    <td className="py-2.5">{inv.date}</td>
+                    <td className="py-2.5 font-medium tabular-nums">{inv.amount}</td>
+                    <td className="py-2.5">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                          inv.status === "paid"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        {inv.status === "paid" ? t("paid") : inv.status}
+                      </span>
+                    </td>
+                    <td className="py-2.5 text-right">
+                      {inv.url ? (
+                        <a
+                          href={inv.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-primary hover:underline"
+                        >
+                          {t("view")} <ExternalLink className="h-3 w-3" />
+                        </a>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">{t("historyHint")}</p>
+        </div>
+      )}
 
       {/* Pricing tiers */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

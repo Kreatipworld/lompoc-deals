@@ -1425,7 +1425,15 @@
     "mostPopular": "Most popular",
     "switchTo": "Switch to {name}",
     "getStarted": "Get started",
-    "plusContact": "Contact us about Plus"
+    "plusContact": "Contact us about Plus",
+    "historyTitle": "Billing history",
+    "colDate": "Date",
+    "colAmount": "Amount",
+    "colStatus": "Status",
+    "colInvoice": "Invoice",
+    "paid": "Paid",
+    "view": "View",
+    "historyHint": "Your recent invoices. Use Manage subscription for the full history, to update your card, or to cancel."
   },
   "dashboardStats": {
     "title": "Stats",
