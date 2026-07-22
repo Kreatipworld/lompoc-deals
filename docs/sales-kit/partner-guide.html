@@ -138,6 +138,40 @@
   .dealcard .biz{font-size:13px;color:var(--muted);}
   .dealcard .code{margin-top:9px;font-family:ui-monospace,monospace;font-weight:700;letter-spacing:.18em;background:var(--ink);color:var(--gold);padding:4px 10px;border-radius:6px;font-size:12px;display:inline-block;}
 
+  /* ── Dashboard mock ── */
+  .dash{border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 8px 22px rgba(42,18,48,.12);background:#fff;margin:6px 0;}
+  .dash-top{background:var(--ink);color:#fff;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;}
+  .dash-top .t{font-family:var(--serif);font-weight:700;font-size:15px;}
+  .dash-top .chip{background:rgba(255,255,255,.14);color:#fff;font-size:11px;padding:4px 10px;border-radius:999px;}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);}
+  .kpi{background:#fff;padding:13px 14px;}
+  .kpi .kn{font-family:var(--serif);font-size:25px;font-weight:700;color:var(--purple);line-height:1;font-variant-numeric:tabular-nums;}
+  .kpi.hi .kn{color:var(--green);}
+  .kpi .kl{font-size:10.5px;color:var(--muted);margin-top:4px;}
+  .funnel{padding:13px 16px;border-top:1px solid var(--line);}
+  .fbar{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+  .fbar:last-child{margin-bottom:0;}
+  .fbar .fl{width:70px;font-size:11.5px;color:var(--muted);flex-shrink:0;}
+  .fbar .ft{height:20px;border-radius:5px;background:linear-gradient(90deg,var(--purple),#8a2a9c);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;padding:0 8px;min-width:44px;}
+  .fbar.r .ft{background:linear-gradient(90deg,var(--green),#12b53a);}
+  .dtable{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .dtable th{text-align:left;color:var(--muted);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em;padding:8px 12px;border-top:1px solid var(--line);}
+  .dtable th.n,.dtable td.n{text-align:right;font-variant-numeric:tabular-nums;}
+  .dtable td{padding:9px 12px;border-top:1px solid var(--line);color:#3f2a45;}
+  .dtable .rr{color:var(--green);font-weight:700;}
+
+  /* ── Two-column feature lists ── */
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:6px 0;}
+  .subcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;}
+  .subcard.biz{border-top:3px solid var(--purple);}
+  .subcard.local{border-top:3px solid var(--green);}
+  .colhead{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--purple);margin-bottom:12px;}
+  .colhead.lc{color:var(--green);}
+  .feats{display:grid;gap:9px;}
+  .feat{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;color:#3f2a45;line-height:1.3;}
+  .feat .fi{color:var(--purple);font-weight:800;flex-shrink:0;}
+  .feat.lc .fi{color:var(--green);}
+
   /* ── Plus-is-for-you ── */
   .plus .sheet{background:linear-gradient(165deg,#fff 0%,#faf3fc 100%);}
   .foryou{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 20px;}
@@ -350,18 +384,61 @@
     <section class="slide">
       <div class="sheet"><div class="pad">
         <div class="sec-h reveal"><div class="kicker">Your Dashboard</div><h2>Finally, numbers you can act on.</h2><div class="accent-bar"></div></div>
-        <p class="lead reveal">Every offer you run reports back — not vanity likes, but the things that tell you whether it worked.</p>
-        <div class="stats stagger">
-          <div class="stat"><div class="n">✓</div><div class="l"><b style="color:var(--ink)">Verified redemptions</b><br>People who actually walked in and used it</div></div>
-          <div class="stat"><div class="n">→</div><div class="l"><b style="color:var(--ink)">Claim → visit rate</b><br>How well an offer turns interest into a visit</div></div>
-          <div class="stat"><div class="n">◉</div><div class="l"><b style="color:var(--ink)">Views &amp; clicks</b><br>How many locals saw your deal and tapped it</div></div>
-          <div class="stat"><div class="n">◑</div><div class="l"><b style="color:var(--ink)">New vs. repeat</b><br>Did it win new faces or reward your regulars</div></div>
-          <div class="stat"><div class="n">◔</div><div class="l"><b style="color:var(--ink)">Best day &amp; time</b><br>When redeemers actually show up — plan your staff</div></div>
-          <div class="stat"><div class="n">★</div><div class="l"><b style="color:var(--ink)">Top offers</b><br>Which deals pull people in, which get ignored</div></div>
+        <p class="lead reveal">Every offer reports back — not vanity likes, but the numbers that tell you whether it worked. Here&rsquo;s your dashboard.</p>
+        <div class="dash reveal">
+          <div class="dash-top"><span class="t">Your Business · Dashboard</span><span class="chip">Last 30 days</span></div>
+          <div class="kpis">
+            <div class="kpi"><div class="kn">342</div><div class="kl">Profile views</div></div>
+            <div class="kpi"><div class="kn">1,208</div><div class="kl">Deal views</div></div>
+            <div class="kpi"><div class="kn">96</div><div class="kl">Coupons claimed</div></div>
+            <div class="kpi hi"><div class="kn">71</div><div class="kl">Redeemed at counter</div></div>
+          </div>
+          <div class="funnel">
+            <div class="fbar"><span class="fl">Views</span><span class="ft" style="width:100%;">1,208</span></div>
+            <div class="fbar"><span class="fl">Clicks</span><span class="ft" style="width:34%;">410</span></div>
+            <div class="fbar"><span class="fl">Claimed</span><span class="ft" style="width:15%;">96</span></div>
+            <div class="fbar r"><span class="fl">Redeemed</span><span class="ft" style="width:11%;">71</span></div>
+          </div>
+          <table class="dtable">
+            <tr><th>Deal</th><th class="n">Views</th><th class="n">Claimed</th><th class="n">Redeemed</th><th class="n">Rate</th></tr>
+            <tr><td>10% Off First Order</td><td class="n">742</td><td class="n">61</td><td class="n">48</td><td class="n rr">79%</td></tr>
+            <tr><td>Free Cap w/ $50+ Order</td><td class="n">466</td><td class="n">35</td><td class="n">23</td><td class="n rr">66%</td></tr>
+          </table>
         </div>
-        <div class="row reveal" style="margin-top:18px;background:rgba(11,153,47,.06);border-color:#bfe6c9;">
-          <div class="ic" style="background:rgba(11,153,47,.12);color:var(--green);">$</div>
-          <div><h3>No guesswork, no invented numbers</h3><p>We count what your register confirms — hard counts you can trust, never an estimate someone can dispute.</p></div>
+        <p class="note reveal">Example view — this is what yours shows once your deals are live. Every number is counted at your counter, never estimated.</p>
+      </div></div>
+    </section>
+
+    <!-- EVERYTHING YOU GET -->
+    <section class="slide">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">The Full Picture</div><h2>One platform, working for both sides.</h2><div class="accent-bar"></div></div>
+        <p class="lead reveal">Locals get a reason to look. You get a reason to be found. Here&rsquo;s everything in the box.</p>
+        <div class="twocol stagger">
+          <div class="subcard biz">
+            <div class="colhead">For your business</div>
+            <div class="feats">
+              <div class="feat"><span class="fi">✓</span>Profile page — logo, photos, hours, contact, map pin</div>
+              <div class="feat"><span class="fi">✓</span>Post deals with unique, single-use codes</div>
+              <div class="feat"><span class="fi">✓</span>Redeem at your counter in seconds — no hardware</div>
+              <div class="feat"><span class="fi">✓</span>A dashboard of real views, claims &amp; redemptions</div>
+              <div class="feat"><span class="fi">✓</span>Featured in the weekly digest email</div>
+              <div class="feat"><span class="fi">✓</span>Official Partner badge + priority placement <em>(Plus)</em></div>
+              <div class="feat"><span class="fi">✓</span>Your own Sponsor Spotlight ad <em>(Plus)</em></div>
+            </div>
+          </div>
+          <div class="subcard local">
+            <div class="colhead lc">For locals</div>
+            <div class="feats">
+              <div class="feat lc"><span class="fi">✓</span>One place for every Lompoc deal, business &amp; event</div>
+              <div class="feat lc"><span class="fi">✓</span>Grab a coupon — their own code, used once</div>
+              <div class="feat lc"><span class="fi">✓</span>Save favorites &amp; get the Monday digest</div>
+              <div class="feat lc"><span class="fi">✓</span>Browse by category, search, or the local map</div>
+              <div class="feat lc"><span class="fi">✓</span>Events + Vandenberg rocket launches</div>
+              <div class="feat lc"><span class="fi">✓</span>English &amp; Spanish, built for phones</div>
+              <div class="feat lc"><span class="fi">✓</span>Always free — so your audience keeps growing</div>
+            </div>
+          </div>
         </div>
       </div></div>
     </section>
@@ -479,7 +556,7 @@
   <button class="nav prev" id="prev" aria-label="Previous slide">‹</button>
   <button class="nav next" id="next" aria-label="Next slide">›</button>
   <div class="dots" id="dots"></div>
-  <div class="counter" id="counter">1 / 10</div>
+  <div class="counter" id="counter">1 / 11</div>
   <div class="hint" id="hint">← → or swipe to move · press P to print</div>
 </div>
 
