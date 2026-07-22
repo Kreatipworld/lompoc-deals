@@ -163,6 +163,31 @@ export default async function PartnersPage({
       </section>
 
       {/* ─────────────────────────────────────────────────
+          INTRO VIDEO — a neighbor explains the platform
+         ───────────────────────────────────────────────── */}
+      <section className={`${PAGE_CONTAINER} py-16 sm:py-24`}>
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            {t("intro.eyebrow")}
+          </div>
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            {t("intro.h2")}
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">{t("intro.subtitle")}</p>
+        </div>
+        <div className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-2xl border bg-card shadow-lg">
+          <video
+            src="/videos/partner-intro.mp4"
+            controls
+            playsInline
+            preload="metadata"
+            aria-label={t("intro.videoLabel")}
+            className="aspect-video w-full"
+          />
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────
           OUR MISSION — awareness + local economy
          ───────────────────────────────────────────────── */}
       <section className="border-y bg-primary text-primary-foreground">

@@ -636,6 +636,12 @@
       "statBusinessesLabel": "negocios anunciados",
       "statEventsLabel": "eventos próximos"
     },
+    "intro": {
+      "eyebrow": "Conoce Lompoc Locals",
+      "h2": "Una introducción rápida",
+      "subtitle": "Quince segundos de una vecina: qué es Lompoc Locals y por qué se unen los negocios locales.",
+      "videoLabel": "Video de introducción para socios de Lompoc Locals"
+    },
     "alreadyListed": {
       "eyebrow": "Probablemente ya estás aquí",
       "h2": "{count} negocios de Lompoc. ¿Uno de ellos es el tuyo?",
