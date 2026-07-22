@@ -183,9 +183,9 @@
       "q2": "¿Cómo reclamo una oferta?",
       "a2": "Haz clic en \"Reclamar oferta\" en cualquier promoción, luego muestra tu teléfono en el negocio.",
       "q3": "¿Cómo publican ofertas los negocios?",
-      "a3": "Regístrate como negocio (gratis) y crea tu perfil en menos de 5 minutos. Publicar ofertas requiere el plan Growth ($39.99/mes), que desbloquea hasta 15 ofertas activas.",
+      "a3": "Regístrate como negocio (gratis) y crea tu perfil en menos de 5 minutos. Publicar ofertas requiere el plan Growth ($39.99/mes), que desbloquea hasta 5 ofertas activas.",
       "q4": "¿Cuánto cuesta publicar mi negocio?",
-      "a4": "Nuestro plan gratuito es $0 para siempre — tu negocio aparece listado con horarios, fotos e información de contacto. Growth cuesta $39.99/mes y desbloquea las ofertas (hasta 15 activas), estadísticas y posicionamiento prioritario.",
+      "a4": "Nuestro plan gratuito es $0 para siempre — tu negocio aparece listado con horarios, fotos e información de contacto. Growth cuesta $39.99/mes y desbloquea las ofertas (hasta 5 activas), estadísticas y posicionamiento prioritario.",
       "q5": "¿Esto es solo para Lompoc?",
       "a5": "Por ahora, sí. Estamos 100% enfocados en Lompoc. Eso es lo que lo hace funcionar — cada oferta es de alguien local, para alguien local.",
       "q6": "¿Cómo recibo el correo semanal de ofertas?",
@@ -589,7 +589,7 @@
       "freeFeature4": "Aparece en búsquedas locales",
       "freeFeature5": "Datos de contacto y horario",
       "standardFeature1": "Todo lo del plan Free",
-      "standardFeature2": "Publica y muestra hasta 15 ofertas",
+      "standardFeature2": "Publica y muestra hasta 5 ofertas",
       "standardFeature3": "Incluido en el boletín semanal de ofertas",
       "standardFeature4": "Analíticas de vistas y clics",
       "standardFeature5": "Redes sociales + reseñas de Google",
@@ -897,7 +897,9 @@
       "free": "Gratis",
       "perMonth": "/mes",
       "continueWith": "Continuar con {planName}",
-      "back": "Atrás"
+      "back": "Atrás",
+      "plusContact": "Hablemos",
+      "plusContactCta": "Contáctanos →"
     },
     "step3": {
       "canceledBanner": "El pago fue cancelado. Elige un plan e inténtalo de nuevo.",
@@ -1279,7 +1281,7 @@
     "viewPlans": "Ver planes",
     "dealUsage": "Uso de ofertas",
     "upgradeCta": "Desbloquea más con Growth",
-    "upgradeBody": "Estadísticas, enlaces sociales y hasta 15 ofertas activas por $39.99/mes",
+    "upgradeBody": "Estadísticas, enlaces sociales y hasta 5 ofertas activas por $39.99/mes",
     "upgrade": "Mejorar",
     "quickActions": "Acciones rápidas",
     "postDeal": "Publicar oferta",
@@ -2000,7 +2002,7 @@
       "intro": "Ofrecemos los siguientes planes de suscripción para cuentas de negocios:",
       "items": [
         "Gratis — Listado básico sin costo; incluye página de perfil, marcador en el mapa, horarios e información de contacto.",
-        "Growth ($39.99/mes) — Listado mejorado con hasta 15 ofertas activas, posicionamiento prioritario y estadísticas.",
+        "Growth ($39.99/mes) — Listado mejorado con hasta 5 ofertas activas, posicionamiento prioritario y estadísticas.",
         "Plus ($99.99/mes) — Todas las funciones de Growth más posicionamiento destacado en la página principal, enlaces a redes sociales y listados de propiedades/hoteles."
       ],
       "billing": "Los planes de pago se facturan mensualmente y se renuevan automáticamente a través de Stripe. Puedes cancelar tu suscripción en cualquier momento desde el panel de tu cuenta; la cancelación surte efecto al final del período de facturación actual. Los reembolsos son a nuestra discreción y, en general, no se emiten por meses parciales, salvo cuando lo requiera la ley."

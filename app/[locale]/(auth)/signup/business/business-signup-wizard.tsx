@@ -228,52 +228,84 @@ function Step2({
   defaultPlan: "free" | "standard" | "premium"
 }) {
   const t = useTranslations("signupBusiness")
-  const [selected, setSelected] = useState<"free" | "standard" | "premium">(defaultPlan)
+  // Plus is a contact-led, higher-touch tier — never self-serve here. Any inbound
+  // ?plan=premium falls back to Growth for selection.
+  const [selected, setSelected] = useState<"free" | "standard">(
+    defaultPlan === "premium" ? "standard" : defaultPlan
+  )
 
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {(Object.entries(TIERS) as [keyof typeof TIERS, (typeof TIERS)[keyof typeof TIERS]][]).map(
-          ([key, tier]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setSelected(key)}
-              className={`relative flex flex-col rounded-3xl border-2 p-5 text-left transition ${
-                selected === key
-                  ? "border-primary bg-primary/5 shadow-md"
-                  : "border-border bg-card hover:border-primary/40"
-              }`}
-            >
-              {key === "standard" && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-primary/30 bg-primary px-3 py-0.5 text-xs font-semibold text-primary-foreground">
-                  {t("step2.mostPopular")}
-                </span>
-              )}
-              {key === "premium" && (
-                <Crown className="absolute right-4 top-4 h-4 w-4 text-gold" />
-              )}
-              <div className="font-display text-base font-semibold">{tier.name}</div>
-              <div className="mt-1">
-                {tier.price === 0 ? (
-                  <span className="font-display text-2xl font-bold">{t("step2.free")}</span>
-                ) : (
-                  <>
-                    <span className="font-display text-2xl font-bold">${tier.price}</span>
-                    <span className="text-xs text-muted-foreground">{t("step2.perMonth")}</span>
-                  </>
+          ([key, tier]) => {
+            // Plus / Official Partner: contact-only, not a self-serve checkout.
+            if (key === "premium") {
+              return (
+                <div
+                  key={key}
+                  className="relative flex flex-col rounded-3xl border-2 border-border bg-card p-5 text-left"
+                >
+                  <Crown className="absolute right-4 top-4 h-4 w-4 text-gold" />
+                  <div className="font-display text-base font-semibold">{tier.name}</div>
+                  <div className="mt-1">
+                    <span className="font-display text-xl font-bold">{t("step2.plusContact")}</span>
+                  </div>
+                  <ul className="mt-3 space-y-1.5">
+                    {tier.features.map((f) => (
+                      <li key={f} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+                        <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href="mailto:hello@lompoclocals.com?subject=Lompoc%20Locals%20Plus"
+                    className="mt-4 inline-flex h-9 items-center justify-center rounded-full border border-primary/40 px-4 text-xs font-semibold text-primary transition hover:bg-primary/5"
+                  >
+                    {t("step2.plusContactCta")}
+                  </a>
+                </div>
+              )
+            }
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setSelected(key as "free" | "standard")}
+                className={`relative flex flex-col rounded-3xl border-2 p-5 text-left transition ${
+                  selected === key
+                    ? "border-primary bg-primary/5 shadow-md"
+                    : "border-border bg-card hover:border-primary/40"
+                }`}
+              >
+                {key === "standard" && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-primary/30 bg-primary px-3 py-0.5 text-xs font-semibold text-primary-foreground">
+                    {t("step2.mostPopular")}
+                  </span>
                 )}
-              </div>
-              <ul className="mt-3 space-y-1.5">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </button>
-          )
+                <div className="font-display text-base font-semibold">{tier.name}</div>
+                <div className="mt-1">
+                  {tier.price === 0 ? (
+                    <span className="font-display text-2xl font-bold">{t("step2.free")}</span>
+                  ) : (
+                    <>
+                      <span className="font-display text-2xl font-bold">${tier.price}</span>
+                      <span className="text-xs text-muted-foreground">{t("step2.perMonth")}</span>
+                    </>
+                  )}
+                </div>
+                <ul className="mt-3 space-y-1.5">
+                  {tier.features.map((f) => (
+                    <li key={f} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </button>
+            )
+          }
         )}
       </div>
 
@@ -539,7 +571,8 @@ export function BusinessSignupWizard({
       const saved = sessionStorage.getItem("bizSignupStep1")
       if (saved && Object.keys(step1Data).length === 0) setStep1Data(JSON.parse(saved))
       const savedPlan = sessionStorage.getItem("bizSignupPlan") as "free" | "standard" | "premium" | null
-      if (savedPlan) setPlan(savedPlan)
+      // Plus is contact-only; never restore a self-serve premium selection.
+      if (savedPlan) setPlan(savedPlan === "premium" ? "standard" : savedPlan)
     } catch {
       // ignore – sessionStorage unavailable (private mode, etc.)
     }

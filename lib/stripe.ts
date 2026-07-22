@@ -42,7 +42,7 @@ export const TIERS = {
     name: "Growth",
     priceId: process.env.STRIPE_PRICE_STANDARD ?? "",
     price: 39.99,
-    dealLimit: 15,
+    dealLimit: 5,
     canViewAnalytics: true,
     canViewTrafficSources: false,
     canViewTrends: false,
@@ -52,7 +52,7 @@ export const TIERS = {
     featuredOnHomepage: false,
     features: [
       "Everything in Free",
-      "Post & showcase up to 15 deals",
+      "Post & showcase up to 5 deals",
       "Featured in the weekly deals digest",
       "Views & clicks analytics",
       "Social links + Google reviews",

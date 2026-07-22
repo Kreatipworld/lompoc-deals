@@ -183,9 +183,9 @@
       "q2": "How do I claim a deal?",
       "a2": "Click \"Claim Deal\" on any offer, then show your phone at the business.",
       "q3": "How do businesses post deals?",
-      "a3": "Sign up as a business (free) and create your profile in under 5 minutes. Posting deals requires the Growth plan ($39.99/mo), which unlocks up to 15 active deals.",
+      "a3": "Sign up as a business (free) and create your profile in under 5 minutes. Posting deals requires the Growth plan ($39.99/mo), which unlocks up to 5 active deals.",
       "q4": "What does it cost to list my business?",
-      "a4": "Our Free plan is $0 forever — your business listed with hours, photos, and contact info. Growth is $39.99/month and unlocks deals (up to 15 active), analytics, and priority placement.",
+      "a4": "Our Free plan is $0 forever — your business listed with hours, photos, and contact info. Growth is $39.99/month and unlocks deals (up to 5 active), analytics, and priority placement.",
       "q5": "Is this only for Lompoc?",
       "a5": "For now, yes. We're 100% focused on Lompoc. That's what makes it work — every deal is from someone local, for someone local.",
       "q6": "How do I get the weekly deals email?",
@@ -589,7 +589,7 @@
       "freeFeature4": "Show up in local search",
       "freeFeature5": "Contact info & hours",
       "standardFeature1": "Everything in Free",
-      "standardFeature2": "Post & showcase up to 15 deals",
+      "standardFeature2": "Post & showcase up to 5 deals",
       "standardFeature3": "Featured in the weekly deals digest",
       "standardFeature4": "Views & clicks analytics",
       "standardFeature5": "Social links + Google reviews",
@@ -897,7 +897,9 @@
       "free": "Free",
       "perMonth": "/mo",
       "continueWith": "Continue with {planName}",
-      "back": "Back"
+      "back": "Back",
+      "plusContact": "Let's talk",
+      "plusContactCta": "Contact us →"
     },
     "step3": {
       "canceledBanner": "Payment was cancelled. Choose a plan and try again.",
@@ -1279,7 +1281,7 @@
     "viewPlans": "View plans",
     "dealUsage": "Deal usage",
     "upgradeCta": "Unlock more with Growth",
-    "upgradeBody": "Analytics, social links, and up to 15 active deals for $39.99/mo",
+    "upgradeBody": "Analytics, social links, and up to 5 active deals for $39.99/mo",
     "upgrade": "Upgrade",
     "quickActions": "Quick actions",
     "postDeal": "Post a deal",
@@ -2000,7 +2002,7 @@
       "intro": "We offer the following subscription plans for business accounts:",
       "items": [
         "Free — Basic listing at no charge; includes profile page, map pin, hours, and contact info.",
-        "Growth ($39.99/month) — Enhanced listing with up to 15 active deals, priority placement, and analytics.",
+        "Growth ($39.99/month) — Enhanced listing with up to 5 active deals, priority placement, and analytics.",
         "Plus ($99.99/month) — All Growth features plus featured homepage placement, social media links, and property/hotel listings."
       ],
       "billing": "Paid plans are billed monthly and renew automatically via Stripe. You may cancel your subscription at any time through your account dashboard; cancellation takes effect at the end of the current billing period. Refunds are at our discretion and will generally not be issued for partial months, except where required by law."
