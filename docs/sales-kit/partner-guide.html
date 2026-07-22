@@ -8,87 +8,100 @@
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--purple-deep);color:var(--ink);font-family:var(--sans);
-    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;}
-  .stage{max-width:840px;margin:0 auto;padding:28px 16px 60px;}
+  body{margin:0;background:radial-gradient(140% 100% at 50% -20%,#5a0a68 0%,var(--purple-deep) 55%,#2c0435 100%);
+    color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;line-height:1.5;min-height:100vh;}
 
-  /* Each .page is a real sheet: a card on screen, a printed page in PDF */
-  .page{background:var(--paper);border-radius:16px;overflow:hidden;
-    box-shadow:0 18px 50px rgba(0,0,0,.35);margin-bottom:28px;position:relative;}
-  .pad{padding:44px 52px;}
+  /* ── Deck mechanics (screen) ── */
+  .deck{position:relative;overflow:hidden;height:100vh;}
+  .rail{display:flex;height:100%;transition:transform .55s cubic-bezier(.7,0,.2,1);will-change:transform;}
+  .slide{flex:0 0 100%;height:100%;overflow-y:auto;overflow-x:hidden;
+    display:flex;align-items:center;justify-content:center;padding:34px 18px 92px;-webkit-overflow-scrolling:touch;}
+  .sheet{width:100%;max-width:860px;background:var(--paper);border-radius:18px;
+    box-shadow:0 24px 70px rgba(0,0,0,.4);overflow:hidden;margin:auto;}
+  .pad{padding:40px 48px;}
+
+  /* entrance animation, only on the active slide */
+  .reveal{opacity:0;transform:translateY(14px);}
+  .slide.is-active .reveal{animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .slide.is-active .reveal:nth-child(2){animation-delay:.06s;}
+  .slide.is-active .reveal:nth-child(3){animation-delay:.12s;}
+  .slide.is-active .reveal:nth-child(4){animation-delay:.18s;}
+  .slide.is-active .reveal:nth-child(5){animation-delay:.24s;}
+  .slide.is-active .reveal:nth-child(6){animation-delay:.30s;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+  .stagger>*{opacity:0;transform:translateY(12px);}
+  .slide.is-active .stagger>*{animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  .slide.is-active .stagger>*:nth-child(1){animation-delay:.10s;}
+  .slide.is-active .stagger>*:nth-child(2){animation-delay:.17s;}
+  .slide.is-active .stagger>*:nth-child(3){animation-delay:.24s;}
+  .slide.is-active .stagger>*:nth-child(4){animation-delay:.31s;}
+  .slide.is-active .stagger>*:nth-child(5){animation-delay:.38s;}
+  .slide.is-active .stagger>*:nth-child(6){animation-delay:.45s;}
 
   h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.08;text-wrap:balance;margin:0;}
-  .kicker{font-size:11px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;
-    color:var(--purple);}
+  .kicker{font-size:11px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--purple);}
   .kicker.on-dark{color:var(--gold);}
   p{margin:0 0 14px;max-width:62ch;}
   .lead{font-size:18px;color:#3f2a45;}
   a{color:var(--purple);}
 
-  /* ---- Cover ---- */
-  .cover{background:
+  /* ── Cover ── */
+  .cover .sheet{background:
       radial-gradient(120% 90% at 85% -10%,#7d1a91 0%,transparent 55%),
-      linear-gradient(160deg,#4f0857 0%,var(--purple) 52%,#37043f 100%);
-    color:#fff;}
-  .cover .pad{padding:64px 52px 48px;}
-  .nameplate{font-family:var(--serif);font-size:52px;font-weight:700;letter-spacing:.005em;
-    color:#fff;line-height:1;}
-  .rule-gold{height:3px;background:var(--gold);border-radius:2px;margin:20px 0;}
-  .cover .promise{font-family:var(--serif);font-size:30px;line-height:1.15;color:#fff;
-    margin:26px 0 8px;max-width:18ch;}
+      linear-gradient(160deg,#4f0857 0%,var(--purple) 52%,#37043f 100%);color:#fff;}
+  .cover .pad{padding:56px 48px;}
+  .nameplate{font-family:var(--serif);font-size:52px;font-weight:700;color:#fff;line-height:1;position:relative;}
+  .nameplate::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(239,198,24,.55) 50%,transparent 70%);
+    background-size:250% 100%;mix-blend-mode:screen;animation:shine 4.5s ease-in-out 1s infinite;pointer-events:none;}
+  @keyframes shine{0%,100%{background-position:180% 0;}45%,55%{background-position:-60% 0;}}
+  .rule-gold{height:3px;background:var(--gold);border-radius:2px;margin:20px 0;width:200px;}
+  .cover .promise{font-family:var(--serif);font-size:29px;line-height:1.15;color:#fff;margin:24px 0 8px;max-width:19ch;}
   .cover .sub{color:rgba(255,255,255,.82);font-size:16px;max-width:46ch;}
-  .cover-strip{display:flex;gap:0;margin-top:44px;border-top:1px solid rgba(255,255,255,.22);
-    padding-top:22px;}
+  .cover-strip{display:flex;gap:0;margin-top:40px;border-top:1px solid rgba(255,255,255,.22);padding-top:22px;}
   .cover-strip div{flex:1;}
   .cover-strip .n{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--gold);}
-  .cover-strip .l{font-size:12px;color:rgba(255,255,255,.8);letter-spacing:.02em;}
+  .cover-strip .l{font-size:12px;color:rgba(255,255,255,.8);}
   .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);
     border:1px solid rgba(239,198,24,.5);color:var(--gold);font-size:12px;font-weight:700;
     letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;}
 
-  /* ---- Section header ---- */
   .sec-h{margin-bottom:22px;}
-  .sec-h h2{font-size:32px;color:var(--ink);margin-top:6px;}
+  .sec-h h2{font-size:31px;color:var(--ink);margin-top:6px;}
   .accent-bar{height:4px;width:52px;background:var(--gold);border-radius:2px;margin-top:14px;}
 
-  /* ---- Stat grid ---- */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0 6px;}
-  .stat{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:18px 18px;}
-  .stat .n{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--purple);line-height:1;}
+  .stat{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .stat .n{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--purple);line-height:1;font-variant-numeric:tabular-nums;}
   .stat .l{font-size:13px;color:var(--muted);margin-top:6px;}
 
-  /* ---- Feature rows ---- */
   .rows{display:grid;gap:14px;margin-top:6px;}
-  .row{display:flex;gap:16px;align-items:flex-start;background:var(--paper-2);
-    border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
-  .row .ic{flex-shrink:0;width:38px;height:38px;border-radius:10px;display:flex;
-    align-items:center;justify-content:center;background:rgba(101,12,117,.08);
-    color:var(--purple);font-family:var(--serif);font-weight:700;font-size:18px;}
+  .row{display:flex;gap:16px;align-items:flex-start;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:14px;padding:16px 18px;transition:transform .2s ease,box-shadow .2s ease;}
+  .row:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(101,12,117,.1);}
+  .row .ic{flex-shrink:0;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;
+    justify-content:center;background:rgba(101,12,117,.08);color:var(--purple);font-family:var(--serif);font-weight:700;font-size:18px;}
   .row h3{font-size:17px;color:var(--ink);margin-bottom:3px;}
   .row p{margin:0;font-size:14.5px;color:#4a3650;}
 
-  /* ---- Coupon loop ---- */
   .loop{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 20px;}
   .step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px;
-    position:relative;}
+    transition:transform .2s ease,box-shadow .2s ease;}
+  .step:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(101,12,117,.1);}
   .step .num{width:30px;height:30px;border-radius:999px;background:var(--purple);color:#fff;
-    font-family:var(--serif);font-weight:700;display:flex;align-items:center;justify-content:center;
-    font-size:15px;margin-bottom:12px;}
+    font-family:var(--serif);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:12px;}
   .step h3{font-size:16px;color:var(--ink);margin-bottom:4px;}
   .step p{font-size:13.5px;color:#4a3650;margin:0;}
-  .codechip{display:inline-block;font-family:ui-monospace,monospace;font-weight:700;
-    letter-spacing:.2em;background:var(--ink);color:var(--gold);padding:4px 10px;border-radius:6px;
-    font-size:13px;margin-top:10px;}
+  .codechip{display:inline-block;font-family:ui-monospace,monospace;font-weight:700;letter-spacing:.2em;
+    background:var(--ink);color:var(--gold);padding:4px 10px;border-radius:6px;font-size:13px;margin-top:10px;}
   .contrast{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
   .con{border-radius:12px;padding:14px 16px;font-size:14px;}
   .con.bad{background:#fbecec;border:1px solid #f0cfcf;color:#7a2b2b;}
   .con.good{background:#e8f6ec;border:1px solid #bfe6c9;color:#1c5c30;}
   .con b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
   .controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
-  .pill{background:rgba(101,12,117,.07);border:1px solid var(--line);color:var(--purple);
-    font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;}
+  .pill{background:rgba(101,12,117,.07);border:1px solid var(--line);color:var(--purple);font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;}
 
-  /* ---- Plans ---- */
   .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px;align-items:stretch;}
   .plan{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 20px;display:flex;flex-direction:column;}
   .plan.feature{border:2px solid var(--purple);box-shadow:0 8px 24px rgba(101,12,117,.14);}
@@ -102,238 +115,325 @@
   .plan .best{display:inline-block;background:var(--gold);color:#3a2600;font-size:11px;font-weight:800;
     letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin-bottom:10px;align-self:flex-start;}
 
-  /* ---- Get started / CTA ---- */
+  /* ── Plus-is-for-you ── */
+  .plus .sheet{background:linear-gradient(165deg,#fff 0%,#faf3fc 100%);}
+  .foryou{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 20px;}
+  .foryou div{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:10px;padding:13px 15px;font-size:14px;color:#3f2a45;}
+  .foryou b{color:var(--purple);}
+  .perks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .perk{background:linear-gradient(160deg,var(--purple) 0%,#4a0857 100%);color:#fff;border-radius:14px;padding:16px 16px;}
+  .perk .pt{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+  .perk .pd{font-size:14px;margin-top:5px;line-height:1.35;color:rgba(255,255,255,.94);}
+  .anchor{margin-top:20px;background:var(--ink);color:#fff;border-radius:14px;padding:18px 22px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .anchor .big{font-family:var(--serif);font-size:26px;font-weight:700;}
+  .anchor .big span{color:var(--gold);}
+  .anchor .day{font-size:14px;color:rgba(255,255,255,.82);max-width:34ch;}
+
   .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 22px;}
-  .cta{background:linear-gradient(160deg,var(--purple) 0%,#4a0857 100%);color:#fff;border-radius:16px;
-    padding:28px 30px;text-align:center;}
+  .cta{background:linear-gradient(160deg,var(--purple) 0%,#4a0857 100%);color:#fff;border-radius:16px;padding:28px 30px;text-align:center;}
   .cta h3{color:#fff;font-size:24px;margin-bottom:6px;}
   .cta p{color:rgba(255,255,255,.85);margin:0 auto 16px;max-width:44ch;}
-  .cta .go{display:inline-block;background:var(--gold);color:#3a2600;font-weight:800;
-    padding:13px 28px;border-radius:999px;text-decoration:none;font-size:15px;}
-  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:26px;
-    padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);}
+  .cta .go{display:inline-block;background:var(--gold);color:#3a2600;font-weight:800;padding:13px 28px;border-radius:999px;text-decoration:none;font-size:15px;transition:transform .15s ease;}
+  .cta .go:hover{transform:scale(1.04);}
+  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);}
   .foot b{color:var(--purple);font-family:var(--serif);}
-
   .note{font-size:12px;color:var(--muted);margin-top:10px;}
 
-  /* ---- Print → clean PDF ---- */
+  /* ── Deck chrome ── */
+  .nav{position:fixed;top:50%;transform:translateY(-50%);z-index:30;width:46px;height:46px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:20px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:background .15s ease,opacity .2s ease;}
+  .nav:hover{background:rgba(255,255,255,.24);}
+  .nav[disabled]{opacity:.25;cursor:default;}
+  .nav.prev{left:14px;} .nav.next{right:14px;}
+  .dots{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:30;display:flex;gap:9px;
+    background:rgba(0,0,0,.28);padding:9px 14px;border-radius:999px;backdrop-filter:blur(6px);align-items:center;}
+  .dot{width:9px;height:9px;border-radius:999px;border:0;background:rgba(255,255,255,.4);cursor:pointer;padding:0;transition:background .2s,width .2s;}
+  .dot.active{background:var(--gold);width:22px;}
+  .counter{position:fixed;bottom:22px;right:18px;z-index:30;color:rgba(255,255,255,.8);font-size:13px;
+    font-variant-numeric:tabular-nums;background:rgba(0,0,0,.28);padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px);}
+  .hint{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:30;color:rgba(255,255,255,.7);
+    font-size:12px;letter-spacing:.04em;background:rgba(0,0,0,.25);padding:6px 14px;border-radius:999px;
+    backdrop-filter:blur(6px);transition:opacity .4s ease;}
+
+  /* ── Print → clean multi-page PDF ── */
   @media print{
     @page{size:letter;margin:14mm;}
     body{background:#fff;}
-    .stage{max-width:none;margin:0;padding:0;}
-    .page{box-shadow:none;border-radius:0;margin:0;page-break-after:always;break-after:page;}
-    .page:last-child{page-break-after:auto;}
-    .pad{padding:8mm 4mm;}
-    .cover .pad{padding:16mm 4mm;}
+    .deck{height:auto;overflow:visible;}
+    .rail{display:block;transform:none!important;}
+    .slide{height:auto;display:block;padding:0;overflow:visible;page-break-after:always;break-after:page;}
+    .slide:last-child{page-break-after:auto;}
+    .sheet{box-shadow:none;border-radius:0;max-width:none;}
+    .pad{padding:8mm 4mm;} .cover .pad{padding:16mm 4mm;}
+    .reveal,.stagger>*{opacity:1!important;transform:none!important;animation:none!important;}
+    .nav,.dots,.counter,.hint{display:none!important;}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
-  @media (max-width:640px){
-    .stats,.loop,.plans,.steps3,.cover-strip{grid-template-columns:1fr;}
-    .contrast{grid-template-columns:1fr;}
-    .pad{padding:30px 22px;}
-    .nameplate{font-size:40px;}
+  @media (max-width:660px){
+    .stats,.loop,.plans,.steps3,.cover-strip,.perks{grid-template-columns:1fr;}
+    .contrast,.foryou{grid-template-columns:1fr;}
+    .pad{padding:28px 20px;} .nameplate{font-size:38px;} .nav{display:none;}
+    .slide{padding:20px 12px 84px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .rail{transition:none;} .reveal,.stagger>*{opacity:1!important;transform:none!important;animation:none!important;}
+    .nameplate::after{animation:none;}
   }
 </style>
 
-<div class="stage">
+<div class="deck" id="deck">
+  <div class="rail" id="rail">
 
-  <!-- ══ 1. COVER ══ -->
-  <section class="page cover">
-    <div class="pad">
-      <div class="kicker on-dark">Est. 2026 · Lompoc &amp; Vandenberg, CA</div>
-      <div class="nameplate">Lompoc Locals</div>
-      <div class="rule-gold" style="width:200px;"></div>
-      <div class="promise">The whole town, in one place — and a real reason for locals to walk into your business.</div>
-      <p class="sub">Lompoc Locals is the #1 local hub for Lompoc &amp; Vandenberg: deals, businesses, events, and things to do, all pointed at the same neighbors you&rsquo;re trying to reach.</p>
-      <div style="margin-top:18px;"><span class="badge">★ Partner Guide 2026</span></div>
-
-      <div class="cover-strip">
-        <div><div class="n">2,400+</div><div class="l">locals a month</div></div>
-        <div><div class="n">473</div><div class="l">businesses listed</div></div>
-        <div><div class="n">90+</div><div class="l">upcoming events</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 2. WHY ══ -->
-  <section class="page">
-    <div class="pad">
-      <div class="sec-h">
-        <div class="kicker">Why Lompoc Locals</div>
-        <h2>One town. All of it in one place.</h2>
-        <div class="accent-bar"></div>
-      </div>
-      <p class="lead">We cover Lompoc &amp; Vandenberg — ZIP codes 93436, 37, and 38 — and nowhere else. That focus is the whole point. When a neighbor is looking for what you sell, this is where they look.</p>
-
-      <div class="rows">
-        <div class="row"><div class="ic">◎</div><div>
-          <h3>Locals can already find you</h3>
-          <p>473 businesses across 10 categories are on the map, in search, and in the directory. A free profile puts your name, hours, photos, and contact info in front of people who live here.</p></div></div>
-        <div class="row"><div class="ic">▲</div><div>
-          <h3>95% of them are on their phone</h3>
-          <p>The site is built mobile-first — a neighbor pulls it up on the sidewalk and finds you in seconds. Your listing looks right on the screen where it matters.</p></div></div>
-        <div class="row"><div class="ic">↻</div><div>
-          <h3>Everyone gets a fair turn at the top</h3>
-          <p>Featured spots rotate on every visit, so it&rsquo;s never the same few businesses on the homepage. Show up, and you get seen.</p></div></div>
-        <div class="row"><div class="ic">✦</div><div>
-          <h3>A weekly reason to come back</h3>
-          <p>Every Monday, subscribers get &ldquo;The Lompoc Locals&rdquo; — a front-page digest of the week&rsquo;s events, deals, and neighbors. Partners are featured in it.</p></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 3. YOUR REACH ══ -->
-  <section class="page">
-    <div class="pad">
-      <div class="sec-h">
-        <div class="kicker">Your Reach</div>
-        <h2>Real numbers, this month.</h2>
-        <div class="accent-bar"></div>
-      </div>
-      <p class="lead">Not projections. This is who&rsquo;s actually using Lompoc Locals right now.</p>
-
-      <div class="stats">
-        <div class="stat"><div class="n">2,400+</div><div class="l">Locals visiting each month</div></div>
-        <div class="stat"><div class="n">4,000+</div><div class="l">Pages viewed each month</div></div>
-        <div class="stat"><div class="n">473</div><div class="l">Businesses listed</div></div>
-        <div class="stat"><div class="n">10</div><div class="l">Categories, from food to trades</div></div>
-        <div class="stat"><div class="n">90+</div><div class="l">Upcoming local events</div></div>
-        <div class="stat"><div class="n">2</div><div class="l">ZIP focus: Lompoc + Vandenberg</div></div>
-      </div>
-      <p class="note">Figures reflect the last 30 days on www.lompoclocals.com and update as the community grows.</p>
-
-      <div class="row" style="margin-top:22px;background:rgba(11,153,47,.06);border-color:#bfe6c9;">
-        <div class="ic" style="background:rgba(11,153,47,.12);color:var(--green);">↑</div>
-        <div><h3>Bilingual by default</h3>
-        <p>Every page works in English and Spanish, so you reach all of Lompoc — not just half of it.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 4. COUPON SYSTEM ══ -->
-  <section class="page">
-    <div class="pad">
-      <div class="sec-h">
-        <div class="kicker">The Difference</div>
-        <h2>Coupons you can actually trust.</h2>
-        <div class="accent-bar"></div>
-      </div>
-      <p class="lead">Most &ldquo;online coupons&rdquo; are a screenshot everyone shares and a number nobody checks. Ours are different — built for real businesses that want real control.</p>
-
-      <div class="loop">
-        <div class="step"><div class="num">1</div>
-          <h3>Every customer gets their own code</h3>
-          <p>Not one shared code — a unique, single-use code per person. It can&rsquo;t be screenshotted and passed around.</p>
-          <span class="codechip">7K2F9P</span></div>
-        <div class="step"><div class="num">2</div>
-          <h3>You verify it at your counter</h3>
-          <p>Your staff type the code into your dashboard. It shows valid, expired, or already-used — then you tap to redeem.</p></div>
-        <div class="step"><div class="num">3</div>
-          <h3>You see who walked in</h3>
-          <p>Your redemption count means people who actually showed up and used it — a real number, not a guess.</p></div>
-      </div>
-
-      <div class="contrast">
-        <div class="con bad"><b>The old way</b>One code, screenshotted and shared. &ldquo;Redeemed&rdquo; is whatever a shopper taps on their own phone.</div>
-        <div class="con good"><b>The Lompoc Locals way</b>One code per customer, confirmed at your register. Numbers you can stake a decision on.</div>
-      </div>
-
-      <p style="margin-top:20px;font-weight:600;color:var(--ink);">You stay in control:</p>
-      <div class="controls">
-        <span class="pill">Cap it — &ldquo;first 50 only&rdquo;</span>
-        <span class="pill">One per customer</span>
-        <span class="pill">Limit per day</span>
-        <span class="pill">Set an expiry</span>
-        <span class="pill">A code in hand always works</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 5. PLANS ══ -->
-  <section class="page">
-    <div class="pad">
-      <div class="sec-h">
-        <div class="kicker">Membership</div>
-        <h2>Start free. Grow when you&rsquo;re ready.</h2>
-        <div class="accent-bar"></div>
-      </div>
-
-      <div class="plans">
-        <div class="plan">
-          <div class="tag">Free</div>
-          <div class="price">$0</div>
-          <ul>
-            <li>Business profile page</li>
-            <li>Logo + cover photo</li>
-            <li>Map pin + directory listing</li>
-            <li>Show up in local search</li>
-            <li>Contact info &amp; hours</li>
-          </ul>
+    <!-- 1. COVER -->
+    <section class="slide cover">
+      <div class="sheet"><div class="pad">
+        <div class="kicker on-dark reveal">Est. 2026 · Lompoc &amp; Vandenberg, CA</div>
+        <div class="nameplate reveal">Lompoc Locals</div>
+        <div class="rule-gold reveal"></div>
+        <div class="promise reveal">The whole town, in one place — and a real reason for locals to walk into your business.</div>
+        <p class="sub reveal">The #1 local hub for Lompoc &amp; Vandenberg: deals, businesses, events, and things to do, all pointed at the same neighbors you&rsquo;re trying to reach.</p>
+        <div class="reveal" style="margin-top:16px;"><span class="badge">★ Partner Guide 2026</span></div>
+        <div class="cover-strip reveal">
+          <div><div class="n" data-count="2400" data-suffix="+">2,400+</div><div class="l">locals a month</div></div>
+          <div><div class="n" data-count="473">473</div><div class="l">businesses listed</div></div>
+          <div><div class="n" data-count="90" data-suffix="+">90+</div><div class="l">upcoming events</div></div>
         </div>
-        <div class="plan feature">
-          <span class="best">Most popular</span>
-          <div class="tag">Growth</div>
-          <div class="price">$39.99 <span class="per">/ month</span></div>
-          <ul>
-            <li>Everything in Free</li>
-            <li>Post up to 15 deals with unique codes</li>
-            <li>Featured in the weekly digest</li>
-            <li>Views &amp; clicks analytics</li>
-            <li>Redemption counts at your counter</li>
-            <li>Social links + Google reviews</li>
-          </ul>
+      </div></div>
+    </section>
+
+    <!-- 2. WHY -->
+    <section class="slide">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">Why Lompoc Locals</div>
+          <h2>One town. All of it in one place.</h2><div class="accent-bar"></div></div>
+        <p class="lead reveal">We cover Lompoc &amp; Vandenberg — ZIPs 93436, 37, and 38 — and nowhere else. That focus is the whole point. When a neighbor is looking for what you sell, this is where they look.</p>
+        <div class="rows stagger">
+          <div class="row"><div class="ic">◎</div><div><h3>Locals can already find you</h3><p>473 businesses across 10 categories are on the map, in search, and in the directory. A free profile puts your name, hours, and photos in front of people who live here.</p></div></div>
+          <div class="row"><div class="ic">▲</div><div><h3>95% of them are on their phone</h3><p>Built mobile-first — a neighbor pulls it up on the sidewalk and finds you in seconds.</p></div></div>
+          <div class="row"><div class="ic">↻</div><div><h3>Everyone gets a fair turn at the top</h3><p>Featured spots reshuffle on every visit, so it&rsquo;s never the same few on the homepage. Show up, and you get seen.</p></div></div>
+          <div class="row"><div class="ic">✦</div><div><h3>A weekly reason to come back</h3><p>Every Monday, subscribers get &ldquo;The Lompoc Locals&rdquo; — a front-page digest of the week. Partners are featured in it.</p></div></div>
         </div>
-        <div class="plan">
-          <div class="tag">Plus</div>
-          <div class="price">$99.99 <span class="per">/ month</span></div>
-          <ul>
-            <li>Everything in Growth</li>
-            <li>Unlimited deals</li>
-            <li>Featured on homepage + digest</li>
-            <li>Priority in search results</li>
-            <li>Featured Deal of the Week rotation</li>
-            <li>Sponsor Spotlight ad included</li>
-            <li>Real estate listings + priority support</li>
-          </ul>
+      </div></div>
+    </section>
+
+    <!-- 3. REACH -->
+    <section class="slide">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">Your Reach</div><h2>Real numbers, this month.</h2><div class="accent-bar"></div></div>
+        <p class="lead reveal">Not projections. This is who&rsquo;s actually using Lompoc Locals right now.</p>
+        <div class="stats stagger">
+          <div class="stat"><div class="n" data-count="2400" data-suffix="+">2,400+</div><div class="l">Locals visiting each month</div></div>
+          <div class="stat"><div class="n" data-count="4000" data-suffix="+">4,000+</div><div class="l">Pages viewed each month</div></div>
+          <div class="stat"><div class="n" data-count="473">473</div><div class="l">Businesses listed</div></div>
+          <div class="stat"><div class="n" data-count="10">10</div><div class="l">Categories, food to trades</div></div>
+          <div class="stat"><div class="n" data-count="90" data-suffix="+">90+</div><div class="l">Upcoming local events</div></div>
+          <div class="stat"><div class="n" data-count="2">2</div><div class="l">ZIP focus: Lompoc + Vandenberg</div></div>
         </div>
-      </div>
-      <p class="note">Coupons and their verified redemption counts start on Growth. Free is a full listing — a real presence in the community at no cost.</p>
-    </div>
-  </section>
+        <p class="note reveal">Figures reflect the last 30 days on www.lompoclocals.com and grow with the community.</p>
+        <div class="row reveal" style="margin-top:18px;background:rgba(11,153,47,.06);border-color:#bfe6c9;">
+          <div class="ic" style="background:rgba(11,153,47,.12);color:var(--green);">↑</div>
+          <div><h3>Bilingual by default</h3><p>Every page works in English and Spanish — you reach all of Lompoc, not just half of it.</p></div>
+        </div>
+      </div></div>
+    </section>
 
-  <!-- ══ 6. GET STARTED ══ -->
-  <section class="page">
-    <div class="pad">
-      <div class="sec-h">
-        <div class="kicker">Get Started</div>
-        <h2>Three steps to your first redemption.</h2>
-        <div class="accent-bar"></div>
-      </div>
+    <!-- 4. COUPON SYSTEM -->
+    <section class="slide">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">The Difference</div><h2>Coupons you can actually trust.</h2><div class="accent-bar"></div></div>
+        <p class="lead reveal">Most &ldquo;online coupons&rdquo; are a screenshot everyone shares and a number nobody checks. Ours are built for real businesses that want real control.</p>
+        <div class="loop stagger">
+          <div class="step"><div class="num">1</div><h3>Every customer gets their own code</h3><p>Not one shared code — a unique, single-use code per person. It can&rsquo;t be screenshotted and passed around.</p><span class="codechip">7K2F9P</span></div>
+          <div class="step"><div class="num">2</div><h3>You verify it at your counter</h3><p>Staff type the code into your dashboard — valid, expired, or already-used — then tap to redeem.</p></div>
+          <div class="step"><div class="num">3</div><h3>You see who walked in</h3><p>Your redemption count means people who actually showed up. A real number, not a guess.</p></div>
+        </div>
+        <div class="contrast reveal">
+          <div class="con bad"><b>The old way</b>One code, screenshotted and shared. &ldquo;Redeemed&rdquo; is whatever a shopper taps on their own phone.</div>
+          <div class="con good"><b>The Lompoc Locals way</b>One code per customer, confirmed at your register. Numbers you can stake a decision on.</div>
+        </div>
+        <p class="reveal" style="margin-top:18px;font-weight:600;color:var(--ink);">You stay in control:</p>
+        <div class="controls reveal">
+          <span class="pill">Cap it — &ldquo;first 50 only&rdquo;</span><span class="pill">One per customer</span>
+          <span class="pill">Limit per day</span><span class="pill">Set an expiry</span><span class="pill">A code in hand always works</span>
+        </div>
+      </div></div>
+    </section>
 
-      <div class="steps3">
-        <div class="step"><div class="num">1</div>
-          <h3>Claim your page</h3>
-          <p>Find your business on Lompoc Locals — or add it — and make it yours. Free, in minutes.</p></div>
-        <div class="step"><div class="num">2</div>
-          <h3>Post your first deal</h3>
-          <p>Set the offer and any limits. Locals see it in the feed, on your page, and in the digest.</p></div>
-        <div class="step"><div class="num">3</div>
-          <h3>Redeem at your counter</h3>
-          <p>A customer shows their code, you confirm it, and it counts. Watch the numbers come in.</p></div>
-      </div>
+    <!-- 5. WHAT YOU CAN MEASURE -->
+    <section class="slide">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">Your Dashboard</div><h2>Finally, numbers you can act on.</h2><div class="accent-bar"></div></div>
+        <p class="lead reveal">Every offer you run reports back — not vanity likes, but the things that tell you whether it worked.</p>
+        <div class="stats stagger">
+          <div class="stat"><div class="n">✓</div><div class="l"><b style="color:var(--ink)">Verified redemptions</b><br>People who actually walked in and used it</div></div>
+          <div class="stat"><div class="n">→</div><div class="l"><b style="color:var(--ink)">Claim → visit rate</b><br>How well an offer turns interest into a visit</div></div>
+          <div class="stat"><div class="n">◉</div><div class="l"><b style="color:var(--ink)">Views &amp; clicks</b><br>How many locals saw your deal and tapped it</div></div>
+          <div class="stat"><div class="n">◑</div><div class="l"><b style="color:var(--ink)">New vs. repeat</b><br>Did it win new faces or reward your regulars</div></div>
+          <div class="stat"><div class="n">◔</div><div class="l"><b style="color:var(--ink)">Best day &amp; time</b><br>When redeemers actually show up — plan your staff</div></div>
+          <div class="stat"><div class="n">★</div><div class="l"><b style="color:var(--ink)">Top offers</b><br>Which deals pull people in, which get ignored</div></div>
+        </div>
+        <div class="row reveal" style="margin-top:18px;background:rgba(11,153,47,.06);border-color:#bfe6c9;">
+          <div class="ic" style="background:rgba(11,153,47,.12);color:var(--green);">$</div>
+          <div><h3>No guesswork, no invented numbers</h3><p>We count what your register confirms — hard counts you can trust, never an estimate someone can dispute.</p></div>
+        </div>
+      </div></div>
+    </section>
 
-      <div class="cta">
-        <span class="badge" style="margin-bottom:12px;">★ Official Partner</span>
-        <h3>Ready to be found by locals?</h3>
-        <p>Join the businesses already on Lompoc Locals. Claim your page today and post your first deal this week.</p>
-        <a class="go" href="https://www.lompoclocals.com/signup/business">Get started at lompoclocals.com →</a>
-      </div>
+    <!-- 6. PLANS -->
+    <section class="slide">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">Membership</div><h2>Start free. Grow when you&rsquo;re ready.</h2><div class="accent-bar"></div></div>
+        <div class="plans stagger">
+          <div class="plan"><div class="tag">Free</div><div class="price">$0</div>
+            <ul><li>Business profile page</li><li>Logo + cover photo</li><li>Map pin + directory listing</li><li>Show up in local search</li><li>Contact info &amp; hours</li></ul></div>
+          <div class="plan feature"><span class="best">Most popular</span><div class="tag">Growth</div><div class="price">$39.99 <span class="per">/ mo</span></div>
+            <ul><li>Everything in Free</li><li>Post up to 15 deals with unique codes</li><li>Featured in the weekly digest</li><li>Views &amp; clicks analytics</li><li>Redemption counts at your counter</li><li>Social links + Google reviews</li></ul></div>
+          <div class="plan"><div class="tag">Plus</div><div class="price">$99.99 <span class="per">/ mo</span></div>
+            <ul><li>Everything in Growth</li><li>Unlimited deals</li><li>Featured on homepage + digest</li><li>Priority in search</li><li>Featured Deal of the Week rotation</li><li>Sponsor Spotlight ad included</li><li>Real estate module + priority support</li></ul></div>
+        </div>
+        <p class="note reveal">Coupons and their verified redemption counts start on Growth. Free is a full listing — a real presence at no cost.</p>
+      </div></div>
+    </section>
 
-      <div class="foot">
-        <span><b>Lompoc Locals</b> · The #1 local hub for Lompoc &amp; Vandenberg</span>
-        <span>www.lompoclocals.com</span>
-      </div>
-    </div>
-  </section>
+    <!-- 6. PLUS IS FOR YOU -->
+    <section class="slide plus">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">Plus · Official Partner</div><h2>Own your category.</h2><div class="accent-bar"></div></div>
+        <p class="lead reveal">Plus isn&rsquo;t a longer list of features — it&rsquo;s being the business locals see <em>first</em>, every time they open the app.</p>
 
+        <p class="reveal" style="font-weight:700;color:var(--ink);margin-bottom:8px;">Plus is for you if&hellip;</p>
+        <div class="foryou stagger">
+          <div>You want to be the <b>first name</b> locals see when they search your category.</div>
+          <div>You run more than a couple of offers and don&rsquo;t want a <b>cap</b>.</div>
+          <div>You want your storefront on the <b>homepage</b>, not buried in a list.</div>
+          <div>You want the <b>Official Partner</b> badge that says you&rsquo;re the real deal.</div>
+        </div>
+
+        <p class="reveal" style="font-weight:700;color:var(--ink);margin:6px 0 8px;">What owning it looks like:</p>
+        <div class="perks stagger">
+          <div class="perk"><div class="pt">Front page</div><div class="pd">Featured on the homepage and in the weekly digest.</div></div>
+          <div class="perk"><div class="pt">Top of search</div><div class="pd">Priority ranking in your category, above the rest.</div></div>
+          <div class="perk"><div class="pt">Deal of the week</div><div class="pd">A rotation reserved for you every month.</div></div>
+          <div class="perk"><div class="pt">Your own ad</div><div class="pd">A Sponsor Spotlight placement, included.</div></div>
+          <div class="perk"><div class="pt">Unlimited deals</div><div class="pd">Run as many offers as you want, no limit.</div></div>
+          <div class="perk"><div class="pt">The badge</div><div class="pd">Official Partner — visible everywhere you appear.</div></div>
+        </div>
+
+        <div class="anchor reveal">
+          <div class="big">$99.99<span>/mo</span></div>
+          <div class="day">That&rsquo;s about <b style="color:#fff;">$3.30 a day</b> to be the business your town sees first — less than a cup of coffee.</div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 8. WHY NOW -->
+    <section class="slide plus">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">Why Now</div><h2>Get in before your competitor does.</h2><div class="accent-bar"></div></div>
+        <p class="lead reveal">A whole town is coming online in one place. The businesses that show up early become the names locals know first — and every category has only one top spot.</p>
+        <div class="foryou stagger">
+          <div>Every category has <b>one Official Partner spot</b>. Right now, in most categories, it&rsquo;s still open.</div>
+          <div>The audience <b>grows every week</b> — new locals, new events, new neighbors added constantly.</div>
+          <div>Deals are still few, so an offer you post now gets <b>outsized attention</b>, not lost in a crowd.</div>
+          <div>Built here, for here — <b>Lompoc + Vandenberg only</b>. This is your town&rsquo;s hub, not a national directory.</div>
+        </div>
+        <div class="anchor reveal">
+          <div class="big">Be early.</div>
+          <div class="day">Being part of the place your town already checks &mdash; and owning your corner of it &mdash; is worth far more the sooner you claim it.</div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 9. GET STARTED -->
+    <section class="slide">
+      <div class="sheet"><div class="pad">
+        <div class="sec-h reveal"><div class="kicker">Get Started</div><h2>Three steps to your first redemption.</h2><div class="accent-bar"></div></div>
+        <div class="steps3 stagger">
+          <div class="step"><div class="num">1</div><h3>Claim your page</h3><p>Find your business — or add it — and make it yours. Free, in minutes.</p></div>
+          <div class="step"><div class="num">2</div><h3>Post your first deal</h3><p>Set the offer and any limits. Locals see it in the feed, on your page, and in the digest.</p></div>
+          <div class="step"><div class="num">3</div><h3>Redeem at your counter</h3><p>A customer shows their code, you confirm it, and it counts.</p></div>
+        </div>
+        <div class="cta reveal">
+          <span class="badge" style="margin-bottom:12px;">★ Official Partner</span>
+          <h3>Ready to be found by locals?</h3>
+          <p>Join the businesses already on Lompoc Locals. Claim your page today and post your first deal this week.</p>
+          <a class="go" href="https://www.lompoclocals.com/signup/business">Get started at lompoclocals.com →</a>
+        </div>
+        <div class="foot reveal"><span><b>Lompoc Locals</b> · The #1 local hub for Lompoc &amp; Vandenberg</span><span>www.lompoclocals.com</span></div>
+      </div></div>
+    </section>
+
+  </div>
+
+  <button class="nav prev" id="prev" aria-label="Previous slide">‹</button>
+  <button class="nav next" id="next" aria-label="Next slide">›</button>
+  <div class="dots" id="dots"></div>
+  <div class="counter" id="counter">1 / 9</div>
+  <div class="hint" id="hint">← → or swipe to move · press P to print</div>
 </div>
+
+<script>
+(function(){
+  var rail=document.getElementById('rail');
+  var slides=Array.prototype.slice.call(rail.children);
+  var N=slides.length, i=0;
+  var prev=document.getElementById('prev'), next=document.getElementById('next');
+  var dotsWrap=document.getElementById('dots'), counter=document.getElementById('counter'), hint=document.getElementById('hint');
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // dots
+  slides.forEach(function(_,k){
+    var b=document.createElement('button'); b.className='dot'+(k===0?' active':''); b.setAttribute('aria-label','Go to slide '+(k+1));
+    b.addEventListener('click',function(){go(k);}); dotsWrap.appendChild(b);
+  });
+  var dots=Array.prototype.slice.call(dotsWrap.children);
+
+  function countUp(slide){
+    if(reduce) return;
+    slide.querySelectorAll('[data-count]').forEach(function(el){
+      var target=parseInt(el.getAttribute('data-count'),10);
+      var suffix=el.getAttribute('data-suffix')||'';
+      var start=null, dur=900;
+      function fmt(n){return n.toLocaleString('en-US');}
+      function tick(t){
+        if(start===null)start=t; var p=Math.min((t-start)/dur,1);
+        var eased=1-Math.pow(1-p,3);
+        el.textContent=fmt(Math.round(target*eased))+suffix;
+        if(p<1)requestAnimationFrame(tick);
+      }
+      el.textContent='0'+suffix; requestAnimationFrame(tick);
+    });
+  }
+
+  function go(n){
+    i=Math.max(0,Math.min(N-1,n));
+    rail.style.transform='translateX(-'+(i*100)+'%)';
+    slides.forEach(function(s,k){s.classList.toggle('is-active',k===i);});
+    dots.forEach(function(d,k){d.classList.toggle('active',k===i);});
+    counter.textContent=(i+1)+' / '+N;
+    prev.disabled=(i===0); next.disabled=(i===N-1);
+    countUp(slides[i]);
+  }
+  prev.addEventListener('click',function(){go(i-1);});
+  next.addEventListener('click',function(){go(i+1);});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(i+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+    else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(N-1);}
+    else if(e.key==='p'||e.key==='P'){window.print();}
+  });
+  // touch swipe (per-slide vertical scroll still works)
+  var x0=null,y0=null;
+  rail.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+  rail.addEventListener('touchend',function(e){
+    if(x0===null)return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4){go(dx<0?i+1:i-1);} x0=null;y0=null;
+  },{passive:true});
+
+  setTimeout(function(){hint.style.opacity='0';},4200);
+  go(0);
+})();
+</script>
