@@ -22,7 +22,7 @@ export function MobileMenu() {
     { href: "/hotels", icon: BedDouble, label: t("hotels") },
     { href: "/feed", icon: ShoppingBag, label: t("neighborhood") },
     { href: "/locals", icon: Heart, label: t("locals") },
-    { href: "/for-businesses", icon: Building2, label: t("businesses") },
+    { href: "/partners", icon: Building2, label: t("businesses") },
     { href: "/account", icon: User, label: t("account") },
   ]
   const [mounted, setMounted] = useState(false)

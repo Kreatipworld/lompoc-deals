@@ -70,7 +70,7 @@ export async function SiteFooter() {
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="/for-businesses" className="hover:text-foreground">
+                <Link href="/partners" className="hover:text-foreground">
                   {t("whyList")}
                 </Link>
               </li>

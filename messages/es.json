@@ -619,6 +619,90 @@
       "ctaBrowse": "o primero explora las ofertas →"
     }
   },
+  "partners": {
+    "metaTitle": "Sé socio de Lompoc Locals — Que los locales te encuentren",
+    "metaDescription": "Únete a los negocios que ya están en Lompoc Locals, el centro local de Lompoc y Vandenberg. Anuncio gratis, cupones reales y un espacio en el boletín semanal.",
+    "metaOgTitle": "Lompoc Locals — Que te encuentren los vecinos que ya te están buscando",
+    "metaOgDescription": "El centro local #1 de Lompoc y Vandenberg. Anuncia tu página gratis, publica cupones reales y aparece en el boletín del lunes.",
+    "hero": {
+      "kicker": "Para negocios de Lompoc y Vandenberg",
+      "h1": "Que te encuentren los vecinos",
+      "h1Italic": "que ya te están buscando.",
+      "subtitle": "Lompoc Locals es el centro local #1 de Lompoc y Vandenberg — miles de vecinos exploran ofertas, negocios y eventos cada mes. Tu negocio pertenece aquí.",
+      "ctaClaim": "Reclama tu página",
+      "ctaLive": "Ver el sitio en vivo",
+      "trustLine": "Anuncio gratis · Sin tarjeta de crédito · Cancela cuando quieras",
+      "statVisitorsLabel": "vecinos al mes",
+      "statBusinessesLabel": "negocios anunciados",
+      "statEventsLabel": "eventos próximos"
+    },
+    "alreadyListed": {
+      "eyebrow": "Probablemente ya estás aquí",
+      "h2": "{count} negocios de Lompoc. ¿Uno de ellos es el tuyo?",
+      "subtitle": "Muchos están anunciados sin foto y sin dueño. Reclama el tuyo — gratis — y hazlo trabajar para ti, junto a socios como estos.",
+      "badge": "Socio Oficial",
+      "emptyState": "Los socios destacados llegan pronto — el tuyo podría ser el primero."
+    },
+    "values": {
+      "eyebrow": "Por qué ser socio",
+      "h2": "Tres formas en que funciona para ti.",
+      "card1Title": "Que te encuentren donde ya miran",
+      "card1Body": "La página principal, la búsqueda, el mapa y el boletín semanal por correo. El 95% de los locales usa su teléfono — y está diseñado justo para eso.",
+      "card2Title": "Cupones que toman segundos",
+      "card2Body": "Cada cliente recibe su propio código. Lo canjeas en tu mostrador en segundos — sin app, sin escáner, sin equipo nuevo — y no se puede compartir ni falsificar.",
+      "card3Title": "Números reales, no suposiciones",
+      "card3Body": "Un panel sencillo de vistas, cupones reclamados y canjeados de verdad en tu caja. Sabes exactamente quién entró."
+    },
+    "hub": {
+      "eyebrow": "Más que un anuncio",
+      "h2": "Es el lugar que los locales revisan cada semana.",
+      "subtitle": "Una escena local activa significa razones frescas para visitarte — y más ojos sobre tu negocio, una y otra vez.",
+      "eventsTag": "Eventos y actividades",
+      "eventsTitle": "{count}+ ahora mismo",
+      "eventsBody": "Mercados, festivales, música en vivo, días familiares — el calendario que los locales realmente usan.",
+      "launchesTag": "Lanzamientos de Vandenberg",
+      "launchesTitle": "Lanzamientos de cohetes",
+      "launchesBody": "Todo el valle los revisa. Cuando abren la app para un lanzamiento, también te ven a ti.",
+      "digestTag": "El boletín semanal",
+      "digestTitle": "La portada del lunes",
+      "digestBody": "Un correo estilo periódico para cada suscriptor, cada semana — y los socios aparecen destacados ahí.",
+      "mapTag": "El mapa local",
+      "mapTitle": "Tu punto, donde buscan",
+      "mapBody": "Los vecinos exploran el mapa para encontrar lo que tienen cerca. Tu negocio, marcado y listo.",
+      "bilingualTag": "Inglés y español",
+      "bilingualTitle": "Todo Lompoc",
+      "bilingualBody": "Cada página funciona en ambos idiomas — llegas a todo el pueblo, no solo a la mitad.",
+      "partnerTag": "Socio Oficial",
+      "partnerTitle": "Destaca",
+      "partnerBody": "La insignia que le dice a los locales que eres de confianza — y te lleva a lo más alto de tu categoría."
+    },
+    "howToJoin": {
+      "eyebrow": "La parte fácil",
+      "h2": "Unirte toma minutos.",
+      "step1Title": "Reclama tu página",
+      "step1Body": "Busca tu negocio — puede que ya esté anunciado — y hazlo tuyo. Gratis, en un par de minutos.",
+      "step2Title": "Agrega tu primera oferta",
+      "step2Body": "Define tu promoción y cualquier límite. Nosotros nos encargamos de los códigos únicos — no hay nada que instalar.",
+      "step3Title": "Empieza a que te encuentren",
+      "step3Body": "Apareces en el feed, en el mapa y en el boletín del lunes. Los locales empiezan a encontrarte el mismo día.",
+      "footnote": "Sin app que descargar · Sin equipo que comprar · Sin contrato"
+    },
+    "pricing": {
+      "eyebrow": "Precios sencillos",
+      "planName": "Growth",
+      "perMonth": "/mes",
+      "body": "El plan Growth — unos {perDay} al día — desbloquea cupones reales, tu panel y un espacio en el correo del lunes de cada suscriptor.",
+      "freeNote": "…y anunciarte siempre es gratis.",
+      "ctaLabel": "Reclama tu página"
+    },
+    "finalCta": {
+      "h2": "¿Listo para que te",
+      "h2Highlight": "encuentren los locales?",
+      "subtitle": "Reclama tu página hoy y publica tu primera oferta esta semana. Toma minutos.",
+      "ctaClaim": "Reclama tu página de negocio",
+      "ctaBrowse": "o mira el sitio en vivo primero →"
+    }
+  },
   "dashboard": {
     "title": "Panel",
     "deals": "Ofertas",

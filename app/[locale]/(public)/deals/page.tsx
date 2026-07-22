@@ -264,7 +264,7 @@ export default async function DealsPage() {
           </h2>
           <p className="mx-auto mt-2 max-w-md text-white/80">{t("merchantBody")}</p>
           <Link
-            href="/for-businesses"
+            href="/partners"
             className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-gold px-6 py-3 text-sm font-bold text-gold-foreground shadow-lg transition-transform hover:-translate-y-0.5"
           >
             {t("merchantCta")}

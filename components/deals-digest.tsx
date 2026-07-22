@@ -17,7 +17,7 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
 
   const FeatureBanner = (
     <Link
-      href="/for-businesses"
+      href="/partners"
       className="group flex items-center gap-4 rounded-2xl border bg-card p-4 transition-shadow hover:shadow-md"
     >
       <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">

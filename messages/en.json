@@ -619,6 +619,90 @@
       "ctaBrowse": "or browse the deals first →"
     }
   },
+  "partners": {
+    "metaTitle": "Partner With Lompoc Locals — Get Found by Locals",
+    "metaDescription": "Join the businesses already on Lompoc Locals — the local hub for Lompoc & Vandenberg. Free to list, real coupons, and a spot in the weekly digest.",
+    "metaOgTitle": "Lompoc Locals — Get found by the locals already looking for you",
+    "metaOgDescription": "The #1 local hub for Lompoc & Vandenberg. Claim your free page, post real coupons, and land in Monday's digest.",
+    "hero": {
+      "kicker": "For Lompoc & Vandenberg businesses",
+      "h1": "Get found by the locals",
+      "h1Italic": "already looking for you.",
+      "subtitle": "Lompoc Locals is the #1 local hub for Lompoc & Vandenberg — thousands of neighbors browsing deals, businesses, and events every month. Your business belongs here.",
+      "ctaClaim": "Claim your page",
+      "ctaLive": "See it live",
+      "trustLine": "Free to list · No credit card · Cancel anytime",
+      "statVisitorsLabel": "locals a month",
+      "statBusinessesLabel": "businesses listed",
+      "statEventsLabel": "upcoming events"
+    },
+    "alreadyListed": {
+      "eyebrow": "You're probably already on here",
+      "h2": "{count} Lompoc businesses. Is one of them yours?",
+      "subtitle": "Many are listed with no photo and no owner. Claim yours — free — and make it work for you, alongside partners like these.",
+      "badge": "Official Partner",
+      "emptyState": "Partner spotlights are coming soon — yours could be the first."
+    },
+    "values": {
+      "eyebrow": "Why partner with us",
+      "h2": "Three ways it works for you.",
+      "card1Title": "Get found where locals look",
+      "card1Body": "The homepage, search, the map, and the weekly digest email. 95% of locals are on their phone — and it's built for exactly that.",
+      "card2Title": "Coupons that take seconds",
+      "card2Body": "Every customer gets their own code. You redeem it at your counter in seconds — no app, no scanner, no hardware — and it can't be shared or faked.",
+      "card3Title": "Real numbers, not guesses",
+      "card3Body": "A simple dashboard of views, claims, and coupons actually redeemed at your register. You see exactly who walked in."
+    },
+    "hub": {
+      "eyebrow": "More than a listing",
+      "h2": "It's the hub locals check every week.",
+      "subtitle": "A living local scene means fresh reasons to visit — and more eyes landing on your business, over and over.",
+      "eventsTag": "Events & things to do",
+      "eventsTitle": "{count}+ happening now",
+      "eventsBody": "Markets, festivals, live music, family days — the calendar locals actually use.",
+      "launchesTag": "Vandenberg launches",
+      "launchesTitle": "Rocket launches",
+      "launchesBody": "The whole valley checks these. When they open the app for a launch, they see you too.",
+      "digestTag": "The weekly digest",
+      "digestTitle": "Monday's front page",
+      "digestBody": "A newspaper-style email to every subscriber, every week — and partners are featured right in it.",
+      "mapTag": "The local map",
+      "mapTitle": "Your pin, where they search",
+      "mapBody": "Neighbors browse the map to find what's near them. Your business, marked and ready.",
+      "bilingualTag": "English & Spanish",
+      "bilingualTitle": "All of Lompoc",
+      "bilingualBody": "Every page works in both languages — you reach the whole town, not half of it.",
+      "partnerTag": "Official Partner",
+      "partnerTitle": "Stand out",
+      "partnerBody": "The badge that tells locals you're the real deal — and lifts you to the top of your category."
+    },
+    "howToJoin": {
+      "eyebrow": "The easy part",
+      "h2": "Joining takes minutes.",
+      "step1Title": "Claim your page",
+      "step1Body": "Find your business — it may already be listed — and make it yours. Free, in a couple of minutes.",
+      "step2Title": "Add your first deal",
+      "step2Body": "Set your offer and any limits. We handle the unique codes — nothing to install.",
+      "step3Title": "Start getting found",
+      "step3Body": "You're in the feed, on the map, and in Monday's digest. Locals start finding you the same day.",
+      "footnote": "No app to download · No hardware to buy · No contract"
+    },
+    "pricing": {
+      "eyebrow": "Simple pricing",
+      "planName": "Growth",
+      "perMonth": "/month",
+      "body": "The Growth plan — about {perDay} a day — unlocks real coupons, your dashboard, and a spot in every subscriber's Monday inbox.",
+      "freeNote": "…and getting listed is always free.",
+      "ctaLabel": "Claim your page"
+    },
+    "finalCta": {
+      "h2": "Ready to be found",
+      "h2Highlight": "by locals?",
+      "subtitle": "Claim your page today and post your first deal this week. It takes minutes.",
+      "ctaClaim": "Claim your business page",
+      "ctaBrowse": "or see it live first →"
+    }
+  },
   "dashboard": {
     "title": "Dashboard",
     "deals": "Deals",

@@ -472,11 +472,11 @@ export default async function BusinessPage({
       )}
 
       {/* ─────────────────────────────────────────────────
-          OWNER CTA — footer link to /for-businesses (all businesses)
+          OWNER CTA — footer link to /partners (all businesses)
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 pb-10 text-center">
         <Link
-          href="/for-businesses"
+          href="/partners"
           className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
         >
           {t("ownerCta")}

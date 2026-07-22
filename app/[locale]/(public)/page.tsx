@@ -438,7 +438,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
             </div>
             <div className="flex flex-col gap-2 sm:flex-row md:flex-col">
               <Link
-                href="/for-businesses"
+                href="/partners"
                 className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground [transition:background-color_160ms_ease,transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:bg-primary/90 active:scale-[0.97]"
               >
                 {t("listYourBusiness")}

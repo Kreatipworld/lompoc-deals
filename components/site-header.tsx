@@ -27,7 +27,7 @@ export async function SiteHeader() {
           <NavLink href="/map">{t("map")}</NavLink>
           <NavLink href="/hotels">{t("hotels")}</NavLink>
           <NavLink href="/feed">{t("neighborhood")}</NavLink>
-          <NavLink href="/for-businesses">{t("forBusinesses")}</NavLink>
+          <NavLink href="/partners">{t("forBusinesses")}</NavLink>
           <NavLink href="/locals">{t("forLocals")}</NavLink>
         </nav>
 

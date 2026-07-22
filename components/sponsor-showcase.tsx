@@ -43,7 +43,7 @@ export async function SponsorShowcase({
             </p>
           </div>
           <Link
-            href="/for-businesses"
+            href="/partners"
             className="hidden flex-shrink-0 items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
           >
             {t("becomePartner")}

@@ -360,7 +360,7 @@ export default async function BusinessesPage({
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
-                href="/for-businesses"
+                href="/partners"
                 className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md active:scale-[0.97]"
               >
                 {t("ctaListFree")}

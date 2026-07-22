@@ -62,7 +62,7 @@ export default async function ContactPage() {
             {t("businessCard.description")}
           </p>
           <Link
-            href="/for-businesses"
+            href="/partners"
             className="mt-4 text-sm font-medium text-primary hover:underline"
           >
             {t("businessCard.linkLabel")} →
