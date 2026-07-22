@@ -701,6 +701,12 @@
       "subtitle": "Claim your page today and post your first deal this week. It takes minutes.",
       "ctaClaim": "Claim your business page",
       "ctaBrowse": "or see it live first →"
+    },
+    "guide": {
+      "eyebrow": "See the whole story",
+      "h2": "Flip through the full guide",
+      "subtitle": "The complete pitch — reach, the coupon system, your dashboard, and pricing — as an interactive deck. Swipe or use the arrows.",
+      "openFull": "Open full screen ↗"
     }
   },
   "dashboard": {

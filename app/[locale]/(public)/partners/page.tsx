@@ -247,6 +247,39 @@ export default async function PartnersPage({
       </section>
 
       {/* ─────────────────────────────────────────────────
+          INTERACTIVE GUIDE — self-hosted deck, embedded
+         ───────────────────────────────────────────────── */}
+      <section className={`${PAGE_CONTAINER} py-16 sm:py-24`}>
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            {t("guide.eyebrow")}
+          </div>
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            {t("guide.h2")}
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">{t("guide.subtitle")}</p>
+        </div>
+        <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border bg-card shadow-lg">
+          <iframe
+            src="/partner-guide.html"
+            title={t("guide.h2")}
+            loading="lazy"
+            className="h-[68vh] min-h-[460px] w-full border-0"
+          />
+        </div>
+        <div className="mt-6 text-center">
+          <a
+            href="/partner-guide.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border px-6 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
+          >
+            {t("guide.openFull")}
+          </a>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────
           MORE THAN A LISTING — living hub
          ───────────────────────────────────────────────── */}
       <section className={`${PAGE_CONTAINER} py-16 sm:py-24`}>

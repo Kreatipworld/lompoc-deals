@@ -701,6 +701,12 @@
       "subtitle": "Reclama tu página hoy y publica tu primera oferta esta semana. Toma minutos.",
       "ctaClaim": "Reclama tu página de negocio",
       "ctaBrowse": "o mira el sitio en vivo primero →"
+    },
+    "guide": {
+      "eyebrow": "Ve la historia completa",
+      "h2": "Explora la guía completa",
+      "subtitle": "Toda la propuesta — alcance, el sistema de cupones, tu panel y precios — en una presentación interactiva. Desliza o usa las flechas.",
+      "openFull": "Abrir en pantalla completa ↗"
     }
   },
   "dashboard": {
