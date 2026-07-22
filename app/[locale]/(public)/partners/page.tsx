@@ -264,7 +264,7 @@ export default async function PartnersPage({
             src="/partner-guide.html"
             title={t("guide.h2")}
             loading="lazy"
-            className="h-[68vh] min-h-[460px] w-full border-0"
+            className="h-[82vh] min-h-[560px] w-full border-0"
           />
         </div>
         <div className="mt-6 text-center">

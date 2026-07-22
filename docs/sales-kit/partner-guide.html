@@ -15,8 +15,11 @@
   /* ── Deck mechanics (screen) ── */
   .deck{position:relative;overflow:hidden;height:100vh;}
   .rail{display:flex;height:100%;transition:transform .55s cubic-bezier(.7,0,.2,1);will-change:transform;}
+  /* align-items:flex-start (not center) so tall slides scroll from the top and
+     their bottom padding clears the fixed dots; the sheet's margin:auto still
+     centers it vertically whenever it fits. */
   .slide{flex:0 0 100%;height:100%;overflow-y:auto;overflow-x:hidden;
-    display:flex;align-items:center;justify-content:center;padding:34px 18px 92px;-webkit-overflow-scrolling:touch;}
+    display:flex;align-items:flex-start;justify-content:center;padding:34px 18px 104px;-webkit-overflow-scrolling:touch;}
   .sheet{width:100%;max-width:860px;background:var(--paper);border-radius:18px;
     box-shadow:0 24px 70px rgba(0,0,0,.4);overflow:hidden;margin:auto;}
   .pad{padding:40px 48px;}
