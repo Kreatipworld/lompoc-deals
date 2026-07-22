@@ -1,0 +1,165 @@
+<title>Lompoc Locals — Presenter Casting Board</title>
+<style>
+  :root{
+    --purple:#650C75; --deep:#37043f; --ink:#2A1230; --green:#0B992F; --gold:#EFC618;
+    --paper:#FAF7F2; --muted:#6E5A72; --line:#E9DEEC;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 20px 64px;}
+  h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.1;text-wrap:balance;}
+  .kick{font-size:11px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--purple);}
+
+  header{background:linear-gradient(160deg,#4f0857,var(--purple) 55%,var(--deep));color:#fff;border-radius:20px;padding:32px 30px;}
+  header .kick{color:var(--gold);}
+  header h1{font-size:clamp(26px,4vw,40px);color:#fff;margin-top:8px;}
+  header p{color:rgba(255,255,255,.85);margin-top:10px;max-width:60ch;}
+  .warn{margin-top:16px;display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(239,198,24,.5);
+    color:var(--gold);font-size:12px;font-weight:600;padding:8px 14px;border-radius:999px;}
+
+  .sec{margin-top:34px;}
+  .sec-h{margin-bottom:16px;}
+  .sec-h h2{font-size:24px;} .sec-h .accent{height:4px;width:46px;background:var(--gold);border-radius:2px;margin-top:10px;}
+
+  /* recommended big card */
+  .lead-card{display:grid;grid-template-columns:280px 1fr;gap:24px;background:#fff;border:2px solid var(--purple);
+    border-radius:20px;padding:22px;box-shadow:0 12px 30px rgba(101,12,117,.12);}
+  .portrait{border-radius:16px;overflow:hidden;position:relative;aspect-ratio:3/4;
+    background:linear-gradient(160deg,#f0e6f4,#e5d0ec);display:flex;align-items:flex-end;justify-content:center;}
+  .portrait svg{width:72%;height:auto;opacity:.5;margin-bottom:-2%;}
+  .portrait .lbl{position:absolute;top:10px;left:10px;background:rgba(42,18,48,.75);color:#fff;font-size:10px;
+    font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:6px;}
+  .portrait .frame{position:absolute;inset:8px;border:2px dashed rgba(101,12,117,.35);border-radius:12px;pointer-events:none;}
+  .lead-card .body h3{font-size:22px;}
+  .lead-card .tag{display:inline-block;background:var(--gold);color:#3a2600;font-size:11px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:999px;margin-bottom:8px;}
+  .attrs{display:grid;gap:8px;margin-top:12px;}
+  .attr{display:flex;gap:10px;font-size:14px;}
+  .attr b{color:var(--purple);min-width:96px;flex-shrink:0;}
+  .swatches{display:flex;gap:8px;margin-top:14px;align-items:center;flex-wrap:wrap;}
+  .sw{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);}
+  .swlabel{font-size:12px;color:var(--muted);}
+
+  .prompt{margin-top:16px;background:var(--ink);color:#efe6f2;border-radius:12px;padding:14px 16px;font-size:12.5px;line-height:1.5;
+    font-family:ui-monospace,monospace;}
+  .prompt b{color:var(--gold);}
+
+  /* alternates */
+  .alts{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .alt{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+  .alt .portrait{aspect-ratio:4/3;border-radius:0;}
+  .alt .p{padding:16px 18px;}
+  .alt h3{font-size:18px;}
+  .alt .desc{font-size:13.5px;color:#4a3650;margin-top:5px;}
+  .alt .swatches{margin-top:10px;}
+
+  .framing{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;}
+  .fbox{aspect-ratio:9/16;max-width:150px;background:linear-gradient(160deg,#4f0857,var(--purple));border-radius:12px;position:relative;overflow:hidden;margin:0 auto;}
+  .fbox .head{position:absolute;top:34%;left:50%;transform:translateX(-50%);width:34%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.35);}
+  .fbox .body2{position:absolute;top:60%;left:50%;transform:translateX(-50%);width:56%;height:40%;border-radius:40% 40% 0 0;background:rgba(255,255,255,.25);}
+  .fbox .txt{position:absolute;bottom:8%;left:8%;right:8%;height:14%;border-radius:6px;border:1px dashed var(--gold);}
+  .fbox .logo{position:absolute;top:6%;left:8%;width:26%;height:8%;border-radius:4px;background:rgba(239,198,24,.6);}
+  .framing ul{list-style:none;display:grid;gap:8px;}
+  .framing li{font-size:14px;padding-left:18px;position:relative;color:#3f2a45;}
+  .framing li::before{content:"–";position:absolute;left:0;color:var(--purple);font-weight:800;}
+
+  .note{font-size:13px;color:var(--muted);margin-top:14px;}
+  .cta{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;}
+  .cta h3{font-size:18px;color:var(--purple);} .cta ol{margin:10px 0 0 18px;font-size:14px;color:#3f2a45;display:grid;gap:6px;}
+
+  @media (max-width:680px){.lead-card,.framing{grid-template-columns:1fr;}.alts{grid-template-columns:1fr;}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="kick">Presenter Casting — approve before we generate</div>
+    <h1>Who tells the Lompoc Locals story.</h1>
+    <p>A friendly local host who feels like a real Lompoc neighbor &mdash; warm, trustworthy, not corporate. Pick a direction (or mix), then we generate the avatar in Higgsfield once, on target.</p>
+    <span class="warn">⚠ These are concept frames, not the generated avatar. Higgsfield renders the real face after you approve.</span>
+  </header>
+
+  <!-- RECOMMENDED -->
+  <div class="sec">
+    <div class="sec-h"><div class="kick">Recommended</div><h2>Option A — “The Neighbor”</h2><div class="accent"></div></div>
+    <div class="lead-card">
+      <div class="portrait">
+        <span class="lbl">Concept</span><div class="frame"></div>
+        <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="40" r="24" fill="#650C75"/><path d="M12 120c0-24 17-40 38-40s38 16 38 40z" fill="#650C75"/></svg>
+      </div>
+      <div class="body">
+        <span class="tag">★ Lead pick</span>
+        <h3>Warm, approachable, real.</h3>
+        <div class="attrs">
+          <div class="attr"><b>Who</b><span>Woman, late 20s–30s, mixed white / Latina heritage.</span></div>
+          <div class="attr"><b>Vibe</b><span>Genuine friendly smile, relaxed and welcoming — talking to a neighbor, not selling.</span></div>
+          <div class="attr"><b>Wardrobe</b><span>Solid soft-purple or warm-neutral top; no busy patterns.</span></div>
+          <div class="attr"><b>Backdrop</b><span>Bright, sunlit café / main-street interior, softly blurred. Daytime, inviting.</span></div>
+          <div class="attr"><b>Framing</b><span>Head-and-shoulders, centered, eye contact. Headroom for text + logo.</span></div>
+        </div>
+        <div class="swatches">
+          <span class="swlabel">Palette:</span>
+          <span class="sw" style="background:#B98BC7" title="soft purple"></span>
+          <span class="sw" style="background:#E7D8B0" title="warm neutral"></span>
+          <span class="sw" style="background:#650C75" title="brand purple"></span>
+          <span class="sw" style="background:#EFC618" title="gold accent"></span>
+        </div>
+        <div class="prompt"><b>Higgsfield Soul-ID prompt:</b><br>
+        Portrait of a friendly, approachable woman in her late 20s to early 30s, mixed white and Latina heritage, warm natural smile, genuine and welcoming expression, wearing a solid soft-purple casual-professional top, seated in a bright sunlit local café with a softly blurred warm background, natural daylight, head-and-shoulders framing, looking directly at camera, photorealistic, high detail, trustworthy neighbor next-door feel.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALTERNATES -->
+  <div class="sec">
+    <div class="sec-h"><div class="kick">Or choose another direction</div><h2>Alternates</h2><div class="accent"></div></div>
+    <div class="alts">
+      <div class="alt">
+        <div class="portrait"><span class="lbl">Concept</span>
+          <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="30" r="18" fill="#0B992F"/><path d="M18 80c0-18 14-30 32-30s32 12 32 30z" fill="#0B992F"/></svg>
+        </div>
+        <div class="p">
+          <h3>Option B — “The Shopkeeper”</h3>
+          <div class="desc">Same host, inside a bright local shop/boutique. Warm-neutral top. Reads as a fellow business owner — great for a B2B, peer-to-peer tone.</div>
+          <div class="swatches"><span class="sw" style="background:#E7D8B0"></span><span class="sw" style="background:#650C75"></span><span class="sw" style="background:#0B992F"></span></div>
+        </div>
+      </div>
+      <div class="alt">
+        <div class="portrait"><span class="lbl">Concept</span>
+          <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="30" r="18" fill="#EFC618"/><path d="M18 80c0-18 14-30 32-30s32 12 32 30z" fill="#EFC618"/></svg>
+        </div>
+        <div class="p">
+          <h3>Option C — “The Guide”</h3>
+          <div class="desc">Outdoors on a sunny Lompoc main street (flower-field / mural backdrop). Casual, energetic, bright — best for the punchy 15s social ad.</div>
+          <div class="swatches"><span class="sw" style="background:#B98BC7"></span><span class="sw" style="background:#EFC618"></span><span class="sw" style="background:#650C75"></span></div>
+        </div>
+      </div>
+    </div>
+    <p class="note">You can also mix: e.g. Option A wardrobe + Option C outdoor backdrop. Just tell me the combo and I&rsquo;ll lock the prompt.</p>
+  </div>
+
+  <!-- FRAMING -->
+  <div class="sec">
+    <div class="sec-h"><div class="kick">Same for both formats</div><h2>Framing &amp; overlays</h2><div class="accent"></div></div>
+    <div class="framing">
+      <div class="fbox"><div class="logo"></div><div class="head"></div><div class="body2"></div><div class="txt"></div></div>
+      <ul>
+        <li>Presenter centered, head-and-shoulders, eye contact with the camera.</li>
+        <li>Top-left: the Lompoc Locals logo. Bottom third: burn-in captions + key text (social plays muted).</li>
+        <li>Generate <b>9:16</b> (social ads) and <b>16:9</b> (platform hero) from the same presenter.</li>
+        <li>Brand purple #650C75 / gold #EFC618; warm, upbeat music low under the voice.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- NEXT -->
+  <div class="cta">
+    <h3>Approve, then we generate — once.</h3>
+    <ol>
+      <li>Tell me: <b>A, B, or C</b> (or a mix), and any tweak (age, wardrobe color, backdrop).</li>
+      <li>You authenticate Higgsfield + restart Claude Code so its tools load.</li>
+      <li>I run <b>higgsfield-soul-id</b> with the locked prompt → then <b>generate</b> the EN + ES videos in 9:16 and 16:9. No wasted re-takes.</li>
+    </ol>
+  </div>
+</div>
