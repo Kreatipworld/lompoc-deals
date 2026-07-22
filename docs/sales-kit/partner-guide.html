@@ -1,0 +1,339 @@
+<title>Lompoc Locals — Partner Guide</title>
+<style>
+  :root{
+    --purple:#650C75; --purple-deep:#43075A; --ink:#2A1230;
+    --green:#0B992F; --gold:#EFC618; --gold-soft:#FBEFA8;
+    --paper:#FAF7F2; --paper-2:#FFFFFF; --muted:#6E5A72; --line:#E9DEEC;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--purple-deep);color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;}
+  .stage{max-width:840px;margin:0 auto;padding:28px 16px 60px;}
+
+  /* Each .page is a real sheet: a card on screen, a printed page in PDF */
+  .page{background:var(--paper);border-radius:16px;overflow:hidden;
+    box-shadow:0 18px 50px rgba(0,0,0,.35);margin-bottom:28px;position:relative;}
+  .pad{padding:44px 52px;}
+
+  h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.08;text-wrap:balance;margin:0;}
+  .kicker{font-size:11px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--purple);}
+  .kicker.on-dark{color:var(--gold);}
+  p{margin:0 0 14px;max-width:62ch;}
+  .lead{font-size:18px;color:#3f2a45;}
+  a{color:var(--purple);}
+
+  /* ---- Cover ---- */
+  .cover{background:
+      radial-gradient(120% 90% at 85% -10%,#7d1a91 0%,transparent 55%),
+      linear-gradient(160deg,#4f0857 0%,var(--purple) 52%,#37043f 100%);
+    color:#fff;}
+  .cover .pad{padding:64px 52px 48px;}
+  .nameplate{font-family:var(--serif);font-size:52px;font-weight:700;letter-spacing:.005em;
+    color:#fff;line-height:1;}
+  .rule-gold{height:3px;background:var(--gold);border-radius:2px;margin:20px 0;}
+  .cover .promise{font-family:var(--serif);font-size:30px;line-height:1.15;color:#fff;
+    margin:26px 0 8px;max-width:18ch;}
+  .cover .sub{color:rgba(255,255,255,.82);font-size:16px;max-width:46ch;}
+  .cover-strip{display:flex;gap:0;margin-top:44px;border-top:1px solid rgba(255,255,255,.22);
+    padding-top:22px;}
+  .cover-strip div{flex:1;}
+  .cover-strip .n{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--gold);}
+  .cover-strip .l{font-size:12px;color:rgba(255,255,255,.8);letter-spacing:.02em;}
+  .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);
+    border:1px solid rgba(239,198,24,.5);color:var(--gold);font-size:12px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;}
+
+  /* ---- Section header ---- */
+  .sec-h{margin-bottom:22px;}
+  .sec-h h2{font-size:32px;color:var(--ink);margin-top:6px;}
+  .accent-bar{height:4px;width:52px;background:var(--gold);border-radius:2px;margin-top:14px;}
+
+  /* ---- Stat grid ---- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0 6px;}
+  .stat{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:18px 18px;}
+  .stat .n{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--purple);line-height:1;}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:6px;}
+
+  /* ---- Feature rows ---- */
+  .rows{display:grid;gap:14px;margin-top:6px;}
+  .row{display:flex;gap:16px;align-items:flex-start;background:var(--paper-2);
+    border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
+  .row .ic{flex-shrink:0;width:38px;height:38px;border-radius:10px;display:flex;
+    align-items:center;justify-content:center;background:rgba(101,12,117,.08);
+    color:var(--purple);font-family:var(--serif);font-weight:700;font-size:18px;}
+  .row h3{font-size:17px;color:var(--ink);margin-bottom:3px;}
+  .row p{margin:0;font-size:14.5px;color:#4a3650;}
+
+  /* ---- Coupon loop ---- */
+  .loop{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 20px;}
+  .step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px;
+    position:relative;}
+  .step .num{width:30px;height:30px;border-radius:999px;background:var(--purple);color:#fff;
+    font-family:var(--serif);font-weight:700;display:flex;align-items:center;justify-content:center;
+    font-size:15px;margin-bottom:12px;}
+  .step h3{font-size:16px;color:var(--ink);margin-bottom:4px;}
+  .step p{font-size:13.5px;color:#4a3650;margin:0;}
+  .codechip{display:inline-block;font-family:ui-monospace,monospace;font-weight:700;
+    letter-spacing:.2em;background:var(--ink);color:var(--gold);padding:4px 10px;border-radius:6px;
+    font-size:13px;margin-top:10px;}
+  .contrast{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+  .con{border-radius:12px;padding:14px 16px;font-size:14px;}
+  .con.bad{background:#fbecec;border:1px solid #f0cfcf;color:#7a2b2b;}
+  .con.good{background:#e8f6ec;border:1px solid #bfe6c9;color:#1c5c30;}
+  .con b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .pill{background:rgba(101,12,117,.07);border:1px solid var(--line);color:var(--purple);
+    font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;}
+
+  /* ---- Plans ---- */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px;align-items:stretch;}
+  .plan{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 20px;display:flex;flex-direction:column;}
+  .plan.feature{border:2px solid var(--purple);box-shadow:0 8px 24px rgba(101,12,117,.14);}
+  .plan .tag{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .plan.feature .tag{color:var(--purple);}
+  .plan .price{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--ink);margin:8px 0 2px;}
+  .plan .per{font-size:13px;color:var(--muted);font-weight:400;}
+  .plan ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:9px;}
+  .plan li{font-size:13.5px;color:#3f2a45;padding-left:20px;position:relative;line-height:1.35;}
+  .plan li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:800;}
+  .plan .best{display:inline-block;background:var(--gold);color:#3a2600;font-size:11px;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin-bottom:10px;align-self:flex-start;}
+
+  /* ---- Get started / CTA ---- */
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 22px;}
+  .cta{background:linear-gradient(160deg,var(--purple) 0%,#4a0857 100%);color:#fff;border-radius:16px;
+    padding:28px 30px;text-align:center;}
+  .cta h3{color:#fff;font-size:24px;margin-bottom:6px;}
+  .cta p{color:rgba(255,255,255,.85);margin:0 auto 16px;max-width:44ch;}
+  .cta .go{display:inline-block;background:var(--gold);color:#3a2600;font-weight:800;
+    padding:13px 28px;border-radius:999px;text-decoration:none;font-size:15px;}
+  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:26px;
+    padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);}
+  .foot b{color:var(--purple);font-family:var(--serif);}
+
+  .note{font-size:12px;color:var(--muted);margin-top:10px;}
+
+  /* ---- Print → clean PDF ---- */
+  @media print{
+    @page{size:letter;margin:14mm;}
+    body{background:#fff;}
+    .stage{max-width:none;margin:0;padding:0;}
+    .page{box-shadow:none;border-radius:0;margin:0;page-break-after:always;break-after:page;}
+    .page:last-child{page-break-after:auto;}
+    .pad{padding:8mm 4mm;}
+    .cover .pad{padding:16mm 4mm;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+  @media (max-width:640px){
+    .stats,.loop,.plans,.steps3,.cover-strip{grid-template-columns:1fr;}
+    .contrast{grid-template-columns:1fr;}
+    .pad{padding:30px 22px;}
+    .nameplate{font-size:40px;}
+  }
+</style>
+
+<div class="stage">
+
+  <!-- ══ 1. COVER ══ -->
+  <section class="page cover">
+    <div class="pad">
+      <div class="kicker on-dark">Est. 2026 · Lompoc &amp; Vandenberg, CA</div>
+      <div class="nameplate">Lompoc Locals</div>
+      <div class="rule-gold" style="width:200px;"></div>
+      <div class="promise">The whole town, in one place — and a real reason for locals to walk into your business.</div>
+      <p class="sub">Lompoc Locals is the #1 local hub for Lompoc &amp; Vandenberg: deals, businesses, events, and things to do, all pointed at the same neighbors you&rsquo;re trying to reach.</p>
+      <div style="margin-top:18px;"><span class="badge">★ Partner Guide 2026</span></div>
+
+      <div class="cover-strip">
+        <div><div class="n">2,400+</div><div class="l">locals a month</div></div>
+        <div><div class="n">473</div><div class="l">businesses listed</div></div>
+        <div><div class="n">90+</div><div class="l">upcoming events</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 2. WHY ══ -->
+  <section class="page">
+    <div class="pad">
+      <div class="sec-h">
+        <div class="kicker">Why Lompoc Locals</div>
+        <h2>One town. All of it in one place.</h2>
+        <div class="accent-bar"></div>
+      </div>
+      <p class="lead">We cover Lompoc &amp; Vandenberg — ZIP codes 93436, 37, and 38 — and nowhere else. That focus is the whole point. When a neighbor is looking for what you sell, this is where they look.</p>
+
+      <div class="rows">
+        <div class="row"><div class="ic">◎</div><div>
+          <h3>Locals can already find you</h3>
+          <p>473 businesses across 10 categories are on the map, in search, and in the directory. A free profile puts your name, hours, photos, and contact info in front of people who live here.</p></div></div>
+        <div class="row"><div class="ic">▲</div><div>
+          <h3>95% of them are on their phone</h3>
+          <p>The site is built mobile-first — a neighbor pulls it up on the sidewalk and finds you in seconds. Your listing looks right on the screen where it matters.</p></div></div>
+        <div class="row"><div class="ic">↻</div><div>
+          <h3>Everyone gets a fair turn at the top</h3>
+          <p>Featured spots rotate on every visit, so it&rsquo;s never the same few businesses on the homepage. Show up, and you get seen.</p></div></div>
+        <div class="row"><div class="ic">✦</div><div>
+          <h3>A weekly reason to come back</h3>
+          <p>Every Monday, subscribers get &ldquo;The Lompoc Locals&rdquo; — a front-page digest of the week&rsquo;s events, deals, and neighbors. Partners are featured in it.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 3. YOUR REACH ══ -->
+  <section class="page">
+    <div class="pad">
+      <div class="sec-h">
+        <div class="kicker">Your Reach</div>
+        <h2>Real numbers, this month.</h2>
+        <div class="accent-bar"></div>
+      </div>
+      <p class="lead">Not projections. This is who&rsquo;s actually using Lompoc Locals right now.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="n">2,400+</div><div class="l">Locals visiting each month</div></div>
+        <div class="stat"><div class="n">4,000+</div><div class="l">Pages viewed each month</div></div>
+        <div class="stat"><div class="n">473</div><div class="l">Businesses listed</div></div>
+        <div class="stat"><div class="n">10</div><div class="l">Categories, from food to trades</div></div>
+        <div class="stat"><div class="n">90+</div><div class="l">Upcoming local events</div></div>
+        <div class="stat"><div class="n">2</div><div class="l">ZIP focus: Lompoc + Vandenberg</div></div>
+      </div>
+      <p class="note">Figures reflect the last 30 days on www.lompoclocals.com and update as the community grows.</p>
+
+      <div class="row" style="margin-top:22px;background:rgba(11,153,47,.06);border-color:#bfe6c9;">
+        <div class="ic" style="background:rgba(11,153,47,.12);color:var(--green);">↑</div>
+        <div><h3>Bilingual by default</h3>
+        <p>Every page works in English and Spanish, so you reach all of Lompoc — not just half of it.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 4. COUPON SYSTEM ══ -->
+  <section class="page">
+    <div class="pad">
+      <div class="sec-h">
+        <div class="kicker">The Difference</div>
+        <h2>Coupons you can actually trust.</h2>
+        <div class="accent-bar"></div>
+      </div>
+      <p class="lead">Most &ldquo;online coupons&rdquo; are a screenshot everyone shares and a number nobody checks. Ours are different — built for real businesses that want real control.</p>
+
+      <div class="loop">
+        <div class="step"><div class="num">1</div>
+          <h3>Every customer gets their own code</h3>
+          <p>Not one shared code — a unique, single-use code per person. It can&rsquo;t be screenshotted and passed around.</p>
+          <span class="codechip">7K2F9P</span></div>
+        <div class="step"><div class="num">2</div>
+          <h3>You verify it at your counter</h3>
+          <p>Your staff type the code into your dashboard. It shows valid, expired, or already-used — then you tap to redeem.</p></div>
+        <div class="step"><div class="num">3</div>
+          <h3>You see who walked in</h3>
+          <p>Your redemption count means people who actually showed up and used it — a real number, not a guess.</p></div>
+      </div>
+
+      <div class="contrast">
+        <div class="con bad"><b>The old way</b>One code, screenshotted and shared. &ldquo;Redeemed&rdquo; is whatever a shopper taps on their own phone.</div>
+        <div class="con good"><b>The Lompoc Locals way</b>One code per customer, confirmed at your register. Numbers you can stake a decision on.</div>
+      </div>
+
+      <p style="margin-top:20px;font-weight:600;color:var(--ink);">You stay in control:</p>
+      <div class="controls">
+        <span class="pill">Cap it — &ldquo;first 50 only&rdquo;</span>
+        <span class="pill">One per customer</span>
+        <span class="pill">Limit per day</span>
+        <span class="pill">Set an expiry</span>
+        <span class="pill">A code in hand always works</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 5. PLANS ══ -->
+  <section class="page">
+    <div class="pad">
+      <div class="sec-h">
+        <div class="kicker">Membership</div>
+        <h2>Start free. Grow when you&rsquo;re ready.</h2>
+        <div class="accent-bar"></div>
+      </div>
+
+      <div class="plans">
+        <div class="plan">
+          <div class="tag">Free</div>
+          <div class="price">$0</div>
+          <ul>
+            <li>Business profile page</li>
+            <li>Logo + cover photo</li>
+            <li>Map pin + directory listing</li>
+            <li>Show up in local search</li>
+            <li>Contact info &amp; hours</li>
+          </ul>
+        </div>
+        <div class="plan feature">
+          <span class="best">Most popular</span>
+          <div class="tag">Growth</div>
+          <div class="price">$39.99 <span class="per">/ month</span></div>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Post up to 15 deals with unique codes</li>
+            <li>Featured in the weekly digest</li>
+            <li>Views &amp; clicks analytics</li>
+            <li>Redemption counts at your counter</li>
+            <li>Social links + Google reviews</li>
+          </ul>
+        </div>
+        <div class="plan">
+          <div class="tag">Plus</div>
+          <div class="price">$99.99 <span class="per">/ month</span></div>
+          <ul>
+            <li>Everything in Growth</li>
+            <li>Unlimited deals</li>
+            <li>Featured on homepage + digest</li>
+            <li>Priority in search results</li>
+            <li>Featured Deal of the Week rotation</li>
+            <li>Sponsor Spotlight ad included</li>
+            <li>Real estate listings + priority support</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Coupons and their verified redemption counts start on Growth. Free is a full listing — a real presence in the community at no cost.</p>
+    </div>
+  </section>
+
+  <!-- ══ 6. GET STARTED ══ -->
+  <section class="page">
+    <div class="pad">
+      <div class="sec-h">
+        <div class="kicker">Get Started</div>
+        <h2>Three steps to your first redemption.</h2>
+        <div class="accent-bar"></div>
+      </div>
+
+      <div class="steps3">
+        <div class="step"><div class="num">1</div>
+          <h3>Claim your page</h3>
+          <p>Find your business on Lompoc Locals — or add it — and make it yours. Free, in minutes.</p></div>
+        <div class="step"><div class="num">2</div>
+          <h3>Post your first deal</h3>
+          <p>Set the offer and any limits. Locals see it in the feed, on your page, and in the digest.</p></div>
+        <div class="step"><div class="num">3</div>
+          <h3>Redeem at your counter</h3>
+          <p>A customer shows their code, you confirm it, and it counts. Watch the numbers come in.</p></div>
+      </div>
+
+      <div class="cta">
+        <span class="badge" style="margin-bottom:12px;">★ Official Partner</span>
+        <h3>Ready to be found by locals?</h3>
+        <p>Join the businesses already on Lompoc Locals. Claim your page today and post your first deal this week.</p>
+        <a class="go" href="https://www.lompoclocals.com/signup/business">Get started at lompoclocals.com →</a>
+      </div>
+
+      <div class="foot">
+        <span><b>Lompoc Locals</b> · The #1 local hub for Lompoc &amp; Vandenberg</span>
+        <span>www.lompoclocals.com</span>
+      </div>
+    </div>
+  </section>
+
+</div>
