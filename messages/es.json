@@ -707,6 +707,17 @@
       "h2": "Explora la guía completa",
       "subtitle": "Toda la propuesta — alcance, el sistema de cupones, tu panel y precios — en una presentación interactiva. Desliza o usa las flechas.",
       "openFull": "Abrir en pantalla completa ↗"
+    },
+    "mission": {
+      "eyebrow": "Nuestra misión",
+      "h2": "Más que un cupón.",
+      "body": "Cuando los vecinos descubren y eligen lo local, el dinero se queda en Lompoc — y todo el pueblo se fortalece. Ser socio significa dar a conocer tu negocio y construir una economía local próspera para todos.",
+      "p1Title": "Visibilidad",
+      "p1Body": "Tu nombre frente a los vecinos que viven aquí — no perdido entre cadenas de otras ciudades y apps nacionales.",
+      "p2Title": "Economía local",
+      "p2Body": "Cada visita que ganas aquí es un dólar que se queda en Lompoc, circulando por la comunidad.",
+      "p3Title": "Comunidad y futuro",
+      "p3Body": "Un lugar que mantiene al pueblo conectado — y lo estamos construyendo, creciendo cada semana, con los primeros socios dándole forma."
     }
   },
   "dashboard": {

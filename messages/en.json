@@ -707,6 +707,17 @@
       "h2": "Flip through the full guide",
       "subtitle": "The complete pitch — reach, the coupon system, your dashboard, and pricing — as an interactive deck. Swipe or use the arrows.",
       "openFull": "Open full screen ↗"
+    },
+    "mission": {
+      "eyebrow": "Our mission",
+      "h2": "Bigger than a coupon.",
+      "body": "When neighbors discover and choose local, the dollars stay in Lompoc — and the whole town gets stronger. Partnering with us means awareness for your business and a thriving local economy for everyone.",
+      "p1Title": "Awareness",
+      "p1Body": "Your name in front of the neighbors who live here — not lost to out-of-town chains and national apps.",
+      "p2Title": "Local economy",
+      "p2Body": "Every visit you earn here is a dollar that stays in Lompoc, circulating through the community.",
+      "p3Title": "Community & future",
+      "p3Body": "One place that keeps the town connected — and we're building it, growing every week, with early partners helping shape it."
     }
   },
   "dashboard": {

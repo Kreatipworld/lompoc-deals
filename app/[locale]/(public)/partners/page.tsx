@@ -163,6 +163,31 @@ export default async function PartnersPage({
       </section>
 
       {/* ─────────────────────────────────────────────────
+          OUR MISSION — awareness + local economy
+         ───────────────────────────────────────────────── */}
+      <section className="border-y bg-primary text-primary-foreground">
+        <div className={`${PAGE_CONTAINER} py-16 sm:py-24`}>
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+              {t("mission.eyebrow")}
+            </div>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              {t("mission.h2")}
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85">{t("mission.body")}</p>
+          </div>
+          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
+            {([1, 2, 3] as const).map((n) => (
+              <div key={n} className="rounded-2xl bg-white/10 p-5 text-left">
+                <div className="font-display text-lg font-semibold">{t(`mission.p${n}Title`)}</div>
+                <p className="mt-1 text-sm text-primary-foreground/80">{t(`mission.p${n}Body`)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────
           YOU'RE PROBABLY ALREADY LISTED
          ───────────────────────────────────────────────── */}
       {spotlightPartners.length > 0 && (
