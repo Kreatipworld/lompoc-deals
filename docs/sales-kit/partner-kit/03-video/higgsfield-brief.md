@@ -6,7 +6,17 @@ for the video. Two aspect ratios: **9:16** (social/Reels/TikTok) and **16:9** (s
 
 ---
 
-## 1. The presenter (Soul ID)
+## 1. The presenter (Soul ID) — ✅ LOCKED: Option A "The Neighbor"
+
+Approved 2026-07-22. Run this exact prompt in `higgsfield-soul-id`, save the Soul ID,
+and reuse it for every cut (EN/ES × 9:16/16:9) so the face is identical across all four.
+
+> **Soul-ID prompt (final):** Portrait of a friendly, approachable woman in her late 20s
+> to early 30s, mixed white and Latina heritage, warm natural smile, genuine and welcoming
+> expression, wearing a solid soft-purple casual-professional top, seated in a bright sunlit
+> local café with a softly blurred warm background, natural daylight, head-and-shoulders
+> framing, looking directly at camera, photorealistic, high detail, trustworthy
+> neighbor-next-door feel.
 
 A friendly local host who feels like a real Lompoc neighbor — warm and trustworthy,
 not corporate. Reflects the community.
