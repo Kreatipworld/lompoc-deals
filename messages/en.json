@@ -1366,6 +1366,23 @@
     "savePending": "Saving…",
     "saveIdle": "Save profile"
   },
+  "photoManager": {
+    "title": "Photo gallery",
+    "help": "Add, remove, and reorder your photos. The first photo is the hero image shown at the top of your public profile.",
+    "empty": "No photos yet. Add some to show off your place.",
+    "shownFirst": "Shown first",
+    "makeFirst": "Make first",
+    "moveLeft": "Move left",
+    "moveRight": "Move right",
+    "remove": "Remove photo",
+    "addPhotos": "Add photos",
+    "countHint": "{count}/{max} photos",
+    "limitReached": "You've reached the {max}-photo limit. Remove one to add another.",
+    "save": "Save gallery",
+    "saving": "Saving…",
+    "saved": "Gallery saved",
+    "saveError": "Something went wrong. Please try again."
+  },
   "dashboardDealForm": {
     "typeLabel": "Type",
     "typeCoupon": "Coupon",

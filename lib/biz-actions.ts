@@ -9,7 +9,7 @@ import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { businesses, deals, subscriptions, propertyListings, favorites, businessFollows, users } from "@/db/schema"
 import { assertFeature } from "@/lib/plan-features"
-import { uploadImage } from "@/lib/blob"
+import { uploadImage, deleteImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { localizedLompocAddressError } from "@/lib/i18n-helpers"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
@@ -224,6 +224,95 @@ export async function saveProfileAction(
   revalidatePath("/dashboard/profile")
   revalidatePath("/")
   return { success: "Profile saved" }
+}
+
+// ============ photo gallery ============
+
+const MAX_GALLERY_PHOTOS = 8
+const BLOB_HOST = "public.blob.vercel-storage.com"
+
+function isOurBlobUrl(url: string): boolean {
+  try {
+    return new URL(url).host.endsWith(BLOB_HOST)
+  } catch {
+    return false
+  }
+}
+
+const galleryManifestEntrySchema = z.union([
+  z.object({ kind: z.literal("existing"), url: z.string().url() }),
+  z.object({ kind: z.literal("new"), idx: z.number().int().min(0) }),
+])
+
+export type GalleryState = { ok: boolean; error?: string } | undefined
+
+export async function saveGalleryAction(
+  _prev: GalleryState,
+  formData: FormData
+): Promise<GalleryState> {
+  const t = await getTranslations("errors.biz")
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) {
+    return { ok: false, error: t("createProfileFirstShort") }
+  }
+
+  const manifestRaw = formData.get("manifest")
+  if (typeof manifestRaw !== "string") {
+    return { ok: false, error: t("invalidInput") }
+  }
+
+  let manifest: Array<{ kind: "existing"; url: string } | { kind: "new"; idx: number }>
+  try {
+    const parsed = z.array(galleryManifestEntrySchema).safeParse(JSON.parse(manifestRaw))
+    if (!parsed.success) return { ok: false, error: t("invalidInput") }
+    manifest = parsed.data
+  } catch {
+    return { ok: false, error: t("invalidInput") }
+  }
+
+  // Rebuild the final ordered list of photo URLs, honoring the 8-photo cap.
+  // Existing photos keep their URL; new photos are uploaded as we go. A file
+  // that fails validation (not an image, too large) is skipped rather than
+  // failing the whole save.
+  const final: string[] = []
+  for (const entry of manifest) {
+    if (final.length >= MAX_GALLERY_PHOTOS) break
+    if (entry.kind === "existing") {
+      final.push(entry.url)
+    } else {
+      const file = formData.get(`new_${entry.idx}`) as File | null
+      if (!file || file.size === 0) continue
+      try {
+        const url = await uploadImage(file, "photos")
+        final.push(url)
+      } catch {
+        continue
+      }
+    }
+  }
+
+  // Only ever delete blobs we own (uploaded via Vercel Blob). Enrichment
+  // photos live on lh3.googleusercontent.com and are never ours to delete.
+  const oldPhotos: string[] = Array.isArray(biz.photosJson) ? (biz.photosJson as string[]) : []
+  const removed = oldPhotos.filter((url) => !final.includes(url))
+  await Promise.allSettled(
+    removed.filter(isOurBlobUrl).map((url) => deleteImage(url))
+  )
+
+  await db
+    .update(businesses)
+    .set({
+      photosJson: final,
+      coverUrl: final.length > 0 ? final[0] : biz.coverUrl,
+    })
+    .where(eq(businesses.id, biz.id))
+
+  revalidatePath("/dashboard/profile")
+  revalidatePath(`/biz/${biz.slug}`)
+  revalidatePath("/")
+
+  return { ok: true }
 }
 
 // ============ deals ============

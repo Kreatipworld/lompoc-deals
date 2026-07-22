@@ -1,6 +1,7 @@
 import { Sparkles } from "lucide-react"
 import { getCategoriesList, getMyBusiness } from "@/lib/biz-actions"
 import { ProfileForm } from "./profile-form"
+import { PhotoManager } from "@/components/photo-manager"
 import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "Business profile — Lompoc Locals" }
@@ -20,6 +21,14 @@ export default async function ProfilePage({
   searchParams: { claimed?: string }
 }) {
   const [biz, cats, t] = await Promise.all([getMyBusiness(), getCategoriesList(), getTranslations("dashboardProfile")])
+
+  const photosJson = biz?.photosJson as string[] | null
+  const initialPhotos: string[] =
+    Array.isArray(photosJson) && photosJson.length > 0
+      ? photosJson
+      : biz?.coverUrl
+      ? [biz.coverUrl]
+      : []
 
   return (
     <div className="space-y-6">
@@ -62,6 +71,12 @@ export default async function ProfilePage({
       <div className="rounded-3xl border bg-card p-6 shadow-sm sm:p-8">
         <ProfileForm biz={biz} categories={cats} />
       </div>
+
+      {biz && (
+        <div className="rounded-3xl border bg-card p-6 shadow-sm sm:p-8">
+          <PhotoManager initialPhotos={initialPhotos} />
+        </div>
+      )}
     </div>
   )
 }

@@ -1366,6 +1366,23 @@
     "savePending": "Guardando…",
     "saveIdle": "Guardar perfil"
   },
+  "photoManager": {
+    "title": "Galería de fotos",
+    "help": "Agrega, elimina y reordena tus fotos. La primera foto es la imagen principal que aparece arriba de tu perfil público.",
+    "empty": "Aún no hay fotos. Agrega algunas para mostrar tu negocio.",
+    "shownFirst": "Se muestra primero",
+    "makeFirst": "Poner primero",
+    "moveLeft": "Mover a la izquierda",
+    "moveRight": "Mover a la derecha",
+    "remove": "Eliminar foto",
+    "addPhotos": "Agregar fotos",
+    "countHint": "{count}/{max} fotos",
+    "limitReached": "Llegaste al límite de {max} fotos. Elimina una para agregar otra.",
+    "save": "Guardar galería",
+    "saving": "Guardando…",
+    "saved": "Galería guardada",
+    "saveError": "Algo salió mal. Inténtalo de nuevo."
+  },
   "dashboardDealForm": {
     "typeLabel": "Tipo",
     "typeCoupon": "Cupón",
