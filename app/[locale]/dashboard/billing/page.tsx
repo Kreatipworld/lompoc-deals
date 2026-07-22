@@ -224,6 +224,14 @@ export default async function BillingPage({
                   <div className="w-full rounded-xl bg-primary/10 py-2 text-center text-sm font-medium text-primary">
                     {t("currentPlanLabel")}
                   </div>
+                ) : key === "premium" ? (
+                  // Plus is contact-led (listings tier), not self-serve checkout.
+                  <a
+                    href="mailto:hello@lompoclocals.com?subject=Lompoc%20Locals%20Plus"
+                    className="block w-full rounded-xl border py-2 text-center text-sm font-semibold text-primary transition hover:bg-accent"
+                  >
+                    {t("plusContact")}
+                  </a>
                 ) : (
                   <BillingActions
                     hasSubscription={!!sub}

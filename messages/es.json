@@ -1424,7 +1424,8 @@
     "managePlan": "Administrar plan",
     "mostPopular": "Más popular",
     "switchTo": "Cambiar a {name}",
-    "getStarted": "Comenzar"
+    "getStarted": "Comenzar",
+    "plusContact": "Consulta sobre Plus"
   },
   "dashboardStats": {
     "title": "Estadísticas",
@@ -1491,7 +1492,7 @@
     "remove": "Eliminar",
     "upgradeTitle": "Los listados de propiedades son una función Plus",
     "upgradeBody": "Mejora a Plus para agregar propiedades en venta y renta a tu perfil. Incluye ofertas ilimitadas y posicionamiento prioritario.",
-    "upgradePremium": "Mejorar a Plus — $99.99/mes",
+    "upgradePremium": "Obtén Plus para publicar propiedades — contáctanos",
     "backToOverview": "Volver al resumen",
     "propertyFormTitle": "Agregar listado",
     "propertyFormEdit": "Editar listado",

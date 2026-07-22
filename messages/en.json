@@ -1424,7 +1424,8 @@
     "managePlan": "Manage plan",
     "mostPopular": "Most popular",
     "switchTo": "Switch to {name}",
-    "getStarted": "Get started"
+    "getStarted": "Get started",
+    "plusContact": "Contact us about Plus"
   },
   "dashboardStats": {
     "title": "Stats",
@@ -1491,7 +1492,7 @@
     "remove": "Remove",
     "upgradeTitle": "Property listings are a Plus feature",
     "upgradeBody": "Upgrade to Plus to add for-sale and for-rent property listings to your business profile. Unlimited deals and priority placement included.",
-    "upgradePremium": "Upgrade to Plus — $99.99/mo",
+    "upgradePremium": "Get Plus to list properties — contact us",
     "backToOverview": "Back to overview",
     "propertyFormTitle": "Add listing",
     "propertyFormEdit": "Edit listing",
