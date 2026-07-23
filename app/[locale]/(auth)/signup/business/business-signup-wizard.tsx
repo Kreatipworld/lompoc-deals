@@ -256,82 +256,111 @@ function Step2({
     defaultPlan === "premium" ? "standard" : defaultPlan
   )
 
+  // Reusable selected-state indicator: an empty circle that fills with a check.
+  const selectDot = (active: boolean) => (
+    <span
+      aria-hidden
+      className={`absolute right-5 top-5 flex h-6 w-6 items-center justify-center rounded-full border-2 transition-colors ${
+        active
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-border bg-background text-transparent"
+      }`}
+    >
+      <Check className="h-3.5 w-3.5" strokeWidth={3} />
+    </span>
+  )
+
+  const featureList = (features: readonly string[], muted: boolean) => (
+    <ul className="mt-4 space-y-2.5">
+      {features.map((f) => (
+        <li
+          key={f}
+          className={`flex items-start gap-2 text-sm leading-snug ${
+            muted ? "text-muted-foreground" : "text-foreground/80"
+          }`}
+        >
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <span>{f}</span>
+        </li>
+      ))}
+    </ul>
+  )
+
+  // data-wide-step lets the auth layout stretch the card to pricing width
+  // while this step is mounted (see app/[locale]/(auth)/layout.tsx).
   return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {(Object.entries(TIERS) as [keyof typeof TIERS, (typeof TIERS)[keyof typeof TIERS]][]).map(
-          ([key, tier]) => {
-            // Plus / Official Partner: contact-only, not a self-serve checkout.
-            if (key === "premium") {
-              return (
-                <div
-                  key={key}
-                  className="relative flex flex-col rounded-3xl border-2 border-border bg-card p-5 text-left"
-                >
-                  <Crown className="absolute right-4 top-4 h-4 w-4 text-gold" />
-                  <div className="font-display text-base font-semibold">{tier.name}</div>
-                  <div className="mt-1">
-                    <span className="font-display text-xl font-bold">{t("step2.plusContact")}</span>
-                  </div>
-                  <ul className="mt-3 space-y-1.5">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                        <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href="mailto:hello@lompoclocals.com?subject=Lompoc%20Locals%20Plus"
-                    className="mt-4 inline-flex h-9 items-center justify-center rounded-full border border-primary/40 px-4 text-xs font-semibold text-primary transition hover:bg-primary/5"
-                  >
-                    {t("step2.plusContactCta")}
-                  </a>
-                </div>
-              )
-            }
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setSelected(key as "free" | "standard")}
-                className={`relative flex flex-col rounded-3xl border-2 p-5 text-left transition ${
-                  selected === key
-                    ? "border-primary bg-primary/5 shadow-md"
-                    : "border-border bg-card hover:border-primary/40"
-                }`}
-              >
-                {key === "standard" && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-primary/30 bg-primary px-3 py-0.5 text-xs font-semibold text-primary-foreground">
-                    {t("step2.mostPopular")}
-                  </span>
-                )}
-                <div className="font-display text-base font-semibold">{tier.name}</div>
-                <div className="mt-1">
-                  {tier.price === 0 ? (
-                    <span className="font-display text-2xl font-bold">{t("step2.free")}</span>
-                  ) : (
-                    <>
-                      <span className="font-display text-2xl font-bold">${tier.price}</span>
-                      <span className="text-xs text-muted-foreground">{t("step2.perMonth")}</span>
-                    </>
-                  )}
-                </div>
-                <ul className="mt-3 space-y-1.5">
-                  {tier.features.map((f) => (
-                    <li key={f} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </button>
-            )
-          }
-        )}
+    <div data-wide-step className="space-y-6">
+      {/* pt-3 keeps the floating "most popular" badge from crowding the step bar */}
+      <div className="grid grid-cols-1 gap-4 pt-3 md:grid-cols-3">
+        {/* Free — understated */}
+        <button
+          type="button"
+          onClick={() => setSelected("free")}
+          aria-pressed={selected === "free"}
+          className={`relative flex h-full flex-col rounded-3xl border-2 p-6 text-left transition-all duration-200 active:scale-[0.99] ${
+            selected === "free"
+              ? "border-primary bg-primary/5 shadow-md"
+              : "border-border bg-card shadow-sm hover:border-primary/40"
+          }`}
+        >
+          {selectDot(selected === "free")}
+          <div className="font-display text-lg font-semibold">{TIERS.free.name}</div>
+          <div className="mt-1 flex items-baseline gap-1">
+            <span className="font-display text-3xl font-bold tracking-tight">
+              {t("step2.free")}
+            </span>
+          </div>
+          {featureList(TIERS.free.features, true)}
+        </button>
+
+        {/* Growth — the hero: preselected, most popular, richest treatment */}
+        <button
+          type="button"
+          onClick={() => setSelected("standard")}
+          aria-pressed={selected === "standard"}
+          className={`relative order-first flex h-full flex-col rounded-3xl border-2 p-6 text-left transition-all duration-200 active:scale-[0.99] md:order-none ${
+            selected === "standard"
+              ? "border-primary bg-gradient-to-b from-primary/[0.08] via-card to-card shadow-lg shadow-primary/15 ring-2 ring-primary/20"
+              : "border-primary/50 bg-gradient-to-b from-primary/[0.05] via-card to-card shadow-md hover:border-primary"
+          }`}
+        >
+          <span className="absolute -top-3 left-6 rounded-full bg-gold px-3.5 py-1 text-[11px] font-bold uppercase tracking-wide text-gold-foreground shadow-sm">
+            {t("step2.mostPopular")}
+          </span>
+          {selectDot(selected === "standard")}
+          <div className="font-display text-lg font-semibold text-primary">
+            {TIERS.standard.name}
+          </div>
+          <div className="mt-1 flex items-baseline gap-1">
+            <span className="font-display text-4xl font-bold tracking-tight">
+              ${TIERS.standard.price}
+            </span>
+            <span className="text-sm text-muted-foreground">{t("step2.perMonth")}</span>
+          </div>
+          {featureList(TIERS.standard.features, false)}
+        </button>
+
+        {/* Plus / Official Partner: contact-only, not a self-serve checkout. */}
+        <div className="relative flex h-full flex-col rounded-3xl border-2 border-border bg-muted/40 p-6 text-left shadow-sm">
+          <Crown className="absolute right-5 top-5 h-5 w-5 text-gold" />
+          <div className="font-display text-lg font-semibold">{TIERS.premium.name}</div>
+          <div className="mt-1 flex items-baseline gap-1">
+            <span className="font-display text-2xl font-bold tracking-tight">
+              {t("step2.plusContact")}
+            </span>
+          </div>
+          {featureList(TIERS.premium.features, true)}
+          <div aria-hidden className="min-h-5 flex-1" />
+          <a
+            href="mailto:hello@lompoclocals.com?subject=Lompoc%20Locals%20Plus"
+            className="inline-flex h-10 w-full items-center justify-center rounded-full border border-primary/40 px-4 text-sm font-semibold text-primary transition hover:bg-primary/5"
+          >
+            {t("step2.plusContactCta")}
+          </a>
+        </div>
       </div>
 
-      <div className="flex gap-3">
+      <div className="mx-auto flex w-full max-w-md gap-3">
         <button
           type="button"
           onClick={onBack}

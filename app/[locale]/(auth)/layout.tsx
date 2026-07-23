@@ -22,7 +22,8 @@ export default function AuthLayout({
         className="absolute -bottom-40 right-[-10%] -z-10 h-[460px] w-[460px] rounded-full bg-primary/10 blur-3xl"
       />
 
-      <div className="w-full max-w-md">
+      {/* Widens automatically while a step renders [data-wide-step] (plan selection) */}
+      <div className="w-full max-w-md transition-[max-width] duration-500 ease-out has-[[data-wide-step]]:max-w-4xl">
         {/* Brand lockup */}
         <Link
           href="/"
