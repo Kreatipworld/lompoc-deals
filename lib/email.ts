@@ -12,7 +12,7 @@ export type DealNotificationData = {
   businessSlug: string
 }
 
-const FROM_ADDRESS = "Lompoc Locals <onboarding@resend.dev>"
+const FROM_ADDRESS = "Lompoc Locals <hello@lompoclocals.com>"
 
 function getResend(): Resend | null {
   const key = process.env.RESEND_API_KEY
