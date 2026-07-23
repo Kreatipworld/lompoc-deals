@@ -14,7 +14,7 @@ import type { TierKey } from "@/lib/stripe"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { sendWelcomeEmail } from "@/lib/email"
-import { localizedLompocAddressError, getCurrentLocale } from "@/lib/i18n-helpers"
+import { localizedResolveLompocAddress, getCurrentLocale } from "@/lib/i18n-helpers"
 import { track, stitchSession } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 
@@ -59,7 +59,7 @@ export async function validateStep1Action(
   // no public address is verified by the admin approval step instead — every
   // signup already lands as status "pending".
   if (parsed.data.address) {
-    const addrErr = await localizedLompocAddressError(parsed.data.address)
+    const { error: addrErr } = await localizedResolveLompocAddress(parsed.data.address)
     if (addrErr) return { error: addrErr }
   }
 
@@ -112,12 +112,14 @@ export async function businessSignupSubmitAction(
     return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
 
-  const { ownerFullName, businessName, email, password, categoryId, address, phone, plan } =
+  const { ownerFullName, businessName, email, password, categoryId, phone, plan } =
     parsed.data
+  let address = parsed.data.address
 
   if (address) {
-    const addrErr = await localizedLompocAddressError(address)
-    if (addrErr) return { error: addrErr }
+    const resolved = await localizedResolveLompocAddress(address)
+    if (resolved.error) return { error: resolved.error }
+    address = resolved.normalized // ZIP filled in server-side when missing
   }
 
   const existing = await db.query.users.findFirst({ where: eq(users.email, email) })
