@@ -80,7 +80,8 @@ function Step1({
   // Mobile vendors, home-based and PO-box businesses opt out of the address
   // field entirely rather than being forced to invent one.
   const [noAddress, setNoAddress] = useState(false)
-  // Lompoc-biased address suggestions from /api/address-autocomplete, debounced.
+  // Lompoc-biased street suggestions from /api/address-autocomplete, debounced.
+  // Only the street line is shown — city/state/ZIP are handled by the ZIP pills.
   const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
   const suggestTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const onAddressInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
@@ -91,7 +92,8 @@ function Step1({
       try {
         const res = await fetch(`/api/address-autocomplete?q=${encodeURIComponent(q)}`)
         const data = await res.json()
-        setAddressSuggestions(data.suggestions ?? [])
+        const streets = (data.suggestions ?? []).map((s: string) => s.split(",")[0].trim())
+        setAddressSuggestions(Array.from(new Set(streets)))
       } catch { /* suggestions are best-effort */ }
     }, 300)
   }, [])
@@ -100,6 +102,14 @@ function Step1({
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const fd = new FormData(e.currentTarget)
+      // Compose the full address from street + ZIP pill so nobody has to know
+      // our address format — the ZIP is always present and always in-area.
+      const street = String(fd.get("street") ?? "").trim()
+      const zip = String(fd.get("zip") ?? "93436")
+      if (street) {
+        const city = zip === "93437" ? "Vandenberg SFB" : "Lompoc"
+        fd.set("address", `${street}, ${city}, CA ${zip}`)
+      }
       const data: Record<string, string> = {}
       Array.from(fd.entries()).forEach(([k, v]) => { data[k] = String(v) })
 
@@ -179,11 +189,11 @@ function Step1({
         </select>
       </div>
 
-      {field("address", t("step1.addressLabel"), <MapPin className="h-4 w-4" />, {
+      {field("street", t("step1.streetLabel"), <MapPin className="h-4 w-4" />, {
         required: !noAddress,
         disabled: noAddress,
-        placeholder: t("step1.addressPlaceholder"),
-        autoComplete: "street-address",
+        placeholder: t("step1.streetPlaceholder"),
+        autoComplete: "address-line1",
         list: "address-suggestions",
         onInput: onAddressInput,
         // A disabled input submits no value, so opting out sends no address.
@@ -193,6 +203,28 @@ function Step1({
           <option key={s} value={s} />
         ))}
       </datalist>
+
+      {!noAddress && (
+        <div className="space-y-1.5">
+          <div className="text-sm font-medium text-foreground">{t("step1.zipLabel")}</div>
+          <div className="flex gap-2">
+            {(["93436", "93437", "93438"] as const).map((z) => (
+              <label key={z} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="zip"
+                  value={z}
+                  defaultChecked={(defaultValues.zip ?? "93436") === z}
+                  className="peer sr-only"
+                />
+                <span className="inline-flex items-center rounded-full border border-border bg-background px-4 py-2 text-sm font-medium transition peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary hover:border-primary/50">
+                  {z}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
       <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
         <input
           type="checkbox"

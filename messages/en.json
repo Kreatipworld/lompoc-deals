@@ -913,7 +913,10 @@
       "haveAccount": "Already have an account?",
       "signIn": "Sign in",
       "signInLink": "Sign in instead",
-      "noAddressToggle": "I don't have a public address (mobile, home-based, or by appointment)"
+      "noAddressToggle": "I don't have a public address (mobile, home-based, or by appointment)",
+      "streetLabel": "Street address",
+      "streetPlaceholder": "100 E Ocean Ave",
+      "zipLabel": "ZIP (tap one — most of town is 93436)"
     },
     "step2": {
       "mostPopular": "Most popular",
@@ -1292,7 +1295,7 @@
     "overview": "Here's an overview of your business on Lompoc Locals.",
     "gracePeriodWarning": "Payment failed. Your plan features remain active until {date}. Update your payment method in Billing to avoid interruption.",
     "billingLink": "Billing",
-    "pendingWarning": "Your business is pending review. Our team will approve it shortly. You can set up your profile and deals in the meantime.",
+    "pendingWarning": "You're in! 🎉 Every new business gets a quick human review — usually the same day. Your page goes live the moment it's approved. Keep going: finish your profile and get your first deal ready.",
     "approvedBanner": "Your business is approved and live on Lompoc Locals.",
     "activeDeals": "Active deals",
     "totalViews": "Total views",

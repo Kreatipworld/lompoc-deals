@@ -913,7 +913,10 @@
       "haveAccount": "¿Ya tienes una cuenta?",
       "signIn": "Iniciar sesión",
       "signInLink": "Inicia sesión en su lugar",
-      "noAddressToggle": "No tengo dirección pública (móvil, desde casa o con cita)"
+      "noAddressToggle": "No tengo dirección pública (móvil, desde casa o con cita)",
+      "streetLabel": "Dirección (calle y número)",
+      "streetPlaceholder": "100 E Ocean Ave",
+      "zipLabel": "Código postal (elige uno — casi todo el pueblo es 93436)"
     },
     "step2": {
       "mostPopular": "Más popular",
@@ -1292,7 +1295,7 @@
     "overview": "Aquí tienes un resumen de tu negocio en Lompoc Locals.",
     "gracePeriodWarning": "El pago falló. Las funciones de tu plan permanecen activas hasta el {date}. Actualiza tu método de pago en Facturación para evitar interrupciones.",
     "billingLink": "Facturación",
-    "pendingWarning": "Tu negocio está pendiente de revisión. Nuestro equipo lo aprobará pronto. Mientras tanto, puedes configurar tu perfil y ofertas.",
+    "pendingWarning": "¡Ya estás dentro! 🎉 Cada negocio nuevo pasa una revisión rápida — normalmente el mismo día. Tu página se publica en cuanto se aprueba. Mientras tanto: completa tu perfil y deja listo tu primer cupón.",
     "approvedBanner": "Tu negocio está aprobado y visible en Lompoc Locals.",
     "activeDeals": "Ofertas activas",
     "totalViews": "Visitas totales",
