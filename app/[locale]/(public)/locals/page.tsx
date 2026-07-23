@@ -91,9 +91,9 @@ export default async function LocalsPage({
           aria-hidden
           className="absolute inset-0 -z-20 overflow-hidden"
           style={{
-            backgroundImage: "url('/lompoc-community.jpg')",
+            backgroundImage: "url('/lompoc-hero.jpg')",
             backgroundSize: "cover",
-            backgroundPosition: "center 62%",
+            backgroundPosition: "center 55%",
           }}
         />
         {/* Plum shade for copy legibility, melting into warm golden light. */}
