@@ -3,8 +3,11 @@ import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { getActiveDeals, getSiteStats } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
+import { getFeaturedBusinesses } from "@/lib/queries"
 import { DealGrid } from "@/components/deal-card"
 import { CouponDemo } from "@/components/coupon-demo"
+import { EventsSection } from "@/components/events-section"
+import { FeaturedBusinessesMarquee } from "@/components/featured-businesses-marquee"
 import { Heart, Bell, Mail, Ticket, ArrowRight, MapPin } from "lucide-react"
 
 export async function generateMetadata({
@@ -34,11 +37,13 @@ export default async function LocalsPage({
 }) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: "locals" })
+  const th = await getTranslations({ locale, namespace: "home" })
 
-  const [stats, deals, viewer] = await Promise.all([
+  const [stats, deals, viewer, featuredBusinesses] = await Promise.all([
     getSiteStats(),
     getActiveDeals(3),
     getViewer(),
+    getFeaturedBusinesses(10),
   ])
 
   const benefits = [
@@ -173,6 +178,36 @@ export default async function LocalsPage({
         </section>
       )}
 
+      {/* ── POPULAR IN LOMPOC — featured businesses marquee ──────────── */}
+      {featuredBusinesses.length > 0 && (
+        <section className="border-t bg-accent/20 py-14">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <h2 className="font-display text-3xl font-bold tracking-tight">
+                  {th("popularInLompoc")}
+                </h2>
+                <p className="mt-1 text-muted-foreground">{th("businessesSubheading")}</p>
+              </div>
+              <Link
+                href="/businesses"
+                className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
+              >
+                {th("viewAllBusinesses")}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <FeaturedBusinessesMarquee
+              businesses={featuredBusinesses}
+              dealLabel={th("deal")}
+              dealsLabel={th("deals")}
+              prevLabel={th("carouselPrev")}
+              nextLabel={th("carouselNext")}
+            />
+          </div>
+        </section>
+      )}
+
       {/* ── MEMBER VALUE — everything the free account does ──────────── */}
       <section className="border-y bg-secondary/30 py-14">
         <div className="mx-auto max-w-6xl px-4">
@@ -209,6 +244,9 @@ export default async function LocalsPage({
           </div>
         </div>
       </section>
+
+      {/* ── EVENTS — live upcoming events around Lompoc ──────────────── */}
+      <EventsSection />
 
       {/* ── LOMPOC EXPERIENCES — real photos, real places ────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-14">
