@@ -383,5 +383,54 @@ export async function profileSetupAction(
     ...(coverUrl ? { coverUrl } : {}),
   }).where(eq(businesses.id, biz.id))
 
-  redirect("/signup/business/first-deal")
+  // Only route into "post your first deal" when this account can actually post
+  // one — Free (dealLimit 0) used to be guided into a form it could never submit.
+  redirect((await canPostDeals(userId)) ? "/signup/business/first-deal" : "/dashboard")
+}
+
+/** True when the user's subscription tier allows posting at least one deal. */
+export async function canPostDeals(userId: number): Promise<boolean> {
+  const sub = await db.query.subscriptions.findFirst({
+    where: eq(subscriptions.userId, userId),
+  })
+  if (!sub || sub.status !== "active") return false
+  const limit = TIERS[(sub.tier ?? "free") as TierKey].dealLimit
+  return limit > 0
+}
+
+// ─── Stripe return — verify payment server-side so paid features unlock even
+// when the webhook is delayed or missing ────────────────────────────────────
+
+export async function confirmCheckoutOnReturn(
+  sessionId: string
+): Promise<"paid" | "unpaid" | "error"> {
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId)
+    if (session.mode !== "subscription" || session.payment_status !== "paid") return "unpaid"
+
+    const userId = Number(session.metadata?.userId)
+    const tier = (session.metadata?.tier ?? "free") as TierKey
+    if (!userId || tier === "free") return "unpaid"
+
+    // The webhook may have landed first — keep this idempotent.
+    const existing = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.userId, userId),
+    })
+    if (existing?.tier === tier && existing.status === "active") return "paid"
+
+    const stripeSubscriptionId =
+      typeof session.subscription === "string" ? session.subscription : session.subscription?.id
+    await db
+      .update(subscriptions)
+      .set({
+        tier,
+        status: "active",
+        ...(stripeSubscriptionId ? { stripeSubscriptionId } : {}),
+        updatedAt: new Date(),
+      })
+      .where(eq(subscriptions.userId, userId))
+    return "paid"
+  } catch {
+    return "error"
+  }
 }

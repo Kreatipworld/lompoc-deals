@@ -273,6 +273,12 @@
       "submitPending": "Creating account…",
       "haveAccount": "Already have an account?",
       "signIn": "Sign in"
+    },
+    "boundary": {
+      "title": "Let's pick up where you left off",
+      "body": "Something hiccuped on our side — this usually happens when the site updated while your page was open. Reload and your progress carries on; nothing you paid for is lost.",
+      "reload": "Reload and continue",
+      "retry": "Try again without reloading"
     }
   },
   "userMenu": {
@@ -957,7 +963,8 @@
       "tiktokPlaceholder": "https://tiktok.com/@yourbusiness",
       "savePending": "Saving…",
       "saveIdle": "Save and add first deal",
-      "skipForNow": "Skip for now"
+      "skipForNow": "Skip for now",
+      "paidConfirmedBanner": "Payment confirmed — your Growth membership is active. Welcome aboard!"
     },
     "firstDeal": {
       "metaTitle": "Add your first deal — Lompoc Locals",

@@ -273,6 +273,12 @@
       "submitPending": "Creando cuenta…",
       "haveAccount": "¿Ya tienes una cuenta?",
       "signIn": "Iniciar sesión"
+    },
+    "boundary": {
+      "title": "Continuemos donde quedaste",
+      "body": "Algo falló de nuestro lado — suele pasar cuando el sitio se actualizó mientras tu página estaba abierta. Recarga y tu progreso continúa; nada de lo que pagaste se pierde.",
+      "reload": "Recargar y continuar",
+      "retry": "Intentar de nuevo sin recargar"
     }
   },
   "userMenu": {
@@ -957,7 +963,8 @@
       "tiktokPlaceholder": "https://tiktok.com/@tunegocio",
       "savePending": "Guardando…",
       "saveIdle": "Guardar y agregar primera oferta",
-      "skipForNow": "Omitir por ahora"
+      "skipForNow": "Omitir por ahora",
+      "paidConfirmedBanner": "Pago confirmado — tu membresía Growth está activa. ¡Bienvenido!"
     },
     "firstDeal": {
       "metaTitle": "Agrega tu primera oferta — Lompoc Locals",

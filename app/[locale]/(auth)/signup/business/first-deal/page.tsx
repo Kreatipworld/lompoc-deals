@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { FirstDealForm } from "./first-deal-form"
+import { canPostDeals } from "@/lib/business-signup-actions"
 import { Sparkles } from "lucide-react"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,6 +27,10 @@ export default async function FirstDealPage() {
   })
 
   if (!biz) redirect("/dashboard/profile")
+
+  // This page exists to post a deal — accounts that can't (Free tier) go
+  // straight to the dashboard instead of a form that rejects them.
+  if (!(await canPostDeals(userId))) redirect("/dashboard")
 
   return (
     <div className="space-y-6">
