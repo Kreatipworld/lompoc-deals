@@ -40,3 +40,4 @@ next-env.d.ts
 
 # Scraped contact exports (not for version control)
 exports/
+scripts/mirror-backup-*.json
