@@ -14,15 +14,28 @@ type Props = {
   nextLabel: string
 }
 
+/** How long auto-drift stays paused after the user browses manually. */
+const MANUAL_GRACE_MS = 4000
+/** Pointer movement (px) beyond which a card press counts as a drag, not a click. */
+const DRAG_CLICK_THRESHOLD = 6
+
 /**
  * "Popular in Lompoc" as an endlessly-scrolling row. It auto-drifts on its own,
- * but the user can also drag / trackpad-scroll or use the arrows to move back and
- * forward — the row loops seamlessly in both directions. Auto-drift pauses while
- * hovering or touching, and honors prefers-reduced-motion (manual scroll still works).
+ * but the user can browse back and forward freely — arrows (all screen sizes),
+ * touch, trackpad, or mouse drag — and the row loops seamlessly in both
+ * directions. Any manual move pauses the drift for a few seconds so the user is
+ * never fighting the animation. Honors prefers-reduced-motion (manual still works).
  */
 export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, prevLabel, nextLabel }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null)
-  const pausedRef = useRef(false)
+  const hoverPausedRef = useRef(false)
+  const manualUntilRef = useRef(0)
+  const dragRef = useRef<{ startX: number; startScroll: number; moved: number; dragging: boolean }>({
+    startX: 0,
+    startScroll: 0,
+    moved: 0,
+    dragging: false,
+  })
 
   // Three identical copies give room to drift/scroll infinitely either direction;
   // we keep the scroll position parked in the middle copy and recenter on the fly.
@@ -47,7 +60,8 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
 
     let raf = 0
     const step = () => {
-      if (!pausedRef.current && !reduce) el.scrollLeft += 0.4
+      const manualHold = Date.now() < manualUntilRef.current
+      if (!hoverPausedRef.current && !manualHold && !reduce) el.scrollLeft += 0.4
       recenter()
       raf = requestAnimationFrame(step)
     }
@@ -61,21 +75,62 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
     }
   }, [])
 
-  const pause = () => { pausedRef.current = true }
-  const resume = () => { pausedRef.current = false }
+  const holdDrift = () => {
+    manualUntilRef.current = Date.now() + MANUAL_GRACE_MS
+  }
   const nudge = (dir: 1 | -1) => {
+    holdDrift()
     scrollerRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" })
+  }
+
+  // Mouse drag-to-scroll (touch devices already scroll natively).
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return
+    const el = scrollerRef.current
+    if (!el) return
+    dragRef.current = { startX: e.clientX, startScroll: el.scrollLeft, moved: 0, dragging: true }
+    el.setPointerCapture(e.pointerId)
+  }
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current
+    const el = scrollerRef.current
+    if (!d.dragging || !el) return
+    const dx = e.clientX - d.startX
+    d.moved = Math.max(d.moved, Math.abs(dx))
+    if (d.moved > 0) holdDrift()
+    el.scrollLeft = d.startScroll - dx
+  }
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = scrollerRef.current
+    if (dragRef.current.dragging && el?.hasPointerCapture(e.pointerId)) {
+      el.releasePointerCapture(e.pointerId)
+    }
+    dragRef.current.dragging = false
+  }
+  // After a real drag, swallow the click so the card underneath doesn't navigate.
+  const onClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (dragRef.current.moved > DRAG_CLICK_THRESHOLD) {
+      e.preventDefault()
+      e.stopPropagation()
+      dragRef.current.moved = 0
+    }
   }
 
   return (
     <div className="relative">
       <div
         ref={scrollerRef}
-        onMouseEnter={pause}
-        onMouseLeave={resume}
-        onTouchStart={pause}
-        onTouchEnd={() => window.setTimeout(resume, 2000)}
-        className="marquee-mask scrollbar-none flex overflow-x-auto scroll-smooth pb-2"
+        onMouseEnter={() => { hoverPausedRef.current = true }}
+        onMouseLeave={() => { hoverPausedRef.current = false }}
+        onTouchStart={holdDrift}
+        onTouchMove={holdDrift}
+        onWheel={holdDrift}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onClickCapture={onClickCapture}
+        className="marquee-mask scrollbar-none flex cursor-grab overflow-x-auto pb-2 select-none active:cursor-grabbing"
       >
         {loop.map((biz, i) => (
           <Link
@@ -83,6 +138,7 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
             href={`/biz/${biz.slug}`}
             aria-hidden={i >= businesses.length}
             tabIndex={i >= businesses.length ? -1 : undefined}
+            draggable={false}
             className="group mr-4 flex w-80 flex-shrink-0 gap-4 rounded-2xl border bg-background p-4 shadow-sm card-lift hover:-translate-y-0.5 hover:shadow-md"
           >
             <div className="flex-shrink-0">
@@ -125,7 +181,7 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
         type="button"
         onClick={() => nudge(-1)}
         aria-label={prevLabel}
-        className="absolute left-1 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary sm:flex"
+        className="absolute left-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
@@ -133,7 +189,7 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
         type="button"
         onClick={() => nudge(1)}
         aria-label={nextLabel}
-        className="absolute right-1 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary sm:flex"
+        className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary"
       >
         <ChevronRight className="h-5 w-5" />
       </button>

@@ -35,7 +35,11 @@ export function BusinessPhotoGallery({
 }) {
   const t = useTranslations("businesses.profile")
   const [openAt, setOpenAt] = useState<number | null>(null)
-  const { lead, thumbs, overflow } = planGallery(photos)
+  // Photos that failed to load (even after retry) are pruned so the mosaic
+  // reflows without empty tiles — a smaller gallery beats a broken-looking one.
+  const [deadPhotos, setDeadPhotos] = useState<string[]>([])
+  const livePhotos = photos.filter((p) => !deadPhotos.includes(p))
+  const { lead, thumbs, overflow } = planGallery(livePhotos)
 
   // Empty state — branded banner with the logo (looks deliberate, not broken)
   if (!lead) {
@@ -64,6 +68,7 @@ export function BusinessPhotoGallery({
           alt=""
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           fallback={<div className="h-full w-full bg-gradient-to-br from-primary/15 to-accent" />}
+          onFail={() => setDeadPhotos((prev) => (prev.includes(src) ? prev : [...prev, src]))}
         />
         {children}
       </button>
@@ -103,7 +108,12 @@ export function BusinessPhotoGallery({
       )}
 
       {openAt !== null && (
-        <PhotoLightbox photos={photos} startIndex={openAt} businessName={businessName} onClose={() => setOpenAt(null)} />
+        <PhotoLightbox
+          photos={livePhotos}
+          startIndex={Math.min(openAt, livePhotos.length - 1)}
+          businessName={businessName}
+          onClose={() => setOpenAt(null)}
+        />
       )}
     </div>
   )
