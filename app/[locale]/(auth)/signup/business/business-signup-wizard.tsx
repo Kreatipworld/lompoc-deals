@@ -80,6 +80,21 @@ function Step1({
   // Mobile vendors, home-based and PO-box businesses opt out of the address
   // field entirely rather than being forced to invent one.
   const [noAddress, setNoAddress] = useState(false)
+  // Lompoc-biased address suggestions from /api/address-autocomplete, debounced.
+  const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
+  const suggestTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const onAddressInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    const q = e.currentTarget.value
+    if (suggestTimer.current) clearTimeout(suggestTimer.current)
+    if (q.trim().length < 3) { setAddressSuggestions([]); return }
+    suggestTimer.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/address-autocomplete?q=${encodeURIComponent(q)}`)
+        const data = await res.json()
+        setAddressSuggestions(data.suggestions ?? [])
+      } catch { /* suggestions are best-effort */ }
+    }, 300)
+  }, [])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -169,8 +184,15 @@ function Step1({
         disabled: noAddress,
         placeholder: t("step1.addressPlaceholder"),
         autoComplete: "street-address",
+        list: "address-suggestions",
+        onInput: onAddressInput,
         // A disabled input submits no value, so opting out sends no address.
       })}
+      <datalist id="address-suggestions">
+        {addressSuggestions.map((s) => (
+          <option key={s} value={s} />
+        ))}
+      </datalist>
       <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
         <input
           type="checkbox"

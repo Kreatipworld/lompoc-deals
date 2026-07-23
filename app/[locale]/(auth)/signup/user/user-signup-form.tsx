@@ -105,6 +105,7 @@ export function UserSignupForm({ from }: { from?: string }) {
               name="city"
               type="text"
               autoComplete="address-level2"
+              defaultValue="Lompoc"
               placeholder="Lompoc"
               className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
             />
@@ -120,6 +121,7 @@ export function UserSignupForm({ from }: { from?: string }) {
             name="zip"
             type="text"
             autoComplete="postal-code"
+            defaultValue="93436"
             placeholder="93436"
             maxLength={10}
             className="h-11 w-full rounded-full border border-input bg-background px-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
