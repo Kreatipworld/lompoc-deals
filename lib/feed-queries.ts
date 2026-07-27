@@ -172,7 +172,8 @@ export async function getFeedItems(opts?: { limit?: number }): Promise<FeedDispl
         isFeatured: false,
         isNew: now.getTime() - deal.createdAt.getTime() < TWENTY_FOUR_HOURS_MS,
         approvedAt: deal.createdAt,
-        href: `/deals/${deal.id}`,
+        // /deals/[id] has no page — the claim page is the deal's public URL.
+        href: `/deals/${deal.id}/claim`,
       }))
     }),
 
