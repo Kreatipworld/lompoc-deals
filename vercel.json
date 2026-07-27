@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/cron/vitals",
+      "schedule": "0 15 * * 1"
+    },
+    {
       "path": "/api/cron/digest",
       "schedule": "0 16 * * 1"
     },
