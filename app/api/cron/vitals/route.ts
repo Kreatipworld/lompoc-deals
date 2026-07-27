@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const [row] = await db.execute(sql`
+  const result = await db.execute(sql`
     SELECT
       (SELECT count(*) FROM users WHERE email NOT LIKE '%.internal'
          AND email NOT LIKE '%.test' AND email NOT LIKE '%.system'
@@ -41,7 +41,13 @@ export async function GET(req: Request) {
       (SELECT json_object_agg(tier, n) FROM (
          SELECT tier, count(*) AS n FROM subscriptions
          WHERE status = 'active' GROUP BY tier) t)                                AS subs_by_tier
-  `) as unknown as Array<Record<string, unknown>>
+  `)
+
+  // neon-http returns { rows }, node-postgres returns an array — accept both.
+  const row: Record<string, unknown> =
+    (result as unknown as { rows?: Record<string, unknown>[] }).rows?.[0] ??
+    (Array.isArray(result) ? (result[0] as Record<string, unknown>) : {}) ??
+    {}
 
   const n = (k: string) => Number(row[k] ?? 0)
   const subsByTier = (row.subs_by_tier ?? {}) as Record<string, number>
