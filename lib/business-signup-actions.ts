@@ -9,7 +9,7 @@ import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { users, businesses, subscriptions } from "@/db/schema"
 import { signIn } from "@/auth"
-import { stripe, TIERS } from "@/lib/stripe"
+import { stripe, validStripeCustomerId, TIERS } from "@/lib/stripe"
 import type { TierKey } from "@/lib/stripe"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
@@ -140,8 +140,11 @@ export async function businessSignupSubmitAction(
         const priceId = TIERS[tierKey].priceId
         if (priceId) {
           try {
+            // Reuse the stored customer only if it exists in the current
+            // Stripe account — stale pre-migration ids self-heal here.
+            const storedCustomerId = await validStripeCustomerId(existingSub.stripeCustomerId)
             const customerId =
-              existingSub.stripeCustomerId ??
+              storedCustomerId ??
               (
                 await stripe.customers.create({
                   email,
@@ -149,7 +152,7 @@ export async function businessSignupSubmitAction(
                 })
               ).id
 
-            if (!existingSub.stripeCustomerId) {
+            if (customerId !== existingSub.stripeCustomerId) {
               await db
                 .update(subscriptions)
                 .set({ stripeCustomerId: customerId })

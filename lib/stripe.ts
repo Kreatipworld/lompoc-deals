@@ -11,6 +11,24 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "sk_test_place
   typescript: true,
 })
 
+/**
+ * Returns the customer id only if it exists (and isn't deleted) in THIS Stripe
+ * account, else null. Stored ids can go stale — e.g. the 2026-07 migration to
+ * the dedicated Lompoc Locals account orphaned every previously saved customer.
+ * Callers treat null as "mint a fresh customer" so billing self-heals.
+ */
+export async function validStripeCustomerId(
+  id: string | null | undefined
+): Promise<string | null> {
+  if (!id) return null
+  try {
+    const customer = await stripe.customers.retrieve(id)
+    return customer.deleted ? null : customer.id
+  } catch {
+    return null
+  }
+}
+
 // Subscription tier config.
 // NOTE: enum keys stay free/standard/premium (no DB migration); `name` carries
 // the customer-facing plan name (Free / Growth / Plus). `price` is DISPLAY only —

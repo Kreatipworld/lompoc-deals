@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { subscriptions } from "@/db/schema"
-import { stripe, TIERS, type TierKey } from "@/lib/stripe"
+import { stripe, validStripeCustomerId, TIERS, type TierKey } from "@/lib/stripe"
 import { eq } from "drizzle-orm"
 
 export async function POST(request: Request) {
@@ -97,8 +97,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Database error. Please try again." }, { status: 503 })
   }
 
-  if (existing?.stripeCustomerId) {
-    stripeCustomerId = existing.stripeCustomerId
+  // Self-healing: only reuse the stored customer if it actually exists in the
+  // current Stripe account (ids from before the account migration are stale).
+  const validExistingId = await validStripeCustomerId(existing?.stripeCustomerId)
+  if (validExistingId) {
+    stripeCustomerId = validExistingId
   } else {
     let customer
     try {
@@ -107,9 +110,11 @@ export async function POST(request: Request) {
         metadata: { userId: String(userId) },
       })
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to create Stripe customer"
-      console.error("[stripe/checkout] customer create failed:", message)
-      return NextResponse.json({ error: message }, { status: 502 })
+      console.error("[stripe/checkout] customer create failed:", err)
+      return NextResponse.json(
+        { error: "We couldn't reach our payment provider. Please try again in a minute." },
+        { status: 502 }
+      )
     }
     stripeCustomerId = customer.id
 
@@ -151,9 +156,11 @@ export async function POST(request: Request) {
       },
     })
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Stripe checkout failed"
-    console.error("[stripe/checkout] session create failed:", message)
-    return NextResponse.json({ error: message }, { status: 502 })
+    console.error("[stripe/checkout] session create failed:", err)
+    return NextResponse.json(
+      { error: "We couldn't start checkout. Please try again in a minute." },
+      { status: 502 }
+    )
   }
 
   if (!checkoutSession.url) {
