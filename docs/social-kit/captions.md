@@ -22,6 +22,35 @@ IG name field: `Lompoc Locals | Lompoc, CA` · category: Community · link: lomp
 
 ---
 
+## THE LAUNCH CAPTION (FINAL) — rebrand announcement
+
+Context: the account is a rebrand of **Lompoc Eats** (the user's existing,
+years-old community). Rename that account — don't start a new one.
+
+**EN:**
+> **From Lompoc Eats to Lompoc Locals** 💜
+>
+> For years, this page has been about one thing: celebrating the food and the people of our town. Every taquería, every family recipe, every hidden gem — you were there with us, and you turned this into a real community.
+>
+> Today, that community gets a bigger home.
+>
+> We're becoming **Lompoc Locals** — because Lompoc is more than what we eat. It's the shops, the wineries, the events, the rocket launches lighting up our sky. So we spent years quietly building something for all of it:
+>
+> 📍 **lompoclocals.com** — all of Lompoc in one place. 471 local businesses with real photos and real stories. Deals you claim and show at the counter. Every Vandenberg launch and every event, one calendar. In English y en español. Free, forever.
+>
+> Same people. Same love for this town. A new way to connect with it.
+>
+> Made by locals, for locals. Find your town 👉 link in bio
+>
+> And if you own a business: your page is already built. Come claim it 🤝
+>
+> #Lompoc #LompocCA #LompocEats #LompocLocals #SomosLompoc #ShopLocalLompoc #CentralCoast #VandenbergSFB
+
+**ES (post as first comment):**
+> **De Lompoc Eats a Lompoc Locals** 💜 Por años esta página celebró la comida y la gente de nuestro pueblo — y ustedes la convirtieron en una verdadera comunidad. Hoy esa comunidad tiene una casa más grande: somos Lompoc Locals, porque Lompoc es más que comida. Pasamos años construyendo algo para todo: lompoclocals.com — todo Lompoc en un solo lugar. 471 negocios, ofertas reales, cada lanzamiento de Vandenberg. Gratis para siempre, en inglés y español. La misma gente, el mismo amor por el pueblo. Encuentra tu pueblo 👉 link en bio. ¿Tienes un negocio? Tu página ya está lista 🤝
+
+---
+
 ## Post 1 — Intro carousel (IG: ig1→ig5, in order)
 
 **Caption (EN):**
