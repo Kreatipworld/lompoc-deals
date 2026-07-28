@@ -70,10 +70,10 @@ function emailFor(row, coverUrl, description, eventsBlock = "") {
   const name = esc(row.name)
   const url = row.profile_url
   const subject = UPDATE
-    ? `Here's what ${row.name} looks like on Lompoc Locals`
+    ? `${row.name} — your page, your photos, and this week in Lompoc`
     : `${row.name} is already on Lompoc Locals — it's yours to claim`
   const intro = UPDATE
-    ? `Quick update from Lompoc Locals — your page is live and looking good. This is what 2,300+ neighbors a week see when they find <strong>${name}</strong> on the site:`
+    ? `Here's your page on Lompoc Locals in full — your photos, your story, and what's happening in town this week. This is what <strong>2,300+ neighbors a week</strong> see when they find <strong>${name}</strong>:`
     : `Hi — I'm Andres, and I run Lompoc Locals, where <strong>2,300+ neighbors a week</strong> find the businesses, deals, and events of our town. We already built a page for <strong>${name}</strong> — photos, story, and all:`
 
   const coverBlock = coverUrl
