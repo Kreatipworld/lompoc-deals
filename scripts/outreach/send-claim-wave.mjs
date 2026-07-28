@@ -66,7 +66,7 @@ function toCsv(header, rows) {
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
-function emailFor(row, coverUrl) {
+function emailFor(row, coverUrl, description, eventsBlock = "") {
   const name = esc(row.name)
   const url = row.profile_url
   const subject = UPDATE
@@ -80,6 +80,11 @@ function emailFor(row, coverUrl) {
     ? `<div style="background:#fff"><a href="${url}"><img src="${coverUrl}" alt="${name}" width="560" style="width:100%;max-height:280px;object-fit:cover;display:block"/></a></div>`
     : ""
 
+  // quote their real page description so the email feels hand-built, not mass-sent
+  const descBlock = description
+    ? `<div style="border-left:3px solid #EFC618;padding:2px 0 2px 14px;margin:0 0 18px"><p style="font-style:italic;color:#650C75;font-size:15px;line-height:1.55;margin:0">&ldquo;${esc(description)}&rdquo;</p><p style="color:#999;font-size:12px;margin:6px 0 0">— what locals read on your page</p></div>`
+    : ""
+
   const html = `<div style="margin:0;padding:0;background:#f4eef6">
 <div style="max-width:560px;margin:0 auto;padding:24px 12px;font-family:Georgia,serif">
   <div style="background:#650C75;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center">
@@ -89,6 +94,7 @@ function emailFor(row, coverUrl) {
   ${coverBlock}
   <div style="background:#fff;border-radius:0 0 16px 16px;padding:28px 32px">
     <p style="font-size:16px;line-height:1.6;color:#333;margin:0 0 16px">${intro}</p>
+    ${descBlock}
     <div style="text-align:center;margin:26px 0">
       <a href="${url}" style="background:#EFC618;color:#3a2b00;text-decoration:none;font-weight:bold;font-size:17px;padding:14px 36px;border-radius:999px;display:inline-block">See your page &rarr;</a>
     </div>
@@ -102,6 +108,7 @@ function emailFor(row, coverUrl) {
     <p style="font-size:15px;line-height:1.6;color:#333;margin:0 0 6px">Claiming it is free: post deals that reach the whole town, keep your info current, and see exactly how many locals found you.</p>
     <p style="font-size:15px;line-height:1.6;color:#333;margin:16px 0 0">Questions? Just reply — it's really me.<br/><strong>Andres</strong> &middot; Lompoc Locals &middot; <a href="mailto:hello@lompoclocals.com" style="color:#650C75">hello@lompoclocals.com</a></p>
   </div>
+  ${eventsBlock}
   <p style="text-align:center;color:#999;font-size:11px;line-height:1.6;margin:16px 0 0">Lompoc Locals &middot; ${esc(ADDRESS ?? "[mailing address]")}<br/>Prefer not to hear from me? Reply &quot;unsubscribe&quot; and I won't email again.</p>
 </div></div>`
 
@@ -126,19 +133,54 @@ const queue = UPDATE
   ? rows.filter((r) => r.sent_at && !r.update_sent_at && r.email)
   : rows.filter((r) => r.wave === "1" && !r.sent_at && r.email)
 
-// covers come from the DB so the email shows the same hero as the live page
+// covers + descriptions come from the DB so the email mirrors the live page
 const sql = neon(process.env.DATABASE_URL)
-async function coversFor(slugs) {
+async function metaFor(slugs) {
   if (!slugs.length) return {}
-  const found = await sql`SELECT slug, cover_url FROM businesses WHERE slug = ANY(${slugs})`
-  return Object.fromEntries(found.map((b) => [b.slug, b.cover_url]))
+  const found = await sql`SELECT slug, cover_url, description FROM businesses WHERE slug = ANY(${slugs})`
+  return Object.fromEntries(found.map((b) => [b.slug, b]))
+}
+
+// real upcoming events (deduped by title) close the email with proof the town is active
+async function upcomingEventsBlock() {
+  const events = await sql`
+    SELECT DISTINCT ON (title) title, starts_at, location FROM events
+    WHERE starts_at > now() AND status = 'approved'
+    ORDER BY title, starts_at`
+  // same-instant events are the same real-world thing under two source titles
+  const seen = new Set()
+  const next = events
+    .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at))
+    .filter((e) => {
+      const key = new Date(e.starts_at).toISOString()
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+    .slice(0, 3)
+  if (!next.length) return ""
+  const items = next
+    .map((e) => {
+      const d = new Date(e.starts_at).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
+      const place = (e.location ?? "").split(",")[0]
+      return `<tr>
+        <td style="padding:8px 0;border-bottom:1px solid #7a2b88;color:#EFC618;font-size:13px;font-weight:bold;white-space:nowrap;vertical-align:top">${d}</td>
+        <td style="padding:8px 0 8px 14px;border-bottom:1px solid #7a2b88;color:#fff;font-size:14px;line-height:1.4">${esc(e.title)}${place ? `<span style="color:#c9a3d4"> &middot; ${esc(place)}</span>` : ""}</td>
+      </tr>`
+    })
+    .join("")
+  return `<div style="background:#650C75;border-radius:16px;padding:22px 28px;margin:14px 0 0">
+    <div style="color:#EFC618;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:0 0 8px">Happening in Lompoc</div>
+    <table style="width:100%;border-collapse:collapse">${items}</table>
+    <p style="margin:12px 0 0;text-align:center"><a href="https://www.lompoclocals.com/events" style="color:#EFC618;font-size:13px;text-decoration:none;font-weight:bold">See all events &rarr;</a></p>
+  </div>`
 }
 
 if (PREVIEW_SLUG) {
   const row = rows.find((r) => r.slug === PREVIEW_SLUG) ?? queue[0]
   if (!row) { console.error("no row for preview"); process.exit(1) }
-  const covers = await coversFor([row.slug])
-  const { subject, html } = emailFor(row, covers[row.slug])
+  const meta = await metaFor([row.slug])
+  const { subject, html } = emailFor(row, meta[row.slug]?.cover_url, meta[row.slug]?.description, await upcomingEventsBlock())
   const out = `${process.env.PREVIEW_OUT ?? "/tmp"}/outreach-preview-${row.slug}.html`
   writeFileSync(out, `<!-- SUBJECT: ${subject} -->\n${html}`)
   console.log(`preview written: ${out}\nSUBJECT: ${subject}\nTO: ${row.email}\nqueue size for this mode: ${queue.length}`)
@@ -152,12 +194,13 @@ if (!YES) {
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const batch = queue.slice(0, BATCH)
-const covers = await coversFor(batch.map((r) => r.slug))
+const meta = await metaFor(batch.map((r) => r.slug))
+const eventsBlock = await upcomingEventsBlock()
 console.log(`Sending ${batch.length} of ${queue.length} unsent (${UPDATE ? "update" : "first-touch"} mode)`)
 
 let sent = 0
 for (const row of batch) {
-  const { subject, html, text } = emailFor(row, covers[row.slug])
+  const { subject, html, text } = emailFor(row, meta[row.slug]?.cover_url, meta[row.slug]?.description, eventsBlock)
   try {
     const res = await resend.emails.send({ from: FROM, to: row.email, replyTo: REPLY_TO, subject, html, text })
     if (res.error) throw new Error(res.error.message ?? JSON.stringify(res.error))
