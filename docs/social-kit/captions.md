@@ -9,7 +9,7 @@ All images in `docs/social-kit/images/`. Real platform screenshots, real numbers
 
 **Instagram bio (FINAL — chosen 2026-07-28):**
 > All of Lompoc in one place 💜
-> Made by neighbors, for neighbors
+> Made by locals, for locals
 > 🍔 Local spots · 🏷️ deals · 🚀 launches
 > Somos comunidad 👇
 
@@ -17,7 +17,7 @@ IG name field: `Lompoc Locals | Lompoc, CA` · category: Community · link: lomp
 
 **TikTok bio (FINAL):**
 > All of Lompoc in one place 💜
-> By neighbors, for neighbors 🚀
+> By locals, for locals 🚀
 > lompoclocals.com
 
 ---
