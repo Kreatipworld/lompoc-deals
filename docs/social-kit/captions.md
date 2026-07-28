@@ -7,16 +7,17 @@ All images in `docs/social-kit/images/`. Real platform screenshots, real numbers
 
 **Avatar (both platforms):** `avatar.png` — white mark on purple.
 
-**Instagram bio:**
-> 💜 All of Lompoc. One place.
-> 🍔 471 local businesses · deals · events · 🚀 launches
-> Hecho por vecinos, para vecinos
-> 👇 Find your town
-> lompoclocals.com
-
-**TikTok bio:**
+**Instagram bio (FINAL — chosen 2026-07-28):**
 > All of Lompoc in one place 💜
-> Deals · events · rocket launches 🚀
+> Made by neighbors, for neighbors
+> 🍔 Local spots · 🏷️ deals · 🚀 launches
+> Somos comunidad 👇
+
+IG name field: `Lompoc Locals | Lompoc, CA` · category: Community · link: lompoclocals.com
+
+**TikTok bio (FINAL):**
+> All of Lompoc in one place 💜
+> By neighbors, for neighbors 🚀
 > lompoclocals.com
 
 ---
