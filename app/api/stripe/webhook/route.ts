@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server"
 import { stripe, TIERS } from "@/lib/stripe"
 import { db } from "@/db/client"
-import { subscriptions, businesses } from "@/db/schema"
+import { subscriptions, businesses, users } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import type { TierKey } from "@/lib/stripe"
 import type Stripe from "stripe"
 import { track } from "@/lib/analytics/track"
+import { notifyPlatform } from "@/lib/email"
 
 /** Map a Stripe price ID back to the tier key it represents. */
 function tierFromPriceId(priceId: string): TierKey | null {
@@ -135,6 +136,22 @@ export async function POST(request: Request) {
           targetId: updatedSub?.id ?? null,
           props: { tier: tier as "standard" | "premium", priceUsdCents },
         })
+
+        // Alert the founder inbox: a new member just started.
+        const [memberUser, memberBiz] = await Promise.all([
+          db.query.users.findFirst({ where: eq(users.id, userId), columns: { email: true } }),
+          db.query.businesses.findFirst({
+            where: eq(businesses.ownerUserId, userId),
+            columns: { name: true },
+          }),
+        ])
+        const planName = TIERS[tier as TierKey].name
+        const status = sub?.status ?? "trialing"
+        await notifyPlatform(`🎉 New ${planName} member`, [
+          `<strong>${memberBiz?.name ?? "A business"}</strong> just started a <strong>${status}</strong> ${planName} subscription.`,
+          `Account: ${memberUser?.email ?? "unknown"}`,
+          status === "trialing" ? "On a 14-day free trial — converts to paid after the trial." : "",
+        ])
       }
       break
     }

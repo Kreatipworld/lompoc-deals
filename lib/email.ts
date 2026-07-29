@@ -25,6 +25,29 @@ function siteUrl(path = "") {
   return `${base.replace(/\/$/, "")}${path}`
 }
 
+/**
+ * Internal alert to the founder inbox for key platform events (new member,
+ * new business signup, new claim). Sends to NOTIFY_EMAIL (default
+ * hello@lompoclocals.com, which forwards to the founder). Fire-and-forget —
+ * never throws into the caller, so a notification failure can't break signup,
+ * checkout, or a webhook.
+ */
+export async function notifyPlatform(subject: string, lines: string[]): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const to = process.env.NOTIFY_EMAIL ?? "hello@lompoclocals.com"
+  const html = `<div style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.6;color:#1a1a1a">
+    <h2 style="color:#650C75;margin:0 0 12px">${subject}</h2>
+    ${lines.map((l) => `<p style="margin:0 0 6px">${l}</p>`).join("")}
+    <p style="margin:16px 0 0;color:#888;font-size:13px">Lompoc Locals · automated notification</p>
+  </div>`
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to, subject, html })
+  } catch (err) {
+    console.error("[notifyPlatform] send failed:", err)
+  }
+}
+
 export async function sendConfirmationEmail(
   email: string,
   token: string,

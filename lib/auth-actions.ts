@@ -12,7 +12,7 @@ import { db } from "@/db/client"
 import { users, businessClaims, subscriptions, passwordResetTokens } from "@/db/schema"
 import { signIn, signOut } from "@/auth"
 import { stripe, TIERS } from "@/lib/stripe"
-import { sendPasswordResetEmail } from "@/lib/email"
+import { sendPasswordResetEmail, notifyPlatform } from "@/lib/email"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 
@@ -81,6 +81,18 @@ export async function signupAction(
         targetId: biz.id,
       })
     }
+  }
+
+  // Notify the founder inbox of the new claim / business signup (fire-and-forget).
+  if (claimSlug) {
+    await notifyPlatform("🔖 New business claim", [
+      `<strong>${email}</strong> submitted a claim on <strong>${claimSlug}</strong>.`,
+      "Approve it in the admin dashboard to transfer ownership.",
+    ])
+  } else if (dbRole === "business") {
+    await notifyPlatform("🏪 New business signup", [
+      `<strong>${email}</strong> just created a business account.`,
+    ])
   }
 
   try {
