@@ -63,8 +63,9 @@ function welcomeHtml(opts: {
 }): string {
   return `
   <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
-    <div style="background:${BRAND_PURPLE}; padding:20px 24px; border-radius:12px 12px 0 0;">
-      <span style="color:#ffffff; font-size:20px; font-weight:700; letter-spacing:-0.02em;">Lompoc Locals</span>
+    <div style="background:${BRAND_PURPLE}; padding:18px 24px; border-radius:12px 12px 0 0;">
+      <img src="https://www.lompoclocals.com/brand/lompoc-locals-mark-white.png" alt="Lompoc Locals" width="28" height="36" style="vertical-align:middle; margin-right:10px;">
+      <span style="color:#ffffff; font-size:20px; font-weight:700; letter-spacing:-0.02em; vertical-align:middle;">Lompoc Locals</span>
     </div>
     <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
       <h1 style="font-size:22px; margin:0 0 14px; color:#1a1a1a;">${opts.heading}</h1>
