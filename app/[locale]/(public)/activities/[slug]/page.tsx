@@ -1,9 +1,15 @@
 import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { MapPin, ArrowLeft, ExternalLink, Lightbulb, CalendarDays, Compass } from "lucide-react"
-import { getActivityBySlug, getActivities } from "@/lib/queries"
+import {
+  getActivityBySlug,
+  getActivities,
+  getBusinessesNearPoint,
+  getActivitiesNearPoint,
+} from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
+import { NearbyBusinesses, NearbyPlaces } from "@/components/nearby-links"
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import { getTranslations } from "next-intl/server"
@@ -59,6 +65,17 @@ export default async function ActivityDetailPage({
 
   const activity = await getActivityBySlug(slug)
   if (!activity) notFound()
+
+  // Proximity links. Routes like the taco trail sit on a nominal downtown point, so they get
+  // a wider radius than a park does — otherwise the trail's own stops fall outside it.
+  const isRoute = activity.slug.endsWith("-trail")
+  const [nearbyBusinesses, nearbyPlaces] =
+    activity.lat && activity.lng
+      ? await Promise.all([
+          getBusinessesNearPoint(activity.lat, activity.lng, isRoute ? 3 : 1.5, 6, activity.title),
+          getActivitiesNearPoint(activity.lat, activity.lng, 4, activity.slug),
+        ])
+      : [[], []]
 
   const photos: string[] = Array.isArray(activity.photosJson)
     ? (activity.photosJson as string[]).filter((p): p is string => typeof p === "string")
@@ -220,6 +237,14 @@ export default async function ActivityDetailPage({
           </Link>
         </div>
       </div>
+
+      <NearbyBusinesses
+        businesses={nearbyBusinesses}
+        heading={t("nearbyBusinesses")}
+        subheading={t("nearbyBusinessesSub")}
+        browseAllLabel={t("viewAllBusinesses")}
+      />
+      <NearbyPlaces places={nearbyPlaces} heading={t("morePlaces")} />
     </div>
   )
 }

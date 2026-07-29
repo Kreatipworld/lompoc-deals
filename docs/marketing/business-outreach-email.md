@@ -4,7 +4,7 @@ Cold B2B outreach to the ~141 Lompoc/Vandenberg businesses with scraped emails.
 Angle: their profile already exists — claim it free and post a deal.
 
 **Merge fields:** `{{business_name}}`, `{{profile_url}}` (= `https://www.lompoclocals.com/biz/<slug>`), `{{greeting}}` (default "there").
-**Fill before sending:** `[Your name]`, `[reply email]`, `[phone]`, `[mailing address]`.
+**Fill before sending:** `[Your name]`, `hello@lompoclocals.com`, `[phone]`, `[mailing address]`.
 
 ---
 
@@ -40,7 +40,7 @@ To claim it, click **"Claim this business"** on your page, or just reply and I'l
 Thanks for being part of Lompoc,
 [Your name]
 Lompoc Locals
-[reply email] · [phone]
+hello@lompoclocals.com · [phone]
 [mailing address]
 
 *Prefer not to hear from me? Reply "unsubscribe" and I won't email again.*
@@ -58,7 +58,7 @@ Your {{business_name}} page ({{profile_url}}) is still there and free to claim w
 Either way, thanks for everything you do for the community.
 
 [Your name] · Lompoc Locals
-[reply email]
+hello@lompoclocals.com
 
 *Reply "unsubscribe" to opt out.*
 

@@ -101,7 +101,7 @@ Both maintain "community resources / local links" pages. Email template (send to
 > Would you consider adding it to your community resources page? Happy to provide a logo, description, or anything else you need.
 >
 > Thanks for everything you do for the city,
-> Andres · andres@kreatipdesign.com
+> Andres · hello@lompoclocals.com
 
 ### Week 4 — Local press (Lompoc Record, Noozhawk, KEYT)
 
@@ -117,7 +117,7 @@ Press pitch template — email the newsroom/tips address of each outlet:
 >
 > I'm available for an interview anytime, and can share screenshots or a demo.
 >
-> Andres Amador · andres@kreatipdesign.com
+> Andres Amador · hello@lompoclocals.com
 
 One published article = the strongest local backlink you can get.
 

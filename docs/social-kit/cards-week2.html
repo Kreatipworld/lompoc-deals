@@ -1,0 +1,268 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#650C75; --gold:#EFC618; --green:#0B992F; --cream:#FAF5EC; --ink:#241629; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#333; font-family:'Plus Jakarta Sans',sans-serif; }
+  .card { position:relative; overflow:hidden; margin:20px auto; }
+  .ig { width:1080px; height:1350px; }
+  .tt { width:1080px; height:1920px; }
+  .grain::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:.07; z-index:50;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); }
+  .serif { font-family:Georgia,serif; font-style:italic; }
+  .tape { position:absolute; width:220px; height:56px; background:rgba(239,198,24,.85); box-shadow:0 2px 8px rgba(0,0,0,.12); }
+  .url { font-weight:800; letter-spacing:1px; }
+  .mark { width:150px; }
+
+  /* event row */
+  .ev { display:flex; gap:26px; align-items:flex-start; padding:22px 0; border-bottom:3px solid rgba(36,22,41,.10); }
+  .ev:last-child { border-bottom:none; }
+  .ev .icon { font-size:52px; line-height:1; width:68px; flex-shrink:0; }
+  .ev .day { color:var(--purple); font-weight:800; font-size:30px; letter-spacing:1px; text-transform:uppercase; }
+  .ev .ttl { color:var(--ink); font-weight:700; font-size:42px; line-height:1.15; margin-top:5px; }
+  .ev .loc { color:rgba(36,22,41,.55); font-weight:500; font-size:29px; margin-top:6px; }
+  #claim2 .ev { padding:32px 0; gap:32px; }
+  #claim2 .ev .icon { font-size:62px; width:80px; }
+  #claim2 .ev .ttl { font-size:54px; }
+  #claim2 .ev .loc { font-size:34px; }
+  .tt .ev { padding:34px 0; gap:34px; }
+  .tt .ev .icon { font-size:64px; width:82px; }
+  .tt .ev .day { font-size:34px; }
+  .tt .ev .ttl { font-size:52px; }
+  .tt .ev .loc { font-size:34px; }
+
+  /* wine row */
+  .wine { border-bottom:3px solid rgba(250,245,236,.18); padding:60px 0; }
+  .wine:first-child { padding-top:30px; }
+  .wine:last-child { border-bottom:none; }
+  .wine .n { color:#fff; font-weight:800; font-size:66px; line-height:1.1; }
+  .wine .a { color:var(--gold); font-weight:500; font-size:36px; margin-top:12px; }
+
+  .footbar { position:absolute; left:0; right:0; bottom:0; height:130px; background:var(--purple);
+    display:flex; align-items:center; justify-content:space-between; padding:0 70px; }
+  .footbar .u { color:var(--gold); font-weight:800; font-size:42px; letter-spacing:1px; }
+</style></head><body>
+
+<!-- ============ P1 / P10 — THIS WEEK IN LOMPOC (1080x1350) ============ -->
+<div class="card ig grain" id="week-events" style="background:var(--cream);">
+  <div class="tape" style="top:-16px; left:120px; transform:rotate(-2.5deg);"></div>
+  <div class="tape" style="top:-16px; right:120px; transform:rotate(2deg);"></div>
+  <div style="padding:64px 78px 0;">
+    <div class="serif" style="color:var(--green); font-size:42px;">what's on</div>
+    <div style="color:var(--ink); font-size:84px; font-weight:800; line-height:1.02; margin-top:8px;">This week<br>in Lompoc.</div>
+  </div>
+  <div style="padding:34px 78px 0;">
+    <div class="ev"><div class="icon">🚀</div><div><div class="day">Fri · Jul 31</div><div class="ttl">Falcon 9 launch — Starlink 17-52</div><div class="loc">Vandenberg SFB</div></div></div>
+    <div class="ev"><div class="icon">🛍️</div><div><div class="day">Sat · Aug 1</div><div class="ttl">Old Town Market</div><div class="loc">South H Street</div></div></div>
+    <div class="ev"><div class="icon">🎶</div><div><div class="day">Sun · Aug 2</div><div class="ttl">Live music at Hangar 7</div><div class="loc">107 W Ocean Ave</div></div></div>
+    <div class="ev"><div class="icon">🚀</div><div><div class="day">Mon · Aug 3</div><div class="ttl">Falcon 9 launch — Starlink 17-53</div><div class="loc">Vandenberg SFB</div></div></div>
+    <div class="ev"><div class="icon">🎨</div><div><div class="day">All week</div><div class="ttl">Pouring My Art Out</div><div class="loc">Cypress Gallery, 119 E Cypress</div></div></div>
+  </div>
+  <div class="footbar">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="height:66px;">
+    <div style="text-align:right;">
+      <div style="color:#f3e6f6; font-size:26px; font-weight:600;">+93 more on the calendar</div>
+      <div class="u">lompoclocals.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STORY VERSION (1080x1920) ============ -->
+<div class="card tt grain" id="week-events-story" style="background:var(--cream);">
+  <div class="tape" style="top:-16px; left:180px; transform:rotate(-2.5deg);"></div>
+  <div style="padding:300px 84px 0;">
+    <div class="serif" style="color:var(--green); font-size:52px;">what's on</div>
+    <div style="color:var(--ink); font-size:112px; font-weight:800; line-height:1.02; margin-top:10px;">This week<br>in Lompoc.</div>
+  </div>
+  <div style="padding:70px 84px 0;">
+    <div class="ev"><div class="icon">🚀</div><div><div class="day">Fri · Jul 31</div><div class="ttl">Falcon 9 launch</div><div class="loc">Vandenberg SFB</div></div></div>
+    <div class="ev"><div class="icon">🛍️</div><div><div class="day">Sat · Aug 1</div><div class="ttl">Old Town Market</div><div class="loc">South H Street</div></div></div>
+    <div class="ev"><div class="icon">🎶</div><div><div class="day">Sun · Aug 2</div><div class="ttl">Live music at Hangar 7</div><div class="loc">107 W Ocean Ave</div></div></div>
+    <div class="ev"><div class="icon">🚀</div><div><div class="day">Mon · Aug 3</div><div class="ttl">Falcon 9 launch</div><div class="loc">Vandenberg SFB</div></div></div>
+    <div class="ev"><div class="icon">🎨</div><div><div class="day">All week</div><div class="ttl">Pouring My Art Out</div><div class="loc">Cypress Gallery</div></div></div>
+  </div>
+  <div class="footbar" style="height:190px;">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="height:76px;">
+    <div style="text-align:right;">
+      <div style="color:#f3e6f6; font-size:30px; font-weight:600;">+93 more on the calendar</div>
+      <div class="u" style="font-size:48px;">lompoclocals.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ P2 — ROCKET LAUNCH ============ -->
+<div class="card ig grain" id="launch">
+  <div style="position:absolute; inset:0; background:linear-gradient(175deg, #1b0a20 0%, #4a0857 45%, #650C75 100%);"></div>
+  <div style="position:absolute; inset:0; background:radial-gradient(circle at 72% 24%, rgba(239,198,24,.30) 0%, rgba(239,198,24,0) 42%);"></div>
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:86px 84px 96px;">
+    <img class="mark" src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg">
+    <div>
+      <div style="font-size:150px; line-height:1;">🚀</div>
+      <div class="serif" style="color:var(--gold); font-size:54px; margin-top:34px;">tonight, over our valley —</div>
+      <div style="color:#fff; font-size:122px; font-weight:800; line-height:1.02; margin-top:14px;">There's a<br>launch.</div>
+      <div style="color:#f3e6f6; font-size:46px; font-weight:500; margin-top:36px; line-height:1.35;">Falcon 9 · Starlink 17-52<br>Vandenberg Space Force Base</div>
+      <div style="margin-top:44px; display:inline-block; border:3px solid var(--gold); border-radius:999px; padding:20px 40px; color:var(--gold); font-size:38px; font-weight:800;">Look southwest 👀</div>
+      <div class="url" style="color:#fff; font-size:38px; margin-top:52px; opacity:.9;">every launch on lompoclocals.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ P3 — OLD TOWN MARKET ============ -->
+<div class="card ig grain" id="market">
+  <img src="file:///Users/kreatip/Projects/lompoc-deals/public/lompoc-community.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+  <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(36,22,41,.30) 0%, rgba(36,22,41,.20) 35%, rgba(101,12,117,.92) 100%);"></div>
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:86px 84px 96px;">
+    <img class="mark" src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg">
+    <div>
+      <div class="serif" style="color:var(--gold); font-size:54px;">saturday morning —</div>
+      <div style="color:#fff; font-size:118px; font-weight:800; line-height:1.02; margin-top:12px;">Old Town<br>Market.</div>
+      <div style="color:#f3e6f6; font-size:46px; font-weight:500; margin-top:32px; line-height:1.35;">South H Street · every Saturday<br>Produce, makers, and a walk down Ocean.</div>
+      <div class="url" style="color:var(--gold); font-size:40px; margin-top:52px;">lompoclocals.com/events</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ P4 — BURRITO DEBATE ============ -->
+<div class="card ig grain" id="burrito" style="background:var(--gold);">
+  <div style="position:absolute; inset:0; background:radial-gradient(circle at 25% 20%, rgba(255,255,255,.55) 0%, rgba(239,198,24,0) 55%);"></div>
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:90px 78px; transform:translateY(56px);">
+    <div style="font-size:190px; line-height:1;">🌯</div>
+    <div class="serif" style="color:var(--purple); font-size:52px; margin-top:30px;">settle it for us, Lompoc —</div>
+    <div style="color:var(--ink); font-size:120px; font-weight:800; line-height:1.02; margin-top:18px;">Best breakfast burrito in town.</div>
+    <div style="color:rgba(36,22,41,.72); font-size:52px; font-weight:700; margin-top:40px;">One name. Go. 👇</div>
+    <div style="position:absolute; bottom:86px; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:24px;">
+      <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark.svg" style="height:52px;">
+      <div class="url" style="color:var(--purple); font-size:34px;">lompoclocals.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ P6 — CLAIM CAROUSEL, SLIDE 1 ============ -->
+<div class="card ig grain" id="claim1" style="background:var(--purple);">
+  <div style="position:absolute; inset:0; background:radial-gradient(circle at 30% 22%, #7d1b8f 0%, #650C75 58%, #4a0857 100%);"></div>
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:86px 84px 96px;">
+    <img class="mark" src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg">
+    <div>
+      <div class="serif" style="color:var(--gold); font-size:54px;">Lompoc business owners —</div>
+      <div style="color:#fff; font-size:126px; font-weight:800; line-height:1.01; margin-top:14px;">Your page<br>is already<br>built.</div>
+      <div style="color:#f3e6f6; font-size:46px; font-weight:500; margin-top:38px; line-height:1.35;">All 475 of them. Yours included.</div>
+    </div>
+    <div style="color:var(--gold); font-size:38px; font-weight:800;">swipe →</div>
+  </div>
+</div>
+
+<!-- ============ P6 — SLIDE 2 ============ -->
+<div class="card ig grain" id="claim2" style="background:var(--cream);">
+  <div class="tape" style="top:-16px; left:430px; transform:rotate(-3deg);"></div>
+  <div style="padding:110px 84px 0;">
+    <div class="serif" style="color:var(--green); font-size:46px;">what's on it already</div>
+    <div style="color:var(--ink); font-size:88px; font-weight:800; line-height:1.05; margin-top:10px;">We did the<br>work for you.</div>
+  </div>
+  <div style="padding:62px 84px 0;">
+    <div class="ev"><div class="icon">📸</div><div><div class="ttl">Your photos</div><div class="loc">Pulled and curated, not a blank page</div></div></div>
+    <div class="ev"><div class="icon">🕒</div><div><div class="ttl">Your hours</div><div class="loc">Synced, in English and Spanish</div></div></div>
+    <div class="ev"><div class="icon">📍</div><div><div class="ttl">Your map pin</div><div class="loc">One tap to directions</div></div></div>
+    <div class="ev"><div class="icon">🏷️</div><div><div class="ttl">Room for your offer</div><div class="loc">Post one whenever you want</div></div></div>
+  </div>
+  <div class="footbar">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="height:66px;">
+    <div class="u">swipe →</div>
+  </div>
+</div>
+
+<!-- ============ P6 — SLIDE 3 ============ -->
+<div class="card ig grain" id="claim3" style="background:var(--green);">
+  <div style="position:absolute; inset:0; background:radial-gradient(circle at 70% 25%, #16b53c 0%, #0B992F 55%, #07701f 100%);"></div>
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:90px 78px;">
+    <div style="font-size:150px; line-height:1;">🤝</div>
+    <div style="color:#fff; font-size:116px; font-weight:800; line-height:1.02; margin-top:34px;">Claim it free.<br>2 minutes.</div>
+    <div style="color:rgba(255,255,255,.9); font-size:46px; font-weight:500; margin-top:36px; line-height:1.35;">Search your business name →<br>hit "Claim this business."</div>
+    <div style="margin-top:52px; background:#fff; border-radius:999px; padding:26px 52px;">
+      <span class="url" style="color:var(--green); font-size:44px;">lompoclocals.com</span>
+    </div>
+    <div style="color:rgba(255,255,255,.85); font-size:34px; font-weight:600; margin-top:44px;">Not listed? Comment your name — we'll build it.</div>
+  </div>
+</div>
+
+<!-- ============ P8 — WINE CAROUSEL, SLIDE 1 ============ -->
+<div class="card ig grain" id="wine1">
+  <div style="position:absolute; inset:0; background:linear-gradient(170deg, #3d0745 0%, #650C75 55%, #7d1b8f 100%);"></div>
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:86px 84px 96px;">
+    <img class="mark" src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg">
+    <div>
+      <div style="font-size:140px; line-height:1;">🍷</div>
+      <div style="color:#fff; font-size:132px; font-weight:800; line-height:1.0; margin-top:30px;">Lompoc has<br>38 wineries.</div>
+      <div class="serif" style="color:var(--gold); font-size:56px; margin-top:34px; line-height:1.3;">Most people who live here<br>have been to two.</div>
+      <div style="color:#f3e6f6; font-size:42px; font-weight:600; margin-top:44px;">Park once. Walk between them. →</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ P8 — SLIDE 2 ============ -->
+<div class="card ig grain" id="wine2" style="background:var(--purple);">
+  <div style="position:absolute; inset:0; background:linear-gradient(160deg, #650C75 0%, #4a0857 100%);"></div>
+  <div style="position:relative; z-index:2; padding:110px 84px 0;">
+    <div class="serif" style="color:var(--gold); font-size:48px;">the wine ghetto — block one</div>
+    <div style="margin-top:44px;">
+      <div class="wine"><div class="n">Piedrasassi</div><div class="a">1501 E Chestnut Ave</div></div>
+      <div class="wine"><div class="n">Domaine de la Côte</div><div class="a">1503 E Chestnut Ave</div></div>
+      <div class="wine"><div class="n">Temperance Cellars</div><div class="a">1509 E Chestnut Ave</div></div>
+      <div class="wine"><div class="n">JCR Vineyard</div><div class="a">1500 E Chestnut Ct, Unit D</div></div>
+    </div>
+  </div>
+  <div class="footbar" style="background:rgba(0,0,0,.28);">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="height:66px;">
+    <div class="u">swipe →</div>
+  </div>
+</div>
+
+<!-- ============ P8 — SLIDE 3 ============ -->
+<div class="card ig grain" id="wine3" style="background:var(--purple);">
+  <div style="position:absolute; inset:0; background:linear-gradient(160deg, #7d1b8f 0%, #650C75 100%);"></div>
+  <div style="position:relative; z-index:2; padding:110px 84px 0;">
+    <div class="serif" style="color:var(--gold); font-size:48px;">a few blocks over</div>
+    <div style="margin-top:44px;">
+      <div class="wine"><div class="n">Transcendence Winery</div><div class="a">300 N G St, Unit C</div></div>
+      <div class="wine"><div class="n">Sweetzer Cellars</div><div class="a">308 N 9th St, Unit C</div></div>
+      <div class="wine"><div class="n">Jalama Wines</div><div class="a">321 N D St</div></div>
+      <div class="wine"><div class="n">William Hines Wines</div><div class="a">1712 Industrial Way B</div></div>
+    </div>
+  </div>
+  <div class="footbar" style="background:rgba(0,0,0,.28);">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="height:66px;">
+    <div class="u">swipe →</div>
+  </div>
+</div>
+
+<!-- ============ P8 — SLIDE 4 ============ -->
+<div class="card ig grain" id="wine4" style="background:var(--cream);">
+  <div class="tape" style="top:-16px; left:180px; transform:rotate(-2deg);"></div>
+  <div style="padding:110px 84px 0;">
+    <div class="serif" style="color:var(--green); font-size:48px;">and out in the hills</div>
+    <div style="margin-top:44px;">
+      <div class="wine" style="border-color:rgba(36,22,41,.12);"><div class="n" style="color:var(--ink);">Sea Smoke</div><div class="a" style="color:rgba(36,22,41,.55);">1016 Aviation Dr</div></div>
+      <div class="wine" style="border-color:rgba(36,22,41,.12);"><div class="n" style="color:var(--ink);">The Hilt Estate</div><div class="a" style="color:rgba(36,22,41,.55);">2240 Santa Rosa Rd</div></div>
+      <div class="wine" style="border-color:rgba(36,22,41,.12);"><div class="n" style="color:var(--ink);">Terre et Sang</div><div class="a" style="color:rgba(36,22,41,.55);">4457 Santa Rosa Rd, Unit 2</div></div>
+      <div class="wine" style="border-color:rgba(36,22,41,.12);"><div class="n" style="color:var(--ink);">Melville · Sanford · Babcock</div><div class="a" style="color:rgba(36,22,41,.55);">Santa Rita Hills</div></div>
+    </div>
+  </div>
+  <div class="footbar">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="height:66px;">
+    <div class="u">swipe →</div>
+  </div>
+</div>
+
+<!-- ============ P8 — SLIDE 5 ============ -->
+<div class="card ig grain" id="wine5" style="background:var(--gold);">
+  <div style="position:absolute; inset:0; background:radial-gradient(circle at 28% 22%, rgba(255,255,255,.5) 0%, rgba(239,198,24,0) 58%);"></div>
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:90px 78px;">
+    <div class="serif" style="color:var(--purple); font-size:54px;">no limo. no tour bus.</div>
+    <div style="color:var(--ink); font-size:124px; font-weight:800; line-height:1.02; margin-top:20px;">All 38, with hours and addresses.</div>
+    <div style="margin-top:56px; background:var(--purple); border-radius:999px; padding:28px 56px;">
+      <span class="url" style="color:var(--gold); font-size:44px;">lompoclocals.com</span>
+    </div>
+    <div style="color:rgba(36,22,41,.7); font-size:38px; font-weight:600; margin-top:44px;">Which one's your regular? 👇</div>
+  </div>
+</div>
+
+</body></html>

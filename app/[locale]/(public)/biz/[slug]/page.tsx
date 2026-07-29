@@ -15,7 +15,13 @@ import {
   BadgeCheck,
   Lock,
 } from "lucide-react"
-import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
+import {
+  getBusinessBySlug,
+  getListingsByBusinessId,
+  getRelatedBusinesses,
+  getActivitiesNearPoint,
+} from "@/lib/queries"
+import { NearbyPlaces } from "@/components/nearby-links"
 import { getViewer } from "@/lib/viewer"
 import { bumpViewCounts } from "@/lib/tracking"
 import { track } from "@/lib/analytics/track"
@@ -117,6 +123,13 @@ export default async function BusinessPage({
     business.id,
     4
   )
+
+  // Places to go near this business. Service-area members have no coordinates, so they
+  // simply don't get the section rather than getting a wrong one.
+  const nearbyPlaces =
+    business.lat && business.lng
+      ? await getActivitiesNearPoint(business.lat, business.lng, 4)
+      : []
 
   // For real estate businesses, fetch property listings instead
   const listings = isRealEstate
@@ -494,6 +507,12 @@ export default async function BusinessPage({
           {t("ownerCta")}
         </Link>
       </section>
+
+      {nearbyPlaces.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4">
+          <NearbyPlaces places={nearbyPlaces} heading={t("placesNearby")} />
+        </section>
+      )}
 
       {relatedBusinesses.length > 0 && business.category && (
         <section className="mx-auto max-w-6xl px-4 pb-10">

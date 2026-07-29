@@ -17,7 +17,8 @@ with one deal" is concrete, flattering, and self-evidently worth 5 minutes.
 
 **Merge fields:** `{{business_name}}`, `{{views}}` (30-day page views), `{{profile_url}}`
 (= `https://www.lompoclocals.com/biz/<slug>`), `{{greeting}}` (default "there").
-**Fill before sending:** `[Your name]`, `[reply email]`, `[phone]`, `[mailing address]`.
+**Reply address:** `hello@lompoclocals.com` (active — Resend send + inbound forward to Andres).
+**Fill before sending:** `[Your name]`, `[phone]`, `[mailing address]`.
 
 Target list + live view counts: `deal-ask-targets.csv`.
 
@@ -55,7 +56,7 @@ No cost, no catch. I only put up deals a business actually wants.
 
 Thanks for being part of Lompoc,
 [Your name]
-Lompoc Locals · [reply email] · [phone]
+Lompoc Locals · hello@lompoclocals.com · [phone]
 [mailing address]
 
 *Prefer not to hear from me? Reply "unsubscribe" and I won't email again.*

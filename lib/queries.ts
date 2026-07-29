@@ -1150,3 +1150,122 @@ export async function getBusinessesForBlogCategory(
 
   return rows as BlogBusinessCard[]
 }
+
+// ---------------------------------------------------------------------------
+// Proximity linking — "what else is right there"
+//
+// Place pages and business pages point at each other by distance. This is what
+// turns two separate directories into one map of the town: someone reading about
+// Beattie Park sees the businesses around it, and someone on a business page sees
+// what there is to do nearby.
+//
+// Distance is the spherical-law-of-cosines great-circle formula in miles,
+// computed in SQL. At Lompoc's scale (a few miles across) it is exact enough,
+// and it avoids a PostGIS dependency for what is ultimately a "nearby" list.
+// ---------------------------------------------------------------------------
+
+/** Miles between a fixed point and a row's lat/lng columns. */
+function milesFrom(lat: number, lng: number, latCol: unknown, lngCol: unknown) {
+  return sql<number>`
+    3959 * acos(
+      least(1.0,
+        cos(radians(${lat})) * cos(radians(${latCol})) *
+        cos(radians(${lngCol}) - radians(${lng})) +
+        sin(radians(${lat})) * sin(radians(${latCol}))
+      )
+    )`
+}
+
+export type NearbyBusiness = {
+  name: string
+  slug: string
+  address: string | null
+  photoUrl: string | null
+  categoryName: string | null
+  categorySlug: string | null
+  activeDealCount: number
+  miles: number
+}
+
+/**
+ * Approved businesses within `radiusMiles` of a point, closest first.
+ * Address-less service-area members have no coordinates and are excluded by design —
+ * "3 minutes from the park" has to mean something.
+ */
+export async function getBusinessesNearPoint(
+  lat: number,
+  lng: number,
+  radiusMiles = 1.5,
+  limit = 6,
+  /** Activity title to suppress — the scraper has rows for some parks, and a place
+   *  should never list itself as a business next door. */
+  excludeTitle?: string
+): Promise<NearbyBusiness[]> {
+  const distance = milesFrom(lat, lng, businesses.lat, businesses.lng)
+  const rows = await db
+    .select({
+      name: businesses.name,
+      slug: businesses.slug,
+      address: businesses.address,
+      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now() and ${deals.paused} = false)::int`,
+      miles: distance,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .where(
+      and(
+        eq(businesses.status, "approved"),
+        sql`${businesses.lat} is not null and ${businesses.lng} is not null`,
+        sql`${distance} <= ${radiusMiles}`,
+        // Scraped listings that announce their own closure are not a recommendation.
+        sql`${businesses.name} !~* 'perman(a|e)ntly clos'`,
+        excludeTitle ? ne(businesses.name, excludeTitle) : undefined
+      )
+    )
+    .groupBy(businesses.id, categories.id)
+    .orderBy(distance)
+    .limit(limit)
+  return rows
+}
+
+export type NearbyActivity = {
+  title: string
+  slug: string
+  category: string
+  imageUrl: string | null
+  address: string | null
+  miles: number
+}
+
+/** Other places to go, closest first. Pass `excludeSlug` when linking from an activity page. */
+export async function getActivitiesNearPoint(
+  lat: number,
+  lng: number,
+  limit = 4,
+  excludeSlug?: string
+): Promise<NearbyActivity[]> {
+  const distance = milesFrom(lat, lng, activities.lat, activities.lng)
+  const rows = await db
+    .select({
+      title: activities.title,
+      slug: activities.slug,
+      category: activities.category,
+      imageUrl: activities.imageUrl,
+      address: activities.address,
+      miles: distance,
+    })
+    .from(activities)
+    .where(
+      and(
+        sql`${activities.lat} is not null and ${activities.lng} is not null`,
+        excludeSlug ? ne(activities.slug, excludeSlug) : undefined
+      )
+    )
+    .orderBy(distance)
+    .limit(limit)
+  return rows
+}
