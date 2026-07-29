@@ -23,6 +23,7 @@ import {
 } from "lucide-react"
 import { isPast } from "date-fns"
 import { getTranslations } from "next-intl/server"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 
 export const metadata = { title: "Dashboard — Lompoc Locals" }
 
@@ -41,7 +42,7 @@ export default async function DashboardHomePage() {
     }),
   ])
 
-  const currentTier = sub?.tier ?? "free"
+  const currentTier = await getEffectiveTierForUser(userId)
   const tierConfig = TIERS[currentTier]
 
   // Active deal count + total views/clicks
@@ -74,7 +75,7 @@ export default async function DashboardHomePage() {
   const isAtLimit = dealLimit !== Infinity && activeDealCount >= dealLimit
   const isNearLimit = !isAtLimit && dealLimit !== Infinity && usagePct >= 75
 
-  const isActive = sub?.status === "active" || sub?.status === "trialing"
+  const isPaid = currentTier !== "free"
 
   return (
     <div className="space-y-6">
@@ -163,7 +164,7 @@ export default async function DashboardHomePage() {
             href="/dashboard/billing"
             className="shrink-0 rounded-xl border px-3 py-1.5 text-xs font-medium transition hover:bg-accent"
           >
-            {isActive && sub ? t("managePlan") : t("viewPlans")}
+            {isPaid ? t("managePlan") : t("viewPlans")}
           </Link>
         </div>
 

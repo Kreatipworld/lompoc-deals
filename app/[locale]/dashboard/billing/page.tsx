@@ -3,6 +3,7 @@ import { db } from "@/db/client"
 import { subscriptions, deals } from "@/db/schema"
 import { TIERS, stripe } from "@/lib/stripe"
 import { getPlanFeatures } from "@/lib/plan-features"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { eq, and, gt, sql } from "drizzle-orm"
 import { CreditCard, Check, AlertCircle, CheckCircle2, BarChart2, ExternalLink, Star, Zap, FileText } from "lucide-react"
 import BillingActions from "./billing-actions"
@@ -47,7 +48,10 @@ export default async function BillingPage({
   }
 
   const isActive = sub?.status === "active" || sub?.status === "trialing"
-  const currentTier = sub?.tier ?? "free"
+  const isTrialing = sub?.status === "trialing"
+  // Base entitlements on the effective tier so comps, trials, and grace-period
+  // members see the right plan/features/limits — not the raw subscription row.
+  const currentTier = await getEffectiveTierForUser(userId)
   const tierConfig = TIERS[currentTier]
   const features = getPlanFeatures(currentTier)
 
@@ -109,7 +113,7 @@ export default async function BillingPage({
 
       {/* Plan info card */}
       <div className="rounded-3xl border bg-card p-6 shadow-sm">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-primary" />
@@ -125,22 +129,26 @@ export default async function BillingPage({
             </h2>
             {sub?.currentPeriodEnd && (
               <p className="mt-1 text-sm text-muted-foreground">
-                {sub.cancelAtPeriodEnd
+                {isTrialing
+                  ? t("trialEndsOn", { date: sub.currentPeriodEnd.toLocaleDateString() })
+                  : sub.cancelAtPeriodEnd
                   ? t("cancelsOn", { date: sub.currentPeriodEnd.toLocaleDateString() })
                   : t("renewsOn", { date: sub.currentPeriodEnd.toLocaleDateString() })}
               </p>
             )}
             <span
               className={`mt-2 inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
-                sub?.status === "active"
+                sub?.status === "active" || sub?.status === "trialing"
                   ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
                   : sub?.status === "past_due"
                   ? "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
                   : "bg-muted text-muted-foreground"
               }`}
             >
-              {!sub || sub.status === "trialing"
+              {!sub
                 ? t("statusActive")
+                : sub.status === "trialing"
+                ? t("statusTrialing")
                 : sub.status === "active"
                 ? t("statusActive")
                 : sub.status === "past_due"
@@ -309,12 +317,18 @@ export default async function BillingPage({
                   >
                     {t("plusContact")}
                   </a>
+                ) : key === "free" ? (
+                  // Reached only when the effective tier is paid (the current-plan
+                  // branch handles free). A downgrade must go through Stripe's
+                  // cancel flow, so route to the billing portal instead of firing a
+                  // subscribe(free) checkout. Comps have no sub to manage.
+                  sub ? <BillingActions hasSubscription mode="manage" /> : null
                 ) : (
                   <BillingActions
                     hasSubscription={!!sub}
                     mode="subscribe"
                     tier={key}
-                    label={currentTier ? t("switchTo", { name: tier.name }) : t("getStarted")}
+                    label={sub && sub.tier !== "free" ? t("switchTo", { name: tier.name }) : t("getStarted")}
                   />
                 )}
               </div>

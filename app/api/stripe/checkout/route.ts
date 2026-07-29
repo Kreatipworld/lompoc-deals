@@ -44,7 +44,9 @@ export async function POST(request: Request) {
 
   const userId = Number(session.user.id)
 
-  // Free tier requires no Stripe checkout — just create/update the subscription record
+  // Free tier is a downgrade — no Stripe checkout. If there's a live Stripe
+  // subscription we must actually cancel it (at period end so they keep the
+  // access they already paid for); otherwise the customer keeps getting billed.
   if (tier === "free") {
     let existing
     try {
@@ -56,6 +58,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Database error. Please try again." }, { status: 503 })
     }
 
+    const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+
+    if (existing?.stripeSubscriptionId) {
+      // Schedule cancellation at period end. Do NOT touch tier/subscriptionId
+      // here — the customer.subscription.updated/deleted webhook records the
+      // final downgrade once Stripe actually cancels.
+      try {
+        await stripe.subscriptions.update(existing.stripeSubscriptionId, {
+          cancel_at_period_end: true,
+        })
+      } catch (err) {
+        console.error("[stripe/checkout] failed to schedule subscription cancellation:", err)
+        return NextResponse.json(
+          { error: "We couldn't cancel your subscription. Please try again in a minute." },
+          { status: 502 }
+        )
+      }
+      return NextResponse.json({ url: `${baseUrl}/dashboard/billing?success=1` })
+    }
+
+    // No live Stripe subscription — just make sure a free record exists.
     try {
       if (existing) {
         await db.update(subscriptions)
@@ -74,7 +97,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Database error. Please try again." }, { status: 503 })
     }
 
-    const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
     return NextResponse.json({ url: `${baseUrl}/dashboard/billing?success=1` })
   }
 
@@ -150,8 +172,10 @@ export async function POST(request: Request) {
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${baseUrl}/dashboard/billing?success=1`,
       cancel_url: `${baseUrl}/dashboard/billing?canceled=1`,
+      allow_promotion_codes: true,
       metadata: { userId: String(userId), tier },
       subscription_data: {
+        trial_period_days: 14,
         metadata: { userId: String(userId), tier },
       },
     })

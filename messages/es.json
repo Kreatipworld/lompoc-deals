@@ -1463,6 +1463,8 @@
     "cancelsOn": "Cancela el {date}",
     "renewsOn": "Renueva el {date}",
     "statusActive": "Activo",
+    "statusTrialing": "Prueba",
+    "trialEndsOn": "La prueba termina el {date}",
     "statusPastDue": "Vencido",
     "statusCanceled": "Cancelado",
     "managePlan": "Administrar plan",

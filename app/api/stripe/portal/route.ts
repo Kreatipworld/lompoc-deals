@@ -10,6 +10,9 @@ export async function POST() {
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+  if (session.user.role !== "business") {
+    return NextResponse.json({ error: "Only business accounts can manage billing" }, { status: 403 })
+  }
 
   const userId = Number(session.user.id)
   const sub = await db.query.subscriptions.findFirst({

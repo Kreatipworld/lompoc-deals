@@ -1,10 +1,8 @@
 import { auth } from "@/auth"
-import { db } from "@/db/client"
-import { subscriptions } from "@/db/schema"
-import { eq } from "drizzle-orm"
 import { redirect, notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { TIERS } from "@/lib/stripe"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { getMyPropertyById } from "@/lib/biz-actions"
 import { ChevronLeft } from "lucide-react"
 import { PropertyForm } from "../../property-form"
@@ -20,10 +18,7 @@ export default async function EditPropertyPage({
   const session = await auth()
   const userId = Number(session?.user?.id)
 
-  const sub = await db.query.subscriptions.findFirst({
-    where: eq(subscriptions.userId, userId),
-  })
-  const currentTier = sub?.tier ?? "free"
+  const currentTier = await getEffectiveTierForUser(userId)
 
   if (!TIERS[currentTier].canListRealEstate) {
     redirect("/dashboard/properties")

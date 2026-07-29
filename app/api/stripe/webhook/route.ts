@@ -57,15 +57,41 @@ export async function POST(request: Request) {
       const stripeCustomerId = session.customer as string
       const stripeSubscriptionId = session.subscription as string
 
-      // Fetch the subscription to get period end (expand items)
-      const sub = await stripe.subscriptions.retrieve(stripeSubscriptionId, {
-        expand: ["items"],
-      })
-      const periodEnd = getPeriodEnd(sub)
+      // Fetch the subscription to get period end + real status (expand items).
+      // P1-4: a transient Stripe error must not 500 the event (Stripe would
+      // redeliver). On failure, reconcile via the subscription.* events instead.
+      let sub: Stripe.Subscription | null = null
+      try {
+        sub = await stripe.subscriptions.retrieve(stripeSubscriptionId, {
+          expand: ["items"],
+        })
+      } catch (err) {
+        console.error(
+          "stripe.subscriptions.retrieve failed in checkout.session.completed; will reconcile via subscription.* events",
+          err
+        )
+      }
+      const periodEnd = sub ? getPeriodEnd(sub) : null
+      // Persist the REAL status (e.g. 'trialing' for a 14-day trial) so a
+      // trial isn't mislabeled 'active' or clobbered by a racing update event.
+      const subStatus = sub?.status as
+        | "active"
+        | "past_due"
+        | "canceled"
+        | "trialing"
+        | undefined
 
       const existing = await db.query.subscriptions.findFirst({
         where: eq(subscriptions.userId, userId),
       })
+
+      // Dedupe guard for analytics: this checkout is a genuinely new activation
+      // only if the row wasn't already tied to this subscription in an active/
+      // trialing state before this event.
+      const alreadyActivated =
+        !!existing &&
+        existing.stripeSubscriptionId === stripeSubscriptionId &&
+        (existing.status === "active" || existing.status === "trialing")
 
       if (existing) {
         await db.update(subscriptions)
@@ -73,7 +99,8 @@ export async function POST(request: Request) {
             stripeCustomerId,
             stripeSubscriptionId,
             tier,
-            status: "active",
+            // Only overwrite status when we could read the real one from Stripe.
+            ...(subStatus ? { status: subStatus } : {}),
             currentPeriodEnd: periodEnd,
             cancelAtPeriodEnd: 0,
             updatedAt: new Date(),
@@ -85,15 +112,17 @@ export async function POST(request: Request) {
           stripeCustomerId,
           stripeSubscriptionId,
           tier,
-          status: "active",
+          // Falls back to the column default ('trialing') if Stripe was unreachable.
+          ...(subStatus ? { status: subStatus } : {}),
           currentPeriodEnd: periodEnd,
           cancelAtPeriodEnd: 0,
         })
       }
 
-      // Emit paid_upgrade — fires exactly once per checkout completion
-      if (tier !== "free") {
-        const lineItem = sub.items?.data?.[0]
+      // Emit paid_upgrade at-most-once per subscription — skip if this row was
+      // already active/trialing on this subscription (redelivery / duplicate).
+      if (tier !== "free" && !alreadyActivated) {
+        const lineItem = sub?.items?.data?.[0]
         const priceUsdCents = lineItem?.price?.unit_amount ?? 0
         const updatedSub = await db.query.subscriptions.findFirst({
           where: eq(subscriptions.userId, userId),
@@ -113,7 +142,13 @@ export async function POST(request: Request) {
     case "customer.subscription.updated": {
       const sub = event.data.object as Stripe.Subscription
       const userId = Number(sub.metadata?.userId)
-      if (!userId) break
+      const customerId = sub.customer as string
+
+      // P1-3: fall back to the stripe_customer_id link when metadata.userId is
+      // missing/NaN, mirroring the invoice.* handlers — otherwise the update is
+      // silently dropped.
+      const byUserId = Number.isFinite(userId) && userId > 0
+      if (!byUserId && !customerId) break
 
       // Prefer deriving tier from the active price (handles portal upgrades/downgrades
       // where metadata.tier may still reflect the original plan).
@@ -130,7 +165,11 @@ export async function POST(request: Request) {
           cancelAtPeriodEnd: sub.cancel_at_period_end ? 1 : 0,
           updatedAt: new Date(),
         })
-        .where(eq(subscriptions.userId, userId))
+        .where(
+          byUserId
+            ? eq(subscriptions.userId, userId)
+            : eq(subscriptions.stripeCustomerId, customerId)
+        )
       break
     }
 
@@ -191,7 +230,12 @@ export async function POST(request: Request) {
     case "customer.subscription.deleted": {
       const sub = event.data.object as Stripe.Subscription
       const userId = Number(sub.metadata?.userId)
-      if (!userId) break
+      const customerId = sub.customer as string
+
+      // P1-3: fall back to the stripe_customer_id link when metadata.userId is
+      // missing/NaN so cancellations are never silently dropped.
+      const byUserId = Number.isFinite(userId) && userId > 0
+      if (!byUserId && !customerId) break
 
       await db.update(subscriptions)
         .set({
@@ -200,7 +244,11 @@ export async function POST(request: Request) {
           stripeSubscriptionId: null,
           updatedAt: new Date(),
         })
-        .where(eq(subscriptions.userId, userId))
+        .where(
+          byUserId
+            ? eq(subscriptions.userId, userId)
+            : eq(subscriptions.stripeCustomerId, customerId)
+        )
       break
     }
 

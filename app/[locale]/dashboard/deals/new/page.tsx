@@ -1,10 +1,8 @@
 import { auth } from "@/auth"
-import { db } from "@/db/client"
-import { subscriptions } from "@/db/schema"
-import { eq } from "drizzle-orm"
 import { Link } from "@/i18n/navigation"
 import { Lock, Zap } from "lucide-react"
 import { TIERS } from "@/lib/stripe"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { DealForm } from "../deal-form"
 
 export const metadata = { title: "New deal — Lompoc Locals" }
@@ -12,14 +10,10 @@ export const metadata = { title: "New deal — Lompoc Locals" }
 export default async function NewDealPage() {
   const session = await auth()
   const userId = Number(session?.user?.id)
-  const sub = await db.query.subscriptions.findFirst({
-    where: eq(subscriptions.userId, userId),
-  })
-  // Mirror the server-side limit in lib/biz-actions.ts: an inactive sub falls
-  // back to the Free limit. Free = 0 → posting deals is gated behind Growth.
-  const isActive = sub?.status === "active" || sub?.status === "trialing"
-  const tierKey = sub?.tier ?? "free"
-  const dealLimit = isActive ? TIERS[tierKey].dealLimit : TIERS.free.dealLimit
+  // Mirror the server-side limit in lib/biz-actions.ts, resolved through the
+  // effective tier (comps, trials, grace). Free = 0 → posting is gated on Growth.
+  const tierKey = await getEffectiveTierForUser(userId)
+  const dealLimit = TIERS[tierKey].dealLimit
 
   if (dealLimit === 0) {
     return (

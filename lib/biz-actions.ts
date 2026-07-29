@@ -7,7 +7,7 @@ import { and, eq, gt, sql } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { businesses, deals, subscriptions, propertyListings, favorites, businessFollows, users } from "@/db/schema"
+import { businesses, deals, propertyListings, favorites, businessFollows, users } from "@/db/schema"
 import { assertFeature } from "@/lib/plan-features"
 import { uploadImage, deleteImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
@@ -15,6 +15,7 @@ import { localizedLompocAddressError } from "@/lib/i18n-helpers"
 import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
 import { isAmenitySlug } from "@/lib/amenities"
 import { TIERS } from "@/lib/stripe"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail } from "@/lib/email"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
@@ -376,14 +377,13 @@ export async function saveDealAction(
 
   const dealId = formData.get("dealId")
 
-  // Subscription tier gating for new deals only
+  // Subscription tier gating for new deals only. Use the effective tier so a
+  // comped (plan_override), trialing, or grace-period business gets its real
+  // deal limit instead of being wrongly treated as free.
   if (!dealId) {
-    const sub = await db.query.subscriptions.findFirst({
-      where: eq(subscriptions.userId, userId),
-    })
-    const isActive = sub?.status === "active" || sub?.status === "trialing"
-    const tierKey = sub?.tier ?? "free"
-    const limit = isActive ? TIERS[tierKey].dealLimit : TIERS.free.dealLimit
+    const tier = await getEffectiveTierForUser(userId)
+    const tierKey = tier
+    const limit = TIERS[tierKey].dealLimit
 
     if (limit !== Infinity) {
       const now = new Date()
@@ -645,11 +645,9 @@ export async function upsertPropertyAction(
   const biz = await ownedBusiness(userId)
   if (!biz) return { error: t("createProfileFirstShort") }
 
-  // Require premium tier
-  const sub = await db.query.subscriptions.findFirst({
-    where: eq(subscriptions.userId, userId),
-  })
-  const tierKey = sub?.tier ?? "free"
+  // Require premium tier. Use the effective tier so comps/trials/grace are
+  // honored (and status is accounted for) rather than reading sub.tier raw.
+  const tierKey = await getEffectiveTierForUser(userId)
   try {
     assertFeature(tierKey, "canListRealEstate")
   } catch {

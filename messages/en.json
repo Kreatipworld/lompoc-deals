@@ -1463,6 +1463,8 @@
     "cancelsOn": "Cancels on {date}",
     "renewsOn": "Renews on {date}",
     "statusActive": "Active",
+    "statusTrialing": "Trial",
+    "trialEndsOn": "Trial ends {date}",
     "statusPastDue": "Past due",
     "statusCanceled": "Canceled",
     "managePlan": "Manage plan",

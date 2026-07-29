@@ -11,6 +11,7 @@ import { users, businesses, subscriptions } from "@/db/schema"
 import { signIn } from "@/auth"
 import { stripe, validStripeCustomerId, TIERS } from "@/lib/stripe"
 import type { TierKey } from "@/lib/stripe"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { sendWelcomeEmail } from "@/lib/email"
@@ -391,14 +392,12 @@ export async function profileSetupAction(
   redirect((await canPostDeals(userId)) ? "/signup/business/first-deal" : "/dashboard")
 }
 
-/** True when the user's subscription tier allows posting at least one deal. */
+/** True when the user's effective tier allows posting at least one deal. */
 export async function canPostDeals(userId: number): Promise<boolean> {
-  const sub = await db.query.subscriptions.findFirst({
-    where: eq(subscriptions.userId, userId),
-  })
-  if (!sub || sub.status !== "active") return false
-  const limit = TIERS[(sub.tier ?? "free") as TierKey].dealLimit
-  return limit > 0
+  // Use the effective tier so trialing and comped (plan_override) users — not
+  // just status "active" — are correctly routed to post their first deal.
+  const tier = await getEffectiveTierForUser(userId)
+  return TIERS[tier].dealLimit > 0
 }
 
 // ─── Stripe return — verify payment server-side so paid features unlock even
@@ -423,6 +422,12 @@ export async function confirmCheckoutOnReturn(
 
     const stripeSubscriptionId =
       typeof session.subscription === "string" ? session.subscription : session.subscription?.id
+    // TODO: the real Stripe subscription status (e.g. "trialing") is not readily
+    // available here — session.subscription is an unexpanded id string, so we
+    // cannot distinguish an active vs trialing sub without an extra retrieve/expand.
+    // The webhook is the source of truth and will reconcile the true status; this
+    // return-path write only needs to unlock paid features promptly, so we set
+    // "active". Do not fabricate a trialing status here.
     await db
       .update(subscriptions)
       .set({

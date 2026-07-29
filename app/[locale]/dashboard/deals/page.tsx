@@ -1,11 +1,9 @@
 import { Link } from "@/i18n/navigation"
 import { differenceInDays, format, isPast } from "date-fns"
 import { Plus, Eye, MousePointerClick, Tag, Pause, Play, Zap } from "lucide-react"
-import { eq } from "drizzle-orm"
 import { auth } from "@/auth"
-import { db } from "@/db/client"
-import { subscriptions } from "@/db/schema"
 import { TIERS } from "@/lib/stripe"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { getMyBusiness, getMyDeals, deleteDealAction, toggleDealPausedAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { StatCard } from "@/components/stat-card"
@@ -66,13 +64,11 @@ export default async function MyDealsPage() {
   const totalViews = deals.reduce((s, d) => s + (d.viewCount ?? 0), 0)
   const totalClicks = deals.reduce((s, d) => s + (d.clickCount ?? 0), 0)
 
-  // Resolve the deal limit exactly as the server enforces it (Free = 0 → gated).
+  // Resolve the deal limit exactly as the server enforces it (Free = 0 → gated),
+  // via the effective tier so comps, trials, and grace-period members match.
   const session = await auth()
-  const sub = await db.query.subscriptions.findFirst({
-    where: eq(subscriptions.userId, Number(session?.user?.id)),
-  })
-  const isActive = sub?.status === "active" || sub?.status === "trialing"
-  const dealLimit = isActive ? TIERS[sub?.tier ?? "free"].dealLimit : TIERS.free.dealLimit
+  const tier = await getEffectiveTierForUser(Number(session?.user?.id))
+  const dealLimit = TIERS[tier].dealLimit
   const canPostDeals = dealLimit !== 0
 
   return (

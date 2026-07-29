@@ -1,11 +1,9 @@
 import { redirect } from "next/navigation"
 import { LayoutDashboard, Store, Tag, BarChart3, CreditCard, Building2, Ticket } from "lucide-react"
 import { auth } from "@/auth"
-import { db } from "@/db/client"
-import { subscriptions } from "@/db/schema"
-import { eq } from "drizzle-orm"
 import { getMyDeals } from "@/lib/biz-actions"
 import { TIERS } from "@/lib/stripe"
+import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { isPast } from "date-fns"
 import { getTranslations } from "next-intl/server"
@@ -26,12 +24,11 @@ export default async function DashboardLayout({
   let activeDealCount = 0
   let canListRealEstate = false
   try {
-    const [deals, sub] = await Promise.all([
+    const [deals, tier] = await Promise.all([
       getMyDeals(),
-      db.query.subscriptions.findFirst({ where: eq(subscriptions.userId, userId) }),
+      getEffectiveTierForUser(userId),
     ])
     activeDealCount = deals.filter((d) => !isPast(d.expiresAt)).length
-    const tier = sub?.tier ?? "free"
     canListRealEstate = TIERS[tier].canListRealEstate
   } catch {
     // silently ignore — layout must not hard-fail
