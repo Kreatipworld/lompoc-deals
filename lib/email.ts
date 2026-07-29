@@ -72,13 +72,13 @@ function welcomeHtml(opts: {
       <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">${opts.heading}</h1>
       <div style="height:3px; width:52px; background:#EFC618; border-radius:2px; margin:0 0 18px;"></div>
       <p style="color:#444; line-height:1.6; margin:0 0 16px;">${opts.intro}</p>
-      <p style="color:#1a1a1a; font-weight:600; margin:0 0 8px;">${opts.bulletsTitle}</p>
+      ${opts.bullets.length ? `<p style="color:#1a1a1a; font-weight:600; margin:0 0 8px;">${opts.bulletsTitle}</p>
       <ul style="color:#444; line-height:1.7; margin:0 0 24px; padding-left:20px;">
         ${opts.bullets.map((b) => `<li>${b}</li>`).join("")}
-      </ul>
-      <p style="margin:0 0 28px;">
+      </ul>` : ""}
+      ${opts.ctaLabel && opts.ctaUrl ? `<p style="margin:0 0 28px;">
         <a href="${opts.ctaUrl}" style="display:inline-block; background:${BRAND_PURPLE}; color:#ffffff; padding:12px 22px; border-radius:8px; text-decoration:none; font-weight:600;">${opts.ctaLabel}</a>
-      </p>
+      </p>` : ""}
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">${opts.closing}</p>
       <p style="color:#888; margin:16px 0 0;">${opts.signoff}</p>
       <div style="margin-top:26px; padding-top:18px; border-top:1px solid #eee; text-align:center;">
@@ -146,6 +146,50 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
     await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: content.subject, html: content.html })
   } catch (err) {
     console.error("[email] business welcome failed:", err)
+  }
+}
+
+/** Auto-acknowledgement to a member who filed a support ticket. Fire-and-forget. */
+export async function sendTicketAckEmail(
+  email: string,
+  ticketSubject: string,
+  locale: "en" | "es"
+): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const dashUrl = siteUrl(`/${locale}/dashboard`)
+  const content =
+    locale === "es"
+      ? {
+          subject: "Recibimos tu mensaje — Lompoc Locals",
+          html: welcomeHtml({
+            heading: "Estamos en ello.",
+            intro: `Gracias por escribirnos sobre &ldquo;${ticketSubject}&rdquo;. Lo registramos y nuestro equipo ya está trabajando en ello — te responderemos a este correo lo antes posible. Mientras tanto, todo en tu panel sigue funcionando.`,
+            bulletsTitle: "",
+            bullets: [],
+            ctaLabel: "Volver a tu panel",
+            ctaUrl: dashUrl,
+            closing: "Responde a este correo cuando quieras — lo lee una persona real aquí en Lompoc.",
+            signoff: "— El equipo de Lompoc Locals",
+          }),
+        }
+      : {
+          subject: "We got your message — Lompoc Locals",
+          html: welcomeHtml({
+            heading: "We're on it.",
+            intro: `Thanks for reaching out about &ldquo;${ticketSubject}&rdquo;. We've logged it and our team is already on it — we'll follow up at this email as soon as we can. In the meantime, everything on your dashboard keeps working.`,
+            bulletsTitle: "",
+            bullets: [],
+            ctaLabel: "Back to your dashboard",
+            ctaUrl: dashUrl,
+            closing: "Reply to this email any time — it reaches a real person here in Lompoc.",
+            signoff: "— The Lompoc Locals team",
+          }),
+        }
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: content.subject, html: content.html })
+  } catch (err) {
+    console.error("[email] ticket ack failed:", err)
   }
 }
 

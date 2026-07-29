@@ -5,7 +5,8 @@ import { eq, desc } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { supportTickets, businesses } from "@/db/schema"
-import { notifyPlatform } from "@/lib/email"
+import { notifyPlatform, sendTicketAckEmail } from "@/lib/email"
+import { getCurrentLocale } from "@/lib/i18n-helpers"
 
 const ticketSchema = z.object({
   category: z.enum(["bug", "billing", "feature", "question", "other"]),
@@ -60,6 +61,12 @@ export async function submitTicketAction(
     `From: ${session.user.email ?? `user #${userId}`}`,
     `Business: ${biz?.name ?? "—"}`,
   ])
+
+  // Auto-acknowledge the member so they know it's being handled.
+  if (session.user.email) {
+    const locale = (await getCurrentLocale()) as "en" | "es"
+    await sendTicketAckEmail(session.user.email, subject, locale)
+  }
 
   return { success: "Thanks — we got it. We'll follow up at your email." }
 }
