@@ -295,6 +295,11 @@ export default async function BillingPage({
                     </>
                   )}
                 </div>
+                {key === "standard" && (
+                  <p className="mt-1.5 text-xs font-semibold text-primary">
+                    {t("trial", { price: tier.price.toFixed(2) })}
+                  </p>
+                )}
                 <ul className="mt-4 space-y-2">
                   {tier.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm">

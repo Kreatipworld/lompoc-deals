@@ -428,6 +428,9 @@ export default async function PartnersPage({
             <span className="text-base text-muted-foreground">{t("pricing.perMonth")}</span>
           </div>
           <p className="mt-1 text-sm font-semibold text-primary">{t("pricing.planName")}</p>
+          <p className="mt-2 text-sm font-semibold text-success">
+            {t("pricing.trial", { price: growthPrice.toFixed(2) })}
+          </p>
           <p className="mt-5 text-sm leading-relaxed text-muted-foreground sm:text-base">
             {t("pricing.body", { perDay })}
           </p>

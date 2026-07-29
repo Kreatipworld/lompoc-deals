@@ -173,6 +173,10 @@ export async function POST(request: Request) {
       success_url: `${baseUrl}/dashboard/billing?success=1`,
       cancel_url: `${baseUrl}/dashboard/billing?canceled=1`,
       allow_promotion_codes: true,
+      // Skip card collection when nothing will ever be charged (e.g. a 100%-off
+      // FMEM comp) — a frictionless free membership. Normal paid trials still
+      // collect a card because a payment comes due after the 14-day trial.
+      payment_method_collection: "if_required",
       metadata: { userId: String(userId), tier },
       subscription_data: {
         trial_period_days: 14,

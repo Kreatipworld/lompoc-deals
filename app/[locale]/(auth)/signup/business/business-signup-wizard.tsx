@@ -369,6 +369,9 @@ function Step2({
             </span>
             <span className="text-sm text-muted-foreground">{t("step2.perMonth")}</span>
           </div>
+          <p className="mt-1.5 text-xs font-semibold text-success">
+            {t("step2.trial", { price: TIERS.standard.price.toFixed(2) })}
+          </p>
           {featureList(TIERS.standard.features, false)}
         </button>
 
