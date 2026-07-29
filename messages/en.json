@@ -113,7 +113,7 @@
     "browseDirectory": "Browse directory",
     "forBusinessOwners": "For business owners",
     "ownABusiness": "Own a Lompoc business?",
-    "businessCta": "List your business, post your own coupons, and reach locals actively looking to spend at home. Free forever for the basics.",
+    "businessCta": "List your business, get discovered by neighbors, and land in the weekly digest — with real coupons whenever you want them. Free forever for the basics.",
     "listYourBusiness": "List your business",
     "weeklyDigest": "Weekly digest",
     "findDealsInLompoc": "Find deals in Lompoc",
@@ -627,14 +627,14 @@
   },
   "partners": {
     "metaTitle": "Partner With Lompoc Locals — Get Found by Locals",
-    "metaDescription": "Join the businesses already on Lompoc Locals — the local hub for Lompoc & Vandenberg. Free to list, real coupons, and a spot in the weekly digest.",
+    "metaDescription": "Join the businesses already on Lompoc Locals — the local hub for Lompoc & Vandenberg. Get discovered by neighbors, featured in the weekly digest, and showcased in local search. Free to list.",
     "metaOgTitle": "Lompoc Locals — Get found by the locals already looking for you",
-    "metaOgDescription": "The #1 local hub for Lompoc & Vandenberg. Claim your free page, post real coupons, and land in Monday's digest.",
+    "metaOgDescription": "The #1 local hub for Lompoc & Vandenberg. Claim your free page, get found by neighbors, and land in Monday's digest.",
     "hero": {
       "kicker": "For Lompoc & Vandenberg businesses",
       "h1": "Get found by the locals",
       "h1Italic": "already looking for you.",
-      "subtitle": "Lompoc Locals is the #1 local hub for Lompoc & Vandenberg — thousands of neighbors browsing deals, businesses, and events every month. Your business belongs here.",
+      "subtitle": "Lompoc Locals is the #1 local hub for Lompoc & Vandenberg — thousands of neighbors browsing local businesses, events, and deals every month. This is where they find you.",
       "ctaClaim": "Claim your page",
       "ctaLive": "See it live",
       "trustLine": "Free to list · No credit card · Cancel anytime",
@@ -657,13 +657,13 @@
     },
     "values": {
       "eyebrow": "Why partner with us",
-      "h2": "Three ways it works for you.",
-      "card1Title": "Get found where locals look",
-      "card1Body": "The homepage, search, the map, and the weekly digest email. 95% of locals are on their phone — and it's built for exactly that.",
-      "card2Title": "Coupons that take seconds",
-      "card2Body": "Every customer gets their own code. You redeem it at your counter in seconds — no app, no scanner, no hardware — and it can't be shared or faked.",
-      "card3Title": "Real numbers, not guesses",
-      "card3Body": "A simple dashboard of views, claims, and coupons actually redeemed at your register. You see exactly who walked in."
+      "h2": "More than a deal — a place in the community.",
+      "card1Title": "Get discovered by neighbors",
+      "card1Body": "The homepage, search, the map, and the weekly digest email — the places locals already look. 95% are on their phone, and it's built for exactly that.",
+      "card2Title": "Own your spot in your category",
+      "card2Body": "Brand awareness that sticks: your page ranks in your category and shows up in local search, so you're the name neighbors remember.",
+      "card3Title": "Real coupons, real numbers",
+      "card3Body": "Post a deal whenever you want one — each with its own code — then watch the views, claims, and redemptions in a simple dashboard."
     },
     "hub": {
       "eyebrow": "More than a listing",
@@ -704,7 +704,7 @@
       "planName": "Growth",
       "perMonth": "/month",
       "trial": "14-day free trial, then ${price}/month",
-      "body": "The Growth plan — about {perDay} a day — unlocks real coupons, your dashboard, and a spot in every subscriber's Monday inbox.",
+      "body": "For about {perDay} a day, Growth puts you in front of locals — featured in Monday's digest, showcased in local search, your views and clicks in a dashboard, plus real coupons whenever you want them.",
       "freeNote": "…and getting listed is always free.",
       "ctaLabel": "Claim your page"
     },
@@ -883,9 +883,9 @@
   },
   "signupBusiness": {
     "metaTitle": "List your business — Lompoc Locals",
-    "metaDescription": "Sign up as a business on Lompoc Locals. Reach local customers in Lompoc with no per-deal fees and no hidden charges.",
+    "metaDescription": "Sign up as a business on Lompoc Locals. Get discovered by neighbors, featured in the weekly digest, and showcased in local search — no per-deal fees, no hidden charges.",
     "pageTitle": "List your business",
-    "pageSubtitle": "Reach local customers in Lompoc. No per-deal fees, no hidden charges.",
+    "pageSubtitle": "Get discovered by neighbors in Lompoc & Vandenberg — featured in the weekly digest, on the map, and in local search. No per-deal fees, no hidden charges.",
     "stepBar": {
       "stepOf": "Step {current} of {total}"
     },
@@ -1167,7 +1167,8 @@
       "getDirections": "Get directions",
       "hoursUnknown": "Hours not listed.",
       "hoursUnknownCall": "Hours not listed — call to confirm:",
-      "ownerCta": "Own this business? Get your deals in front of Lompoc locals →"
+      "ownerCta": "Own this business? Get your deals in front of Lompoc locals →",
+      "placesNearby": "Places to go nearby"
     },
     "amenities": {
       "wheelchair_accessible": "Wheelchair accessible",
@@ -1309,8 +1310,8 @@
     "managePlan": "Manage plan",
     "viewPlans": "View plans",
     "dealUsage": "Deal usage",
-    "upgradeCta": "Unlock more with Growth",
-    "upgradeBody": "Start with a 14-day free trial — analytics, social links, and up to 5 active deals, then $39.99/mo",
+    "upgradeCta": "Get discovered with Growth",
+    "upgradeBody": "Start with a 14-day free trial — featured in the weekly digest, views & clicks analytics, social links, and up to 5 deals, then $39.99/mo",
     "upgrade": "Upgrade",
     "quickActions": "Quick actions",
     "postDeal": "Post a deal",
@@ -1456,11 +1457,11 @@
     "activeDealsUsage": "Active deals",
     "dealsUsed": "{count} of {limit} used",
     "nearLimit": "Almost at your deal limit — upgrade to post more.",
-    "featureAnalytics": "View & click analytics",
-    "featureSocialLinks": "Social links on profile",
+    "featureAnalytics": "Views & clicks on your page",
+    "featureSocialLinks": "Social links + Google reviews",
     "featureRealEstate": "Real estate listings",
-    "featurePriority": "Priority in search results",
-    "featureFeatured": "Featured on homepage",
+    "featurePriority": "Showcased first in local search",
+    "featureFeatured": "Featured on the homepage",
     "currentPlanLabel": "Current plan",
     "cancelsOn": "Cancels on {date}",
     "renewsOn": "Renews on {date}",
@@ -1815,7 +1816,13 @@
     "arts": "Arts & Murals",
     "foodWine": "Food & Wine",
     "family": "Family",
-    "unique": "Only in Lompoc"
+    "unique": "Only in Lompoc",
+    "nearbyBusinesses": "Around the corner",
+    "nearbyBusinessesSub": "Local spots within a short walk or drive",
+    "morePlaces": "More places nearby",
+    "milesAway": "{miles} mi away",
+    "dealsCount": "{count, plural, one {# deal} other {# deals}}",
+    "viewAllBusinesses": "Browse all Lompoc businesses"
   },
   "subscribePage": {
     "metaTitle": "Weekly Digest",

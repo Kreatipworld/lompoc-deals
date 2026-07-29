@@ -70,10 +70,10 @@ export const TIERS = {
     featuredOnHomepage: false,
     features: [
       "Everything in Free",
-      "Post & showcase up to 5 deals",
-      "Featured in the weekly deals digest",
-      "Views & clicks analytics",
+      "Featured in the weekly community digest",
+      "Views & clicks analytics on your page",
       "Social links + Google reviews",
+      "Post & showcase up to 5 deals",
     ],
   },
   premium: {

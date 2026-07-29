@@ -113,7 +113,7 @@
     "browseDirectory": "Ver directorio",
     "forBusinessOwners": "Para dueños de negocios",
     "ownABusiness": "¿Tienes un negocio en Lompoc?",
-    "businessCta": "Publica tu negocio, ofrece cupones y llega a los locales que buscan apoyar a los comercios de su comunidad. Gratis para lo básico.",
+    "businessCta": "Publica tu negocio, que te descubran los vecinos y aparece en el boletín semanal — con cupones reales cuando los quieras. Gratis para siempre en lo básico.",
     "listYourBusiness": "Publica tu negocio",
     "weeklyDigest": "Resumen semanal",
     "findDealsInLompoc": "Encuentra ofertas en Lompoc",
@@ -627,14 +627,14 @@
   },
   "partners": {
     "metaTitle": "Sé socio de Lompoc Locals — Que los locales te encuentren",
-    "metaDescription": "Únete a los negocios que ya están en Lompoc Locals, el centro local de Lompoc y Vandenberg. Anuncio gratis, cupones reales y un espacio en el boletín semanal.",
+    "metaDescription": "Únete a los negocios que ya están en Lompoc Locals, el centro local de Lompoc y Vandenberg. Que te descubran tus vecinos, aparece en el boletín semanal y destaca en la búsqueda local. Anuncio gratis.",
     "metaOgTitle": "Lompoc Locals — Que te encuentren los vecinos que ya te están buscando",
-    "metaOgDescription": "El centro local #1 de Lompoc y Vandenberg. Anuncia tu página gratis, publica cupones reales y aparece en el boletín del lunes.",
+    "metaOgDescription": "El centro local #1 de Lompoc y Vandenberg. Anuncia tu página gratis, que te encuentren los vecinos y aparece en el boletín del lunes.",
     "hero": {
       "kicker": "Para negocios de Lompoc y Vandenberg",
       "h1": "Que te encuentren los vecinos",
       "h1Italic": "que ya te están buscando.",
-      "subtitle": "Lompoc Locals es el centro local #1 de Lompoc y Vandenberg — miles de vecinos exploran ofertas, negocios y eventos cada mes. Tu negocio pertenece aquí.",
+      "subtitle": "Lompoc Locals es el centro local #1 de Lompoc y Vandenberg — miles de vecinos exploran negocios, eventos y ofertas cada mes. Aquí es donde te encuentran.",
       "ctaClaim": "Reclama tu página",
       "ctaLive": "Ver el sitio en vivo",
       "trustLine": "Anuncio gratis · Sin tarjeta de crédito · Cancela cuando quieras",
@@ -657,13 +657,13 @@
     },
     "values": {
       "eyebrow": "Por qué ser socio",
-      "h2": "Tres formas en que funciona para ti.",
-      "card1Title": "Que te encuentren donde ya miran",
-      "card1Body": "La página principal, la búsqueda, el mapa y el boletín semanal por correo. El 95% de los locales usa su teléfono — y está diseñado justo para eso.",
-      "card2Title": "Cupones que toman segundos",
-      "card2Body": "Cada cliente recibe su propio código. Lo canjeas en tu mostrador en segundos — sin app, sin escáner, sin equipo nuevo — y no se puede compartir ni falsificar.",
-      "card3Title": "Números reales, no suposiciones",
-      "card3Body": "Un panel sencillo de vistas, cupones reclamados y canjeados de verdad en tu caja. Sabes exactamente quién entró."
+      "h2": "Más que una oferta — un lugar en la comunidad.",
+      "card1Title": "Que te descubran tus vecinos",
+      "card1Body": "La página principal, la búsqueda, el mapa y el boletín semanal por correo — donde los locales ya miran. El 95% usa su teléfono, y está diseñado justo para eso.",
+      "card2Title": "Tu lugar en tu categoría",
+      "card2Body": "Reconocimiento de marca que perdura: tu página aparece en tu categoría y en la búsqueda local, para que seas el nombre que los vecinos recuerdan.",
+      "card3Title": "Cupones reales, números reales",
+      "card3Body": "Publica una oferta cuando quieras — cada una con su propio código — y observa las vistas, los cupones reclamados y los canjeados en un panel sencillo."
     },
     "hub": {
       "eyebrow": "Más que un anuncio",
@@ -704,7 +704,7 @@
       "planName": "Growth",
       "perMonth": "/mes",
       "trial": "Prueba gratis de 14 días, luego ${price}/mes",
-      "body": "El plan Growth — unos {perDay} al día — desbloquea cupones reales, tu panel y un espacio en el correo del lunes de cada suscriptor.",
+      "body": "Por unos {perDay} al día, Growth te pone frente a los locales — destacado en el boletín del lunes, visible en la búsqueda local, tus vistas y clics en un panel, y cupones reales cuando los quieras.",
       "freeNote": "…y anunciarte siempre es gratis.",
       "ctaLabel": "Reclama tu página"
     },
@@ -883,9 +883,9 @@
   },
   "signupBusiness": {
     "metaTitle": "Publica tu negocio — Lompoc Locals",
-    "metaDescription": "Regístrate como negocio en Lompoc Locals. Llega a clientes locales en Lompoc sin cargos por oferta y sin costos ocultos.",
+    "metaDescription": "Regístrate como negocio en Lompoc Locals. Que te descubran los vecinos, aparece en el boletín semanal y destaca en la búsqueda local — sin cargos por oferta y sin costos ocultos.",
     "pageTitle": "Publica tu negocio",
-    "pageSubtitle": "Llega a clientes locales en Lompoc. Sin cargos por oferta, sin costos ocultos.",
+    "pageSubtitle": "Que te descubran los vecinos de Lompoc y Vandenberg — en el boletín semanal, en el mapa y en la búsqueda local. Sin cargos por oferta, sin costos ocultos.",
     "stepBar": {
       "stepOf": "Paso {current} de {total}"
     },
@@ -1167,7 +1167,8 @@
       "getDirections": "Cómo llegar",
       "hoursUnknown": "Horario no disponible.",
       "hoursUnknownCall": "Horario no disponible — llama para confirmar:",
-      "ownerCta": "¿Es tu negocio? Pon tus ofertas frente a los vecinos de Lompoc →"
+      "ownerCta": "¿Es tu negocio? Pon tus ofertas frente a los vecinos de Lompoc →",
+      "placesNearby": "Lugares que visitar cerca"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",
@@ -1309,8 +1310,8 @@
     "managePlan": "Administrar plan",
     "viewPlans": "Ver planes",
     "dealUsage": "Uso de ofertas",
-    "upgradeCta": "Desbloquea más con Growth",
-    "upgradeBody": "Empieza con una prueba gratis de 14 días — estadísticas, enlaces sociales y hasta 5 ofertas activas, luego $39.99/mes",
+    "upgradeCta": "Hazte notar con Growth",
+    "upgradeBody": "Empieza con una prueba gratis de 14 días — destacado en el boletín semanal, estadísticas de vistas y clics, redes sociales y hasta 5 ofertas, luego $39.99/mes",
     "upgrade": "Mejorar",
     "quickActions": "Acciones rápidas",
     "postDeal": "Publicar oferta",
@@ -1456,10 +1457,10 @@
     "activeDealsUsage": "Ofertas activas",
     "dealsUsed": "{count} de {limit} usadas",
     "nearLimit": "Casi en tu límite de ofertas — mejora para publicar más.",
-    "featureAnalytics": "Estadísticas de visitas y clics",
-    "featureSocialLinks": "Redes sociales en el perfil",
+    "featureAnalytics": "Vistas y clics en tu página",
+    "featureSocialLinks": "Redes sociales + reseñas de Google",
     "featureRealEstate": "Listados de bienes raíces",
-    "featurePriority": "Prioridad en resultados de búsqueda",
+    "featurePriority": "Destacado primero en la búsqueda local",
     "featureFeatured": "Destacado en la página principal",
     "currentPlanLabel": "Plan actual",
     "cancelsOn": "Cancela el {date}",
@@ -1815,7 +1816,13 @@
     "arts": "Arte y murales",
     "foodWine": "Comida y vino",
     "family": "Familia",
-    "unique": "Solo en Lompoc"
+    "unique": "Solo en Lompoc",
+    "nearbyBusinesses": "A la vuelta de la esquina",
+    "nearbyBusinessesSub": "Negocios locales a poca distancia",
+    "morePlaces": "Más lugares cerca",
+    "milesAway": "a {miles} mi",
+    "dealsCount": "{count, plural, one {# oferta} other {# ofertas}}",
+    "viewAllBusinesses": "Ver todos los negocios de Lompoc"
   },
   "subscribePage": {
     "metaTitle": "Digest semanal",

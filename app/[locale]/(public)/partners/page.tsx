@@ -283,12 +283,12 @@ export default async function PartnersPage({
               body={t("values.card1Body")}
             />
             <ValueCard
-              icon={<Receipt className="h-5 w-5" />}
+              icon={<Store className="h-5 w-5" />}
               title={t("values.card2Title")}
               body={t("values.card2Body")}
             />
             <ValueCard
-              icon={<Sparkles className="h-5 w-5" />}
+              icon={<Receipt className="h-5 w-5" />}
               title={t("values.card3Title")}
               body={t("values.card3Body")}
             />
