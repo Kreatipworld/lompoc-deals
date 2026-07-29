@@ -67,7 +67,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
-    getFeaturedActivities(6),
+    getFeaturedActivities(6, params.locale),
     getActiveDeals(12),
     getCategoryCoverImages(),
     getTranslations({ locale: params.locale, namespace: "home" }),

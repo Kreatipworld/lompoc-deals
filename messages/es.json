@@ -352,7 +352,22 @@
     "metaTitle": "Qué hacer en Lompoc, CA — Aventuras y Actividades",
     "metaDescription": "Descubre las mejores cosas que hacer en Lompoc, CA — misiones históricas, campos de flores, cata de vinos, playas, murales y aventuras al aire libre. Actualizado por locales.",
     "metaOgTitle": "Qué hacer en Lompoc, CA",
-    "metaOgDescription": "Explora Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más."
+    "metaOgDescription": "Explora Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más.",
+    "heading": "Qué hacer en Lompoc",
+    "all": "Todo",
+    "empty": "No encontramos actividades. ¡Vuelve pronto!",
+    "featured": "Destacado",
+    "mapCtaTitle": "Explora el mapa",
+    "mapCtaSub": "Mira actividades y negocios marcados en el mapa de Lompoc.",
+    "openMap": "Abrir mapa",
+    "catOutdoors": "Aire libre",
+    "catHistory": "Historia y cultura",
+    "catArts": "Arte y murales",
+    "catFoodWine": "Comida y vino",
+    "catFamily": "Familia",
+    "catUnique": "Solo en Lompoc",
+    "detailTitle": "{title} — Qué hacer en Lompoc",
+    "detailFallbackDescription": "Descubre {title} en Lompoc, CA."
   },
   "favorites": {
     "metaTitle": "Mis favoritos — Lompoc Locals"
@@ -2283,5 +2298,9 @@
     "subscribeTitle": "Recíbelo en tu correo",
     "subscribeBody": "Un correo por semana con todo lo que pasa en Lompoc. Gratis, y puedes cancelar cuando quieras.",
     "subscribeCta": "Suscribirme al semanal"
+  },
+  "distance": {
+    "shortWalk": "a 5 min caminando",
+    "milesAway": "a {miles} mi"
   }
 }

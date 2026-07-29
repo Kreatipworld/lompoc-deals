@@ -29,15 +29,6 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   }
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  outdoors: "Outdoors",
-  history: "History & Culture",
-  arts: "Arts & Murals",
-  "food-wine": "Food & Wine",
-  family: "Family",
-  unique: "Only in Lompoc",
-}
-
 // Real Lompoc photos (public/activities/) — never generic stock.
 const CATEGORY_IMAGES: Record<string, string> = {
   outdoors: "/activities/jalama-beach.jpg",
@@ -49,19 +40,32 @@ const CATEGORY_IMAGES: Record<string, string> = {
 }
 
 export default async function ActivitiesPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ category?: string }>
 }) {
+  const { locale } = await params
   const { category } = await searchParams
-  const [allActivities, categories] = await Promise.all([
-    getActivities(category),
+  const [allActivities, categories, t] = await Promise.all([
+    getActivities(category, 50, locale),
     getActivityCategories(),
+    getTranslations({ locale, namespace: "activities" }),
   ])
+
+  const CATEGORY_LABELS: Record<string, string> = {
+    outdoors: t("catOutdoors"),
+    history: t("catHistory"),
+    arts: t("catArts"),
+    "food-wine": t("catFoodWine"),
+    family: t("catFamily"),
+    unique: t("catUnique"),
+  }
 
   return (
     <>
-      <PageHeader title="Things to Do in Lompoc" />
+      <PageHeader title={t("heading")} />
 
       {/* ─── CATEGORY FILTER CHIPS ─── */}
       <div className="border-b bg-background">
@@ -75,7 +79,7 @@ export default async function ActivitiesPage({
                   : "border bg-background text-foreground hover:bg-accent"
               }`}
             >
-              All
+              {t("all")}
             </Link>
             {categories.map((cat) => (
               <Link
@@ -98,7 +102,7 @@ export default async function ActivitiesPage({
       <section className={`${PAGE_CONTAINER} py-8 sm:py-10`}>
         {allActivities.length === 0 ? (
           <p className="py-16 text-center text-muted-foreground">
-            No activities found. Check back soon!
+            {t("empty")}
           </p>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -136,7 +140,7 @@ export default async function ActivitiesPage({
                   {/* Featured badge */}
                   {activity.featured && (
                     <div className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold text-primary-foreground shadow">
-                      Featured
+                      {t("featured")}
                     </div>
                   )}
                   {/* Category chip */}
@@ -176,16 +180,16 @@ export default async function ActivitiesPage({
 
         {/* Map CTA */}
         <div className="mt-12 rounded-2xl border bg-accent/30 p-6 text-center">
-          <h3 className="font-display text-lg font-semibold">Explore the map</h3>
+          <h3 className="font-display text-lg font-semibold">{t("mapCtaTitle")}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            See activities and businesses pinned on the Lompoc map.
+            {t("mapCtaSub")}
           </p>
           <Link
             href="/map"
             className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             <MapPin className="h-4 w-4" />
-            Open map
+            {t("openMap")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

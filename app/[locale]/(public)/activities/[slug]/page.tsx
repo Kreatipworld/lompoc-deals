@@ -31,12 +31,15 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string; locale: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
-  const activity = await getActivityBySlug(slug)
+  const { slug, locale } = await params
+  const activity = await getActivityBySlug(slug, locale)
   if (!activity) return {}
+  const tm = await getTranslations({ locale, namespace: "activities" })
   return {
-    title: `${activity.title} — Things to Do in Lompoc | Lompoc Locals`,
-    description: activity.description ?? `Discover ${activity.title} in Lompoc, CA.`,
+    // No brand in the string — the root layout's template appends "| Lompoc Locals".
+    title: tm("detailTitle", { title: activity.title }),
+    description:
+      activity.description ?? tm("detailFallbackDescription", { title: activity.title }),
     openGraph: {
       title: activity.title,
       description: activity.description ?? undefined,
@@ -53,6 +56,11 @@ export default async function ActivityDetailPage({
 }) {
   const { slug, locale } = await params
   const t = await getTranslations({ locale, namespace: "activityDetail" })
+  const td = await getTranslations({ locale, namespace: "distance" })
+  const distanceLabels = {
+    shortWalk: td("shortWalk"),
+    miles: (value: string) => td("milesAway", { miles: value }),
+  }
 
   const CATEGORY_LABELS: Record<string, string> = {
     outdoors: t("outdoors"),
@@ -63,7 +71,7 @@ export default async function ActivityDetailPage({
     unique: t("unique"),
   }
 
-  const activity = await getActivityBySlug(slug)
+  const activity = await getActivityBySlug(slug, locale)
   if (!activity) notFound()
 
   // Proximity links. Routes like the taco trail sit on a nominal downtown point, so they get
@@ -243,8 +251,13 @@ export default async function ActivityDetailPage({
         heading={t("nearbyBusinesses")}
         subheading={t("nearbyBusinessesSub")}
         browseAllLabel={t("viewAllBusinesses")}
+        distanceLabels={distanceLabels}
       />
-      <NearbyPlaces places={nearbyPlaces} heading={t("morePlaces")} />
+      <NearbyPlaces
+        places={nearbyPlaces}
+        heading={t("morePlaces")}
+        distanceLabels={distanceLabels}
+      />
     </div>
   )
 }

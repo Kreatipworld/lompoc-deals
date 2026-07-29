@@ -370,6 +370,11 @@ export const activities = pgTable(
     photosJson: jsonb("photos_json"), // gallery photos (photo #1 == imageUrl when set)
     tips: text("tips"),
     seasonality: varchar("seasonality", { length: 200 }),
+    // Spanish copy. Rendered on /es/activities/* when present; falls back to the
+    // English column when it isn't, so a half-translated row still renders.
+    descriptionEs: text("description_es"),
+    tipsEs: text("tips_es"),
+    seasonalityEs: varchar("seasonality_es", { length: 200 }),
     sourceUrl: varchar("source_url", { length: 1000 }),
     featured: boolean("featured").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })

@@ -3,10 +3,15 @@ import { MapPin, Compass, Tag } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import type { NearbyBusiness, NearbyActivity } from "@/lib/queries"
 
-function distanceLabel(miles: number): string {
-  // Under a quarter mile reads as "steps away" better than "0.2 mi".
-  if (miles < 0.25) return "a 5-min walk"
-  return `${miles < 10 ? miles.toFixed(1) : Math.round(miles)} mi`
+/**
+ * Localized distance. Under a quarter mile, "a 5-min walk" reads better than "0.2 mi" —
+ * and the phrasing differs enough between languages that the caller supplies both strings.
+ */
+export type DistanceLabels = { shortWalk: string; miles: (value: string) => string }
+
+function distanceLabel(miles: number, labels: DistanceLabels): string {
+  if (miles < 0.25) return labels.shortWalk
+  return labels.miles(miles < 10 ? miles.toFixed(1) : String(Math.round(miles)))
 }
 
 /**
@@ -18,11 +23,13 @@ export function NearbyBusinesses({
   heading,
   subheading,
   browseAllLabel,
+  distanceLabels,
 }: {
   businesses: NearbyBusiness[]
   heading: string
   subheading: string
   browseAllLabel: string
+  distanceLabels: DistanceLabels
 }) {
   if (!businesses.length) return null
 
@@ -55,7 +62,7 @@ export function NearbyBusinesses({
                   {b.categoryName && <span>{b.categoryName}</span>}
                   <span className="flex items-center gap-1">
                     <MapPin className="h-3 w-3 text-primary" />
-                    {distanceLabel(b.miles)}
+                    {distanceLabel(b.miles, distanceLabels)}
                   </span>
                   {b.activeDealCount > 0 && (
                     <span className="flex items-center gap-1 font-medium text-green">
@@ -84,9 +91,11 @@ export function NearbyBusinesses({
 export function NearbyPlaces({
   places,
   heading,
+  distanceLabels,
 }: {
   places: NearbyActivity[]
   heading: string
+  distanceLabels: DistanceLabels
 }) {
   if (!places.length) return null
 
@@ -119,7 +128,7 @@ export function NearbyPlaces({
                   {p.title}
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground">
-                  {distanceLabel(p.miles)}
+                  {distanceLabel(p.miles, distanceLabels)}
                 </div>
               </div>
             </Link>

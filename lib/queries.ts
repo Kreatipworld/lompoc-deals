@@ -842,24 +842,44 @@ export type ActivityData = {
   featured: boolean
 }
 
-export async function getActivities(category?: string, limit = 50): Promise<ActivityData[]> {
+
+/**
+ * Activity columns for a locale. Spanish rows fall back to the English column when a
+ * translation hasn't been written yet, so a partially translated table still renders.
+ */
+function activityFields(locale?: string) {
+  const es = locale === "es"
+  return {
+    id: activities.id,
+    title: activities.title,
+    slug: activities.slug,
+    category: activities.category,
+    description: es
+      ? sql<string | null>`coalesce(${activities.descriptionEs}, ${activities.description})`
+      : activities.description,
+    address: activities.address,
+    lat: activities.lat,
+    lng: activities.lng,
+    imageUrl: activities.imageUrl,
+    photosJson: activities.photosJson,
+    tips: es
+      ? sql<string | null>`coalesce(${activities.tipsEs}, ${activities.tips})`
+      : activities.tips,
+    seasonality: es
+      ? sql<string | null>`coalesce(${activities.seasonalityEs}, ${activities.seasonality})`
+      : activities.seasonality,
+    sourceUrl: activities.sourceUrl,
+    featured: activities.featured,
+  }
+}
+
+export async function getActivities(
+  category?: string,
+  limit = 50,
+  locale?: string
+): Promise<ActivityData[]> {
   const rows = await db
-    .select({
-      id: activities.id,
-      title: activities.title,
-      slug: activities.slug,
-      category: activities.category,
-      description: activities.description,
-      address: activities.address,
-      lat: activities.lat,
-      lng: activities.lng,
-      imageUrl: activities.imageUrl,
-      photosJson: activities.photosJson,
-      tips: activities.tips,
-      seasonality: activities.seasonality,
-      sourceUrl: activities.sourceUrl,
-      featured: activities.featured,
-    })
+    .select(activityFields(locale))
     .from(activities)
     .where(category ? eq(activities.category, category) : undefined)
     .orderBy(desc(activities.featured), activities.title)
@@ -867,24 +887,9 @@ export async function getActivities(category?: string, limit = 50): Promise<Acti
   return rows
 }
 
-export async function getFeaturedActivities(limit = 6): Promise<ActivityData[]> {
+export async function getFeaturedActivities(limit = 6, locale?: string): Promise<ActivityData[]> {
   const rows = await db
-    .select({
-      id: activities.id,
-      title: activities.title,
-      slug: activities.slug,
-      category: activities.category,
-      description: activities.description,
-      address: activities.address,
-      lat: activities.lat,
-      lng: activities.lng,
-      imageUrl: activities.imageUrl,
-      photosJson: activities.photosJson,
-      tips: activities.tips,
-      seasonality: activities.seasonality,
-      sourceUrl: activities.sourceUrl,
-      featured: activities.featured,
-    })
+    .select(activityFields(locale))
     .from(activities)
     .where(eq(activities.featured, true))
     .orderBy(activities.title)
@@ -892,24 +897,12 @@ export async function getFeaturedActivities(limit = 6): Promise<ActivityData[]> 
   return rows
 }
 
-export async function getActivityBySlug(slug: string): Promise<ActivityData | null> {
+export async function getActivityBySlug(
+  slug: string,
+  locale?: string
+): Promise<ActivityData | null> {
   const rows = await db
-    .select({
-      id: activities.id,
-      title: activities.title,
-      slug: activities.slug,
-      category: activities.category,
-      description: activities.description,
-      address: activities.address,
-      lat: activities.lat,
-      lng: activities.lng,
-      imageUrl: activities.imageUrl,
-      photosJson: activities.photosJson,
-      tips: activities.tips,
-      seasonality: activities.seasonality,
-      sourceUrl: activities.sourceUrl,
-      featured: activities.featured,
-    })
+    .select(activityFields(locale))
     .from(activities)
     .where(eq(activities.slug, slug))
     .limit(1)

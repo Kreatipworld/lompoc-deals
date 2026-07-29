@@ -92,11 +92,12 @@ export default async function BusinessPage({
 }: {
   params: { slug: string; locale: string }
 }) {
-  const [data, viewer, t, tsp] = await Promise.all([
+  const [data, viewer, t, tsp, td] = await Promise.all([
     getBusinessBySlug(params.slug),
     getViewer(),
     getTranslations("businesses.profile"),
     getTranslations("sponsors"),
+    getTranslations("distance"),
   ])
   if (!data) {
     if (params.slug.startsWith("demo-")) {
@@ -510,7 +511,14 @@ export default async function BusinessPage({
 
       {nearbyPlaces.length > 0 && (
         <section className="mx-auto max-w-6xl px-4">
-          <NearbyPlaces places={nearbyPlaces} heading={t("placesNearby")} />
+          <NearbyPlaces
+            places={nearbyPlaces}
+            heading={t("placesNearby")}
+            distanceLabels={{
+              shortWalk: td("shortWalk"),
+              miles: (value: string) => td("milesAway", { miles: value }),
+            }}
+          />
         </section>
       )}
 
