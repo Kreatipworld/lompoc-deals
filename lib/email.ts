@@ -67,8 +67,10 @@ function welcomeHtml(opts: {
       <img src="https://www.lompoclocals.com/brand/lompoc-locals-mark-white.png" alt="Lompoc Locals" width="28" height="36" style="vertical-align:middle; margin-right:10px;">
       <span style="color:#ffffff; font-size:20px; font-weight:700; letter-spacing:-0.02em; vertical-align:middle;">Lompoc Locals</span>
     </div>
+    <div style="height:6px; background:linear-gradient(90deg,#EFC618 0%,#0B992F 55%,#650C75 100%);"></div>
     <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
-      <h1 style="font-size:22px; margin:0 0 14px; color:#1a1a1a;">${opts.heading}</h1>
+      <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">${opts.heading}</h1>
+      <div style="height:3px; width:52px; background:#EFC618; border-radius:2px; margin:0 0 18px;"></div>
       <p style="color:#444; line-height:1.6; margin:0 0 16px;">${opts.intro}</p>
       <p style="color:#1a1a1a; font-weight:600; margin:0 0 8px;">${opts.bulletsTitle}</p>
       <ul style="color:#444; line-height:1.7; margin:0 0 24px; padding-left:20px;">
@@ -79,6 +81,15 @@ function welcomeHtml(opts: {
       </p>
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">${opts.closing}</p>
       <p style="color:#888; margin:16px 0 0;">${opts.signoff}</p>
+      <div style="margin-top:26px; padding-top:18px; border-top:1px solid #eee; text-align:center;">
+        <div style="margin-bottom:8px;">
+          <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#650C75; margin:0 3px;"></span>
+          <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#EFC618; margin:0 3px;"></span>
+          <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#0B992F; margin:0 3px;"></span>
+        </div>
+        <div style="font-size:14px; font-weight:700; color:#650C75;">lompoclocals.com</div>
+        <div style="font-size:12px; color:#999; margin-top:2px;">community &amp; communication for Lompoc, California</div>
+      </div>
     </div>
   </div>`
 }

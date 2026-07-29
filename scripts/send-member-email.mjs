@@ -29,8 +29,10 @@ const html = `
       <img src="https://www.lompoclocals.com/brand/lompoc-locals-mark-white.png" alt="Lompoc Locals" width="28" height="36" style="vertical-align:middle; margin-right:10px;">
       <span style="color:#ffffff; font-size:20px; font-weight:700; letter-spacing:-0.02em; vertical-align:middle;">Lompoc Locals</span>
     </div>
+    <div style="height:6px; background:linear-gradient(90deg,#EFC618 0%,#0B992F 55%,#650C75 100%);"></div>
     <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
-      <h1 style="font-size:22px; margin:0 0 14px; color:#1a1a1a;">You&rsquo;re all set, Vargas Jewelers.</h1>
+      <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">You&rsquo;re all set, Vargas Jewelers.</h1>
+      <div style="height:3px; width:52px; background:#EFC618; border-radius:2px; margin:0 0 18px;"></div>
       <p style="color:#444; line-height:1.6; margin:0 0 16px;">Welcome to the Lompoc Locals community as a Growth member. Your page is live and already getting found &mdash; over 60 neighbors looked you up last month. It&rsquo;s your page now, ready to make your own:</p>
       <p style="color:#1a1a1a; font-weight:600; margin:0 0 8px;">Here&rsquo;s what you can do, any time:</p>
       <ul style="color:#444; line-height:1.7; margin:0 0 24px; padding-left:20px;">
@@ -41,9 +43,24 @@ const html = `
       </p>
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">Log in with your email at lompoclocals.com. Reply to this email any time &mdash; it reaches a real person here in Lompoc.</p>
       <p style="color:#888; margin:16px 0 0;">&mdash; The Lompoc Locals team</p>
+      <div style="margin-top:26px; padding-top:18px; border-top:1px solid #eee; text-align:center;">
+        <div style="margin-bottom:8px;">
+          <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#650C75; margin:0 3px;"></span>
+          <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#EFC618; margin:0 3px;"></span>
+          <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#0B992F; margin:0 3px;"></span>
+        </div>
+        <div style="font-size:14px; font-weight:700; color:#650C75;">lompoclocals.com</div>
+        <div style="font-size:12px; color:#999; margin-top:2px;">community &amp; communication for Lompoc, California</div>
+      </div>
     </div>
   </div>`
 
+if (process.env.DUMP) {
+  const { writeFileSync } = await import("node:fs")
+  writeFileSync(process.env.DUMP, `<!doctype html><html><body style="background:#f2f2f4;padding:24px;">${html}</body></html>`)
+  console.log("dumped to " + process.env.DUMP)
+  process.exit(0)
+}
 console.log(`${SEND ? "SENDING" : "DRY RUN"} → ${TO}\nSubject: ${subject}\n`)
 if (!SEND) { console.log("(set SEND=1 to actually send)"); process.exit(0) }
 
