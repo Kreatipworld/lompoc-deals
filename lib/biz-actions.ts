@@ -224,6 +224,12 @@ export async function saveProfileAction(
 
   revalidatePath("/dashboard/profile")
   revalidatePath("/")
+  revalidatePath("/map")
+  // Push the owner's public page live immediately instead of waiting for the
+  // 5-minute ISR window. Cover the new slug and (if the name changed) the old.
+  const savedSlug = slugify(data.name)
+  revalidatePath(`/biz/${savedSlug}`)
+  if (existing && existing.slug !== savedSlug) revalidatePath(`/biz/${existing.slug}`)
   return { success: "Profile saved" }
 }
 
