@@ -51,6 +51,42 @@ export async function getPlatformHealth(): Promise<HealthSnapshot> {
   }
 }
 
+export type DetectedProblems = {
+  duplicatePhoneGroups: number
+  junkEmails: number
+  noGeo: number
+}
+
+/** Auto-detected data problems — things to fix that no one has to report. */
+export async function detectedProblems(): Promise<DetectedProblems> {
+  const dup = await db.execute<Record<string, number>>(sql`
+    WITH g AS (
+      SELECT regexp_replace(coalesce(phone,''), '[^0-9]', '', 'g') AS np, count(*) AS c
+      FROM businesses
+      WHERE status = 'approved'
+        AND length(regexp_replace(coalesce(phone,''), '[^0-9]', '', 'g')) >= 7
+      GROUP BY 1 HAVING count(*) > 1
+    )
+    SELECT count(*)::int AS groups FROM g
+  `)
+  const junk = await db.execute<Record<string, number>>(sql`
+    SELECT count(*)::int AS c FROM businesses
+    WHERE status = 'approved' AND email IS NOT NULL AND (
+      email ILIKE '%johndoe%' OR email ILIKE '%@example.%' OR email ILIKE 'filler@%'
+      OR email ILIKE '%spam%' OR email ILIKE '%uce.gov%' OR email ILIKE 'test@%'
+    )
+  `)
+  const geo = await db.execute<Record<string, number>>(sql`
+    SELECT count(*)::int AS c FROM businesses
+    WHERE status = 'approved' AND address IS NOT NULL AND (lat IS NULL OR lng IS NULL)
+  `)
+  return {
+    duplicatePhoneGroups: dup.rows[0]?.groups ?? 0,
+    junkEmails: junk.rows[0]?.c ?? 0,
+    noGeo: geo.rows[0]?.c ?? 0,
+  }
+}
+
 /** The most recent open tickets, for the health hub's "needs attention" list. */
 export async function recentOpenTickets(limit = 5) {
   return db

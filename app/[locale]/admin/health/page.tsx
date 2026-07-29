@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { format } from "date-fns"
-import { getPlatformHealth, recentOpenTickets } from "@/lib/health"
+import { getPlatformHealth, recentOpenTickets, detectedProblems } from "@/lib/health"
 
 export const dynamic = "force-dynamic"
 
@@ -42,7 +42,11 @@ function Attention({
 }
 
 export default async function AdminHealthPage() {
-  const [h, tickets] = await Promise.all([getPlatformHealth(), recentOpenTickets(5)])
+  const [h, tickets, problems] = await Promise.all([
+    getPlatformHealth(),
+    recentOpenTickets(5),
+    detectedProblems(),
+  ])
 
   return (
     <main className="container mx-auto max-w-5xl space-y-8 px-4 py-8">
@@ -63,6 +67,16 @@ export default async function AdminHealthPage() {
           <Attention label="Listings missing an about" count={h.missingAbout} href="/admin/businesses" tone="green" />
           <Attention label="Listings missing photos" count={h.missingPhotos} href="/admin/businesses" tone="green" />
           <Attention label="Listings missing hours" count={h.missingHours} href="/admin/businesses" tone="green" />
+        </div>
+      </section>
+
+      {/* Auto-detected problems */}
+      <section className="space-y-3">
+        <h2 className="font-semibold">Detected problems</h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <Attention label="Possible duplicate listings (same phone)" count={problems.duplicatePhoneGroups} href="/admin/businesses" />
+          <Attention label="Listings with junk/placeholder emails" count={problems.junkEmails} href="/admin/businesses" />
+          <Attention label="Have an address but no map pin" count={problems.noGeo} href="/admin/businesses" />
         </div>
       </section>
 
