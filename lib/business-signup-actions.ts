@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 import bcrypt from "bcryptjs"
-import { eq } from "drizzle-orm"
+import { eq, or, sql } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
 import { getTranslations } from "next-intl/server"
@@ -16,6 +16,7 @@ import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
 import { sendWelcomeEmail } from "@/lib/email"
 import { localizedResolveLompocAddress, getCurrentLocale } from "@/lib/i18n-helpers"
+import { isUnclaimedBusiness } from "@/lib/business-ownership"
 import { track, stitchSession } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 
@@ -232,20 +233,51 @@ export async function businessSignupSubmitAction(
     // non-fatal — continue without coords
   }
 
-  await db.insert(businesses).values({
-    ownerUserId: userId,
-    ownerFullName,
-    name: businessName,
-    slug,
-    // Empty string would masquerade as "has an address"; store NULL so every
-    // downstream check (map filter, profile render) treats it as absent.
-    address: address || null,
-    lat: coords?.lat ?? null,
-    lng: coords?.lng ?? null,
-    phone: phone ?? null,
-    categoryId: categoryId ?? null,
-    status: "pending",
-  })
+  // Adopt an existing UNCLAIMED listing instead of creating a blank duplicate.
+  // Most businesses were already scraped/enriched under a placeholder owner
+  // (photos, about, traffic) — if we match one by normalized phone or slug, we
+  // hand the member THAT page to edit rather than a fresh empty one. This is
+  // the fix for the duplicate-listing problem (e.g. the Vargas Jewelers case).
+  const normalizedPhone = (phone ?? "").replace(/[^0-9]/g, "")
+  const candidates = await db
+    .select({ id: businesses.id, ownerEmail: users.email, status: businesses.status })
+    .from(businesses)
+    .leftJoin(users, eq(businesses.ownerUserId, users.id))
+    .where(
+      or(
+        eq(businesses.slug, slug),
+        normalizedPhone.length >= 7
+          ? sql`regexp_replace(coalesce(${businesses.phone}, ''), '[^0-9]', '', 'g') = ${normalizedPhone}`
+          : sql`false`
+      )
+    )
+  const adopt = candidates.find(
+    (c) => c.status !== "rejected" && isUnclaimedBusiness(c.ownerEmail)
+  )
+
+  if (adopt) {
+    // Take over the existing listing — preserve its enrichment (photos, about,
+    // hours, address). The member edits it from here.
+    await db
+      .update(businesses)
+      .set({ ownerUserId: userId, ownerFullName })
+      .where(eq(businesses.id, adopt.id))
+  } else {
+    await db.insert(businesses).values({
+      ownerUserId: userId,
+      ownerFullName,
+      name: businessName,
+      slug,
+      // Empty string would masquerade as "has an address"; store NULL so every
+      // downstream check (map filter, profile render) treats it as absent.
+      address: address || null,
+      lat: coords?.lat ?? null,
+      lng: coords?.lng ?? null,
+      phone: phone ?? null,
+      categoryId: categoryId ?? null,
+      status: "pending",
+    })
+  }
 
   // Fire-and-forget welcome email — don't block signup on failure
   sendWelcomeEmail(email, ownerFullName, "business", locale).catch((err) =>
