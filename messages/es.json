@@ -1632,7 +1632,25 @@
     "stats": "Estadísticas",
     "properties": "Propiedades",
     "billing": "Facturación",
+    "support": "Ayuda",
     "businessSection": "Negocio"
+  },
+  "dashboardSupport": {
+    "title": "Ayuda y soporte",
+    "subtitle": "¿Algo no funciona o tienes una pregunta? Cuéntanos y lo arreglamos — leemos cada mensaje.",
+    "category": "¿De qué se trata?",
+    "catBug": "Algo no funciona",
+    "catQuestion": "Una pregunta",
+    "catBilling": "Facturación",
+    "catFeature": "Una sugerencia",
+    "catOther": "Otra cosa",
+    "subject": "Asunto",
+    "subjectPlaceholder": "Un resumen breve",
+    "message": "Cuéntanos más",
+    "messagePlaceholder": "¿Qué pasó y qué esperabas? Cualquier detalle que nos ayude a arreglarlo.",
+    "submit": "Enviar a Lompoc Locals",
+    "sending": "Enviando…",
+    "thanks": "¡Gracias! Lo recibimos. Te responderemos a tu correo lo antes posible."
   },
   "redeem": {
     "title": "Canjear un cupón",

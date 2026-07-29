@@ -1632,7 +1632,25 @@
     "stats": "Stats",
     "properties": "Properties",
     "billing": "Billing",
+    "support": "Help",
     "businessSection": "Business"
+  },
+  "dashboardSupport": {
+    "title": "Help & support",
+    "subtitle": "Something not working, or a question? Tell us and we'll fix it — we read every message.",
+    "category": "What's this about?",
+    "catBug": "Something's broken",
+    "catQuestion": "A question",
+    "catBilling": "Billing",
+    "catFeature": "A suggestion",
+    "catOther": "Something else",
+    "subject": "Subject",
+    "subjectPlaceholder": "A short summary",
+    "message": "Tell us more",
+    "messagePlaceholder": "What happened, and what did you expect? Any detail that helps us fix it.",
+    "submit": "Send to Lompoc Locals",
+    "sending": "Sending…",
+    "thanks": "Thanks — we got it. We'll follow up at your email as soon as we can."
   },
   "redeem": {
     "title": "Redeem a coupon",

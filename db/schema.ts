@@ -592,3 +592,34 @@ export const feedPosts = pgTable(
     postedByIdx: index("feed_posts_posted_by_idx").on(t.postedByUserId),
   })
 )
+
+// ---------- support tickets ----------
+export const ticketCategory = pgEnum("ticket_category", [
+  "bug",
+  "billing",
+  "feature",
+  "question",
+  "other",
+])
+export const ticketStatus = pgEnum("ticket_status", [
+  "open",
+  "in_progress",
+  "resolved",
+])
+
+export const supportTickets = pgTable("support_tickets", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  businessId: integer("business_id").references(() => businesses.id, {
+    onDelete: "set null",
+  }),
+  category: ticketCategory("category").notNull().default("bug"),
+  subject: varchar("subject", { length: 200 }).notNull(),
+  message: text("message").notNull(),
+  status: ticketStatus("status").notNull().default("open"),
+  adminNote: text("admin_note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+})

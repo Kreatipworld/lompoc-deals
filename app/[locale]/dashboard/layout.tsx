@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { LayoutDashboard, Store, Tag, BarChart3, CreditCard, Building2, Ticket } from "lucide-react"
+import { LayoutDashboard, Store, Tag, BarChart3, CreditCard, Building2, Ticket, LifeBuoy } from "lucide-react"
 import { auth } from "@/auth"
 import { getMyDeals } from "@/lib/biz-actions"
 import { TIERS } from "@/lib/stripe"
@@ -44,6 +44,7 @@ export default async function DashboardLayout({
       ? [{ href: "/dashboard/properties", icon: <Building2 className="h-4 w-4" />, label: t("properties") }]
       : []),
     { href: "/dashboard/billing", icon: <CreditCard className="h-4 w-4" />, label: t("billing") },
+    { href: "/dashboard/support", icon: <LifeBuoy className="h-4 w-4" />, label: t("support") },
   ]
 
   return (
