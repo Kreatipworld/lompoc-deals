@@ -13,6 +13,7 @@ import {
   Navigation,
   Bell,
   BadgeCheck,
+  Lock,
 } from "lucide-react"
 import { getBusinessBySlug, getListingsByBusinessId, getRelatedBusinesses } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
@@ -34,8 +35,7 @@ import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
 import { pageAlternates } from "@/lib/seo"
-
-const SYSTEM_OWNER_EMAIL = "system@lompocdeals.test"
+import { isUnclaimedBusiness } from "@/lib/business-ownership"
 
 // Profiles are living data (enrichment sweeps, claims, unpublishes). Without
 // revalidation, a page cached while approved keeps serving after unpublish.
@@ -144,7 +144,7 @@ export default async function BusinessPage({
     props: { locale, referrer: ref },
   })
 
-  const isUnclaimed = business.ownerEmail === SYSTEM_OWNER_EMAIL
+  const isUnclaimed = isUnclaimedBusiness(business.ownerEmail)
   const reviewsUrl = googleReviewsUrl(business)
 
   // Build photo array: photosJson takes priority, then fall back to coverUrl
@@ -288,6 +288,18 @@ export default async function BusinessPage({
                       >
                         <Bell className="h-3.5 w-3.5" />
                         {t("follow")}
+                      </Link>
+                    </>
+                  )}
+                  {isUnclaimed && (
+                    <>
+                      <span className="text-foreground/30">·</span>
+                      <Link
+                        href={`/signup?claim=${encodeURIComponent(params.slug)}`}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors duration-150 hover:bg-primary/15"
+                      >
+                        <Lock className="h-3.5 w-3.5" />
+                        {t("claimCta")}
                       </Link>
                     </>
                   )}
