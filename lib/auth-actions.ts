@@ -12,7 +12,8 @@ import { db } from "@/db/client"
 import { users, businessClaims, subscriptions, passwordResetTokens } from "@/db/schema"
 import { signIn, signOut } from "@/auth"
 import { stripe, TIERS } from "@/lib/stripe"
-import { sendPasswordResetEmail, notifyPlatform } from "@/lib/email"
+import { sendPasswordResetEmail, notifyPlatform, sendWelcomeEmail } from "@/lib/email"
+import { getCurrentLocale } from "@/lib/i18n-helpers"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 
@@ -94,6 +95,10 @@ export async function signupAction(
       `<strong>${email}</strong> just created a business account.`,
     ])
   }
+
+  // Welcome the new account (branded, community-first; fire-and-forget).
+  const welcomeLocale = (await getCurrentLocale()) as "en" | "es"
+  await sendWelcomeEmail(email, "", dbRole as "business" | "local", welcomeLocale)
 
   try {
     await signIn("credentials", {

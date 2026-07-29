@@ -48,6 +48,152 @@ export async function notifyPlatform(subject: string, lines: string[]): Promise<
   }
 }
 
+// ── Welcome emails ──────────────────────────────────────────────────────────
+const BRAND_PURPLE = "#650C75"
+
+function welcomeHtml(opts: {
+  heading: string
+  intro: string
+  bulletsTitle: string
+  bullets: string[]
+  ctaLabel: string
+  ctaUrl: string
+  closing: string
+  signoff: string
+}): string {
+  return `
+  <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
+    <div style="background:${BRAND_PURPLE}; padding:20px 24px; border-radius:12px 12px 0 0;">
+      <span style="color:#ffffff; font-size:20px; font-weight:700; letter-spacing:-0.02em;">Lompoc Locals</span>
+    </div>
+    <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
+      <h1 style="font-size:22px; margin:0 0 14px; color:#1a1a1a;">${opts.heading}</h1>
+      <p style="color:#444; line-height:1.6; margin:0 0 16px;">${opts.intro}</p>
+      <p style="color:#1a1a1a; font-weight:600; margin:0 0 8px;">${opts.bulletsTitle}</p>
+      <ul style="color:#444; line-height:1.7; margin:0 0 24px; padding-left:20px;">
+        ${opts.bullets.map((b) => `<li>${b}</li>`).join("")}
+      </ul>
+      <p style="margin:0 0 28px;">
+        <a href="${opts.ctaUrl}" style="display:inline-block; background:${BRAND_PURPLE}; color:#ffffff; padding:12px 22px; border-radius:8px; text-decoration:none; font-weight:600;">${opts.ctaLabel}</a>
+      </p>
+      <p style="color:#444; line-height:1.6; margin:0 0 4px;">${opts.closing}</p>
+      <p style="color:#888; margin:16px 0 0;">${opts.signoff}</p>
+    </div>
+  </div>`
+}
+
+/** Welcome email for a new business account. Fire-and-forget — never throws. */
+export async function sendBusinessWelcomeEmail(email: string, name: string, locale: "en" | "es"): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const dashUrl = siteUrl(`/${locale}/dashboard`)
+  const greet = name?.trim()
+    ? locale === "es" ? `Hola ${name.trim()}, ` : `Hi ${name.trim()}, `
+    : locale === "es" ? "Hola, " : "Hi there, "
+  const content =
+    locale === "es"
+      ? {
+          subject: "Bienvenido a Lompoc Locals — tu negocio es parte de la comunidad",
+          html: welcomeHtml({
+            heading: "Bienvenido al vecindario.",
+            intro:
+              greet + "gracias por agregar tu negocio a Lompoc Locals — el punto de encuentro donde los vecinos de Lompoc y Vandenberg descubren los lugares que hacen nuestro pueblo. Tu perfil ya está activo, así que los locales pueden encontrarte en el directorio, en el mapa y en la búsqueda local.",
+            bulletsTitle: "Unos minutos ahora hacen la diferencia:",
+            bullets: [
+              "Agrega tus fotos, horarios e historia para que los vecinos te conozcan",
+              "Comparte tus redes sociales y reseñas de Google",
+              "Cuando quieras, empieza una prueba gratis de 14 días de Growth — aparece en nuestro resumen semanal de la comunidad, mira cuántos locales visitan tu página y publica ofertas cuando gustes",
+            ],
+            ctaLabel: "Ir a tu panel",
+            ctaUrl: dashUrl,
+            closing:
+              "Esto no es solo un perfil — es tu lugar en la comunidad. Responde a este correo cuando quieras; lo lee una persona real aquí en Lompoc.",
+            signoff: "— El equipo de Lompoc Locals",
+          }),
+        }
+      : {
+          subject: "Welcome to Lompoc Locals — your business is part of the community",
+          html: welcomeHtml({
+            heading: "Welcome to the neighborhood.",
+            intro:
+              greet + "thanks for adding your business to Lompoc Locals — the community hub where Lompoc and Vandenberg neighbors discover the places that make our town ours. Your listing is live, so locals can already find you in the directory, on the map, and in local search.",
+            bulletsTitle: "A few minutes now goes a long way:",
+            bullets: [
+              "Add your photos, hours, and story so neighbors get the full picture",
+              "Share your social links and Google reviews",
+              "When you're ready, start a 14-day free Growth trial — get featured in our weekly community digest, see how many locals are viewing your page, and post specials whenever you like",
+            ],
+            ctaLabel: "Go to your dashboard",
+            ctaUrl: dashUrl,
+            closing:
+              "This isn't just a listing — it's your place in the community. Reply to this email anytime; it reaches a real person here in Lompoc.",
+            signoff: "— The Lompoc Locals team",
+          }),
+        }
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: content.subject, html: content.html })
+  } catch (err) {
+    console.error("[email] business welcome failed:", err)
+  }
+}
+
+/** Welcome email for a new local account. Fire-and-forget — never throws. */
+export async function sendLocalWelcomeEmail(email: string, name: string, locale: "en" | "es"): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const exploreUrl = siteUrl(`/${locale}`)
+  const greet = name?.trim()
+    ? locale === "es" ? `Hola ${name.trim()}, ` : `Hi ${name.trim()}, `
+    : locale === "es" ? "Hola, " : "Hi there, "
+  const content =
+    locale === "es"
+      ? {
+          subject: "Bienvenido a Lompoc Locals — tu guía de lo que pasa en el pueblo",
+          html: welcomeHtml({
+            heading: "Bienvenido, vecino.",
+            intro:
+              greet + "¡ya eres parte! Lompoc Locals es tu guía de los negocios, ofertas y eventos que hacen que Lompoc y Vandenberg se sientan como en casa.",
+            bulletsTitle: "Aquí puedes empezar:",
+            bullets: [
+              "Explora negocios locales y mira qué hay cerca en el mapa",
+              "Aprovecha ofertas y cupones de lugares del pueblo",
+              "Descubre próximos eventos de la comunidad",
+              "Recibe el resumen semanal para no perderte nada nuevo",
+            ],
+            ctaLabel: "Explorar Lompoc",
+            ctaUrl: exploreUrl,
+            closing:
+              "Gracias por ser parte de la comunidad. Responde cuando quieras — lo lee un local de verdad.",
+            signoff: "— El equipo de Lompoc Locals",
+          }),
+        }
+      : {
+          subject: "Welcome to Lompoc Locals — your guide to what's happening in town",
+          html: welcomeHtml({
+            heading: "Welcome, neighbor.",
+            intro:
+              greet + "you're in! Lompoc Locals is your guide to the businesses, deals, and events that make Lompoc and Vandenberg feel like home.",
+            bulletsTitle: "Here's where to start:",
+            bullets: [
+              "Browse local businesses and see what's nearby on the map",
+              "Grab deals and coupons from spots around town",
+              "Check out upcoming community events",
+              "Get the weekly digest so you never miss what's new",
+            ],
+            ctaLabel: "Explore Lompoc",
+            ctaUrl: exploreUrl,
+            closing:
+              "Thanks for being part of the community. Reply anytime — a real local reads it.",
+            signoff: "— The Lompoc Locals team",
+          }),
+        }
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: content.subject, html: content.html })
+  } catch (err) {
+    console.error("[email] local welcome failed:", err)
+  }
+}
+
 export async function sendConfirmationEmail(
   email: string,
   token: string,
@@ -196,97 +342,10 @@ export async function sendWelcomeEmail(
     return { ok: false, error: "Email service not configured" }
   }
 
-  const dashboardLink = role === "business" ? siteUrl("/en/dashboard") : siteUrl("/en/account")
-  const isBusinessRole = role === "business"
-
-  const subject =
-    locale === "es"
-      ? isBusinessRole
-        ? "Bienvenido a Lompoc Locals — ¡tu negocio está casi en línea!"
-        : "¡Bienvenido a Lompoc Locals!"
-      : isBusinessRole
-        ? "Welcome to Lompoc Locals — your business is almost live!"
-        : "Welcome to Lompoc Locals!"
-
-  const html =
-    locale === "es"
-      ? `
-        <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;">
-          <h1 style="font-size:24px;margin-bottom:4px;">¡Bienvenido a Lompoc Locals, ${name}!</h1>
-          <p style="color:#555;line-height:1.5;margin:0 0 12px;">
-            ${
-              isBusinessRole
-                ? "Gracias por registrarte. Estamos emocionados de ayudarte a llegar a clientes locales en Lompoc."
-                : "Gracias por unirte. Lompoc Locals es tu fuente de cupones, especiales y anuncios de negocios locales en Lompoc, California."
-            }
-          </p>
-          <p style="font-weight:600;color:#111;margin:16px 0 4px;">Próximos pasos:</p>
-          ${
-            isBusinessRole
-              ? `<ul style="color:#555;line-height:1.8;padding-left:20px;">
-                  <li>Completa tu perfil de negocio</li>
-                  <li>Publica tu primera oferta o especial</li>
-                  <li>Tu listado se publica una vez aprobado por nuestro equipo</li>
-                </ul>`
-              : `<ul style="color:#555;line-height:1.8;padding-left:20px;">
-                  <li>Explora las últimas ofertas de negocios locales</li>
-                  <li>Guarda tus favoritos</li>
-                  <li>Suscríbete al resumen semanal para no perderte ninguna oferta</li>
-                </ul>`
-          }
-          <p style="margin:24px 0;">
-            <a href="${dashboardLink}"
-               style="display:inline-block;background:#111;color:#fff;padding:12px 20px;border-radius:6px;text-decoration:none;">
-              ${isBusinessRole ? "Ir al panel" : "Ver ofertas"}
-            </a>
-          </p>
-          <p style="color:#888;font-size:12px;margin-top:32px;">
-            <a href="${siteUrl()}" style="color:#888;">lompoclocals.com</a>
-          </p>
-        </div>
-      `
-      : `
-        <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;">
-          <h1 style="font-size:24px;margin-bottom:4px;">Welcome to Lompoc Locals, ${name}!</h1>
-          <p style="color:#555;line-height:1.5;margin:0 0 12px;">
-            ${
-              isBusinessRole
-                ? "Thanks for signing up. We're excited to help your business reach local customers in Lompoc."
-                : "Thanks for joining. Lompoc Locals is your go-to feed for local coupons, specials, and announcements from businesses in Lompoc, California."
-            }
-          </p>
-          <p style="font-weight:600;color:#111;margin:16px 0 4px;">Next steps:</p>
-          ${
-            isBusinessRole
-              ? `<ul style="color:#555;line-height:1.8;padding-left:20px;">
-                  <li>Complete your business profile</li>
-                  <li>Post your first deal or special</li>
-                  <li>Your listing goes live once approved by our team</li>
-                </ul>`
-              : `<ul style="color:#555;line-height:1.8;padding-left:20px;">
-                  <li>Browse the latest deals from local businesses</li>
-                  <li>Save your favorites</li>
-                  <li>Subscribe to the weekly digest to never miss a deal</li>
-                </ul>`
-          }
-          <p style="margin:24px 0;">
-            <a href="${dashboardLink}"
-               style="display:inline-block;background:#111;color:#fff;padding:12px 20px;border-radius:6px;text-decoration:none;">
-              ${isBusinessRole ? "Go to dashboard" : "Browse deals"}
-            </a>
-          </p>
-          <p style="color:#888;font-size:12px;margin-top:32px;">
-            <a href="${siteUrl()}" style="color:#888;">lompoclocals.com</a>
-          </p>
-        </div>
-      `
-
-  try {
-    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })
-    return { ok: true }
-  } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
-  }
+  // Delegates to the branded, community-first per-role welcome emails above.
+  if (role === "business") await sendBusinessWelcomeEmail(email, name, locale)
+  else await sendLocalWelcomeEmail(email, name, locale)
+  return { ok: true }
 }
 
 export async function sendDealUpdateEmail(
