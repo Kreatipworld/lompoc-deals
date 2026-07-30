@@ -179,7 +179,13 @@ for (const b of rows) {
   clean.push(b)
 }
 
-let list = clean.slice(OFFSET, LIMIT ? OFFSET + LIMIT : undefined)
+// Target one business precisely (one-off invites): ONLY_EMAIL=... or ONLY_ID=...
+const ONLY_EMAIL = (process.env.ONLY_EMAIL || "").trim().toLowerCase()
+const ONLY_ID = process.env.ONLY_ID ? Number(process.env.ONLY_ID) : null
+let pool = clean
+if (ONLY_EMAIL) pool = pool.filter((b) => b.email === ONLY_EMAIL)
+if (ONLY_ID) pool = pool.filter((b) => b.id === ONLY_ID)
+let list = pool.slice(OFFSET, LIMIT ? OFFSET + LIMIT : undefined)
 
 if (process.env.DUMP) {
   const { writeFileSync } = await import("node:fs")
