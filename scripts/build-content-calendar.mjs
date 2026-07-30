@@ -69,10 +69,14 @@ async function main() {
         from events
         where status='approved' and starts_at between now() and ${horizon.toISOString()}
         order by starts_at asc`,
+    // Photos are required, not preferred: the place posts are carried by the image, and a
+    // "you've driven past it 500 times" card with no picture of the thing makes no sense.
     sql`select title, slug, category, address, seasonality, tips,
                (address ilike '%Lompoc%' and slug not in
                  ('jalama-beach','point-sal','sta-rita-hills-wine-trail')) as in_town
-        from activities order by random()`,
+        from activities
+        where jsonb_array_length(coalesce(photos_json,'[]'::jsonb)) >= 1
+        order by random()`,
     sql`select b.name, b.slug, c.name as category, b.address, b.instagram_url,
                jsonb_array_length(coalesce(b.photos_json,'[]'::jsonb)) as photos
         from businesses b left join categories c on c.id=b.category_id
@@ -117,7 +121,8 @@ async function main() {
           const t = new Date(e.starts_at)
           const icon = /rocket/i.test(e.title) ? "🚀" : /market/i.test(e.title) ? "🛍️"
             : /music/i.test(e.title) ? "🎶" : /art/i.test(e.title) ? "🎨" : "📌"
-          return `${icon} ${fmtDay(t)} — ${e.title}`
+          // The 🚀 already says it's a launch; the "Rocket Launch:" prefix just eats line width.
+          return `${icon} ${fmtDay(t)} — ${e.title.replace(/^Rocket Launch:\s*/i, "")}`
         })
         if (!lines.length) continue
         text =
@@ -125,7 +130,7 @@ async function main() {
           `Plus ${Math.max(0, events.length - lines.length)} more on the calendar — all of it in one place, ` +
           `no account needed.\n\n👉 ${SITE}/en/events\n\n${HASHTAGS.general}`
         link = `${SITE}/en/events`
-        media = "docs/social-kit/images/week2/week-events.png"
+        // Image comes from build-social-cards.mjs --write-csv, which renders this week's events.
       }
 
       if (slot.kind === "place") {
@@ -158,7 +163,13 @@ async function main() {
 
       if (slot.kind === "free-weekend") {
         series = "Free in Lompoc"
-        const nextLaunch = launches.find((l) => new Date(l.starts_at) >= when)
+        // "This weekend" has to mean this weekend. The post goes out Friday afternoon, so only a
+        // launch between then and Monday qualifies — otherwise we'd promise a launch weeks out.
+        const weekendEnd = addDays(when, 3)
+        const nextLaunch = launches.find((l) => {
+          const t = new Date(l.starts_at)
+          return t >= when && t < weekendEnd
+        })
         const a = activities[placeI++ % activities.length]
         text = nextLaunch
           ? `🚀 There's a launch this weekend.\n\n${nextLaunch.title.replace(/^Rocket Launch:\s*/, "")} — ` +
@@ -168,7 +179,6 @@ async function main() {
           : `This weekend, for $0. 💜\n\n${a.title} — ${(a.seasonality || "open year-round").toLowerCase()}.\n\n` +
             `👉 ${SITE}/en/activities/${a.slug}\n\n${HASHTAGS.outdoors}`
         link = nextLaunch ? `${SITE}/en/events` : `${SITE}/en/activities/${a.slug}`
-        media = nextLaunch ? "docs/social-kit/images/week2/launch.png" : ""
       }
 
       rows.push({
@@ -227,6 +237,16 @@ async function main() {
     "",
     `**No deal posts.** Every live deal belongs to a scraper or demo account, so promoting one would ` +
       `advertise a discount no owner agreed to. Confirm with the owner first, then add those by hand.`,
+    "",
+    `**Images come from the cards step**, not from this script. After regenerating this calendar, run:`,
+    "",
+    "```bash",
+    `node scripts/build-social-cards.mjs ${path.join(OUT_DIR, `calendar-${fmtDate(START)}.csv`)} --write-csv`,
+    `node scripts/render-social-cards.mjs docs/social-kit/cards-calendar.html docs/social-kit/images/calendar`,
+    "```",
+    "",
+    `That renders one card per post — this week's events, this weekend's launch, this business's own ` +
+      `photo — and fills in the media column. Every post gets its own image; nothing is shared between weeks.`,
     "",
     "| Date | Time | Series | Channels | Opening line |",
     "|---|---|---|---|---|",
