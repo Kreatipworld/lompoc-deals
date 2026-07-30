@@ -34,18 +34,19 @@ const MUSIC_DB = -5 // the generated bed is already normalised to -20 LUFS, so i
                     // less attenuation than a commercial track would
 
 // Ordered so each shot is on screen while the narration names it. Phrase timings came from
-// silencedetect over the VO: "flower fields" 1.6-3.2s, "main street" 3.4-5.6s, "wineries"
-// 5.9-8.4s, "rockets" 8.7-10.5s. Durations below place each cut inside its phrase.
-// No checkout beat — this is a brand spot about the town, not a how-to.
+// silencedetect over the VO. Entries marked `photo` are real public-domain photographs of
+// Lompoc from Wikimedia Commons, Ken-Burned rather than generated — the real Ocean Avenue
+// storefront lands on "a main street", and one of the town's actual murals sits mid-film.
+// No checkout beat: this is a brand spot about the town.
 const ITEMS = [
-  { clip: "lpc-aerial.mp4", dur: 2.2, title: "title-experience.png" }, // "This is Lompoc."
-  { clip: "lpc-flowers.mp4", dur: 2.6 },  // "Flower fields in June."
-  { clip: "lpc-oldtown.mp4", dur: 2.8 },  // "A main street you can walk end to end."
-  { clip: "broll-wine.mp4", dur: 2.8 },   // "Wineries you don't have to drive an hour to reach."
-  { clip: "broll-rocket.mp4", dur: 3.0 }, // "Rockets going up over the valley."
-  { clip: "broll-shop.mp4", dur: 2.4 },   // "Everything you love about this town..."
+  { clip: "lpc-aerial.mp4", dur: 2.2, title: "title-experience.png" },  // "This is Lompoc."
+  { clip: "lpc-flowers.mp4", dur: 2.6 },                                // "Flower fields in June."
+  { photo: "real-oceanave.jpg", dur: 2.8, zoom: 1.14 },                 // real Ocean Ave — "a main street"
+  { clip: "broll-wine.mp4", dur: 2.8 },                                 // "Wineries..."
+  { clip: "broll-rocket.mp4", dur: 3.0 },                               // "Rockets going up..."
+  { photo: "real-mural.jpg", dur: 2.4, zoom: 1.10 },                    // real Lompoc mural
   { clip: "broll-tacos.mp4", dur: 2.4 },
-  { clip: "lpc-rail.mp4", dur: 2.6 },     // "...couldn't find it in one place. Now you can."
+  { clip: "lpc-rail.mp4", dur: 2.6 },                                   // "...Now you can."
   {
     // The only product beat — what it is, not how to use it. Punches, never a scroll.
     ui: [
@@ -53,7 +54,7 @@ const ITEMS = [
       { img: "events", dur: 2.4, from: 0.06, to: 0.06, move: "punch", caption: "Every event. Every launch." },
     ],
   },
-  { clip: "broll-dusk.mp4", dur: 2.6 },
+  { photo: "real-valley.jpg", dur: 2.6, zoom: 1.12 },                   // real Lompoc valley
   { ui: [{ img: "endcard-experience", dur: 4.2, from: 0, to: 0, zoom: 1.05, fullBleed: true }] },
 ]
 
@@ -127,6 +128,32 @@ async function prepClip(item, tmp, i) {
   return { file: dest, dur: item.dur, audio: withAudio }
 }
 
+
+/**
+ * Ken Burns a still into a clip. Used for the real public-domain Lompoc photographs —
+ * a slow centred push, no invented motion, so a real place stays a real place.
+ */
+async function prepPhoto(item, tmp, i) {
+  const src = path.join(ASSETS, item.photo)
+  if (!fs.existsSync(src)) throw new Error(`missing photo ${src}`)
+  const dest = path.join(tmp, `photo-${i}.mp4`)
+  const frames = Math.round(item.dur * FPS)
+  const zoom = item.zoom ?? 1.12
+
+  const vf =
+    `scale=${W * 2}:${H * 2}:force_original_aspect_ratio=increase,crop=${W * 2}:${H * 2},` +
+    `zoompan=z='min(1+${(zoom - 1).toFixed(3)}*on/${frames},${zoom})':` +
+    `x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=${W}x${H}:fps=${FPS},` +
+    `setsar=1,format=yuv420p`
+
+  const { code, err } = await run([
+    "-y", "-loop", "1", "-i", src, "-vf", vf, "-t", item.dur.toFixed(2), "-an",
+    "-c:v", "libx264", "-preset", "medium", "-crf", "18", dest,
+  ])
+  if (code !== 0) throw new Error(`photo prep failed (${code})\n${err.split("\n").slice(-8).join("\n")}`)
+  return { file: dest, dur: item.dur, audio: false }
+}
+
 /** Silent stereo filler so UI segments keep the ambience timeline aligned. */
 async function silence(dur, tmp, i) {
   const dest = path.join(tmp, `sil-${i}.m4a`)
@@ -145,7 +172,10 @@ async function main() {
 
   console.log("── building spot ──")
   for (const [i, item] of ITEMS.entries()) {
-    if (item.clip) {
+    if (item.photo) {
+      parts.push(await prepPhoto(item, tmp, i))
+      console.log(`  photo ${item.photo.padEnd(22)} ${item.dur}s  (real, public domain)`)
+    } else if (item.clip) {
       const p = await prepClip(item, tmp, i)
       parts.push(p)
       console.log(`  clip  ${item.clip.padEnd(22)} ${item.dur}s${p.audio ? " +ambience" : ""}${item.title ? " +title" : ""}`)

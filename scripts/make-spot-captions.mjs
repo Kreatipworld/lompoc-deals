@@ -25,11 +25,11 @@ const CHROME =
 export const CAPTIONS = [
   // cap01/cap02 intentionally absent: the title plate holds the lower third until ~2.6s
   // and two stacked cards read as a mistake.
+  // Four cards, not eight. The narration carries the rest; stacking a caption on every
+  // phrase is what made the old cut feel busy.
   { id: "cap03", text: "A main street you can walk end to end.", start: 3.42, end: 5.70 },
-  { id: "cap04", text: "Wineries you don't have to drive an hour to reach.", start: 5.87, end: 8.45 },
   { id: "cap05", text: "Rockets going up over the valley.", start: 8.69, end: 10.55 },
   { id: "cap06", text: "It was all already here.", start: 10.76, end: 13.55 },
-  { id: "cap07", text: "You just couldn't find it in one place.", start: 13.81, end: 15.85 },
   { id: "cap08", text: "Now you can.", start: 16.07, end: 17.15 },
 ]
 
@@ -44,11 +44,19 @@ const HTML = `<!doctype html><html><head><meta charset="utf-8">
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:transparent; font-family:'Plus Jakarta Sans',sans-serif; }
   .cap { position:relative; width:1080px; height:1920px; display:none; }
+  /* A scrim rather than a slab — the footage stays visible and the type just sits on it. */
+  .cap::before {
+    content:''; position:absolute; left:0; right:0; bottom:0; height:780px;
+    background:linear-gradient(180deg, rgba(12,4,15,0) 0%, rgba(12,4,15,.55) 55%, rgba(12,4,15,.80) 100%);
+  }
   .cap .bar {
-    position:absolute; left:90px; right:90px; bottom:430px;
-    background:#650C75; color:#fff; border-radius:34px;
-    padding:44px 56px; font-size:62px; font-weight:800; line-height:1.18;
-    box-shadow:0 18px 44px rgba(0,0,0,.45);
+    position:absolute; left:96px; right:96px; bottom:470px;
+    color:#fff; font-size:66px; font-weight:800; line-height:1.16;
+    letter-spacing:-0.5px; text-shadow:0 4px 26px rgba(0,0,0,.6);
+  }
+  .cap .bar::after {
+    content:''; display:block; width:96px; height:7px; border-radius:6px;
+    background:#EFC618; margin-top:30px;
   }
 </style></head><body>
 ${CAPTIONS.map((c) => `<div id="${c.id}">${CARD(c.text)}</div>`).join("\n")}
