@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#650C75; --gold:#EFC618; --green:#0B992F; --cream:#FAF5EC; --ink:#241629; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#333; font-family:'Plus Jakarta Sans',sans-serif; }
+  .card { position:relative; overflow:hidden; margin:20px auto; }
+  .tt { width:1080px; height:1920px; }
+  .grain::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:.07; z-index:50;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); }
+  .serif { font-family:Georgia,serif; font-style:italic; }
+  .url { font-weight:800; letter-spacing:1px; }
+  .wrap { position:relative; z-index:2; height:100%; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; padding:120px 90px; }
+</style></head><body>
+
+<!-- END CARD — locals signup video -->
+<div class="card tt grain" id="endcard-locals" style="background:var(--purple);">
+  <div style="position:absolute; inset:0; background:radial-gradient(circle at 30% 24%, #7d1b8f 0%, #650C75 58%, #46064f 100%);"></div>
+  <div class="wrap">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="width:230px;">
+    <div style="color:#fff; font-size:112px; font-weight:800; line-height:1.03; margin-top:70px;">Free account.<br>Two fields.</div>
+    <div class="serif" style="color:var(--gold); font-size:58px; margin-top:44px; line-height:1.32;">Save your spots. Claim deals.<br>Get the weekly email.</div>
+    <div style="margin-top:80px; background:var(--gold); border-radius:999px; padding:34px 68px;">
+      <span class="url" style="color:var(--ink); font-size:52px;">lompoclocals.com</span>
+    </div>
+    <div style="color:rgba(255,255,255,.82); font-size:40px; font-weight:600; margin-top:66px;">Made by locals, for locals 💜</div>
+  </div>
+</div>
+
+<!-- END CARD — business claim video -->
+<div class="card tt grain" id="endcard-business" style="background:var(--green);">
+  <div style="position:absolute; inset:0; background:radial-gradient(circle at 70% 22%, #16b53c 0%, #0B992F 56%, #06661c 100%);"></div>
+  <div class="wrap">
+    <img src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="width:230px;">
+    <div style="color:#fff; font-size:106px; font-weight:800; line-height:1.03; margin-top:70px;">Search your<br>business name.</div>
+    <div class="serif" style="color:#eafbee; font-size:56px; margin-top:44px; line-height:1.32;">Your page is already built.<br>Claiming it is free.</div>
+    <div style="margin-top:80px; background:#fff; border-radius:999px; padding:34px 68px;">
+      <span class="url" style="color:var(--green); font-size:52px;">lompoclocals.com</span>
+    </div>
+    <div style="color:rgba(255,255,255,.85); font-size:40px; font-weight:600; margin-top:66px;">475 Lompoc businesses. Find yours.</div>
+  </div>
+</div>
+
+</body></html>
