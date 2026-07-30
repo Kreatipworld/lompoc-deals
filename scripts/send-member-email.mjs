@@ -12,7 +12,7 @@ const key = (env.match(/^RESEND_API_KEY\s*=\s*"?([^"\n]+)"?/m) || [])[1]
 if (!key) { console.error("no RESEND_API_KEY"); process.exit(1) }
 
 const FROM = "Lompoc Locals <hello@lompoclocals.com>"
-const TO = process.env.TO || "andres@kreatipdesign.com"
+const TO = process.env.TO || "hello@lompoclocals.com"
 const SEND = process.env.SEND === "1"
 const BRAND_PURPLE = "#650C75"
 const dash = "https://www.lompoclocals.com/dashboard"
@@ -25,9 +25,8 @@ const bullets = [
 ]
 const html = `
   <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
-    <div style="background:${BRAND_PURPLE}; padding:18px 24px; border-radius:12px 12px 0 0;">
-      <img src="https://www.lompoclocals.com/brand/lompoc-locals-mark-white.png" alt="Lompoc Locals" width="28" height="36" style="vertical-align:middle; margin-right:10px;">
-      <span style="color:#ffffff; font-size:20px; font-weight:700; letter-spacing:-0.02em; vertical-align:middle;">Lompoc Locals</span>
+    <div style="background:#F7F3E9; padding:22px 24px; border-radius:12px 12px 0 0; text-align:center;">
+      <img src="https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png" alt="Lompoc Locals" width="180" height="117" style="display:inline-block;">
     </div>
     <div style="height:6px; background:linear-gradient(90deg,#EFC618 0%,#0B992F 55%,#650C75 100%);"></div>
     <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
