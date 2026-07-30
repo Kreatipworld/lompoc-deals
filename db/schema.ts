@@ -623,3 +623,20 @@ export const supportTickets = pgTable("support_tickets", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 })
+
+// ---------- email suppressions (unsubscribes / bounces) ----------
+// One row per opted-out address. Every outbound campaign checks this list and
+// skips anyone here — a one-click unsubscribe (or a bounce) is honored forever.
+export const emailSuppressions = pgTable(
+  "email_suppressions",
+  {
+    id: serial("id").primaryKey(),
+    email: varchar("email", { length: 320 }).notNull(),
+    reason: varchar("reason", { length: 40 }).notNull().default("unsubscribe"),
+    source: varchar("source", { length: 40 }).notNull().default("email_link"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    emailUniq: uniqueIndex("email_suppressions_email_uniq").on(t.email),
+  })
+)

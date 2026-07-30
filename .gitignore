@@ -42,3 +42,6 @@ next-env.d.ts
 exports/
 scripts/mirror-backup-*.json
 .claude/worktrees/
+
+# outreach send/suppression logs (contain contact emails)
+scripts/data/
