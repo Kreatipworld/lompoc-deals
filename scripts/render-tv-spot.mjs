@@ -26,29 +26,31 @@ const MUSIC = process.argv[5] || null
 
 const OUT_FILE = "lompoc-locals-spot.mp4"
 const VO = "vo-spot.mp3"
-const VO_START = 14.6 // narration carries the back half; visuals + ambience open the spot
+const VO_START = 4.0 // narration explains the platform across the film; 4s of town first
 const XFADE = 0.55
 const AMBIENCE_DB = -17 // under the voice, present but never competing
 const MUSIC_DB = -14
 
-// A day in town, then the product, then the town at night.
+// A day in Lompoc, then one plain explanation of what the platform is.
+// No checkout beat: the register shot and the coupon walkthrough are deliberately out —
+// this is a brand spot about the town, not a how-to.
 const ITEMS = [
-  { clip: "intro-locals.mp4", dur: 3.4, title: "title-experience.png" }, // flower fields at golden hour
-  { clip: "broll-shop.mp4", dur: 2.6 },
-  { clip: "intro-business.mp4", dur: 2.4 }, // Old Town street
+  { clip: "lpc-aerial.mp4", dur: 3.4, title: "title-experience.png" }, // the valley grid against the fields
+  { clip: "lpc-flowers.mp4", dur: 2.6 },
+  { clip: "lpc-oldtown.mp4", dur: 2.8 }, // Art Deco corner + sidewalk clock
+  { clip: "broll-shop.mp4", dur: 2.4 },
   { clip: "broll-tacos.mp4", dur: 2.4 },
   { clip: "broll-wine.mp4", dur: 2.4 },
-  { clip: "broll-park.mp4", dur: 2.4 },
-  { clip: "broll-rocket.mp4", dur: 3.4 },
+  { clip: "lpc-rail.mp4", dur: 2.6 }, // coastal rail toward Surf
+  { clip: "broll-rocket.mp4", dur: 3.2 },
   {
-    // The only product beat. Two punches, no scrolling — it's an insert, not a tour.
+    // The only product beat — what it is, not how to use it. Punches, never a scroll.
     ui: [
-      { img: "home", dur: 2.6, from: 0.04, to: 0.04, move: "punch", caption: "All of it. One place." },
-      { img: "locals", dur: 2.4, from: 0.34, to: 0.34, move: "punch", caption: "Free for everyone here." },
+      { img: "home", dur: 2.6, from: 0.04, to: 0.04, move: "punch", caption: "Every business in town." },
+      { img: "events", dur: 2.4, from: 0.06, to: 0.06, move: "punch", caption: "Every event. Every launch." },
     ],
   },
-  { clip: "broll-counter.mp4", dur: 2.6 },
-  { clip: "broll-dusk.mp4", dur: 2.8 },
+  { clip: "broll-dusk.mp4", dur: 2.6 },
   { ui: [{ img: "endcard-experience", dur: 3.4, from: 0, to: 0, zoom: 1.05, fullBleed: true }] },
 ]
 
