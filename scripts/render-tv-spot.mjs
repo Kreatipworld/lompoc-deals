@@ -18,6 +18,7 @@ import path from "node:path"
 import { spawn } from "node:child_process"
 import ffmpegPath from "ffmpeg-static"
 import { renderSegment, W, H, FPS } from "./lib/video-frames.mjs"
+import { CAPTIONS } from "./make-spot-captions.mjs"
 
 const ASSETS = process.argv[2]
 const FRAMES = process.argv[3]
@@ -32,18 +33,19 @@ const AMBIENCE_DB = -15 // under the voice, present but never competing
 const MUSIC_DB = -5 // the generated bed is already normalised to -20 LUFS, so it needs far
                     // less attenuation than a commercial track would
 
-// A day in Lompoc, then one plain explanation of what the platform is.
-// No checkout beat: the register shot and the coupon walkthrough are deliberately out —
-// this is a brand spot about the town, not a how-to.
+// Ordered so each shot is on screen while the narration names it. Phrase timings came from
+// silencedetect over the VO: "flower fields" 1.6-3.2s, "main street" 3.4-5.6s, "wineries"
+// 5.9-8.4s, "rockets" 8.7-10.5s. Durations below place each cut inside its phrase.
+// No checkout beat — this is a brand spot about the town, not a how-to.
 const ITEMS = [
-  { clip: "lpc-aerial.mp4", dur: 3.4, title: "title-experience.png" }, // the valley grid against the fields
-  { clip: "lpc-flowers.mp4", dur: 2.6 },
-  { clip: "lpc-oldtown.mp4", dur: 2.8 }, // Art Deco corner + sidewalk clock
-  { clip: "broll-shop.mp4", dur: 2.4 },
+  { clip: "lpc-aerial.mp4", dur: 2.2, title: "title-experience.png" }, // "This is Lompoc."
+  { clip: "lpc-flowers.mp4", dur: 2.6 },  // "Flower fields in June."
+  { clip: "lpc-oldtown.mp4", dur: 2.8 },  // "A main street you can walk end to end."
+  { clip: "broll-wine.mp4", dur: 2.8 },   // "Wineries you don't have to drive an hour to reach."
+  { clip: "broll-rocket.mp4", dur: 3.0 }, // "Rockets going up over the valley."
+  { clip: "broll-shop.mp4", dur: 2.4 },   // "Everything you love about this town..."
   { clip: "broll-tacos.mp4", dur: 2.4 },
-  { clip: "broll-wine.mp4", dur: 2.4 },
-  { clip: "lpc-rail.mp4", dur: 2.6 }, // coastal rail toward Surf
-  { clip: "broll-rocket.mp4", dur: 3.2 },
+  { clip: "lpc-rail.mp4", dur: 2.6 },     // "...couldn't find it in one place. Now you can."
   {
     // The only product beat — what it is, not how to use it. Punches, never a scroll.
     ui: [
@@ -52,7 +54,7 @@ const ITEMS = [
     ],
   },
   { clip: "broll-dusk.mp4", dur: 2.6 },
-  { ui: [{ img: "endcard-experience", dur: 3.4, from: 0, to: 0, zoom: 1.05, fullBleed: true }] },
+  { ui: [{ img: "endcard-experience", dur: 4.2, from: 0, to: 0, zoom: 1.05, fullBleed: true }] },
 ]
 
 const PURPLE = "#650C75"
@@ -198,10 +200,15 @@ async function main() {
   const voLen = await duration(voPath)
   const voMs = Math.round(VO_START * 1000)
 
+  // Voice chain: roll off rumble below 85Hz, lift presence around 3kHz so it cuts through
+  // the bed, then even it out with a gentle compressor before it hits the mix.
   const audioBits = [
     ...ambFilters,
     `[${parts.length}:a]aformat=channel_layouts=stereo:sample_rates=48000,` +
-      `adelay=${voMs}|${voMs},volume=2.0[vo]`,
+      `highpass=f=85,equalizer=f=3000:width_type=o:width=1.4:g=2.5,` +
+      `equalizer=f=250:width_type=o:width=1:g=-1.5,` +
+      `acompressor=threshold=-20dB:ratio=3:attack=6:release=140:makeup=2,` +
+      `adelay=${voMs}|${voMs},volume=1.7,asplit=2[vo][vokey]`,
   ]
   const mixLabels = [...ambLabels, "[vo]"]
 
@@ -209,29 +216,67 @@ async function main() {
   if (MUSIC && fs.existsSync(MUSIC)) {
     const idx = parts.length + 1 + ambCount
     musicInput = ["-i", MUSIC]
+    // Side-chained to the voice: the bed drops ~5dB whenever she speaks and swells back in
+    // the gaps. This is what stops music and narration from fighting each other.
     audioBits.push(
       `[${idx}:a]aformat=channel_layouts=stereo:sample_rates=48000,` +
         `atrim=0:${total.toFixed(2)},afade=t=in:st=0:d=1.5,` +
-        `afade=t=out:st=${(total - 2).toFixed(2)}:d=2,volume=${MUSIC_DB}dB[mus]`
+        `afade=t=out:st=${(total - 2).toFixed(2)}:d=2,volume=${MUSIC_DB}dB[musraw]`,
+      `[musraw][vokey]sidechaincompress=threshold=0.05:ratio=4:attack=12:release=320:makeup=1[mus]`
     )
     mixLabels.push("[mus]")
     console.log(`  music ${path.basename(MUSIC)} at ${MUSIC_DB}dB`)
   }
 
+  // Master bus: sum, then normalise to -14 LUFS with -1dBTP, which is what the social
+  // platforms target — anything hotter just gets turned down on playback.
   audioBits.push(
     `${mixLabels.join("")}amix=inputs=${mixLabels.length}:duration=longest:dropout_transition=0:normalize=0,` +
-      `atrim=0:${total.toFixed(2)},alimiter=limit=0.95[a]`
+      `atrim=0:${total.toFixed(2)},` +
+      `loudnorm=I=-14:TP=-1:LRA=9,` +
+      `alimiter=limit=0.97[a]`
   )
 
-  const filter = [
-    ...chain,
-    `[vmix]fade=t=in:st=0:d=0.8,fade=t=out:st=${(total - 0.8).toFixed(2)}:d=0.8[v]`,
-    ...audioBits,
-  ].join(";")
+  // Caption plates ride on top of the cross-faded picture, each fading in and out around
+  // its phrase. Inputs come after video, narration, ambience and music.
+  const capDir = path.join(ASSETS, "captions")
+  const capInputs = []
+  const capFilters = []
+  let capCount = 0 // count INPUTS, not array slots — each caption pushes "-loop","1","-i",png
+  let capLabel = "vbase"
+  const capBase = parts.length + 1 + ambCount + (musicInput.length ? 1 : 0)
+  capFilters.push(
+    `[vmix]fade=t=in:st=0:d=0.8,fade=t=out:st=${(total - 0.8).toFixed(2)}:d=0.8[vbase]`
+  )
+  CAPTIONS.forEach((c, i) => {
+    const png = path.join(capDir, `${c.id}.png`)
+    if (!fs.existsSync(png)) return
+    const idx = capBase + capCount
+    capCount++
+    capInputs.push("-loop", "1", "-i", png)
+    const dur = c.end - c.start
+    // The trailing setpts shifts this caption's frames to its own start time. Without it the
+    // overlay stream runs from t=0, so by the time the enable window opens it has ended and
+    // eof_action=pass silently shows nothing.
+    capFilters.push(
+      `[${idx}:v]format=rgba,fps=${FPS},trim=0:${dur.toFixed(2)},setpts=PTS-STARTPTS,` +
+        `fade=t=in:st=0:d=0.25:alpha=1,fade=t=out:st=${Math.max(0, dur - 0.3).toFixed(2)}:d=0.3:alpha=1,` +
+        `setpts=PTS+${c.start.toFixed(2)}/TB[c${i}]`
+    )
+    const next = i === CAPTIONS.length - 1 ? "v" : `vc${i}`
+    capFilters.push(
+      `[${capLabel}][c${i}]overlay=0:0:enable='between(t,${c.start.toFixed(2)},${c.end.toFixed(2)})':` +
+        `x=0:y=0:eof_action=pass[${next}]`
+    )
+    capLabel = next
+  })
+  if (capLabel === "vbase") capFilters.push(`[vbase]null[v]`)
+
+  const filter = [...chain, ...capFilters, ...audioBits].join(";")
 
   const dest = path.join(OUT, OUT_FILE)
   const { code, err } = await run([
-    "-y", ...inputs, "-i", voPath, ...ambInputs, ...musicInput,
+    "-y", ...inputs, "-i", voPath, ...ambInputs, ...musicInput, ...capInputs,
     "-filter_complex", filter, "-map", "[v]", "-map", "[a]",
     "-c:v", "libx264", "-preset", "slow", "-crf", "19", "-pix_fmt", "yuv420p",
     "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
