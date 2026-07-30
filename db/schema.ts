@@ -642,3 +642,20 @@ export const emailSuppressions = pgTable(
     emailUniq: uniqueIndex("email_suppressions_email_uniq").on(t.email),
   })
 )
+
+// ---------- cron run log ----------
+// One row per scheduled-job execution, so admins can see what ran, when, and
+// its result (e.g. how many re-engagement or digest emails went out).
+export const cronRuns = pgTable(
+  "cron_runs",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 80 }).notNull(),
+    ok: boolean("ok").notNull().default(true),
+    result: jsonb("result"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    nameCreatedIdx: index("cron_runs_name_created_idx").on(t.name, t.createdAt),
+  })
+)

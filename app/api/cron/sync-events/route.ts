@@ -28,5 +28,7 @@ export async function GET(request: Request) {
     }
   }
 
+  const { logCronRun } = await import("@/lib/cron-log")
+  await logCronRun("sync-events", { reports, failures }, failures.length === 0)
   return NextResponse.json({ ok: failures.length === 0, reports, failures })
 }

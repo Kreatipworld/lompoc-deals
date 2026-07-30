@@ -4,6 +4,7 @@ import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendMasterDigestEmail } from "@/lib/email"
 import { getMasterDigestContent, hasMasterDigestContent } from "@/lib/digest"
+import { logCronRun } from "@/lib/cron-log"
 
 export async function GET(request: Request) {
   const auth = request.headers.get("authorization")
@@ -14,6 +15,7 @@ export async function GET(request: Request) {
 
   const content = await getMasterDigestContent()
   if (!hasMasterDigestContent(content)) {
+    await logCronRun("digest", { sent: 0, skipped: "no content this week" })
     return NextResponse.json({ sent: 0, skipped: "no content this week" })
   }
 
@@ -31,5 +33,7 @@ export async function GET(request: Request) {
     else failed++
   }
 
-  return NextResponse.json({ sent, failed, subscribers: confirmedSubs.length })
+  const result = { sent, failed, subscribers: confirmedSubs.length }
+  await logCronRun("digest", result, failed === 0)
+  return NextResponse.json(result)
 }

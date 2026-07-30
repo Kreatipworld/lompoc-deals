@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { neon } from "@neondatabase/serverless"
 import { sendReengagementEmail } from "@/lib/email"
+import { logCronRun } from "@/lib/cron-log"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -63,5 +64,7 @@ export async function GET(request: Request) {
     await new Promise((res) => setTimeout(res, 300)) // gentle throttle
   }
 
-  return NextResponse.json({ sent, considered: rows.length })
+  const result = { sent, considered: rows.length }
+  await logCronRun("re-engage", result)
+  return NextResponse.json(result)
 }

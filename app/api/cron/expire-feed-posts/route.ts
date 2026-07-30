@@ -17,5 +17,8 @@ export async function GET(req: Request) {
     .where(and(eq(feedPosts.status, "approved"), lte(feedPosts.expiresAt, now)))
     .returning({ id: feedPosts.id })
 
-  return NextResponse.json({ expired: result.length, at: now.toISOString() })
+  const out = { expired: result.length, at: now.toISOString() }
+  const { logCronRun } = await import("@/lib/cron-log")
+  await logCronRun("expire-feed-posts", out)
+  return NextResponse.json(out)
 }
