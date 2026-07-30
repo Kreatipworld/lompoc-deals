@@ -406,6 +406,123 @@ export async function sendWelcomeEmail(
   return { ok: true }
 }
 
+// ── Retargeting / lifecycle emails ──────────────────────────────────────────
+// Keep the "reminder of our interest" going through the whole member lifecycle.
+// All fire-and-forget — never throw into the caller (webhook / cron).
+const greetName = (name?: string) => (name?.trim() ? `Hi ${name.trim()}, ` : "Hi there, ")
+
+const GROWTH_KEEPS = [
+  "Post specials &amp; coupons anytime — they hit the feed and our weekly community digest",
+  "Featured placement in that weekly digest so more neighbors see you",
+  "See how many locals view your page each week — real numbers",
+  "Show up first in your category so neighbors find you first",
+]
+
+/** ~3 days before a Growth trial ends (Stripe trial_will_end). */
+export async function sendTrialEndingEmail(email: string, name: string): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const billingUrl = siteUrl(`/en/dashboard/billing`)
+  const html = welcomeHtml({
+    heading: "Your Growth trial ends soon.",
+    intro:
+      greetName(name) +
+      "just a heads up — your 14-day Growth trial wraps up in about 3 days. Add a card and you'll roll right into Growth at $39.99/month with nothing interrupted. Nothing changes today.",
+    bulletsTitle: "With Growth you keep:",
+    bullets: GROWTH_KEEPS,
+    ctaLabel: "Keep Growth — add your card",
+    ctaUrl: billingUrl,
+    closing:
+      "Prefer to stop here? No problem — do nothing and your page simply stays on the free plan, still listed and findable. Reply anytime; a real person here in Lompoc reads it.",
+    signoff: "— The Lompoc Locals team",
+  })
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: "Your Growth trial ends in 3 days", html })
+  } catch (err) {
+    console.error("[email] trial-ending failed:", err)
+  }
+}
+
+/** After a trial lapses without converting — win-back. */
+export async function sendTrialEndedEmail(email: string, name: string): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const billingUrl = siteUrl(`/en/dashboard/billing`)
+  const html = welcomeHtml({
+    heading: "Your trial wrapped up.",
+    intro:
+      greetName(name) +
+      "your 14-day Growth trial has ended, so your page is back on the free plan. You're still listed and findable — but the tools that turn lookups into repeat customers are paused for now.",
+    bulletsTitle: "Turn Growth back on anytime to:",
+    bullets: GROWTH_KEEPS,
+    ctaLabel: "Restart Growth",
+    ctaUrl: billingUrl,
+    closing:
+      "No pressure at all — your free listing stays put either way. Whenever you're ready, we're right here. Reply anytime; a real person in Lompoc reads it.",
+    signoff: "— The Lompoc Locals team",
+  })
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: "Your Growth trial ended — here's what you're missing", html })
+  } catch (err) {
+    console.error("[email] trial-ended win-back failed:", err)
+  }
+}
+
+/** A renewal charge failed — recover the card before the plan drops to free. */
+export async function sendPaymentFailedEmail(email: string, name: string): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const billingUrl = siteUrl(`/en/dashboard/billing`)
+  const html = welcomeHtml({
+    heading: "We couldn't process your payment.",
+    intro:
+      greetName(name) +
+      "your latest Growth payment didn't go through — no worries, it happens. Your page stays on Growth for a short grace period, but to avoid dropping to the free plan, please update your card.",
+    bulletsTitle: "",
+    bullets: [],
+    ctaLabel: "Update your card",
+    ctaUrl: billingUrl,
+    closing:
+      "Once it's updated, everything continues seamlessly — no gap in your deals, digest spot, or stats. Questions? Reply anytime; a real person here in Lompoc reads it.",
+    signoff: "— The Lompoc Locals team",
+  })
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: "Action needed: update your card to keep Growth", html })
+  } catch (err) {
+    console.error("[email] payment-failed recovery failed:", err)
+  }
+}
+
+/** Nudge a claimed business that's gone quiet (no deals, no activity). */
+export async function sendReengagementEmail(email: string, name: string, businessName: string): Promise<void> {
+  const resend = getResend()
+  if (!resend) return
+  const dashUrl = siteUrl(`/en/dashboard`)
+  const who = businessName?.trim() || "your"
+  const html = welcomeHtml({
+    heading: "Your page misses you.",
+    intro:
+      greetName(name) +
+      `${who} is live on Lompoc Locals and neighbors are still finding it — but it's been quiet lately. The spots that get the most out of the platform post a little something regularly, and it only takes a minute.`,
+    bulletsTitle: "Easy wins that work for local spots:",
+    bullets: [
+      "A first-visit offer for new neighbors",
+      "A weekly special (Taco Tuesday, happy hour, you name it)",
+      "Fresh photos or a quick bit of news",
+    ],
+    ctaLabel: "Update your page",
+    ctaUrl: dashUrl,
+    closing:
+      "We're rooting for you — reply anytime, a real person here in Lompoc reads it.",
+    signoff: "— The Lompoc Locals team",
+  })
+  try {
+    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject: "Your Lompoc Locals page is quiet — here's an easy win", html })
+  } catch (err) {
+    console.error("[email] re-engagement failed:", err)
+  }
+}
+
 export async function sendDealUpdateEmail(
   email: string,
   deal: DealNotificationData,

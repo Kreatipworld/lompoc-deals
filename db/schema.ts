@@ -129,6 +129,8 @@ export const businesses = pgTable(
     status: businessStatus("status").notNull().default("pending"),
     stripeConnectAccountId: varchar("stripe_connect_account_id", { length: 200 }),
     stripeConnectOnboardingComplete: boolean("stripe_connect_onboarding_complete").notNull().default(false),
+    // Last time we sent this owner a re-engagement nudge — throttles the cron.
+    lastReengagedAt: timestamp("last_reengaged_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

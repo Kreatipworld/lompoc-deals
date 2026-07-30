@@ -6,7 +6,41 @@ import { eq } from "drizzle-orm"
 import type { TierKey } from "@/lib/stripe"
 import type Stripe from "stripe"
 import { track } from "@/lib/analytics/track"
-import { notifyPlatform } from "@/lib/email"
+import {
+  notifyPlatform,
+  sendTrialEndingEmail,
+  sendTrialEndedEmail,
+  sendPaymentFailedEmail,
+} from "@/lib/email"
+
+/**
+ * Resolve a member's email + display name from a Stripe userId (metadata) or
+ * customerId. Used to send lifecycle/retargeting emails from webhook events.
+ * Returns null (rather than throwing) when the member can't be resolved.
+ */
+async function resolveMember(opts: {
+  userId?: number
+  customerId?: string
+}): Promise<{ email: string; name: string } | null> {
+  let uid = opts.userId
+  if ((!uid || !Number.isFinite(uid) || uid <= 0) && opts.customerId) {
+    const sub = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.stripeCustomerId, opts.customerId),
+      columns: { userId: true },
+    })
+    uid = sub?.userId
+  }
+  if (!uid || !Number.isFinite(uid) || uid <= 0) return null
+  const [u, b] = await Promise.all([
+    db.query.users.findFirst({ where: eq(users.id, uid), columns: { email: true } }),
+    db.query.businesses.findFirst({
+      where: eq(businesses.ownerUserId, uid),
+      columns: { name: true, ownerFullName: true },
+    }),
+  ])
+  if (!u?.email) return null
+  return { email: u.email, name: (b?.ownerFullName?.trim() || b?.name || "").trim() }
+}
 
 /** Map a Stripe price ID back to the tier key it represents. */
 function tierFromPriceId(priceId: string): TierKey | null {
@@ -156,6 +190,17 @@ export async function POST(request: Request) {
       break
     }
 
+    // ~3 days before a trial ends — nudge the member to keep Growth.
+    case "customer.subscription.trial_will_end": {
+      const sub = event.data.object as Stripe.Subscription
+      const member = await resolveMember({
+        userId: Number(sub.metadata?.userId),
+        customerId: sub.customer as string,
+      })
+      if (member) await sendTrialEndingEmail(member.email, member.name)
+      break
+    }
+
     case "customer.subscription.updated": {
       const sub = event.data.object as Stripe.Subscription
       const userId = Number(sub.metadata?.userId)
@@ -174,6 +219,14 @@ export async function POST(request: Request) {
       const tier = tierFromPrice ?? ((sub.metadata?.tier ?? "free") as TierKey)
       const periodEnd = getPeriodEnd(sub)
 
+      const updWhere = byUserId
+        ? eq(subscriptions.userId, userId)
+        : eq(subscriptions.stripeCustomerId, customerId)
+      const before = await db.query.subscriptions.findFirst({
+        where: updWhere,
+        columns: { status: true },
+      })
+
       await db.update(subscriptions)
         .set({
           tier,
@@ -182,11 +235,15 @@ export async function POST(request: Request) {
           cancelAtPeriodEnd: sub.cancel_at_period_end ? 1 : 0,
           updatedAt: new Date(),
         })
-        .where(
-          byUserId
-            ? eq(subscriptions.userId, userId)
-            : eq(subscriptions.stripeCustomerId, customerId)
-        )
+        .where(updWhere)
+
+      // Win-back: a trial that flipped straight to canceled never converted.
+      // The DB status transition is the dedupe guard — a redelivered event sees
+      // 'canceled', not 'trialing', so the email won't re-send.
+      if (before?.status === "trialing" && sub.status === "canceled") {
+        const member = await resolveMember({ userId, customerId })
+        if (member) await sendTrialEndedEmail(member.email, member.name)
+      }
       break
     }
 
@@ -240,6 +297,10 @@ export async function POST(request: Request) {
             .set({ gracePeriodEndsAt })
             .where(eq(businesses.id, biz.id))
         }
+
+        // Recover the card before the grace period lapses to free.
+        const member = await resolveMember({ userId: existing.userId, customerId })
+        if (member) await sendPaymentFailedEmail(member.email, member.name)
       }
       break
     }
@@ -254,6 +315,14 @@ export async function POST(request: Request) {
       const byUserId = Number.isFinite(userId) && userId > 0
       if (!byUserId && !customerId) break
 
+      const delWhere = byUserId
+        ? eq(subscriptions.userId, userId)
+        : eq(subscriptions.stripeCustomerId, customerId)
+      const before = await db.query.subscriptions.findFirst({
+        where: delWhere,
+        columns: { status: true },
+      })
+
       await db.update(subscriptions)
         .set({
           tier: "free",
@@ -261,11 +330,14 @@ export async function POST(request: Request) {
           stripeSubscriptionId: null,
           updatedAt: new Date(),
         })
-        .where(
-          byUserId
-            ? eq(subscriptions.userId, userId)
-            : eq(subscriptions.stripeCustomerId, customerId)
-        )
+        .where(delWhere)
+
+      // Win-back if a trial lapsed without ever converting to active (guarded by
+      // the pre-update status, so an already-processed cancel won't re-send).
+      if (before?.status === "trialing") {
+        const member = await resolveMember({ userId, customerId })
+        if (member) await sendTrialEndedEmail(member.email, member.name)
+      }
       break
     }
 
