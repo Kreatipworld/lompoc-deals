@@ -29,7 +29,8 @@ const VO = "vo-spot.mp3"
 const VO_START = 0.4 // narration runs the whole film — no silent stretches to sit through
 const XFADE = 0.55
 const AMBIENCE_DB = -15 // under the voice, present but never competing
-const MUSIC_DB = -14
+const MUSIC_DB = -5 // the generated bed is already normalised to -20 LUFS, so it needs far
+                    // less attenuation than a commercial track would
 
 // A day in Lompoc, then one plain explanation of what the platform is.
 // No checkout beat: the register shot and the coupon walkthrough are deliberately out —
