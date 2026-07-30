@@ -14,20 +14,20 @@
  *
  * Usage:
  *   node scripts/build-social-cards.mjs [calendarCsv]
- *   node scripts/render-social-cards.mjs docs/social-kit/cards-calendar.html docs/social-kit/images/calendar
+ *   node scripts/render-social-cards.mjs content/social/cards/cards-calendar.html content/social/posts
  *
  * Pass --write-csv to point the calendar's media column at the cards it generates.
+ *
+ * Everything lands in content/social/ — that folder is the deliverable.
  */
 import { neon } from "@neondatabase/serverless"
 import fs from "node:fs"
 import path from "node:path"
 
-const CSV = process.argv[2]?.endsWith(".csv")
-  ? process.argv[2]
-  : "docs/social-kit/calendar-2026-07-30.csv"
+const CSV = process.argv[2]?.endsWith(".csv") ? process.argv[2] : "content/social/calendar.csv"
 const WRITE_CSV = process.argv.includes("--write-csv")
-const OUT_HTML = "docs/social-kit/cards-calendar.html"
-const IMG_DIR = "docs/social-kit/images/calendar"
+const OUT_HTML = "content/social/cards/cards-calendar.html"
+const IMG_DIR = "content/social/posts"
 const REPO = process.cwd()
 
 const url = fs
@@ -108,7 +108,11 @@ function tidyLoc(loc) {
     if (out.some((o) => o.toLowerCase() === p.toLowerCase())) continue
     out.push(p)
   }
-  return out.join(", ")
+  const s = out.join(", ")
+  // Some events carry a truncated location — "Restaurants in" — which reads as a broken card.
+  // Better to show no location than a dangling fragment.
+  if (s.length < 4 || /\b(in|at|on|of|the|and|near)$/i.test(s)) return ""
+  return s
 }
 
 /**
@@ -318,7 +322,7 @@ async function main() {
       }
       const photo = firstPhoto(b.photos_json)
       if (!photo) missing.push(`${r.date} spotlight — ${b.name} has no usable photo, card falls back to brand fill`)
-      const cardId = `spotlight-${r.date}`
+      const cardId = `${r.date}-local-spotlight`
       cards.push(
         photoCard(cardId, {
           photo,
@@ -344,7 +348,7 @@ async function main() {
       const photo = firstPhoto(a.photos_json)
       if (!photo) missing.push(`${r.date} place — ${a.title} has no usable photo, card falls back to brand fill`)
       const tip = (a.tips || "").split(". ")[0].replace(/\.$/, "")
-      const cardId = `place-${r.date}`
+      const cardId = `${r.date}-driven-past-it`
       cards.push(
         photoCard(cardId, {
           photo,
@@ -363,7 +367,7 @@ async function main() {
       // launch falls back to a free place, and gets the place treatment instead.
       const m = r.text.match(/^(.+?) — (\w{3}, \w{3} \d+), from Vandenberg\./m)
       if (m) {
-        const cardId = `launch-${r.date}`
+        const cardId = `${r.date}-launch-weekend`
         cards.push(launchCard(cardId, { name: m[1].trim(), when: m[2].replace(/,/, " ·") }))
         r.media = `${IMG_DIR}/${cardId}.png`
         continue
@@ -377,7 +381,7 @@ async function main() {
       const photo = firstPhoto(a.photos_json)
       if (!photo) missing.push(`${r.date} free-weekend — ${a.title} has no usable photo, card falls back to brand fill`)
       const season = r.text.match(/^.+ — (.+)\.$/m)?.[1] || ""
-      const cardId = `free-${r.date}`
+      const cardId = `${r.date}-free-weekend`
       cards.push(
         photoCard(cardId, {
           photo,
@@ -403,7 +407,7 @@ async function main() {
         continue
       }
       const more = r.text.match(/Plus (\d+) more/)?.[1] || ""
-      const cardId = `week-${r.date}`
+      const cardId = `${r.date}-this-week`
       cards.push(weekCard(cardId, { events: lines, more }))
       r.media = `${IMG_DIR}/${cardId}.png`
       continue

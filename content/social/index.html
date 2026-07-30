@@ -1,0 +1,548 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lompoc Locals — content folder</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#650C75; --gold:#EFC618; --green:#0B992F; --cream:#FAF5EC; --ink:#241629; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Plus Jakarta Sans',system-ui,sans-serif; background:var(--cream); color:var(--ink); }
+  a { color:inherit; }
+  header { background:var(--purple); color:#fff; padding:56px 40px 48px; }
+  .wrap { max-width:1280px; margin:0 auto; }
+  header .eyebrow { font-family:Georgia,serif; font-style:italic; color:var(--gold); font-size:22px; }
+  header h1 { font-size:52px; font-weight:800; line-height:1.05; margin-top:8px; letter-spacing:-.5px; }
+  header p { color:#eddcf1; font-size:18px; margin-top:16px; max-width:60ch; line-height:1.55; }
+  .stats { display:flex; flex-wrap:wrap; gap:14px; margin-top:28px; }
+  .stat { background:rgba(255,255,255,.12); border-radius:12px; padding:12px 18px; }
+  .stat b { display:block; font-size:26px; font-weight:800; color:var(--gold); }
+  .stat span { font-size:13px; text-transform:uppercase; letter-spacing:1px; color:#eddcf1; }
+  section { padding:52px 40px; }
+  section + section { border-top:2px solid rgba(36,22,41,.10); }
+  h2 { font-size:30px; font-weight:800; letter-spacing:-.3px; }
+  h2 small { display:block; font-size:15px; font-weight:500; color:rgba(36,22,41,.6); margin-top:6px; letter-spacing:0; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:26px; margin-top:30px; }
+  .post { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 14px rgba(36,22,41,.09); display:flex; flex-direction:column; }
+  .post .shot { display:block; background:#eee; aspect-ratio:4/5; }
+  .post .shot img, .post .shot video { width:100%; height:100%; object-fit:cover; display:block; }
+  .post .miss { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#b00; font-weight:700; font-size:14px; }
+  .post .body { padding:18px 20px 20px; display:flex; flex-direction:column; gap:9px; flex:1; }
+  .when { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--purple); }
+  .series { font-size:19px; font-weight:700; line-height:1.25; }
+  .chans { display:flex; gap:6px; flex-wrap:wrap; }
+  .chip { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; background:rgba(101,12,117,.10); color:var(--purple); border-radius:99px; padding:4px 10px; }
+  .cap { font-family:inherit; font-size:13px; line-height:1.5; color:rgba(36,22,41,.78); white-space:pre-wrap; word-break:break-word;
+    background:var(--cream); border-radius:10px; padding:12px; max-height:210px; overflow:auto; }
+  .file { font-size:11px; color:rgba(36,22,41,.45); margin-top:auto; font-variant-numeric:tabular-nums; }
+  .thumbs { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:18px; margin-top:26px; }
+  .thumb { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(36,22,41,.08); display:block; }
+  .thumb img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; background:#eee; }
+  .thumb span { display:block; font-size:11px; padding:8px 10px; color:rgba(36,22,41,.6); word-break:break-all; }
+  .vids { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:22px; margin-top:26px; }
+  .vid { background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 2px 12px rgba(36,22,41,.08); }
+  .vid video { width:100%; display:block; background:#000; }
+  .vid div { padding:12px 16px; font-size:13px; }
+  .vid b { display:block; font-size:14px; font-weight:700; word-break:break-all; }
+  .vid span { color:rgba(36,22,41,.5); font-size:12px; }
+  ul.files { list-style:none; margin-top:22px; display:grid; gap:9px; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+  ul.files a { background:#fff; border-radius:10px; padding:14px 16px; display:flex; justify-content:space-between; gap:12px;
+    box-shadow:0 1px 8px rgba(36,22,41,.07); text-decoration:none; font-size:14px; font-weight:600; }
+  ul.files span { color:rgba(36,22,41,.45); font-weight:500; font-size:12px; }
+  pre.cmd { background:var(--ink); color:#e9dcec; border-radius:12px; padding:20px 22px; margin-top:22px; overflow-x:auto;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; line-height:1.75; }
+  footer { padding:40px; text-align:center; color:rgba(36,22,41,.5); font-size:13px; }
+</style></head><body>
+
+<header><div class="wrap">
+  <div class="eyebrow">everything we've made, in one folder</div>
+  <h1>Lompoc Locals — content</h1>
+  <p>This folder is the deliverable. <b>posts/</b> holds one ready-to-post image per scheduled post,
+  <b>calendar.csv</b> is the scheduler file that pairs each image with its caption, and everything
+  is regenerated from live site data — so it never drifts out of sync with the pages it links to.</p>
+  <div class="stats">
+    <div class="stat"><b>18</b><span>scheduled posts</span></div>
+    <div class="stat"><b>14</b><span>post images</span></div>
+    <div class="stat"><b>5</b><span>videos</span></div>
+    <div class="stat"><b>28</b><span>launch-kit assets</span></div>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <h2>The month ahead<small>Each card is the exact image and caption that ships together. Click any image for full size.</small></h2>
+  <div class="grid">
+  <article class="post">
+    <a class="shot" href="posts/2026-07-30-local-spotlight.png" target="_blank"><img src="posts/2026-07-30-local-spotlight.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Thu, Jul 30 · 12:00</div>
+      <div class="series">Local spotlight</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">📍 Elevate Lompoc — 118 S H St
+
+Dispensaries in Lompoc. Photos, hours and directions are all on their page.
+
+👉 https://www.lompoclocals.com/en/biz/elevate-lompoc
+
+Been? Tell everyone what to order 👇
+
+#ShopLocalLompoc #LompocBusiness #SmallBusinessLompoc #Lompoc #805</pre>
+      <div class="file">2026-07-30-local-spotlight.png · 2144 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-07-31-launch-weekend.png" target="_blank"><img src="posts/2026-07-31-launch-weekend.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Fri, Jul 31 · 16:00</div>
+      <div class="series">Free in Lompoc</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">🚀 There's a launch this weekend.
+
+Falcon 9 Block 5 — Starlink Group 17-52 — Fri, Jul 31, from Vandenberg.
+
+Best free views: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Look southwest.
+
+Every launch on the calendar 👉 https://www.lompoclocals.com/en/events
+
+#VandenbergSFB #RocketLaunch #Lompoc #LompocCA #CentralCoast #805</pre>
+      <div class="file">2026-07-31-launch-weekend.png · 1877 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="video/lompoc-locals-spot.mp4" target="_blank"><video src="video/lompoc-locals-spot.mp4#t=0.1" muted playsinline controls preload="metadata"></video></a>
+    <div class="body">
+      <div class="when">Sun, Aug 2 · 11:00</div>
+      <div class="series">Video</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">All of Lompoc, in one place 💜
+
+Every local business, every event, every launch over the base — and everywhere worth going.
+
+👉 https://www.lompoclocals.com
+
+#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805</pre>
+      <div class="file">lompoc-locals-spot.mp4 · 20.2 MB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-03-this-week.png" target="_blank"><img src="posts/2026-08-03-this-week.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Mon, Aug 3 · 08:30</div>
+      <div class="series">This Week in Lompoc</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">This week in Lompoc 📅
+
+🚀 Tue, Aug 4 — Falcon 9 Block 5 — Starlink Group 17-53
+🎨 Tue, Aug 4 — Pouring My Art Out
+🎨 Thu, Aug 6 — Lompoc Art Walk
+🛍️ Fri, Aug 7 — Old Town Market
+🚀 Sat, Aug 8 — Falcon 9 Block 5 — Starlink Group 17-38
+
+Plus 58 more on the calendar — all of it in one place, no account needed.
+
+👉 https://www.lompoclocals.com/en/events
+
+#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805</pre>
+      <div class="file">2026-08-03-this-week.png · 655 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-04-driven-past-it.png" target="_blank"><img src="posts/2026-08-04-driven-past-it.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Tue, Aug 4 · 17:30</div>
+      <div class="series">You've driven past it 500 times</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">You've driven past it 500 times. Have you ever actually stopped? 👀
+
+La Purisima Golf Course — 3455 CA-246
+
+Wind is the defining factor — morning rounds play noticeably easier than afternoon ones.
+
+Full details, photos and directions 👉 https://www.lompoclocals.com/en/activities/la-purisima-golf-course
+
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805 #Outdoors</pre>
+      <div class="file">2026-08-04-driven-past-it.png · 2109 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-06-local-spotlight.png" target="_blank"><img src="posts/2026-08-06-local-spotlight.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Thu, Aug 6 · 12:00</div>
+      <div class="series">Local spotlight</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">📍 Royal Healing Emporium — 721 W Central Ave Ste D
+
+Retail in Lompoc. Photos, hours and directions are all on their page.
+
+👉 https://www.lompoclocals.com/en/biz/royal-healing-emporium
+Tag them: https://www.instagram.com/royalhealinglompoc
+
+Been? Tell everyone what to order 👇
+
+#ShopLocalLompoc #LompocBusiness #SmallBusinessLompoc #Lompoc #805</pre>
+      <div class="file">2026-08-06-local-spotlight.png · 2088 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-07-launch-weekend.png" target="_blank"><img src="posts/2026-08-07-launch-weekend.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Fri, Aug 7 · 16:00</div>
+      <div class="series">Free in Lompoc</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">🚀 There's a launch this weekend.
+
+Falcon 9 Block 5 — Starlink Group 17-38 — Sat, Aug 8, from Vandenberg.
+
+Best free views: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Look southwest.
+
+Every launch on the calendar 👉 https://www.lompoclocals.com/en/events
+
+#VandenbergSFB #RocketLaunch #Lompoc #LompocCA #CentralCoast #805</pre>
+      <div class="file">2026-08-07-launch-weekend.png · 1878 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="video/lompoc-locals-experience-20s.mp4" target="_blank"><video src="video/lompoc-locals-experience-20s.mp4#t=0.1" muted playsinline controls preload="metadata"></video></a>
+    <div class="body">
+      <div class="when">Sun, Aug 9 · 11:00</div>
+      <div class="series">Video</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">All of Lompoc, in one place 💜
+
+Every local business, every event, every launch over the base — and everywhere worth going.
+
+👉 https://www.lompoclocals.com
+
+#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805</pre>
+      <div class="file">lompoc-locals-experience-20s.mp4 · 6.5 MB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-10-this-week.png" target="_blank"><img src="posts/2026-08-10-this-week.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Mon, Aug 10 · 08:30</div>
+      <div class="series">This Week in Lompoc</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">This week in Lompoc 📅
+
+🎨 Tue, Aug 11 — Pouring My Art Out
+🚀 Tue, Aug 11 — Falcon 9 Block 5 — Starlink Group 17-49
+📌 Thu, Aug 13 — Sta. Rita Wine and Fire Weekend 2026
+📌 Thu, Aug 13 — Zine Making
+🛍️ Fri, Aug 14 — Old Town Market
+
+Plus 58 more on the calendar — all of it in one place, no account needed.
+
+👉 https://www.lompoclocals.com/en/events
+
+#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805</pre>
+      <div class="file">2026-08-10-this-week.png · 661 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-11-driven-past-it.png" target="_blank"><img src="posts/2026-08-11-driven-past-it.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Tue, Aug 11 · 17:30</div>
+      <div class="series">You've driven past it 500 times</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">You've driven past it 500 times. Have you ever actually stopped? 👀
+
+Burton Mesa Ecological Reserve — 4602 Titan Ave
+
+Trailheads are unmarked and easy to miss — look for the pull-offs along the roads on the Vandenberg Village side.
+
+Full details, photos and directions 👉 https://www.lompoclocals.com/en/activities/burton-mesa-ecological-reserve
+
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805 #Outdoors</pre>
+      <div class="file">2026-08-11-driven-past-it.png · 2861 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-13-local-spotlight.png" target="_blank"><img src="posts/2026-08-13-local-spotlight.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Thu, Aug 13 · 12:00</div>
+      <div class="series">Local spotlight</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">📍 Walgreens Pharmacy — 937 N H St
+
+Other in Lompoc. Photos, hours and directions are all on their page.
+
+👉 https://www.lompoclocals.com/en/biz/walgreens-pharmacy
+
+Been? Tell everyone what to order 👇
+
+#ShopLocalLompoc #LompocBusiness #SmallBusinessLompoc #Lompoc #805</pre>
+      <div class="file">2026-08-13-local-spotlight.png · 2124 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-14-free-weekend.png" target="_blank"><img src="posts/2026-08-14-free-weekend.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Fri, Aug 14 · 16:00</div>
+      <div class="series">Free in Lompoc</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">This weekend, for $0. 💜
+
+Cypress Gallery — year-round · new show most months.
+
+👉 https://www.lompoclocals.com/en/activities/cypress-gallery
+
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805 #Outdoors</pre>
+      <div class="file">2026-08-14-free-weekend.png · 2038 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="video/lompoc-locals-experience.mp4" target="_blank"><video src="video/lompoc-locals-experience.mp4#t=0.1" muted playsinline controls preload="metadata"></video></a>
+    <div class="body">
+      <div class="when">Sun, Aug 16 · 11:00</div>
+      <div class="series">Video</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">All of Lompoc, in one place 💜
+
+Every local business, every event, every launch over the base — and everywhere worth going.
+
+👉 https://www.lompoclocals.com
+
+#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805</pre>
+      <div class="file">lompoc-locals-experience.mp4 · 11.4 MB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-17-this-week.png" target="_blank"><img src="posts/2026-08-17-this-week.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Mon, Aug 17 · 08:30</div>
+      <div class="series">This Week in Lompoc</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">This week in Lompoc 📅
+
+🎨 Tue, Aug 18 — Pouring My Art Out
+📌 Sat, Aug 22 — Lompoc Valley Historical Society Open House
+🎶 Sat, Aug 22 — Live Music at Hangar 7 Social House
+
+Plus 60 more on the calendar — all of it in one place, no account needed.
+
+👉 https://www.lompoclocals.com/en/events
+
+#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805</pre>
+      <div class="file">2026-08-17-this-week.png · 610 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-18-driven-past-it.png" target="_blank"><img src="posts/2026-08-18-driven-past-it.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Tue, Aug 18 · 17:30</div>
+      <div class="series">You've driven past it 500 times</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">You've driven past it 500 times. Have you ever actually stopped? 👀
+
+Lompoc Valley Flower Fields — Central Ave &amp; V St
+
+Late May through June is your best window.
+
+Full details, photos and directions 👉 https://www.lompoclocals.com/en/activities/lompoc-flower-fields
+
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805 #Outdoors</pre>
+      <div class="file">2026-08-18-driven-past-it.png · 2162 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-20-local-spotlight.png" target="_blank"><img src="posts/2026-08-20-local-spotlight.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Thu, Aug 20 · 12:00</div>
+      <div class="series">Local spotlight</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span></div>
+      <pre class="cap">📍 Ken Brown Wines — 1200 E Chestnut Ct
+
+Wineries in Lompoc. Photos, hours and directions are all on their page.
+
+👉 https://www.lompoclocals.com/en/biz/ken-brown-wines
+
+Been? Tell everyone what to order 👇
+
+#ShopLocalLompoc #LompocBusiness #SmallBusinessLompoc #Lompoc #805</pre>
+      <div class="file">2026-08-20-local-spotlight.png · 1916 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="posts/2026-08-21-free-weekend.png" target="_blank"><img src="posts/2026-08-21-free-weekend.png" loading="lazy" alt=""></a>
+    <div class="body">
+      <div class="when">Fri, Aug 21 · 16:00</div>
+      <div class="series">Free in Lompoc</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">This weekend, for $0. 💜
+
+Beattie Park — year-round · best at sunset.
+
+👉 https://www.lompoclocals.com/en/activities/beattie-park
+
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805 #Outdoors</pre>
+      <div class="file">2026-08-21-free-weekend.png · 2395 KB</div>
+    </div>
+  </article>
+  <article class="post">
+    <a class="shot" href="video/lompoc-locals-signup.mp4" target="_blank"><video src="video/lompoc-locals-signup.mp4#t=0.1" muted playsinline controls preload="metadata"></video></a>
+    <div class="body">
+      <div class="when">Sun, Aug 23 · 11:00</div>
+      <div class="series">Video</div>
+      <div class="chans"><span class="chip">facebook</span><span class="chip">instagram</span><span class="chip">tiktok</span></div>
+      <pre class="cap">All of Lompoc, in one place 💜
+
+Every local business, every event, every launch over the base — and everywhere worth going.
+
+👉 https://www.lompoclocals.com
+
+#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805</pre>
+      <div class="file">lompoc-locals-signup.mp4 · 11.4 MB</div>
+    </div>
+  </article></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Video<small>Pre-rendered spots. The calendar rotates one into a Sunday slot each week.</small></h2>
+  <div class="vids">
+    <div class="vid"><video src="video/lompoc-locals-claim.mp4" controls muted preload="metadata"></video>
+      <div><b>lompoc-locals-claim.mp4</b><span>7.4 MB</span></div></div>
+    <div class="vid"><video src="video/lompoc-locals-experience-20s.mp4" controls muted preload="metadata"></video>
+      <div><b>lompoc-locals-experience-20s.mp4</b><span>6.5 MB</span></div></div>
+    <div class="vid"><video src="video/lompoc-locals-experience.mp4" controls muted preload="metadata"></video>
+      <div><b>lompoc-locals-experience.mp4</b><span>11.4 MB</span></div></div>
+    <div class="vid"><video src="video/lompoc-locals-signup.mp4" controls muted preload="metadata"></video>
+      <div><b>lompoc-locals-signup.mp4</b><span>11.4 MB</span></div></div>
+    <div class="vid"><video src="video/lompoc-locals-spot.mp4" controls muted preload="metadata"></video>
+      <div><b>lompoc-locals-spot.mp4</b><span>20.2 MB</span></div></div></div>
+  <h2 style="margin-top:44px; font-size:22px;">Ad masters<small>Per-placement aspect ratios cut from the brand spot.</small></h2>
+  <ul class="files"><li><a href="video/masters/lompoc-locals-spot-16x9.mp4" target="_blank">lompoc-locals-spot-16x9.mp4<span>10.4 MB</span></a></li><li><a href="video/masters/lompoc-locals-spot-1x1.mp4" target="_blank">lompoc-locals-spot-1x1.mp4<span>10.3 MB</span></a></li><li><a href="video/masters/lompoc-locals-spot-4x5.mp4" target="_blank">lompoc-locals-spot-4x5.mp4<span>13.0 MB</span></a></li><li><a href="video/masters/lompoc-locals-spot-9x16.mp4" target="_blank">lompoc-locals-spot-9x16.mp4<span>17.4 MB</span></a></li><li><a href="video/masters/lompoc-locals-spot-MASTER.mp4" target="_blank">lompoc-locals-spot-MASTER.mp4<span>24.3 MB</span></a></li></ul>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Launch kit<small>The first round — profile art, the intro carousel, and the week-two card set.</small></h2>
+  <div class="thumbs">
+    <a class="thumb" href="launch-kit/avatar.png" target="_blank">
+      <img src="launch-kit/avatar.png" loading="lazy" alt="">
+      <span>avatar.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/brand.png" target="_blank">
+      <img src="launch-kit/brand.png" loading="lazy" alt="">
+      <span>brand.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/cat.png" target="_blank">
+      <img src="launch-kit/cat.png" loading="lazy" alt="">
+      <span>cat.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ig1.png" target="_blank">
+      <img src="launch-kit/ig1.png" loading="lazy" alt="">
+      <span>ig1.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ig2.png" target="_blank">
+      <img src="launch-kit/ig2.png" loading="lazy" alt="">
+      <span>ig2.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ig3.png" target="_blank">
+      <img src="launch-kit/ig3.png" loading="lazy" alt="">
+      <span>ig3.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ig4.png" target="_blank">
+      <img src="launch-kit/ig4.png" loading="lazy" alt="">
+      <span>ig4.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ig5.png" target="_blank">
+      <img src="launch-kit/ig5.png" loading="lazy" alt="">
+      <span>ig5.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/tt1.png" target="_blank">
+      <img src="launch-kit/tt1.png" loading="lazy" alt="">
+      <span>tt1.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/tt2.png" target="_blank">
+      <img src="launch-kit/tt2.png" loading="lazy" alt="">
+      <span>tt2.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/tt3.png" target="_blank">
+      <img src="launch-kit/tt3.png" loading="lazy" alt="">
+      <span>tt3.png</span>
+    </a></div>
+  <div class="thumbs">
+    <a class="thumb" href="launch-kit/week2/burrito.png" target="_blank">
+      <img src="launch-kit/week2/burrito.png" loading="lazy" alt="">
+      <span>burrito.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/claim1.png" target="_blank">
+      <img src="launch-kit/week2/claim1.png" loading="lazy" alt="">
+      <span>claim1.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/claim2.png" target="_blank">
+      <img src="launch-kit/week2/claim2.png" loading="lazy" alt="">
+      <span>claim2.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/claim3.png" target="_blank">
+      <img src="launch-kit/week2/claim3.png" loading="lazy" alt="">
+      <span>claim3.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/launch.png" target="_blank">
+      <img src="launch-kit/week2/launch.png" loading="lazy" alt="">
+      <span>launch.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/market.png" target="_blank">
+      <img src="launch-kit/week2/market.png" loading="lazy" alt="">
+      <span>market.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/week-events-story.png" target="_blank">
+      <img src="launch-kit/week2/week-events-story.png" loading="lazy" alt="">
+      <span>week-events-story.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/week-events.png" target="_blank">
+      <img src="launch-kit/week2/week-events.png" loading="lazy" alt="">
+      <span>week-events.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/wine1.png" target="_blank">
+      <img src="launch-kit/week2/wine1.png" loading="lazy" alt="">
+      <span>wine1.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/wine2.png" target="_blank">
+      <img src="launch-kit/week2/wine2.png" loading="lazy" alt="">
+      <span>wine2.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/wine3.png" target="_blank">
+      <img src="launch-kit/week2/wine3.png" loading="lazy" alt="">
+      <span>wine3.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/wine4.png" target="_blank">
+      <img src="launch-kit/week2/wine4.png" loading="lazy" alt="">
+      <span>wine4.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/week2/wine5.png" target="_blank">
+      <img src="launch-kit/week2/wine5.png" loading="lazy" alt="">
+      <span>wine5.png</span>
+    </a></div>
+  <div class="thumbs">
+    <a class="thumb" href="launch-kit/ideas/by-numbers.png" target="_blank">
+      <img src="launch-kit/ideas/by-numbers.png" loading="lazy" alt="">
+      <span>by-numbers.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ideas/dictionary.png" target="_blank">
+      <img src="launch-kit/ideas/dictionary.png" loading="lazy" alt="">
+      <span>dictionary.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ideas/fog-report.png" target="_blank">
+      <img src="launch-kit/ideas/fog-report.png" loading="lazy" alt="">
+      <span>fog-report.png</span>
+    </a>
+    <a class="thumb" href="launch-kit/ideas/receipt.png" target="_blank">
+      <img src="launch-kit/ideas/receipt.png" loading="lazy" alt="">
+      <span>receipt.png</span>
+    </a></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Sources &amp; notes<small>Card decks are the HTML the PNGs are rendered from — edit these, not the images.</small></h2>
+  <ul class="files">
+    <li><a href="calendar.csv" target="_blank">calendar.csv<span>scheduler file</span></a></li>
+    <li><a href="notes/captions.md" target="_blank">notes/captions.md<span>5 KB</span></a></li><li><a href="notes/content-weeks-2-3.md" target="_blank">notes/content-weeks-2-3.md<span>23 KB</span></a></li>
+    <li><a href="cards/cards-calendar.html" target="_blank">cards/cards-calendar.html<span>23 KB</span></a></li><li><a href="cards/cards-experience.html" target="_blank">cards/cards-experience.html<span>7 KB</span></a></li><li><a href="cards/cards-ideas.html" target="_blank">cards/cards-ideas.html<span>23 KB</span></a></li><li><a href="cards/cards-source.html" target="_blank">cards/cards-source.html<span>16 KB</span></a></li><li><a href="cards/cards-video-titles.html" target="_blank">cards/cards-video-titles.html<span>2 KB</span></a></li><li><a href="cards/cards-video.html" target="_blank">cards/cards-video.html<span>3 KB</span></a></li><li><a href="cards/cards-week2.html" target="_blank">cards/cards-week2.html<span>19 KB</span></a></li>
+  </ul>
+  <h2 style="margin-top:44px; font-size:22px;">Regenerate all of it<small>Run from the repo root. Each step overwrites in place.</small></h2>
+  <pre class="cmd">node scripts/build-content-calendar.mjs 4          <span style="color:#9b8aa0"># captions + slots from live data</span>
+node scripts/build-social-cards.mjs --write-csv     <span style="color:#9b8aa0"># one card per post, fills the media column</span>
+node scripts/render-social-cards.mjs content/social/cards/cards-calendar.html content/social/posts
+node scripts/build-content-index.mjs                <span style="color:#9b8aa0"># rebuilds this page</span></pre>
+</div></section>
+
+<footer>content/social · rebuild this page with <code>node scripts/build-content-index.mjs</code></footer>
+</body></html>

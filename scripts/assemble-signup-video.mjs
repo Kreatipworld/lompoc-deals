@@ -15,7 +15,7 @@ import ffmpegPath from "ffmpeg-static"
 
 const ASSETS = process.argv[2]
 const BODY = process.argv[3]
-const OUT = process.argv[4] || "docs/social-kit/video"
+const OUT = process.argv[4] || "content/social/video"
 const ONLY = process.argv[5]
 
 const CUTS = {

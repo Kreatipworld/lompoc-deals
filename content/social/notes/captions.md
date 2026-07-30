@@ -1,6 +1,6 @@
 # Lompoc Locals — Social Launch Kit (Instagram + TikTok)
 
-All images in `docs/social-kit/images/`. Real platform screenshots, real numbers
+All images in `content/social/launch-kit/`. Real platform screenshots, real numbers
 (471 businesses, live deals, real launch calendar) — nothing invented.
 
 ## Profile setup

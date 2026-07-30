@@ -22,7 +22,7 @@ import { CAPTIONS } from "./make-spot-captions.mjs"
 
 const ASSETS = process.argv[2]
 const FRAMES = process.argv[3]
-const OUT = process.argv[4] || "docs/social-kit/video"
+const OUT = process.argv[4] || "content/social/video"
 const MUSIC = process.argv[5] || null
 
 const OUT_FILE = "lompoc-locals-spot.mp4"

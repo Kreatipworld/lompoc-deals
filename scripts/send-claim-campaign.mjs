@@ -43,8 +43,7 @@ const SLEEP_MS = process.env.SLEEP_MS ? Number(process.env.SLEEP_MS) : 700
 const SENT_LOG = process.env.SENT_LOG || "/Users/kreatip/Projects/lompoc-deals/scripts/data/campaign-sent.log"
 const SUPPRESS_LOG = process.env.SUPPRESS_LOG || "/Users/kreatip/Projects/lompoc-deals/scripts/data/unsubscribed.log"
 // CAN-SPAM requires a valid physical postal address on commercial email.
-// TODO(owner): replace with the real Lompoc Locals mailing address / PO box.
-const POSTAL = process.env.POSTAL || "Lompoc Locals, Lompoc, CA 93436"
+const POSTAL = process.env.POSTAL || "Lompoc Locals · PO Box 880, Lompoc, CA 93438"
 const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
 const GUIDE = "https://www.lompoclocals.com/partner-guide.html"

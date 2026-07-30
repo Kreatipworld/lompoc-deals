@@ -22,8 +22,8 @@ import path from "node:path"
 import { spawn } from "node:child_process"
 import ffmpegPath from "ffmpeg-static"
 
-const SRC = process.argv[2] || "docs/social-kit/video/lompoc-locals-spot.mp4"
-const OUT = process.argv[3] || "docs/social-kit/video/masters"
+const SRC = process.argv[2] || "content/social/video/lompoc-locals-spot.mp4"
+const OUT = process.argv[3] || "content/social/video/masters"
 
 function run(args) {
   return new Promise((resolve) => {

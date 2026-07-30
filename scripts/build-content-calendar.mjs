@@ -8,7 +8,7 @@
  *
  * Deliberately absent: deal posts. Every "live" deal is owned by a scraper/demo account, so
  * advertising them would promise a discount no owner agreed to. See the checklist at the top
- * of docs/social-kit/content-weeks-2-3.md.
+ * of content/social/notes/content-weeks-2-3.md.
  *
  * Usage:
  *   node --env-file=.env.local node_modules/.bin/tsx scripts/build-content-calendar.mjs [weeks] [startISO]
@@ -19,7 +19,7 @@ import path from "node:path"
 
 const WEEKS = Number(process.argv[2] || 4)
 const START = process.argv[3] ? new Date(process.argv[3]) : new Date()
-const OUT_DIR = "docs/social-kit"
+const OUT_DIR = "content/social"
 const SITE = "https://www.lompoclocals.com"
 
 const url = fs
@@ -195,10 +195,10 @@ async function main() {
 
   // Video assets get their own slots — one a week, rotating.
   const videos = [
-    { file: "docs/social-kit/video/lompoc-locals-spot.mp4", note: "Brand spot, 27s — the wide-reach one" },
-    { file: "docs/social-kit/video/lompoc-locals-experience-20s.mp4", note: "20s cut — best for TikTok" },
-    { file: "docs/social-kit/video/lompoc-locals-experience.mp4", note: "Full tour, 25s" },
-    { file: "docs/social-kit/video/lompoc-locals-signup.mp4", note: "Signup-focused, 19s" },
+    { file: "content/social/video/lompoc-locals-spot.mp4", note: "Brand spot, 27s — the wide-reach one" },
+    { file: "content/social/video/lompoc-locals-experience-20s.mp4", note: "20s cut — best for TikTok" },
+    { file: "content/social/video/lompoc-locals-experience.mp4", note: "Full tour, 25s" },
+    { file: "content/social/video/lompoc-locals-signup.mp4", note: "Signup-focused, 19s" },
   ]
   for (let w = 0; w < WEEKS; w++) {
     const when = addDays(addDays(weekStart(START), w * 7), 6) // Sunday
@@ -222,7 +222,9 @@ async function main() {
   const header = ["date", "time", "channels", "series", "text", "link", "media"]
   const csv = [header.join(","), ...rows.map((r) => header.map((h) => csvCell(r[h])).join(","))].join("\n")
   const stamp = fmtDate(START)
-  const csvPath = path.join(OUT_DIR, `calendar-${stamp}.csv`)
+  // One canonical name, not one file per run: content/social/ is the deliverable folder and a
+  // pile of calendar-<date>.csv files makes it unclear which one is live. History is in git.
+  const csvPath = path.join(OUT_DIR, "calendar.csv")
   fs.writeFileSync(csvPath, csv + "\n")
 
   const md = [
@@ -241,8 +243,8 @@ async function main() {
     `**Images come from the cards step**, not from this script. After regenerating this calendar, run:`,
     "",
     "```bash",
-    `node scripts/build-social-cards.mjs ${path.join(OUT_DIR, `calendar-${fmtDate(START)}.csv`)} --write-csv`,
-    `node scripts/render-social-cards.mjs docs/social-kit/cards-calendar.html docs/social-kit/images/calendar`,
+    `node scripts/build-social-cards.mjs ${csvPath} --write-csv`,
+    `node scripts/render-social-cards.mjs content/social/cards/cards-calendar.html content/social/posts`,
     "```",
     "",
     `That renders one card per post — this week's events, this weekend's launch, this business's own ` +
@@ -255,7 +257,7 @@ async function main() {
         `| ${r.date} | ${r.time} | ${r.series} | ${r.channels} | ${r.text.split("\n")[0].slice(0, 60)}… |`
     ),
   ].join("\n")
-  fs.writeFileSync(path.join(OUT_DIR, `calendar-${stamp}.md`), md + "\n")
+  fs.writeFileSync(path.join(OUT_DIR, "calendar.md"), md + "\n")
 
   const bySeries = rows.reduce((m, r) => ((m[r.series] = (m[r.series] || 0) + 1), m), {})
   console.log(`${rows.length} posts over ${WEEKS} weeks → ${csvPath}`)

@@ -208,7 +208,7 @@ Three posts a week is enough if they're all places.
 | Any day | React to a launch, a closure, weather, or whatever the town is talking about |
 
 Weekly events roundup and business spotlights continue on top of this — they're in
-`docs/social-kit/content-weeks-2-3.md` and they don't conflict.
+`content/social/notes/content-weeks-2-3.md` and they don't conflict.
 
 ---
 

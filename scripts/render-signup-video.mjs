@@ -7,7 +7,7 @@
  * to H.264 MP4. (MediaRecorder would be the obvious shortcut, but its canvas capture returns
  * empty video under headless Chrome — the painting works, the capture pipeline doesn't.)
  *
- * Capture the frames first (see docs/social-kit/video/README.md), then:
+ * Capture the frames first (see content/social/video/README.md), then:
  *   node scripts/render-signup-video.mjs <framesDir> <outDir> [locals|business]
  */
 import http from "node:http"
@@ -18,7 +18,7 @@ import { spawn } from "node:child_process"
 import ffmpegPath from "ffmpeg-static"
 
 const FRAMES = process.argv[2] || "frames"
-const OUT = process.argv[3] || "docs/social-kit/video"
+const OUT = process.argv[3] || "content/social/video"
 const ONLY = process.argv[4]
 
 const CHROME =

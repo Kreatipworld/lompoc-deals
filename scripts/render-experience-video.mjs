@@ -21,7 +21,7 @@ import { renderSegment, W, H, FPS } from "./lib/video-frames.mjs"
 
 const ASSETS = process.argv[2]
 const FRAMES = process.argv[3]
-const OUT = process.argv[4] || "docs/social-kit/video"
+const OUT = process.argv[4] || "content/social/video"
 const ONLY = process.argv[5]
 
 const PURPLE = "#650C75"

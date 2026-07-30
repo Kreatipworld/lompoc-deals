@@ -473,13 +473,13 @@ The events roundup and the spotlight are designed to be repeatable forever.
 
 ## 7. Graphics
 
-Card designs live in `docs/social-kit/cards-week2.html`. Render them with:
+Card designs live in `content/social/cards/cards-week2.html`. Render them with:
 
 ```bash
 node scripts/render-social-cards.mjs
 ```
 
-Output goes to `docs/social-kit/images/week2/`. Cards produced:
+Output goes to `content/social/launch-kit/week2/`. Cards produced:
 
 | File | Size | Used by |
 |---|---|---|

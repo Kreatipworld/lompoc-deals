@@ -90,7 +90,7 @@ CH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 ```
 
 Needed: `home`, `deals`, `bizdeal`, `activities`, `signup`, `bizclaim`, `partners`.
-End cards come from `docs/social-kit/cards-video.html`, title plates from
+End cards come from `content/social/cards/cards-video.html`, title plates from
 `cards-video-titles.html` (render those with `--default-background-color=00000000` to keep
 the alpha), both via `scripts/render-social-cards.mjs`.
 
@@ -106,7 +106,7 @@ Retime the scenes whenever the narration length changes.
 **3. Cut it together:**
 
 ```bash
-node scripts/assemble-signup-video.mjs <assetsDir> <bodyDir> docs/social-kit/video
+node scripts/assemble-signup-video.mjs <assetsDir> <bodyDir> content/social/video
 ```
 
 `assetsDir` needs `intro-*.mp4`, `title-*.png`, `vo-*.wav`.
