@@ -44,42 +44,94 @@ function roundRect(x, y, w, h, r) {
   g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath();
 }
 
+/**
+ * One frame of a scene. scene.move picks the camera so consecutive beats don't all read as
+ * the same vertical scroll — that repetition is what makes a tour feel like a screen
+ * recording. (No backticks in this comment: it lives inside a template literal.)
+ *
+ *   scroll — pan down the page inside the device (the workhorse)
+ *   punch  — hold position, push in slowly on a detail
+ *   pull   — start tight and pull back to reveal the page
+ *   drift  — pan with a slight lateral slide and a degree of device tilt
+ *   swipe  — device slides in from the right and settles, then eases down the page
+ *   crop   — no device at all: a full-bleed detail of the screenshot, slowly pushing
+ */
 function drawScene(img, p, scene, bg) {
   const grd = g.createLinearGradient(0, 0, W, H);
   grd.addColorStop(0, bg[0]); grd.addColorStop(1, bg[1]);
   g.fillStyle = grd; g.fillRect(0, 0, W, H);
 
-  if (scene.fullBleed) {
+  const move = scene.move || (scene.fullBleed ? "still" : "scroll");
+
+  if (scene.fullBleed || move === "still") {
     const s = (W / img.width) * (scene.zoom ? 1 + (scene.zoom - 1) * p : 1);
     g.drawImage(img, (W - img.width*s)/2, (H - img.height*s)/2, img.width*s, img.height*s);
     return;
   }
 
-  // The phone slides up and settles on entry so a cut between beats has momentum.
-  const intro = Math.min(1, p / 0.18);
-  const lift = (1 - easeOut(intro)) * 90;
+  // Full-bleed detail crop — deliberately breaks the phone-in-frame rhythm.
+  if (move === "crop") {
+    const zoom = 1.06 + 0.10 * easeInOut(p);
+    const scale = (W / img.width) * zoom * 1.25;
+    const drawW = img.width * scale, drawH = img.height * scale;
+    const travel = Math.max(0, drawH - H);
+    const at = scene.from + (scene.to - scene.from) * easeInOut(p);
+    g.save();
+    g.drawImage(img, (W - drawW)/2, -travel * at, drawW, drawH);
+    // Vignette keeps the caption legible over a busy crop.
+    const vg = g.createLinearGradient(0, H*0.45, 0, H);
+    vg.addColorStop(0, 'rgba(20,8,24,0)'); vg.addColorStop(1, 'rgba(20,8,24,.75)');
+    g.fillStyle = vg; g.fillRect(0, H*0.45, W, H*0.55);
+    g.restore();
+    return;
+  }
+
+  // Device transform + how the page moves behind the glass, per move type.
+  const settle = easeOut(Math.min(1, p / 0.22));
+  let dx = 0, dy = (1 - settle) * 90, rot = 0, zoom = 1;
+  let at = scene.from + (scene.to - scene.from) * easeInOut(p);
+
+  if (move === "punch") {
+    at = scene.from;
+    zoom = 1 + 0.13 * easeInOut(p);
+  } else if (move === "pull") {
+    at = scene.from;
+    zoom = 1.16 - 0.16 * easeInOut(p);
+  } else if (move === "drift") {
+    dx = (-26 + 52 * easeInOut(p));
+    rot = (-0.7 + 1.4 * easeInOut(p)) * Math.PI / 180;
+  } else if (move === "swipe") {
+    dx = (1 - settle) * 260;
+    dy = 0;
+    at = scene.from + (scene.to - scene.from) * easeInOut(p);
+  }
+
+  const cx = PX + PW/2 + dx, cy = PY + PH/2 + dy;
+  g.save();
+  g.translate(cx, cy); g.rotate(rot); g.translate(-cx, -cy);
 
   g.save();
   g.shadowColor = 'rgba(0,0,0,.45)'; g.shadowBlur = 60; g.shadowOffsetY = 26;
   g.fillStyle = '#15101a';
-  roundRect(PX, PY + lift, PW, PH, RAD); g.fill();
+  roundRect(PX + dx, PY + dy, PW, PH, RAD); g.fill();
   g.restore();
 
-  const sx = PX + BEZEL, sy = PY + BEZEL + lift, sw = PW - BEZEL*2, sh = PH - BEZEL*2;
+  const sx = PX + BEZEL + dx, sy = PY + BEZEL + dy, sw = PW - BEZEL*2, sh = PH - BEZEL*2;
   g.save();
   roundRect(sx, sy, sw, sh, RAD - BEZEL); g.clip();
   g.fillStyle = '#fff'; g.fillRect(sx, sy, sw, sh);
-  const scale = (sw / img.width) * (scene.zoom ? 1 + (scene.zoom - 1) * p : 1);
+  const scale = (sw / img.width) * zoom;
   const drawH = img.height * scale, drawW = img.width * scale;
   const travel = Math.max(0, drawH - sh);
-  const y = sy - travel * (scene.from + (scene.to - scene.from) * easeInOut(p));
-  g.drawImage(img, sx + (sw - drawW)/2, y, drawW, drawH);
+  g.drawImage(img, sx + (sw - drawW)/2, sy - travel * at, drawW, drawH);
   g.restore();
 
   g.save();
-  g.globalAlpha = easeOut(intro);
+  g.globalAlpha = settle;
   g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 3;
-  roundRect(PX+2, PY+2+lift, PW-4, PH-4, RAD-2); g.stroke();
+  roundRect(PX+2+dx, PY+2+dy, PW-4, PH-4, RAD-2); g.stroke();
+  g.restore();
+
   g.restore();
 }
 
