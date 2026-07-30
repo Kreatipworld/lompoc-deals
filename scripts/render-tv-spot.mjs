@@ -26,9 +26,9 @@ const MUSIC = process.argv[5] || null
 
 const OUT_FILE = "lompoc-locals-spot.mp4"
 const VO = "vo-spot.mp3"
-const VO_START = 5.5 // town establishes first; narration then runs to just before the logo
+const VO_START = 0.4 // narration runs the whole film — no silent stretches to sit through
 const XFADE = 0.55
-const AMBIENCE_DB = -17 // under the voice, present but never competing
+const AMBIENCE_DB = -15 // under the voice, present but never competing
 const MUSIC_DB = -14
 
 // A day in Lompoc, then one plain explanation of what the platform is.
