@@ -1,6 +1,6 @@
 # Social calendar — 4 weeks from 2026-07-30
 
-Generated from live data: 63 upcoming events, 23 places, 40 photo-complete businesses.
+Generated from live data: 64 upcoming events, 23 places, 60 photo-complete businesses.
 
 **Load `calendar.csv` into Buffer** (or any scheduler that takes CSV). Columns are date, time, channels, series, text, link, media. Media paths are repo-relative — upload those files when the scheduler asks.
 
@@ -17,21 +17,21 @@ That renders one card per post — this week's events, this weekend's launch, th
 
 | Date | Time | Series | Channels | Opening line |
 |---|---|---|---|---|
-| 2026-07-30 | 12:00 | Local spotlight | facebook,instagram | 📍 Elevate Lompoc — 118 S H St… |
-| 2026-07-31 | 16:00 | Free in Lompoc | facebook,instagram,tiktok | 🚀 There's a launch this weekend.… |
-| 2026-08-02 | 11:00 | Video | facebook,instagram,tiktok | All of Lompoc, in one place 💜… |
-| 2026-08-03 | 08:30 | This Week in Lompoc | facebook,instagram | This week in Lompoc 📅… |
-| 2026-08-04 | 17:30 | You've driven past it 500 times | facebook,instagram | You've driven past it 500 times. Have you ever actually stop… |
-| 2026-08-06 | 12:00 | Local spotlight | facebook,instagram | 📍 Royal Healing Emporium — 721 W Central Ave Ste D… |
-| 2026-08-07 | 16:00 | Free in Lompoc | facebook,instagram,tiktok | 🚀 There's a launch this weekend.… |
-| 2026-08-09 | 11:00 | Video | facebook,instagram,tiktok | All of Lompoc, in one place 💜… |
-| 2026-08-10 | 08:30 | This Week in Lompoc | facebook,instagram | This week in Lompoc 📅… |
-| 2026-08-11 | 17:30 | You've driven past it 500 times | facebook,instagram | You've driven past it 500 times. Have you ever actually stop… |
-| 2026-08-13 | 12:00 | Local spotlight | facebook,instagram | 📍 Walgreens Pharmacy — 937 N H St… |
-| 2026-08-14 | 16:00 | Free in Lompoc | facebook,instagram,tiktok | This weekend, for $0. 💜… |
-| 2026-08-16 | 11:00 | Video | facebook,instagram,tiktok | All of Lompoc, in one place 💜… |
-| 2026-08-17 | 08:30 | This Week in Lompoc | facebook,instagram | This week in Lompoc 📅… |
-| 2026-08-18 | 17:30 | You've driven past it 500 times | facebook,instagram | You've driven past it 500 times. Have you ever actually stop… |
-| 2026-08-20 | 12:00 | Local spotlight | facebook,instagram | 📍 Ken Brown Wines — 1200 E Chestnut Ct… |
-| 2026-08-21 | 16:00 | Free in Lompoc | facebook,instagram,tiktok | This weekend, for $0. 💜… |
-| 2026-08-23 | 11:00 | Video | facebook,instagram,tiktok | All of Lompoc, in one place 💜… |
+| 2026-07-30 | 12:00 | On the record | instagram,tiktok | North H Street, where half the town's errands happen.… |
+| 2026-07-31 | 16:00 | Upcoming launch | instagram,tiktok | Look up Friday night. 🚀… |
+| 2026-08-02 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |
+| 2026-08-03 | 08:30 | The week ahead | instagram,tiktok | Here's the week, if you're making plans.… |
+| 2026-08-04 | 17:30 | Worth the stop | instagram,tiktok | Worth the stop, if you've got an hour.… |
+| 2026-08-06 | 12:00 | On the record | instagram,tiktok | For when the car starts making that noise.… |
+| 2026-08-07 | 16:00 | Upcoming launch | instagram,tiktok | Look up Saturday night. 🚀… |
+| 2026-08-09 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |
+| 2026-08-10 | 08:30 | The week ahead | instagram,tiktok | Here's the week, if you're making plans.… |
+| 2026-08-11 | 17:30 | Worth the stop | instagram,tiktok | Worth the stop, if you've got an hour.… |
+| 2026-08-13 | 12:00 | On the record | instagram,tiktok | Village side.… |
+| 2026-08-14 | 16:00 | Weekend plans | instagram,tiktok | Weekend plans, sorted.… |
+| 2026-08-16 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |
+| 2026-08-17 | 08:30 | The week ahead | instagram,tiktok | Here's the week, if you're making plans.… |
+| 2026-08-18 | 17:30 | Worth the stop | instagram,tiktok | Worth the stop, if you've got an hour.… |
+| 2026-08-20 | 12:00 | On the record | instagram,tiktok | Old Town regulars already know this one.… |
+| 2026-08-21 | 16:00 | Weekend plans | instagram,tiktok | Weekend plans, sorted.… |
+| 2026-08-23 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |

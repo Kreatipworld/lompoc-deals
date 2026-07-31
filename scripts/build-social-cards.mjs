@@ -23,6 +23,7 @@
 import { neon } from "@neondatabase/serverless"
 import fs from "node:fs"
 import path from "node:path"
+import { neighbourhoodLabel, streetLine } from "./lib/voice.mjs"
 
 const CSV = process.argv[2]?.endsWith(".csv") ? process.argv[2] : "content/social/calendar.csv"
 const WRITE_CSV = process.argv.includes("--write-csv")
@@ -83,17 +84,28 @@ function photoSrc(p) {
   return `file://${path.join(REPO, "public", u.replace(/^\//, ""))}`
 }
 
-const firstPhoto = (json) => {
+/**
+ * Some lead photos can't be used even though they load fine — a menu shot with a price burned
+ * into it, for instance, puts an unauthorised price on a card and contradicts the voice rules.
+ * There's no way to detect that automatically, so a reviewed override lives here: slug → the
+ * photo index to use instead of 0. Add a slug when a rendered card shows a problem.
+ */
+const PHOTO_OVERRIDE = {
+  "tacos-el-tizon-1": 1, // photo 0 has "X 6.99" burned into the frame
+}
+
+const firstPhoto = (json, slug) => {
   const arr = Array.isArray(json) ? json : []
-  for (const p of arr) {
-    const s = photoSrc(p)
+  const start = PHOTO_OVERRIDE[slug] ?? 0
+  for (let i = start; i < arr.length + start; i++) {
+    const s = photoSrc(arr[i % arr.length])
     if (s) return s
   }
   return null
 }
 
 const slugFrom = (link, kind) => link.match(new RegExp(`/${kind}/([a-z0-9-]+)`))?.[1] || null
-const street = (addr) => (addr || "").split(",")[0].trim()
+const street = (addr) => streetLine(addr)
 
 /**
  * Event locations arrive as free text and repeat themselves: "Old Town, Old Town Lompoc,
@@ -114,15 +126,6 @@ function tidyLoc(loc) {
   if (s.length < 4 || /\b(in|at|on|of|the|and|near)$/i.test(s)) return ""
   return s
 }
-
-/**
- * The eyebrow leans on where a place is, not how it's categorized — categories go stale and
- * the DB has a tattoo studio filed under "Retail". It deliberately avoids naming the street,
- * because the line under it is the street address.
- */
-const OLD_TOWN = /\b(S|N|South|North)?\s?(H|I|J|G) St|Ocean Ave|Cypress Ave/i
-const placeEyebrow = (address) =>
-  OLD_TOWN.test(street(address)) ? "in Old Town Lompoc —" : "in Lompoc, California —"
 
 /**
  * The CTA has to stay on one line — a wrapped URL reads as broken. Shrink to fit, and if
@@ -173,8 +176,20 @@ const GRAIN_CSS = `
   .shot { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 `
 
+/**
+ * The mark alternates instead of stamping every card.
+ *
+ * Scrolled as a profile grid, an identical logo in an identical corner on every tile reads as a
+ * template. Every other card carries it; the rest are signed by the url line alone, which is
+ * already on every card. Keyed to the post's position in the calendar so the alternation is
+ * stable across rebuilds rather than shuffling when the deck is regenerated.
+ */
+const markFor = (slot) =>
+  slot % 2 === 0 ? `<img class="mark" src="${esc(mark())}">` : ""
+
+
 /** Photo card with the purple wash and a bottom-anchored block — the spotlight/place shape. */
-function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gold)" }) {
+function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gold)", slot = 0 }) {
   const bg = photo
     ? `<img class="shot" src="${esc(photo)}">
        <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(36,22,41,.34) 0%, rgba(36,22,41,.18) 32%, rgba(101,12,117,.93) 100%);"></div>`
@@ -186,8 +201,8 @@ function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gol
   return `
 <div class="card ig grain" id="${id}">
   ${bg}
-  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:86px 84px 96px;">
-    <img class="mark" src="${esc(mark())}">
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:86px 84px 96px;">
+    ${markFor(slot)}
     <div>
       <div class="serif" style="color:var(--gold); font-size:54px; line-height:1.2;">${esc(eyebrow)}</div>
       <div style="color:#fff; font-size:${size}px; font-weight:800; line-height:1.04; margin-top:14px;">${esc(title)}</div>
@@ -198,13 +213,13 @@ function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gol
 </div>`
 }
 
-function launchCard(id, { name, when }) {
+function launchCard(id, { name, when, slot = 0 }) {
   return `
 <div class="card ig grain" id="${id}">
   <div style="position:absolute; inset:0; background:linear-gradient(175deg, #1b0a20 0%, #4a0857 45%, #650C75 100%);"></div>
   <div style="position:absolute; inset:0; background:radial-gradient(circle at 72% 24%, rgba(239,198,24,.30) 0%, rgba(239,198,24,0) 42%);"></div>
-  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:86px 84px 96px;">
-    <img class="mark" src="${esc(mark())}">
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:86px 84px 96px;">
+    ${markFor(slot)}
     <div>
       <div style="font-size:150px; line-height:1;">🚀</div>
       <div class="serif" style="color:var(--gold); font-size:54px; margin-top:34px;">${esc(when)} — over our valley,</div>
@@ -311,24 +326,28 @@ async function main() {
   const cards = []
   const missing = []
 
+  let slot = -1
   for (const r of rows) {
     const id = null
-    if (r.series === "Local spotlight") {
+    if (/^(On the record|Worth the stop|Upcoming launch|Weekend plans|The week ahead)$/.test(r.series)) slot++
+
+    if (r.series === "On the record") {
       const slug = slugFrom(r.link, "biz")
       const b = biz.get(slug)
       if (!b) {
         missing.push(`${r.date} spotlight — no business row for "${slug}"`)
         continue
       }
-      const photo = firstPhoto(b.photos_json)
+      const photo = firstPhoto(b.photos_json, slug)
       if (!photo) missing.push(`${r.date} spotlight — ${b.name} has no usable photo, card falls back to brand fill`)
-      const cardId = `${r.date}-local-spotlight`
+      const cardId = `${r.date}-on-the-record`
       cards.push(
         photoCard(cardId, {
+          slot,
           photo,
           // Not the DB category: it has a tattoo studio filed under "Retail", and a card that
           // mislabels a business is worse than one that just says where it is.
-          eyebrow: placeEyebrow(b.address),
+          eyebrow: neighbourhoodLabel(b.address),
           title: b.name.replace(/\s+/g, " ").trim(),
           meta: street(b.address) ? esc(street(b.address)) : "",
           cta: `lompoclocals.com/biz/${slug}`,
@@ -338,21 +357,22 @@ async function main() {
       continue
     }
 
-    if (r.series === "You've driven past it 500 times") {
+    if (r.series === "Worth the stop") {
       const slug = slugFrom(r.link, "activities")
       const a = act.get(slug)
       if (!a) {
         missing.push(`${r.date} place — no activity row for "${slug}"`)
         continue
       }
-      const photo = firstPhoto(a.photos_json)
+      const photo = firstPhoto(a.photos_json, slug)
       if (!photo) missing.push(`${r.date} place — ${a.title} has no usable photo, card falls back to brand fill`)
       const tip = (a.tips || "").split(". ")[0].replace(/\.$/, "")
-      const cardId = `${r.date}-driven-past-it`
+      const cardId = `${r.date}-worth-the-stop`
       cards.push(
         photoCard(cardId, {
+          slot,
           photo,
-          eyebrow: "you've driven past it 500 times —",
+          eyebrow: "worth the stop —",
           title: a.title.replace(/\s+/g, " ").trim(),
           meta: [street(a.address), tip].filter(Boolean).map(esc).join("<br>"),
           cta: `lompoclocals.com/activities/${slug}`,
@@ -362,13 +382,13 @@ async function main() {
       continue
     }
 
-    if (r.series === "Free in Lompoc") {
+    if (r.series === "Upcoming launch" || r.series === "Weekend plans") {
       // The caption is the source of truth. A launch weekend reads one way; a weekend with no
       // launch falls back to a free place, and gets the place treatment instead.
-      const m = r.text.match(/^(.+?) — (\w{3}, \w{3} \d+), from Vandenberg\./m)
+      const m = r.text.match(/^(.+?)\n(\w{3}, \w{3} \d+) · Vandenberg Space Force Base$/m)
       if (m) {
-        const cardId = `${r.date}-launch-weekend`
-        cards.push(launchCard(cardId, { name: m[1].trim(), when: m[2].replace(/,/, " ·") }))
+        const cardId = `${r.date}-upcoming-launch`
+        cards.push(launchCard(cardId, { slot, name: m[1].trim(), when: m[2].replace(/,/, " ·") }))
         r.media = `${IMG_DIR}/${cardId}.png`
         continue
       }
@@ -378,14 +398,15 @@ async function main() {
         missing.push(`${r.date} free-weekend — caption names no launch and links no activity`)
         continue
       }
-      const photo = firstPhoto(a.photos_json)
+      const photo = firstPhoto(a.photos_json, slug)
       if (!photo) missing.push(`${r.date} free-weekend — ${a.title} has no usable photo, card falls back to brand fill`)
-      const season = r.text.match(/^.+ — (.+)\.$/m)?.[1] || ""
-      const cardId = `${r.date}-free-weekend`
+      const season = r.text.match(/^([A-Z][^\n]*?)\.$/m)?.[1] || ""
+      const cardId = `${r.date}-weekend-plans`
       cards.push(
         photoCard(cardId, {
+          slot,
           photo,
-          eyebrow: "this weekend, for $0 —",
+          eyebrow: "this weekend —",
           title: a.title.replace(/\s+/g, " ").trim(),
           meta: [street(a.address), season].filter(Boolean).map(esc).join("<br>"),
           cta: `lompoclocals.com/activities/${slug}`,
@@ -395,7 +416,7 @@ async function main() {
       continue
     }
 
-    if (r.series === "This Week in Lompoc") {
+    if (r.series === "The week ahead") {
       const lines = [...r.text.matchAll(/^(\S+) (\w{3}, \w{3} \d+) — (.+)$/gm)].map(([, icon, day, title]) => ({
         icon,
         day: day.replace(/,/, " ·"),

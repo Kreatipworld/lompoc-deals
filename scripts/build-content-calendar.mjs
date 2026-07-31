@@ -16,6 +16,18 @@
 import { neon } from "@neondatabase/serverless"
 import fs from "node:fs"
 import path from "node:path"
+import {
+  HASHTAGS as TAGS,
+  OWN_ABOUT_SOURCES,
+  assertNoPriceFraming,
+  cta,
+  detailSentence,
+  hashtagsFor,
+  launchOpener,
+  opener,
+  seriesOpener,
+  street,
+} from "./lib/voice.mjs"
 
 const WEEKS = Number(process.argv[2] || 4)
 const START = process.argv[3] ? new Date(process.argv[3]) : new Date()
@@ -28,16 +40,13 @@ const url = fs
   .replace(/^["']|["']$/g, "")
 const sql = neon(url)
 
-const HASHTAGS = {
-  general: "#Lompoc #LompocCA #ShopLocalLompoc #CentralCoast #805",
-  food: "#Lompoc #LompocCA #LompocEats #TacosLompoc #ShopLocalLompoc #805",
-  outdoors: "#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805 #Outdoors",
-  space: "#VandenbergSFB #RocketLaunch #Lompoc #LompocCA #CentralCoast #805",
-  wine: "#LompocWine #WineGhetto #SantaRitaHills #Lompoc #LompocCA #805",
-  business: "#ShopLocalLompoc #LompocBusiness #SmallBusinessLompoc #Lompoc #805",
-}
-
-const fmtDate = (d) => d.toISOString().slice(0, 10)
+// Local calendar date, not UTC. toISOString() rolls over at 5pm PDT, so an afternoon run used to
+// stamp every post a day late — and a post that names "Friday" landed on Saturday.
+const fmtDate = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}"`.replace(
+    '"',
+    ""
+  )
 const fmtDay = (d) => d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
 const addDays = (d, n) => new Date(d.getTime() + n * 86400000)
 
@@ -81,16 +90,21 @@ async function main() {
         from activities
         where jsonb_array_length(coalesce(photos_json,'[]'::jsonb)) >= 1
         order by random()`,
-    sql`select b.name, b.slug, c.name as category, b.address, b.instagram_url,
+    // about_source matters: Google-sourced about text is Google's prose, and reusing it in a
+    // caption would republish third-party copy. Only text authored for this project qualifies.
+    sql`select b.name, b.slug, c.name as category, b.address, b.about,
+               (b.hours_json is not null) as has_hours,
                jsonb_array_length(coalesce(b.photos_json,'[]'::jsonb)) as photos
         from businesses b left join categories c on c.id=b.category_id
         where b.status='approved' and b.about is not null
           and jsonb_array_length(coalesce(b.photos_json,'[]'::jsonb)) >= 4
-        order by random() limit 40`,
+          and b.about_source = any(${OWN_ABOUT_SOURCES})
+        order by random() limit 60`,
   ])
 
   const launches = events.filter((e) => /rocket launch/i.test(e.title))
   const rows = []
+  const skipped = []
   let placeI = 0
   let bizI = 0
 
@@ -113,7 +127,7 @@ async function main() {
       let series = ""
 
       if (slot.kind === "week-ahead") {
-        series = "This Week in Lompoc"
+        series = "The week ahead"
         const seen = new Set()
         const unique = weekEvents.filter((e) => {
           const k = e.title.toLowerCase().trim()
@@ -129,10 +143,11 @@ async function main() {
           return `${icon} ${fmtDay(t)} — ${e.title.replace(/^Rocket Launch:\s*/i, "")}`
         })
         if (!lines.length) continue
+        const more = Math.max(0, events.length - lines.length)
         text =
-          `This week in Lompoc 📅\n\n${lines.join("\n")}\n\n` +
-          `Plus ${Math.max(0, events.length - lines.length)} more on the calendar — all of it in one place, ` +
-          `no account needed.\n\n👉 ${SITE}/en/events\n\n${HASHTAGS.general}`
+          `${seriesOpener("weekAhead")}\n\n${lines.join("\n")}\n\n` +
+          `${more ? `Plus ${more} more on the calendar.\n\n` : ""}` +
+          `The full week:\nlompoclocals.com/events\n\n${TAGS.general}`
         link = `${SITE}/en/events`
         // Image comes from build-social-cards.mjs --write-csv, which renders this week's events.
       }
@@ -141,27 +156,46 @@ async function main() {
         // Only in-town places: the hook is that you pass it daily.
         const inTown = activities.filter((x) => x.in_town)
         const a = inTown[placeI++ % inTown.length]
-        series = "You've driven past it 500 times"
+        series = "Worth the stop"
         const tip = (a.tips || "").split(". ")[0]
         text =
-          `You've driven past it 500 times. Have you ever actually stopped? 👀\n\n` +
-          `${a.title}${a.address ? ` — ${a.address.split(",")[0]}` : ""}\n\n` +
-          `${tip ? tip.replace(/\.$/, "") + ".\n\n" : ""}` +
-          `Full details, photos and directions 👉 ${SITE}/en/activities/${a.slug}\n\n` +
-          `${HASHTAGS[a.category === "food-wine" ? "wine" : a.category === "unique" ? "space" : "outdoors"] || HASHTAGS.general}`
+          `${seriesOpener("place")}\n\n` +
+          `${a.title}${street(a.address) ? ` — ${street(a.address)}` : ""}\n` +
+          `${tip ? tip.replace(/\.$/, "") + ".\n" : ""}\n` +
+          `Photos, tips and directions:\nlompoclocals.com/activities/${a.slug}\n\n` +
+          `${a.category === "food-wine" ? TAGS.wine : TAGS.outdoors}`
         link = `${SITE}/en/activities/${a.slug}`
       }
 
       if (slot.kind === "spotlight") {
-        const b = businesses[bizI++ % businesses.length]
-        series = "Local spotlight"
+        series = "On the record"
+        // Walk the pool until a business yields a usable detail sentence. A business is skipped
+        // when its about text carries a standing offer ("buy one, get one free") — quoting that
+        // would advertise a discount no owner authorised for this campaign.
+        let b = null
+        let detail = ""
+        for (let tries = 0; tries < businesses.length; tries++) {
+          const cand = businesses[bizI++ % businesses.length]
+          const d = detailSentence(cand.name, cand.about)
+          if (!d) continue
+          try {
+            assertNoPriceFraming(d, cand.slug)
+          } catch {
+            skipped.push(`${cand.slug} — about text carries a price claim`)
+            continue
+          }
+          b = cand
+          detail = d
+          break
+        }
+        if (!b) continue
         text =
-          `📍 ${b.name}${b.address ? ` — ${b.address.split(",")[0]}` : ""}\n\n` +
-          `${b.category ? b.category + " in Lompoc. " : ""}` +
-          `Photos, hours and directions are all on their page.\n\n` +
-          `👉 ${SITE}/en/biz/${b.slug}\n` +
-          `${b.instagram_url ? `Tag them: ${b.instagram_url}\n` : ""}` +
-          `\nBeen? Tell everyone what to order 👇\n\n${HASHTAGS.business}`
+          `${opener({ address: b.address, category: b.category })}\n\n` +
+          `${b.name}${street(b.address) ? ` — ${street(b.address)}` : " — Lompoc"}\n` +
+          `${detail}\n\n` +
+          `${cta(b.category, { hasHours: b.has_hours })}:\n` +
+          `lompoclocals.com/biz/${b.slug}\n\n` +
+          `${hashtagsFor(b.category, b.address)}`
         link = `${SITE}/en/biz/${b.slug}`
       }
 
@@ -176,15 +210,17 @@ async function main() {
           return t >= when && t < weekendEnd
         })
         const a = activities[placeI++ % activities.length]
-        series = nextLaunch ? "Upcoming Launch" : "Weekend Plans"
+        series = nextLaunch ? "Upcoming launch" : "Weekend plans"
         text = nextLaunch
-          ? `🚀 Upcoming launch over Lompoc — be ready.\n\n` +
-            `${nextLaunch.title.replace(/^Rocket Launch:\s*/, "")} — ` +
-            `${fmtDay(new Date(nextLaunch.starts_at))}, from Vandenberg.\n\n` +
-            `Best views: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Look southwest.\n\n` +
-            `Every launch on the calendar 👉 ${SITE}/en/events\n\n${HASHTAGS.space}`
-          : `Weekend plans, sorted 💜\n\n${a.title} — ${(a.seasonality || "open year-round").toLowerCase()}.\n\n` +
-            `👉 ${SITE}/en/activities/${a.slug}\n\n${HASHTAGS.outdoors}`
+          ? `${launchOpener(new Date(nextLaunch.starts_at))}\n\n` +
+            `${nextLaunch.title.replace(/^Rocket Launch:\s*/, "")}\n` +
+            `${fmtDay(new Date(nextLaunch.starts_at))} · Vandenberg Space Force Base\n\n` +
+            `Best vantage points: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Face southwest.\n\n` +
+            `Every launch on the calendar:\nlompoclocals.com/events\n\n${TAGS.space}`
+          : `${seriesOpener("weekend")}\n\n` +
+            `${a.title}${street(a.address) ? ` — ${street(a.address)}` : ""}\n` +
+            `${(a.seasonality || "Open year-round").replace(/^./, (c) => c.toUpperCase())}.\n\n` +
+            `Photos, tips and directions:\nlompoclocals.com/activities/${a.slug}\n\n${TAGS.outdoors}`
         link = nextLaunch ? `${SITE}/en/events` : `${SITE}/en/activities/${a.slug}`
       }
 
@@ -214,14 +250,21 @@ async function main() {
     rows.push({
       date: fmtDate(when),
       time: "11:00",
-      channels: "facebook,instagram,tiktok",
+      channels: CHANNELS,
       series: "Video",
       text:
-        `All of Lompoc, in one place 💜\n\nEvery local business, every event, every launch over the base — ` +
-        `and everywhere worth going.\n\n👉 ${SITE}\n\n${HASHTAGS.general}`,
+        `All of Lompoc, in one place.\n\nEvery local business, every event, every launch over the base — ` +
+        `and everywhere worth going.\n\nlompoclocals.com\n\n${TAGS.general}`,
       link: SITE,
       media: v.file,
     })
+  }
+
+  // Nothing ships that frames the town or the platform on price, or that targets a channel the
+  // Buffer account doesn't have. Fail the build rather than discover it in a published post.
+  for (const r of rows) {
+    assertNoPriceFraming(r.text, `${r.date} ${r.series}`)
+    if (/facebook/i.test(r.channels)) throw new Error(`${r.date} targets facebook — no such channel`)
   }
 
   rows.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
@@ -269,6 +312,10 @@ async function main() {
   const bySeries = rows.reduce((m, r) => ((m[r.series] = (m[r.series] || 0) + 1), m), {})
   console.log(`${rows.length} posts over ${WEEKS} weeks → ${csvPath}`)
   for (const [k, v] of Object.entries(bySeries)) console.log(`  ${String(v).padStart(2)} × ${k}`)
+  if (skipped.length) {
+    console.log(`\nskipped ${skipped.length} business(es):`)
+    for (const m of [...new Set(skipped)]) console.log(`  ! ${m}`)
+  }
 }
 
 main().then(() => process.exit(0))
