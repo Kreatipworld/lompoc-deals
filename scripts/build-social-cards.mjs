@@ -312,12 +312,66 @@ function weekCard(id, { events: all, more, size = "ig" }) {
 </div>`
 }
 
+/**
+ * The run-down card: four photographs, four names, one number.
+ *
+ * A different shape from the other three on purpose. Spotlights and places are one photo with the
+ * type over it, and a run-down that reused that layout would just look like a spotlight of
+ * whichever business happened to be first. Here the grid is the point — four real places on one
+ * street, or four in one category — so the photos sit in a plain 2×2 and the purple block below
+ * carries the count.
+ */
+function gridCard(id, { eyebrow, count, title, tiles, cta, size = "ig" }) {
+  const panel = size === "tt" ? 620 : 470
+  const gridH = (size === "tt" ? 1920 : 1350) - panel
+  const cells = tiles
+    .map(
+      (t) => `
+      <div style="position:relative; overflow:hidden;">
+        ${
+          t.photo
+            ? `<img class="shot" src="${esc(t.photo)}">`
+            : `<div style="position:absolute; inset:0; background:linear-gradient(160deg,#2b0f33,#650C75);"></div>`
+        }
+        <div style="position:absolute; left:0; right:0; bottom:0; height:52%;
+          background:linear-gradient(180deg, rgba(18,10,22,0) 0%, rgba(18,10,22,.86) 100%);"></div>
+        <div style="position:absolute; left:26px; right:26px; bottom:22px; color:#fff;
+          font-size:31px; font-weight:700; line-height:1.16;">${esc(t.name)}</div>
+      </div>`
+    )
+    .join("")
+  // The number leads; the phrase beside it says what's being counted and takes what room is left.
+  // "142" next to "North H Street" read as a street address, so the phrase is now a full noun
+  // ("businesses on North H Street") and has to wrap without pushing the url off the panel.
+  const titleSize = title.length > 26 ? 52 : title.length > 18 ? 60 : 72
+  const c = ctaFor(cta)
+  return `
+<div class="card ${size} grain" id="${id}">
+  <div style="position:absolute; top:0; left:0; right:0; height:${gridH}px;
+    display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:6px; background:var(--purple);">
+    ${cells}
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:0; height:${panel}px; background:var(--purple);
+    padding:${size === "tt" ? "72px" : "56px"} 78px 0;">
+    <div class="serif" style="color:var(--gold); font-size:46px; line-height:1.2;">${esc(eyebrow)}</div>
+    <div style="display:flex; align-items:baseline; gap:22px; margin-top:16px;">
+      <div style="color:var(--gold); font-size:${size === "tt" ? 132 : 116}px; font-weight:800; line-height:.92;">${esc(count)}</div>
+      <div style="color:#fff; font-size:${titleSize}px; font-weight:800; line-height:1.06;">${esc(title)}</div>
+    </div>
+    <div class="url" style="color:#f3e6f6; font-size:${c.size}px; margin-top:${size === "tt" ? 56 : 40}px; white-space:nowrap;">${esc(c.text)}</div>
+  </div>
+</div>`
+}
+
 /* ---------- build ---------- */
 
 async function main() {
   const rows = parseCsv(fs.readFileSync(CSV, "utf8"))
 
-  const bizSlugs = [...new Set(rows.map((r) => slugFrom(r.link, "biz")).filter(Boolean))]
+  // Run-downs name their four businesses in the `subjects` column: their link points at a map or a
+  // category page, so unlike a spotlight there's no slug in the URL to look them up by.
+  const subjectSlugs = rows.flatMap((r) => (r.subjects || "").split("|").filter(Boolean))
+  const bizSlugs = [...new Set([...rows.map((r) => slugFrom(r.link, "biz")), ...subjectSlugs].filter(Boolean))]
   const actSlugs = [...new Set(rows.map((r) => slugFrom(r.link, "activities")).filter(Boolean))]
 
   const [bizRows, actRows, eventRows] = await Promise.all([
@@ -349,7 +403,8 @@ async function main() {
   let slot = -1
   for (const r of rows) {
     const id = null
-    if (/^(On the record|Worth the stop|Upcoming launch|Weekend plans|The week ahead)$/.test(r.series)) slot++
+    if (/^(On the record|Worth the stop|Upcoming launch|Weekend plans|The week ahead|One street|The short list)$/.test(r.series))
+      slot++
 
     if (r.series === "On the record") {
       const slug = slugFrom(r.link, "biz")
@@ -440,6 +495,42 @@ async function main() {
       continue
     }
 
+    if (r.series === "One street" || r.series === "The short list") {
+      const byStreet = r.series === "One street"
+      const slugs = (r.subjects || "").split("|").filter(Boolean)
+      const tiles = slugs
+        .map((s) => {
+          const b = biz.get(s)
+          if (!b) {
+            missing.push(`${r.date} ${r.series} — no business row for "${s}"`)
+            return null
+          }
+          const photo = firstPhoto(b.photos_json, s)
+          if (!photo) missing.push(`${r.date} ${r.series} — ${b.name} has no usable photo`)
+          return { name: b.name.replace(/\s+/g, " ").trim(), photo }
+        })
+        .filter(Boolean)
+      // Four tiles or none. A 2×2 grid with a hole in it reads as a broken image, and the caption
+      // has already named four businesses by the time anyone sees the card.
+      if (tiles.length < 4) {
+        missing.push(`${r.date} ${r.series} — only ${tiles.length} of 4 subjects resolved, card skipped`)
+        continue
+      }
+      const cardId = `${r.date}-${byStreet ? "one-street" : "short-list"}`
+      for (const size of SIZES) cards.push(
+        gridCard(`${cardId}-${size}`, {
+          size,
+          eyebrow: byStreet ? "one street —" : "the short list —",
+          count: r.count,
+          title: r.headline,
+          tiles,
+          cta: r.link.replace(/^https?:\/\/www\./, "").replace("/en/", "/"),
+        })
+      )
+      setMedia(r, cardId)
+      continue
+    }
+
     if (r.series === "The week ahead") {
       const lines = [...r.text.matchAll(/^(\S+) (\w{3}, \w{3} \d+) — (.+)$/gm)].map(([, icon, day, title]) => ({
         icon,
@@ -470,7 +561,21 @@ ${cards.join("\n")}
   fs.writeFileSync(OUT_HTML, html)
 
   if (WRITE_CSV) {
-    const header = ["date", "time", "channels", "series", "text", "link", "media", "media_vertical"]
+    // Must match the calendar builder's header, or a rewrite here silently drops the run-down
+    // columns and the next card build has nothing to look its four businesses up by.
+    const header = [
+      "date",
+      "time",
+      "channels",
+      "series",
+      "text",
+      "link",
+      "media",
+      "media_vertical",
+      "subjects",
+      "headline",
+      "count",
+    ]
     const out = [header.join(","), ...rows.map((r) => header.map((h) => csvCell(r[h])).join(","))].join("\n")
     fs.writeFileSync(CSV, out + "\n")
   }

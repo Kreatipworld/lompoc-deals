@@ -35,6 +35,27 @@ database, so a card can only ever show the subject its own caption links to.
 Both build steps print warnings instead of failing quietly — a business with no usable photo,
 an event whose location won't parse, a post whose media is missing. Read that output.
 
+## The series
+
+| Series | When | What it is |
+|---|---|---|
+| The week ahead | Mon 08:30 | This week's events, from the events table. |
+| Worth the stop | Tue 17:30 | One in-town place, carried by its photo. |
+| One street | Wed 17:00, fortnightly | Four businesses on one street, with the count for the whole street. |
+| The short list | Wed 17:00, fortnightly | Four businesses in one category, with the count for the whole category. |
+| On the record | Thu 12:00 | One business, one true sentence from about text we wrote. |
+| Upcoming launch / Weekend plans | Fri 16:00 | A launch if one falls this weekend; otherwise a place. |
+| Video | Sun 11:00 | The spots, rotating. |
+
+The two run-downs share the Wednesday slot and alternate by week, so each lands fortnightly.
+They carry three extra CSV columns — `subjects` (the four business slugs, pipe-separated),
+`headline` and `count` — because their link points at a map or a category page, so unlike a
+spotlight there's no slug in the URL for the card builder to look the subjects up by.
+
+**No business is named twice.** The pools are independently ordered, which once put the same
+restaurant in a run-down, a spotlight and a street post inside eight days. The generator now keeps
+a set of everything it has already named and skips it everywhere else.
+
 ## Rules baked into the pipeline
 
 - **No deal posts.** Every live deal belongs to a scraper or demo account, so promoting one

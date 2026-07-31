@@ -1,4 +1,4 @@
-date,time,channels,series,text,link,media,media_vertical
+date,time,channels,series,text,link,media,media_vertical,subjects,headline,count
 2026-07-31,16:00,"instagram,tiktok",Upcoming launch,"Look up Friday night. 🚀
 
 Falcon 9 Block 5 — Starlink Group 17-52
@@ -9,14 +9,14 @@ Best vantage points: Harris Grade Rd, Ocean Ave heading west, or your own drivew
 Every launch on the calendar:
 lompoclocals.com/events
 
-#VandenbergSFB #RocketLaunch #Lompoc #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-07-31-upcoming-launch-ig.png,content/social/posts/2026-07-31-upcoming-launch-tt.png
+#VandenbergSFB #RocketLaunch #Lompoc #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-07-31-upcoming-launch-ig.png,content/social/posts/2026-07-31-upcoming-launch-tt.png,,,
 2026-08-02,11:00,"instagram,tiktok",Video,"All of Lompoc, in one place.
 
 Every local business, every event, every launch over the base — and everywhere worth going.
 
 lompoclocals.com
 
-#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/masters/lompoc-locals-spot-4x5.mp4,content/social/video/lompoc-locals-spot.mp4
+#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/masters/lompoc-locals-spot-4x5.mp4,content/social/video/lompoc-locals-spot.mp4,,,
 2026-08-03,08:30,"instagram,tiktok",The week ahead,"Here's the week, if you're making plans.
 
 🎨 Mon, Aug 3 — Pouring My Art Out
@@ -30,7 +30,7 @@ Plus 59 more on the calendar.
 The full week:
 lompoclocals.com/events
 
-#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-03-this-week-ig.png,content/social/posts/2026-08-03-this-week-tt.png
+#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-03-this-week-ig.png,content/social/posts/2026-08-03-this-week-tt.png,,,
 2026-08-04,17:30,"instagram,tiktok",Worth the stop,"Worth the stop, if you've got an hour.
 
 Lompoc Wine Ghetto Tasting — 1520-1800 E Chestnut Ave
@@ -39,16 +39,27 @@ Park once and walk the whole cluster.
 Photos, tips and directions:
 lompoclocals.com/activities/lompoc-wine-ghetto
 
-#LompocWine #SantaRitaHills #Lompoc #LompocCA #805",https://www.lompoclocals.com/en/activities/lompoc-wine-ghetto,content/social/posts/2026-08-04-worth-the-stop-ig.png,content/social/posts/2026-08-04-worth-the-stop-tt.png
-2026-08-06,12:00,"instagram,tiktok",On the record,"North H Street, where half the town's errands happen.
+#LompocWine #SantaRitaHills #Lompoc #LompocCA #805",https://www.lompoclocals.com/en/activities/lompoc-wine-ghetto,content/social/posts/2026-08-04-worth-the-stop-ig.png,content/social/posts/2026-08-04-worth-the-stop-tt.png,,,
+2026-08-05,17:00,"instagram,tiktok",The short list,"104 places to eat in town. Four to start with:
 
 Sake Sushi — 1325 N H St
-Sake Sushi & Korean BBQ serves sushi rolls, Korean barbecue, tempura, bento boxes, and ramen.
+Savory & Sweet Eats — 1412 Burton Mesa Blvd
+La Botte Italian Restaurant & Catering — 112 S I St
+Valle Eatery & Bar — 1201 N H St
 
-Menu, hours and directions:
-lompoclocals.com/biz/sake-sushi-lompoc
+All 104 on the list:
+lompoclocals.com/category/food-drink
 
-#Lompoc #LompocCA #LompocEats #ShopLocalLompoc #805",https://www.lompoclocals.com/en/biz/sake-sushi-lompoc,content/social/posts/2026-08-06-on-the-record-ig.png,content/social/posts/2026-08-06-on-the-record-tt.png
+#Lompoc #LompocCA #LompocEats #ShopLocalLompoc #805",https://www.lompoclocals.com/en/category/food-drink,content/social/posts/2026-08-05-short-list-ig.png,content/social/posts/2026-08-05-short-list-tt.png,sake-sushi-lompoc|savory-sweet-eats|la-botte-italian-restaurant-catering|valle-eatery-bar,places to eat in town,104
+2026-08-06,12:00,"instagram,tiktok",On the record,"Old Town regulars already know this one.
+
+Elevate Lompoc — 118 S H St
+A family-owned cannabis dispensary operating under California state license C10-0000080-LIC.
+
+Hours and directions:
+lompoclocals.com/biz/elevate-lompoc
+
+#Lompoc #OldTownLompoc #ShopLocalLompoc #805",https://www.lompoclocals.com/en/biz/elevate-lompoc,content/social/posts/2026-08-06-on-the-record-ig.png,content/social/posts/2026-08-06-on-the-record-tt.png,,,
 2026-08-07,16:00,"instagram,tiktok",Upcoming launch,"Look up Saturday night. 🚀
 
 Falcon 9 Block 5 — Starlink Group 17-38
@@ -59,14 +70,14 @@ Best vantage points: Harris Grade Rd, Ocean Ave heading west, or your own drivew
 Every launch on the calendar:
 lompoclocals.com/events
 
-#VandenbergSFB #RocketLaunch #Lompoc #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-07-upcoming-launch-ig.png,content/social/posts/2026-08-07-upcoming-launch-tt.png
+#VandenbergSFB #RocketLaunch #Lompoc #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-07-upcoming-launch-ig.png,content/social/posts/2026-08-07-upcoming-launch-tt.png,,,
 2026-08-09,11:00,"instagram,tiktok",Video,"All of Lompoc, in one place.
 
 Every local business, every event, every launch over the base — and everywhere worth going.
 
 lompoclocals.com
 
-#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/masters/lompoc-locals-experience-20s-4x5.mp4,content/social/video/lompoc-locals-experience-20s.mp4
+#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/masters/lompoc-locals-experience-20s-4x5.mp4,content/social/video/lompoc-locals-experience-20s.mp4,,,
 2026-08-10,08:30,"instagram,tiktok",The week ahead,"Here's the week, if you're making plans.
 
 🎨 Mon, Aug 10 — Pouring My Art Out
@@ -80,7 +91,7 @@ Plus 59 more on the calendar.
 The full week:
 lompoclocals.com/events
 
-#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-10-this-week-ig.png,content/social/posts/2026-08-10-this-week-tt.png
+#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-10-this-week-ig.png,content/social/posts/2026-08-10-this-week-tt.png,,,
 2026-08-11,17:30,"instagram,tiktok",Worth the stop,"Worth the stop, if you've got an hour.
 
 Vandenberg Space Force Base Launch Viewing — Lompoc
@@ -89,16 +100,27 @@ Check local social media the day of; times shift constantly.
 Photos, tips and directions:
 lompoclocals.com/activities/vandenberg-launches
 
-#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/vandenberg-launches,content/social/posts/2026-08-11-worth-the-stop-ig.png,content/social/posts/2026-08-11-worth-the-stop-tt.png
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/vandenberg-launches,content/social/posts/2026-08-11-worth-the-stop-ig.png,content/social/posts/2026-08-11-worth-the-stop-tt.png,,,
+2026-08-12,17:00,"instagram,tiktok",One street,"North H Street, end to end — 142 businesses.
+
+Reviving Hope Thrift and Refurbishing
+Holiday Inn Express Lompoc by IHG
+Lompoc Honda
+La Palomita Mi Styles
+
+Every one of them is on the map:
+lompoclocals.com/map
+
+#Lompoc #LompocBusiness #ShopLocalLompoc #805",https://www.lompoclocals.com/en/map,content/social/posts/2026-08-12-one-street-ig.png,content/social/posts/2026-08-12-one-street-tt.png,reviving-hope-thrift-and-refurbishing|holiday-inn-express-lompoc-by-ihg|lompoc-honda|la-palomita-mi-styles,businesses on North H Street,142
 2026-08-13,12:00,"instagram,tiktok",On the record,"Old Town regulars already know this one.
 
-Elevate Lompoc — 118 S H St
-A family-owned cannabis dispensary operating under California state license C10-0000080-LIC.
+The Santi's Bakery & Deli — 822 E Ocean Ave
+A family-owned Mexican bakery baking traditional pastries like pan dulce, bolillo, telera, tres leches, flan and capirotada, plus tamales.
 
-Hours and directions:
-lompoclocals.com/biz/elevate-lompoc
+Menu, hours and directions:
+lompoclocals.com/biz/the-santi-s-bakery-deli
 
-#Lompoc #OldTownLompoc #ShopLocalLompoc #805",https://www.lompoclocals.com/en/biz/elevate-lompoc,content/social/posts/2026-08-13-on-the-record-ig.png,content/social/posts/2026-08-13-on-the-record-tt.png
+#Lompoc #OldTownLompoc #ShopLocalLompoc #805",https://www.lompoclocals.com/en/biz/the-santi-s-bakery-deli,content/social/posts/2026-08-13-on-the-record-ig.png,content/social/posts/2026-08-13-on-the-record-tt.png,,,
 2026-08-14,16:00,"instagram,tiktok",Weekend plans,"Weekend plans, sorted.
 
 Vandenberg Space Force Base Launch Viewing — Lompoc
@@ -107,14 +129,14 @@ Year-round; clear nights are best.
 Photos, tips and directions:
 lompoclocals.com/activities/vandenberg-launches
 
-#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/vandenberg-launches,content/social/posts/2026-08-14-weekend-plans-ig.png,content/social/posts/2026-08-14-weekend-plans-tt.png
-2026-08-16,11:00,"instagram,tiktok",Video,"All of Lompoc, in one place.
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/vandenberg-launches,content/social/posts/2026-08-14-weekend-plans-ig.png,content/social/posts/2026-08-14-weekend-plans-tt.png,,,
+2026-08-16,11:00,"instagram,tiktok",Video,"What's actually on the site.
 
-Every local business, every event, every launch over the base — and everywhere worth going.
+Every business in town, every event, every launch over the base — real photos, one listing each, in English y en español.
 
 lompoclocals.com
 
-#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/masters/lompoc-locals-experience-4x5.mp4,content/social/video/lompoc-locals-experience.mp4
+#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/lompoc-locals-features-4x5.mp4,content/social/video/lompoc-locals-features-9x16.mp4,,,
 2026-08-17,08:30,"instagram,tiktok",The week ahead,"Here's the week, if you're making plans.
 
 🎨 Mon, Aug 17 — Pouring My Art Out
@@ -126,7 +148,7 @@ Plus 61 more on the calendar.
 The full week:
 lompoclocals.com/events
 
-#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-17-this-week-ig.png,content/social/posts/2026-08-17-this-week-tt.png
+#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com/en/events,content/social/posts/2026-08-17-this-week-ig.png,content/social/posts/2026-08-17-this-week-tt.png,,,
 2026-08-18,17:30,"instagram,tiktok",Worth the stop,"Worth the stop, if you've got an hour.
 
 Skydiving Over the Lompoc Valley — 1801 N H St
@@ -135,16 +157,27 @@ Book ahead and expect weather holds — coastal fog and wind push jumps more oft
 Photos, tips and directions:
 lompoclocals.com/activities/skydiving-lompoc
 
-#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/skydiving-lompoc,content/social/posts/2026-08-18-worth-the-stop-ig.png,content/social/posts/2026-08-18-worth-the-stop-tt.png
-2026-08-20,12:00,"instagram,tiktok",On the record,"Old Town regulars already know this one.
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/skydiving-lompoc,content/social/posts/2026-08-18-worth-the-stop-ig.png,content/social/posts/2026-08-18-worth-the-stop-tt.png,,,
+2026-08-19,17:00,"instagram,tiktok",The short list,"88 shops in town. Four of them:
 
-La Botte Italian Restaurant & Catering — 112 S I St
-Serves authentic Central and Southern Italian cuisine.
+DG Market — 1124 W Ocean Ave
+Smart & Final Extra Lompoc — 116 W Ocean Ave
+La Favorita Market — 720 N H St
+Cat's Market & Deli — 421 W Ocean Ave
 
-Menu, hours and directions:
-lompoclocals.com/biz/la-botte-italian-restaurant-catering
+All 88 on the list:
+lompoclocals.com/category/retail
 
-#Lompoc #OldTownLompoc #ShopLocalLompoc #805",https://www.lompoclocals.com/en/biz/la-botte-italian-restaurant-catering,content/social/posts/2026-08-20-on-the-record-ig.png,content/social/posts/2026-08-20-on-the-record-tt.png
+#Lompoc #LompocBusiness #ShopLocalLompoc #805",https://www.lompoclocals.com/en/category/retail,content/social/posts/2026-08-19-short-list-ig.png,content/social/posts/2026-08-19-short-list-tt.png,dg-market|smart-final-lompoc|la-favorita-market|cat-s-market-deli,shops in town,88
+2026-08-20,12:00,"instagram,tiktok",On the record,"Worth knowing about.
+
+Flying Goat Cellars — 1520 E Chestnut Ct
+Was founded in 2000 by winemaker Norm Yost and has been dedicated to producing ageworthy Pinot and sparkling wine ever since releasing its first Pinot Noir in 2002.
+
+Tasting hours and directions:
+lompoclocals.com/biz/flying-goat-cellars
+
+#LompocWine #SantaRitaHills #Lompoc #LompocCA #805",https://www.lompoclocals.com/en/biz/flying-goat-cellars,content/social/posts/2026-08-20-on-the-record-ig.png,content/social/posts/2026-08-20-on-the-record-tt.png,,,
 2026-08-21,16:00,"instagram,tiktok",Weekend plans,"Weekend plans, sorted.
 
 Skydiving Over the Lompoc Valley — 1801 N H St
@@ -153,11 +186,11 @@ Year-round · weather dependent.
 Photos, tips and directions:
 lompoclocals.com/activities/skydiving-lompoc
 
-#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/skydiving-lompoc,content/social/posts/2026-08-21-weekend-plans-ig.png,content/social/posts/2026-08-21-weekend-plans-tt.png
+#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",https://www.lompoclocals.com/en/activities/skydiving-lompoc,content/social/posts/2026-08-21-weekend-plans-ig.png,content/social/posts/2026-08-21-weekend-plans-tt.png,,,
 2026-08-23,11:00,"instagram,tiktok",Video,"All of Lompoc, in one place.
 
 Every local business, every event, every launch over the base — and everywhere worth going.
 
 lompoclocals.com
 
-#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/masters/lompoc-locals-signup-4x5.mp4,content/social/video/lompoc-locals-signup.mp4
+#Lompoc #LompocCA #CentralCoast #805",https://www.lompoclocals.com,content/social/video/masters/lompoc-locals-experience-4x5.mp4,content/social/video/lompoc-locals-experience.mp4,,,

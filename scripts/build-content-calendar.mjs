@@ -24,12 +24,17 @@ import {
   HASHTAGS as TAGS,
   OWN_ABOUT_SOURCES,
   assertNoPriceFraming,
+  categoryNoun,
+  categoryOpener,
   cta,
   detailSentence,
   hashtagsFor,
   launchOpener,
   opener,
   seriesOpener,
+  streetLine,
+  streetNoun,
+  streetOpener,
   nameSuffix,
 } from "./lib/voice.mjs"
 
@@ -78,9 +83,25 @@ const CHANNELS = "instagram,tiktok"
 const SLOTS = [
   { dow: 1, time: "08:30", kind: "week-ahead", channels: CHANNELS },
   { dow: 2, time: "17:30", kind: "place", channels: CHANNELS },
+  // Wednesday alternates between the two run-downs rather than adding a slot for each: five posts
+  // a week is already the ceiling for a town this size, and a series that appears fortnightly
+  // stays a thing people recognise instead of a thing they scroll past.
+  { dow: 3, time: "17:00", kind: "run-down", channels: CHANNELS },
   { dow: 4, time: "12:00", kind: "spotlight", channels: CHANNELS },
   { dow: 5, time: "16:00", kind: "weekend", channels: CHANNELS },
 ]
+
+/**
+ * How many named businesses a run-down carries. Four fills the card's 2×2 grid exactly, and a
+ * caption longer than four names stops being readable in the feed's collapsed preview.
+ */
+const RUN_DOWN_PICKS = 4
+
+/** Smallest pool worth a run-down: fewer than this and "here are four of them" is most of them. */
+const RUN_DOWN_MIN = 8
+
+/** The street a business sits on, with the house number and suite dropped. */
+const streetKey = (addr) => streetLine(addr).replace(/^[\d-]+\s+/, "").trim()
 
 function csvCell(v) {
   const s = String(v ?? "")
@@ -90,7 +111,7 @@ function csvCell(v) {
 async function main() {
   const horizon = addDays(START, WEEKS * 7 + 7)
 
-  const [events, activities, businesses] = await Promise.all([
+  const [events, activities, businesses, listed] = await Promise.all([
     sql`select title, category, starts_at, location, source
         from events
         where status='approved' and starts_at between now() and ${horizon.toISOString()}
@@ -113,13 +134,75 @@ async function main() {
           and jsonb_array_length(coalesce(b.photos_json,'[]'::jsonb)) >= 4
           and b.about_source = any(${OWN_ABOUT_SOURCES})
         order by md5(b.slug) limit 60`,
+    // The run-down pool. Broader than the spotlight pool on purpose: a run-down names a business
+    // and shows its photo, it doesn't quote prose about it, so it needs a picture and an address
+    // rather than about text we authored. Ordered by md5 so the rotation is reproducible.
+    //
+    // Unfiltered on purpose: the headline count ("124 businesses on North H Street") has to be
+    // every business the site actually lists there, while the four it names have to be ones with
+    // a photo. Filtering here would make the count describe our photo coverage instead of the town.
+    sql`select b.name, b.slug, b.address, c.name as category, c.slug as category_slug,
+               jsonb_array_length(coalesce(b.photos_json,'[]'::jsonb)) as photos
+        from businesses b left join categories c on c.id = b.category_id
+        where b.status='approved'
+        order by md5(b.slug)`,
   ])
 
   const launches = events.filter((e) => /rocket launch/i.test(e.title))
+
+  /**
+   * Run-down pools. `count` is every business the site lists — that's the number in the headline.
+   * `items` is the subset with a photo, because those are the four the card can actually show.
+   *
+   * Pools below RUN_DOWN_MIN are dropped: "here are four of them" out of five isn't a run-down.
+   */
+  function poolsFrom(keyOf) {
+    const groups = new Map()
+    for (const b of listed) {
+      const key = keyOf(b)
+      if (!key) continue
+      if (!groups.has(key)) groups.set(key, { key, label: key, count: 0, items: [] })
+      const g = groups.get(key)
+      g.count++
+      if (b.photos >= 1 && b.address) g.items.push(b)
+    }
+    return [...groups.values()]
+      .filter((g) => g.count >= RUN_DOWN_MIN && g.items.length >= RUN_DOWN_PICKS)
+      .sort((a, b) => b.count - a.count || a.key.localeCompare(b.key))
+  }
+
+  // Only keys that read as a street. Without this, "Lompoc Wine Ghetto" and bare city lines get
+  // announced as streets, and the opener ("…, end to end") stops being true.
+  const STREETISH = /\b(St|Ave|Rd|Blvd|Ln|Dr|Ct|Pl|Hwy|Way|Street|Avenue|Road|Boulevard)\b|^CA-\d+/i
+  const streetPools = poolsFrom((b) => {
+    const k = streetKey(b.address)
+    return k && STREETISH.test(k) ? k : null
+  })
+  // "Other" is the bucket everything unclassified lands in, so it names no real category and its
+  // members have nothing in common. A run-down of it would promise a theme it can't deliver.
+  const categoryPools = poolsFrom((b) => (b.category_slug && b.category_slug !== "other" ? b.category_slug : null))
+  for (const g of categoryPools) g.label = listed.find((b) => b.category_slug === g.key)?.category || g.key
+
+  // Where each pool's rotation currently sits, so the same street doesn't name the same four
+  // businesses every time it comes round.
+  const pickCursor = new Map()
+
+  /**
+   * Every business this calendar has already named, across all series.
+   *
+   * The pools are independently md5-ordered, which meant the same business surfaced at the top of
+   * all three: one run of the calendar put Sake Sushi in a category run-down on the Wednesday, a
+   * spotlight on the Thursday, and a street run-down the following week. To anyone following the
+   * account that reads as a paid placement.
+   */
+  const named = new Set()
+
   const rows = []
   const skipped = []
   let placeI = 0
   let bizI = 0
+  let streetI = 0
+  let categoryI = 0
 
   for (let w = 0; w < WEEKS; w++) {
     const monday = addDays(weekStart(START), w * 7)
@@ -142,6 +225,11 @@ async function main() {
       let link = ""
       let media = ""
       let series = ""
+      // Run-down posts only. The card needs the exact businesses the caption names, and a link to
+      // a map or a category page can't identify them the way a /biz/ link identifies a spotlight.
+      let subjects = ""
+      let headline = ""
+      let count = ""
 
       if (slot.kind === "week-ahead") {
         series = "The week ahead"
@@ -184,6 +272,47 @@ async function main() {
         link = `${SITE}/en/activities/${a.slug}`
       }
 
+      if (slot.kind === "run-down") {
+        // The two run-downs alternate by week, so each lands fortnightly on the same weekday.
+        const byStreet = w % 2 === 0
+        const pools = byStreet ? streetPools : categoryPools
+        if (!pools.length) {
+          skipped.push(`${byStreet ? "street" : "category"} run-down — no pool of ${RUN_DOWN_MIN}+ with photos`)
+          continue
+        }
+        const p = pools[(byStreet ? streetI++ : categoryI++) % pools.length]
+        // Advance this pool's own cursor, so North H Street names four different businesses the
+        // next time it comes up rather than reintroducing the same four every fortnight.
+        const at = pickCursor.get(p.key) || 0
+        const picks = []
+        // Walk the pool for four businesses this calendar hasn't named yet. The bound is the pool
+        // length: if everything in it has been used, take the repeat rather than drop the post.
+        for (let tries = 0; tries < p.items.length && picks.length < RUN_DOWN_PICKS; tries++) {
+          const cand = p.items[(at + tries) % p.items.length]
+          if (named.has(cand.slug)) continue
+          picks.push(cand)
+        }
+        while (picks.length < RUN_DOWN_PICKS) picks.push(p.items[(at + picks.length) % p.items.length])
+        pickCursor.set(p.key, at + RUN_DOWN_PICKS)
+        for (const b of picks) named.add(b.slug)
+
+        series = byStreet ? "One street" : "The short list"
+        const lines = byStreet
+          ? picks.map((b) => b.name)
+          : picks.map((b) => `${b.name}${nameSuffix(b.name, b.address)}`)
+        text =
+          `${byStreet ? streetOpener(p.count, p.key) : categoryOpener(p.count, p.key, p.label)}\n\n` +
+          `${lines.join("\n")}\n\n` +
+          (byStreet
+            ? `Every one of them is on the map:\nlompoclocals.com/map\n\n${TAGS.business}`
+            : `All ${p.count} on the list:\nlompoclocals.com/category/${p.key}\n\n${hashtagsFor(p.label, "")}`)
+        link = byStreet ? `${SITE}/en/map` : `${SITE}/en/category/${p.key}`
+        // The card renders these four and only these four — the caption and the image can't drift.
+        subjects = picks.map((b) => b.slug).join("|")
+        headline = byStreet ? streetNoun(p.key) : categoryNoun(p.key, p.label)
+        count = p.count
+      }
+
       if (slot.kind === "spotlight") {
         series = "On the record"
         // Walk the pool until a business yields a usable detail sentence. A business is skipped
@@ -193,6 +322,8 @@ async function main() {
         let detail = ""
         for (let tries = 0; tries < businesses.length; tries++) {
           const cand = businesses[bizI++ % businesses.length]
+          // A business a run-down already named this month doesn't get the spotlight as well.
+          if (named.has(cand.slug)) continue
           const d = detailSentence(cand.name, cand.about)
           if (!d) continue
           try {
@@ -206,6 +337,7 @@ async function main() {
           break
         }
         if (!b) continue
+        named.add(b.slug)
         text =
           `${opener({ address: b.address, slug: b.slug })}\n\n` +
           `${b.name}${nameSuffix(b.name, b.address) || " — Lompoc"}\n` +
@@ -251,6 +383,9 @@ async function main() {
         text,
         link,
         media,
+        subjects,
+        headline,
+        count,
       })
     }
   }
@@ -258,15 +393,33 @@ async function main() {
   // Video assets get their own slots — one a week, rotating.
   // Each spot ships in both shapes: the 4:5 master for the Instagram feed, the untouched 9:16
   // for TikTok. Same cut, sized for where it lands.
+  const BRAND_CAPTION =
+    `All of Lompoc, in one place.\n\nEvery local business, every event, every launch over the base — ` +
+    `and everywhere worth going.\n\nlompoclocals.com\n\n${TAGS.general}`
+
+  // Most spots were cut as a 9:16 master with a 4:5 crop alongside it; the feature ad was rendered
+  // natively in both shapes, so it names its files directly rather than following that convention.
   const videos = [
     { stem: "lompoc-locals-spot", note: "Brand spot, 27s — the wide-reach one" },
     { stem: "lompoc-locals-experience-20s", note: "20s cut" },
+    {
+      stem: "lompoc-locals-features",
+      note: "Feature ad — what's on the site, with live numbers",
+      file: "content/social/video/lompoc-locals-features-4x5.mp4",
+      vertical: "content/social/video/lompoc-locals-features-9x16.mp4",
+      // No counts in the caption: the numbers are burned into the video at render time, and a
+      // caption that recounts them from today's database would contradict the frame it sits under.
+      text:
+        `What's actually on the site.\n\nEvery business in town, every event, every launch over the ` +
+        `base — real photos, one listing each, in English y en español.\n\nlompoclocals.com\n\n${TAGS.general}`,
+    },
     { stem: "lompoc-locals-experience", note: "Full tour, 25s" },
     { stem: "lompoc-locals-signup", note: "Signup-focused, 19s" },
   ].map((v) => ({
     ...v,
-    file: `content/social/video/masters/${v.stem}-4x5.mp4`,
-    vertical: `content/social/video/${v.stem}.mp4`,
+    file: v.file || `content/social/video/masters/${v.stem}-4x5.mp4`,
+    vertical: v.vertical || `content/social/video/${v.stem}.mp4`,
+    text: v.text || BRAND_CAPTION,
   }))
   for (let w = 0; w < WEEKS; w++) {
     const when = addDays(addDays(weekStart(START), w * 7), 6) // Sunday
@@ -277,9 +430,7 @@ async function main() {
       time: "11:00",
       channels: CHANNELS,
       series: "Video",
-      text:
-        `All of Lompoc, in one place.\n\nEvery local business, every event, every launch over the base — ` +
-        `and everywhere worth going.\n\nlompoclocals.com\n\n${TAGS.general}`,
+      text: v.text,
       link: SITE,
       media: v.file,
       media_vertical: v.vertical,
@@ -302,7 +453,21 @@ async function main() {
 
   rows.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
 
-  const header = ["date", "time", "channels", "series", "text", "link", "media", "media_vertical"]
+  // subjects/headline/count are the run-down columns: a card built from a /map or /category link
+  // has no way to know which four businesses the caption named, so the calendar records them.
+  const header = [
+    "date",
+    "time",
+    "channels",
+    "series",
+    "text",
+    "link",
+    "media",
+    "media_vertical",
+    "subjects",
+    "headline",
+    "count",
+  ]
   const csv = [header.join(","), ...rows.map((r) => header.map((h) => csvCell(r[h])).join(","))].join("\n")
   const stamp = fmtDate(START)
   // One canonical name, not one file per run: content/social/ is the deliverable folder and a

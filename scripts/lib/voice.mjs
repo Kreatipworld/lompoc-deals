@@ -87,6 +87,98 @@ const SERIES_OPENERS = {
 
 const NO_STOREFRONT_OPENER = "No storefront. Still one of ours."
 
+/* ---------- run-downs ---------- */
+
+/**
+ * Street names the way people say them, expanded from the postal line.
+ *
+ * A lookup table would go stale the moment a business lands on a street nobody has listed on yet,
+ * and new addresses arrive constantly — so this expands the abbreviations instead. Anything it
+ * doesn't recognise (CA-246) passes through untouched, which is also how people say it.
+ */
+const DIRECTION = { N: "North", S: "South", E: "East", W: "West" }
+const STREET_TYPE = {
+  St: "Street",
+  Ave: "Avenue",
+  Rd: "Road",
+  Blvd: "Boulevard",
+  Ln: "Lane",
+  Dr: "Drive",
+  Ct: "Court",
+  Pl: "Place",
+  Hwy: "Highway",
+}
+export function streetName(s) {
+  const words = String(s || "").trim().split(/\s+/)
+  return words
+    .map((w, i) => {
+      const bare = w.replace(/\.$/, "")
+      if (i === 0 && DIRECTION[bare]) return DIRECTION[bare]
+      if (i === words.length - 1 && STREET_TYPE[bare]) return STREET_TYPE[bare]
+      return w
+    })
+    .join(" ")
+}
+
+/**
+ * Openers for the two run-down series.
+ *
+ * Every line here has to stay true of any street or any category the rotation lands on — the
+ * pools are picked by a counter, so a line that only works for wineries will eventually run over
+ * a tyre shop. Nothing claims walkability, price, or quality; the count and the names do the work.
+ */
+const STREET_OPENERS = [
+  (n, name) => `${n} businesses on ${name}. Four of them:`,
+  (n, name) => `One street. ${n} businesses on it.`,
+  (n, name) => `${name}, end to end — ${n} businesses.`,
+]
+
+/** Keyed to the category slug, because "38 places to eat" and "38 wineries" want different lines. */
+const CATEGORY_OPENERS = {
+  "food-drink": (n) => `${n} places to eat in town. Four to start with:`,
+  wineries: (n) => `${n} wineries in the valley. Four to start with:`,
+  retail: (n) => `${n} shops in town. Four of them:`,
+  services: (n) => `${n} local services on the record. Four of them:`,
+  "health-beauty": (n) => `${n} places in town to get sorted out. Four of them:`,
+  auto: (n) => `${n} auto shops in town. Four of them:`,
+  entertainment: (n) => `${n} places in town to actually go out. Four of them:`,
+  "real-estate": (n) => `${n} real-estate offices in town. Four of them:`,
+  dispensaries: (n) => `${n} dispensaries in town. Four of them:`,
+}
+const CATEGORY_OPENER_FALLBACK = (n, label) => `${n} of them in town, on the record. Four to start with:`
+
+/**
+ * What the run-down card's big number is counting.
+ *
+ * The card sets the count beside this phrase, so it has to say what is being counted: the first
+ * cut paired "142" with "North H Street" and the result read as a street address rather than a
+ * tally of the businesses on it.
+ */
+const CATEGORY_NOUN = {
+  "food-drink": "places to eat in town",
+  wineries: "wineries in the valley",
+  retail: "shops in town",
+  services: "local services in town",
+  "health-beauty": "health & beauty spots in town",
+  auto: "auto shops in town",
+  entertainment: "places to go out in town",
+  "real-estate": "real-estate offices in town",
+  dispensaries: "dispensaries in town",
+}
+export const streetNoun = (key) => `businesses on ${streetName(key)}`
+export const categoryNoun = (slug, label) => CATEGORY_NOUN[slug] || `${String(label).toLowerCase()} in town`
+
+/** Stable pick, so the same street always opens the same way across rebuilds. */
+export function streetOpener(count, key) {
+  const name = streetName(key)
+  let h = 0
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0
+  return STREET_OPENERS[h % STREET_OPENERS.length](count, name)
+}
+
+export const categoryOpener = (count, slug, label) =>
+  (CATEGORY_OPENERS[slug] || ((n) => CATEGORY_OPENER_FALLBACK(n, label)))(count)
+
 /* ---------- hashtags ---------- */
 
 export const HASHTAGS = {

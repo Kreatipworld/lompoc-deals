@@ -67,9 +67,14 @@ async function gather() {
   const act = await sql`select title, photos_json from activities
     where jsonb_array_length(coalesce(photos_json,'[]'::jsonb)) >= 1 order by md5(slug) limit 14`
 
-  // One photo per business, so the mosaic shows 30 different places rather than 3 places 10 times.
-  const bizPhotos = biz.map((r) => (r.photos_json || []).map(photoUrl).find(Boolean)).filter(Boolean)
-  const actPhotos = act.map((r) => (r.photos_json || []).map(photoUrl).find(Boolean)).filter(Boolean)
+  // One photo per subject, and the title travels with it: the beats are cast by what a photo
+  // shows (a rocket under "every launch"), which needs more than a bare URL.
+  const pick = (rows, key) =>
+    rows
+      .map((r) => ({ title: r[key], url: (r.photos_json || []).map(photoUrl).find(Boolean) }))
+      .filter((x) => x.url)
+  const bizPhotos = pick(biz, "name")
+  const actPhotos = pick(act, "title")
 
   return {
     n: { businesses: b.n, events: e.n, launches: l.n, photos: p.n, places: a.n },
@@ -96,7 +101,16 @@ async function cachePhotos(urls, dir) {
       }
     })
   )
-  return kept.filter(Boolean)
+  // A photo that failed to download shifts every index after it, and the beats are cast by index —
+  // so hand back where each surviving photo actually landed rather than leaving callers to guess.
+  const files = []
+  const position = new Map()
+  kept.forEach((f, i) => {
+    if (!f) return
+    position.set(i, files.length)
+    files.push(f)
+  })
+  return { files, position }
 }
 
 const PLAYER = (W, H, spec) => /* html */ `<!doctype html><meta charset="utf-8">
@@ -116,13 +130,35 @@ const easeInOut = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
 const clamp01   = t => t < 0 ? 0 : t > 1 ? 1 : t;
 const lerp = (a,b,t) => a + (b-a)*t;
 const PAD = Math.round(W * 0.088);
+const LINE_HEIGHT = 1.08;
+// Grain is texture, not an effect. At the old 0.055 it crawled visibly across the flat colour
+// fields, which on a 4:5 feed video reads as compression noise.
+const GRAIN_ALPHA = 0.03;
 const MARK_ASPECT = 314 / 402;   // the SVG has a viewBox but no width/height
 
 const load = src => new Promise(res => {
   const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src;
 });
 
-let MARK_W, PHOTOS = [], GRAIN;
+let MARK_W, PHOTOS = [], GRAIN, STOREFRONT = 0;
+
+/**
+ * The widest business photo in the pool.
+ *
+ * Which photo is a storefront isn't recorded anywhere, but shape is a decent proxy: a building is
+ * shot wide, a plate of food is shot square or tall. Measured here because only the browser knows
+ * the pixel dimensions once the image has loaded.
+ */
+function widestIn([a,b]){
+  let best=a, bestRatio=0;
+  for(let i=a;i<b && i<PHOTOS.length;i++){
+    const im=PHOTOS[i];
+    if(!im || !im.height) continue;
+    const r=im.width/im.height;
+    if(r>bestRatio){ bestRatio=r; best=i; }
+  }
+  return best;
+}
 
 /** Film grain, painted once offscreen — the same texture the cards carry. */
 function makeGrain(){
@@ -138,12 +174,6 @@ function grain(alpha){
   g.save(); g.globalAlpha=alpha; g.globalCompositeOperation='overlay';
   for(let y=0;y<H;y+=260) for(let x=0;x<W;x+=260) g.drawImage(GRAIN,x,y);
   g.restore();
-}
-
-function roundRect(x,y,w,h,r){
-  g.beginPath();
-  g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r);
-  g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath();
 }
 
 /** object-fit: cover. */
@@ -165,29 +195,32 @@ function wrapWords(words,font,maxW){
   return lines;
 }
 
-/** Words land one after another, each rising into place — the line completes itself. */
-function reveal(text,{y,size,weight,colour,ghost,maxW,x,p,stagger,align}){
+/**
+ * Lines fade up into place, one after another.
+ *
+ * The earlier version revealed word by word over a grey ghost of the finished line — so the whole
+ * headline was on screen the entire time, half of it in the wrong colour, and it read as a
+ * rendering fault rather than an effect. A line is either in its final colour or it isn't there.
+ */
+function reveal(text,{y,size,weight,colour,maxW,x,p,stagger,align}){
   const font=weight+' '+size+'px "Plus Jakarta Sans", sans-serif';
   const lines=wrapWords(text.split(' '),font,maxW);
   g.font=font; g.textBaseline='alphabetic'; g.textAlign='left';
-  const lh=size*1.05;
-  let idx=0, yy=y;
-  for(const line of lines){
-    const lw=g.measureText(line.join(' ')).width;
-    let xx = align==='center' ? x-lw/2 : x;
-    for(const w of line){
-      const t=clamp01((p - idx*stagger)/0.20);
-      const rise=(1-easeOut(t))*size*0.20;
+  const lh=size*LINE_HEIGHT;
+  let yy=y;
+  lines.forEach((line,i)=>{
+    const t=clamp01((p - i*stagger)/0.26);
+    if(t>0){
+      const str=line.join(' ');
+      const xx = align==='center' ? x-g.measureText(str).width/2 : x;
       g.save();
-      g.globalAlpha = t<=0 ? 0 : lerp(0.25,1,t);
-      g.fillStyle = t>=1 ? colour : (ghost||colour);
-      g.fillText(w,xx,yy+rise);
+      g.globalAlpha=easeOut(t);
+      g.fillStyle=colour;
+      g.fillText(str,xx,yy+(1-easeOut(t))*size*0.16);
       g.restore();
-      xx += g.measureText(w+' ').width;
-      idx++;
     }
     yy+=lh;
-  }
+  });
   return yy-y;
 }
 
@@ -197,84 +230,42 @@ const headLines = (text,size) =>
 function lockup(alpha){
   if(!MARK_W) return;
   g.save(); g.globalAlpha=alpha;
-  const h=Math.round(W*0.072);
+  const h=Math.round(W*0.056);
   g.drawImage(MARK_W,PAD,PAD*0.72,h*MARK_ASPECT,h);
   g.restore();
-}
-
-/**
- * A mosaic of real places. Tiles pop in on a diagonal wave, then a brand scrim closes over them
- * so the headline has somewhere quiet to sit — the photos still read through it.
- */
-function mosaic(p,cols,rows,scrim){
-  const cw=W/cols, ch=H/rows;
-  let i=0;
-  for(let r=0;r<rows;r++) for(let cI=0;cI<cols;cI++){
-    const img=PHOTOS[i%Math.max(1,PHOTOS.length)];
-    const t=clamp01((p-(r+cI)*0.035)/0.28);
-    if(t>0){
-      const s=lerp(0.86,1,easeOut(t));
-      g.save(); g.globalAlpha=easeOut(t);
-      const w=cw*s, h=ch*s;
-      g.translate(cI*cw+(cw-w)/2, r*ch+(ch-h)/2);
-      g.beginPath(); g.rect(0,0,w,h); g.clip();
-      cover(img,0,0,w,h);
-      g.restore();
-    }
-    i++;
-  }
-  if(scrim>0){
-    g.save(); g.globalAlpha=scrim; g.fillStyle=PURPLE; g.fillRect(0,0,W,H); g.restore();
-  }
 }
 
 function paintBeat(b,p){
   g.fillStyle=C[b.bg]||PURPLE; g.fillRect(0,0,W,H);
 
-  if(b.kind==='mosaic') mosaic(p,b.cols,b.rows,clamp01((p-0.30)/0.22)*0.80);
-
   if(b.kind==='photo'){
-    const img=PHOTOS[b.photo%Math.max(1,PHOTOS.length)];
+    const idx = b.photo==='storefront' ? STOREFRONT : b.photo;
+    const img=PHOTOS[idx%Math.max(1,PHOTOS.length)];
     // Slow push-in keeps a still photograph from feeling like a slide.
-    const s=lerp(1.0,1.10,easeInOut(p));
+    const s=lerp(1.0,1.06,easeInOut(p));
     g.save();
     g.translate(W/2,H/2); g.scale(s,s); g.translate(-W/2,-H/2);
     cover(img,0,0,W,H);
     g.restore();
-    const grd=g.createLinearGradient(0,0,0,H);
-    grd.addColorStop(0,'rgba(36,22,41,0.32)');
-    grd.addColorStop(0.42,'rgba(36,22,41,0.26)');
-    grd.addColorStop(1, b.bg==='green' ? 'rgba(11,153,47,0.95)' : 'rgba(101,12,117,0.95)');
-    g.fillStyle=grd; g.fillRect(0,0,W,H);
-  }
-
-  if(b.kind==='cards'){
-    // Three tilted photo cards, as if pulled off the site and laid down. They sit high on
-    // purpose: the headline anchors low, and white type over a white card reads as nothing.
-    const base=H*0.30;
-    for(let i=0;i<3;i++){
-      const t=clamp01((p-0.10-i*0.09)/0.34);
-      if(t<=0) continue;
-      const img=PHOTOS[(b.photo+i*5)%Math.max(1,PHOTOS.length)];
-      const cwid=W*0.36, chg=cwid*1.25;
-      const ang=(-10+i*10)*Math.PI/180;
-      const cx=W*(0.28+i*0.22), cy=base+(1-easeOut(t))*H*0.10;
-      g.save(); g.globalAlpha=easeOut(t);
-      g.translate(cx,cy); g.rotate(ang*easeOut(t));
-      g.shadowColor='rgba(0,0,0,0.30)'; g.shadowBlur=44; g.shadowOffsetY=16;
-      g.fillStyle='#fff'; roundRect(-cwid/2,-chg/2,cwid,chg,26); g.fill();
-      g.shadowColor='transparent';
-      g.save(); roundRect(-cwid/2+10,-chg/2+10,cwid-20,chg-20,18); g.clip();
-      cover(img,-cwid/2+10,-chg/2+10,cwid-20,chg-20);
-      g.restore(); g.restore();
-    }
+    // A neutral scrim, not a brand wash. Flooding the frame with purple or green turned a beach
+    // into a purple beach and a rocket into a green rocket — the photographs are the whole
+    // argument that this is a real town, so they keep their own colour. Only the strip the type
+    // sits on gets darkened, and only enough to hold white text.
+    const grd=g.createLinearGradient(0,H*0.34,0,H);
+    grd.addColorStop(0,'rgba(18,10,22,0)');
+    grd.addColorStop(1,'rgba(18,10,22,0.84)');
+    g.fillStyle=grd; g.fillRect(0,H*0.34,W,H*0.66);
+    // Just enough at the top for the white mark to read against a bright sky.
+    const top=g.createLinearGradient(0,0,0,H*0.16);
+    top.addColorStop(0,'rgba(18,10,22,0.34)');
+    top.addColorStop(1,'rgba(18,10,22,0)');
+    g.fillStyle=top; g.fillRect(0,0,W,H*0.16);
   }
 
   const onDark = b.bg!=='cream' && b.bg!=='gold';
   const headColour = b.headColour ? C[b.headColour] : (onDark ? '#ffffff' : INK);
-  const ghost = onDark ? 'rgba(255,255,255,0.30)' : 'rgba(36,22,41,0.22)';
 
-  lockup(clamp01(p/0.18)*(onDark?0.95:0.85));
+  lockup(clamp01(p/0.18)*(onDark?0.7:0.6));
 
   if(b.kind==='end'){
     const a=clamp01(p/0.20);
@@ -283,31 +274,30 @@ function paintBeat(b,p){
     g.drawImage(MARK_W,(W-h*MARK_ASPECT)/2,H*0.28,h*MARK_ASPECT,h);
     g.restore();
     reveal(b.head,{y:H*0.56,size:Math.round(W*0.078),weight:'800',colour:GOLD,
-      ghost:'rgba(239,198,24,0.28)',maxW:W-PAD*2,x:W/2,p,stagger:0.09,align:'center'});
+      maxW:W-PAD*2,x:W/2,p,stagger:0.10,align:'center'});
     g.textAlign='center';
     g.globalAlpha=clamp01((p-0.45)/0.3);
     g.fillStyle='rgba(255,255,255,0.9)';
     g.font='600 '+Math.round(W*0.034)+'px "Plus Jakarta Sans", sans-serif';
     g.fillText('Made by locals, for locals',W/2,H*0.635);
     g.globalAlpha=1; g.textAlign='left';
-    grain(0.05);
+    grain(GRAIN_ALPHA);
     return;
   }
 
   const headSize=b.big?Math.round(W*0.108):Math.round(W*0.086);
   const nLines=headLines(b.head,headSize);
-  let blockH=nLines*headSize*1.05;
+  let blockH=nLines*headSize*LINE_HEIGHT;
   if(b.sub)  blockH+=Math.round(W*0.05)+Math.round(W*0.05);
   if(b.stat) blockH+=Math.round(W*0.19)*0.80+Math.round(W*0.056);
 
   // Photo beats anchor low so the picture stays visible; colour beats sit optically centred.
-  const anchorLow = b.kind==='photo'||b.kind==='mosaic'||b.kind==='cards';
-  const top = anchorLow
+  const top = b.kind==='photo'
     ? H - PAD*1.5 - blockH + headSize*0.72
     : Math.max(H*0.22,(H-blockH)/2) + headSize*0.66;
 
-  const used=reveal(b.head,{y:top,size:headSize,weight:'800',colour:headColour,ghost,
-    maxW:W-PAD*2,x:PAD,p,stagger:0.075});
+  const used=reveal(b.head,{y:top,size:headSize,weight:'800',colour:headColour,
+    maxW:W-PAD*2,x:PAD,p,stagger:0.10});
 
   if(b.stat){
     const a=clamp01((p-0.26)/0.28);
@@ -336,14 +326,17 @@ function paintBeat(b,p){
     g.restore();
   }
 
-  grain(0.055);
+  grain(GRAIN_ALPHA);
 }
 
 const toBlob = () => new Promise(r => cv.toBlob(r,'image/jpeg',0.94));
 
 (async () => {
   MARK_W = await load('/brand/lompoc-locals-mark-white.svg');
-  PHOTOS = (await Promise.all(spec.photos.map(f => load('/p/'+f)))).filter(Boolean);
+  // Nulls are kept, not filtered: the beats were cast against these positions in Node, and
+  // dropping a failed image here would slide every photo after it into the wrong beat.
+  PHOTOS = await Promise.all(spec.photos.map(f => load('/p/'+f)));
+  STOREFRONT = widestIn(spec.bizRange);
   GRAIN = makeGrain();
   await document.fonts.load('800 140px "Plus Jakarta Sans"');
   await document.fonts.load('600 40px "Plus Jakarta Sans"');
@@ -381,21 +374,29 @@ const toBlob = () => new Promise(r => cv.toBlob(r,'image/jpeg',0.94));
 })();
 </script>`
 
-const beats = (n, actStart) => [
-  { kind: "open", bg: "purple", head: "All of Lompoc.", sub: "One place.", subColour: "gold", big: true, dur: 2.3 },
-  { kind: "mosaic", bg: "purple", cols: 4, rows: 5, head: "Every business in town.",
-    stat: n.businesses.toLocaleString(), statColour: "gold", label: "local businesses, all of them real", dur: 3.0 },
-  { kind: "photo", bg: "purple", photo: actStart + 1, head: "Every event. Every launch.",
-    stat: n.events.toLocaleString(), statColour: "gold", label: `upcoming — ${n.launches} over the base`, dur: 2.9 },
-  { kind: "cards", bg: "green", photo: 2, head: "Real photos. Real places.",
-    stat: n.photos.toLocaleString(), statColour: "gold", label: "photos on the site, no stock imagery", dur: 3.0 },
-  { kind: "photo", bg: "green", photo: actStart + 4, head: "Curated places worth the drive.",
-    stat: n.places.toLocaleString(), statColour: "gold", label: "hand-checked things to do", dur: 2.8 },
+/**
+ * Seven beats, and every one of them is either a photograph or a flat brand colour.
+ *
+ * The previous cut had eight beats across five colour fields, a 4×5 photo mosaic and a stack of
+ * tilted polaroids — a different visual trick every three seconds. Each was fine alone; together
+ * they read as a demo of what the renderer can do. What's left is one idea per beat: three
+ * photographs carrying the three numbers, two flat colour statements, an open and an end.
+ *
+ * Rule for the type: gold is for numbers and for the sub-line on a dark field. Nothing else.
+ */
+const beats = (n, cast) => [
+  { kind: "open", bg: "purple", head: "All of Lompoc.", sub: "One place.", subColour: "gold", big: true, dur: 2.6 },
+  { kind: "photo", bg: "purple", photo: "storefront", head: "Every business in town.",
+    stat: n.businesses.toLocaleString(), statColour: "gold", label: "local businesses, all of them real", dur: 3.2 },
+  { kind: "photo", bg: "purple", photo: cast.launch, head: "Every event. Every launch.",
+    stat: n.events.toLocaleString(), statColour: "gold", label: `upcoming — ${n.launches} over the base`, dur: 3.2 },
+  { kind: "photo", bg: "purple", photo: cast.land, head: "Real photos of real places.",
+    stat: n.photos.toLocaleString(), statColour: "gold", label: "photos on the site, no stock imagery", dur: 3.2 },
   { kind: "color", bg: "gold", head: "One listing each.", sub: "Duplicates merged, not stacked.",
-    headColour: "ink", subColour: "purple", dur: 2.4 },
-  { kind: "color", bg: "cream", head: "En inglés y en español.", sub: "Every page, both languages.",
-    headColour: "ink", subColour: "green", dur: 2.3 },
-  { kind: "end", bg: "purple", head: "lompoclocals.com", dur: 2.7 },
+    headColour: "ink", subColour: "purple", dur: 2.6 },
+  { kind: "color", bg: "green", head: "En inglés y en español.", sub: "Every page, both languages.",
+    subColour: "gold", dur: 2.6 },
+  { kind: "end", bg: "purple", head: "lompoclocals.com", dur: 2.8 },
 ]
 
 async function renderShape(key, spec, photoDir) {
@@ -479,13 +480,35 @@ async function renderShape(key, spec, photoDir) {
 const { n, bizPhotos, actPhotos } = await gather()
 console.log("live numbers:", n)
 const photoDir = fs.mkdtempSync(path.join(os.tmpdir(), "ad-photos-"))
-const files = await cachePhotos([...bizPhotos, ...actPhotos], photoDir)
-console.log(`photos: ${files.length} of ${bizPhotos.length + actPhotos.length} cached\n`)
+const all = [...bizPhotos, ...actPhotos]
+const { files, position } = await cachePhotos(all.map((x) => x.url), photoDir)
+console.log(`photos: ${files.length} of ${all.length} cached`)
 
-// Activity photos are appended after the business photos, so the place-led beats can index into
-// the landscape half rather than landing on somebody's lunch.
-const actStart = Math.max(0, files.length - actPhotos.length)
-const spec = { beats: beats(n, actStart), photos: files }
+/**
+ * Cast the three photo beats by what the photograph shows.
+ *
+ * Indexing into an md5-ordered pool put a close-up of a plate of sushi under "every business in
+ * town" and a rocket under "real photos of real places" — both true, neither composed. Matching on
+ * the subject's own title is still live data; it just stops the running order deciding the images.
+ */
+const actAt = (re, taken = []) => {
+  const i = actPhotos.findIndex((a, k) => re.test(a.title) && !taken.includes(k))
+  return i < 0 ? null : { key: i, at: position.get(bizPhotos.length + i) ?? null }
+}
+const launch = actAt(/launch|vandenberg|rocket|space/i)
+const land = actAt(/beach|dune|park|valley|trail|river|lake|bluff|garden|flower|ranch|hill/i, [launch?.key])
+const cast = {
+  // The business beat wants a storefront, and nothing in the data says which photo is one — so the
+  // player picks the widest business photo at load time. A wide frame is a building; a square one
+  // is usually a plate of food.
+  bizRange: [0, position.get(bizPhotos.length) ?? files.length],
+  launch: launch?.at ?? 0,
+  land: land?.at ?? 0,
+}
+console.log(`cast: launch="${launch ? actPhotos[launch.key].title : "—"}" ` +
+  `place="${land ? actPhotos[land.key].title : "—"}"\n`)
+
+const spec = { beats: beats(n, cast), photos: files, bizRange: cast.bizRange }
 for (const key of Object.keys(SHAPES)) {
   if (ONLY.length && !ONLY.includes(key)) continue
   await renderShape(key, spec, photoDir)
