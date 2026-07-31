@@ -227,14 +227,6 @@ function reveal(text,{y,size,weight,colour,maxW,x,p,stagger,align}){
 const headLines = (text,size) =>
   wrapWords(text.split(' '),'800 '+size+'px "Plus Jakarta Sans", sans-serif',W-PAD*2).length;
 
-function lockup(alpha){
-  if(!MARK_W) return;
-  g.save(); g.globalAlpha=alpha;
-  const h=Math.round(W*0.056);
-  g.drawImage(MARK_W,PAD,PAD*0.72,h*MARK_ASPECT,h);
-  g.restore();
-}
-
 function paintBeat(b,p){
   g.fillStyle=C[b.bg]||PURPLE; g.fillRect(0,0,W,H);
 
@@ -265,7 +257,10 @@ function paintBeat(b,p){
   const onDark = b.bg!=='cream' && b.bg!=='gold';
   const headColour = b.headColour ? C[b.headColour] : (onDark ? '#ffffff' : INK);
 
-  lockup(clamp01(p/0.18)*(onDark?0.7:0.6));
+  // No mark in the corner. It used to sit top-left on every frame of the ad — six hundred frames
+  // of the same logo in the same place, which reads as a watermark rather than as branding and
+  // competes with the photograph underneath. The end card carries the mark and the name; that is
+  // where an ad is supposed to sign itself.
 
   if(b.kind==='end'){
     const a=clamp01(p/0.20);

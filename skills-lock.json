@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "ads": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/SKILL.md",
+      "computedHash": "569e690ae2defe2abaea3d63dc955e0af5d99cbe2b52d2cb977fd2039aae31a2"
+    },
     "neon-postgres": {
       "source": "neondatabase/agent-skills",
       "sourceType": "github",

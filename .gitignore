@@ -45,3 +45,11 @@ scripts/mirror-backup-*.json
 
 # outreach send/suppression logs (contain contact emails)
 scripts/data/
+
+# Generated social media (reproducible from scripts + DB; published copies live on Vercel Blob).
+# Every regeneration rewrites every card, and git keeps each version forever — tracking them
+# put .git at 514 MB. The deck HTML, calendar.csv and the ledger are the reviewable artefacts.
+content/social/posts/*.png
+content/social/video/*.mp4
+content/social/video/masters/*.mp4
+content/social/launch-kit/**/*.png

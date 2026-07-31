@@ -187,22 +187,31 @@ const GRAIN_CSS = `
 `
 
 /**
- * The mark alternates instead of stamping every card.
+ * No card carries the mark at the top.
  *
- * Scrolled as a profile grid, an identical logo in an identical corner on every tile reads as a
- * template. Every other card carries it; the rest are signed by the url line alone, which is
- * already on every card. Keyed to the post's position in the calendar so the alternation is
- * stable across rebuilds rather than shuffling when the deck is regenerated.
+ * It used to alternate — every other card stamped the logo in the top-left corner — but scrolled
+ * as a profile grid that still reads as a repeating watermark sitting on top of the photograph.
+ * Every card already signs itself with the url line at the bottom, and the week card keeps the
+ * mark in its footer bar, which is where a signature belongs.
  */
-const markFor = (slot) =>
-  slot % 2 === 0 ? `<img class="mark" src="${esc(mark())}">` : ""
 
 
-/** Photo card with the purple wash and a bottom-anchored block — the spotlight/place shape. */
-function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gold)", slot = 0, size = "ig" }) {
+/**
+ * Photo card with a bottom-anchored block — the spotlight/place/weekend shape.
+ *
+ * The wash differs by series. Three series sharing one template meant three of every four cards
+ * in the grid were the same purple-bottomed photograph, and a feed of those reads as one post
+ * repeated. Same structure, different field: the layout stays recognisable, the tile doesn't.
+ */
+const WASH = {
+  purple: "rgba(101,12,117,.93)",
+  green: "rgba(11,153,47,.92)",
+  ink: "rgba(24,14,28,.94)",
+}
+function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gold)", wash = "purple", slot = 0, size = "ig" }) {
   const bg = photo
     ? `<img class="shot" src="${esc(photo)}">
-       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(36,22,41,.34) 0%, rgba(36,22,41,.18) 32%, rgba(101,12,117,.93) 100%);"></div>`
+       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(36,22,41,.34) 0%, rgba(36,22,41,.18) 32%, ${WASH[wash] || WASH.purple} 100%);"></div>`
     : `<div style="position:absolute; inset:0; background:linear-gradient(175deg, #1b0a20 0%, #4a0857 45%, #650C75 100%);"></div>
        <div style="position:absolute; inset:0; background:radial-gradient(circle at 72% 24%, rgba(239,198,24,.28) 0%, rgba(239,198,24,0) 42%);"></div>`
   // Long names need to shrink or they overrun the card.
@@ -210,12 +219,12 @@ function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gol
   const c = ctaFor(cta)
   // Content is bottom-anchored, so the taller 9:16 frame only needs more breathing room above
   // it — the type scale that works at 1350 still works at 1920.
+  void slot
   const pad = size === "tt" ? "150px 84px 190px" : "86px 84px 96px"
   return `
 <div class="card ${size} grain" id="${id}">
   ${bg}
-  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:${pad};">
-    ${markFor(slot)}
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:${pad};">
     <div>
       <div class="serif" style="color:var(--gold); font-size:54px; line-height:1.2;">${esc(eyebrow)}</div>
       <div style="color:#fff; font-size:${titleSize}px; font-weight:800; line-height:1.04; margin-top:14px;">${esc(title)}</div>
@@ -226,14 +235,16 @@ function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gol
 </div>`
 }
 
+// The launch card signs itself with the url line at the bottom, not a mark at the top: the rocket
+// and the purple field are already unmistakably ours, and a logo above them just crowds the frame.
 function launchCard(id, { name, when, slot = 0, size = "ig" }) {
+  void slot
   const pad = size === "tt" ? "150px 84px 190px" : "86px 84px 96px"
   return `
 <div class="card ${size} grain" id="${id}">
   <div style="position:absolute; inset:0; background:linear-gradient(175deg, #1b0a20 0%, #4a0857 45%, #650C75 100%);"></div>
   <div style="position:absolute; inset:0; background:radial-gradient(circle at 72% 24%, rgba(239,198,24,.30) 0%, rgba(239,198,24,0) 42%);"></div>
-  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:${pad};">
-    ${markFor(slot)}
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:${pad};">
     <div>
       <div style="font-size:150px; line-height:1;">🚀</div>
       <div class="serif" style="color:var(--gold); font-size:54px; margin-top:34px;">${esc(when)} — over our valley,</div>
@@ -303,8 +314,7 @@ function weekCard(id, { events: all, more, size = "ig" }) {
   </div>
   <div style="padding:30px 78px 0;">${rows}</div>
   <div class="footbar" style="height:${size === "tt" ? 180 : 130}px;">
-    <img src="${esc(mark())}" style="height:${size === "tt" ? 78 : 66}px;">
-    <div style="text-align:right;">
+    <div style="text-align:left;">
       ${more ? `<div style="color:#f3e6f6; font-size:26px; font-weight:600;">+${more} more on the calendar</div>` : ""}
       <div class="u">lompoclocals.com</div>
     </div>
@@ -449,6 +459,7 @@ async function main() {
           size,
           slot,
           photo,
+          wash: "green",
           eyebrow: "worth the stop —",
           title: a.title.replace(/\s+/g, " ").trim(),
           meta: [nameSuffix(a.title, a.address).replace(/^ — /, ""), tip].filter(Boolean).map(esc).join("<br>"),
@@ -485,6 +496,7 @@ async function main() {
           size,
           slot,
           photo,
+          wash: "ink",
           eyebrow: "this weekend —",
           title: a.title.replace(/\s+/g, " ").trim(),
           meta: [nameSuffix(a.title, a.address).replace(/^ — /, ""), season].filter(Boolean).map(esc).join("<br>"),

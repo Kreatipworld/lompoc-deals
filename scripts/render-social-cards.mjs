@@ -48,6 +48,8 @@ const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "social-cards-"))
 
 console.log(`Rendering ${cards.length} cards from ${SRC} → ${OUT}/\n`)
 
+const failed = []
+
 for (const { id, size } of cards) {
   const [w, h] = size
   // Isolate one card: hide the rest, strip page chrome so the card fills the viewport.
@@ -64,25 +66,49 @@ for (const { id, size } of cards) {
   fs.writeFileSync(tmpFile, isolated)
 
   const outFile = path.join(OUT, `${id}.png`)
-  execFileSync(
-    CHROME,
-    [
-      "--headless=new",
-      "--disable-gpu",
-      "--hide-scrollbars",
-      "--force-device-scale-factor=1",
-      "--default-background-color=00000000",
-      "--virtual-time-budget=6000", // let webfonts + images settle
-      `--window-size=${w},${h}`,
-      `--screenshot=${outFile}`,
-      `file://${tmpFile}`,
-    ],
-    { stdio: "ignore" }
-  )
+  const shoot = () =>
+    execFileSync(
+      CHROME,
+      [
+        "--headless=new",
+        "--disable-gpu",
+        "--hide-scrollbars",
+        "--force-device-scale-factor=1",
+        "--default-background-color=00000000",
+        "--virtual-time-budget=6000", // let webfonts + images settle
+        `--window-size=${w},${h}`,
+        `--screenshot=${outFile}`,
+        `file://${tmpFile}`,
+      ],
+      // Without a timeout one wedged Chrome stops the whole deck: a 72-card run sat for three
+      // hours on card 41 with the process still alive and nothing being written. The virtual
+      // time budget is 6s, so a render that hasn't finished in 90 is not going to.
+      { stdio: "ignore", timeout: 90_000, killSignal: "SIGKILL" }
+    )
+
+  try {
+    shoot()
+  } catch {
+    // One retry: the hang is intermittent rather than a property of the card — the same card
+    // renders fine on a second run — so a retry costs 10s and usually saves the image.
+    try {
+      shoot()
+    } catch {
+      failed.push(id)
+      console.log(`  ! ${id}.png  timed out twice, skipped`)
+      continue
+    }
+  }
 
   const kb = Math.round(fs.statSync(outFile).size / 1024)
   console.log(`  ✓ ${id}.png  ${w}×${h}  ${kb}kb`)
 }
 
 fs.rmSync(tmpDir, { recursive: true, force: true })
+
+if (failed.length) {
+  console.log(`\n${failed.length} card(s) did not render:`)
+  for (const id of failed) console.log(`  ! ${id}`)
+  console.log(`Re-run to retry just these; every other card is already written.`)
+}
 console.log(`\nDone. ${cards.length} PNGs in ${OUT}/`)
