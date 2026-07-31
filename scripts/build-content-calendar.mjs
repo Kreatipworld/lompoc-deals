@@ -26,7 +26,7 @@ import {
   launchOpener,
   opener,
   seriesOpener,
-  street,
+  nameSuffix,
 } from "./lib/voice.mjs"
 
 const WEEKS = Number(process.argv[2] || 4)
@@ -160,7 +160,7 @@ async function main() {
         const tip = (a.tips || "").split(". ")[0]
         text =
           `${seriesOpener("place")}\n\n` +
-          `${a.title}${street(a.address) ? ` — ${street(a.address)}` : ""}\n` +
+          `${a.title}${nameSuffix(a.title, a.address)}\n` +
           `${tip ? tip.replace(/\.$/, "") + ".\n" : ""}\n` +
           `Photos, tips and directions:\nlompoclocals.com/activities/${a.slug}\n\n` +
           `${a.category === "food-wine" ? TAGS.wine : TAGS.outdoors}`
@@ -190,8 +190,8 @@ async function main() {
         }
         if (!b) continue
         text =
-          `${opener({ address: b.address, category: b.category })}\n\n` +
-          `${b.name}${street(b.address) ? ` — ${street(b.address)}` : " — Lompoc"}\n` +
+          `${opener({ address: b.address, slug: b.slug })}\n\n` +
+          `${b.name}${nameSuffix(b.name, b.address) || " — Lompoc"}\n` +
           `${detail}\n\n` +
           `${cta(b.category, { hasHours: b.has_hours })}:\n` +
           `lompoclocals.com/biz/${b.slug}\n\n` +
@@ -218,7 +218,7 @@ async function main() {
             `Best vantage points: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Face southwest.\n\n` +
             `Every launch on the calendar:\nlompoclocals.com/events\n\n${TAGS.space}`
           : `${seriesOpener("weekend")}\n\n` +
-            `${a.title}${street(a.address) ? ` — ${street(a.address)}` : ""}\n` +
+            `${a.title}${nameSuffix(a.title, a.address)}\n` +
             `${(a.seasonality || "Open year-round").replace(/^./, (c) => c.toUpperCase())}.\n\n` +
             `Photos, tips and directions:\nlompoclocals.com/activities/${a.slug}\n\n${TAGS.outdoors}`
         link = nextLaunch ? `${SITE}/en/events` : `${SITE}/en/activities/${a.slug}`

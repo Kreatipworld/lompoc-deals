@@ -21,6 +21,13 @@ const NEIGHBOURHOODS = [
   { test: /Central Ave/i, key: "central" },
   { test: /Chestnut Ave/i, key: "east" },
   { test: /Constellation|Burton Mesa|Vandenberg Village|Mission Hills/i, key: "village" },
+  // Lompoc is a lettered grid. Anything on another letter street or a named town avenue is still
+  // central Lompoc — without this bucket most addresses fell through to a category opener, and a
+  // wrong category then produced a wrong claim (a plumber told to worry about car noise).
+  {
+    test: /\b(N|S|North|South)?\s?[A-G] St\b|\b(Walnut|College|Pine|Olive|Laurel|Maple|Locust|Cherry|Lupine)\s+(Ave|St)/i,
+    key: "grid",
+  },
 ]
 
 const NEIGHBOURHOOD_OPENERS = {
@@ -29,23 +36,33 @@ const NEIGHBOURHOOD_OPENERS = {
   central: "Out on Central, between the errands.",
   east: "Out east, where the valley's wine actually gets made.",
   village: "Village side.",
+  grid: "A few blocks off the main drag.",
+}
+
+/**
+ * Openers for businesses whose address doesn't place them.
+ *
+ * Deliberately category-free. The category column is unreliable — it files a tattoo studio under
+ * "Retail" and a plumbing contractor under "Auto" — and a category-flavoured opener turns that
+ * data error into a claim the post gets wrong in public. These say something true of any business.
+ */
+const NEUTRAL_OPENERS = [
+  "One for the list.",
+  "Filed under: good to know.",
+  "Worth knowing about.",
+  "Adding this one to the record.",
+  "Here's one that's been here a while.",
+]
+
+/** Stable pick, so the same business always gets the same opener across rebuilds. */
+function neutralOpener(seed = "") {
+  let h = 0
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
+  return NEUTRAL_OPENERS[h % NEUTRAL_OPENERS.length]
 }
 
 /* ---------- categories ---------- */
 
-const CATEGORY_OPENERS = {
-  "Food & Drink": "One more for the rotation.",
-  Retail: "Worth a look next time you're by.",
-  Services: "The number you want saved before you need it.",
-  Wineries: "Made in the valley, poured in the valley.",
-  "Health & Beauty": "Book it local.",
-  Auto: "For when the car starts making that noise.",
-  // Covers a golf course as well as a venue, so it can't promise a night out for a tee time.
-  Entertainment: "Something to actually do.",
-  "Real Estate": "For when the plan changes.",
-  Dispensaries: "Open, legal, and in town.",
-}
-const CATEGORY_OPENER_FALLBACK = "Filed under: good to know."
 
 // What the page actually has, stated plainly. Never a command.
 const CATEGORY_CTA = {
@@ -101,15 +118,15 @@ export function neighbourhood(address) {
 }
 
 /**
- * The warm line. Neighbourhood wins over category, because where a place sits says more to a
- * resident than what bucket it's filed under — and the category field is unreliable (the DB has
- * a tattoo studio under "Retail").
+ * The warm line. Where a place sits, never what bucket it's filed under: the category column is
+ * unreliable enough that a category-flavoured opener once told a plumbing contractor's audience
+ * to worry about car noise. Unplaced addresses get a neutral line instead.
  */
-export function opener({ address, category }) {
+export function opener({ address, slug }) {
   if (!street(address)) return NO_STOREFRONT_OPENER
   const n = neighbourhood(address)
   if (n && NEIGHBOURHOOD_OPENERS[n]) return NEIGHBOURHOOD_OPENERS[n]
-  return CATEGORY_OPENERS[category] || CATEGORY_OPENER_FALLBACK
+  return neutralOpener(slug || street(address))
 }
 
 export const seriesOpener = (key) => SERIES_OPENERS[key] || ""
@@ -124,6 +141,7 @@ const NEIGHBOURHOOD_LABELS = {
   central: "on Central Ave —",
   east: "east side of Lompoc —",
   village: "in Vandenberg Village —",
+  grid: "in Lompoc —",
 }
 export function neighbourhoodLabel(address) {
   if (!street(address)) return "serving Lompoc —"
@@ -135,6 +153,25 @@ export const streetLine = (addr) =>
   street(addr)
     .replace(/[,\s]+(?:STE\.?|Suite|Unit|#)\s*[\w-]+$/i, "")
     .trim()
+
+/**
+ * The " — street" suffix after a name, or nothing.
+ *
+ * Suppressed when the street just restates the name: several parks have an address whose first
+ * line is the park itself, which produced "Ryon Park — Ryon Memorial Park".
+ */
+export function nameSuffix(title, address) {
+  const s = streetLine(address)
+  if (!s) return ""
+  const norm = (v) => v.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
+  const a = norm(title)
+  const b = norm(s)
+  if (!b || a === b) return ""
+  const shorter = a.length <= b.length ? a : b
+  const longer = a.length <= b.length ? b : a
+  if (shorter.length > 3 && longer.includes(shorter)) return ""
+  return ` — ${s}`
+}
 
 export const launchOpener = (date) =>
   `Look up ${date.toLocaleDateString("en-US", { weekday: "long" })} night. 🚀`

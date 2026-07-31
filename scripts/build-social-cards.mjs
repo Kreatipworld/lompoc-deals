@@ -23,7 +23,7 @@
 import { neon } from "@neondatabase/serverless"
 import fs from "node:fs"
 import path from "node:path"
-import { neighbourhoodLabel, streetLine } from "./lib/voice.mjs"
+import { nameSuffix, neighbourhoodLabel, streetLine } from "./lib/voice.mjs"
 
 const CSV = process.argv[2]?.endsWith(".csv") ? process.argv[2] : "content/social/calendar.csv"
 const WRITE_CSV = process.argv.includes("--write-csv")
@@ -374,7 +374,7 @@ async function main() {
           photo,
           eyebrow: "worth the stop —",
           title: a.title.replace(/\s+/g, " ").trim(),
-          meta: [street(a.address), tip].filter(Boolean).map(esc).join("<br>"),
+          meta: [nameSuffix(a.title, a.address).replace(/^ — /, ""), tip].filter(Boolean).map(esc).join("<br>"),
           cta: `lompoclocals.com/activities/${slug}`,
         })
       )
@@ -408,7 +408,7 @@ async function main() {
           photo,
           eyebrow: "this weekend —",
           title: a.title.replace(/\s+/g, " ").trim(),
-          meta: [street(a.address), season].filter(Boolean).map(esc).join("<br>"),
+          meta: [nameSuffix(a.title, a.address).replace(/^ — /, ""), season].filter(Boolean).map(esc).join("<br>"),
           cta: `lompoclocals.com/activities/${slug}`,
         })
       )
