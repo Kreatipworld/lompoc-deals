@@ -23,7 +23,7 @@
 import { neon } from "@neondatabase/serverless"
 import fs from "node:fs"
 import path from "node:path"
-import { nameSuffix, neighbourhoodLabel, streetLine } from "./lib/voice.mjs"
+import { launchCardVoice, launchWeek, nameSuffix, neighbourhoodLabel, streetLine } from "./lib/voice.mjs"
 
 const CSV = process.argv[2]?.endsWith(".csv") ? process.argv[2] : "content/social/calendar.csv"
 const WRITE_CSV = process.argv.includes("--write-csv")
@@ -235,23 +235,68 @@ function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gol
 </div>`
 }
 
-// The launch card signs itself with the url line at the bottom, not a mark at the top: the rocket
-// and the purple field are already unmistakably ours, and a logo above them just crowds the frame.
-function launchCard(id, { name, when, slot = 0, size = "ig" }) {
+/**
+ * Backdrops for the launch card: real night launches from the pad the post names.
+ *
+ * The card used to be a flat purple gradient with a 150px rocket emoji on it, which is a drawing
+ * of the thing rather than the thing. What a resident actually sees is a plume climbing out of
+ * the dark hills to the southwest, and these are photographs of exactly that, from SLC-4E.
+ *
+ * Both are U.S. Space Force work and therefore public domain — see
+ * content/social/assets/LAUNCH-PHOTO-CREDIT.md for source, photographer and licence. Nothing
+ * under a licence that wants attribution printed on the image belongs here: the card has nowhere
+ * to print it.
+ *
+ * `focus` is where the bright part of the plume sits vertically in the frame. The card lifts the
+ * photo so that point lands in the top third, clear of the type block — otherwise the headline
+ * lands on the one blazing-white area of the picture.
+ */
+const LAUNCH_PHOTOS = [
+  { file: "content/social/assets/launch-night-vandenberg-a.jpg", focus: 0.5 },
+  { file: "content/social/assets/launch-night-vandenberg-b.jpg", focus: 0.52 },
+]
+
+/**
+ * The launch card: a night launch, a scrim, and the wayfinding.
+ *
+ * Signs itself with the url line at the bottom, not a mark at the top — the photograph is doing
+ * the work up there.
+ *
+ * Words and picture both turn over weekly (see launchCardVoice), because this series fires most
+ * weeks and two identical cards next to each other in a profile grid read as one post posted
+ * twice. The layout stays put; the field and the opener don't.
+ */
+function launchCard(id, { name, when, date, slot = 0, size = "ig" }) {
   void slot
+  const cardH = size === "tt" ? 1920 : 1350
+  const photo = LAUNCH_PHOTOS[Math.abs(launchWeek(date)) % LAUNCH_PHOTOS.length]
+  const { eyebrow, headline, look } = launchCardVoice(date, when)
+  // 4:5 needs the tighter zoom: at natural cover the plume sits dead centre, which is where the
+  // headline goes. 9:16 has the height to spare and barely needs lifting.
+  const zoom = size === "tt" ? 1.12 : 1.38
+  const imgH = Math.round(cardH * zoom)
+  const target = size === "tt" ? 0.3 : 0.33
+  // Clamped so the lift can never pull the photo off an edge and expose the card background.
+  const top = Math.min(0, Math.max(cardH - imgH, Math.round(target * cardH - photo.focus * imgH)))
+  const src = `file://${path.join(REPO, photo.file)}`
   const pad = size === "tt" ? "150px 84px 190px" : "86px 84px 96px"
   return `
-<div class="card ${size} grain" id="${id}">
-  <div style="position:absolute; inset:0; background:linear-gradient(175deg, #1b0a20 0%, #4a0857 45%, #650C75 100%);"></div>
-  <div style="position:absolute; inset:0; background:radial-gradient(circle at 72% 24%, rgba(239,198,24,.30) 0%, rgba(239,198,24,0) 42%);"></div>
+<div class="card ${size} grain" id="${id}" style="background:#0c0410;">
+  <img src="${esc(src)}" style="position:absolute; left:0; width:100%; top:${top}px; height:${imgH}px; object-fit:cover; object-position:center;">
+  <!-- The plume is the brightest thing on any of these frames and the eyebrow crosses it, so the
+       scrim ramps hard between 38% and 56% rather than tinting evenly: gold on white-hot smoke is
+       the one place this card can go illegible. -->
+  <div style="position:absolute; inset:0; background:linear-gradient(180deg,
+    rgba(12,4,16,.58) 0%, rgba(12,4,16,.12) 16%, rgba(16,5,21,.34) 32%, rgba(18,6,24,.66) 42%,
+    rgba(20,6,26,.88) 52%, rgba(23,7,29,.95) 66%, rgba(26,8,32,.97) 100%);"></div>
+  <div style="position:absolute; inset:0; background:radial-gradient(ellipse at 50% ${size === "tt" ? 26 : 28}%, rgba(239,198,24,.18) 0%, rgba(239,198,24,0) 46%);"></div>
   <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:${pad};">
     <div>
-      <div style="font-size:150px; line-height:1;">🚀</div>
-      <div class="serif" style="color:var(--gold); font-size:54px; margin-top:34px;">${esc(when)} — over our valley,</div>
-      <div style="color:#fff; font-size:122px; font-weight:800; line-height:1.02; margin-top:14px;">There's a<br>launch.</div>
-      <div style="color:#f3e6f6; font-size:${name.length > 34 ? 40 : 46}px; font-weight:500; margin-top:36px; line-height:1.35;">${esc(name)}<br>Vandenberg Space Force Base</div>
-      <div style="margin-top:44px; display:inline-block; border:3px solid var(--gold); border-radius:999px; padding:20px 40px; color:var(--gold); font-size:38px; font-weight:800;">Look southwest 👀</div>
-      <div class="url" style="color:#fff; font-size:38px; margin-top:52px; opacity:.9;">every launch on lompoclocals.com</div>
+      <div class="serif" style="color:var(--gold); font-size:54px; line-height:1.2; text-shadow:0 2px 26px rgba(0,0,0,.75);">${esc(eyebrow)}</div>
+      <div style="color:#fff; font-size:118px; font-weight:800; line-height:1.02; margin-top:14px; text-shadow:0 4px 40px rgba(0,0,0,.55);">${headline.map(esc).join("<br>")}</div>
+      <div style="color:#efe3f2; font-size:${name.length > 34 ? 40 : 46}px; font-weight:500; margin-top:34px; line-height:1.35;">${esc(name)}<br>Vandenberg Space Force Base</div>
+      <div style="margin-top:42px; display:inline-block; border:3px solid var(--gold); border-radius:999px; padding:20px 40px; color:var(--gold); font-size:38px; font-weight:800; background:rgba(26,8,32,.5);">${esc(look)}</div>
+      <div class="url" style="color:#fff; font-size:38px; margin-top:50px; opacity:.9;">every launch on lompoclocals.com</div>
     </div>
   </div>
 </div>`
@@ -477,7 +522,9 @@ async function main() {
       if (m) {
         const cardId = `${r.date}-upcoming-launch`
         for (const size of SIZES)
-          cards.push(launchCard(`${cardId}-${size}`, { size, slot, name: m[1].trim(), when: m[2].replace(/,/, " ·") }))
+          cards.push(
+            launchCard(`${cardId}-${size}`, { size, slot, date: r.date, name: m[1].trim(), when: m[2].replace(/,/, " ·") })
+          )
         setMedia(r, cardId)
         continue
       }

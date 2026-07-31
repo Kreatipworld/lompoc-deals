@@ -268,6 +268,42 @@ export function nameSuffix(title, address) {
 export const launchOpener = (date) =>
   `Look up ${date.toLocaleDateString("en-US", { weekday: "long" })} night. 🚀`
 
+/* ---------- launch cards ---------- */
+
+/**
+ * Launches are the one series that fires most weeks, so two of its cards land side by side in a
+ * profile grid more often than any other. The first cut wrote one card — same eyebrow, same
+ * "There's a launch.", same pill — and a scrolled grid read it as the same post twice.
+ *
+ * So the card's three written lines come from a bank instead. Nothing here asserts a time of day
+ * or a time of night: the launch time we publish comes from the events table and the card doesn't
+ * repeat it, so a line like "tonight" would eventually run over a morning launch.
+ *
+ * Every variant keeps "southwest" — the wayfinding is the genuinely useful part for a resident
+ * and it's true of every Vandenberg launch seen from town.
+ */
+const LAUNCH_CARD_LINES = [
+  { eyebrow: (when) => `${when} — over our valley,`, headline: ["There's a", "launch."], look: "Look southwest 👀" },
+  { eyebrow: (when) => `${when} — out at Vandenberg,`, headline: ["Something's", "going up."], look: "Face southwest 👀" },
+  { eyebrow: (when) => `${when} — from the base,`, headline: ["Eyes on", "the sky."], look: "Southwest, over the hills 👀" },
+  { eyebrow: (when) => `${when} — over the valley,`, headline: ["Another", "one up."], look: "Look southwest 👀" },
+]
+
+/**
+ * Which week of the epoch a date falls in.
+ *
+ * Launch posts sit a week apart, so a week counter is what makes consecutive cards differ —
+ * a hash of the date would be stable but could hand two neighbouring weeks the same slot.
+ * Shared with the photo bank so the picture turns over on the same beat as the words.
+ */
+export const launchWeek = (date) => Math.floor(Date.parse(`${date}T00:00:00Z`) / 604_800_000)
+
+/** The written lines for one launch card. `when` is the pre-formatted day, e.g. "Fri · Jul 31". */
+export function launchCardVoice(date, when) {
+  const v = LAUNCH_CARD_LINES[Math.abs(launchWeek(date)) % LAUNCH_CARD_LINES.length]
+  return { eyebrow: v.eyebrow(when), headline: v.headline, look: v.look }
+}
+
 /** What's on the page. Drops "hours" when we don't actually have them. */
 export function cta(category, { hasHours = true } = {}) {
   let label = CATEGORY_CTA[category] || CATEGORY_CTA_FALLBACK

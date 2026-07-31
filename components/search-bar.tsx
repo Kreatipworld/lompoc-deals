@@ -4,6 +4,7 @@ import { useRouter } from "@/i18n/navigation"
 import { Search, Building2, Tag, LayoutGrid } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import { useEffect, useRef, useState, useCallback } from "react"
+import { createPortal } from "react-dom"
 import { useTranslations } from "next-intl"
 
 // Example queries that cycle through the typewriter animation
@@ -90,6 +91,8 @@ export function SearchBar({
   const isLarge = size === "lg"
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   const [value, setValue] = useState(defaultValue)
   const [focused, setFocused] = useState(false)
@@ -98,6 +101,18 @@ export function SearchBar({
   const [loading, setLoading] = useState(false)
   const [activeIdx, setActiveIdx] = useState(-1)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  /**
+   * Where to paint the suggestions, in viewport coordinates.
+   *
+   * The panel is portalled to <body> rather than positioned inside this component, so it has to
+   * carry its own anchor. See the portal note below for why it can't just be an absolute child.
+   */
+  const [anchor, setAnchor] = useState<
+    { left: number; top: number; bottom: number; width: number; height: number } | null
+  >(null)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   // Load popular categories once, for the idle "Discover" state.
   const fetchPopular = useCallback(async () => {
@@ -176,12 +191,16 @@ export function SearchBar({
     onNavigate?.()
   }
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click. The panel is portalled out of this subtree, so a click
+  // inside it is not inside containerRef — both have to count as "inside" or picking a
+  // suggestion would dismiss the panel before the click landed.
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setResults(null)
-      }
+      const target = e.target as Node
+      if (containerRef.current?.contains(target)) return
+      if (panelRef.current?.contains(target)) return
+      setResults(null)
+      setFocused(false)
     }
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
@@ -237,21 +256,88 @@ export function SearchBar({
 
   const panelOpen = showDropdown || showDiscover
 
+  // Keep the portalled panel glued to the input through scrolls and resizes. Measured from the
+  // form so the panel is exactly as wide as the field it belongs to.
+  useEffect(() => {
+    if (!panelOpen) return
+    const measure = () => {
+      const r = formRef.current?.getBoundingClientRect()
+      if (r) setAnchor({ left: r.left, top: r.top, bottom: r.bottom, width: r.width, height: r.height })
+    }
+    measure()
+    window.addEventListener("scroll", measure, true)
+    window.addEventListener("resize", measure)
+    return () => {
+      window.removeEventListener("scroll", measure, true)
+      window.removeEventListener("resize", measure)
+    }
+  }, [panelOpen])
+
+  /**
+   * The suggestions live on <body>, not inside this component.
+   *
+   * As an absolutely-positioned child they were painted inside the hero's subtree, and the
+   * partner cards further down the page are themselves positioned elements — so they came later
+   * in DOM order and drew straight over the panel, whatever z-index it carried. Raising the
+   * number only moves the problem to the next positioned thing somebody adds below the fold.
+   * A portal takes the panel out of that contest entirely, and also means no ancestor's
+   * `overflow: hidden` or `transform` can ever clip it.
+   */
+  const portal = (node: React.ReactNode) =>
+    mounted && anchor
+      ? createPortal(
+          <div
+            ref={panelRef}
+            style={{ position: "fixed", left: anchor.left, top: anchor.bottom, width: anchor.width, zIndex: 100 }}
+          >
+            {node}
+          </div>,
+          document.body
+        )
+      : null
+
+  const panelShell =
+    "max-h-[min(70vh,32rem)] overflow-y-auto rounded-b-2xl border border-t-0 border-border bg-background shadow-xl " +
+    "motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-top-1 motion-safe:duration-150"
+
+  // The field sits above the portalled scrim (99) so it stays lit and clickable while the rest of
+  // the page dims; the panel sits at 100, just under it, and the two never overlap.
   return (
-    <div ref={containerRef} className={`relative w-full ${scrim && panelOpen ? "z-50" : ""}`}>
-      {/* Focus scrim — dims the page behind the suggestions. Lives inside the
-          z-50 container so the input + panel paint above it. */}
-      {scrim && panelOpen && (
-        <div
-          aria-hidden
-          className="fixed inset-0 -z-10 bg-black/30"
-          onMouseDown={() => {
-            setResults(null)
-            setFocused(false)
-          }}
-        />
-      )}
-      <form onSubmit={handleSubmit} className="relative w-full">
+    <div ref={containerRef} className={`relative w-full ${panelOpen ? "z-[101]" : ""}`}>
+      {/* Focus scrim — dims the page behind the suggestions. Portalled alongside the panel and
+          sat just under it, so it covers the whole page rather than only this component's
+          stacking context. */}
+      {scrim &&
+        panelOpen &&
+        mounted &&
+        anchor &&
+        createPortal(
+          <div
+            aria-hidden
+            className="fixed motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-150"
+            /**
+             * A scrim with a hole cut out for the field.
+             *
+             * A plain `inset-0` overlay dimmed the search box along with the page: the field can't
+             * out-stack it, because the hero it sits in makes its own stacking context, so no
+             * z-index on the input escapes. Instead this element *is* the field's footprint, and
+             * an enormous shadow spread paints the dim everywhere except here — so the box stays
+             * lit, the panel below it stays lit, and everything else recedes.
+             */
+            style={{
+              zIndex: 99,
+              left: anchor.left,
+              top: anchor.top,
+              width: anchor.width,
+              height: anchor.height,
+              borderRadius: "9999px 9999px 0 0",
+              boxShadow: "0 0 0 9999px rgba(0,0,0,0.34)",
+              pointerEvents: "none",
+            }}
+          />,
+          document.body
+        )}
+      <form ref={formRef} onSubmit={handleSubmit} className="relative w-full">
         <Search
           className={`pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground ${
             isLarge ? "h-5 w-5" : "h-4 w-4"
@@ -292,8 +378,8 @@ export function SearchBar({
       </form>
 
       {/* Autocomplete Dropdown */}
-      {showDropdown && (
-        <div className="absolute left-0 right-0 z-50 max-h-[min(70vh,32rem)] overflow-y-auto rounded-b-2xl border border-t-0 border-border bg-background shadow-xl">
+      {showDropdown && portal(
+        <div className={panelShell} role="listbox" aria-label={t("businesses")}>
           {results!.categories.length > 0 && (
             <div>
               <div className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -417,8 +503,8 @@ export function SearchBar({
       )}
 
       {/* Idle "Discover" panel — popular categories before anything is typed */}
-      {showDiscover && (
-        <div className="absolute left-0 right-0 z-50 rounded-b-2xl border border-t-0 border-border bg-background shadow-xl overflow-hidden">
+      {showDiscover && portal(
+        <div className={`${panelShell} overflow-hidden`}>
           <div className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             {t("discover")}
           </div>
