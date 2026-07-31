@@ -131,6 +131,9 @@ fs.writeFileSync(OUT, JSON.stringify(queue, null, 2) + "\n")
 console.log(`\n${queue.length} post(s) → ${OUT}`)
 console.log(`  ${uploaded.size} file(s) uploaded to Blob`)
 if (skippedPast) console.log(`  ${skippedPast} post(s) skipped — their slot time has already passed`)
-const missing = queueRows.length - queue.length
+// Count against the channel fan-out, not the row count: every row becomes one entry per channel,
+// so comparing 20 rows to 40 entries reported "-20 dropped" on a run where nothing was dropped.
+const expected = queueRows.reduce((sum, r) => sum + r.channels.split(",").filter(Boolean).length, 0)
+const missing = expected - queue.length
 if (missing) console.log(`  ${missing} post(s) dropped — no uploadable media`)
 console.log(`  ${queue.length} Buffer posts (${queue.filter((q) => q.shape === "9:16").length} at 9:16, ${queue.filter((q) => q.shape === "4:5").length} at 4:5)`)
