@@ -74,40 +74,56 @@ const future = rows.filter((r) => {
 const skippedPast = rows.length - future.length
 const queueRows = LIMIT ? future.slice(0, LIMIT) : future
 
+// TikTok is full-screen, so it takes the 9:16 cut; feed placements take 4:5.
+const VERTICAL = new Set(["tiktok"])
+const assetFor = (row, channel) =>
+  VERTICAL.has(channel) && row.media_vertical ? row.media_vertical : row.media
+
 // Upload each distinct file once, even when several posts share a video.
 const uploaded = new Map()
-for (const r of queueRows) {
-  if (!r.media || uploaded.has(r.media)) continue
-  if (!fs.existsSync(r.media)) {
-    console.error(`  ! missing ${r.media}`)
+const wanted = new Set()
+for (const r of queueRows) for (const ch of r.channels.split(",").filter(Boolean)) wanted.add(assetFor(r, ch))
+
+for (const file of wanted) {
+  if (!file || uploaded.has(file)) continue
+  if (!fs.existsSync(file)) {
+    console.error(`  ! missing ${file}`)
     continue
   }
-  const ext = path.extname(r.media).toLowerCase()
-  const key = `social/${path.basename(r.media)}`
-  const res = await put(key, fs.readFileSync(r.media), {
+  const ext = path.extname(file).toLowerCase()
+  const res = await put(`social/${path.basename(file)}`, fs.readFileSync(file), {
     access: "public",
     token,
     addRandomSuffix: true,
     contentType: MIME[ext] || "application/octet-stream",
   })
-  uploaded.set(r.media, res.url)
-  const mb = (fs.statSync(r.media).size / 1048576).toFixed(1)
-  console.log(`  ✓ ${path.basename(r.media)}  ${mb} MB`)
+  uploaded.set(file, res.url)
+  console.log(`  ✓ ${path.basename(file).padEnd(42)} ${(fs.statSync(file).size / 1048576).toFixed(1)} MB`)
 }
 
+// One entry per channel: the asset differs by placement, so a post is no longer one thing.
 const queue = queueRows
-  .map((r) => ({
-    date: r.date,
-    time: r.time,
-    dueAt: dueAt(r.date, r.time),
-    series: r.series,
-    channels: r.channels.split(",").filter(Boolean),
-    text: r.text,
-    link: r.link,
-    media: r.media,
-    mediaUrl: uploaded.get(r.media) || null,
-    kind: /\.mp4$/i.test(r.media) ? "video" : "image",
-  }))
+  .flatMap((r) =>
+    r.channels
+      .split(",")
+      .filter(Boolean)
+      .map((channel) => {
+        const file = assetFor(r, channel)
+        return {
+          date: r.date,
+          time: r.time,
+          dueAt: dueAt(r.date, r.time),
+          series: r.series,
+          channel,
+          text: r.text,
+          link: r.link,
+          media: file,
+          mediaUrl: uploaded.get(file) || null,
+          kind: /\.mp4$/i.test(file) ? "video" : "image",
+          shape: VERTICAL.has(channel) ? "9:16" : "4:5",
+        }
+      })
+  )
   .filter((q) => q.mediaUrl)
 
 fs.writeFileSync(OUT, JSON.stringify(queue, null, 2) + "\n")
@@ -117,4 +133,4 @@ console.log(`  ${uploaded.size} file(s) uploaded to Blob`)
 if (skippedPast) console.log(`  ${skippedPast} post(s) skipped — their slot time has already passed`)
 const missing = queueRows.length - queue.length
 if (missing) console.log(`  ${missing} post(s) dropped — no uploadable media`)
-console.log(`  ${queue.reduce((n, q) => n + q.channels.length, 0)} Buffer posts if every channel is used`)
+console.log(`  ${queue.length} Buffer posts (${queue.filter((q) => q.shape === "9:16").length} at 9:16, ${queue.filter((q) => q.shape === "4:5").length} at 4:5)`)

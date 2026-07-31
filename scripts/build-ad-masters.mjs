@@ -15,7 +15,12 @@
  * throws away most of the picture — so it sits the full frame over a blurred fill of itself,
  * which is what every platform's own auto-reframe does.
  *
- * Usage: node scripts/build-ad-masters.mjs [srcMp4] [outDir]
+ * Output names derive from the source basename, so this can run over any cut without
+ * overwriting another one's variants.
+ *
+ * Usage:
+ *   node scripts/build-ad-masters.mjs [srcMp4] [outDir]
+ *   node scripts/build-ad-masters.mjs content/social/video/x.mp4 out --only=4x5
  */
 import fs from "node:fs"
 import path from "node:path"
@@ -23,7 +28,10 @@ import { spawn } from "node:child_process"
 import ffmpegPath from "ffmpeg-static"
 
 const SRC = process.argv[2] || "content/social/video/lompoc-locals-spot.mp4"
-const OUT = process.argv[3] || "content/social/video/masters"
+const OUT = process.argv[3]?.startsWith("--") ? "content/social/video/masters" : process.argv[3] || "content/social/video/masters"
+const ONLY = (process.argv.find((a) => a.startsWith("--only=")) || "").slice(7).split(",").filter(Boolean)
+// Variant filenames hang off the source name, not a hardcoded one.
+const STEM = path.basename(SRC, path.extname(SRC))
 
 function run(args) {
   return new Promise((resolve) => {
@@ -41,25 +49,29 @@ const AUDIO = ["-c:a", "aac", "-b:a", "192k", "-ar", "48000"]
 
 const TARGETS = [
   {
-    name: "lompoc-locals-spot-MASTER.mp4",
+    key: "MASTER",
+    name: `${STEM}-MASTER.mp4`,
     label: "master 1080x1920",
     vf: null,
     v: ["-c:v", "libx264", "-preset", "slower", "-crf", "16", "-pix_fmt", "yuv420p"],
   },
   {
-    name: "lompoc-locals-spot-9x16.mp4",
+    key: "9x16",
+    name: `${STEM}-9x16.mp4`,
     label: "9:16 reels/tiktok/shorts",
     vf: null,
     v: ["-c:v", "libx264", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p"],
   },
   {
-    name: "lompoc-locals-spot-4x5.mp4",
+    key: "4x5",
+    name: `${STEM}-4x5.mp4`,
     label: "4:5 ig/fb feed",
     vf: "crop=1080:1350:0:(ih-1350)/2",
     v: ["-c:v", "libx264", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p"],
   },
   {
-    name: "lompoc-locals-spot-1x1.mp4",
+    key: "1x1",
+    name: `${STEM}-1x1.mp4`,
     label: "1:1 square",
     // Not a centred crop: the end card's logo sits above frame centre, and a true centre
     // crop clips the gold dot off the top of the mark. 360 keeps the whole lockup and the
@@ -68,7 +80,8 @@ const TARGETS = [
     v: ["-c:v", "libx264", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p"],
   },
   {
-    name: "lompoc-locals-spot-16x9.mp4",
+    key: "16x9",
+    name: `${STEM}-16x9.mp4`,
     label: "16:9 youtube/web",
     // Blurred fill behind the untouched vertical frame — nothing is cropped away.
     vf:
@@ -87,7 +100,10 @@ async function main() {
   fs.mkdirSync(OUT, { recursive: true })
   console.log(`source: ${SRC}\n`)
 
-  for (const t of TARGETS) {
+  const targets = ONLY.length ? TARGETS.filter((t) => ONLY.includes(t.key)) : TARGETS
+  if (!targets.length) throw new Error(`--only matched nothing; keys are ${TARGETS.map((t) => t.key).join(", ")}`)
+
+  for (const t of targets) {
     const dest = path.join(OUT, t.name)
     const args = ["-y", "-i", SRC]
     if (t.complex) args.push("-filter_complex", t.vf)
@@ -105,8 +121,10 @@ async function main() {
     console.log(`  ✓ ${t.name.padEnd(34)} ${dim.padEnd(10)} ${mb.padStart(5)} MB   ${t.label}`)
   }
 
+  if (ONLY.length) return // a subset build is for one placement, not the whole delivery set
+
   // Poster: a frame from the opening title, which is the strongest single image in the cut.
-  const poster = path.join(OUT, "lompoc-locals-spot-poster.jpg")
+  const poster = path.join(OUT, `${STEM}-poster.jpg`)
   await run(["-y", "-ss", "1.6", "-i", SRC, "-frames:v", "1", "-q:v", "2", poster])
   console.log(`  ✓ ${path.basename(poster).padEnd(34)} 1080x1920  ${(fs.statSync(poster).size / 1e6).toFixed(1)} MB   poster frame`)
 }

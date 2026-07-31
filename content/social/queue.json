@@ -4,74 +4,129 @@
     "time": "16:00",
     "dueAt": "2026-07-31T16:00:00-07:00",
     "series": "Upcoming launch",
-    "channels": [
-      "instagram",
-      "tiktok"
-    ],
+    "channel": "instagram",
     "text": "Look up Friday night. 🚀\n\nFalcon 9 Block 5 — Starlink Group 17-52\nFri, Jul 31 · Vandenberg Space Force Base\n\nBest vantage points: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Face southwest.\n\nEvery launch on the calendar:\nlompoclocals.com/events\n\n#VandenbergSFB #RocketLaunch #Lompoc #CentralCoast #805",
     "link": "https://www.lompoclocals.com/en/events",
-    "media": "content/social/posts/2026-07-31-upcoming-launch.png",
-    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-07-31-upcoming-launch-aPnuq8DC9suY8Pcrh3opnHv6Kzlee2.png",
-    "kind": "image"
+    "media": "content/social/posts/2026-07-31-upcoming-launch-ig.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-07-31-upcoming-launch-ig-aW4yqz2VW9qhGm5L54yzDHGLFOKViD.png",
+    "kind": "image",
+    "shape": "4:5"
+  },
+  {
+    "date": "2026-07-31",
+    "time": "16:00",
+    "dueAt": "2026-07-31T16:00:00-07:00",
+    "series": "Upcoming launch",
+    "channel": "tiktok",
+    "text": "Look up Friday night. 🚀\n\nFalcon 9 Block 5 — Starlink Group 17-52\nFri, Jul 31 · Vandenberg Space Force Base\n\nBest vantage points: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Face southwest.\n\nEvery launch on the calendar:\nlompoclocals.com/events\n\n#VandenbergSFB #RocketLaunch #Lompoc #CentralCoast #805",
+    "link": "https://www.lompoclocals.com/en/events",
+    "media": "content/social/posts/2026-07-31-upcoming-launch-tt.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-07-31-upcoming-launch-tt-2ZPFWCNSGVr40hRltdNsWhnB8WSuRc.png",
+    "kind": "image",
+    "shape": "9:16"
   },
   {
     "date": "2026-08-02",
     "time": "11:00",
     "dueAt": "2026-08-02T11:00:00-07:00",
     "series": "Video",
-    "channels": [
-      "instagram",
-      "tiktok"
-    ],
+    "channel": "instagram",
+    "text": "All of Lompoc, in one place.\n\nEvery local business, every event, every launch over the base — and everywhere worth going.\n\nlompoclocals.com\n\n#Lompoc #LompocCA #CentralCoast #805",
+    "link": "https://www.lompoclocals.com",
+    "media": "content/social/video/masters/lompoc-locals-spot-4x5.mp4",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/lompoc-locals-spot-4x5-6u8VQgomWc7BX2Vdg23gEclZfeZiUQ.mp4",
+    "kind": "video",
+    "shape": "4:5"
+  },
+  {
+    "date": "2026-08-02",
+    "time": "11:00",
+    "dueAt": "2026-08-02T11:00:00-07:00",
+    "series": "Video",
+    "channel": "tiktok",
     "text": "All of Lompoc, in one place.\n\nEvery local business, every event, every launch over the base — and everywhere worth going.\n\nlompoclocals.com\n\n#Lompoc #LompocCA #CentralCoast #805",
     "link": "https://www.lompoclocals.com",
     "media": "content/social/video/lompoc-locals-spot.mp4",
-    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/lompoc-locals-spot-VhzUz5UaiVPI9mgllKgpuXAaLEoB7U.mp4",
-    "kind": "video"
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/lompoc-locals-spot-DK1AKgdAcztVQptk4hRbW4U3wc2spw.mp4",
+    "kind": "video",
+    "shape": "9:16"
   },
   {
     "date": "2026-08-03",
     "time": "08:30",
     "dueAt": "2026-08-03T08:30:00-07:00",
     "series": "The week ahead",
-    "channels": [
-      "instagram",
-      "tiktok"
-    ],
-    "text": "Here's the week, if you're making plans.\n\n🚀 Tue, Aug 4 — Falcon 9 Block 5 — Starlink Group 17-53\n🎨 Tue, Aug 4 — Pouring My Art Out\n🎨 Thu, Aug 6 — Lompoc Art Walk\n🛍️ Fri, Aug 7 — Old Town Market\n🚀 Sat, Aug 8 — Falcon 9 Block 5 — Starlink Group 17-38\n\nPlus 59 more on the calendar.\n\nThe full week:\nlompoclocals.com/events\n\n#Lompoc #LompocCA #CentralCoast #805",
+    "channel": "instagram",
+    "text": "Here's the week, if you're making plans.\n\n🎨 Mon, Aug 3 — Pouring My Art Out\n🚀 Tue, Aug 4 — Falcon 9 Block 5 — Starlink Group 17-53\n🎨 Thu, Aug 6 — Lompoc Art Walk\n🛍️ Fri, Aug 7 — Old Town Market\n🚀 Sat, Aug 8 — Falcon 9 Block 5 — Starlink Group 17-38\n\nPlus 59 more on the calendar.\n\nThe full week:\nlompoclocals.com/events\n\n#Lompoc #LompocCA #CentralCoast #805",
     "link": "https://www.lompoclocals.com/en/events",
-    "media": "content/social/posts/2026-08-03-this-week.png",
-    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-03-this-week-VVr49gcBacJ9xzYVizg9QRqYDtW9pZ.png",
-    "kind": "image"
+    "media": "content/social/posts/2026-08-03-this-week-ig.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-03-this-week-ig-s8p6SbB9ZTIad4hmW8FAozO89G4vkP.png",
+    "kind": "image",
+    "shape": "4:5"
+  },
+  {
+    "date": "2026-08-03",
+    "time": "08:30",
+    "dueAt": "2026-08-03T08:30:00-07:00",
+    "series": "The week ahead",
+    "channel": "tiktok",
+    "text": "Here's the week, if you're making plans.\n\n🎨 Mon, Aug 3 — Pouring My Art Out\n🚀 Tue, Aug 4 — Falcon 9 Block 5 — Starlink Group 17-53\n🎨 Thu, Aug 6 — Lompoc Art Walk\n🛍️ Fri, Aug 7 — Old Town Market\n🚀 Sat, Aug 8 — Falcon 9 Block 5 — Starlink Group 17-38\n\nPlus 59 more on the calendar.\n\nThe full week:\nlompoclocals.com/events\n\n#Lompoc #LompocCA #CentralCoast #805",
+    "link": "https://www.lompoclocals.com/en/events",
+    "media": "content/social/posts/2026-08-03-this-week-tt.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-03-this-week-tt-l6iYpk6UlVEAIqBLZXGRbTRWM2S2HX.png",
+    "kind": "image",
+    "shape": "9:16"
   },
   {
     "date": "2026-08-04",
     "time": "17:30",
     "dueAt": "2026-08-04T17:30:00-07:00",
     "series": "Worth the stop",
-    "channels": [
-      "instagram",
-      "tiktok"
-    ],
-    "text": "Worth the stop, if you've got an hour.\n\nLompoc Murals Walking Tour — Downtown Lompoc\nPark once and cover it on foot — most of the murals sit within a few walkable blocks.\n\nPhotos, tips and directions:\nlompoclocals.com/activities/lompoc-murals-tour\n\n#Lompoc #LompocCA #ThingsToDoLompoc #CentralCoast #805",
-    "link": "https://www.lompoclocals.com/en/activities/lompoc-murals-tour",
-    "media": "content/social/posts/2026-08-04-worth-the-stop.png",
-    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-04-worth-the-stop-JV2xRAn8hY4CreutoFYCaKsaykahtF.png",
-    "kind": "image"
+    "channel": "instagram",
+    "text": "Worth the stop, if you've got an hour.\n\nLompoc Wine Ghetto Tasting — 1520-1800 E Chestnut Ave\nPark once and walk the whole cluster.\n\nPhotos, tips and directions:\nlompoclocals.com/activities/lompoc-wine-ghetto\n\n#LompocWine #SantaRitaHills #Lompoc #LompocCA #805",
+    "link": "https://www.lompoclocals.com/en/activities/lompoc-wine-ghetto",
+    "media": "content/social/posts/2026-08-04-worth-the-stop-ig.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-04-worth-the-stop-ig-x9TAJ6l3dQk0fOh9xUxMKGoIEdV3Ao.png",
+    "kind": "image",
+    "shape": "4:5"
+  },
+  {
+    "date": "2026-08-04",
+    "time": "17:30",
+    "dueAt": "2026-08-04T17:30:00-07:00",
+    "series": "Worth the stop",
+    "channel": "tiktok",
+    "text": "Worth the stop, if you've got an hour.\n\nLompoc Wine Ghetto Tasting — 1520-1800 E Chestnut Ave\nPark once and walk the whole cluster.\n\nPhotos, tips and directions:\nlompoclocals.com/activities/lompoc-wine-ghetto\n\n#LompocWine #SantaRitaHills #Lompoc #LompocCA #805",
+    "link": "https://www.lompoclocals.com/en/activities/lompoc-wine-ghetto",
+    "media": "content/social/posts/2026-08-04-worth-the-stop-tt.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-04-worth-the-stop-tt-f94GSlStvTXM8drcO6lNaW0j8EDdAi.png",
+    "kind": "image",
+    "shape": "9:16"
   },
   {
     "date": "2026-08-06",
     "time": "12:00",
     "dueAt": "2026-08-06T12:00:00-07:00",
     "series": "On the record",
-    "channels": [
-      "instagram",
-      "tiktok"
-    ],
-    "text": "Old Town regulars already know this one.\n\nHanger 7 Social House — 107 W Ocean Ave\nHangar 7 Social House is a wine bar in the heart of Lompoc where the rolling Santa Ynez Valley vineyards meet aerospace inspiration.\n\nMenu, hours and directions:\nlompoclocals.com/biz/hanger-7-social-house\n\n#Lompoc #OldTownLompoc #ShopLocalLompoc #805",
-    "link": "https://www.lompoclocals.com/en/biz/hanger-7-social-house",
-    "media": "content/social/posts/2026-08-06-on-the-record.png",
-    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-06-on-the-record-yce7bfZf93EPxr81fdHNgAREIRqypo.png",
-    "kind": "image"
+    "channel": "instagram",
+    "text": "North H Street, where half the town's errands happen.\n\nSake Sushi — 1325 N H St\nSake Sushi & Korean BBQ serves sushi rolls, Korean barbecue, tempura, bento boxes, and ramen.\n\nMenu, hours and directions:\nlompoclocals.com/biz/sake-sushi-lompoc\n\n#Lompoc #LompocCA #LompocEats #ShopLocalLompoc #805",
+    "link": "https://www.lompoclocals.com/en/biz/sake-sushi-lompoc",
+    "media": "content/social/posts/2026-08-06-on-the-record-ig.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-06-on-the-record-ig-9I92vBcqymjrpFFwdCNTVaIKdprPQL.png",
+    "kind": "image",
+    "shape": "4:5"
+  },
+  {
+    "date": "2026-08-06",
+    "time": "12:00",
+    "dueAt": "2026-08-06T12:00:00-07:00",
+    "series": "On the record",
+    "channel": "tiktok",
+    "text": "North H Street, where half the town's errands happen.\n\nSake Sushi — 1325 N H St\nSake Sushi & Korean BBQ serves sushi rolls, Korean barbecue, tempura, bento boxes, and ramen.\n\nMenu, hours and directions:\nlompoclocals.com/biz/sake-sushi-lompoc\n\n#Lompoc #LompocCA #LompocEats #ShopLocalLompoc #805",
+    "link": "https://www.lompoclocals.com/en/biz/sake-sushi-lompoc",
+    "media": "content/social/posts/2026-08-06-on-the-record-tt.png",
+    "mediaUrl": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/2026-08-06-on-the-record-tt-wG9aBvWiaHcEpimrUEagWd8pfovBw9.png",
+    "kind": "image",
+    "shape": "9:16"
   }
 ]

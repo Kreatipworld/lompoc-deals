@@ -6,6 +6,10 @@
  * from activities, spotlights from approved businesses with photos. Nothing is invented, so
  * a post can't promise a page that doesn't exist.
  *
+ * Selection is ordered by md5(slug), not random(): a rebuild has to reproduce the same calendar,
+ * or the cards and the posts already scheduled in Buffer drift apart from the CSV that describes
+ * them. The hash still gives an arbitrary, well-mixed order — it just gives the same one twice.
+ *
  * Deliberately absent: deal posts. Every "live" deal is owned by a scraper/demo account, so
  * advertising them would promise a discount no owner agreed to. See the checklist at the top
  * of content/social/notes/content-weeks-2-3.md.
@@ -50,11 +54,20 @@ const fmtDate = (d) =>
 const fmtDay = (d) => d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
 const addDays = (d, n) => new Date(d.getTime() + n * 86400000)
 
+/** Local midnight, so slot maths never carries the time of day the script happened to run. */
+const dayStart = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate())
+
 /** Monday of the week containing `d`, so slots land on stable weekdays. */
 function weekStart(d) {
-  const c = new Date(d)
+  const c = dayStart(d)
   const day = (c.getDay() + 6) % 7
   return addDays(c, -day)
+}
+
+/** The slot's actual moment, for comparing against real event times. */
+function slotMoment(day, time) {
+  const [hh, mm] = time.split(":").map(Number)
+  return new Date(day.getFullYear(), day.getMonth(), day.getDate(), hh, mm, 0)
 }
 
 // The channels actually connected in Buffer. Facebook is deliberately absent — there's no
@@ -89,7 +102,7 @@ async function main() {
                  ('jalama-beach','point-sal','sta-rita-hills-wine-trail')) as in_town
         from activities
         where jsonb_array_length(coalesce(photos_json,'[]'::jsonb)) >= 1
-        order by random()`,
+        order by md5(slug)`,
     // about_source matters: Google-sourced about text is Google's prose, and reusing it in a
     // caption would republish third-party copy. Only text authored for this project qualifies.
     sql`select b.name, b.slug, c.name as category, b.address, b.about,
@@ -99,7 +112,7 @@ async function main() {
         where b.status='approved' and b.about is not null
           and jsonb_array_length(coalesce(b.photos_json,'[]'::jsonb)) >= 4
           and b.about_source = any(${OWN_ABOUT_SOURCES})
-        order by random() limit 60`,
+        order by md5(b.slug) limit 60`,
   ])
 
   const launches = events.filter((e) => /rocket launch/i.test(e.title))
@@ -113,7 +126,11 @@ async function main() {
 
     for (const slot of SLOTS) {
       const when = addDays(monday, slot.dow - 1)
-      if (when < START) continue
+      // Compare the slot's real moment against now. Using the bare date meant a run at 7:33pm
+      // gave every slot a 19:33 timestamp, and a 19:00 launch fell outside its own weekend by
+      // 33 minutes — so the same calendar produced different content depending on run time.
+      const whenAt = slotMoment(when, slot.time)
+      if (whenAt <= START) continue
 
       // Events inside this posting week, for the Monday round-up.
       const weekEvents = events.filter((e) => {
@@ -204,10 +221,12 @@ async function main() {
         // own terms, and framing it as something cheap undersells both the launch and the brand.
         // "This weekend" has to mean this weekend. The post goes out Friday afternoon, so only a
         // launch between then and Monday qualifies — otherwise we'd promise a launch weeks out.
-        const weekendEnd = addDays(when, 3)
+        // Friday afternoon through Monday morning, measured from the start of the posting day.
+        const weekendStart = dayStart(when)
+        const weekendEnd = addDays(weekendStart, 3)
         const nextLaunch = launches.find((l) => {
           const t = new Date(l.starts_at)
-          return t >= when && t < weekendEnd
+          return t >= whenAt && t < weekendEnd
         })
         const a = activities[placeI++ % activities.length]
         series = nextLaunch ? "Upcoming launch" : "Weekend plans"
@@ -237,12 +256,18 @@ async function main() {
   }
 
   // Video assets get their own slots — one a week, rotating.
+  // Each spot ships in both shapes: the 4:5 master for the Instagram feed, the untouched 9:16
+  // for TikTok. Same cut, sized for where it lands.
   const videos = [
-    { file: "content/social/video/lompoc-locals-spot.mp4", note: "Brand spot, 27s — the wide-reach one" },
-    { file: "content/social/video/lompoc-locals-experience-20s.mp4", note: "20s cut — best for TikTok" },
-    { file: "content/social/video/lompoc-locals-experience.mp4", note: "Full tour, 25s" },
-    { file: "content/social/video/lompoc-locals-signup.mp4", note: "Signup-focused, 19s" },
-  ]
+    { stem: "lompoc-locals-spot", note: "Brand spot, 27s — the wide-reach one" },
+    { stem: "lompoc-locals-experience-20s", note: "20s cut" },
+    { stem: "lompoc-locals-experience", note: "Full tour, 25s" },
+    { stem: "lompoc-locals-signup", note: "Signup-focused, 19s" },
+  ].map((v) => ({
+    ...v,
+    file: `content/social/video/masters/${v.stem}-4x5.mp4`,
+    vertical: `content/social/video/${v.stem}.mp4`,
+  }))
   for (let w = 0; w < WEEKS; w++) {
     const when = addDays(addDays(weekStart(START), w * 7), 6) // Sunday
     if (when < START) continue
@@ -257,19 +282,27 @@ async function main() {
         `and everywhere worth going.\n\nlompoclocals.com\n\n${TAGS.general}`,
       link: SITE,
       media: v.file,
+      media_vertical: v.vertical,
     })
   }
 
   // Nothing ships that frames the town or the platform on price, or that targets a channel the
   // Buffer account doesn't have. Fail the build rather than discover it in a published post.
   for (const r of rows) {
-    assertNoPriceFraming(r.text, `${r.date} ${r.series}`)
+    // Check our own words, not quoted proper nouns: one real event is called "Free Admission:
+    // End-of-Summer Family Day", and renaming somebody's event to satisfy our style rule would
+    // trade one kind of inaccuracy for another.
+    const ours = r.text
+      .split("\n")
+      .filter((l) => !/^[\p{Emoji}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(l.trim()))
+      .join("\n")
+    assertNoPriceFraming(ours, `${r.date} ${r.series}`)
     if (/facebook/i.test(r.channels)) throw new Error(`${r.date} targets facebook — no such channel`)
   }
 
   rows.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
 
-  const header = ["date", "time", "channels", "series", "text", "link", "media"]
+  const header = ["date", "time", "channels", "series", "text", "link", "media", "media_vertical"]
   const csv = [header.join(","), ...rows.map((r) => header.map((h) => csvCell(r[h])).join(","))].join("\n")
   const stamp = fmtDate(START)
   // One canonical name, not one file per run: content/social/ is the deliverable folder and a

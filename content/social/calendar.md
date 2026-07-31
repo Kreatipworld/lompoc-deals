@@ -17,12 +17,11 @@ That renders one card per post — this week's events, this weekend's launch, th
 
 | Date | Time | Series | Channels | Opening line |
 |---|---|---|---|---|
-| 2026-07-30 | 12:00 | On the record | instagram,tiktok | North H Street, where half the town's errands happen.… |
 | 2026-07-31 | 16:00 | Upcoming launch | instagram,tiktok | Look up Friday night. 🚀… |
 | 2026-08-02 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |
 | 2026-08-03 | 08:30 | The week ahead | instagram,tiktok | Here's the week, if you're making plans.… |
 | 2026-08-04 | 17:30 | Worth the stop | instagram,tiktok | Worth the stop, if you've got an hour.… |
-| 2026-08-06 | 12:00 | On the record | instagram,tiktok | Old Town regulars already know this one.… |
+| 2026-08-06 | 12:00 | On the record | instagram,tiktok | North H Street, where half the town's errands happen.… |
 | 2026-08-07 | 16:00 | Upcoming launch | instagram,tiktok | Look up Saturday night. 🚀… |
 | 2026-08-09 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |
 | 2026-08-10 | 08:30 | The week ahead | instagram,tiktok | Here's the week, if you're making plans.… |
@@ -32,6 +31,6 @@ That renders one card per post — this week's events, this weekend's launch, th
 | 2026-08-16 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |
 | 2026-08-17 | 08:30 | The week ahead | instagram,tiktok | Here's the week, if you're making plans.… |
 | 2026-08-18 | 17:30 | Worth the stop | instagram,tiktok | Worth the stop, if you've got an hour.… |
-| 2026-08-20 | 12:00 | On the record | instagram,tiktok | Adding this one to the record.… |
+| 2026-08-20 | 12:00 | On the record | instagram,tiktok | Old Town regulars already know this one.… |
 | 2026-08-21 | 16:00 | Weekend plans | instagram,tiktok | Weekend plans, sorted.… |
 | 2026-08-23 | 11:00 | Video | instagram,tiktok | All of Lompoc, in one place.… |

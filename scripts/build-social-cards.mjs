@@ -29,6 +29,16 @@ const CSV = process.argv[2]?.endsWith(".csv") ? process.argv[2] : "content/socia
 const WRITE_CSV = process.argv.includes("--write-csv")
 const OUT_HTML = "content/social/cards/cards-calendar.html"
 const IMG_DIR = "content/social/posts"
+
+/**
+ * Two cuts per post, because the platforms genuinely differ: Instagram's feed gives 4:5 the most
+ * screen, TikTok is full-screen 9:16. Posting one shape to both wastes half the frame somewhere.
+ */
+const SIZES = ["ig", "tt"]
+const setMedia = (row, cardId) => {
+  row.media = `${IMG_DIR}/${cardId}-ig.png`
+  row.media_vertical = `${IMG_DIR}/${cardId}-tt.png`
+}
 const REPO = process.cwd()
 
 const url = fs
@@ -189,23 +199,26 @@ const markFor = (slot) =>
 
 
 /** Photo card with the purple wash and a bottom-anchored block — the spotlight/place shape. */
-function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gold)", slot = 0 }) {
+function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gold)", slot = 0, size = "ig" }) {
   const bg = photo
     ? `<img class="shot" src="${esc(photo)}">
        <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(36,22,41,.34) 0%, rgba(36,22,41,.18) 32%, rgba(101,12,117,.93) 100%);"></div>`
     : `<div style="position:absolute; inset:0; background:linear-gradient(175deg, #1b0a20 0%, #4a0857 45%, #650C75 100%);"></div>
        <div style="position:absolute; inset:0; background:radial-gradient(circle at 72% 24%, rgba(239,198,24,.28) 0%, rgba(239,198,24,0) 42%);"></div>`
   // Long names need to shrink or they overrun the card.
-  const size = title.length > 26 ? 92 : title.length > 18 ? 108 : 122
+  const titleSize = title.length > 26 ? 92 : title.length > 18 ? 108 : 122
   const c = ctaFor(cta)
+  // Content is bottom-anchored, so the taller 9:16 frame only needs more breathing room above
+  // it — the type scale that works at 1350 still works at 1920.
+  const pad = size === "tt" ? "150px 84px 190px" : "86px 84px 96px"
   return `
-<div class="card ig grain" id="${id}">
+<div class="card ${size} grain" id="${id}">
   ${bg}
-  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:86px 84px 96px;">
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:${pad};">
     ${markFor(slot)}
     <div>
       <div class="serif" style="color:var(--gold); font-size:54px; line-height:1.2;">${esc(eyebrow)}</div>
-      <div style="color:#fff; font-size:${size}px; font-weight:800; line-height:1.04; margin-top:14px;">${esc(title)}</div>
+      <div style="color:#fff; font-size:${titleSize}px; font-weight:800; line-height:1.04; margin-top:14px;">${esc(title)}</div>
       ${meta ? `<div style="color:#f3e6f6; font-size:44px; font-weight:500; margin-top:30px; line-height:1.35;">${meta}</div>` : ""}
       <div class="url" style="color:${ctaColor}; font-size:${c.size}px; margin-top:50px; white-space:nowrap;">${esc(c.text)}</div>
     </div>
@@ -213,12 +226,13 @@ function photoCard(id, { photo, eyebrow, title, meta, cta, ctaColor = "var(--gol
 </div>`
 }
 
-function launchCard(id, { name, when, slot = 0 }) {
+function launchCard(id, { name, when, slot = 0, size = "ig" }) {
+  const pad = size === "tt" ? "150px 84px 190px" : "86px 84px 96px"
   return `
-<div class="card ig grain" id="${id}">
+<div class="card ${size} grain" id="${id}">
   <div style="position:absolute; inset:0; background:linear-gradient(175deg, #1b0a20 0%, #4a0857 45%, #650C75 100%);"></div>
   <div style="position:absolute; inset:0; background:radial-gradient(circle at 72% 24%, rgba(239,198,24,.30) 0%, rgba(239,198,24,0) 42%);"></div>
-  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:86px 84px 96px;">
+  <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:${markFor(slot) ? "space-between" : "flex-end"}; padding:${pad};">
     ${markFor(slot)}
     <div>
       <div style="font-size:150px; line-height:1;">🚀</div>
@@ -237,11 +251,17 @@ function launchCard(id, { name, when, slot = 0 }) {
  * off the card and under the footer. So measure before rendering: scale the rows down to fit,
  * and only drop an event if even the smallest scale won't hold them.
  */
-const FIT_HEIGHT = 855 // 1350 − header block − footbar − breathing room
+const FIT_IG = 855 // 1350 − header block − footbar − breathing room
+// 1920 − 230 top pad − ~282 header − 30 list pad − 180 footbar − margin. The first attempt at
+// 1330 ignored that the 9:16 header and footbar are both taller, and clipped the last row.
+const FIT_TT = 1120
 const TEXT_WIDTH = 830 // card width − side padding − icon column
 
-function fitRows(events) {
-  const scales = [1, 0.94, 0.88, 0.82, 0.76]
+function fitRows(events, limit, maxScale = 1) {
+  // Scales up as well as down: the 9:16 frame has ~475px more room than 4:5, and a list sized
+  // for the shorter card leaves a dead zone above the footer.
+  const up = [1.45, 1.35, 1.25, 1.15, 1.07].filter((s) => s <= maxScale)
+  const scales = [...up, 1, 0.94, 0.88, 0.82, 0.76]
   const estimate = (list, s) =>
     list.reduce((sum, e) => {
       const perLine = Math.max(12, Math.floor(TEXT_WIDTH / (0.52 * 40 * s)))
@@ -250,17 +270,17 @@ function fitRows(events) {
       return sum + 30 * s + 5 + titleLines * 40 * s * 1.15 + (locLines ? 6 + locLines * 28 * s * 1.3 : 0) + 44 * s + 3
     }, 0)
 
-  for (const s of scales) if (estimate(events, s) <= FIT_HEIGHT) return { events, scale: s }
+  for (const s of scales) if (estimate(events, s) <= limit) return { events, scale: s }
   let list = events.slice()
   while (list.length > 2) {
     list = list.slice(0, -1)
-    for (const s of scales) if (estimate(list, s) <= FIT_HEIGHT) return { events: list, scale: s }
+    for (const s of scales) if (estimate(list, s) <= limit) return { events: list, scale: s }
   }
   return { events: list, scale: 0.76 }
 }
 
-function weekCard(id, { events: all, more }) {
-  const { events, scale } = fitRows(all)
+function weekCard(id, { events: all, more, size = "ig" }) {
+  const { events, scale } = fitRows(all, size === "tt" ? FIT_TT : FIT_IG, size === "tt" ? 1.45 : 1)
   const dropped = all.length - events.length
   const px = (n) => Math.round(n * scale)
   const rows = events
@@ -274,16 +294,16 @@ function weekCard(id, { events: all, more }) {
   const tail = Number(more || 0) + dropped
   more = tail ? String(tail) : ""
   return `
-<div class="card ig grain" id="${id}" style="background:var(--cream);">
+<div class="card ${size} grain" id="${id}" style="background:var(--cream);">
   <div class="tape" style="top:-16px; left:120px; transform:rotate(-2.5deg);"></div>
   <div class="tape" style="top:-16px; right:120px; transform:rotate(2deg);"></div>
-  <div style="padding:64px 78px 0;">
-    <div class="serif" style="color:var(--green); font-size:42px;">what's on</div>
-    <div style="color:var(--ink); font-size:84px; font-weight:800; line-height:1.02; margin-top:8px;">This week<br>in Lompoc.</div>
+  <div style="padding:${size === "tt" ? "230px" : "64px"} 78px 0;">
+    <div class="serif" style="color:var(--green); font-size:${size === "tt" ? 52 : 42}px;">what's on</div>
+    <div style="color:var(--ink); font-size:${size === "tt" ? 104 : 84}px; font-weight:800; line-height:1.02; margin-top:8px;">This week<br>in Lompoc.</div>
   </div>
   <div style="padding:30px 78px 0;">${rows}</div>
-  <div class="footbar">
-    <img src="${esc(mark())}" style="height:66px;">
+  <div class="footbar" style="height:${size === "tt" ? 180 : 130}px;">
+    <img src="${esc(mark())}" style="height:${size === "tt" ? 78 : 66}px;">
     <div style="text-align:right;">
       ${more ? `<div style="color:#f3e6f6; font-size:26px; font-weight:600;">+${more} more on the calendar</div>` : ""}
       <div class="u">lompoclocals.com</div>
@@ -341,8 +361,9 @@ async function main() {
       const photo = firstPhoto(b.photos_json, slug)
       if (!photo) missing.push(`${r.date} spotlight — ${b.name} has no usable photo, card falls back to brand fill`)
       const cardId = `${r.date}-on-the-record`
-      cards.push(
-        photoCard(cardId, {
+      for (const size of SIZES) cards.push(
+        photoCard(`${cardId}-${size}`, {
+          size,
           slot,
           photo,
           // Not the DB category: it has a tattoo studio filed under "Retail", and a card that
@@ -353,7 +374,7 @@ async function main() {
           cta: `lompoclocals.com/biz/${slug}`,
         })
       )
-      r.media = `${IMG_DIR}/${cardId}.png`
+      setMedia(r, cardId)
       continue
     }
 
@@ -368,8 +389,9 @@ async function main() {
       if (!photo) missing.push(`${r.date} place — ${a.title} has no usable photo, card falls back to brand fill`)
       const tip = (a.tips || "").split(". ")[0].replace(/\.$/, "")
       const cardId = `${r.date}-worth-the-stop`
-      cards.push(
-        photoCard(cardId, {
+      for (const size of SIZES) cards.push(
+        photoCard(`${cardId}-${size}`, {
+          size,
           slot,
           photo,
           eyebrow: "worth the stop —",
@@ -378,7 +400,7 @@ async function main() {
           cta: `lompoclocals.com/activities/${slug}`,
         })
       )
-      r.media = `${IMG_DIR}/${cardId}.png`
+      setMedia(r, cardId)
       continue
     }
 
@@ -388,8 +410,9 @@ async function main() {
       const m = r.text.match(/^(.+?)\n(\w{3}, \w{3} \d+) · Vandenberg Space Force Base$/m)
       if (m) {
         const cardId = `${r.date}-upcoming-launch`
-        cards.push(launchCard(cardId, { slot, name: m[1].trim(), when: m[2].replace(/,/, " ·") }))
-        r.media = `${IMG_DIR}/${cardId}.png`
+        for (const size of SIZES)
+          cards.push(launchCard(`${cardId}-${size}`, { size, slot, name: m[1].trim(), when: m[2].replace(/,/, " ·") }))
+        setMedia(r, cardId)
         continue
       }
       const slug = slugFrom(r.link, "activities")
@@ -402,8 +425,9 @@ async function main() {
       if (!photo) missing.push(`${r.date} free-weekend — ${a.title} has no usable photo, card falls back to brand fill`)
       const season = r.text.match(/^([A-Z][^\n]*?)\.$/m)?.[1] || ""
       const cardId = `${r.date}-weekend-plans`
-      cards.push(
-        photoCard(cardId, {
+      for (const size of SIZES) cards.push(
+        photoCard(`${cardId}-${size}`, {
+          size,
           slot,
           photo,
           eyebrow: "this weekend —",
@@ -412,7 +436,7 @@ async function main() {
           cta: `lompoclocals.com/activities/${slug}`,
         })
       )
-      r.media = `${IMG_DIR}/${cardId}.png`
+      setMedia(r, cardId)
       continue
     }
 
@@ -429,8 +453,8 @@ async function main() {
       }
       const more = r.text.match(/Plus (\d+) more/)?.[1] || ""
       const cardId = `${r.date}-this-week`
-      cards.push(weekCard(cardId, { events: lines, more }))
-      r.media = `${IMG_DIR}/${cardId}.png`
+      for (const size of SIZES) cards.push(weekCard(`${cardId}-${size}`, { size, events: lines, more }))
+      setMedia(r, cardId)
       continue
     }
     void id
@@ -446,7 +470,7 @@ ${cards.join("\n")}
   fs.writeFileSync(OUT_HTML, html)
 
   if (WRITE_CSV) {
-    const header = ["date", "time", "channels", "series", "text", "link", "media"]
+    const header = ["date", "time", "channels", "series", "text", "link", "media", "media_vertical"]
     const out = [header.join(","), ...rows.map((r) => header.map((h) => csvCell(r[h])).join(","))].join("\n")
     fs.writeFileSync(CSV, out + "\n")
   }
