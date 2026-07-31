@@ -356,14 +356,22 @@ const toBlob = () => new Promise(r => cv.toBlob(r,'image/jpeg',0.94));
     const beat=spec.beats[idx], local=t-acc;
     paintBeat(beat,local/beat.dur);
 
-    // Colour wipe across the seam: the next beat's field sweeps up over the current one, so a cut
+    // Colour wipe across the seam: the next beat's field sweeps in over the current one, so a cut
     // lands as a deliberate change of colour rather than a dissolve.
+    //
+    // The direction alternates by beat. Every seam sweeping bottom-to-top gave the whole ad one
+    // repeating gesture — six identical swipes read as a slideshow transition rather than as
+    // deliberate cuts, and on a feed the eye starts predicting it by the third one.
     const next=spec.beats[idx+1];
     const toEnd=beat.dur-local;
     if(next && toEnd<WIPE){
       const w=easeInOut(1-toEnd/WIPE);
       g.fillStyle=C[next.bg]||PURPLE;
-      g.fillRect(0,H-H*w,W,H*w+2);
+      const dir=idx%4;
+      if(dir===0)      g.fillRect(0,H-H*w,W,H*w+2);   // up
+      else if(dir===1) g.fillRect(0,0,W*w+2,H);       // in from the left
+      else if(dir===2) g.fillRect(0,0,W,H*w+2);       // down
+      else             g.fillRect(W-W*w,0,W*w+2,H);   // in from the right
     }
 
     const blob=await toBlob();
