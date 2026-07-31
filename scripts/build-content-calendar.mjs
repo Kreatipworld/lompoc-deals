@@ -48,12 +48,16 @@ function weekStart(d) {
   return addDays(c, -day)
 }
 
+// The channels actually connected in Buffer. Facebook is deliberately absent — there's no
+// Facebook channel on the account, so targeting it would queue posts that can't send.
+const CHANNELS = "instagram,tiktok"
+
 // Weekly slots. Times are local and chosen for a working town: morning and early evening.
 const SLOTS = [
-  { dow: 1, time: "08:30", kind: "week-ahead", channels: "facebook,instagram" },
-  { dow: 2, time: "17:30", kind: "place", channels: "facebook,instagram" },
-  { dow: 4, time: "12:00", kind: "spotlight", channels: "facebook,instagram" },
-  { dow: 5, time: "16:00", kind: "free-weekend", channels: "facebook,instagram,tiktok" },
+  { dow: 1, time: "08:30", kind: "week-ahead", channels: CHANNELS },
+  { dow: 2, time: "17:30", kind: "place", channels: CHANNELS },
+  { dow: 4, time: "12:00", kind: "spotlight", channels: CHANNELS },
+  { dow: 5, time: "16:00", kind: "weekend", channels: CHANNELS },
 ]
 
 function csvCell(v) {
@@ -161,8 +165,9 @@ async function main() {
         link = `${SITE}/en/biz/${b.slug}`
       }
 
-      if (slot.kind === "free-weekend") {
-        series = "Free in Lompoc"
+      if (slot.kind === "weekend") {
+        // Nothing in this slot leads on price. A launch over the valley is worth watching on its
+        // own terms, and framing it as something cheap undersells both the launch and the brand.
         // "This weekend" has to mean this weekend. The post goes out Friday afternoon, so only a
         // launch between then and Monday qualifies — otherwise we'd promise a launch weeks out.
         const weekendEnd = addDays(when, 3)
@@ -171,12 +176,14 @@ async function main() {
           return t >= when && t < weekendEnd
         })
         const a = activities[placeI++ % activities.length]
+        series = nextLaunch ? "Upcoming Launch" : "Weekend Plans"
         text = nextLaunch
-          ? `🚀 There's a launch this weekend.\n\n${nextLaunch.title.replace(/^Rocket Launch:\s*/, "")} — ` +
+          ? `🚀 Upcoming launch over Lompoc — be ready.\n\n` +
+            `${nextLaunch.title.replace(/^Rocket Launch:\s*/, "")} — ` +
             `${fmtDay(new Date(nextLaunch.starts_at))}, from Vandenberg.\n\n` +
-            `Best free views: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Look southwest.\n\n` +
+            `Best views: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Look southwest.\n\n` +
             `Every launch on the calendar 👉 ${SITE}/en/events\n\n${HASHTAGS.space}`
-          : `This weekend, for $0. 💜\n\n${a.title} — ${(a.seasonality || "open year-round").toLowerCase()}.\n\n` +
+          : `Weekend plans, sorted 💜\n\n${a.title} — ${(a.seasonality || "open year-round").toLowerCase()}.\n\n` +
             `👉 ${SITE}/en/activities/${a.slug}\n\n${HASHTAGS.outdoors}`
         link = nextLaunch ? `${SITE}/en/events` : `${SITE}/en/activities/${a.slug}`
       }
