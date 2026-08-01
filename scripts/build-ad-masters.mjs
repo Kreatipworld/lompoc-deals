@@ -73,11 +73,19 @@ const TARGETS = [
     key: "1x1",
     name: `${STEM}-1x1.mp4`,
     label: "1:1 square",
-    // Not a centred crop: the end card's logo sits above frame centre, and a true centre
-    // crop clips the gold dot off the top of the mark. 360 keeps the whole lockup and the
-    // URL button — verified frame by frame at 300/360/420.
-    vf: "crop=1080:1080:0:360",
+    // Blurred fill, not a crop. This used to crop at y=360, tuned against an older cut. On the
+    // corrected spot the end card runs mark-through-button for ~1118px of a 1920 frame — taller
+    // than the 1080 a square can hold — so EVERY offset clips something, and at 360 the thing it
+    // clipped was the lompoclocals.com button. Losing the call to action is the one failure an ad
+    // cannot absorb, so the square gives up size to keep the whole frame.
+    vf:
+      "split=2[bg][fg];" +
+      "[bg]scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080," +
+      "gblur=sigma=42,eq=brightness=-0.09:saturation=0.7[bgo];" +
+      "[fg]scale=-2:1080[fgo];" +
+      "[bgo][fgo]overlay=(W-w)/2:0",
     v: ["-c:v", "libx264", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p"],
+    complex: true,
   },
   {
     key: "16x9",
