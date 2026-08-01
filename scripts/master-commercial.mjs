@@ -27,7 +27,9 @@ const OUT = VID
 // Cuts to master. Each VO was measured after generation; start times are set so the read ends
 // ~0.5s before the picture does, leaving the end card a beat of its own.
 const CUTS = [
-  { lang: "en", vo: "en-female-emily.wav", voLen: 21.04, start: 0.55 },
+  // Sterling is the picked English read — an American broadcast voice. At 20.07s it is the
+  // shortest take, which leaves the end card 2.3s of its own rather than the 0.8s Emily left.
+  { lang: "en", vo: "en-male-sterling.wav", voLen: 20.07, start: 0.75 },
   { lang: "es", vo: "es-male-hugo.wav", voLen: 21.88, start: 0.20 },
 ]
 const SHAPES = [

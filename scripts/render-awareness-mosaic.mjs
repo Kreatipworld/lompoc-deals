@@ -563,11 +563,10 @@ function paint(t){
     g.save(); g.globalAlpha=clamp01((local-0.42)/0.4);
     g.textAlign='center'; g.fillStyle=GOLD;
     g.font='800 '+Math.round(U*0.080)+'px "Plus Jakarta Sans", sans-serif';
+    // The url line is the whole sign-off. A tagline reading "made by locals, for locals" under a
+    // wordmark that already says LOCALS put the word on screen three times in one frame — the same
+    // pile-up cut out of the TV spot's ending and the feature ad's end card.
     g.fillText('lompoclocals.com',W/2,H*0.667);
-    g.globalAlpha=clamp01((local-0.75)/0.4);
-    g.fillStyle='rgba(250,245,236,0.88)';
-    g.font='600 '+Math.round(U*0.034)+'px "Plus Jakarta Sans", sans-serif';
-    g.fillText('Made by locals, for locals',W/2,H*0.725);
     g.textAlign='left'; g.restore();
   }
 
