@@ -5,7 +5,7 @@ import { TIERS } from "@/lib/stripe"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { DealForm } from "../deal-form"
 
-export const metadata = { title: "New deal — Lompoc Locals" }
+export const metadata = { title: "New deal" }
 
 export default async function NewDealPage() {
   const session = await auth()

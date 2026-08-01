@@ -9,7 +9,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { StatCard } from "@/components/stat-card"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "My deals — Lompoc Locals" }
+export const metadata = { title: "My deals" }
 
 function ExpiryLabel({ expiresAt, labels }: { expiresAt: Date; labels: { expired: string; today: string; tomorrow: string; inDays: (d: number) => string } }) {
   const isExpired = isPast(expiresAt)

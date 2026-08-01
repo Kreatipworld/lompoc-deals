@@ -25,7 +25,7 @@ import { isPast } from "date-fns"
 import { getTranslations } from "next-intl/server"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
 
-export const metadata = { title: "Dashboard — Lompoc Locals" }
+export const metadata = { title: "Dashboard" }
 
 export default async function DashboardHomePage() {
   const [session, t] = await Promise.all([auth(), getTranslations("dashboardHome")])

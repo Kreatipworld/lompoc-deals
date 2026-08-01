@@ -6,7 +6,7 @@ import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { ChevronLeft } from "lucide-react"
 import { PropertyForm } from "../property-form"
 
-export const metadata = { title: "Add listing — Lompoc Locals" }
+export const metadata = { title: "Add listing" }
 
 export default async function NewPropertyPage() {
   const session = await auth()

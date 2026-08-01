@@ -4,7 +4,7 @@ import { ProfileForm } from "./profile-form"
 import { PhotoManager } from "@/components/photo-manager"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Business profile — Lompoc Locals" }
+export const metadata = { title: "Business profile" }
 
 const STATUS_STYLES: Record<string, string> = {
   approved:

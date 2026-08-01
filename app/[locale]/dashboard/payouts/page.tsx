@@ -6,7 +6,7 @@ import { Wallet, CheckCircle2, AlertCircle, ExternalLink } from "lucide-react"
 import { ConnectStripeButton, StripeExpressDashboardButton } from "./connect-actions"
 import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "Payouts — Lompoc Locals" }
+export const metadata = { title: "Payouts" }
 
 export default async function PayoutsPage({
   searchParams,

@@ -19,7 +19,7 @@ export async function generateMetadata({
   params: { slug: string }
 }): Promise<Metadata> {
   const post = await getBlogPostBySlug(params.slug)
-  if (!post) return { title: "Post not found — Lompoc Locals" }
+  if (!post) return { title: "Post not found" }
 
   const description =
     post.metaDescription ?? post.excerpt ?? `Read ${post.title} on the Lompoc Locals blog.`
