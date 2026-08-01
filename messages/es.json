@@ -1143,7 +1143,7 @@
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
-      "metaNotFound": "Negocio no encontrado — Lompoc Locals",
+      "metaNotFound": "Negocio no encontrado",
       "metaOgSuffix": "",
       "metaFallbackDescription": "Explora las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
       "metaOgFallback": "Ofertas actuales de {name} en Lompoc, CA. Gratis para canjear.",
@@ -1803,7 +1803,7 @@
   },
   "listing": {
     "metaTitleSuffix": "",
-    "metaNotFound": "Listado no encontrado — Lompoc Locals",
+    "metaNotFound": "Listado no encontrado",
     "backToListings": "Volver a todos los listados",
     "photoNotAvailable": "Foto no disponible",
     "noPhotos": "No hay fotos disponibles",

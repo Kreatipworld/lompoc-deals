@@ -1143,7 +1143,7 @@
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
-      "metaNotFound": "Business not found — Lompoc Locals",
+      "metaNotFound": "Business not found",
       "metaOgSuffix": "",
       "metaFallbackDescription": "Browse current deals and coupons from {name}, a {catLabel} in Lompoc, CA. Free to claim — updated directly by the business.",
       "metaOgFallback": "Current deals from {name} in Lompoc, CA. Free to claim.",
@@ -1803,7 +1803,7 @@
   },
   "listing": {
     "metaTitleSuffix": "",
-    "metaNotFound": "Listing not found — Lompoc Locals",
+    "metaNotFound": "Listing not found",
     "backToListings": "Back to all listings",
     "photoNotAvailable": "Photo not available",
     "noPhotos": "No photos available",

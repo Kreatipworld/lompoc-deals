@@ -98,11 +98,14 @@ for (const loc of ["en", "es"]) {
   })(data)
 
   for (const [key, value] of flat) {
-    const leaf = key.split(".").pop()
-    if (!isTitleKey(leaf)) continue
+    const usedAbsolute = absoluteKeys.has(key)
+    const usedTemplated = templatedKeys.has(key)
 
-    const usedAbsolute = [...absoluteKeys].some((k) => key === k || key.endsWith(`.${k}`) || k.endsWith(key))
-    const usedTemplated = [...templatedKeys].some((k) => key === k || key.endsWith(`.${k}`) || k.endsWith(key))
+    // Check a key if it is *used* as a title anywhere, whatever it is called. Filtering by name
+    // alone let `businesses.profile.metaNotFound` through — the deleted-business page rendered
+    // "Business not found — Lompoc Locals | Lompoc Locals" for weeks because "metaNotFound"
+    // doesn't contain the word "title".
+    if (!usedAbsolute && !usedTemplated && !isTitleKey(key.split(".").pop())) continue
 
     if (endsWithBrand(value) && usedTemplated && !usedAbsolute) {
       failures.push(`${file}: "${key}" ends with "${BRAND}" but is rendered through the title template — it will print twice\n      ${value}`)
