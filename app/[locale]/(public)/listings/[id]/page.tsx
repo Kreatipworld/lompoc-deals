@@ -26,7 +26,7 @@ export async function generateMetadata({
   const id = parseInt(params.id, 10)
   if (isNaN(id)) return { title: "Listing" }
   const listing = await getListingById(id)
-  if (!listing) return { title: t("metaNotFound") }
+  if (!listing) return { title: t("metaNotFound"), robots: { index: false, follow: true } }
   return {
     title: `${listing.title} ${t("metaTitleSuffix")}`,
     description: listing.description ?? undefined,

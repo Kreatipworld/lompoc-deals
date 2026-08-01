@@ -56,7 +56,13 @@ export async function generateMetadata({
     getBusinessBySlug(params.slug),
     getTranslations("businesses.profile"),
   ])
-  if (!data) return { title: t("metaNotFound") }
+  if (!data) {
+    // A slug with no business behind it still renders (a loading.tsx boundary upstream means the
+    // response has already streamed with a 200, so notFound() cannot change the status). Say
+    // noindex here, at the source, rather than relying on the not-found boundary's tag winning a
+    // conflict — without this the page emitted "index, follow" AND "noindex" together.
+    return { title: t("metaNotFound"), robots: { index: false, follow: true } }
+  }
   const { name, description, about } = data.business
   const catLabel = data.business.category?.name ?? "local business"
   const fallbackDescription = t("metaFallbackDescription", { name, catLabel })
