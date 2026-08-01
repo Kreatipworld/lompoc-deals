@@ -1,11 +1,14 @@
 import { Link } from "@/i18n/navigation"
 import { BrandLogo } from "@/components/brand-logo"
+import { ArrowLeft } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const t = await getTranslations("auth")
   return (
     <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden bg-background px-4 py-12">
       {/* Decorative gradient blobs */}
@@ -24,10 +27,13 @@ export default function AuthLayout({
 
       {/* Widens automatically while a step renders [data-wide-step] (plan selection) */}
       <div className="w-full max-w-md transition-[max-width] duration-500 ease-out has-[[data-wide-step]]:max-w-4xl">
-        {/* Brand lockup */}
+        {/* Brand lockup. It has always linked home, but nothing about it said so — no hover, no
+            affordance — so on a phone (where most claim links are opened, straight out of an
+            email) it read as decoration. The transition gives it a state on tap and hover; the
+            worded link below the card is what people actually find. */}
         <Link
           href="/"
-          className="mx-auto mb-8 flex items-center justify-center"
+          className="mx-auto mb-8 flex items-center justify-center transition-opacity hover:opacity-70 active:opacity-60"
           aria-label="Lompoc Locals home"
         >
           <BrandLogo className="h-12 w-auto" />
@@ -38,7 +44,17 @@ export default function AuthLayout({
           {children}
         </div>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">
+        <div className="mt-6 flex justify-center">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            {t("backHome")}
+          </Link>
+        </div>
+
+        <p className="mt-4 text-center text-xs text-muted-foreground">
           By continuing you agree to be a kind neighbor and not spam local
           businesses.
         </p>

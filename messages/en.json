@@ -202,6 +202,7 @@
     "siteKeywords": "lompoc local directory, lompoc businesses, things to do in lompoc, lompoc ca, lompoc deals, directorio lompoc"
   },
   "auth": {
+    "backHome": "Back to lompoclocals.com",
     "signup": "Sign up",
     "signupTitle": "Create an account",
     "signupSubtitle": "Join the platform connecting Lompoc's locals, businesses, and visitors.",

@@ -202,6 +202,7 @@
     "siteKeywords": "directorio local lompoc, negocios lompoc, qué hacer en lompoc, lompoc ca, ofertas lompoc, lompoc deals"
   },
   "auth": {
+    "backHome": "Volver a lompoclocals.com",
     "signup": "Registrarse",
     "signupTitle": "Crear una cuenta",
     "signupSubtitle": "Únete a la plataforma que conecta a los vecinos, negocios y visitantes de Lompoc.",
