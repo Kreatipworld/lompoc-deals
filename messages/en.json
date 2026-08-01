@@ -1,6 +1,6 @@
 {
   "claim": {
-    "metaTitle": "Your deal — Lompoc Locals",
+    "metaTitle": "Your deal",
     "showAtRegister": "Show this screen at the register",
     "code": "Deal code",
     "expires": "Expires {distance}",
@@ -77,7 +77,7 @@
     "events": "Events"
   },
   "home": {
-    "metaTitle": "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
+    "metaTitle": "Lompoc Businesses, Deals & Things To Do",
     "metaDescription": "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more. Browse by category, discover deals, and support local.",
     "location": "Lompoc, California",
     "heroTitle": "All of Lompoc",
@@ -197,7 +197,7 @@
     "homeDescription": "Explore Lompoc, CA's local business directory — restaurants, shops, services, and more. Browse by category, discover deals, and support local.",
     "homeOgTitle": "Lompoc Local Directory — Businesses, Deals & Things To Do",
     "homeOgDescription": "Discover Lompoc, CA by category — restaurants, boutiques, services, health & beauty, and more. All local, all free to browse.",
-    "categoryTitle": "Lompoc {category} — Local Businesses & Deals | Lompoc Locals",
+    "categoryTitle": "Lompoc {category} — Local Businesses & Deals",
     "categoryDescription": "Browse {category} businesses and deals in Lompoc, CA. Find local {categoryLower} shops, services, and coupons — updated daily.",
     "siteKeywords": "lompoc local directory, lompoc businesses, things to do in lompoc, lompoc ca, lompoc deals, directorio lompoc"
   },
@@ -209,7 +209,7 @@
     "password": "Password",
     "name": "Name",
     "forgotPassword": {
-      "metaTitle": "Forgot Password — Lompoc Locals"
+      "metaTitle": "Forgot Password"
     },
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
@@ -218,7 +218,7 @@
     "businessSignup": "Sign up as a business",
     "localSignup": "Sign up as a local",
     "login": {
-      "metaTitle": "Sign in — Lompoc Locals",
+      "metaTitle": "Sign in",
       "metaDescription": "Sign in to your Lompoc Locals account.",
       "heading": "Welcome back",
       "subheading": "Sign in to your Lompoc Locals account.",
@@ -233,7 +233,7 @@
       "createAccount": "Create an account"
     },
     "signupLanding": {
-      "metaTitle": "Sign up — Lompoc Locals",
+      "metaTitle": "Sign up",
       "metaDescription": "Join Lompoc Locals — browse deals, save favorites, or list your business.",
       "heading": "Join Lompoc Locals",
       "subheading": "No per-deal fees. No hidden charges. No ads.",
@@ -251,10 +251,10 @@
       "claimingBadgeBody": "Create your account and an admin will review your claim."
     },
     "resetPassword": {
-      "metaTitle": "Reset Password — Lompoc Locals"
+      "metaTitle": "Reset Password"
     },
     "signupUser": {
-      "metaTitle": "Sign up as a local — Lompoc Locals",
+      "metaTitle": "Sign up as a local",
       "metaDescription": "Join Lompoc Locals free — save deals, follow businesses, and discover what's happening in Lompoc.",
       "heading": "Join as a local",
       "subheading": "Save deals, follow businesses, and discover what's happening in Lompoc. Free forever.",
@@ -370,7 +370,7 @@
     "detailFallbackDescription": "Discover {title} in Lompoc, CA."
   },
   "favorites": {
-    "metaTitle": "My favorites — Lompoc Locals"
+    "metaTitle": "My favorites"
   },
   "subscribe": {
     "title": "Get the weekly digest",
@@ -382,8 +382,8 @@
     "successSubtitle": "Look for your first digest Saturday morning.",
     "unsubscribe": "Unsubscribe",
     "unsubscribeSuccess": "You've been unsubscribed.",
-    "confirmMetaTitle": "Confirm subscription — Lompoc Locals",
-    "unsubscribeMetaTitle": "Unsubscribe — Lompoc Locals",
+    "confirmMetaTitle": "Confirm subscription",
+    "unsubscribeMetaTitle": "Unsubscribe",
     "confirmedTitle": "You're subscribed",
     "confirmedBody": "We'll send the next digest to {email} on Saturday morning.",
     "confirmFailedTitle": "Couldn't confirm",
@@ -773,7 +773,7 @@
     "reject": "Reject",
     "noNewBusinesses": "No new businesses awaiting approval.",
     "home": {
-      "metaTitle": "Admin — Lompoc Locals",
+      "metaTitle": "Admin",
       "heading": "Overview",
       "subheading": "Platform-wide stats and recent activity.",
       "badge": "Admin",
@@ -897,7 +897,7 @@
     "signUp": "Sign up"
   },
   "signupBusiness": {
-    "metaTitle": "List your business — Lompoc Locals",
+    "metaTitle": "List your business",
     "metaDescription": "Sign up as a business on Lompoc Locals. Get discovered by neighbors, featured in the weekly digest, and showcased in local search — no per-deal fees, no hidden charges.",
     "pageTitle": "List your business",
     "pageSubtitle": "Get discovered by neighbors in Lompoc & Vandenberg — featured in the weekly digest, on the map, and in local search. No per-deal fees, no hidden charges.",
@@ -987,7 +987,7 @@
       "paidConfirmedBanner": "Payment confirmed — your Growth membership is active. Welcome aboard!"
     },
     "firstDeal": {
-      "metaTitle": "Add your first deal — Lompoc Locals",
+      "metaTitle": "Add your first deal",
       "stepLabel": "Step 5 of 5",
       "title": "Add your first deal",
       "subtitle": "Give customers a reason to visit {bizName}. You can add more from your dashboard.",
@@ -1142,9 +1142,9 @@
       "heading": "Business Directory"
     },
     "profile": {
-      "metaTitleSuffix": "Deals & Coupons in Lompoc, CA | Lompoc Locals",
+      "metaTitleSuffix": "Lompoc, CA",
       "metaNotFound": "Business not found — Lompoc Locals",
-      "metaOgSuffix": "| Lompoc Locals",
+      "metaOgSuffix": "",
       "metaFallbackDescription": "Browse current deals and coupons from {name}, a {catLabel} in Lompoc, CA. Free to claim — updated directly by the business.",
       "metaOgFallback": "Current deals from {name} in Lompoc, CA. Free to claim.",
       "breadcrumbHome": "Deals",
@@ -1738,7 +1738,7 @@
     "paginationLabel": "Pagination"
   },
   "submitEvent": {
-    "metaTitle": "Submit an Event — Lompoc Locals",
+    "metaTitle": "Submit an Event",
     "metaDescription": "Tell Lompoc about your upcoming event, festival, or business launch.",
     "heading": "Submit an event",
     "subtitle": "Free to post. Events are reviewed before going live — usually within a few hours.",
@@ -1765,7 +1765,7 @@
     "successBody": "We'll publish it shortly after approval."
   },
   "account": {
-    "metaTitle": "My account — Lompoc Locals",
+    "metaTitle": "My account",
     "heading": "My account",
     "subtitle": "Your saved deals, coupons, and preferences",
     "notifDisabledBanner": "Deal notifications turned off. You can re-enable them below.",
@@ -1802,7 +1802,7 @@
     "activeLabel": "Active"
   },
   "listing": {
-    "metaTitleSuffix": "— Lompoc Locals",
+    "metaTitleSuffix": "",
     "metaNotFound": "Listing not found — Lompoc Locals",
     "backToListings": "Back to all listings",
     "photoNotAvailable": "Photo not available",

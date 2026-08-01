@@ -39,7 +39,7 @@ export async function generateMetadata({
   if (!cat) return { title: "Category — Lompoc Locals" }
   const catLower = cat.name.toLowerCase()
   return {
-    title: `Lompoc ${cat.name} Businesses & Deals — Local Directory | Lompoc Locals`,
+    title: `Lompoc ${cat.name} — Local Businesses & Deals`,
     description: `Browse ${catLower} businesses in Lompoc, CA — local listings, active deals, and coupons. Updated daily.`,
     keywords: [`lompoc ${catLower}`, `lompoc ${catLower} businesses`, `lompoc ${catLower} deals`, "lompoc ca"],
     alternates: pageAlternates(`/category/${params.slug}`),

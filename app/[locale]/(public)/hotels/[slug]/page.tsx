@@ -33,7 +33,7 @@ export async function generateMetadata({
   const hotel = getHotelBySlug(params.slug)
   if (!hotel) return { title: "Hotel — Lompoc Locals" }
   return {
-    title: `${hotel.name} — Lompoc Hotel | Lompoc Locals`,
+    title: `${hotel.name} — Lompoc Hotel`,
     description: `${hotel.tagline}. ${hotel.description.slice(0, 120)}…`,
     keywords: [
       `${hotel.name.toLowerCase()}`,

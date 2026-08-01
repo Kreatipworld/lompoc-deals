@@ -1,6 +1,6 @@
 {
   "claim": {
-    "metaTitle": "Tu oferta — Lompoc Locals",
+    "metaTitle": "Tu oferta",
     "showAtRegister": "Muestra esta pantalla en la caja",
     "code": "Código de oferta",
     "expires": "Vence {distance}",
@@ -77,7 +77,7 @@
     "events": "Eventos"
   },
   "home": {
-    "metaTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer en Lompoc, CA",
+    "metaTitle": "Negocios, Ofertas y Qué Hacer en Lompoc",
     "metaDescription": "Explora el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
     "location": "Lompoc, California",
     "heroTitle": "Todo Lompoc",
@@ -197,7 +197,7 @@
     "homeDescription": "Explora el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
     "homeOgTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer",
     "homeOgDescription": "Descubre Lompoc, CA por categoría — restaurantes, boutiques, servicios, salud y belleza, y más. Todo local, todo gratis para explorar.",
-    "categoryTitle": "Lompoc {category} — Negocios y Ofertas Locales | Lompoc Locals",
+    "categoryTitle": "Lompoc {category} — Negocios y Ofertas Locales",
     "categoryDescription": "Explora negocios y ofertas de {category} en Lompoc, CA. Encuentra tiendas, servicios y cupones locales de {categoryLower} — actualizados diariamente.",
     "siteKeywords": "directorio local lompoc, negocios lompoc, qué hacer en lompoc, lompoc ca, ofertas lompoc, lompoc deals"
   },
@@ -209,7 +209,7 @@
     "password": "Contraseña",
     "name": "Nombre",
     "forgotPassword": {
-      "metaTitle": "Olvidé mi contraseña — Lompoc Locals"
+      "metaTitle": "Olvidé mi contraseña"
     },
     "noAccount": "¿No tienes una cuenta?",
     "haveAccount": "¿Ya tienes una cuenta?",
@@ -218,7 +218,7 @@
     "businessSignup": "Registrarse como negocio",
     "localSignup": "Registrarse como local",
     "login": {
-      "metaTitle": "Iniciar sesión — Lompoc Locals",
+      "metaTitle": "Iniciar sesión",
       "metaDescription": "Inicia sesión en tu cuenta de Lompoc Locals.",
       "heading": "Bienvenido de nuevo",
       "subheading": "Inicia sesión en tu cuenta de Lompoc Locals.",
@@ -233,7 +233,7 @@
       "createAccount": "Crear una cuenta"
     },
     "signupLanding": {
-      "metaTitle": "Registrarse — Lompoc Locals",
+      "metaTitle": "Registrarse",
       "metaDescription": "Únete a Lompoc Locals — explora ofertas, guarda favoritos o publica tu negocio.",
       "heading": "Únete a Lompoc Locals",
       "subheading": "Sin cargos por oferta. Sin cargos ocultos. Sin anuncios.",
@@ -251,10 +251,10 @@
       "claimingBadgeBody": "Crea tu cuenta y un administrador revisará tu solicitud."
     },
     "resetPassword": {
-      "metaTitle": "Restablecer contraseña — Lompoc Locals"
+      "metaTitle": "Restablecer contraseña"
     },
     "signupUser": {
-      "metaTitle": "Registrarse como residente — Lompoc Locals",
+      "metaTitle": "Registrarse como residente",
       "metaDescription": "Únete gratis a Lompoc Locals — guarda ofertas, sigue negocios y descubre qué pasa en Lompoc.",
       "heading": "Únete como residente",
       "subheading": "Guarda ofertas, sigue negocios y descubre qué pasa en Lompoc. Siempre gratis.",
@@ -370,7 +370,7 @@
     "detailFallbackDescription": "Descubre {title} en Lompoc, CA."
   },
   "favorites": {
-    "metaTitle": "Mis favoritos — Lompoc Locals"
+    "metaTitle": "Mis favoritos"
   },
   "subscribe": {
     "title": "Recibe el resumen semanal",
@@ -382,8 +382,8 @@
     "successSubtitle": "Recibirás tu primer resumen el sábado por la mañana.",
     "unsubscribe": "Cancelar suscripción",
     "unsubscribeSuccess": "Tu suscripción fue cancelada.",
-    "confirmMetaTitle": "Confirmar suscripción — Lompoc Locals",
-    "unsubscribeMetaTitle": "Cancelar suscripción — Lompoc Locals",
+    "confirmMetaTitle": "Confirmar suscripción",
+    "unsubscribeMetaTitle": "Cancelar suscripción",
     "confirmedTitle": "¡Ya estás suscrito!",
     "confirmedBody": "Enviaremos el próximo resumen a {email} el sábado por la mañana.",
     "confirmFailedTitle": "No se pudo confirmar",
@@ -773,7 +773,7 @@
     "reject": "Rechazar",
     "noNewBusinesses": "No hay negocios nuevos esperando aprobación.",
     "home": {
-      "metaTitle": "Admin — Lompoc Locals",
+      "metaTitle": "Admin",
       "heading": "Resumen",
       "subheading": "Estadísticas generales y actividad reciente.",
       "badge": "Admin",
@@ -897,7 +897,7 @@
     "signUp": "Registrarse"
   },
   "signupBusiness": {
-    "metaTitle": "Publica tu negocio — Lompoc Locals",
+    "metaTitle": "Publica tu negocio",
     "metaDescription": "Regístrate como negocio en Lompoc Locals. Que te descubran los vecinos, aparece en el boletín semanal y destaca en la búsqueda local — sin cargos por oferta y sin costos ocultos.",
     "pageTitle": "Publica tu negocio",
     "pageSubtitle": "Que te descubran los vecinos de Lompoc y Vandenberg — en el boletín semanal, en el mapa y en la búsqueda local. Sin cargos por oferta, sin costos ocultos.",
@@ -987,7 +987,7 @@
       "paidConfirmedBanner": "Pago confirmado — tu membresía Growth está activa. ¡Bienvenido!"
     },
     "firstDeal": {
-      "metaTitle": "Agrega tu primera oferta — Lompoc Locals",
+      "metaTitle": "Agrega tu primera oferta",
       "stepLabel": "Paso 5 de 5",
       "title": "Agrega tu primera oferta",
       "subtitle": "Dale a los clientes una razón para visitar {bizName}. Puedes agregar más desde tu panel.",
@@ -1142,9 +1142,9 @@
       "heading": "Directorio de negocios"
     },
     "profile": {
-      "metaTitleSuffix": "Ofertas y Cupones en Lompoc, CA | Lompoc Locals",
+      "metaTitleSuffix": "Lompoc, CA",
       "metaNotFound": "Negocio no encontrado — Lompoc Locals",
-      "metaOgSuffix": "| Lompoc Locals",
+      "metaOgSuffix": "",
       "metaFallbackDescription": "Explora las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
       "metaOgFallback": "Ofertas actuales de {name} en Lompoc, CA. Gratis para canjear.",
       "breadcrumbHome": "Ofertas",
@@ -1738,7 +1738,7 @@
     "paginationLabel": "Paginación"
   },
   "submitEvent": {
-    "metaTitle": "Envía un evento — Lompoc Locals",
+    "metaTitle": "Envía un evento",
     "metaDescription": "Cuéntale a Lompoc sobre tu próximo evento, festival o apertura de negocio.",
     "heading": "Envía un evento",
     "subtitle": "Gratis publicar. Los eventos se revisan antes de aparecer — generalmente en pocas horas.",
@@ -1765,7 +1765,7 @@
     "successBody": "Lo publicaremos poco después de la aprobación."
   },
   "account": {
-    "metaTitle": "Mi cuenta — Lompoc Locals",
+    "metaTitle": "Mi cuenta",
     "heading": "Mi cuenta",
     "subtitle": "Tus ofertas guardadas, cupones y preferencias",
     "notifDisabledBanner": "Notificaciones de ofertas desactivadas. Puedes reactivarlas abajo.",
@@ -1802,7 +1802,7 @@
     "activeLabel": "Activo"
   },
   "listing": {
-    "metaTitleSuffix": "— Lompoc Locals",
+    "metaTitleSuffix": "",
     "metaNotFound": "Listado no encontrado — Lompoc Locals",
     "backToListings": "Volver a todos los listados",
     "photoNotAvailable": "Foto no disponible",
