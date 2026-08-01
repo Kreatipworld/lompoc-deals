@@ -2,6 +2,12 @@ import { auth } from "@/auth"
 import createMiddleware from "next-intl/middleware"
 import { routing } from "@/i18n/routing"
 import { NextResponse } from "next/server"
+import {
+  CAMPAIGN_COOKIE,
+  CAMPAIGN_MAX_AGE,
+  campaignFromParams,
+  encodeCampaign,
+} from "@/lib/analytics/campaign"
 
 const intlMiddleware = createMiddleware(routing)
 
@@ -9,6 +15,32 @@ const protectedPaths = ["/dashboard", "/admin"]
 
 const SESSION_COOKIE = "lompoc_sid"
 const SESSION_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
+
+/**
+ * Record how someone arrived, once, on their first tagged visit.
+ *
+ * Written here rather than in a page because middleware sees every entry point — a business page,
+ * a deal, the map — and a campaign link can land on any of them. track() then folds this into the
+ * props of every event, which is what makes "this post produced that claim" answerable.
+ *
+ * First touch wins: skipped entirely when the cookie already exists.
+ */
+function ensureCampaignCookie(req: Parameters<Parameters<typeof auth>[0]>[0], res: Response): Response {
+  if (!(res instanceof NextResponse)) return res
+  if (req.cookies.get(CAMPAIGN_COOKIE)) return res
+  const campaign = campaignFromParams(req.nextUrl.searchParams)
+  if (!campaign) return res
+  res.cookies.set({
+    name: CAMPAIGN_COOKIE,
+    value: encodeCampaign(campaign),
+    maxAge: CAMPAIGN_MAX_AGE,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+  })
+  return res
+}
 
 function ensureSessionCookie(req: Parameters<Parameters<typeof auth>[0]>[0], res: Response): Response {
   if (req.headers.get("cookie")?.includes(`${SESSION_COOKIE}=`)) return res
@@ -83,7 +115,7 @@ export default auth(function middleware(req) {
     }
   }
 
-  return ensureSessionCookie(req, intlResponse)
+  return ensureCampaignCookie(req, ensureSessionCookie(req, intlResponse))
 })
 
 export const config = {
