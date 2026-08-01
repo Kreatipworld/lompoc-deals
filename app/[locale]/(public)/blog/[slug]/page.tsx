@@ -25,7 +25,7 @@ export async function generateMetadata({
     post.metaDescription ?? post.excerpt ?? `Read ${post.title} on the Lompoc Locals blog.`
 
   return {
-    title: `${post.title} | Lompoc Locals Blog`,
+    title: post.title,
     description,
     openGraph: {
       title: post.title,
