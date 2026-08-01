@@ -1,6 +1,6 @@
-# Social calendar — 8 weeks from 2026-07-31
+# Social calendar — 8 weeks from 2026-08-01
 
-Generated from live data: 83 upcoming events, 23 places, 60 photo-complete businesses.
+Generated from live data: 84 upcoming events, 23 places, 60 photo-complete businesses.
 
 **Load `calendar.csv` into Buffer** (or any scheduler that takes CSV). Columns are date, time, channels, series, text, link, media. Media paths are repo-relative — upload those files when the scheduler asks.
 

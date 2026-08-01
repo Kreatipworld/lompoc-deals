@@ -29,6 +29,7 @@ import {
   cta,
   detailSentence,
   hashtagsFor,
+  isChain,
   launchOpener,
   launchVantage,
   launchCta,
@@ -166,7 +167,10 @@ async function main() {
       if (!groups.has(key)) groups.set(key, { key, label: key, count: 0, items: [] })
       const g = groups.get(key)
       g.count++
-      if (b.photos >= 1 && b.address) g.items.push(b)
+      // Chains count toward the street's total — they really are on that street — but they are
+      // never one of the four the post names. "88 shops in town" then holding up Smart & Final
+      // under #ShopLocalLompoc is an argument against ourselves.
+      if (b.photos >= 1 && b.address && !isChain(b.name)) g.items.push(b)
     }
     return [...groups.values()]
       .filter((g) => g.count >= RUN_DOWN_MIN && g.items.length >= RUN_DOWN_PICKS)

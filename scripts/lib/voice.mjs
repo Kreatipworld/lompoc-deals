@@ -176,6 +176,43 @@ const CATEGORY_NOUN = {
   "real-estate": "real-estate offices in town",
   dispensaries: "dispensaries in town",
 }
+/**
+ * Nationally-owned brands, kept out of the run-downs.
+ *
+ * A run-down posts under #ShopLocalLompoc. Naming Smart & Final or Taco Bell under that hashtag
+ * undercuts the whole point — those places do not need us, and a resident reading the post knows
+ * it. They stay in the directory (people genuinely look for them); they just don't get held up as
+ * an example of the town.
+ *
+ * Matched on word boundaries, not substrings. A plain `includes()` version excluded four local
+ * businesses by accident: "Crossroads Community Church" matched Ross, "Lompoc Flower Farm" matched
+ * Lowe's, and three independent detailers matched Mobil. Wrongly cutting a local business is a
+ * worse failure than letting a chain through, so the patterns are deliberately tight.
+ *
+ * This is an editorial list and needs adding to as chains arrive — there is no field in the data
+ * that says who owns a business.
+ */
+const CHAIN_PATTERNS = [
+  /\bsmart\s*&\s*final\b/i, /\bwal-?mart\b/i, /\btarget\b/i, /\bcostco\b/i, /\bhome depot\b/i,
+  /\bcvs\b/i, /\bwalgreens\b/i, /\brite aid\b/i, /\bstarbucks\b/i, /\bmcdonald/i, /\bburger king\b/i,
+  /\btaco bell\b/i, /\bwendy/i, /\bsubway\b/i, /\bdomino/i, /\bpizza hut\b/i, /\bkfc\b/i,
+  /\bjack in the box\b/i, /\bdel taco\b/i, /\bin-n-out\b/i, /\bchipotle\b/i, /\bpanda express\b/i,
+  /\bdollar tree\b/i, /\bdollar general\b/i, /\bfamily dollar\b/i, /\bbig lots\b/i,
+  /\bross dress\b/i, /\bmarshalls\b/i, /\btj ?maxx\b/i, /\bold navy\b/i, /\bgamestop\b/i,
+  /\bautozone\b/i, /\bo'?reilly\b/i, /\bnapa auto\b/i, /\bjiffy lube\b/i, /\bmidas\b/i,
+  /\bfirestone\b/i, /\bles schwab\b/i, /\bgoodwill\b/i, /\bups store\b/i, /\bfedex\b/i,
+  /\bverizon\b/i, /\bat&t\b/i, /\bt-mobile\b/i, /\bchase bank\b/i, /\bwells fargo\b/i,
+  /\bbank of america\b/i, /\bus bank\b/i, /\bgrocery outlet\b/i, /\bvons\b/i, /\balbertsons\b/i,
+  /\bsafeway\b/i, /\bfood 4 less\b/i, /\b7-eleven\b/i, /\bcircle k\b/i, /\bchevron\b/i,
+  /\bholiday inn\b/i, /\bhampton inn\b/i, /\bmarriott\b/i, /\bhilton\b/i, /\bmotel 6\b/i,
+  /\bsuper 8\b/i, /\bbest western\b/i, /\bembassy suites\b/i,
+  // Deliberately NOT a bare /motel/ — that caught Star Motel, which is an independent Lompoc
+  // motel and exactly the kind of business a run-down exists to name.
+]
+
+/** True when a business is a nationally-owned brand rather than one of the town's own. */
+export const isChain = (name) => CHAIN_PATTERNS.some((re) => re.test(String(name || "")))
+
 export const streetNoun = (key) => `businesses on ${streetName(key)}`
 export const categoryNoun = (slug, label) => CATEGORY_NOUN[slug] || `${String(label).toLowerCase()} in town`
 
