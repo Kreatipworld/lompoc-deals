@@ -78,10 +78,21 @@ const CATEGORY_CTA = {
 }
 const CATEGORY_CTA_FALLBACK = "Hours and directions"
 
+/**
+ * Openers, rewritten 2026-08-01 to match the copy being posted by hand.
+ *
+ * The originals were taglines — "Weekend plans, sorted." — which read as a brand talking. The
+ * hand-written posts that replaced them in the queue do something different and better: they name
+ * a thing the reader already experiences, in the second person, before offering anything.
+ * "Something's always happening in Lompoc. You just hear about it after." earns the next line;
+ * "Weekend plans, sorted." asks to be believed.
+ *
+ * The rule for anything added here: say something true about the reader's week, not about us.
+ */
 const SERIES_OPENERS = {
-  weekAhead: "Here's the week, if you're making plans.",
-  place: "Worth the stop, if you've got an hour.",
-  weekend: "Weekend plans, sorted.",
+  weekAhead: "Here's what's on this week, so you hear about it before and not after.",
+  place: "You've driven past this one. Worth actually stopping for.",
+  weekend: "If the weekend's still open, here's one to fill it with.",
   // Launch openers take the weekday, so they're built in launchOpener() below.
 }
 
@@ -265,8 +276,29 @@ export function nameSuffix(title, address) {
   return ` — ${s}`
 }
 
-export const launchOpener = (date) =>
-  `Look up ${date.toLocaleDateString("en-US", { weekday: "long" })} night. 🚀`
+/**
+ * "Look up Friday night. 🚀" was an instruction with an emoji doing the work. This says what is
+ * actually happening, in the words people here use — a launch is something that goes up over the
+ * valley, and it's a shared event rather than a notification.
+ */
+export const launchOpener = (date) => {
+  const day = date.toLocaleDateString("en-US", { weekday: "long" })
+  const now = new Date()
+  const days = Math.round((date - now) / 86400000)
+  const when = days <= 1 ? "tonight" : days <= 3 ? "this weekend" : `${day} night`
+  return `Something's going up over the valley ${when}.`
+}
+
+/**
+ * Where to watch from. Written for someone who lives here: the answer is usually "your driveway",
+ * and the named roads are for people who want the wide view, not a required trip.
+ */
+export const launchVantage =
+  "You don't need to drive anywhere for this one — southwest from your own driveway usually does " +
+  "it. If you want the wide view, Harris Grade Rd or Ocean Ave heading west."
+
+/** Launch times slip constantly, and standing outside for nothing is the thing to prevent. */
+export const launchCta = "Times move, so check before you stand outside:"
 
 /* ---------- launch cards ---------- */
 

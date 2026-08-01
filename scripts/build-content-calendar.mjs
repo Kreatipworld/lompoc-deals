@@ -30,6 +30,8 @@ import {
   detailSentence,
   hashtagsFor,
   launchOpener,
+  launchVantage,
+  launchCta,
   opener,
   seriesOpener,
   streetLine,
@@ -366,8 +368,8 @@ async function main() {
           ? `${launchOpener(new Date(nextLaunch.starts_at))}\n\n` +
             `${nextLaunch.title.replace(/^Rocket Launch:\s*/, "")}\n` +
             `${fmtDay(new Date(nextLaunch.starts_at))} · Vandenberg Space Force Base\n\n` +
-            `Best vantage points: Harris Grade Rd, Ocean Ave heading west, or your own driveway. Face southwest.\n\n` +
-            `Every launch on the calendar:\nlompoclocals.com/events\n\n${TAGS.space}`
+            `${launchVantage}\n\n` +
+            `${launchCta}\nlompoclocals.com/events\n\n${TAGS.space}`
           : `${seriesOpener("weekend")}\n\n` +
             `${a.title}${nameSuffix(a.title, a.address)}\n` +
             `${(a.seasonality || "Open year-round").replace(/^./, (c) => c.toUpperCase())}.\n\n` +
@@ -393,9 +395,16 @@ async function main() {
   // Video assets get their own slots — one a week, rotating.
   // Each spot ships in both shapes: the 4:5 master for the Instagram feed, the untouched 9:16
   // for TikTok. Same cut, sized for where it lands.
+  // Counted at generation time, so the caption can't claim a town bigger than the one on the site.
+  const bizCount = listed.length
+  const eventCount = events.length
   const BRAND_CAPTION =
-    `All of Lompoc, in one place.\n\nEvery local business, every event, every launch over the base — ` +
-    `and everywhere worth going.\n\nlompoclocals.com\n\n${TAGS.general}`
+    `Something's always happening in Lompoc. You just hear about it after.\n\n` +
+    `${bizCount} local businesses. ${eventCount} events coming up, including the launches over the ` +
+    `base. Real photos of real places, so you know before you go.\n\n` +
+    `It used to be scattered — flyers, group chats, word of mouth. Now it's one place.\n\n` +
+    `lompoclocals.com\nEn inglés y en español, porque es el pueblo de todos.\n\n` +
+    `${TAGS.general} #SomosLompoc #ShopLocalLompoc`
 
   // Most spots were cut as a 9:16 master with a 4:5 crop alongside it; the feature ad was rendered
   // natively in both shapes, so it names its files directly rather than following that convention.
@@ -410,8 +419,11 @@ async function main() {
       // No counts in the caption: the numbers are burned into the video at render time, and a
       // caption that recounts them from today's database would contradict the frame it sits under.
       text:
-        `What's actually on the site.\n\nEvery business in town, every event, every launch over the ` +
-        `base — real photos, one listing each, in English y en español.\n\nlompoclocals.com\n\n${TAGS.general}`,
+        `Everything in town, in one place — and it's all real.\n\n` +
+        `Every business, every event, every launch over the base. Real photos, not stock. One ` +
+        `listing each, so you're not guessing which is current.\n\n` +
+        `lompoclocals.com\nEn inglés y en español, porque es el pueblo de todos.\n\n` +
+        `${TAGS.general} #SomosLompoc`,
     },
     { stem: "lompoc-locals-experience", note: "Full tour, 25s" },
     { stem: "lompoc-locals-signup", note: "Signup-focused, 19s" },
