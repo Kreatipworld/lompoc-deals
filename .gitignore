@@ -53,3 +53,11 @@ content/social/posts/*.png
 content/social/video/*.mp4
 content/social/video/masters/*.mp4
 content/social/launch-kit/**/*.png
+
+# Same rule as above, for the directories added since: ad deliverables are derived from the
+# source cut by build-ad-masters.mjs, and the narration/generated stills are large binaries that
+# git would keep a copy of on every regeneration. The durable archive for all of this is Dropbox
+# — run scripts/sync-content-to-dropbox.sh, which mirrors it and never deletes.
+content/social/video/ad-masters/
+content/social/video/vo/
+content/social/assets/generated-people/
