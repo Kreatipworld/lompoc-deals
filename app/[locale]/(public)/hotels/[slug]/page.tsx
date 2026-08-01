@@ -44,6 +44,9 @@ export async function generateMetadata({
     openGraph: {
       title: `${hotel.name} · Lompoc, CA`,
       description: hotel.tagline,
+      // Every hotel carries six Blob photos; without this the card rendered as a grey rectangle
+      // wherever the link was shared.
+      images: hotel.photos?.length ? [{ url: hotel.photos[0], alt: hotel.name }] : undefined,
     },
     alternates: pageAlternates(`/hotels/${params.slug}`),
   }

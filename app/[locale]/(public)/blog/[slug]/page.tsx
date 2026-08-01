@@ -34,7 +34,13 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.publishedAt?.toISOString(),
       authors: post.authorName ? [post.authorName] : undefined,
-      images: post.imageUrl ? [{ url: post.imageUrl, alt: post.title }] : undefined,
+      // 28 of 48 posts have no image of their own. A shared link with a blank card is the one
+      // nobody clicks, so fall back to a real Lompoc photograph instead of leaving it empty.
+      images: [
+        post.imageUrl
+          ? { url: post.imageUrl, alt: post.title }
+          : { url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" },
+      ],
     },
     alternates: pageAlternates(`/blog/${params.slug}`),
   }

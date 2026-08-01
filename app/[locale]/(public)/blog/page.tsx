@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     title: "Blog — Lompoc Locals",
     description: "Local stories, tips, and community news for Lompoc, CA.",
     url: `${siteUrl}/blog`,
+    images: [{ url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" }],
   },
   alternates: pageAlternates("/blog"),
 }
