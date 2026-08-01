@@ -5,15 +5,20 @@ import { Link } from "@/i18n/navigation"
 import { Mail, Lock, Heart, Store, Crown } from "lucide-react"
 import { signupAction, type FormState } from "@/lib/auth-actions"
 
-function SubmitButton() {
+/**
+ * The button says what happens, and names the business when we know it: someone arriving from an
+ * outreach email is deciding whether to claim *their shop*, not whether to create an account.
+ * "Claim J's Glass Co" is the same action described from their side of the screen.
+ */
+function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
   const { pending } = useFormStatus()
   return (
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex h-11 w-full items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition-[transform,background-color,opacity] duration-150 hover:bg-primary/90 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
+      className="inline-flex h-11 w-full items-center justify-center rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition-[transform,background-color,opacity] duration-150 hover:bg-primary/90 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
     >
-      {pending ? "Creating account…" : "Create account"}
+      <span className="truncate">{pending ? pendingLabel : label}</span>
     </button>
   )
 }
@@ -22,10 +27,14 @@ export function SignupForm({
   claimSlug,
   defaultPlan,
   showCanceled,
+  submitLabel,
+  submitPendingLabel,
 }: {
   claimSlug?: string | null
   defaultPlan?: string | null
   showCanceled?: boolean
+  submitLabel?: string
+  submitPendingLabel?: string
 } = {}) {
   const [state, action] = useFormState<FormState, FormData>(
     signupAction,
@@ -143,7 +152,10 @@ export function SignupForm({
         </p>
       )}
 
-      <SubmitButton />
+      <SubmitButton
+        label={submitLabel ?? "Create account"}
+        pendingLabel={submitPendingLabel ?? "Creating account…"}
+      />
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}

@@ -247,9 +247,19 @@
       "haveAccount": "¿Ya tienes una cuenta?",
       "signIn": "Iniciar sesión",
       "claimHeading": "Reclamar tu negocio",
-      "claimSubheading": "Crea tu cuenta de propietario en 30 segundos.",
+      "claimSubheading": "Recláma­la y es tuya — fotos, horarios, tu historia, todo.",
       "claimingBadgeTitle": "Reclamando",
-      "claimingBadgeBody": "Crea tu cuenta y un administrador revisará tu solicitud."
+      "claimingBadgeBody": "Crea tu cuenta y un administrador revisará tu solicitud.",
+      "claimHeadingNamed": "Esta página ya está publicada.",
+      "claimCta": "Reclamar {name}",
+      "claimCtaPending": "Reclamando…",
+      "claimAssuranceFree": "Gratis, y así se queda. Sin tarjeta, sin prueba que se acaba.",
+      "claimAssuranceControl": "Tú editas todo — fotos, horarios, descripción, enlaces.",
+      "claimAssuranceExit": "¿La quieres fuera? Nos dices y quitamos la página.",
+      "previewOpenNow": "Abierto ahora",
+      "previewClosed": "Cerrado",
+      "previewOpens": "Abre {when}",
+      "previewLive": "Publicado en lompoclocals.com"
     },
     "resetPassword": {
       "metaTitle": "Restablecer contraseña"

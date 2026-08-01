@@ -247,9 +247,19 @@
       "haveAccount": "Already have an account?",
       "signIn": "Sign in",
       "claimHeading": "Claim your listing",
-      "claimSubheading": "Set up your business owner account in 30 seconds.",
+      "claimSubheading": "Claim it and it's yours to run — photos, hours, your story, all of it.",
       "claimingBadgeTitle": "Claiming",
-      "claimingBadgeBody": "Create your account and an admin will review your claim."
+      "claimingBadgeBody": "Create your account and an admin will review your claim.",
+      "claimHeadingNamed": "This page is already live.",
+      "claimCta": "Claim {name}",
+      "claimCtaPending": "Claiming…",
+      "claimAssuranceFree": "Free, and it stays free. No card, no trial running out.",
+      "claimAssuranceControl": "You edit everything — photos, hours, description, links.",
+      "claimAssuranceExit": "Want it gone? Say the word and we take the page down.",
+      "previewOpenNow": "Open now",
+      "previewClosed": "Closed",
+      "previewOpens": "Opens {when}",
+      "previewLive": "Live on lompoclocals.com"
     },
     "resetPassword": {
       "metaTitle": "Reset Password"

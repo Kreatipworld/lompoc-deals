@@ -1,7 +1,8 @@
 import { db } from "@/db/client"
 import { SignupForm } from "./signup-form"
 import { Link } from "@/i18n/navigation"
-import { Sparkles, Heart, Store, ChevronRight } from "lucide-react"
+import { Heart, Store, ChevronRight, Check } from "lucide-react"
+import { ClaimPreview } from "./claim-preview"
 import { getTranslations } from "next-intl/server"
 
 export async function generateMetadata({
@@ -29,46 +30,91 @@ export default async function SignupPage({
   const defaultPlan = searchParams.plan ?? null
   const showCanceled = searchParams.canceled === "1"
   const from = searchParams.from
-  let claimingBusinessName: string | null = null
+  // The claim screen leads with a miniature of the listing itself, so pull what the card renders.
+  let claimingBusiness: {
+    name: string
+    address: string | null
+    coverUrl: string | null
+    logoUrl: string | null
+    hoursJson: unknown
+    category: string | null
+  } | null = null
   if (claimSlug) {
     const biz = await db.query.businesses.findFirst({
       where: (b, { eq }) => eq(b.slug, claimSlug),
-      columns: { name: true },
+      columns: {
+        name: true,
+        address: true,
+        coverUrl: true,
+        logoUrl: true,
+        hoursJson: true,
+        categoryId: true,
+      },
     })
-    claimingBusinessName = biz?.name ?? null
+    if (biz) {
+      // businesses has no `category` relation defined, so read the name on its own rather than
+      // adding one just for this card.
+      const cat = biz.categoryId
+        ? await db.query.categories.findFirst({
+            where: (c, { eq }) => eq(c.id, biz.categoryId as number),
+            columns: { name: true },
+          })
+        : null
+      claimingBusiness = {
+        name: biz.name,
+        address: biz.address ?? null,
+        coverUrl: biz.coverUrl ?? null,
+        logoUrl: biz.logoUrl ?? null,
+        hoursJson: biz.hoursJson ?? null,
+        category: cat?.name ?? null,
+      }
+    }
   }
+  const claimingBusinessName = claimingBusiness?.name ?? null
 
   // If claiming a business, fall through to the old form (preserves claim flow)
   if (claimSlug) {
     return (
       <>
-        {claimingBusinessName && (
-          <div className="mb-6 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4">
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-              <Sparkles className="h-4 w-4" />
-            </div>
-            <div className="text-sm">
-              <p className="font-semibold">
-                {t("signupLanding.claimingBadgeTitle")}{" "}
-                <span className="text-primary">{claimingBusinessName}</span>
-              </p>
-              <p className="text-muted-foreground">
-                {t("signupLanding.claimingBadgeBody")}
-              </p>
-            </div>
-          </div>
-        )}
-        <div className="space-y-2 text-center">
-          <h1 className="font-display text-3xl font-semibold tracking-tight">
-            {t("signupLanding.claimHeading")}
+        {claimingBusiness && <ClaimPreview {...claimingBusiness} />}
+
+        <div className="mt-6 space-y-2 text-center">
+          <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+            {claimingBusinessName
+              ? t("signupLanding.claimHeadingNamed")
+              : t("signupLanding.claimHeading")}
           </h1>
           <p className="text-sm text-muted-foreground">
             {t("signupLanding.claimSubheading")}
           </p>
         </div>
-        <div className="mt-8">
-          <SignupForm claimSlug={claimSlug} defaultPlan={defaultPlan} showCanceled={showCanceled} />
+
+        <div className="mt-6">
+          <SignupForm
+            claimSlug={claimSlug}
+            defaultPlan={defaultPlan}
+            showCanceled={showCanceled}
+            submitLabel={
+              claimingBusinessName
+                ? t("signupLanding.claimCta", { name: claimingBusinessName })
+                : undefined
+            }
+            submitPendingLabel={
+              claimingBusinessName ? t("signupLanding.claimCtaPending") : undefined
+            }
+          />
         </div>
+
+        {/* The three things an owner who never asked to be listed actually wants to know: what it
+            costs, who controls it, and how to get out. Stated once, plainly, under the button. */}
+        <ul className="mt-6 grid gap-2 border-t pt-5 text-sm text-muted-foreground">
+          {["claimAssuranceFree", "claimAssuranceControl", "claimAssuranceExit"].map((key) => (
+            <li key={key} className="flex items-start gap-2">
+              <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B992F]" aria-hidden />
+              <span>{t(`signupLanding.${key}`)}</span>
+            </li>
+          ))}
+        </ul>
       </>
     )
   }
