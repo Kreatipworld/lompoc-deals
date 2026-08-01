@@ -23,28 +23,10 @@ import { neon } from "@neondatabase/serverless"
 import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
-import { execFileSync } from "node:child_process"
-import ffmpegPath from "ffmpeg-static"
+import { evaluate } from "./lib/photo-health.mjs"
 
 const LIMIT = Number((process.argv.find((a) => a.startsWith("--limit=")) || "").split("=")[1] || 0)
 const JSON_OUT = (process.argv.find((a) => a.startsWith("--json=")) || "").split("=")[1] || ""
-
-// Deliberately not the ideal — the ideal (≥1080 short edge, to fill a partner card without
-// upscaling) would flag most of the directory, and a report that flags everything gets ignored.
-// This is the "visibly soft even in a thumbnail" line.
-const MIN_EDGE = 500
-/**
- * Thresholds measured against a real failure, not guessed.
- *
- * The first cut tested each row's min/max spread and caught nothing — the Bowl & Soul band was a
- * dark *gradient*, so its range looked normal. Sampling the actual rows showed the real signal is
- * standard deviation: that band ran sd 6–9 across the top 8 rows of 24, while a good photograph of
- * the same subject never drops below sd 17 except for 3 rows of blurred counter at the bottom.
- */
-const FLAT_SD = 12 // a row this uniform carries no detail
-const EDGE_BAND_RATIO = 0.22 // a dead run this deep at the top or bottom is wasted frame
-const BLANK_ROW_RATIO = 0.5 // mostly detail-less overall — an empty image, not a composed one
-const TARGET_RATIO = 4 / 5
 
 const url = fs
   .readFileSync(".env.local", "utf8")
@@ -53,53 +35,6 @@ const url = fs
 const sql = neon(url)
 
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), "photo-health-"))
-
-/** Decode to a tiny raw greyscale grid — enough to spot flat bands without decoding full frames. */
-function sample(file, w = 24, h = 30) {
-  const out = path.join(TMP, "s.gray")
-  execFileSync(
-    ffmpegPath,
-    ["-y", "-i", file, "-vf", `scale=${w}:${h}`, "-pix_fmt", "gray", "-f", "rawvideo", out],
-    { stdio: "ignore", timeout: 25_000 }
-  )
-  const buf = fs.readFileSync(out)
-  const rows = []
-  for (let y = 0; y < h; y++) rows.push([...buf.subarray(y * w, (y + 1) * w)])
-  return rows
-}
-
-function dimensions(file) {
-  const out = execFileSync(ffmpegPath, ["-i", file, "-hide_banner"], {
-    stdio: ["ignore", "ignore", "pipe"], timeout: 25_000, encoding: "utf8",
-  }).toString()
-  return out
-}
-
-/** ffmpeg reports size on stderr and exits non-zero with no output file; parse either way. */
-function probeSize(file) {
-  try {
-    dimensions(file)
-  } catch (e) {
-    const m = String(e.stderr || "").match(/,\s(\d{2,5})x(\d{2,5})[\s,]/)
-    if (m) return { w: Number(m[1]), h: Number(m[2]) }
-  }
-  return null
-}
-
-function sd(row) {
-  const mean = row.reduce((a, b) => a + b, 0) / row.length
-  return Math.sqrt(row.reduce((a, b) => a + (b - mean) ** 2, 0) / row.length)
-}
-const flat = (row) => sd(row) <= FLAT_SD
-
-function analyse(rows) {
-  const flatRows = rows.filter(flat).length
-  let topBand = 0
-  while (topBand < rows.length && flat(rows[topBand])) topBand++
-  let bottomBand = 0
-  while (bottomBand < rows.length && flat(rows[rows.length - 1 - bottomBand])) bottomBand++
-  return { blankRatio: flatRows / rows.length, topBand, bottomBand, total: rows.length }
-}
 
 const businesses = await sql`
   select id, name, slug, cover_url,
@@ -135,32 +70,8 @@ for (const b of pool) {
   fs.writeFileSync(file, buf)
   checked++
 
-  const size = probeSize(file)
-  const issues = []
-  if (size) {
-    const short = Math.min(size.w, size.h)
-    if (short < MIN_EDGE) issues.push({ issue: "tiny", detail: `${size.w}x${size.h}` })
-    // 16:9 is ordinary photography and centre-crops to 4:5 perfectly well, so the bar is set
-    // beyond it: only panoramas and tall strips, where a centre crop discards most of the frame.
-    const ratio = size.w / size.h
-    if (ratio > 2.4 || ratio < 0.42) issues.push({ issue: "lopsided", detail: `${size.w}x${size.h}` })
-  }
-
-  try {
-    const a = analyse(sample(file))
-    if (a.blankRatio >= BLANK_ROW_RATIO)
-      issues.push({ issue: "blank", detail: `${Math.round(a.blankRatio * 100)}% flat rows` })
-    const band = Math.max(a.topBand, a.bottomBand)
-    if (band / a.total >= EDGE_BAND_RATIO)
-      issues.push({
-        issue: "letterboxed",
-        detail: `${a.topBand ? `${Math.round((a.topBand / a.total) * 100)}% top` : ""}${
-          a.topBand && a.bottomBand ? " + " : ""
-        }${a.bottomBand ? `${Math.round((a.bottomBand / a.total) * 100)}% bottom` : ""}`,
-      })
-  } catch {
-    /* undecodable frame — the size check above already spoke, or it's a format ffmpeg won't read */
-  }
+  const { size, issues } = evaluate(file, TMP)
+  void size
 
   for (const i of issues) findings.push({ ...b, ...i })
   fs.rmSync(file, { force: true })

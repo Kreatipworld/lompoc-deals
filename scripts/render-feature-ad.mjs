@@ -10,6 +10,16 @@
  * Photos are downloaded once and served from the local frame server: same-origin keeps the canvas
  * untainted (toBlob throws on a tainted canvas), and it avoids refetching 40 images every frame.
  *
+ * Two rules govern how a photograph meets the frame, because the pool is live data and nothing in
+ * it says what a picture is of. First, the crop centres on measured edge energy rather than on the
+ * geometric middle, so an off-centre subject stays in frame. Second, when a crop would throw away
+ * more than half the picture — a 2:1 shop sign in a 9:16 frame, where no focal point can help —
+ * the photo stops being cropped and is shown whole, full width, over a blurred blow-up of itself.
+ * Nothing gets sliced past recognition in either shape.
+ *
+ * Sound is a synthesised pad (scripts/lib/music-bed.mjs), one chord per beat so the harmony turns
+ * on the cut, resolving on the tonic over the end card. Both shapes carry the same mix at -14 LUFS.
+ *
  * Same two headless-Chrome facts the other renderers work around (see lib/video-frames.mjs):
  * MediaRecorder returns empty video in headless, and requestAnimationFrame never fires — so frames
  * are painted on a step loop, POSTed out as JPEGs, and encoded by ffmpeg.
@@ -25,6 +35,7 @@ import path from "node:path"
 import { spawn } from "node:child_process"
 import ffmpegPath from "ffmpeg-static"
 import { neon } from "@neondatabase/serverless"
+import { buildBed } from "./lib/music-bed.mjs"
 
 const FPS = 30
 const OUT_DIR = "content/social/video"
@@ -140,7 +151,16 @@ const load = src => new Promise(res => {
   const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src;
 });
 
-let MARK_W, PHOTOS = [], GRAIN, STOREFRONT = 0;
+let MARK_W, PHOTOS = [], FOCUS = [], GRAIN, STOREFRONT = 0;
+
+// How much of a photograph a full-bleed crop keeps: the short side of the frame against the
+// long side of the picture. Below PLATE_MIN the crop is throwing away more than half the
+// photo, at which point no focal point saves it — a shop sign that runs the full width of a
+// 2:1 photograph cannot survive a 9:16 crop from any centre, so the picture stops being
+// cropped and gets shown whole instead.
+const FRAME_R = W/H;
+const PLATE_MIN = 0.45;
+const survives = img => { const r=img.width/img.height; return Math.min(r,FRAME_R)/Math.max(r,FRAME_R); };
 
 /**
  * The widest business photo in the pool.
@@ -176,12 +196,49 @@ function grain(alpha){
   g.restore();
 }
 
-/** object-fit: cover. */
-function cover(img,x,y,w,h){
+/**
+ * object-fit: cover, centred on (fx,fy) of the source instead of on its geometric middle.
+ *
+ * The focal point is clamped, not obeyed: it can slide the crop anywhere inside the picture
+ * but can never pull it past an edge and expose the background.
+ */
+function coverAt(img,x,y,w,h,fx,fy){
   if(!img) return;
   const s=Math.max(w/img.width,h/img.height);
   const dw=img.width*s, dh=img.height*s;
-  g.drawImage(img, x+(w-dw)/2, y+(h-dh)/2, dw, dh);
+  const dx=Math.min(x, Math.max(x+w-dw, x+w/2-fx*dw));
+  const dy=Math.min(y, Math.max(y+h-dh, y+h/2-fy*dh));
+  g.drawImage(img,dx,dy,dw,dh);
+}
+
+/**
+ * Where the subject of a photograph is.
+ *
+ * Nothing in the data records what a photo is *of*, so a crop can't be told where to look —
+ * it has to work it out. Edge energy is a decent stand-in for subject: a rocket on a pad, a
+ * shopfront, a row of campers carry dense detail; open sky and flat water carry almost none.
+ * The centroid of that energy, pulled most of the way back toward the middle so one busy
+ * corner can't yank the whole frame, is the point the crop centres on.
+ *
+ * Cheap by design — 72px wide, computed once per photo at load, never per frame.
+ */
+function focusOf(img){
+  if(!img || !img.width) return {fx:0.5,fy:0.5};
+  const w=72, h=Math.max(8,Math.round(72*img.height/img.width));
+  const o=document.createElement('canvas'); o.width=w; o.height=h;
+  const x=o.getContext('2d',{willReadFrequently:true});
+  x.drawImage(img,0,0,w,h);
+  const d=x.getImageData(0,0,w,h).data;
+  const lum=i=>0.299*d[i*4]+0.587*d[i*4+1]+0.114*d[i*4+2];
+  let sx=0, sy=0, tot=0;
+  for(let j=1;j<h-1;j++) for(let i=1;i<w-1;i++){
+    const c=j*w+i;
+    const e=Math.abs(lum(c)-lum(c+1))+Math.abs(lum(c)-lum(c+w));
+    const wt=e*e;
+    sx+=wt*(i+0.5); sy+=wt*(j+0.5); tot+=wt;
+  }
+  if(!tot) return {fx:0.5,fy:0.5};
+  return { fx: lerp(0.5, sx/tot/w, 0.55), fy: lerp(0.5, sy/tot/h, 0.55) };
 }
 
 function wrapWords(words,font,maxW){
@@ -227,32 +284,73 @@ function reveal(text,{y,size,weight,colour,maxW,x,p,stagger,align}){
 const headLines = (text,size) =>
   wrapWords(text.split(' '),'800 '+size+'px "Plus Jakarta Sans", sans-serif',W-PAD*2).length;
 
+/**
+ * Where an uncroppable photograph goes instead — full width, sitting directly on top of the
+ * headline, over a blurred blow-up of itself so the frame stays photographic rather than
+ * turning into a letterbox. Returns null when a crop is safe and the photo should go
+ * full-bleed as normal.
+ */
+function plateBox(img,top,headSize){
+  if(!img || survives(img)>=PLATE_MIN) return null;
+  const bottom=top-headSize*0.78-PAD*0.75, ceiling=H*0.07;
+  let w=W, h=W*img.height/img.width;
+  if(h>bottom-ceiling){ h=bottom-ceiling; w=h*img.width/img.height; }
+  return {x:(W-w)/2, y:bottom-h, w, h};
+}
+
+function backdrop(img,p){
+  // Zoomed well past the frame so the blur never samples off the edge of the picture, and
+  // blurred hard enough that a textured source — a shingled wall behind a shop sign — reads
+  // as a field of colour rather than as a smudged photograph.
+  const s=lerp(1.34,1.42,easeInOut(p));
+  g.save();
+  g.filter='blur(72px)';
+  g.translate(W/2,H/2); g.scale(s,s); g.translate(-W/2,-H/2);
+  coverAt(img,0,0,W,H,0.5,0.5);
+  g.restore();
+  g.fillStyle='rgba(18,10,22,0.56)'; g.fillRect(0,0,W,H);
+}
+
+function plate(img,box,p){
+  g.save();
+  g.shadowColor='rgba(0,0,0,0.55)';
+  g.shadowBlur=Math.round(W*0.055);
+  g.shadowOffsetY=Math.round(W*0.014);
+  g.fillStyle='#000'; g.fillRect(box.x,box.y,box.w,box.h);
+  g.restore();
+  g.save();
+  g.beginPath(); g.rect(box.x,box.y,box.w,box.h); g.clip();
+  // A hair of push-in for life. Capped at 2%, which is a rounding error against the margin
+  // any real sign leaves inside its own photograph.
+  const s=lerp(1.0,1.02,easeInOut(p));
+  const dw=box.w*s, dh=box.h*s;
+  g.drawImage(img, box.x+(box.w-dw)/2, box.y+(box.h-dh)/2, dw, dh);
+  g.restore();
+  g.save();
+  g.strokeStyle='rgba(255,255,255,0.12)'; g.lineWidth=2;
+  g.strokeRect(box.x+1,box.y+1,box.w-2,box.h-2);
+  g.restore();
+}
+
+/**
+ * A neutral scrim, not a brand wash. Flooding the frame with purple or green turned a beach
+ * into a purple beach and a rocket into a green rocket — the photographs are the whole
+ * argument that this is a real town, so they keep their own colour. Only the strip the type
+ * sits on gets darkened, and only enough to hold white text.
+ */
+function scrims(k){
+  const grd=g.createLinearGradient(0,H*0.34,0,H);
+  grd.addColorStop(0,'rgba(18,10,22,0)');
+  grd.addColorStop(1,'rgba(18,10,22,'+(0.84*k).toFixed(3)+')');
+  g.fillStyle=grd; g.fillRect(0,H*0.34,W,H*0.66);
+  const t=g.createLinearGradient(0,0,0,H*0.16);
+  t.addColorStop(0,'rgba(18,10,22,'+(0.34*k).toFixed(3)+')');
+  t.addColorStop(1,'rgba(18,10,22,0)');
+  g.fillStyle=t; g.fillRect(0,0,W,H*0.16);
+}
+
 function paintBeat(b,p){
   g.fillStyle=C[b.bg]||PURPLE; g.fillRect(0,0,W,H);
-
-  if(b.kind==='photo'){
-    const idx = b.photo==='storefront' ? STOREFRONT : b.photo;
-    const img=PHOTOS[idx%Math.max(1,PHOTOS.length)];
-    // Slow push-in keeps a still photograph from feeling like a slide.
-    const s=lerp(1.0,1.06,easeInOut(p));
-    g.save();
-    g.translate(W/2,H/2); g.scale(s,s); g.translate(-W/2,-H/2);
-    cover(img,0,0,W,H);
-    g.restore();
-    // A neutral scrim, not a brand wash. Flooding the frame with purple or green turned a beach
-    // into a purple beach and a rocket into a green rocket — the photographs are the whole
-    // argument that this is a real town, so they keep their own colour. Only the strip the type
-    // sits on gets darkened, and only enough to hold white text.
-    const grd=g.createLinearGradient(0,H*0.34,0,H);
-    grd.addColorStop(0,'rgba(18,10,22,0)');
-    grd.addColorStop(1,'rgba(18,10,22,0.84)');
-    g.fillStyle=grd; g.fillRect(0,H*0.34,W,H*0.66);
-    // Just enough at the top for the white mark to read against a bright sky.
-    const top=g.createLinearGradient(0,0,0,H*0.16);
-    top.addColorStop(0,'rgba(18,10,22,0.34)');
-    top.addColorStop(1,'rgba(18,10,22,0)');
-    g.fillStyle=top; g.fillRect(0,0,W,H*0.16);
-  }
 
   const onDark = b.bg!=='cream' && b.bg!=='gold';
   const headColour = b.headColour ? C[b.headColour] : (onDark ? '#ffffff' : INK);
@@ -268,14 +366,11 @@ function paintBeat(b,p){
     const h=Math.round(W*0.22);
     g.drawImage(MARK_W,(W-h*MARK_ASPECT)/2,H*0.28,h*MARK_ASPECT,h);
     g.restore();
+    // No tagline under the mark. The wordmark already reads LOCALS, so "made by locals, for
+    // locals" put the word on screen three times in one frame — the same pile-up that had to be
+    // cut out of the TV spot's ending. The url line is the whole sign-off.
     reveal(b.head,{y:H*0.56,size:Math.round(W*0.078),weight:'800',colour:GOLD,
       maxW:W-PAD*2,x:W/2,p,stagger:0.10,align:'center'});
-    g.textAlign='center';
-    g.globalAlpha=clamp01((p-0.45)/0.3);
-    g.fillStyle='rgba(255,255,255,0.9)';
-    g.font='600 '+Math.round(W*0.034)+'px "Plus Jakarta Sans", sans-serif';
-    g.fillText('Made by locals, for locals',W/2,H*0.635);
-    g.globalAlpha=1; g.textAlign='left';
     grain(GRAIN_ALPHA);
     return;
   }
@@ -290,6 +385,31 @@ function paintBeat(b,p){
   const top = b.kind==='photo'
     ? H - PAD*1.5 - blockH + headSize*0.72
     : Math.max(H*0.22,(H-blockH)/2) + headSize*0.66;
+
+  // The picture is painted after the type has been measured, because a photograph that has
+  // to be shown whole is laid out around the words rather than behind them.
+  if(b.kind==='photo'){
+    const idx = b.photo==='storefront' ? STOREFRONT : b.photo;
+    const at = idx%Math.max(1,PHOTOS.length);
+    const img=PHOTOS[at];
+    const box=plateBox(img,top,headSize);
+    if(box){
+      backdrop(img,p);
+      scrims(0.5);
+      plate(img,box,p);
+    } else {
+      // Slow push-in keeps a still photograph from feeling like a slide.
+      // A beat's own focus:[x,y] overrides the measured focal point, for the day a photo
+      // needs framing a machine can't guess.
+      const f=b.focus ? {fx:b.focus[0], fy:b.focus[1]} : (FOCUS[at]||{fx:0.5,fy:0.5});
+      const s=lerp(1.0,1.06,easeInOut(p));
+      g.save();
+      g.translate(W/2,H/2); g.scale(s,s); g.translate(-W/2,-H/2);
+      coverAt(img,0,0,W,H,f.fx,f.fy);
+      g.restore();
+      scrims(1);
+    }
+  }
 
   const used=reveal(b.head,{y:top,size:headSize,weight:'800',colour:headColour,
     maxW:W-PAD*2,x:PAD,p,stagger:0.10});
@@ -331,6 +451,7 @@ const toBlob = () => new Promise(r => cv.toBlob(r,'image/jpeg',0.94));
   // Nulls are kept, not filtered: the beats were cast against these positions in Node, and
   // dropping a failed image here would slide every photo after it into the wrong beat.
   PHOTOS = await Promise.all(spec.photos.map(f => load('/p/'+f)));
+  FOCUS = PHOTOS.map(focusOf);
   STOREFRONT = widestIn(spec.bizRange);
   GRAIN = makeGrain();
   await document.fonts.load('800 140px "Plus Jakarta Sans"');
@@ -385,24 +506,41 @@ const toBlob = () => new Promise(r => cv.toBlob(r,'image/jpeg',0.94));
  * they read as a demo of what the renderer can do. What's left is one idea per beat: three
  * photographs carrying the three numbers, two flat colour statements, an open and an end.
  *
+ * The argument, in order: you are missing things happening in your own town, and here is one
+ * place where all of it lives. The three photo beats name a specific thing a resident misses —
+ * the shop they've never noticed, the launch they could have watched, the places they drive
+ * past — and the number underneath is the evidence that it is all already here. The numbers
+ * are not a feature list; they are the receipt for "everything".
+ *
  * Rule for the type: gold is for numbers and for the sub-line on a dark field. Nothing else.
  */
 const beats = (n, cast) => [
-  { kind: "open", bg: "purple", head: "All of Lompoc.", sub: "One place.", subColour: "gold", big: true, dur: 2.6 },
-  { kind: "photo", bg: "purple", photo: "storefront", head: "Every business in town.",
-    stat: n.businesses.toLocaleString(), statColour: "gold", label: "local businesses, all of them real", dur: 3.2 },
-  { kind: "photo", bg: "purple", photo: cast.launch, head: "Every event. Every launch.",
-    stat: n.events.toLocaleString(), statColour: "gold", label: `upcoming — ${n.launches} over the base`, dur: 3.2 },
-  { kind: "photo", bg: "purple", photo: cast.land, head: "Real photos of real places.",
-    stat: n.photos.toLocaleString(), statColour: "gold", label: "photos on the site, no stock imagery", dur: 3.2 },
-  { kind: "color", bg: "gold", head: "One listing each.", sub: "Duplicates merged, not stacked.",
+  { kind: "open", bg: "purple", head: "Stop missing your own town.", sub: "It's all in one place.",
+    subColour: "gold", big: true, dur: 2.6 },
+  { kind: "photo", bg: "purple", photo: "storefront", head: "The shop two streets over.",
+    stat: n.businesses.toLocaleString(), statColour: "gold", label: "Lompoc businesses, all of them here", dur: 3.2 },
+  { kind: "photo", bg: "purple", photo: cast.launch, head: "The launch you could have watched.",
+    stat: n.events.toLocaleString(), statColour: "gold", label: `coming up — ${n.launches} over the base`, dur: 3.2 },
+  { kind: "photo", bg: "purple", photo: cast.land, head: "The places you drive past.",
+    stat: n.photos.toLocaleString(), statColour: "gold", label: "real photos on the site, no stock", dur: 3.2 },
+  { kind: "color", bg: "gold", head: "One place, not ten.", sub: "No more hunting Facebook groups.",
     headColour: "ink", subColour: "purple", dur: 2.6 },
   { kind: "color", bg: "green", head: "En inglés y en español.", sub: "Every page, both languages.",
     subColour: "gold", dur: 2.6 },
   { kind: "end", bg: "purple", head: "lompoclocals.com", dur: 2.8 },
 ]
 
-async function renderShape(key, spec, photoDir) {
+/**
+ * The bed under the picture.
+ *
+ * One chord per beat, changing on the cut, so a cut lands as a change of harmony as well as a
+ * change of colour. I–V–vi–IV–I–V–I in A major: it opens on the tonic, travels, and comes home
+ * on an authentic cadence over the end card, so the last chord is a resolution rather than a
+ * fade-out that happened to run out of runtime.
+ */
+const CHORD_PER_BEAT = ["A", "E", "F#m", "D", "A", "E", "A"]
+
+async function renderShape(key, spec, photoDir, bedPath) {
   const { w: W, h: H, name } = SHAPES[key]
   const seconds = spec.beats.reduce((a, b) => a + b.dur, 0)
   const expected = Math.round(seconds * FPS)
@@ -464,12 +602,19 @@ async function renderShape(key, spec, photoDir) {
 
   fs.mkdirSync(OUT_DIR, { recursive: true })
   const outFile = path.join(OUT_DIR, name)
+  // A silent upload gets demoted on both platforms, and a viewer who taps for sound gets
+  // nothing back. The bed is built once for both shapes and cut to the same length as the
+  // picture, so neither stream has to be trimmed against the other.
+  const audio = bedPath ? ["-i", bedPath] : []
   const code = await new Promise((r) => {
     const ff = spawn(ffmpegPath, [
       "-y", "-framerate", String(FPS),
       "-i", path.join(frameDir, "f-%05d.jpg"),
+      ...audio,
       "-c:v", "libx264", "-preset", "slow", "-crf", "19",
-      "-pix_fmt", "yuv420p", "-movflags", "+faststart", outFile,
+      ...(bedPath ? ["-c:a", "aac", "-b:a", "192k", "-ar", "48000"] : []),
+      "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+      "-t", seconds.toFixed(3), outFile,
     ], { stdio: "ignore" })
     ff.on("close", r)
   })
@@ -477,7 +622,8 @@ async function renderShape(key, spec, photoDir) {
   if (code !== 0) throw new Error(`ffmpeg exited ${code} for ${outFile}`)
 
   const mb = (fs.statSync(outFile).size / 1048576).toFixed(1)
-  console.log(`  ✓ ${name.padEnd(36)} ${W}x${H}  ${seconds.toFixed(1)}s  ${mb} MB`)
+  console.log(`  ✓ ${name.padEnd(36)} ${W}x${H}  ${seconds.toFixed(1)}s  ${mb} MB` +
+    (bedPath ? "  + music" : "  (silent)"))
 }
 
 const { n, bizPhotos, actPhotos } = await gather()
@@ -512,8 +658,23 @@ console.log(`cast: launch="${launch ? actPhotos[launch.key].title : "—"}" ` +
   `place="${land ? actPhotos[land.key].title : "—"}"\n`)
 
 const spec = { beats: beats(n, cast), photos: files, bizRange: cast.bizRange }
+
+// The bed is scheduled against the cut, so it is built from the same beat list the picture is.
+const total = spec.beats.reduce((a, b) => a + b.dur, 0)
+const schedule = spec.beats.map((b, i) => ({ chord: CHORD_PER_BEAT[i % CHORD_PER_BEAT.length], dur: b.dur }))
+const accentAt = []
+let mark = 0
+schedule.forEach((s, i) => {
+  mark += s.dur
+  if (i < schedule.length - 1) accentAt.push({ at: mark, chord: schedule[i + 1].chord })
+})
+const audioDir = fs.mkdtempSync(path.join(os.tmpdir(), "ad-audio-"))
+const bedPath = path.join(audioDir, "bed.wav")
+await buildBed({ out: bedPath, schedule, total, lufs: -14, accentAt })
+
 for (const key of Object.keys(SHAPES)) {
   if (ONLY.length && !ONLY.includes(key)) continue
-  await renderShape(key, spec, photoDir)
+  await renderShape(key, spec, photoDir, bedPath)
 }
 fs.rmSync(photoDir, { recursive: true, force: true })
+fs.rmSync(audioDir, { recursive: true, force: true })
