@@ -30,12 +30,17 @@ const CUTS = [
   // Sterling is the picked English read — an American broadcast voice. At 20.07s it is the
   // shortest take, which leaves the end card 2.3s of its own rather than the 0.8s Emily left.
   { lang: "en", vo: "en-male-sterling.wav", voLen: 20.07, start: 0.75 },
-  { lang: "es", vo: "es-male-hugo.wav", voLen: 21.88, start: 0.20 },
+  // The Spanish read is its own script, not a translation of the English one at English length —
+  // the first attempt ran 37s against a 22.4s picture. Its spoken numbers must match whatever the
+  // picture rendered that day, so re-render the es cut and re-cut this VO together, never one alone.
+  { lang: "es", vo: "es-male-hugo-v2.wav", voLen: 20.28, start: 0.55 },
 ]
-const SHAPES = [
-  { src: "lompoc-locals-features-wow-9x16.mp4", tag: "9x16" },
-  { src: "lompoc-locals-features-wow-4x5.mp4", tag: "4x5" },
-]
+// The picture is per-language, not shared. This used to point at the one English render for both
+// cuts, which put a Spanish read over English lettering — the exact half-measure the bilingual
+// render exists to avoid, and invisible unless you look at a frame. Fail loudly if the matching
+// picture is missing rather than silently falling back to the English one.
+const SHAPES = ["9x16", "4x5"]
+const pictureFor = (lang, tag) => `lompoc-locals-features-wow-${lang}-${tag}.mp4`
 
 const DUCK_DB = 7 // how far the bed drops under the voice
 
@@ -65,12 +70,17 @@ for (const cut of CUTS) {
   const voPath = path.join(VO, cut.vo)
   if (!fs.existsSync(voPath)) throw new Error(`missing narration ${voPath}`)
 
-  for (const shape of SHAPES) {
-    const src = path.join(VID, shape.src)
-    if (!fs.existsSync(src)) throw new Error(`missing picture ${src}`)
+  for (const tag of SHAPES) {
+    const src = path.join(VID, pictureFor(cut.lang, tag))
+    if (!fs.existsSync(src)) {
+      throw new Error(
+        `missing ${cut.lang} picture ${src} — render it first:\n` +
+          `  node scripts/render-feature-ad-wow.mjs --lang=${cut.lang}`
+      )
+    }
     const total = await duration(src)
     const ms = Math.round(cut.start * 1000)
-    const outFile = path.join(OUT, `lompoc-locals-commercial-${cut.lang}-${shape.tag}.mp4`)
+    const outFile = path.join(OUT, `lompoc-locals-commercial-${cut.lang}-${tag}.mp4`)
 
     // [1:a] is the narration, [0:a] the picture's existing bed.
     const filter = [
