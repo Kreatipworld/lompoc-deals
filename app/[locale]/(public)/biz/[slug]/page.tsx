@@ -36,6 +36,7 @@ import { BusinessClaimCta } from "@/components/business-claim-cta"
 import { FollowBusinessButton } from "@/components/follow-business-button"
 import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import { BusinessAbout } from "@/components/business-about"
+import { OutboundLink } from "@/components/outbound-link"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
@@ -355,7 +356,10 @@ export default async function BusinessPage({
                 </span>
               )}
               {business.address && (
-                <a
+                <OutboundLink
+                  action="map_click"
+                  slug={business.slug}
+                  category={business.category?.name}
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                     business.address
                   )}`}
@@ -365,10 +369,13 @@ export default async function BusinessPage({
                 >
                   <MapPin className="h-3.5 w-3.5 text-primary" />
                   {business.address}
-                </a>
+                </OutboundLink>
               )}
               {business.address && (
-                <a
+                <OutboundLink
+                  action="directions_click"
+                  slug={business.slug}
+                  category={business.category?.name}
                   href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
                     business.address
                   )}`}
@@ -378,19 +385,25 @@ export default async function BusinessPage({
                 >
                   <Navigation className="h-3.5 w-3.5" />
                   {t("getDirections")}
-                </a>
+                </OutboundLink>
               )}
               {business.phone && (
-                <a
+                <OutboundLink
+                  action="phone_click"
+                  slug={business.slug}
+                  category={business.category?.name}
                   href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
                   className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition-colors duration-150 hover:bg-secondary"
                 >
                   <Phone className="h-3.5 w-3.5 text-primary" />
                   {business.phone}
-                </a>
+                </OutboundLink>
               )}
               {business.website && (
-                <a
+                <OutboundLink
+                  action="website_click"
+                  slug={business.slug}
+                  category={business.category?.name}
                   href={business.website}
                   target="_blank"
                   rel="noreferrer"
@@ -398,7 +411,7 @@ export default async function BusinessPage({
                 >
                   <Globe className="h-3.5 w-3.5 text-primary" />
                   {business.website.replace(/^https?:\/\//, "")}
-                </a>
+                </OutboundLink>
               )}
             </div>
           </div>
