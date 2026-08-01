@@ -1,0 +1,15 @@
+# Things the deployed app never reads.
+#
+# `vercel deploy` uploads the working directory, not the git tree — so untracking the generated
+# social media from git did nothing for deploys, and the upload had grown to 326 MB and started
+# failing outright ("fetch failed" partway through). None of this is imported by app code; the
+# published copies live on Vercel Blob and everything here is reproducible from the scripts.
+
+content/
+docs/
+scripts/data/
+scripts/mirror-backup-*.json
+exports/
+.claude/
+.agents/
+.superpowers/
