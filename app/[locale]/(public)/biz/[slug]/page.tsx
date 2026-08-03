@@ -126,6 +126,9 @@ export default async function BusinessPage({
   const { business, deals } = data
   const isRealEstate = business.category?.slug === "real-estate"
 
+  // "Thin" means the page has nothing of its own to say: no deals, no about text, no description.
+  const isThin = !business.about && !business.description && deals.length === 0
+
   const relatedBusinesses = await getRelatedBusinesses(
     business.categoryId,
     business.id,
@@ -481,6 +484,32 @@ export default async function BusinessPage({
                 )}
               </div>
             )}
+
+            {/* A listing with no deals and no story of its own leaves the main column empty
+                while the sidebar runs on with a map and opening hours — roughly 400px of white
+                space on 205 of the 472 listings. Rather than invent prose to fill it, put the
+                neighbours there: useful to someone who landed on a sparse page, and it links
+                deeper into the directory. Pages that already have something to say are
+                untouched. */}
+            {isThin && relatedBusinesses.length > 0 && business.category && (
+              <div className="mt-6 rounded-2xl border bg-card p-5">
+                <h2 className="font-display text-base font-semibold">
+                  {t("moreInCategory", { category: business.category.name })}
+                </h2>
+                <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {relatedBusinesses.map((rb) => (
+                    <li key={rb.slug}>
+                      <Link
+                        href={`/biz/${rb.slug}`}
+                        className="flex items-center gap-2 rounded-xl border bg-background px-3 py-2 text-sm transition-colors hover:bg-secondary"
+                      >
+                        <span className="truncate">{rb.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           {/* SIDEBAR — map + hours */}
@@ -541,7 +570,7 @@ export default async function BusinessPage({
         </section>
       )}
 
-      {relatedBusinesses.length > 0 && business.category && (
+      {!isThin && relatedBusinesses.length > 0 && business.category && (
         <section className="mx-auto max-w-6xl px-4 pb-10">
           <div className="mt-12 border-t pt-8">
             <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
