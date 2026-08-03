@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
 import { and, eq, gt, ilike, or, sql } from "drizzle-orm"
-import { CATEGORY_SYNONYMS } from "@/lib/search"
+import { CATEGORY_SYNONYMS, rankBusinessHits } from "@/lib/search"
 
 export const runtime = "nodejs"
 
@@ -84,9 +84,10 @@ export async function GET(req: NextRequest) {
           ),
         ),
       )
-      // Name matches rank above content matches.
+      // Fetch wide, then rank. A narrow limit here let name matches eat every slot, so a
+      // business whose *description* answers the query could never surface — see rankBusinessHits.
       .orderBy(sql`case when ${businesses.name} ilike ${term} then 0 else 1 end`)
-      .limit(6),
+      .limit(40),
 
     db
       .select({
@@ -109,5 +110,9 @@ export async function GET(req: NextRequest) {
       .limit(5),
   ])
 
-  return NextResponse.json({ categories: categoryHits, businesses: bizRows, deals: dealRows })
+  return NextResponse.json({
+    categories: categoryHits,
+    businesses: rankBusinessHits(bizRows, q, 6),
+    deals: dealRows,
+  })
 }
