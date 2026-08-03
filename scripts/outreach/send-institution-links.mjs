@@ -64,7 +64,7 @@ const rows = await sql`
   order by b.name`
 
 // Never invite somebody to look at an empty page. A page with no photographs makes the ask look
-// like the favour it is not.
+// like the favor it is not.
 const ready = rows.filter((r) => r.photos >= 3 && !alreadySent.has(r.email.toLowerCase()))
 const thin = rows.filter((r) => r.photos < 3)
 
@@ -83,14 +83,14 @@ const htmlFor = (b) => `<!doctype html><html><body style="margin:0;background:#f
     <div style="width:44px;height:3px;background:#EFC618;margin:0 0 18px;"></div>
 
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Hello — we're Lompoc Locals, a free community hub for Lompoc. We keep a page for
-    ${esc(b.name)} with your photos, hours and directions, so neighbours looking for you can find you:</p>
+    ${esc(b.name)} with your photos, hours and directions, so neighbors looking for you can find you:</p>
 
     <p style="margin:0 0 18px;"><a href="${SITE}/biz/${b.slug}" style="font-size:15px;color:#650C75;font-weight:700;">lompoclocals.com/biz/${esc(b.slug)}</a></p>
 
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">There's nothing to sign up for and nothing to pay — the page is there either way, in English
     and Spanish. We're writing for one small reason: <strong>if you keep a links or community-resources page, a link to it
-    would help people find you.</strong> Search engines treat a link from an organisation like yours as a strong signal, and it
-    helps neighbours who are searching land on the right place.</p>
+    would help people find you.</strong> Search engines treat a link from an organization like yours as a strong signal, and it
+    helps neighbors who are searching land on the right place.</p>
 
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">If anything on the page is wrong or out of date, reply to this email and we'll fix it — a real
     person here in Lompoc reads it. If you'd rather we took the page down, we'll do that too, no questions.</p>
