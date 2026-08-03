@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation"
 import { BrandLogo } from "@/components/brand-logo"
 import { LocaleSwitcher } from "@/components/locale-switcher"
+import { SubscribeForm } from "@/components/subscribe-form"
 import { getTranslations } from "next-intl/server"
 
 export async function SiteFooter() {
@@ -139,6 +140,20 @@ export async function SiteFooter() {
                 </Link>
               </li>
             </ul>
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-4 border-t pt-8 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+          <div className="space-y-1">
+            <h3 className="font-display text-sm font-semibold tracking-tight">
+              {t("stayInTouch")}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {t("newsletterIntro")}
+            </p>
+          </div>
+          <div className="w-full sm:max-w-sm">
+            <SubscribeForm />
           </div>
         </div>
 

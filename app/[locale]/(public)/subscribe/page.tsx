@@ -1,6 +1,6 @@
-import { Mail, Sparkles, Clock, ShieldCheck, Star, Users } from "lucide-react"
+import { Mail, Sparkles, Clock, ShieldCheck, Users } from "lucide-react"
 import { CategoryPatternBg } from "@/components/category-pattern-bg"
-import { SubscribeForm } from "./subscribe-form"
+import { SubscribeForm } from "@/components/subscribe-form"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
@@ -37,31 +37,27 @@ export default async function SubscribePage({
     { icon: ShieldCheck, title: t("benefit3Title"), desc: t("benefit3Desc") },
   ]
 
-  const testimonials = [
-    { quote: t("testimonial1Quote"), author: t("testimonial1Author"), subtitle: t("testimonial1Sub") },
-    { quote: t("testimonial2Quote"), author: t("testimonial2Author"), subtitle: t("testimonial2Sub") },
-    { quote: t("testimonial3Quote"), author: t("testimonial3Author"), subtitle: t("testimonial3Sub") },
-  ]
-
-  const sampleDeals = [
+  // Illustrative sections of the Saturday email — descriptions of what's in it,
+  // not invented events or offers.
+  const sampleSections = [
     {
-      business: "Lompoc Brewing Co.",
-      category: "Food & Drink",
-      deal: "Happy Hour — 20% off all pints",
+      title: t("sampleItem1Title"),
+      category: t("sampleItem1Category"),
+      body: t("sampleItem1Body"),
       badge: t("sampleBadgeToday"),
       color: "bg-brand-terracotta/10 text-brand-terracotta",
     },
     {
-      business: "Valley Flowers",
-      category: "Shopping",
-      deal: "Spring bouquets from $18 — this weekend only",
+      title: t("sampleItem2Title"),
+      category: t("sampleItem2Category"),
+      body: t("sampleItem2Body"),
       badge: t("sampleBadgeWeekend"),
       color: "bg-success/10 text-success",
     },
     {
-      business: "Central Coast Yoga",
-      category: "Wellness",
-      deal: "First class free for new students",
+      title: t("sampleItem3Title"),
+      category: t("sampleItem3Category"),
+      body: t("sampleItem3Body"),
       badge: t("sampleBadgeNew"),
       color: "bg-accent text-accent-foreground",
     },
@@ -172,14 +168,14 @@ export default async function SubscribePage({
               </div>
 
               <h3 className="font-bold text-foreground">
-                🛍️ {t("previewWeekly")}
+                📰 {t("previewWeekly")}
               </h3>
-              <p className="mt-1 text-xs text-muted-foreground">Saturday, April 19 · 9:00 AM</p>
+              <p className="mt-1 text-xs text-muted-foreground">Saturday · 9:00 AM</p>
 
               <div className="mt-4 space-y-3">
-                {sampleDeals.map(({ business, category, deal, badge, color }, i) => (
+                {sampleSections.map(({ title, category, body, badge, color }, i) => (
                   <div
-                    key={business}
+                    key={title}
                     className="flex items-start gap-3 rounded-lg border border-border p-3"
                   >
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
@@ -187,13 +183,13 @@ export default async function SubscribePage({
                     </span>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="text-xs font-semibold text-foreground">{business}</span>
+                        <span className="text-xs font-semibold text-foreground">{title}</span>
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${color}`}>
                           {badge}
                         </span>
                       </div>
                       <p className="mt-0.5 text-xs text-muted-foreground">{category}</p>
-                      <p className="mt-1 text-sm font-medium text-foreground">{deal}</p>
+                      <p className="mt-1 text-sm font-medium text-foreground">{body}</p>
                     </div>
                   </div>
                 ))}
@@ -207,37 +203,12 @@ export default async function SubscribePage({
         </div>
       </section>
 
-      {/* ── Social proof ── */}
+      {/* ── When it lands ── */}
       <section className="bg-background px-4 py-14">
         <div className="mx-auto max-w-3xl">
-          <div className="mb-8 text-center">
+          <div className="text-center">
             <div className="mb-2 text-4xl font-extrabold text-primary">{t("statSaturday")}</div>
             <p className="text-sm text-muted-foreground">{t("statLocals")}</p>
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-3">
-            {testimonials.map(({ quote, author, subtitle }) => (
-              <div
-                key={author}
-                className="rounded-xl border border-border bg-card p-5 shadow-sm"
-              >
-                <div className="mb-3 flex gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-3.5 w-3.5 fill-gold text-gold"
-                    />
-                  ))}
-                </div>
-                <p className="text-sm leading-relaxed text-foreground">
-                  &ldquo;{quote}&rdquo;
-                </p>
-                <div className="mt-3">
-                  <p className="text-xs font-semibold">{author}</p>
-                  <p className="text-xs text-muted-foreground">{subtitle}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

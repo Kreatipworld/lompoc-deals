@@ -45,7 +45,7 @@ export default async function AdminCommsPage() {
     const body = encodeURIComponent(
       role === "business"
         ? "Hi! I'm Andres from Lompoc Locals — saw your business join and wanted to say welcome personally. If you want a hand setting up your profile or your first deal, just reply to this email and I'll walk you through it.\n\n— Andres"
-        : "Hi! I'm Andres from Lompoc Locals — just wanted to say welcome personally. The Saturday digest has the week's best local deals, and everything on the site is free for locals. If anything's confusing, just reply — I read every email.\n\n— Andres"
+        : "Hi! I'm Andres from Lompoc Locals — just wanted to say welcome personally. Every Saturday morning we send one email with what's on around Lompoc that week, and everything on the site is free for locals. If anything's confusing, just reply — I read every email.\n\n— Andres"
     )
     return `mailto:${email}?subject=${subject}&body=${body}`
   }
