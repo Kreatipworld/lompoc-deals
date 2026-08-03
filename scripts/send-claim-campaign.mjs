@@ -64,6 +64,21 @@ const EXCLUDE_EMAILS = new Set([
   "anaheim@kaizencollisioncenter.com","info@goodwillvsb.org","vtcinfo@vtc-sm.org",
 ])
 
+/**
+ * The same problem as a pattern, because an exact list only ever catches what already went wrong.
+ *
+ * impallari@gmail.com reached a real send: it is a font designer's address that rides along inside
+ * webfont licence comments, and a harvester attached it to "Events Mission Valley". A person in
+ * Argentina got an invitation to claim a Lompoc listing. These are addresses belonging to whoever
+ * built, hosts or supplies the site — never the business itself.
+ */
+const EXCLUDE_PATTERNS = [
+  /@edan\.io$/i, /@keeq\./i, /@squarespace\./i, /@wix\./i, /@shopify\./i, /@square\.site$/i,
+  /@mealage\./i, /@ez-qr\./i, /@groomore\./i, /@netlify\./i, /@readycube\./i, /@poi\.place$/i,
+  /@jotform\./i, /paradox\.ai$/i, /^impallari@/i, /@nva\.com$/i, /@evetsites\./i,
+  /^(privacy|legal|dmca|abuse|postmaster|webmaster|hostmaster)@/i,
+]
+
 // Category → tailored language.
 const CAT = {
   "Food & Drink":   { deal: "&ldquo;Taco Tuesday, $2 off&rdquo; or &ldquo;$5 off your first online order&rdquo;", search: "somewhere to eat in Lompoc" },
@@ -169,7 +184,7 @@ let dropped = { excludedId: 0, excludedEmail: 0, malformed: 0, dupe: 0, alreadyS
 const clean = []
 for (const b of rows) {
   if (EXCLUDE_IDS.has(b.id)) { dropped.excludedId++; continue }
-  if (EXCLUDE_EMAILS.has(b.email)) { dropped.excludedEmail++; continue }
+  if (EXCLUDE_EMAILS.has(b.email) || EXCLUDE_PATTERNS.some((re) => re.test(b.email))) { dropped.excludedEmail++; continue }
   if (!validEmail(b.email)) { dropped.malformed++; continue }
   if (suppressed.has(b.email)) { dropped.suppressed++; continue }
   if (alreadySent.has(b.email)) { dropped.alreadySent++; continue }
