@@ -15,6 +15,7 @@
  *
  *   Preview the list:  node --env-file=.env.local scripts/outreach/send-institution-links.mjs
  *   Dump the HTML:     DUMP=/tmp/out.html node --env-file=.env.local scripts/outreach/send-institution-links.mjs
+ *   Proof to our inbox: PROOF=hello@lompoclocals.com node --env-file=.env.local scripts/outreach/send-institution-links.mjs
  *   Send:              SEND=1 node --env-file=.env.local scripts/outreach/send-institution-links.mjs
  */
 import { readFileSync, appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs"
@@ -30,6 +31,7 @@ const sql = neon(pick("DATABASE_URL"))
 
 const SEND = process.env.SEND === "1"
 const DUMP = process.env.DUMP || ""
+const PROOF = process.env.PROOF || ""
 const LIMIT = process.env.LIMIT ? Number(process.env.LIMIT) : null
 const FROM = "Lompoc Locals <hello@lompoclocals.com>"
 const SENT_LOG = "/Users/kreatip/Projects/lompoc-deals/scripts/data/institution-sent.log"
@@ -130,6 +132,29 @@ if (DUMP) {
   mkdirSync(dirname(DUMP), { recursive: true })
   writeFileSync(DUMP, ready.map((b) => `<p style="font:13px system-ui;color:#650C75;padding:8px 12px;">to: ${b.email} · ${esc(b.name)}</p>${htmlFor(b)}`).join("\n<hr>\n"))
   console.log(`\ndumped ${ready.length} email(s) to ${DUMP}`)
+}
+
+// PROOF sends exactly one real email to our own inbox, rendered for a real recipient, so the thing
+// being approved is the thing that arrives — not a screenshot of it. No institution is contacted
+// and nothing is written to the sent log, so the proof can be repeated and the wave is unaffected.
+if (PROOF) {
+  const b = ready.find((r) => r.slug === (process.env.SAMPLE || "lompoc-theatre")) || ready[0]
+  if (!b) { console.error("no ready institution to render a proof from"); process.exit(1) }
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      from: FROM, to: PROOF, subject: `[PROOF — not sent to them] ${subjectFor(b)}`, html: htmlFor(b),
+      headers: { "List-Unsubscribe": `<${unsubUrl(PROOF)}>, <mailto:hello@lompoclocals.com?subject=unsubscribe>` },
+    }),
+  })
+  const out = await res.json()
+  console.log(
+    out.id
+      ? `\n  ✓ proof of "${b.name}" sent to ${PROOF}  (${out.id})\n    ${ready.length} institution(s) still unsent.`
+      : `\n  ✗ proof failed: ${JSON.stringify(out).slice(0, 200)}`
+  )
+  process.exit(out.id ? 0 : 1)
 }
 
 if (!SEND) {
