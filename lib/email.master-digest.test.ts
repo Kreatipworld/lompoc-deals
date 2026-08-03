@@ -24,6 +24,18 @@ const content: MasterDigestContent = {
     { name: "One Plant", slug: "one-plant", coverUrl: "/img/op.jpg",
       categoryName: "Dispensary", dealTitle: null, discountText: null },
   ],
+  restaurants: [
+    { name: "Burritos Lalo", slug: "burritos-lalo", categoryName: "Food & Drink",
+      coverUrl: "/img/lalo.jpg", blurb: "The Original Mexican Food.", address: "119 N H St" },
+    { name: "Pizza Garden", slug: "pizza-garden", categoryName: "Food & Drink",
+      coverUrl: null, blurb: "Family-owned pizzeria serving Lompoc since 1997.", address: null },
+  ],
+  feature: { name: "Taqueria Don Tacho", slug: "taqueria-don-tacho", categoryName: "Food & Drink",
+    coverUrl: "/img/tacho.jpg", blurb: "A family-run taqueria at 614 N H St.", address: "614 N H St" },
+  outdoors: [
+    { title: "Lompoc Museum", href: "/activities/lompoc-museum", imageUrl: "/img/museum.jpg",
+      subtitle: "On South H Street." },
+  ],
 }
 const opts = { unsubUrl: "https://x/unsub?token=abc", now: NOW }
 
@@ -43,6 +55,22 @@ assert.ok(html.includes("Deals of the Week"), "deals section")
 assert.ok(html.includes("Two-for-One Tri-Tip"), "deal item")
 assert.ok(html.includes("20% Off"), "discount chip")
 assert.ok(html.includes("One Plant"), "neighbor item")
+// the town sections: the digest's reason to exist for a resident who will never redeem a coupon
+assert.ok(html.includes("Where to Eat"), "restaurants section header")
+assert.ok(html.includes("Burritos Lalo") && html.includes("Pizza Garden"), "both restaurants listed")
+assert.ok(html.includes("Family-owned pizzeria serving Lompoc since 1997."), "restaurant blurb rendered")
+assert.ok(html.includes("/biz/burritos-lalo"), "restaurant links to its profile")
+assert.ok(html.includes("On the Record"), "feature section header")
+assert.ok(html.includes("Taqueria Don Tacho"), "feature business named")
+assert.ok(html.includes("Worth the Trip"), "outdoors section header")
+assert.ok(html.includes("Lompoc Museum") && html.includes("/activities/lompoc-museum"), "outdoors item + link")
+
+// The town content leads; deals follow it. A resident opens this for the town, not the coupons —
+// if a deal ever renders above "Where to Eat" the promise on /subscribe is broken again.
+assert.ok(html.indexOf("Where to Eat") < html.indexOf("Deals of the Week"), "town content precedes deals")
+assert.ok(html.indexOf("Where to Eat") < html.indexOf("On the Record"), "eat → record order")
+assert.ok(html.indexOf("On the Record") < html.indexOf("Worth the Trip"), "record → trip order")
+
 // full-edition CTA points at the web edition
 assert.ok(html.includes("/this-week"), "links to web edition")
 // unsubscribe wired
@@ -51,12 +79,18 @@ assert.ok(html.includes("https://x/unsub?token=abc"), "unsub link present")
 // Spanish locale swaps labels
 const htmlEs = renderMasterDigestHtml(content, "es", opts)
 assert.ok(htmlEs.includes("Ofertas de la semana"), "es deals label")
+assert.ok(htmlEs.includes("Dónde comer"), "es restaurants label")
+assert.ok(htmlEs.includes("En el registro"), "es feature label")
+assert.ok(htmlEs.includes("Vale la pena ir"), "es outdoors label")
+assert.ok(!htmlEs.includes("Where to Eat"), "es edition has no english section header")
 
 // empty content -> still valid shell, no crash, omits empty sections
-const empty: MasterDigestContent = { events: [], deals: [], things: [], partners: [] }
+const empty: MasterDigestContent = { events: [], deals: [], things: [], partners: [], restaurants: [], feature: null, outdoors: [] }
 const htmlEmpty = renderMasterDigestHtml(empty, "en", opts)
 assert.ok(htmlEmpty.includes("The Lompoc Locals"), "empty still renders masthead")
 assert.ok(!htmlEmpty.includes("Deals of the Week"), "empty omits deals header")
+for (const h of ["Where to Eat", "On the Record", "Worth the Trip"])
+  assert.ok(!htmlEmpty.includes(h), `empty omits "${h}" header`)
 
 // single-column Around Town/Neighbors row: only `things` present -> full-width,
 // no empty sibling cell (no width="50%" two-col markup should appear)
@@ -67,6 +101,9 @@ const onlyThings: MasterDigestContent = {
     { title: "Wine Tasting", href: "/activities/wine", imageUrl: "/img/wine.jpg", subtitle: "Wine" },
   ],
   partners: [],
+    restaurants: [],
+    feature: null,
+    outdoors: [],
 }
 const htmlOnlyThings = renderMasterDigestHtml(onlyThings, "en", opts)
 assert.ok(!htmlOnlyThings.includes('width="50%"'), "single-column row has no 50% cell")
@@ -82,6 +119,9 @@ const onlyPartners: MasterDigestContent = {
     { name: "One Plant", slug: "one-plant", coverUrl: "/img/op.jpg",
       categoryName: "Dispensary", dealTitle: null, discountText: null },
   ],
+    restaurants: [],
+    feature: null,
+    outdoors: [],
 }
 const htmlOnlyPartners = renderMasterDigestHtml(onlyPartners, "en", opts)
 assert.ok(!htmlOnlyPartners.includes('width="50%"'), "single-column row has no 50% cell (partners-only)")

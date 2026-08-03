@@ -1071,6 +1071,41 @@ export function renderMasterDigestHtml(
         <div style="font-size:12px;color:#7a6f60;">${escapeHtml(d.business.name)}</div>
       </td></tr>`).join("") + `</table>` : ""
 
+  // ── Where to eat ──
+  // The most-asked question in any town, and the category with the deepest content: 103 approved
+  // restaurants, every one of them with a photo. Rotates weekly (see digestWeekIndex).
+  const restaurantsHtml = c.restaurants.length ? npKicker(es ? "🍽️ Dónde comer" : "🍽️ Where to Eat") +
+    `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
+    c.restaurants.slice(0, 3).map((r, i, arr) => `
+      <tr><td style="vertical-align:top;padding:8px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
+        <a href="${siteUrl(`/biz/${r.slug}`)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(r.name)}</a>${r.address ? `<span style="font-size:12px;color:#7a6f60;font-style:italic;"> — ${escapeHtml(String(r.address).split(",")[0])}</span>` : ""}
+        ${r.blurb ? `<div style="font-size:13px;color:#4a4238;line-height:1.5;margin-top:2px;">${escapeHtml(r.blurb)}</div>` : ""}
+      </td></tr>`).join("") + `</table>` : ""
+
+  // ── One business, told properly ──
+  // The email's equivalent of the "On the record" post: a single listing whose about text we
+  // actually wrote, so the feature has something true to say rather than a restated category.
+  const featureHtml = c.feature ? npKicker(es ? "📍 En el registro" : "📍 On the Record") + `
+    <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;"><tr>
+      ${c.feature.coverUrl ? `<td width="88" style="vertical-align:top;padding:6px 12px 6px 0;"><img src="${c.feature.coverUrl}" width="88" height="88" alt="" style="display:block;width:88px;height:88px;object-fit:cover;border:1px solid #d8cfc0;"></td>` : ""}
+      <td style="vertical-align:top;padding:6px 0;">
+        <a href="${siteUrl(`/biz/${c.feature.slug}`)}" style="font-size:16px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(c.feature.name)}</a>${c.feature.categoryName ? `<span style="font-size:11px;color:#7a6f60;"> · ${escapeHtml(c.feature.categoryName)}</span>` : ""}
+        ${c.feature.blurb ? `<div style="font-size:13px;color:#4a4238;line-height:1.55;margin-top:3px;">${escapeHtml(c.feature.blurb)}</div>` : ""}
+      </td>
+    </tr></table>` : ""
+
+  // ── Somewhere to go ──
+  // Parks, beaches and trails, read from `activities` — every row there carries an image, tips and
+  // seasonality, and reading only from that table avoids the handful that also exist as thin
+  // business rows (Beattie Park, La Purisima Golf Course) showing up twice.
+  const outdoorsHtml = c.outdoors.length ? npKicker(es ? "🌲 Vale la pena ir" : "🌲 Worth the Trip") +
+    `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
+    c.outdoors.map((o, i, arr) => `
+      <tr><td style="vertical-align:top;padding:8px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
+        <a href="${siteUrl(o.href)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(o.title)}</a>
+        ${o.subtitle ? `<div style="font-size:13px;color:#4a4238;line-height:1.5;margin-top:2px;">${escapeHtml(o.subtitle)}</div>` : ""}
+      </td></tr>`).join("") + `</table>` : ""
+
   // ── Around Town + Neighbors (two columns) ──
   const thingsCol = c.things.length ? `
     <div style="border-bottom:1px solid #650C75;margin-bottom:8px;padding-bottom:4px;"><span style="color:#650C75;font-size:11px;font-weight:bold;letter-spacing:0.16em;text-transform:uppercase;">🌟 ${es ? "Qué hacer" : "Around Town"}</span></div>
@@ -1097,7 +1132,7 @@ export function renderMasterDigestHtml(
         <div style="color:rgba(255,255,255,0.82);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;">${fullDate} &nbsp;·&nbsp; Vol. I, No. ${weekNo} &nbsp;·&nbsp; lompoclocals.com</div>
       </div>
       <div style="padding:18px 24px 22px;">
-        ${leadHtml}${eventsHtml}${dealsHtml}${twoColHtml}
+        ${leadHtml}${eventsHtml}${restaurantsHtml}${featureHtml}${outdoorsHtml}${dealsHtml}${twoColHtml}
         <div style="text-align:center;margin:24px 0 2px;">
           <a href="${siteUrl("/this-week")}" style="display:inline-block;background:#650C75;color:#ffffff;padding:11px 26px;text-decoration:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;">${es ? "Leer la edición completa" : "Read the full edition online"} →</a>
         </div>
@@ -1132,6 +1167,86 @@ export async function sendMasterDigestEmail(
 
   try {
     await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })
+    return { ok: true }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
+  }
+}
+
+/**
+ * The launch alert.
+ *
+ * Deliberately plain and short. Somebody opening this wants three facts — what, when, where to
+ * stand — and nothing else. No deals, no cross-sell, no "while you're here": the moment this
+ * email starts selling, it stops being worth subscribing to, and the whole value of the list is
+ * that people trust it enough to keep it.
+ *
+ * The caution about times slipping is not filler. Vandenberg launches move constantly, and
+ * telling somebody to check before standing outside in the cold is the difference between a
+ * useful alert and one that wastes their evening.
+ */
+export async function sendLaunchAlertEmail(
+  email: string,
+  unsubscribeToken: string,
+  launch: { title: string; startsAt: Date; location: string | null },
+  phrases: { when: string; timeLabel: string },
+  locale: "en" | "es"
+): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend()
+  if (!resend) return { ok: false, error: "Email service not configured" }
+
+  const es = locale === "es"
+  const unsubUrl = siteUrl(`/subscribe/unsubscribe?token=${unsubscribeToken}`)
+  const name = escapeHtml(launch.title.replace(/^Rocket Launch:\s*/i, "").trim())
+
+  const subject = es
+    ? `🚀 Algo despega ${phrases.when} sobre el valle`
+    : `🚀 Something goes up over the valley ${phrases.when}`
+
+  const html = `<!doctype html><html><body style="margin:0;background:#f6f4f0;padding:24px 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#241629;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:4px;overflow:hidden;">
+  <tr><td style="background:#241629;padding:26px 28px 22px;">
+    <div style="color:#EFC618;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;">
+      ${es ? "Aviso de lanzamiento" : "Launch alert"}
+    </div>
+    <div style="color:#ffffff;font-size:24px;font-weight:800;line-height:1.2;margin-top:8px;">
+      ${es ? "Algo despega" : "Something goes up"} ${escapeHtml(phrases.when)}.
+    </div>
+  </td></tr>
+  <tr><td style="padding:26px 28px 8px;">
+    <p style="margin:0 0 4px;font-size:17px;font-weight:700;">${name}</p>
+    <p style="margin:0 0 18px;font-size:15px;color:#6C6070;">${escapeHtml(phrases.timeLabel)} · Vandenberg Space Force Base</p>
+
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">
+      ${es
+        ? "No hace falta ir a ningún lado — mirando al suroeste desde tu propia entrada suele bastar. Si quieres la vista amplia, Harris Grade Rd o Ocean Ave hacia el oeste."
+        : "You don't need to drive anywhere — southwest from your own driveway usually does it. If you want the wide view, Harris Grade Rd or Ocean Ave heading west."}
+    </p>
+    <p style="margin:0 0 18px;font-size:15px;line-height:1.6;">
+      ${es
+        ? "Los horarios cambian a menudo. Comprueba antes de salir:"
+        : "Times move often. Check before you stand outside:"}
+      <a href="${siteUrl("/events")}" style="color:#650C75;font-weight:700;">lompoclocals.com/events</a>
+    </p>
+  </td></tr>
+  <tr><td style="padding:16px 28px 24px;border-top:1px solid #efe7dc;text-align:center;">
+    <div style="font-size:13px;color:#650C75;font-weight:700;">lompoclocals.com</div>
+    <div style="font-size:11px;color:#8b8091;margin-top:6px;line-height:1.5;">
+      ${es ? "Recibes esto porque te apuntaste a los avisos de lanzamiento." : "You're getting this because you asked for launch alerts."}
+      <a href="${unsubUrl}" style="color:#8b8091;">${es ? "Cancelar" : "Unsubscribe"}</a><br>
+      Lompoc Locals · PO Box 880, Lompoc, CA 93438
+    </div>
+  </td></tr>
+</table></body></html>`
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: email,
+      subject,
+      html,
+      headers: { "List-Unsubscribe": `<${unsubUrl}>` },
+    })
     return { ok: true }
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Send failed" }

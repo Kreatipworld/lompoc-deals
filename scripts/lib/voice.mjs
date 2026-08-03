@@ -208,7 +208,42 @@ const CHAIN_PATTERNS = [
   /\bsuper 8\b/i, /\bbest western\b/i, /\bembassy suites\b/i,
   // Deliberately NOT a bare /motel/ — that caught Star Motel, which is an independent Lompoc
   // motel and exactly the kind of business a run-down exists to name.
+  //
+  // Second pass, added while building an outreach list: these all appeared among "local
+  // prospects" and would have wasted a scrape on a corporate inbox.
+  /\baldi\b/i, /\bapplebee/i, /\bbig 5\b/i, /\bbig brand tire\b/i, /\bcarl'?s jr\b/i,
+  /\bcarquest\b/i, /\bcentury ?21\b/i, /\bc21\b/i, /\bdutch bros\b/i, /\bexxon\b/i,
+  /\bfantastic sam/i, /\bfosters? freeze\b/i, /\bh&r block\b/i, /\bhomegoods\b/i,
+  /\bjersey mike/i, /\bkeller williams\b/i, /\blittle caesars\b/i, /\bace hardware\b/i,
+  /\bmassage envy\b/i, /\bmobil\b/i, /\bono hawaiian\b/i, /\bpep boys\b/i, /\bpetco\b/i,
+  /\bplanet fitness\b/i, /\bregal\b/i, /\bhabit burger\b/i, /\bvip petcare\b/i,
+  /\bamerican tire depot\b/i, /\bpacific premier bank\b/i, /\bquiznos\b/i,
+  // Found while auditing the first live digest build, which led with Wingstop and Blaze Pizza.
+  /\bwingstop\b/i, /\bblaze pizza\b/i, /\bpapa john/i, /\bround table pizza\b/i,
+  /\bpanera\b/i, /\bdenny'?s\b/i, /\bihop\b/i, /\bsonic drive/i, /\bpopeyes\b/i,
+  /\bchick-?fil-?a\b/i, /\bfive guys\b/i, /\bbaskin-?robbins\b/i, /\bdunkin/i,
+  /\bcold stone\b/i, /\bjamba\b/i, /\bwienerschnitzel\b/i, /\bel pollo loco\b/i,
 ]
+
+// This list is mirrored in `lib/chains.ts` for the app (which cannot import plain ESM).
+// `lib/chains.test.ts` fails if the two drift apart — edit both, or neither.
+export { CHAIN_PATTERNS }
+
+/**
+ * Public bodies and civic facilities — a park, the library, the post office, a county department.
+ * They belong in the directory because residents look for them, but there is no owner to invite
+ * and no page to claim, so they are never outreach targets.
+ */
+const PUBLIC_PATTERNS = [
+  /cityoflompoc\.com/i, /countyofsb\.org/i, /\.mil(\/|$)/i, /usps\.com/i,
+  /\bpost office\b/i, /\bpublic library\b/i, /\bcity of lompoc\b/i, /\bcounty of\b/i,
+  /\bveterans? (memorial|services)\b/i, /\bsenior cent(er|re)\b/i, /\baquatic cent(er|re)\b/i,
+  /\bdisc golf course\b/i, /\butility service\b/i, /\bdepartment of\b/i, /\bspace force\b/i,
+]
+
+/** True for a civic facility rather than a business someone could claim. */
+export const isPublicBody = (name, website = "") =>
+  PUBLIC_PATTERNS.some((re) => re.test(String(name || "")) || re.test(String(website || "")))
 
 /** True when a business is a nationally-owned brand rather than one of the town's own. */
 export const isChain = (name) => CHAIN_PATTERNS.some((re) => re.test(String(name || "")))
