@@ -362,6 +362,7 @@ export default async function BusinessPage({
                 <OutboundLink
                   action="map_click"
                   slug={business.slug}
+                  businessId={business.id}
                   category={business.category?.name}
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                     business.address
@@ -378,6 +379,7 @@ export default async function BusinessPage({
                 <OutboundLink
                   action="directions_click"
                   slug={business.slug}
+                  businessId={business.id}
                   category={business.category?.name}
                   href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
                     business.address
@@ -394,6 +396,7 @@ export default async function BusinessPage({
                 <OutboundLink
                   action="phone_click"
                   slug={business.slug}
+                  businessId={business.id}
                   category={business.category?.name}
                   href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
                   className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground transition-colors duration-150 hover:bg-secondary"
@@ -406,6 +409,7 @@ export default async function BusinessPage({
                 <OutboundLink
                   action="website_click"
                   slug={business.slug}
+                  businessId={business.id}
                   category={business.category?.name}
                   href={business.website}
                   target="_blank"

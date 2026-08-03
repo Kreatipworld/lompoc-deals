@@ -18,6 +18,11 @@ import type { ReactNode } from "react"
  *
  * `track()` is a no-op in development and when the visitor blocks analytics, so this never
  * interferes with the navigation itself — the href does its normal work either way.
+ *
+ * The same click is also written to our own `analytics_events`. Vercel's dashboard answers "how is
+ * the site doing"; only our table can answer "how did MY listing do", which is the question a
+ * business owner actually pays for. It goes out via `sendBeacon` because the click is navigating
+ * away and an ordinary fetch would be cancelled mid-flight — losing exactly the events that matter.
  */
 export type OutboundAction =
   | "website_click"
@@ -30,6 +35,7 @@ export type OutboundAction =
 export function OutboundLink({
   action,
   slug,
+  businessId,
   category,
   href,
   children,
@@ -42,6 +48,8 @@ export function OutboundLink({
   action: OutboundAction
   /** Which listing sent them — so we can see which pages actually convert. */
   slug: string
+  /** Lets a click be counted per business without a slug lookup, for the owner-facing numbers. */
+  businessId?: number
   category?: string | null
   href: string
   children: ReactNode
@@ -53,15 +61,37 @@ export function OutboundLink({
   detail?: string
 }) {
   const onClick = () => {
+    const props = {
+      slug,
+      ...(category ? { category } : {}),
+      ...(detail ? { detail } : {}),
+    }
     try {
-      track(action, {
-        slug,
-        ...(category ? { category } : {}),
-        ...(detail ? { detail } : {}),
-      })
+      track(action, props)
     } catch {
       // Analytics must never break a link. If tracking throws — blocked script, offline — the
       // click still navigates, which is the part that matters to the person clicking.
+    }
+    try {
+      const body = JSON.stringify({
+        name: action,
+        ...(businessId ? { targetType: "business", targetId: businessId } : {}),
+        props,
+      })
+      // sendBeacon survives the navigation; fetch(keepalive) is the fallback for browsers without
+      // it. Both are fire-and-forget — we never wait, and never block the link.
+      if (typeof navigator !== "undefined" && navigator.sendBeacon) {
+        navigator.sendBeacon("/api/track/event", new Blob([body], { type: "application/json" }))
+      } else {
+        void fetch("/api/track/event", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body,
+          keepalive: true,
+        }).catch(() => {})
+      }
+    } catch {
+      // Same contract as above: a listing that cannot be measured is still a listing that works.
     }
   }
 

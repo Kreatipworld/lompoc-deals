@@ -15,6 +15,24 @@ export type EventName =
   | "deal_click"
   | "deal_claim"
   | "deal_redeem"
+  // Outbound clicks — the only events that mean a real-world visit. A pageview says a listing was
+  // looked at; these say it did its job, and they are what an owner is actually buying.
+  | "website_click"
+  | "phone_click"
+  | "directions_click"
+  | "map_click"
+  | "social_click"
+  | "reviews_click"
+
+/** Every outbound action, so a listing's real-world referrals can be counted in one query. */
+export const OUTBOUND_EVENTS = [
+  "website_click",
+  "phone_click",
+  "directions_click",
+  "map_click",
+  "social_click",
+  "reviews_click",
+] as const
 
 export interface EventProps {
   search_run: { query: string; resultCount: number; locale: "en" | "es" }
@@ -33,6 +51,12 @@ export interface EventProps {
   deal_click: Record<string, never>
   deal_claim: Record<string, never>
   deal_redeem: Record<string, never>
+  website_click: { slug: string; category?: string }
+  phone_click: { slug: string; category?: string }
+  directions_click: { slug: string; category?: string }
+  map_click: { slug: string; category?: string }
+  social_click: { slug: string; category?: string; detail?: string }
+  reviews_click: { slug: string; category?: string }
 }
 
 export type EventPropsFor<N extends EventName> = EventProps[N]

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { track } from "@/lib/analytics/track"
-import type { EventName } from "@/lib/analytics/events"
+import { OUTBOUND_EVENTS, type EventName } from "@/lib/analytics/events"
 
 // Module-level sliding-window rate limit: 60 requests/min per session_id.
 // In-memory only; resets on cold start. Acceptable for v1.
@@ -21,7 +21,10 @@ function withinLimit(sid: string): boolean {
   return true
 }
 
-const ALLOWED = new Set<EventName>(["search_run", "map_pin_clicked"])
+// Outbound clicks are accepted here as well as sent to Vercel Analytics. Vercel's dashboard is for
+// us; this table is for the business owner — "your page sent you 18 website opens last month" is a
+// sentence we can only say if the events live somewhere we can query per listing.
+const ALLOWED = new Set<EventName>(["search_run", "map_pin_clicked", ...OUTBOUND_EVENTS])
 
 interface Body {
   name?: string
