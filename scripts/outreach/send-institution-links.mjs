@@ -50,7 +50,7 @@ const alreadySent = loadLog()
 // rather than inferred — this is a small, one-off audience worth naming by hand.
 const SLUGS = [
   "achievement-house", "calvary-baptist-church", "crossroads-community-church-cogop",
-  "first-christian-church", "hope-chapel-mission-hills", "kids-space-children-s-museum",
+  "first-christian-church", "hope-chapel-mission-hills", "kids-space-museum-lompoc",
   "lompoc-foursquare-church", "lompoc-museum", "lompoc-theatre", "lompoc-valley-baptist-church",
   "lompoc-valley-medical-center", "mission-la-purisima", "place-of-grace-church",
   "st-mary-s-episcopal-church", "trinity-church-of-the-nazarene", "west-coast-industries",
@@ -62,6 +62,15 @@ const rows = await sql`
   from businesses b
   where b.slug = any(${SLUGS}) and b.status='approved' and b.email is not null
   order by b.name`
+
+// A slug that matches nothing drops a recipient without saying so — one typo here quietly cut the
+// children's museum from the first build of this list. Name the gap loudly instead.
+const missing = SLUGS.filter((s) => !rows.some((r) => r.slug === s))
+if (missing.length) {
+  console.error(`\n  ✗ ${missing.length} slug(s) matched no approved row with an email:`)
+  for (const m of missing) console.error(`      ${m}`)
+  console.error(`    Fix the slug or drop it from SLUGS — do not send a short list by accident.\n`)
+}
 
 // Never invite somebody to look at an empty page. A page with no photographs makes the ask look
 // like the favor it is not.
