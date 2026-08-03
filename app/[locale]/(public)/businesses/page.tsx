@@ -32,6 +32,16 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+/**
+ * How many businesses each category shows before deferring to its own page.
+ *
+ * This page used to render all 472 listings at once: 11,781 words and a 3.45s response, the
+ * slowest and heaviest page on the site by some margin (the median elsewhere is 355ms). Every
+ * category already links to /category/<slug>, which lists the whole set and is in the sitemap, so
+ * the full dump bought nothing but weight — and it would only get worse as listings are added.
+ */
+const PREVIEW_PER_CATEGORY = 12
+
 export default async function BusinessesPage({
   searchParams,
 }: {
@@ -257,7 +267,7 @@ export default async function BusinessesPage({
               </AnimeReveal>
 
               <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {g.items.map((b, bi) => {
+                {g.items.slice(0, PREVIEW_PER_CATEGORY).map((b, bi) => {
                   const hasDeals = b.activeDealCount > 0
                   return (
                     <AnimeReveal
@@ -338,6 +348,18 @@ export default async function BusinessesPage({
                   )
                 })}
               </ul>
+
+              {g.items.length > PREVIEW_PER_CATEGORY && (
+                <div className="mt-5 flex justify-center">
+                  <Link
+                    href={`/category/${g.slug}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-primary transition-colors hover:border-primary/40 hover:bg-accent"
+                  >
+                    {t("seeAll")} {g.items.length} {g.name}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              )}
             </section>
           )
         })}
