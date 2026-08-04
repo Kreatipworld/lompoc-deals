@@ -86,6 +86,47 @@ export const normalizeForSearch = (s: string) =>
 /** The same normalization applied to a column, so the comparison happens on equal terms. */
 export const normalizedName = sql`regexp_replace(lower(${businesses.name}), '[^a-z0-9 ]', '', 'g')`
 
+/**
+ * Last resort: nothing matched, so find the nearest name by trigram similarity.
+ *
+ * A resident typed "ja glad" — a slip of the fingers for "js glass" — and got an empty box. People
+ * misspell the names of places they have only ever seen on a sign, and an empty result is the one
+ * outcome guaranteed to send them back to Google. This runs only when the normal search finds
+ * nothing, so it never dilutes a good result set; the worst case is one plausible suggestion
+ * instead of a dead end.
+ *
+ * Requires the pg_trgm extension.
+ */
+export async function fuzzyBusinessSearch(q: string, limit = 4): Promise<BizHit[]> {
+  const norm = normalizeForSearch(q)
+  if (norm.length < 4) return [] // too short to guess from without being silly
+  try {
+    const rows = await db
+      .select({
+        id: businesses.id,
+        name: businesses.name,
+        slug: businesses.slug,
+        logoUrl: businesses.logoUrl,
+        categoryName: categories.name,
+        description: businesses.description,
+      })
+      .from(businesses)
+      .leftJoin(categories, eq(categories.id, businesses.categoryId))
+      .where(
+        and(
+          eq(businesses.status, "approved"),
+          sql`similarity(${normalizedName}, ${norm}) > 0.22`
+        )
+      )
+      .orderBy(sql`similarity(${normalizedName}, ${norm}) desc`)
+      .limit(limit)
+    return rows
+  } catch {
+    // pg_trgm missing on some environment — a missing suggestion is not worth a 500.
+    return []
+  }
+}
+
 export function matchedCategorySlugs(q: string): Set<string> {
   const lower = q.toLowerCase()
   const matched = new Set<string>()
@@ -225,5 +266,8 @@ export async function searchAll(q: string): Promise<SearchResults> {
     searchDeals(q),
   ])
 
-  return { businesses: rankBusinessHits(bizRows, q, 24), categories: categoryHits, deals }
+  const ranked = rankBusinessHits(bizRows, q, 24)
+  // An empty result is the one outcome that sends a resident back to Google.
+  const businessesOut = ranked.length ? ranked : await fuzzyBusinessSearch(q, 6)
+  return { businesses: businessesOut, categories: categoryHits, deals }
 }

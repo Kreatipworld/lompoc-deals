@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
 import { and, eq, gt, ilike, or, sql } from "drizzle-orm"
-import { CATEGORY_SYNONYMS, rankBusinessHits, normalizeForSearch, normalizedName } from "@/lib/search"
+import {
+  CATEGORY_SYNONYMS,
+  rankBusinessHits,
+  normalizeForSearch,
+  normalizedName,
+  fuzzyBusinessSearch,
+} from "@/lib/search"
 
 export const runtime = "nodejs"
 
@@ -115,9 +121,14 @@ export async function GET(req: NextRequest) {
       .limit(5),
   ])
 
+  const ranked = rankBusinessHits(bizRows, q, 6)
+  // Nothing matched: offer the nearest name rather than an empty box. See fuzzyBusinessSearch.
+  const businessesOut =
+    ranked.length || categoryHits.length ? ranked : await fuzzyBusinessSearch(q, 4)
+
   return NextResponse.json({
     categories: categoryHits,
-    businesses: rankBusinessHits(bizRows, q, 6),
+    businesses: businessesOut,
     deals: dealRows,
   })
 }
