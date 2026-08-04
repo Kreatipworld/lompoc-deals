@@ -47,3 +47,25 @@ assert.ok(matchedCategorySlugs("haircut").has("health-beauty"))
 assert.ok(matchedCategorySlugs("comida").has("food-drink"), "Spanish searches must work too")
 
 console.log(`rankBusinessHits: all assertions passed — "pizza" → ${top6.slice(0, 4).join(", ")}, …`)
+
+// ── Precision: a business appears only when its own words match ──────────────
+// The results page for "pizza" was returning 25 businesses — taquerias, a bar, a market deli —
+// because the food-drink synonym pulled in the whole category. 14 businesses actually mention
+// pizza. A directory that answers "pizza" with "here is every restaurant" is not a directory.
+const FOOD = [
+  { name: "Pizza Garden", description: "Family-owned pizzeria since 1997." },
+  { name: "Eye on I", description: "Wood-fired pizza shop on I Street." },
+  { name: "Tacos El Tizon 1", description: "Tacos, burritos and tortas." },
+  { name: "Mariscos El Palmar", description: "Seafood cocteles and ceviche." },
+  { name: "Wicked Shamrock", description: "Irish bar with live music." },
+]
+const pizzaOnly = rankBusinessHits(
+  FOOD.filter((b) => /pizza/i.test(b.name) || /pizza/i.test(b.description)),
+  "pizza",
+  24
+).map((b) => b.name)
+assert.deepEqual(pizzaOnly, ["Pizza Garden", "Eye on I"], "only genuine pizza matches survive")
+for (const irrelevant of ["Tacos El Tizon 1", "Mariscos El Palmar", "Wicked Shamrock"])
+  assert.ok(!pizzaOnly.includes(irrelevant), `${irrelevant} does not serve pizza and must not appear`)
+
+console.log(`precision: "pizza" → ${pizzaOnly.join(", ")} (no category flood)`)

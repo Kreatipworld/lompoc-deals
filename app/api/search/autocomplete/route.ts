@@ -81,8 +81,10 @@ export async function GET(req: NextRequest) {
           // keyword searches surface relevant places, not just name hits.
           // looseLike everywhere: never compare raw typing to a stored string. See lib/search-match.ts.
           or(
+            // A business appears because ITS OWN words match. The category name is deliberately
+            // not here: matching it made "food" return the whole Food & Drink list. The category
+            // chip is the honest place to offer a browse.
             looseLike(businesses.name, q),
-            looseLike(categories.name, q),
             looseLike(businesses.description, q),
             looseLike(businesses.about, q),
           ),

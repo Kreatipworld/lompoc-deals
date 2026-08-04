@@ -198,6 +198,9 @@ export function rankBusinessHits<T extends { name: string; description?: string 
   return out.filter((x) => !seen.has(x) && seen.add(x)).slice(0, limit).map((x) => x.r)
 }
 
+/** Below this many genuine matches, a term is allowed to fall back to its category. */
+const SYNONYM_FALLBACK_MIN = 3
+
 export async function searchAll(q: string): Promise<SearchResults> {
   const term = `%${q}%`
   const lower = q.toLowerCase()
@@ -227,16 +230,21 @@ export async function searchAll(q: string): Promise<SearchResults> {
     .slice(0, 6)
 
   const synonymSlugList = Array.from(synonymSlugs)
+
+  /**
+   * A business appears because its own words match — nothing else.
+   *
+   * The category synonym used to sit in this OR, so searching "pizza" matched the whole
+   * food-drink category and returned taquerias, a bar and a market deli alongside the
+   * pizzerias: 103 businesses for a term that 14 of them actually mention. Precision is the
+   * point of a directory. The synonym still drives the category chip, which is the honest
+   * place to offer "browse all 103 Food & Drink".
+   */
   const bizConditions = [
     looseLike(businesses.name, q),
-    looseLike(categories.name, q),
     looseLike(businesses.description, q),
     looseLike(businesses.about, q),
   ]
-  // Synonym hits: "haircut" should surface salons, not nothing.
-  if (synonymSlugList.length > 0) {
-    bizConditions.push(inArray(categories.slug, synonymSlugList))
-  }
 
   const [bizRows, deals] = await Promise.all([
     db
@@ -256,7 +264,33 @@ export async function searchAll(q: string): Promise<SearchResults> {
     searchDeals(q),
   ])
 
-  const ranked = rankBusinessHits(bizRows, q, 24)
+  let ranked = rankBusinessHits(bizRows, q, 24)
+
+  /**
+   * Only when a term finds almost nothing on its own do we fall back to its category.
+   *
+   * "weed" is the case this exists for: no business here writes the word, so without the
+   * synonym a resident gets an empty page. "pizza" finds 14 on its own and needs no help —
+   * which is exactly why the synonym must not be part of the main condition.
+   */
+  if (ranked.length < SYNONYM_FALLBACK_MIN && synonymSlugList.length > 0) {
+    const byCategory = await db
+      .select({
+        id: businesses.id,
+        name: businesses.name,
+        slug: businesses.slug,
+        logoUrl: businesses.logoUrl,
+        categoryName: categories.name,
+        description: businesses.description,
+      })
+      .from(businesses)
+      .innerJoin(categories, eq(categories.id, businesses.categoryId))
+      .where(and(eq(businesses.status, "approved"), inArray(categories.slug, synonymSlugList)))
+      .limit(24)
+    const have = new Set(ranked.map((b) => b.id))
+    ranked = [...ranked, ...byCategory.filter((b) => !have.has(b.id))].slice(0, 24)
+  }
+
   // An empty result is the one outcome that sends a resident back to Google.
   const businessesOut = ranked.length ? ranked : await fuzzyBusinessSearch(q, 6)
   return { businesses: businessesOut, categories: categoryHits, deals }
