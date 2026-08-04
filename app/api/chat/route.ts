@@ -3,7 +3,8 @@ import { createAnthropic } from "@ai-sdk/anthropic"
 import { z } from "zod"
 import { db } from "@/db/client"
 import { deals, businesses, categories, activities, events } from "@/db/schema"
-import { and, eq, gt, ilike, or, desc } from "drizzle-orm"
+import { looseLike } from "@/lib/search-match"
+import { and, eq, gt, or, desc } from "drizzle-orm"
 import { sql as sqlExpr } from "drizzle-orm"
 
 const anthropic = createAnthropic({
@@ -64,9 +65,10 @@ export async function POST(req: Request) {
           if (query) {
             conditions.push(
               or(
-                ilike(deals.title, `%${query}%`),
-                ilike(deals.description, `%${query}%`),
-                ilike(businesses.name, `%${query}%`)
+                looseLike(deals.title, query),
+                looseLike(deals.description, query),
+                looseLike(businesses.name, query),
+                looseLike(businesses.description, query)
               )!
             )
           }
@@ -116,8 +118,10 @@ export async function POST(req: Request) {
           if (query) {
             conditions.push(
               or(
-                ilike(businesses.name, `%${query}%`),
-                ilike(businesses.description, `%${query}%`)
+                looseLike(businesses.name, query),
+                looseLike(businesses.description, query),
+                // A business is found by what it does, not only what it's called.
+                looseLike(businesses.about, query)
               )!
             )
           }
@@ -153,7 +157,7 @@ export async function POST(req: Request) {
         }),
         execute: async ({ query, limit }) => {
           const conditions = query
-            ? [or(ilike(activities.title, `%${query}%`), ilike(activities.description, `%${query}%`), ilike(activities.category, `%${query}%`))!]
+            ? [or(looseLike(activities.title, query), looseLike(activities.description, query), looseLike(activities.category, query))!]
             : []
 
           const rows = await db
@@ -191,8 +195,8 @@ export async function POST(req: Request) {
           if (query) {
             conditions.push(
               or(
-                ilike(events.title, `%${query}%`),
-                ilike(events.description, `%${query}%`)
+                looseLike(events.title, query),
+                looseLike(events.description, query)
               )!
             )
           }

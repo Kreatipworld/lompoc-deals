@@ -1,6 +1,7 @@
-import { and, desc, eq, gt, gte, ilike, inArray, ne, or, sql } from "drizzle-orm"
+import { and, desc, eq, gt, gte, inArray, ne, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions } from "@/db/schema"
+import { looseLike } from "@/lib/search-match"
 import { effectiveTier } from "@/lib/tier"
 import { weightedSlots } from "@/lib/featured-rotation"
 
@@ -166,7 +167,6 @@ export async function searchDeals(
   q: string,
   limit = 50
 ): Promise<DealCardData[]> {
-  const term = `%${q}%`
   const rows = await db
     .select(baseDealSelect)
     .from(deals)
@@ -177,9 +177,13 @@ export async function searchDeals(
       and(
         activeAndApproved,
         or(
-          ilike(deals.title, term),
-          ilike(deals.description, term),
-          ilike(businesses.name, term)
+          // looseLike, not ilike: "js glass" must find "J's Glass Co". See lib/search.ts.
+          looseLike(deals.title, q),
+          looseLike(deals.description, q),
+          looseLike(businesses.name, q),
+          // A deal from a pizzeria should surface for "pizza" even when neither the deal nor the
+          // business name says so — the same fault Eye on I reported in business search.
+          looseLike(businesses.description, q)
         )
       )
     )

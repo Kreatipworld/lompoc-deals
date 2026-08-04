@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
-import { and, eq, gt, ilike, or, sql } from "drizzle-orm"
-import {
-  CATEGORY_SYNONYMS,
-  rankBusinessHits,
-  normalizeForSearch,
-  normalizedName,
-  fuzzyBusinessSearch,
-} from "@/lib/search"
+import { and, eq, gt, or, sql } from "drizzle-orm"
+import { CATEGORY_SYNONYMS, rankBusinessHits, fuzzyBusinessSearch, looseLike } from "@/lib/search"
 
 export const runtime = "nodejs"
 
@@ -85,13 +79,12 @@ export async function GET(req: NextRequest) {
           eq(businesses.status, "approved"),
           // Match the name, the category, or the description / About text so
           // keyword searches surface relevant places, not just name hits.
+          // looseLike everywhere: never compare raw typing to a stored string. See lib/search-match.ts.
           or(
-            ilike(businesses.name, term),
-            // Punctuation-insensitive: "js glass" must find "J's Glass Co".
-            sql`${normalizedName} like ${`%${normalizeForSearch(q)}%`}`,
-            ilike(categories.name, term),
-            ilike(businesses.description, term),
-            ilike(businesses.about, term),
+            looseLike(businesses.name, q),
+            looseLike(categories.name, q),
+            looseLike(businesses.description, q),
+            looseLike(businesses.about, q),
           ),
         ),
       )
@@ -115,7 +108,7 @@ export async function GET(req: NextRequest) {
         and(
           eq(businesses.status, "approved"),
           gt(deals.expiresAt, sql`now()`),
-          or(ilike(deals.title, term), ilike(businesses.name, term)),
+          or(looseLike(deals.title, q), looseLike(businesses.name, q), looseLike(businesses.description, q)),
         ),
       )
       .limit(5),

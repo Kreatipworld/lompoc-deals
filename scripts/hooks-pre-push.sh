@@ -30,5 +30,15 @@ if ! node scripts/check-title-metadata.mjs; then
   exit 1
 fi
 
+echo ""
+echo "[pre-push] Checking search matching..."
+if ! node scripts/check-search-matching.mjs; then
+  echo ""
+  echo "[pre-push] ❌ Search check failed. Push aborted."
+  echo "[pre-push]    ILIKE hid a pizzeria from \"pizza\" and a third of the directory from its own name."
+  echo ""
+  exit 1
+fi
+
 echo "[pre-push] ✓ Lint passed. Pushing..."
 exit 0

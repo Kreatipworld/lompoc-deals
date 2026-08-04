@@ -1,8 +1,12 @@
 import { db } from "@/db/client"
 import { businesses, categories } from "@/db/schema"
-import { and, eq, ilike, inArray, or, sql } from "drizzle-orm"
+import { and, eq, inArray, or, sql } from "drizzle-orm"
 import { searchDeals, type DealCardData } from "@/lib/queries"
 import { isChain } from "@/lib/chains"
+import { normalizeForSearch, normalizedName, looseLike } from "@/lib/search-match"
+
+// Re-exported so existing importers of "@/lib/search" keep working.
+export { normalizeForSearch, normalizedName, looseLike }
 
 /**
  * Keyword → category synonym map. Lets a searcher type what they're looking for
@@ -72,19 +76,7 @@ export type SearchResults = {
   deals: DealCardData[]
 }
 
-/**
- * Strip punctuation so people can type the way they speak.
- *
- * Four residents searched "js glass" and got an empty box, because the business is "J's Glass Co"
- * and an ILIKE cares about the apostrophe. Nobody types the apostrophe. 145 of 472 business names
- * here carry punctuation — apostrophes, ampersands, hyphens, periods — so this is a third of the
- * directory, not an edge case.
- */
-export const normalizeForSearch = (s: string) =>
-  s.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim()
 
-/** The same normalization applied to a column, so the comparison happens on equal terms. */
-export const normalizedName = sql`regexp_replace(lower(${businesses.name}), '[^a-z0-9 ]', '', 'g')`
 
 /**
  * Last resort: nothing matched, so find the nearest name by trigram similarity.
@@ -235,13 +227,11 @@ export async function searchAll(q: string): Promise<SearchResults> {
     .slice(0, 6)
 
   const synonymSlugList = Array.from(synonymSlugs)
-  const normTerm = `%${normalizeForSearch(q)}%`
   const bizConditions = [
-    ilike(businesses.name, term),
-    sql`${normalizedName} like ${normTerm}`,
-    ilike(categories.name, term),
-    ilike(businesses.description, term),
-    ilike(businesses.about, term),
+    looseLike(businesses.name, q),
+    looseLike(categories.name, q),
+    looseLike(businesses.description, q),
+    looseLike(businesses.about, q),
   ]
   // Synonym hits: "haircut" should surface salons, not nothing.
   if (synonymSlugList.length > 0) {
