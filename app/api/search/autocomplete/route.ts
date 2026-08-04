@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
 import { and, eq, gt, ilike, or, sql } from "drizzle-orm"
-import { CATEGORY_SYNONYMS, rankBusinessHits } from "@/lib/search"
+import { CATEGORY_SYNONYMS, rankBusinessHits, normalizeForSearch, normalizedName } from "@/lib/search"
 
 export const runtime = "nodejs"
 
@@ -81,6 +81,8 @@ export async function GET(req: NextRequest) {
           // keyword searches surface relevant places, not just name hits.
           or(
             ilike(businesses.name, term),
+            // Punctuation-insensitive: "js glass" must find "J's Glass Co".
+            sql`${normalizedName} like ${`%${normalizeForSearch(q)}%`}`,
             ilike(categories.name, term),
             ilike(businesses.description, term),
             ilike(businesses.about, term),

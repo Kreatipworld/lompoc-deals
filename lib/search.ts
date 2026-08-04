@@ -72,6 +72,20 @@ export type SearchResults = {
   deals: DealCardData[]
 }
 
+/**
+ * Strip punctuation so people can type the way they speak.
+ *
+ * Four residents searched "js glass" and got an empty box, because the business is "J's Glass Co"
+ * and an ILIKE cares about the apostrophe. Nobody types the apostrophe. 145 of 472 business names
+ * here carry punctuation — apostrophes, ampersands, hyphens, periods — so this is a third of the
+ * directory, not an edge case.
+ */
+export const normalizeForSearch = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim()
+
+/** The same normalization applied to a column, so the comparison happens on equal terms. */
+export const normalizedName = sql`regexp_replace(lower(${businesses.name}), '[^a-z0-9 ]', '', 'g')`
+
 export function matchedCategorySlugs(q: string): Set<string> {
   const lower = q.toLowerCase()
   const matched = new Set<string>()
@@ -117,21 +131,21 @@ export function rankBusinessHits<T extends { name: string; description?: string 
   q: string,
   limit: number
 ): T[] {
-  const lower = q.trim().toLowerCase()
+  const lower = normalizeForSearch(q)
   const nameRank = (r: T) => {
-    const name = r.name.toLowerCase()
+    const name = normalizeForSearch(r.name)
     if (name.startsWith(lower)) return 0 // they typed who they wanted
     return 1 + (isChain(r.name) ? 1 : 0)
   }
   // Word matches rank by where the evidence lives: description before about, earlier before later.
   const wordRank = (r: T) => {
-    const at = (r.description ?? "").toLowerCase().indexOf(lower)
+    const at = normalizeForSearch(r.description ?? "").indexOf(lower)
     return (at >= 0 ? 0 : 1000) + (at >= 0 ? at / 1000 : 0) + (isChain(r.name) ? 2000 : 0)
   }
-  const keyed = rows.map((r, i) => ({ r, i, isName: r.name.toLowerCase().includes(lower) }))
+  const keyed = rows.map((r, i) => ({ r, i, isName: normalizeForSearch(r.name).includes(lower) }))
   const sortBy = (f: (r: T) => number) => (a: (typeof keyed)[0], b: (typeof keyed)[0]) => f(a.r) - f(b.r) || a.i - b.i
 
-  const lookup = keyed.filter((x) => x.r.name.toLowerCase().startsWith(lower))
+  const lookup = keyed.filter((x) => normalizeForSearch(x.r.name).startsWith(lower))
   const rest = keyed.filter((x) => !lookup.includes(x))
   const localName = rest.filter((x) => x.isName && !isChain(x.r.name)).sort(sortBy(nameRank))
   const chainName = rest.filter((x) => x.isName && isChain(x.r.name)).sort(sortBy(nameRank))
@@ -180,8 +194,10 @@ export async function searchAll(q: string): Promise<SearchResults> {
     .slice(0, 6)
 
   const synonymSlugList = Array.from(synonymSlugs)
+  const normTerm = `%${normalizeForSearch(q)}%`
   const bizConditions = [
     ilike(businesses.name, term),
+    sql`${normalizedName} like ${normTerm}`,
     ilike(categories.name, term),
     ilike(businesses.description, term),
     ilike(businesses.about, term),
