@@ -68,6 +68,9 @@ export async function GET(req: NextRequest) {
         slug: businesses.slug,
         logoUrl: businesses.logoUrl,
         categoryName: categories.name,
+        // Needed by rankBusinessHits: a match in the short description is stronger evidence
+        // than one buried in the about text.
+        description: businesses.description,
       })
       .from(businesses)
       .leftJoin(categories, eq(businesses.categoryId, categories.id))

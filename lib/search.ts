@@ -101,20 +101,54 @@ export function matchedCategorySlugs(q: string): Set<string> {
  * just being unhelpful. A name that *starts with* the query is treated as a lookup and wins
  * outright, chain or not; everything else is a browse, and there the town comes first.
  *
- * Order: starts-with → local name match → local word match → chain name match → chain word match.
+ * Sorting alone still isn't enough. Lompoc has five pizzerias with Pizza in the name, so however
+ * they are ordered they can fill a six-slot dropdown by themselves and Eye on I is out again. A
+ * word match therefore gets a *reserved seat* — the list is built from two queues, not one sort.
+ *
+ * Within word matches, the short curated description beats the long about text: Eye on I's
+ * description opens "Wood-fired pizza shop", while Big Jayke's is an Asian-fusion noodle place that
+ * happens to mention pizza 172 characters into its story. Both are honest matches; only one is what
+ * the searcher meant.
+ *
+ * Order: starts-with → local name → chain name, with word matches held a seat, best-signal first.
  */
-export function rankBusinessHits<T extends { name: string }>(rows: T[], q: string, limit: number): T[] {
+export function rankBusinessHits<T extends { name: string; description?: string | null }>(
+  rows: T[],
+  q: string,
+  limit: number
+): T[] {
   const lower = q.trim().toLowerCase()
-  const rank = (r: T) => {
+  const nameRank = (r: T) => {
     const name = r.name.toLowerCase()
     if (name.startsWith(lower)) return 0 // they typed who they wanted
-    return 1 + (isChain(r.name) ? 2 : 0) + (name.includes(lower) ? 0 : 1)
+    return 1 + (isChain(r.name) ? 1 : 0)
   }
-  return rows
-    .map((r, i) => ({ r, i, k: rank(r) }))
-    .sort((a, b) => a.k - b.k || a.i - b.i) // stable within a tier: keep the DB's order
-    .slice(0, limit)
-    .map((x) => x.r)
+  // Word matches rank by where the evidence lives: description before about, earlier before later.
+  const wordRank = (r: T) => {
+    const at = (r.description ?? "").toLowerCase().indexOf(lower)
+    return (at >= 0 ? 0 : 1000) + (at >= 0 ? at / 1000 : 0) + (isChain(r.name) ? 2000 : 0)
+  }
+  const keyed = rows.map((r, i) => ({ r, i, isName: r.name.toLowerCase().includes(lower) }))
+  const sortBy = (f: (r: T) => number) => (a: (typeof keyed)[0], b: (typeof keyed)[0]) => f(a.r) - f(b.r) || a.i - b.i
+
+  const lookup = keyed.filter((x) => x.r.name.toLowerCase().startsWith(lower))
+  const rest = keyed.filter((x) => !lookup.includes(x))
+  const localName = rest.filter((x) => x.isName && !isChain(x.r.name)).sort(sortBy(nameRank))
+  const chainName = rest.filter((x) => x.isName && isChain(x.r.name)).sort(sortBy(nameRank))
+  const byWord = rest.filter((x) => !x.isName).sort(sortBy(wordRank))
+
+  // One seat per six, so a name-heavy category can never hide the places it doesn't name.
+  const reserved = Math.min(byWord.length, Math.max(1, Math.floor(limit / 6)))
+  const out = [
+    ...lookup,
+    ...localName.slice(0, Math.max(0, limit - lookup.length - reserved)),
+    ...byWord.slice(0, reserved),
+    ...chainName,
+    ...localName,
+    ...byWord,
+  ]
+  const seen = new Set<(typeof keyed)[0]>()
+  return out.filter((x) => !seen.has(x) && seen.add(x)).slice(0, limit).map((x) => x.r)
 }
 
 export async function searchAll(q: string): Promise<SearchResults> {
