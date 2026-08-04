@@ -3,10 +3,10 @@ import { businesses, categories } from "@/db/schema"
 import { and, eq, inArray, or, sql } from "drizzle-orm"
 import { searchDeals, type DealCardData } from "@/lib/queries"
 import { isChain } from "@/lib/chains"
-import { normalizeForSearch, normalizedName, looseLike } from "@/lib/search-match"
+import { normalizeForSearch, normalizedName, looseLike, dropCompetitorMentions } from "@/lib/search-match"
 
 // Re-exported so existing importers of "@/lib/search" keep working.
-export { normalizeForSearch, normalizedName, looseLike }
+export { normalizeForSearch, normalizedName, looseLike, dropCompetitorMentions }
 
 /**
  * Keyword → category synonym map. Lets a searcher type what they're looking for
@@ -264,7 +264,7 @@ export async function searchAll(q: string): Promise<SearchResults> {
     searchDeals(q),
   ])
 
-  let ranked = rankBusinessHits(bizRows, q, 24)
+  let ranked = rankBusinessHits(dropCompetitorMentions(bizRows, q), q, 24)
 
   /**
    * Only when a term finds almost nothing on its own do we fall back to its category.

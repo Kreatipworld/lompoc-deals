@@ -39,3 +39,36 @@ export const looseLike = (col: AnyColumn | SQL, q: string) =>
 
 /** Business names, folded — used by both matching and the fuzzy fallback. */
 export const normalizedName = normalizedCol(businesses.name)
+
+/**
+ * Drop rows that only matched because they name a *different* business.
+ *
+ * Big Jayke's is an Asian-fusion noodle shop. It surfaced for "pizza" because its story says the
+ * founder started out "while working at Mi Amore Pizza and Pasta" — a competitor's name, not
+ * something they sell. Told that they serve pizza, a resident drives over and finds yakisoba.
+ *
+ * The set of offending names is already in hand: any row whose own name matches the query is, by
+ * definition, a business whose name contains the term. Blank those names out of the other rows'
+ * text and re-check. A row survives only if the term still appears in words about itself.
+ *
+ * Rows matching on name or description are never touched — this only judges about-text evidence,
+ * which is where borrowed names live.
+ */
+export function dropCompetitorMentions<
+  T extends { name: string; description?: string | null; about?: string | null },
+>(rows: T[], q: string): T[] {
+  const term = normalizeForSearch(q)
+  if (!term) return rows
+  const nameMatches = rows.map((r) => normalizeForSearch(r.name)).filter((n) => n.includes(term))
+  if (nameMatches.length === 0) return rows
+
+  return rows.filter((r) => {
+    const name = normalizeForSearch(r.name)
+    if (name.includes(term)) return true
+    if (normalizeForSearch(r.description ?? "").includes(term)) return true
+    let about = normalizeForSearch(r.about ?? "")
+    if (!about.includes(term)) return true // matched on something else entirely; not ours to judge
+    for (const other of nameMatches) about = about.split(other).join(" ")
+    return about.includes(term)
+  })
+}

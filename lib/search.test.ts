@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import { rankBusinessHits, matchedCategorySlugs } from "./search"
+import { rankBusinessHits, matchedCategorySlugs, dropCompetitorMentions } from "./search"
 
 // The exact result set production returned for "pizza" before the fix, in the exact order the
 // database produced it: six name matches, limit exhausted, Eye on I unreachable.
@@ -69,3 +69,21 @@ for (const irrelevant of ["Tacos El Tizon 1", "Mariscos El Palmar", "Wicked Sham
   assert.ok(!pizzaOnly.includes(irrelevant), `${irrelevant} does not serve pizza and must not appear`)
 
 console.log(`precision: "pizza" → ${pizzaOnly.join(", ")} (no category flood)`)
+
+// ── A borrowed name is not an offering ───────────────────────────────────────
+// Big Jayke's serves yakisoba. It surfaced for "pizza" because its story says the founder
+// started out "while working at Mi Amore Pizza and Pasta" — a competitor's name. Telling a
+// resident they sell pizza sends them somewhere that doesn't.
+const MENTIONS = [
+  { name: "Mi Amore Pizza and Pasta", description: "Pizza and pasta on North H.", about: "" },
+  { name: "Eye on I", description: "Wood-fired pizza shop on I Street.", about: "A pizza shop." },
+  { name: "Mr. Taco", description: "Street tacos, fajitas, and Mexican pizza.", about: "" },
+  { name: "Capulin Eats & Provisions", description: "Breakfast and lunch.", about: "Egg sandwiches, tortas and breakfast pizzas plus coffee." },
+  { name: "Big Jayke's", description: "Asian-fusion noodles.", about: "Started in 2018 posting yakisoba while working at Mi Amore Pizza and Pasta." },
+]
+const kept = dropCompetitorMentions(MENTIONS, "pizza").map((b) => b.name)
+assert.ok(!kept.includes("Big Jayke's"), `a competitor's name in the story is not an offering; got: ${kept.join(", ")}`)
+assert.ok(kept.includes("Capulin Eats & Provisions"), "breakfast pizzas in its own words is a real match")
+assert.ok(kept.includes("Mr. Taco") && kept.includes("Eye on I") && kept.includes("Mi Amore Pizza and Pasta"))
+
+console.log(`competitor mentions: "pizza" keeps ${kept.length} of ${MENTIONS.length} — dropped Big Jayke's`)

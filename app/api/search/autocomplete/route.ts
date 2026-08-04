@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
 import { and, eq, gt, or, sql } from "drizzle-orm"
-import { CATEGORY_SYNONYMS, rankBusinessHits, fuzzyBusinessSearch, looseLike } from "@/lib/search"
+import {
+  CATEGORY_SYNONYMS,
+  rankBusinessHits,
+  fuzzyBusinessSearch,
+  looseLike,
+  dropCompetitorMentions,
+} from "@/lib/search"
 
 export const runtime = "nodejs"
 
@@ -71,6 +77,7 @@ export async function GET(req: NextRequest) {
         // Needed by rankBusinessHits: a match in the short description is stronger evidence
         // than one buried in the about text.
         description: businesses.description,
+        about: businesses.about,
       })
       .from(businesses)
       .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -116,7 +123,7 @@ export async function GET(req: NextRequest) {
       .limit(5),
   ])
 
-  const ranked = rankBusinessHits(bizRows, q, 6)
+  const ranked = rankBusinessHits(dropCompetitorMentions(bizRows, q), q, 6)
   // Nothing matched: offer the nearest name rather than an empty box. See fuzzyBusinessSearch.
   const businessesOut =
     ranked.length || categoryHits.length ? ranked : await fuzzyBusinessSearch(q, 4)
