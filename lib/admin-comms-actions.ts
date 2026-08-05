@@ -1,9 +1,9 @@
 "use server"
 
-import { isNotNull } from "drizzle-orm"
+import { and, isNotNull, isNull, sql } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
-import { subscribers } from "@/db/schema"
+import { subscribers, emailSuppressions } from "@/db/schema"
 import { sendMasterDigestEmail, sendBroadcastEmail } from "@/lib/email"
 import { getMasterDigestContent, hasMasterDigestContent } from "@/lib/digest"
 
@@ -70,7 +70,11 @@ export async function sendBroadcastAction(formData: FormData): Promise<CommsResu
       locale: subscribers.locale,
     })
     .from(subscribers)
-    .where(isNotNull(subscribers.confirmedAt))
+    .leftJoin(
+      emailSuppressions,
+      sql`lower(${subscribers.email}) = lower(${emailSuppressions.email})`
+    )
+    .where(and(isNotNull(subscribers.confirmedAt), isNull(emailSuppressions.id)))
 
   let sent = 0
   let failed = 0

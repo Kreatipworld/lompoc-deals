@@ -1,4 +1,5 @@
 import { Resend } from "resend"
+import crypto from "node:crypto"
 import type { DealCardData } from "@/lib/queries"
 import type { DigestEvent, ThemedDigestContent, MasterDigestContent } from "@/lib/digest"
 import { selectLead } from "@/lib/digest"
@@ -23,6 +24,27 @@ function getResend(): Resend | null {
 function siteUrl(path = "") {
   const base = process.env.AUTH_URL ?? "http://localhost:3000"
   return `${base.replace(/\/$/, "")}${path}`
+}
+
+/**
+ * RFC 8058 one-click unsubscribe headers for bulk mail (digest, broadcasts,
+ * launch alerts). Gmail/Yahoo bulk-sender rules require these. Points at
+ * /api/unsubscribe, which verifies the same HMAC (see expectedToken there —
+ * keep the two implementations in sync) and writes to email_suppressions;
+ * every subscriber send filters that table.
+ */
+function oneClickUnsubHeaders(email: string): Record<string, string> {
+  const addr = email.trim().toLowerCase()
+  const token = crypto
+    .createHmac("sha256", process.env.AUTH_SECRET || "")
+    .update(addr)
+    .digest("base64url")
+    .slice(0, 24)
+  const url = siteUrl(`/api/unsubscribe?e=${encodeURIComponent(addr)}&t=${token}`)
+  return {
+    "List-Unsubscribe": `<${url}>`,
+    "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+  }
 }
 
 /**
@@ -1166,7 +1188,13 @@ export async function sendMasterDigestEmail(
     : "📬 The Lompoc Locals — your weekly front page"
 
   try {
-    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: email,
+      subject,
+      html,
+      headers: oneClickUnsubHeaders(email),
+    })
     return { ok: true }
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
@@ -1245,7 +1273,7 @@ export async function sendLaunchAlertEmail(
       to: email,
       subject,
       html,
-      headers: { "List-Unsubscribe": `<${unsubUrl}>` },
+      headers: oneClickUnsubHeaders(email),
     })
     return { ok: true }
   } catch (e) {
@@ -1292,7 +1320,13 @@ export async function sendBroadcastEmail(
   `
 
   try {
-    await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: email,
+      subject,
+      html,
+      headers: oneClickUnsubHeaders(email),
+    })
     return { ok: true }
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
