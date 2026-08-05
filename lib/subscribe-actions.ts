@@ -3,7 +3,9 @@
 import { randomBytes } from "crypto"
 import { z } from "zod"
 import { eq } from "drizzle-orm"
+import { redirect } from "next/navigation"
 import { getTranslations } from "next-intl/server"
+import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
 import { sendConfirmationEmail, notifyPlatform } from "@/lib/email"
@@ -111,6 +113,47 @@ export async function confirmSubscriptionByToken(token: string) {
     )
   }
   return { ok: true as const, email: sub.email }
+}
+
+/** Signed-in local subscribes their account email from /account — one click,
+ * still double-opt-in: we send the confirmation email rather than confirming
+ * on their behalf. */
+export async function accountSubscribeAction() {
+  const session = await auth()
+  const email = session?.user?.email?.toLowerCase()
+  if (!email) redirect("/login?from=/account")
+  const locale = await getCurrentLocale()
+
+  const existing = await db.query.subscribers.findFirst({
+    where: (s, { eq: e }) => e(s.email, email!),
+  })
+  if (existing?.confirmedAt) redirect("/account?digest=already")
+
+  let token: string
+  if (existing) {
+    token = existing.unsubscribeToken
+    await db.update(subscribers).set({ locale }).where(eq(subscribers.id, existing.id))
+  } else {
+    token = makeToken()
+    await db.insert(subscribers).values({ email: email!, unsubscribeToken: token, locale })
+  }
+  await sendConfirmationEmail(email!, token, locale)
+  redirect("/account?digest=sent")
+}
+
+/** Signed-in local leaves the digest from /account. */
+export async function accountUnsubscribeAction() {
+  const session = await auth()
+  const email = session?.user?.email?.toLowerCase()
+  if (!email) redirect("/login?from=/account")
+
+  const existing = await db.query.subscribers.findFirst({
+    where: (s, { eq: e }) => e(s.email, email!),
+  })
+  if (existing) {
+    await db.delete(subscribers).where(eq(subscribers.id, existing.id))
+  }
+  redirect("/account?digest=off")
 }
 
 export async function unsubscribeByToken(token: string) {

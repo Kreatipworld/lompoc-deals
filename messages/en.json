@@ -382,7 +382,10 @@
     "detailFallbackDescription": "Discover {title} in Lompoc, CA."
   },
   "favorites": {
-    "metaTitle": "My favorites"
+    "metaTitle": "My favorites",
+    "roleGateBody": "Favorites are only available for personal accounts. You're signed in as {role, select, admin {an admin} other {a business}} account.",
+    "savedCount": "{count, plural, =0 {No saved deals yet} one {# saved deal} other {# saved deals}}",
+    "empty": "You haven't saved any deals yet. Click the heart on any deal to add it here."
   },
   "subscribe": {
     "title": "Get the Saturday email",
@@ -404,7 +407,10 @@
     "alreadySubscribed": "You're already subscribed. Thanks!",
     "checkInbox": "Check your inbox for a confirmation link. Click it and the Saturday email starts arriving.",
     "emailNotConfigured": "Thanks! Your address is saved — confirmation email will arrive once email sending is enabled.",
-    "invalidEmail": "Enter a valid email"
+    "invalidEmail": "Enter a valid email",
+    "unsubscribedBody": "<strong>{email}</strong> won't receive any more digest emails.",
+    "unsubscribeFailedTitle": "Couldn't unsubscribe",
+    "unsubscribeFailedBody": "This link is invalid or has expired. Reply to any of our emails and a real person will take care of it."
   },
   "search": {
     "placeholder": "Search deals, businesses…",
@@ -1813,7 +1819,10 @@
     "expiresLabel": "Expires {distance}",
     "activeLabel": "Active",
     "helpHeading": "Help & support",
-    "helpBody": "Something broken, wrong, or confusing? Send it straight to us — we read every message and reply by email."
+    "helpBody": "Something broken, wrong, or confusing? Send it straight to us — we read every message and reply by email.",
+    "digestUnsubscribe": "Unsubscribe from the weekly digest",
+    "digestConfirmSentBanner": "Confirmation sent — check your inbox to finish subscribing.",
+    "digestOffBanner": "You're off the weekly digest list."
   },
   "listing": {
     "metaTitleSuffix": "",

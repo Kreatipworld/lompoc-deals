@@ -10,6 +10,7 @@ import { formatDistanceToNow, format } from "date-fns"
 import { Tag, CheckCircle2, Clock, Heart, Mail, Bell, BellOff, LifeBuoy } from "lucide-react"
 import { SupportForm } from "@/app/[locale]/dashboard/support/support-form"
 import { updateNotificationPrefsAction } from "@/lib/business-follow-actions"
+import { accountSubscribeAction, accountUnsubscribeAction } from "@/lib/subscribe-actions"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
@@ -23,7 +24,7 @@ export default async function AccountPage({
   searchParams,
 }: {
   params: { locale: string }
-  searchParams: { notif?: string }
+  searchParams: { notif?: string; digest?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "account" })
   const viewer = await getViewer()
@@ -80,6 +81,17 @@ export default async function AccountPage({
         </div>
       )}
 
+      {searchParams.digest === "sent" && (
+        <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          {t("digestConfirmSentBanner")}
+        </div>
+      )}
+      {searchParams.digest === "off" && (
+        <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          {t("digestOffBanner")}
+        </div>
+      )}
+
       {/* Quick links */}
       <section className="flex flex-wrap gap-3">
         <Link
@@ -101,13 +113,15 @@ export default async function AccountPage({
           <Tag className="h-4 w-4" />
           {t("browseDeals")}
         </Link>
-        <Link
-          href="/subscribe"
-          className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium hover:bg-accent"
-        >
-          <Mail className="h-4 w-4" />
-          {isSubscribed ? t("manageDigest") : t("subscribeToDigest")}
-        </Link>
+        {!isSubscribed && (
+          <Link
+            href="/subscribe"
+            className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium hover:bg-accent"
+          >
+            <Mail className="h-4 w-4" />
+            {t("subscribeToDigest")}
+          </Link>
+        )}
       </section>
 
       {/* Digest status */}
@@ -128,13 +142,25 @@ export default async function AccountPage({
         <p className="mt-2 text-sm text-muted-foreground">
           {isSubscribed ? t("digestSubscribedBody") : t("digestNotSubscribedBody")}
         </p>
-        {!isSubscribed && (
-          <Link
-            href="/subscribe"
-            className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-          >
-            {t("subscribeFree")}
-          </Link>
+        {isSubscribed ? (
+          <form action={accountUnsubscribeAction} className="mt-3">
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium hover:bg-muted"
+            >
+              <BellOff className="h-3.5 w-3.5" />
+              {t("digestUnsubscribe")}
+            </button>
+          </form>
+        ) : (
+          <form action={accountSubscribeAction} className="mt-3">
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            >
+              {t("subscribeFree")}
+            </button>
+          </form>
         )}
       </section>
 

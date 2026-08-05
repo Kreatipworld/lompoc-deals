@@ -33,18 +33,30 @@ function siteUrl(path = "") {
  * keep the two implementations in sync) and writes to email_suppressions;
  * every subscriber send filters that table.
  */
-function oneClickUnsubHeaders(email: string): Record<string, string> {
-  const addr = email.trim().toLowerCase()
-  const token = crypto
+function unsubSignature(email: string): string {
+  return crypto
     .createHmac("sha256", process.env.AUTH_SECRET || "")
-    .update(addr)
+    .update(email.trim().toLowerCase())
     .digest("base64url")
     .slice(0, 24)
-  const url = siteUrl(`/api/unsubscribe?e=${encodeURIComponent(addr)}&t=${token}`)
+}
+
+function oneClickUnsubHeaders(email: string): Record<string, string> {
+  const addr = email.trim().toLowerCase()
+  const url = siteUrl(`/api/unsubscribe?e=${encodeURIComponent(addr)}&t=${unsubSignature(addr)}`)
   return {
     "List-Unsubscribe": `<${url}>`,
     "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
   }
+}
+
+/**
+ * Signed token for /api/notifications/unsubscribe. Format:
+ * base64url(email) + "." + HMAC signature — the bare base64 form it replaced
+ * let anyone disable any user's notifications by encoding their address.
+ */
+export function notificationUnsubToken(email: string): string {
+  return `${Buffer.from(email).toString("base64url")}.${unsubSignature(email)}`
 }
 
 /**
@@ -238,7 +250,7 @@ export async function sendLocalWelcomeEmail(email: string, name: string, locale:
               "Explora negocios locales y mira qué hay cerca en el mapa",
               "Aprovecha ofertas y cupones de lugares del pueblo",
               "Descubre próximos eventos de la comunidad",
-              "Recibe el resumen semanal para no perderte nada nuevo",
+              `Recibe el <a href="${siteUrl("/es/subscribe")}" style="color:#650C75;font-weight:600;">resumen semanal</a> para no perderte nada nuevo`,
             ],
             ctaLabel: "Explorar Lompoc",
             ctaUrl: exploreUrl,
@@ -258,7 +270,7 @@ export async function sendLocalWelcomeEmail(email: string, name: string, locale:
               "Browse local businesses and see what's nearby on the map",
               "Grab deals and coupons from spots around town",
               "Check out upcoming community events",
-              "Get the weekly digest so you never miss what's new",
+              `Get the <a href="${siteUrl("/subscribe")}" style="color:#650C75;font-weight:600;">weekly digest</a> so you never miss what's new`,
             ],
             ctaLabel: "Explore Lompoc",
             ctaUrl: exploreUrl,
@@ -292,46 +304,31 @@ export async function sendConfirmationEmail(
       ? "Confirma tu suscripción a Lompoc Locals"
       : "Confirm your Lompoc Locals subscription"
 
+  // Highest-stakes email in the funnel — it gets the full brand shell.
   const html =
     locale === "es"
-      ? `
-        <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
-          <h1 style="font-size: 22px; margin-bottom: 8px;">Confirma tu suscripción</h1>
-          <p style="color: #555; line-height: 1.5;">
-            Haz clic en el botón de abajo para confirmar tu correo y empezar a recibir
-            el resumen semanal de Lompoc Locals.
-          </p>
-          <p style="margin: 24px 0;">
-            <a href="${confirmUrl}"
-               style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
-              Confirmar suscripción
-            </a>
-          </p>
-          <p style="color: #888; font-size: 13px;">
-            O pega este enlace en tu navegador:<br>
-            <span style="word-break: break-all;">${confirmUrl}</span>
-          </p>
-        </div>
-      `
-      : `
-        <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto;">
-          <h1 style="font-size: 22px; margin-bottom: 8px;">Confirm your subscription</h1>
-          <p style="color: #555; line-height: 1.5;">
-            Click the button below to confirm your email and start receiving the
-            weekly Lompoc Locals digest.
-          </p>
-          <p style="margin: 24px 0;">
-            <a href="${confirmUrl}"
-               style="display: inline-block; background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
-              Confirm subscription
-            </a>
-          </p>
-          <p style="color: #888; font-size: 13px;">
-            Or paste this link in your browser:<br>
-            <span style="word-break: break-all;">${confirmUrl}</span>
-          </p>
-        </div>
-      `
+      ? welcomeHtml({
+          heading: "Confirma tu suscripción",
+          intro:
+            "Un clic más y listo: confirma tu correo para empezar a recibir The Lompoc Locals, el resumen semanal de negocios, ofertas y eventos del pueblo, cada sábado por la mañana.",
+          bulletsTitle: "",
+          bullets: [],
+          ctaLabel: "Confirmar suscripción",
+          ctaUrl: confirmUrl,
+          closing: `Si el botón no funciona, pega este enlace en tu navegador:<br><span style="word-break:break-all;color:#888;font-size:13px;">${confirmUrl}</span><br><br>¿No pediste esto? Ignora este correo y no volveremos a escribirte.`,
+          signoff: "— El equipo de Lompoc Locals",
+        })
+      : welcomeHtml({
+          heading: "Confirm your subscription",
+          intro:
+            "One click and you're in: confirm your email to start getting The Lompoc Locals — the Saturday-morning weekly on the businesses, deals, and events happening in town.",
+          bulletsTitle: "",
+          bullets: [],
+          ctaLabel: "Confirm subscription",
+          ctaUrl: confirmUrl,
+          closing: `If the button doesn't work, paste this link in your browser:<br><span style="word-break:break-all;color:#888;font-size:13px;">${confirmUrl}</span><br><br>Didn't ask for this? Ignore this email and we won't write again.`,
+          signoff: "— The Lompoc Locals team",
+        })
 
   try {
     await resend.emails.send({ from: FROM_ADDRESS, to: email, subject, html })

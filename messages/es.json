@@ -382,7 +382,10 @@
     "detailFallbackDescription": "Descubre {title} en Lompoc, CA."
   },
   "favorites": {
-    "metaTitle": "Mis favoritos"
+    "metaTitle": "Mis favoritos",
+    "roleGateBody": "Los favoritos solo están disponibles para cuentas personales. Has iniciado sesión con una cuenta {role, select, admin {de administrador} other {de negocio}}.",
+    "savedCount": "{count, plural, =0 {Aún no hay ofertas guardadas} one {# oferta guardada} other {# ofertas guardadas}}",
+    "empty": "Aún no has guardado ofertas. Toca el corazón en cualquier oferta para agregarla aquí."
   },
   "subscribe": {
     "title": "Recibe el correo del sábado",
@@ -404,7 +407,10 @@
     "alreadySubscribed": "Ya estás suscrito. ¡Gracias!",
     "checkInbox": "Revisa tu correo y haz clic en el enlace de confirmación. Después empieza a llegarte el correo del sábado.",
     "emailNotConfigured": "¡Gracias! Guardamos tu correo — la confirmación llegará cuando el envío de correos esté habilitado.",
-    "invalidEmail": "Ingresa un correo válido"
+    "invalidEmail": "Ingresa un correo válido",
+    "unsubscribedBody": "<strong>{email}</strong> ya no recibirá más correos del resumen.",
+    "unsubscribeFailedTitle": "No se pudo cancelar la suscripción",
+    "unsubscribeFailedBody": "Este enlace no es válido o ha expirado. Responde a cualquiera de nuestros correos y una persona real se encargará."
   },
   "search": {
     "placeholder": "Buscar ofertas, negocios…",
@@ -1813,7 +1819,10 @@
     "expiresLabel": "Vence {distance}",
     "activeLabel": "Activo",
     "helpHeading": "Ayuda y soporte",
-    "helpBody": "¿Algo no funciona, está mal o es confuso? Envíanoslo directamente: leemos cada mensaje y respondemos por correo."
+    "helpBody": "¿Algo no funciona, está mal o es confuso? Envíanoslo directamente: leemos cada mensaje y respondemos por correo.",
+    "digestUnsubscribe": "Cancelar el resumen semanal",
+    "digestConfirmSentBanner": "Confirmación enviada — revisa tu correo para terminar de suscribirte.",
+    "digestOffBanner": "Ya no recibirás el resumen semanal."
   },
   "listing": {
     "metaTitleSuffix": "",
