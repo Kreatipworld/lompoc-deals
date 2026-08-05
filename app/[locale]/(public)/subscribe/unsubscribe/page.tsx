@@ -13,6 +13,7 @@ export default async function UnsubscribePage({
 }: {
   searchParams: { token?: string }
 }) {
+  const t = await getTranslations("subscribe")
   const token = searchParams.token ?? ""
   const result = token
     ? await unsubscribeByToken(token)
@@ -22,20 +23,22 @@ export default async function UnsubscribePage({
     <div className="mx-auto max-w-md px-4 py-12 text-center">
       {result.ok ? (
         <>
-          <h1 className="text-2xl font-bold">Unsubscribed</h1>
+          <h1 className="text-2xl font-bold">{t("unsubscribeSuccess")}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            <strong>{result.email}</strong> won&apos;t receive any more digest
-            emails.
+            {t.rich("unsubscribedBody", {
+              email: result.email,
+              strong: (chunks) => <strong>{chunks}</strong>,
+            })}
           </p>
         </>
       ) : (
         <>
-          <h1 className="text-2xl font-bold">Couldn&apos;t unsubscribe</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{result.message}</p>
+          <h1 className="text-2xl font-bold">{t("unsubscribeFailedTitle")}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{t("unsubscribeFailedBody")}</p>
         </>
       )}
       <Link href="/" className="mt-6 inline-block text-sm underline">
-        Back to feed
+        {t("backHome")}
       </Link>
     </div>
   )

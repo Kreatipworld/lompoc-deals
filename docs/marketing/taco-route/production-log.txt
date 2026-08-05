@@ -1,0 +1,5 @@
+09:39:32 narration locked (media 4e157e99, 30.02s); relaunching production for phases 4-9
+09:48:05 phase4-start: balance 1413.78cr, stills mode confirmed, whisper timeline pass starting
+09:58:28 BUDGET-HOLD received: no further generation calls. Note: 11 frames (16.5cr) + 1 music bed (2cr) had already completed in-flight before hold arrived. Inventorying prior agent's 26 frames + bed now.
+10:00:41 inventory: prior-agent set verified — 21 usable 9:16 frames (10 KIND-A 16:27:28 + 11 KIND-B 16:33-16:37) + 5 asset plates (ref-only) + music bed 9466240d (31.07s). My 11 in-flight frames kept as spares. Proceeding to assembly-only.
+10:04:44 assembly: WARNING shared sandbox collision — another agent's assembly (wrong narration ac233aab 28.74s) running alongside mine (locked 4e157e99 30.02s), same output path. Will verify sidecar+duration and re-run isolated if contested.

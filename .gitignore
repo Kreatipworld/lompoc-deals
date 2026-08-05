@@ -61,3 +61,7 @@ content/social/launch-kit/**/*.png
 content/social/video/ad-masters/
 content/social/video/vo/
 content/social/assets/generated-people/
+
+# heavy media stays local + CDN — never in git
+docs/marketing/taco-route/*.mp4
+docs/marketing/taco-route/*.wav

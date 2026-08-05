@@ -41,9 +41,11 @@ export const CATEGORY_SYNONYMS: Record<string, string[]> = {
   ],
   services: [
     "service", "plumber", "plumbing", "electrician", "cleaning", "clean",
-    "landscaping", "contractor", "insurance", "bank", "legal", "attorney",
+    "landscaping", "landscape", "landscaper", "gardener", "gardening", "yard",
+    "contractor", "insurance", "bank", "legal", "attorney",
     "lawyer", "accountant", "notary", "printing", "photographer",
     "servicio", "plomero", "electricista", "limpieza", "abogado", "seguro",
+    "jardinero", "jardinería",
   ],
   entertainment: [
     "entertainment", "movie", "theater", "fun", "arcade", "bowling", "music",

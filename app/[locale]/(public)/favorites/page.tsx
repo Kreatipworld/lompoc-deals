@@ -12,6 +12,8 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 }
 
 export default async function FavoritesPage() {
+  const t = await getTranslations("favorites")
+  const tFeed = await getTranslations("feed.detail")
   const viewer = await getViewer()
   if (!viewer.isAuthed) {
     redirect("/login?from=/favorites")
@@ -20,13 +22,12 @@ export default async function FavoritesPage() {
   if (!viewer.isLocal) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-8">
-        <h1 className="text-3xl font-bold tracking-tight">Favorites</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("metaTitle")}</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Favorites are only available for personal accounts. You&apos;re signed in
-          as a {viewer.isAdmin ? "admin" : "business"} account.
+          {t("roleGateBody", { role: viewer.isAdmin ? "admin" : "business" })}
         </p>
         <Link href="/" className="mt-4 inline-block text-sm underline">
-          Back to feed
+          {tFeed("backToFeed")}
         </Link>
       </div>
     )
@@ -37,18 +38,15 @@ export default async function FavoritesPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-8">
       <section>
-        <h1 className="text-3xl font-bold tracking-tight">My favorites</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("metaTitle")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          {deals.length} saved {deals.length === 1 ? "deal" : "deals"}
+          {t("savedCount", { count: deals.length })}
         </p>
       </section>
 
       <section>
         {deals.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            You haven&apos;t saved any deals yet. Click the heart on any deal to
-            add it here.
-          </p>
+          <p className="text-sm text-muted-foreground">{t("empty")}</p>
         ) : (
           <DealGrid deals={deals} viewer={viewer} fromPath="/favorites" />
         )}

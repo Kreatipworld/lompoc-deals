@@ -16,7 +16,7 @@ import { DAY_KEYS, type Hours, type DayHours } from "@/lib/hours"
 import { isAmenitySlug } from "@/lib/amenities"
 import { TIERS } from "@/lib/stripe"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
-import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail } from "@/lib/email"
+import { sendDealUpdateEmail, sendNewDealFromFollowedBusinessEmail, notificationUnsubToken } from "@/lib/email"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 
@@ -554,7 +554,7 @@ async function notifyDealUpdated(dealId: number, info: DealInfo) {
         sendDealUpdateEmail(
           row.email,
           { id: dealId, ...info },
-          Buffer.from(row.email).toString("base64url"),
+          notificationUnsubToken(row.email),
           (row.locale ?? "en") as "en" | "es"
         )
       )
@@ -582,7 +582,7 @@ async function notifyNewDeal(businessId: number, info: DealInfo & { id: number }
         sendNewDealFromFollowedBusinessEmail(
           row.email,
           info,
-          Buffer.from(row.email).toString("base64url"),
+          notificationUnsubToken(row.email),
           (row.locale ?? "en") as "en" | "es"
         )
       )
