@@ -14,7 +14,7 @@ import type { TierKey } from "@/lib/stripe"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { uploadImage } from "@/lib/blob"
 import { geocodeAddress } from "@/lib/geocode"
-import { sendWelcomeEmail } from "@/lib/email"
+import { sendWelcomeEmail, notifyPlatform } from "@/lib/email"
 import { localizedResolveLompocAddress, getCurrentLocale } from "@/lib/i18n-helpers"
 import { isUnclaimedBusiness } from "@/lib/business-ownership"
 import { track, stitchSession } from "@/lib/analytics/track"
@@ -282,6 +282,17 @@ export async function businessSignupSubmitAction(
   // Fire-and-forget welcome email — don't block signup on failure
   sendWelcomeEmail(email, ownerFullName, "business", locale).catch((err) =>
     console.error("[businessSignupSubmitAction] welcome email failed:", err)
+  )
+
+  // Alert the founder inbox — this wizard is the path real signups take, and
+  // it was silent while only the legacy signup action notified. Fire-and-forget.
+  const esc = (s: string) => s.replace(/</g, "&lt;")
+  notifyPlatform("🏪 New business signup", [
+    `<strong>${esc(businessName)}</strong>${adopt ? " (adopted existing listing)" : " (new listing, pending approval)"}`,
+    `Owner: ${esc(ownerFullName)} (${email})`,
+    `Address: ${address ? esc(address) : "—"} · Phone: ${phone ?? "—"}`,
+  ]).catch((err) =>
+    console.error("[businessSignupSubmitAction] platform notify failed:", err)
   )
 
   // Auto sign-in
