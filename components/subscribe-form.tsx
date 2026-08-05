@@ -50,6 +50,15 @@ export function SubscribeForm({ variant = "default" }: SubscribeFormProps) {
 
   return (
     <form action={action} className="space-y-2">
+      {/* Honeypot — hidden from people, filled by bots. Checked server-side. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute -left-[9999px] h-0 w-0 opacity-0"
+      />
       <div className="flex gap-2">
         <Input
           id="email"

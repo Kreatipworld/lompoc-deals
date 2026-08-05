@@ -9,6 +9,7 @@ import { CouponDemo } from "@/components/coupon-demo"
 import { EventsSection } from "@/components/events-section"
 import { FeaturedBusinessesMarquee } from "@/components/featured-businesses-marquee"
 import { Reveal } from "@/components/reveal"
+import { SubscribeForm } from "@/components/subscribe-form"
 import {
   Heart,
   Bell,
@@ -371,12 +372,12 @@ export default async function LocalsPage({
                 {t("finalCta")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link
-                href="/subscribe"
-                className="text-sm font-medium text-white/85 underline-offset-4 hover:underline"
-              >
+            </div>
+            <div className="mx-auto mt-8 max-w-sm">
+              <p className="mb-2 text-sm font-medium text-white/85">
                 {t("finalSubscribe")}
-              </Link>
+              </p>
+              <SubscribeForm variant="inverted" />
             </div>
           </Reveal>
         </div>

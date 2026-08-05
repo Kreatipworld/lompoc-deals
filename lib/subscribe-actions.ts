@@ -32,6 +32,12 @@ export async function subscribeAction(
   const locale = await getCurrentLocale()
   const t = await getTranslations("subscribe")
 
+  // Honeypot: real people never see this field. Bots that fill it get a
+  // convincing success and no email — never a signal they were caught.
+  if (formData.get("website")) {
+    return { success: t("checkInbox") }
+  }
+
   const parsed = subscribeSchema.safeParse({ email: formData.get("email") })
   if (!parsed.success) {
     return { error: t("invalidEmail") }
@@ -48,6 +54,12 @@ export async function subscribeAction(
   if (existing) {
     if (existing.confirmedAt) {
       return { success: t("alreadySubscribed") }
+    }
+    // Rate-limit confirmation resends: one per address per 10 minutes, so the
+    // form can't be used to bombard someone else's inbox.
+    const tenMinAgo = Date.now() - 10 * 60 * 1000
+    if (existing.createdAt.getTime() > tenMinAgo) {
+      return { success: t("checkInbox") }
     }
     // Re-issue confirmation
     token = existing.unsubscribeToken
