@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { subscribers } from "@/db/schema"
-import { sendConfirmationEmail } from "@/lib/email"
+import { sendConfirmationEmail, notifyPlatform } from "@/lib/email"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 import { getCurrentLocale } from "@/lib/i18n-helpers"
@@ -102,6 +102,13 @@ export async function confirmSubscriptionByToken(token: string) {
       targetId: sub.id,
       props: { doubleOptIn: true },
     })
+    // Alert the founder inbox — fire-and-forget
+    notifyPlatform("📬 New digest subscriber confirmed", [
+      `<strong>${sub.email.replace(/</g, "&lt;")}</strong>`,
+      `Locale: ${sub.locale}`,
+    ]).catch((err) =>
+      console.error("[confirmSubscriptionByToken] platform notify failed:", err)
+    )
   }
   return { ok: true as const, email: sub.email }
 }

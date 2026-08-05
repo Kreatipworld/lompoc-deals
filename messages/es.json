@@ -1811,7 +1811,9 @@
     "expiredCoupons": "Cupones vencidos",
     "expiredLabel": "Vencido {distance}",
     "expiresLabel": "Vence {distance}",
-    "activeLabel": "Activo"
+    "activeLabel": "Activo",
+    "helpHeading": "Ayuda y soporte",
+    "helpBody": "¿Algo no funciona, está mal o es confuso? Envíanoslo directamente: leemos cada mensaje y respondemos por correo."
   },
   "listing": {
     "metaTitleSuffix": "",

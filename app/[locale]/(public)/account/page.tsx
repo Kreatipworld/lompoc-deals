@@ -7,7 +7,8 @@ import { subscribers, users } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { auth } from "@/auth"
 import { formatDistanceToNow, format } from "date-fns"
-import { Tag, CheckCircle2, Clock, Heart, Mail, Bell, BellOff } from "lucide-react"
+import { Tag, CheckCircle2, Clock, Heart, Mail, Bell, BellOff, LifeBuoy } from "lucide-react"
+import { SupportForm } from "@/app/[locale]/dashboard/support/support-form"
 import { updateNotificationPrefsAction } from "@/lib/business-follow-actions"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
@@ -308,6 +309,16 @@ export default async function AccountPage({
             </table>
           </div>
         )}
+      </section>
+
+      {/* Help & support */}
+      <section>
+        <div className="mb-4 flex items-center gap-2">
+          <LifeBuoy className="h-5 w-5 text-primary" />
+          <h2 className="text-xl font-semibold">{t("helpHeading")}</h2>
+        </div>
+        <p className="mb-4 text-sm text-muted-foreground">{t("helpBody")}</p>
+        <SupportForm />
       </section>
 
       {/* Expired coupons */}

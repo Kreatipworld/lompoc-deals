@@ -1811,7 +1811,9 @@
     "expiredCoupons": "Expired coupons",
     "expiredLabel": "Expired {distance}",
     "expiresLabel": "Expires {distance}",
-    "activeLabel": "Active"
+    "activeLabel": "Active",
+    "helpHeading": "Help & support",
+    "helpBody": "Something broken, wrong, or confusing? Send it straight to us — we read every message and reply by email."
   },
   "listing": {
     "metaTitleSuffix": "",

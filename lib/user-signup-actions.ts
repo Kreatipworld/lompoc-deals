@@ -10,7 +10,7 @@ import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
 import { users } from "@/db/schema"
 import { signIn } from "@/auth"
-import { sendWelcomeEmail } from "@/lib/email"
+import { sendWelcomeEmail, notifyPlatform } from "@/lib/email"
 import { getCurrentLocale } from "@/lib/i18n-helpers"
 import { track, stitchSession } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
@@ -98,6 +98,16 @@ export async function localSignupAction(
   // Fire-and-forget welcome email — don't block signup on failure
   sendWelcomeEmail(email, name, "local", locale).catch((err) =>
     console.error("[localSignupAction] welcome email failed:", err)
+  )
+
+  // Alert the founder inbox about every new resident — fire-and-forget
+  notifyPlatform("👋 New local signup", [
+    `<strong>${name.replace(/</g, "&lt;")}</strong> (${email})`,
+    `City: ${city ?? "—"} · ZIP: ${zip ?? "—"}`,
+    `Interests: ${interests?.join(", ") ?? "—"}`,
+    `Locale: ${locale}`,
+  ]).catch((err) =>
+    console.error("[localSignupAction] platform notify failed:", err)
   )
 
   let autoSignInOk = true
