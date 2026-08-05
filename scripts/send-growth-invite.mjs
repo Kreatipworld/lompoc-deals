@@ -15,9 +15,15 @@ const FROM = "Lompoc Locals <hello@lompoclocals.com>"
 const TO = process.env.TO || "hello@lompoclocals.com"
 const NAME = process.env.NAME || "Camins 2 Dreams"
 const SEND = process.env.SEND === "1"
+// CLAIM=<slug>: the business hasn't claimed its page yet — the CTA becomes the
+// claim link (which flows straight into the dashboard, where Growth checkout
+// lives), and the intro stops thanking them for a claim they haven't made.
+const CLAIM = process.env.CLAIM || ""
 const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
-const billing = "https://www.lompoclocals.com/dashboard/billing"
+const billing = CLAIM
+  ? `https://www.lompoclocals.com/signup?claim=${encodeURIComponent(CLAIM)}`
+  : "https://www.lompoclocals.com/dashboard/billing"
 
 const subject = `Unlock Growth for ${NAME} — your first 14 days are free`
 const bullets = [
@@ -35,13 +41,17 @@ const html = `
     <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
       <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">Ready to unlock Growth, ${NAME}?</h1>
       <div style="height:3px; width:52px; background:#EFC618; border-radius:2px; margin:0 0 18px;"></div>
-      <p style="color:#444; line-height:1.6; margin:0 0 16px;">Hi there &mdash; thanks for claiming your ${NAME} page on Lompoc Locals. It's live and neighbors are already finding you. Here's how to turn that attention into repeat customers: <strong>start a 14-day free Growth trial</strong> &mdash; no charge to begin, cancel anytime.</p>
+      <p style="color:#444; line-height:1.6; margin:0 0 16px;">${
+        CLAIM
+          ? `Hi there &mdash; your ${NAME} page is already live on Lompoc Locals (photos, hours, map pin), and neighbors are finding it. Claiming it takes about two minutes, and <strong>Growth is one click away in your dashboard</strong> &mdash; start with 14 days free, cancel anytime.`
+          : `Hi there &mdash; thanks for claiming your ${NAME} page on Lompoc Locals. It's live and neighbors are already finding you. Here's how to turn that attention into repeat customers: <strong>start a 14-day free Growth trial</strong> &mdash; no charge to begin, cancel anytime.`
+      }</p>
       <p style="color:#1a1a1a; font-weight:700; margin:0 0 8px; font-size:15px;">With Growth you can:</p>
       <ul style="color:#444; line-height:1.7; margin:0 0 24px; padding-left:20px;">
         ${bullets.map((b) => `<li style="margin-bottom:6px;">${b}</li>`).join("")}
       </ul>
       <p style="margin:0 0 10px;">
-        <a href="${billing}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Start your 14-day free trial</a>
+        <a href="${billing}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">${CLAIM ? `Claim ${NAME} &amp; start Growth` : "Start your 14-day free trial"}</a>
       </p>
       <p style="color:#777; line-height:1.5; margin:0 0 20px; font-size:13px;"><strong style="color:${P};">$39.99</strong>/month after the trial &mdash; about the price of a couple of orders &mdash; and you can cancel anytime.</p>
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">Reply to this email with any questions &mdash; a real person here in Lompoc reads it.</p>
