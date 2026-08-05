@@ -173,10 +173,11 @@ export async function POST(request: Request) {
       success_url: `${baseUrl}/dashboard/billing?success=1`,
       cancel_url: `${baseUrl}/dashboard/billing?canceled=1`,
       allow_promotion_codes: true,
-      // Skip card collection when nothing will ever be charged (e.g. a 100%-off
-      // FMEM comp) — a frictionless free membership. Normal paid trials still
-      // collect a card because a payment comes due after the 14-day trial.
-      payment_method_collection: "if_required",
+      // "always": trials owe $0 today, and with "if_required" Stripe skipped the
+      // card entirely — trial members had no payment method and quietly expired
+      // at day 14 instead of converting. Comp'd members (100%-off promo) now
+      // enter a card too; they're still never charged.
+      payment_method_collection: "always",
       metadata: { userId: String(userId), tier },
       subscription_data: {
         trial_period_days: 14,
