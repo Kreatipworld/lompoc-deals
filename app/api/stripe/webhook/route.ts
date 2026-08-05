@@ -270,6 +270,16 @@ export async function POST(request: Request) {
             .where(eq(businesses.id, biz.id))
         }
       }
+
+      // Money actually arrived — the one event the founder must always hear.
+      // ($0 invoices — trial starts, 100%-off comps — stay silent.)
+      if (invoice.amount_paid > 0) {
+        const amount = (invoice.amount_paid / 100).toFixed(2)
+        await notifyPlatform(`💵 Payment received — $${amount}`, [
+          `From: ${invoice.customer_email ?? customerId}`,
+          `Invoice: ${invoice.id} (${invoice.billing_reason ?? "payment"})`,
+        ]).catch((err) => console.error("[webhook] payment notify failed:", err))
+      }
       break
     }
 
