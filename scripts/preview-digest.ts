@@ -1,5 +1,11 @@
 // Render the exact master digest for a given send date without sending it.
 // Usage: node --env-file=.env.local node_modules/.bin/tsx scripts/preview-digest.ts
+//
+// Local .env.local has no AUTH_URL (it would break local auth), and email links
+// are built from it — without this override a locally-rendered proof points at
+// localhost. Production crons are unaffected; this is proof-tooling only.
+process.env.AUTH_URL = "https://www.lompoclocals.com"
+
 import { writeFileSync } from "node:fs"
 import { getMasterDigestContent, hasMasterDigestContent } from "@/lib/digest"
 import { renderMasterDigestHtml } from "@/lib/email"
