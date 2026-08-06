@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { db } from "@/db/client"
-import { businesses, categories } from "@/db/schema"
-import { eq, and, isNotNull } from "drizzle-orm"
+import { businesses, categories, subscriptions } from "@/db/schema"
+import { eq, and, isNotNull, sql } from "drizzle-orm"
 import type { CategoryId } from "@/lib/map-categories"
 
 // Map DB category slugs to valid map CategoryId values
@@ -36,10 +36,17 @@ export async function GET() {
         lng: businesses.lng,
         description: businesses.description,
         categorySlug: categories.slug,
-        planOverride: businesses.planOverride,
+        // Every paying member (Growth or Plus, override or live subscription)
+        // is an Official Partner and gets the prominent marker.
+        isPartner: sql<boolean>`(
+          ${businesses.planOverride} in ('standard','premium')
+          or (${subscriptions.status} in ('active','trialing')
+              and ${subscriptions.tier} in ('standard','premium'))
+        )`,
       })
       .from(businesses)
       .leftJoin(categories, eq(businesses.categoryId, categories.id))
+      .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
       .where(and(eq(businesses.status, "approved"), isNotNull(businesses.lat), isNotNull(businesses.lng)))
       .orderBy(businesses.name)
 
@@ -51,7 +58,7 @@ export async function GET() {
       lng: row.lng as number,
       category: toMapCategory(row.categorySlug ?? null),
       highlight: row.description?.slice(0, 120) ?? row.name,
-      partner: row.planOverride === "premium",
+      partner: Boolean(row.isPartner),
     }))
 
     return NextResponse.json(pois, {

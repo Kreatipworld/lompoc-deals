@@ -155,7 +155,19 @@ export async function getDigestPartners(limit = 6): Promise<DigestPartner[]> {
     })
     .from(businesses)
     .leftJoin(categories, eq(categories.id, businesses.categoryId))
-    .where(and(eq(businesses.status, "approved"), eq(businesses.planOverride, "premium")))
+    .where(
+      and(
+        eq(businesses.status, "approved"),
+        // Every paying member (Growth or Plus) is an Official Partner. EXISTS
+        // instead of a join so a member never appears twice.
+        sql`(${businesses.planOverride} in ('standard','premium') or exists (
+          select 1 from subscriptions s
+          where s.user_id = ${businesses.ownerUserId}
+            and s.status in ('active','trialing')
+            and s.tier in ('standard','premium')
+        ))`
+      )
+    )
     .orderBy(businesses.name)
     .limit(limit)
 

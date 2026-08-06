@@ -259,7 +259,7 @@ export default async function BusinessPage({
               {/* Title block */}
               <div className="flex-1 space-y-3">
                 <div>
-                  {business.planOverride === "premium" && (
+                  {business.effectiveTier !== "free" && (
                     <span className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground shadow-sm">
                       <BadgeCheck className="h-3.5 w-3.5" />
                       {tsp("officialPartnerGeneric")}

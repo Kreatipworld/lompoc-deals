@@ -666,6 +666,19 @@ export async function getBusinessBySlug(slug: string) {
   })
   if (ownerRow) ownerEmail = ownerRow.email
 
+  // Resolve the real paid tier (override OR live subscription) — every paying
+  // member is an Official Partner, so the page needs more than planOverride.
+  const subRow = await db.query.subscriptions.findFirst({
+    where: (s, { eq: e }) => e(s.userId, biz.ownerUserId),
+    columns: { tier: true, status: true },
+  })
+  const paidTier = effectiveTier({
+    planOverride: biz.planOverride,
+    subTier: subRow?.tier ?? null,
+    subStatus: subRow?.status ?? null,
+    gracePeriodEndsAt: biz.gracePeriodEndsAt,
+  })
+
   const bizDeals = await db
     .select(baseDealSelect)
     .from(deals)
@@ -676,7 +689,7 @@ export async function getBusinessBySlug(slug: string) {
     .orderBy(desc(deals.createdAt))
 
   return {
-    business: { ...biz, category, ownerEmail },
+    business: { ...biz, category, ownerEmail, effectiveTier: paidTier },
     deals: bizDeals.map(rowToCard),
   }
 }
