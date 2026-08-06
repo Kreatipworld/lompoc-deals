@@ -1157,7 +1157,8 @@
       "ctaBody": "Get listed in the directory free — add your hours, photos, deals, and let locals find you.",
       "ctaListFree": "List your business free",
       "ctaBrowseDeals": "Browse active deals",
-      "heading": "Business Directory"
+      "heading": "Business Directory",
+      "headingGeo": "Lompoc Business Directory"
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
@@ -1729,7 +1730,8 @@
     "tabForSale": "For sale",
     "tabForRent": "For rent",
     "activeDealsIn": "Active deals in {name}",
-    "dealsAvailable": "{count} {label} available right now"
+    "dealsAvailable": "{count} {label} available right now",
+    "headingGeo": "Lompoc {name}"
   },
   "blog": {
     "eyebrow": "Lompoc Locals Blog",

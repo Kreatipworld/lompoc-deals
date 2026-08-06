@@ -1157,7 +1157,8 @@
       "ctaBody": "Aparece en el directorio gratis — agrega tu horario, fotos, ofertas y deja que los locales te encuentren.",
       "ctaListFree": "Publica tu negocio gratis",
       "ctaBrowseDeals": "Explorar ofertas activas",
-      "heading": "Directorio de negocios"
+      "heading": "Directorio de negocios",
+      "headingGeo": "Directorio de Negocios de Lompoc"
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
@@ -1729,7 +1730,8 @@
     "tabForSale": "En venta",
     "tabForRent": "En renta",
     "activeDealsIn": "Ofertas activas en {name}",
-    "dealsAvailable": "{count} {label} disponibles ahora"
+    "dealsAvailable": "{count} {label} disponibles ahora",
+    "headingGeo": "{name} en Lompoc"
   },
   "blog": {
     "eyebrow": "Blog de Lompoc Locals",

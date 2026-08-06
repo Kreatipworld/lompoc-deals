@@ -7,6 +7,7 @@ export type JsonLdBusiness = {
   about: string | null
   description: string | null
   phone: string | null
+  website: string | null
   address: string | null
   lat: number | null
   lng: number | null
@@ -32,6 +33,13 @@ const SCHEMA_DAYS: Record<(typeof DAY_KEYS)[number], string> = {
 
 const CATEGORY_TO_TYPE: Record<string, string> = {
   "food-drink": "Restaurant",
+  wineries: "Winery",
+  auto: "AutoRepair",
+  "health-beauty": "HealthAndBeautyBusiness",
+  retail: "Store",
+  "real-estate": "RealEstateAgent",
+  entertainment: "EntertainmentBusiness",
+  dispensaries: "Store",
 }
 
 // English labels intentionally mirror messages/en.json > businesses.amenities; this pure builder cannot use next-intl, and schema.org names should stay canonical English regardless of page locale.
@@ -68,13 +76,27 @@ function openingHoursSpec(hours: Hours): Array<Record<string, string>> {
   return out
 }
 
+export type JsonLdDeal = {
+  title: string
+  description: string | null
+  expiresAt: Date | string
+}
+
 export function buildLocalBusinessJsonLd(
   b: JsonLdBusiness,
-  opts: { siteUrl: string; amenities: string[]; photos: string[]; categorySlug: string | null }
+  opts: {
+    siteUrl: string
+    amenities: string[]
+    photos: string[]
+    categorySlug: string | null
+    deals?: JsonLdDeal[]
+  }
 ): Record<string, unknown> {
   const json: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": (opts.categorySlug && CATEGORY_TO_TYPE[opts.categorySlug]) || "LocalBusiness",
+    // Stable entity anchor so Google can reconcile this business across pages.
+    "@id": `${opts.siteUrl}/biz/${b.slug}#business`,
     name: b.name,
     url: `${opts.siteUrl}/biz/${b.slug}`,
   }
@@ -111,6 +133,7 @@ export function buildLocalBusinessJsonLd(
   if (amenityFeature.length > 0) json.amenityFeature = amenityFeature
 
   const sameAs = [
+    b.website,
     b.instagramUrl,
     b.facebookUrl,
     b.tiktokUrl,
@@ -119,6 +142,18 @@ export function buildLocalBusinessJsonLd(
     b.googleBusinessUrl,
   ].filter((u): u is string => !!u)
   if (sameAs.length > 0) json.sameAs = sameAs
+
+  // Active deals as Offers. The deals table stores no price — never derive one
+  // from discountText; name/validity is all we can truthfully claim.
+  const offers = (opts.deals ?? []).map((d) => ({
+    "@type": "Offer",
+    name: d.title,
+    ...(d.description ? { description: d.description } : {}),
+    url: `${opts.siteUrl}/biz/${b.slug}`,
+    validThrough: new Date(d.expiresAt).toISOString(),
+    availability: "https://schema.org/InStock",
+  }))
+  if (offers.length > 0) json.makesOffer = offers
 
   return json
 }

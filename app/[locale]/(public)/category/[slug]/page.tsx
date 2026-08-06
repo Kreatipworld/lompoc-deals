@@ -91,10 +91,25 @@ export default async function CategoryPage({
     ? heroCount === 1 ? t("listingSingular") : t("listingPlural")
     : heroCount === 1 ? t("businessSingular") : t("businessPlural")
 
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: categoryBusinesses.slice(0, 25).map((b, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${process.env.AUTH_URL ?? "http://localhost:3000"}/biz/${b.slug}`,
+      name: b.name,
+    })),
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd).replace(/</g, "\\u003c") }}
+      />
       <PageHeader
-        title={cat.name}
+        title={t("headingGeo", { name: cat.name })}
         backHref="/businesses"
         backLabel={t("allBusinesses")}
         meta={

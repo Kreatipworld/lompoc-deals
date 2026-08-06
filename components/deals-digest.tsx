@@ -62,7 +62,7 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
             <Star className="mr-1 inline h-3 w-3 -translate-y-px fill-current" />{t("featuredBadge")}
           </span>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={featured.imageUrl ?? featured.business.coverUrl ?? "/categories/other.jpg"} alt="" className="h-44 w-full object-cover sm:h-auto sm:w-72 sm:flex-shrink-0" />
+          <img src={featured.imageUrl ?? featured.business.coverUrl ?? "/categories/other.jpg"} alt={`${featured.title} — ${featured.business.name}`} className="h-44 w-full object-cover sm:h-auto sm:w-72 sm:flex-shrink-0" />
           <div className="flex flex-1 flex-col p-5 sm:p-6">
             <p className="font-display text-xl font-bold leading-tight sm:text-2xl">{featured.title}</p>
             <p className="mt-1 text-sm font-semibold text-primary">{featured.business.name}</p>
@@ -82,7 +82,7 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
           {grid.map((d) => (
             <Link key={d.id} href={bizHref(d.business.slug)} className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={d.imageUrl ?? d.business.coverUrl ?? "/categories/other.jpg"} alt="" className="h-32 w-full object-cover" />
+              <img src={d.imageUrl ?? d.business.coverUrl ?? "/categories/other.jpg"} alt={`${d.title} — ${d.business.name}`} className="h-32 w-full object-cover" />
               <div className="flex flex-1 flex-col p-4">
                 <p className="font-display text-base font-bold leading-tight">{d.title}</p>
                 <p className="mt-1 text-xs font-semibold text-primary">{d.business.name}</p>

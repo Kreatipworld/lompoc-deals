@@ -186,6 +186,11 @@ export default async function BusinessPage({
     amenities: (business.amenitiesJson as string[] | null) ?? [],
     photos,
     categorySlug: business.category?.slug ?? null,
+    deals: activeDeals.map((d) => ({
+      title: d.title,
+      description: d.description,
+      expiresAt: d.expiresAt,
+    })),
   })
 
   return (

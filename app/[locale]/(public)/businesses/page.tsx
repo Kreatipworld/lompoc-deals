@@ -98,8 +98,23 @@ export default async function BusinessesPage({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: businesses.slice(0, 25).map((b, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              url: `${process.env.AUTH_URL ?? "http://localhost:3000"}/biz/${b.slug}`,
+              name: b.name,
+            })),
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
       <PageHeader
-        title={t("heading")}
+        title={t("headingGeo")}
         meta={
           <>
             {t("statBarBusinesses", { count: stats.businesses })}

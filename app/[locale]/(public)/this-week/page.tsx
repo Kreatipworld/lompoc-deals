@@ -130,7 +130,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                     {img(lead.event.imageUrl) && (
                       <SafeImage
                         src={img(lead.event.imageUrl) as string}
-                        alt=""
+                        alt={lead.event.title}
                         className="h-56 w-full border border-[#d8cfc0] object-cover sm:h-72"
                       />
                     )}
@@ -162,7 +162,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                     {img(lead.deal.imageUrl ?? lead.deal.business.coverUrl) && (
                       <SafeImage
                         src={img(lead.deal.imageUrl ?? lead.deal.business.coverUrl) as string}
-                        alt=""
+                        alt={`${lead.deal.title} — ${lead.deal.business.name}`}
                         className="h-56 w-full border border-[#d8cfc0] object-cover sm:h-72"
                       />
                     )}
@@ -216,7 +216,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                       {img(d.imageUrl ?? d.business.coverUrl) && (
                         <SafeImage
                           src={img(d.imageUrl ?? d.business.coverUrl) as string}
-                          alt=""
+                          alt={`${d.title} — ${d.business.name}`}
                           className="h-20 w-20 shrink-0 object-cover"
                         />
                       )}
@@ -259,7 +259,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                       >
                         <SafeImage
                           src={img(thing.imageUrl) ?? ""}
-                          alt=""
+                          alt={thing.title}
                           className="h-48 w-full object-cover"
                           fallback={<div className="h-48 w-full bg-[#650C75]" />}
                         />
@@ -300,7 +300,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                       >
                         <SafeImage
                           src={img(p.coverUrl) ?? ""}
-                          alt=""
+                          alt={p.name}
                           className="h-48 w-full object-cover"
                           fallback={<div className="h-48 w-full bg-[#650C75]" />}
                         />

@@ -7,7 +7,7 @@ import { HOTELS } from "@/lib/hotels-data"
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [bizs, cats, posts, acts] = await Promise.all([
+  const [bizs, cats, posts, acts, upcomingEvents] = await Promise.all([
     db.query.businesses
       .findMany({
         where: (b, { eq }) => eq(b.status, "approved"),
@@ -39,11 +39,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         console.error("sitemap activities query failed:", err)
         return [] as { slug: string; updatedAt: Date }[]
       }),
+    // Upcoming/current only — expired events would accumulate as dead URLs.
+    db.query.events
+      .findMany({
+        where: (e, { and, eq, gt }) => and(eq(e.status, "approved"), gt(e.startsAt, new Date(Date.now() - 24 * 60 * 60 * 1000))),
+        columns: { id: true, createdAt: true },
+      })
+      .catch((err) => {
+        console.error("sitemap events query failed:", err)
+        return [] as { id: number; createdAt: Date }[]
+      }),
   ])
 
   const staticPages = [
     "",
     "/businesses",
+    "/deals",
     "/partners",
     "/map",
     "/subscribe",
@@ -56,17 +67,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/activities",
     "/locals",
     "/contact",
+    "/privacy",
+    "/terms",
   ].map((path) => ({
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency:
-      path === "/feed" || path === "/garage-sales" || path === "" ? ("daily" as const)
-      : path === "/contact" ? ("monthly" as const)
+      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" ? ("daily" as const)
+      : path === "/contact" || path === "/privacy" || path === "/terms" ? ("monthly" as const)
       : ("weekly" as const),
     priority:
       path === "" ? 1
-      : path === "/feed" || path === "/garage-sales" || path === "/blog" ? 0.8
+      : path === "/feed" || path === "/garage-sales" || path === "/blog" || path === "/deals" ? 0.8
       : path === "/contact" ? 0.4
+      : path === "/privacy" || path === "/terms" ? 0.3
       : 0.7,
   }))
 
@@ -105,5 +119,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  return [...staticPages, ...bizPages, ...catPages, ...blogPages, ...hotelPages, ...activityPages]
+  const eventPages = upcomingEvents.map((e) => ({
+    url: `${siteUrl}/events/${e.id}`,
+    lastModified: e.createdAt,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }))
+
+  return [...staticPages, ...bizPages, ...catPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages]
 }

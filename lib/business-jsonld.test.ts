@@ -4,6 +4,7 @@ import { buildLocalBusinessJsonLd } from "./business-jsonld"
 const base = {
   name: "Test Cafe",
   slug: "test-cafe",
+  website: null,
   about: null,
   description: null,
   phone: null,
@@ -77,5 +78,25 @@ assert.equal(af[0]["@type"], "LocationFeatureSpecification")
 assert.equal(af[0].value, true)
 assert.deepEqual(full.image, ["https://x.test/p1.jpg"])
 assert.deepEqual(full.sameAs, ["https://instagram.com/x", "https://g.page/x"])
+
+// offers: active deals become makesOffer, no fabricated price
+const withDeals = buildLocalBusinessJsonLd(base, {
+  ...opts,
+  deals: [{ title: "$5 off", description: null, expiresAt: "2027-01-01T00:00:00.000Z" }],
+})
+const offers = withDeals.makesOffer as Array<Record<string, unknown>>
+assert.equal(offers.length, 1)
+assert.equal(offers[0].name, "$5 off")
+assert.equal(offers[0].validThrough, "2027-01-01T00:00:00.000Z")
+assert.ok(!("price" in offers[0]))
+assert.ok(!("description" in offers[0]))
+
+// no deals → no makesOffer key at all
+assert.ok(!("makesOffer" in buildLocalBusinessJsonLd(base, opts)))
+
+// @id anchors the entity; website joins sameAs
+assert.equal(withDeals["@id"], "https://x.test/biz/test-cafe#business")
+const withSite = buildLocalBusinessJsonLd({ ...base, website: "https://cafe.example" }, opts)
+assert.deepEqual(withSite.sameAs, ["https://cafe.example"])
 
 console.log("business-jsonld.test: all passed")

@@ -65,7 +65,7 @@ export function BusinessPhotoGallery({
       >
         <SafeImage
           src={src}
-          alt=""
+          alt={`${businessName} — photo ${index + 1}`}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           fallback={<div className="h-full w-full bg-gradient-to-br from-primary/15 to-accent" />}
           onFail={() => setDeadPhotos((prev) => (prev.includes(src) ? prev : [...prev, src]))}
