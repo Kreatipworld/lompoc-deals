@@ -15,6 +15,9 @@ const TO = process.env.TO || "hello@lompoclocals.com"
 const NAME = process.env.NAME || "Your Business"
 const CLAIM = process.env.CLAIM || ""
 const OWNER = process.env.OWNER || ""
+// FIT="..." — one sentence on why this business matters to the town; the heart
+// of the invite, same as the community-org version. Falls back to a warm default.
+const FIT = process.env.FIT || `what you do is part of what makes this town work`
 const SEND = process.env.SEND === "1"
 const P = "#650C75"
 const GOLD = "#EFC618"
@@ -31,10 +34,10 @@ const html = `
     </div>
     <div style="height:6px; background:linear-gradient(90deg,${GOLD} 0%,#0B992F 55%,${P} 100%);"></div>
     <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
-      <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">Your page is ready &mdash; and it's free.</h1>
+      <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">The community should know about you.</h1>
       <div style="height:3px; width:52px; background:${GOLD}; border-radius:2px; margin:0 0 18px;"></div>
 
-      <p style="color:#444; line-height:1.6; margin:0 0 16px;">${OWNER ? `Hi ${OWNER}` : "Hi there"} &mdash; we run <strong>Lompoc Locals</strong>, the platform where this town finds its businesses, events, and things to do. <a href="${pageUrl}" style="color:${P}; font-weight:600;">${NAME} is already on it</a> &mdash; photos, hours, and your spot on the town map, live right now.</p>
+      <p style="color:#444; line-height:1.6; margin:0 0 16px;">${OWNER ? `Hi ${OWNER}` : "Hi there"} &mdash; we run <strong>Lompoc Locals</strong>, the platform where this town finds its businesses, events, and things to do. Because ${FIT}, we set up <a href="${pageUrl}" style="color:${P}; font-weight:600;">a page for ${NAME}</a> &mdash; photos, hours, and your spot on the town map, already live and looking sharp.</p>
 
       <p style="color:#444; line-height:1.6; margin:0 0 20px;"><strong>Claiming your page is free, and it stays free.</strong> No card, no trial, no catch &mdash; it just puts the page in your hands so it always says what you want. Takes about two minutes.</p>
 
