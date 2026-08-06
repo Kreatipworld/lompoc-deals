@@ -12,7 +12,7 @@ function SubmitButton() {
       disabled={pending}
       className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
     >
-      {pending ? "Saving deal…" : "Publish deal & go to dashboard"}
+      {pending ? "Saving…" : "Publish & go to dashboard"}
       {!pending && <ChevronRight className="h-4 w-4" />}
     </button>
   )
@@ -34,7 +34,7 @@ export function FirstDealForm() {
     <form action={action} className="space-y-4">
       {/* Type */}
       <div className="space-y-1.5">
-        <label className="text-sm font-medium">Deal type</label>
+        <label className="text-sm font-medium">Type</label>
         <div className="flex gap-2">
           {[
             { value: "coupon", label: "Coupon" },
@@ -60,14 +60,14 @@ export function FirstDealForm() {
       {/* Title */}
       <div className="space-y-1.5">
         <label htmlFor="title" className="text-sm font-medium">
-          Deal title
+          Title
         </label>
         <input
           id="title"
           name="title"
           required
           minLength={3}
-          placeholder="e.g. 20% off all services this weekend"
+          placeholder="e.g. 20% off this weekend — or: Now booking fall projects"
           className="h-11 w-full rounded-full border border-input bg-background px-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
         />
       </div>
@@ -94,7 +94,7 @@ export function FirstDealForm() {
           id="description"
           name="description"
           rows={2}
-          placeholder="More details about the deal…"
+          placeholder="More details…"
           className="w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4 resize-none"
         />
       </div>
