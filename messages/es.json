@@ -184,7 +184,7 @@
       "q2": "¿Cómo reclamo una oferta?",
       "a2": "Haz clic en \"Reclamar oferta\" en cualquier promoción, luego muestra tu teléfono en el negocio.",
       "q3": "¿Cómo publican ofertas los negocios?",
-      "a3": "Regístrate como negocio (gratis) y crea tu perfil en menos de 5 minutos. Publicar ofertas requiere el plan Growth ($39.99/mes), que desbloquea hasta 5 ofertas activas.",
+      "a3": "Regístrate como negocio (gratis) y crea tu perfil en menos de 5 minutos. Publicar ofertas requiere el plan Growth ($39.99/mes), que desbloquea hasta 5 ofertas y anuncios activos.",
       "q4": "¿Cuánto cuesta publicar mi negocio?",
       "a4": "Nuestro plan gratuito es $0 para siempre — tu negocio aparece listado con horarios, fotos e información de contacto. Growth cuesta $39.99/mes y desbloquea las ofertas (hasta 5 activas), estadísticas y posicionamiento prioritario.",
       "q5": "¿Esto es solo para Lompoc?",
@@ -1582,7 +1582,7 @@
     "edit": "Editar",
     "remove": "Eliminar",
     "upgradeTitle": "Los listados de propiedades son una función Plus",
-    "upgradeBody": "Mejora a Plus para agregar propiedades en venta y renta a tu perfil. Incluye ofertas ilimitadas y posicionamiento prioritario.",
+    "upgradeBody": "Mejora a Plus para agregar propiedades en venta y renta a tu perfil. Incluye ofertas y anuncios ilimitados y posicionamiento prioritario.",
     "upgradePremium": "Obtén Plus para publicar propiedades — contáctanos",
     "backToOverview": "Volver al resumen",
     "propertyFormTitle": "Agregar listado",
@@ -2123,7 +2123,7 @@
       "intro": "Ofrecemos los siguientes planes de suscripción para cuentas de negocios:",
       "items": [
         "Gratis — Listado básico sin costo; incluye página de perfil, marcador en el mapa, horarios e información de contacto.",
-        "Growth ($39.99/mes) — Listado mejorado con hasta 5 ofertas activas, posicionamiento prioritario y estadísticas.",
+        "Growth ($39.99/mes) — Listado mejorado con hasta 5 ofertas y anuncios activos, posicionamiento prioritario y estadísticas.",
         "Plus ($99.99/mes) — Todas las funciones de Growth más posicionamiento destacado en la página principal, enlaces a redes sociales y listados de propiedades/hoteles."
       ],
       "billing": "Los planes de pago se facturan mensualmente y se renuevan automáticamente a través de Stripe. Puedes cancelar tu suscripción en cualquier momento desde el panel de tu cuenta; la cancelación surte efecto al final del período de facturación actual. Los reembolsos son a nuestra discreción y, en general, no se emiten por meses parciales, salvo cuando lo requiera la ley."

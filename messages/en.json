@@ -184,7 +184,7 @@
       "q2": "How do I claim a deal?",
       "a2": "Click \"Claim Deal\" on any offer, then show your phone at the business.",
       "q3": "How do businesses post deals?",
-      "a3": "Sign up as a business (free) and create your profile in under 5 minutes. Posting deals requires the Growth plan ($39.99/mo), which unlocks up to 5 active deals.",
+      "a3": "Sign up as a business (free) and create your profile in under 5 minutes. Posting deals requires the Growth plan ($39.99/mo), which unlocks up to 5 active deals & announcements.",
       "q4": "What does it cost to list my business?",
       "a4": "Our Free plan is $0 forever — your business listed with hours, photos, and contact info. Growth is $39.99/month and unlocks deals (up to 5 active), analytics, and priority placement.",
       "q5": "Is this only for Lompoc?",
@@ -1582,7 +1582,7 @@
     "edit": "Edit",
     "remove": "Remove",
     "upgradeTitle": "Property listings are a Plus feature",
-    "upgradeBody": "Upgrade to Plus to add for-sale and for-rent property listings to your business profile. Unlimited deals and priority placement included.",
+    "upgradeBody": "Upgrade to Plus to add for-sale and for-rent property listings to your business profile. Unlimited deals & announcements and priority placement included.",
     "upgradePremium": "Get Plus to list properties — contact us",
     "backToOverview": "Back to overview",
     "propertyFormTitle": "Add listing",
@@ -2123,7 +2123,7 @@
       "intro": "We offer the following subscription plans for business accounts:",
       "items": [
         "Free — Basic listing at no charge; includes profile page, map pin, hours, and contact info.",
-        "Growth ($39.99/month) — Enhanced listing with up to 5 active deals, priority placement, and analytics.",
+        "Growth ($39.99/month) — Enhanced listing with up to 5 active deals & announcements, priority placement, and analytics.",
         "Plus ($99.99/month) — All Growth features plus featured homepage placement, social media links, and property/hotel listings."
       ],
       "billing": "Paid plans are billed monthly and renew automatically via Stripe. You may cancel your subscription at any time through your account dashboard; cancellation takes effect at the end of the current billing period. Refunds are at our discretion and will generally not be issued for partial months, except where required by law."
