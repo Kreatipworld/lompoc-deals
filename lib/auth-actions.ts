@@ -9,7 +9,8 @@ import { AuthError } from "next-auth"
 import { randomBytes } from "crypto"
 import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
-import { users, businessClaims, subscriptions, passwordResetTokens } from "@/db/schema"
+import { users, businesses, businessClaims, subscriptions, passwordResetTokens } from "@/db/schema"
+import { isUnclaimedBusiness } from "@/lib/business-ownership"
 import { signIn, signOut } from "@/auth"
 import { stripe, TIERS } from "@/lib/stripe"
 import { sendPasswordResetEmail, notifyPlatform, sendWelcomeEmail } from "@/lib/email"
@@ -63,24 +64,56 @@ export async function signupAction(
     .returning({ id: users.id })
   const newUserId = inserted[0]?.id
 
-  // If claiming, find the business and create a pending claim
+  // If claiming, find the business and create a claim. When the new account's
+  // email matches the email already on the listing, the claimant demonstrably
+  // controls the business inbox — approve on the spot so they land in a working
+  // dashboard instead of waiting on an admin. Only listings still held by a
+  // placeholder owner qualify; anything contested stays pending for review.
+  let claimAutoApproved = false
   if (claimSlug && newUserId) {
     const biz = await db.query.businesses.findFirst({
       where: (b, { eq: e }) => e(b.slug, claimSlug),
-      columns: { id: true },
+      columns: { id: true, email: true, emailsJson: true, ownerUserId: true },
     })
     if (biz) {
+      const listingEmails = [
+        biz.email,
+        ...(Array.isArray(biz.emailsJson) ? (biz.emailsJson as unknown[]) : []),
+      ]
+        .filter((e): e is string => typeof e === "string")
+        .map((e) => e.trim().toLowerCase())
+      let ownerEmail: string | null = null
+      if (biz.ownerUserId) {
+        const owner = await db.query.users.findFirst({
+          where: eq(users.id, biz.ownerUserId),
+          columns: { email: true },
+        })
+        ownerEmail = owner?.email ?? null
+      }
+      claimAutoApproved =
+        isUnclaimedBusiness(ownerEmail) &&
+        listingEmails.includes(email.trim().toLowerCase())
+
       await db.insert(businessClaims).values({
         businessId: biz.id,
         userId: newUserId,
-        status: "pending",
+        status: claimAutoApproved ? "approved" : "pending",
       })
-      await track("business_claim_submitted", {
-        userId: newUserId,
-        sessionId: getSessionId(),
-        targetType: "business",
-        targetId: biz.id,
-      })
+      if (claimAutoApproved) {
+        await db
+          .update(businesses)
+          .set({ ownerUserId: newUserId })
+          .where(eq(businesses.id, biz.id))
+      }
+      await track(
+        claimAutoApproved ? "business_claim_approved" : "business_claim_submitted",
+        {
+          userId: newUserId,
+          sessionId: getSessionId(),
+          targetType: "business",
+          targetId: biz.id,
+        }
+      )
     }
   }
 
@@ -88,7 +121,9 @@ export async function signupAction(
   if (claimSlug) {
     await notifyPlatform("🔖 New business claim", [
       `<strong>${email}</strong> submitted a claim on <strong>${claimSlug}</strong>.`,
-      "Approve it in the admin dashboard to transfer ownership.",
+      claimAutoApproved
+        ? "Auto-approved — the account email matches the listing's email on file. Ownership transferred."
+        : "Approve it in the admin dashboard to transfer ownership.",
     ])
   } else if (dbRole === "business") {
     await notifyPlatform("🏪 New business signup", [

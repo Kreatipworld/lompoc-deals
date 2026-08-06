@@ -19,6 +19,8 @@ const SEND = process.env.SEND === "1"
 // claim link (which flows straight into the dashboard, where Growth checkout
 // lives), and the intro stops thanking them for a claim they haven't made.
 const CLAIM = process.env.CLAIM || ""
+// OWNER=Gale: greet the owner by first name instead of "Hi there".
+const OWNER = process.env.OWNER || ""
 const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
 const billing = CLAIM
