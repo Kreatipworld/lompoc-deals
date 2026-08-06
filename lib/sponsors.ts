@@ -15,16 +15,24 @@ export type SponsorBusiness = {
   exclusive: boolean
 }
 
-// A business is a "Plus" sponsor when its effective tier is premium:
-// admin plan_override, or an active/trialing premium subscription.
-const IS_PREMIUM = sql`(
-  ${businesses.planOverride} = 'premium'
+// Every paying member (Growth or Plus) rides the partner slides: admin
+// plan_override, or an active/trialing paid subscription. Plus still outranks
+// Growth in the ordering below.
+const IS_PAID = sql`(
+  ${businesses.planOverride} in ('standard', 'premium')
   or (
     ${businesses.planOverride} is null
-    and ${subscriptions.tier} = 'premium'
+    and ${subscriptions.tier} in ('standard', 'premium')
     and ${subscriptions.status} in ('active', 'trialing')
   )
 )`
+
+// 2 = Plus (premium), 1 = Growth (standard) — mirrors effectiveTier precedence.
+const PAID_RANK = sql<number>`case
+  when ${businesses.planOverride} = 'premium' then 2
+  when ${businesses.planOverride} = 'standard' then 1
+  when ${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} = 'premium' then 2
+  else 1 end`
 
 const SPONSOR_SELECT = {
   id: businesses.id,
@@ -36,6 +44,7 @@ const SPONSOR_SELECT = {
   categoryName: categories.name,
   categorySlug: categories.slug,
   exclusive: businesses.sponsorExclusive,
+  paidRank: PAID_RANK,
 }
 
 /**
@@ -58,7 +67,7 @@ export async function getSponsoredBusinesses(opts?: {
     .where(
       and(
         eq(businesses.status, "approved"),
-        IS_PREMIUM,
+        IS_PAID,
         opts?.categorySlug ? eq(categories.slug, opts.categorySlug) : undefined
       )
     )
@@ -66,12 +75,14 @@ export async function getSponsoredBusinesses(opts?: {
     .limit(50)
 
   const exclusive = rows.filter((r) => r.exclusive)
-  const shared = rows.filter((r) => !r.exclusive)
+  const plus = rows.filter((r) => !r.exclusive && Number(r.paidRank) >= 2)
+  const growth = rows.filter((r) => !r.exclusive && Number(r.paidRank) < 2)
 
-  // Exclusive owners keep top billing (they paid for it); both groups are
-  // reshuffled on every request so every sponsor gets an equal turn at the
-  // front rather than the same one always leading.
-  return fairShuffle(exclusive).concat(fairShuffle(shared)).slice(0, limit)
+  // Ladder holds: Category-Exclusive owners lead, then Plus, then Growth —
+  // each group reshuffled per request so no one member always fronts the row.
+  return fairShuffle(exclusive)
+    .concat(fairShuffle(plus), fairShuffle(growth))
+    .slice(0, limit)
 }
 
 /**
