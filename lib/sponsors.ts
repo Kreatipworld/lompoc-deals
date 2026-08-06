@@ -27,12 +27,6 @@ const IS_PAID = sql`(
   )
 )`
 
-// 2 = Plus (premium), 1 = Growth (standard) — mirrors effectiveTier precedence.
-const PAID_RANK = sql<number>`case
-  when ${businesses.planOverride} = 'premium' then 2
-  when ${businesses.planOverride} = 'standard' then 1
-  when ${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} = 'premium' then 2
-  else 1 end`
 
 const SPONSOR_SELECT = {
   id: businesses.id,
@@ -44,7 +38,6 @@ const SPONSOR_SELECT = {
   categoryName: categories.name,
   categorySlug: categories.slug,
   exclusive: businesses.sponsorExclusive,
-  paidRank: PAID_RANK,
 }
 
 /**
@@ -71,18 +64,19 @@ export async function getSponsoredBusinesses(opts?: {
         opts?.categorySlug ? eq(categories.slug, opts.categorySlug) : undefined
       )
     )
-    .orderBy(desc(businesses.sponsorExclusive))
+    .orderBy(desc(businesses.sponsorExclusive), sql`random()`)
     .limit(50)
 
-  const exclusive = rows.filter((r) => r.exclusive)
-  const plus = rows.filter((r) => !r.exclusive && Number(r.paidRank) >= 2)
-  const growth = rows.filter((r) => !r.exclusive && Number(r.paidRank) < 2)
-
-  // Ladder holds: Category-Exclusive owners lead, then Plus, then Growth —
-  // each group reshuffled per request so no one member always fronts the row.
-  return fairShuffle(exclusive)
-    .concat(fairShuffle(plus), fairShuffle(growth))
-    .slice(0, limit)
+  // Every Official Partner gets the SAME chance at slot one, re-drawn on every
+  // page load — no tier ladder, no fixed first. Sometimes first, sometimes
+  // last, fair for everyone. The one exception: on a category-scoped surface
+  // the Category-Exclusive owner still leads its own category (that exclusivity
+  // is a sold product); the stable sort keeps the shuffle intact behind it.
+  const shuffled = fairShuffle(rows)
+  if (opts?.categorySlug) {
+    shuffled.sort((a, b) => Number(b.exclusive) - Number(a.exclusive))
+  }
+  return shuffled.slice(0, limit)
 }
 
 /**

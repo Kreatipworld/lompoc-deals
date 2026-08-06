@@ -15,7 +15,9 @@ export async function SponsorShowcase({
 }: {
   categorySlug?: string
 } = {}) {
-  const members = await getSponsoredBusinesses({ categorySlug, limit: 20 })
+  // Generous cap so every Official Partner rides the row; beyond it the
+  // per-request shuffle rotates who appears, so no member is ever locked out.
+  const members = await getSponsoredBusinesses({ categorySlug, limit: 30 })
   if (members.length === 0) return null
   const t = await getTranslations("sponsors")
   const scoped = Boolean(categorySlug)
