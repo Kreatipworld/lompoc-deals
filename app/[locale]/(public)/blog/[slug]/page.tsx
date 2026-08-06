@@ -16,7 +16,7 @@ const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string; locale: string }
 }): Promise<Metadata> {
   const post = await getBlogPostBySlug(params.slug)
   if (!post) return { title: "Post not found" }
@@ -42,7 +42,7 @@ export async function generateMetadata({
           : { url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" },
       ],
     },
-    alternates: pageAlternates(`/blog/${params.slug}`),
+    alternates: pageAlternates(`/blog/${params.slug}`, params.locale),
   }
 }
 

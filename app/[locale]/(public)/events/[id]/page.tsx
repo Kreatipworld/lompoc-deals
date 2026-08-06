@@ -24,7 +24,7 @@ async function getApprovedEvent(id: number) {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string }
+  params: { id: string; locale: string }
 }) {
   const ev = await getApprovedEvent(parseInt(params.id, 10))
   if (!ev) return {}
@@ -33,7 +33,7 @@ export async function generateMetadata({
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
     title: { absolute: t("metaTitle", { title: ev.title }) },
     description: ev.description?.slice(0, 160) ?? undefined,
-    alternates: pageAlternates(`/events/${ev.id}`),
+    alternates: pageAlternates(`/events/${ev.id}`, params.locale),
   }
 }
 

@@ -20,6 +20,8 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    // Internal search results: unbounded thin URL space — keep out of the index.
+    robots: { index: false, follow: true },
   }
 }
 

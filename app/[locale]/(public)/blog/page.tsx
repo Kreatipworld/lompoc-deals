@@ -10,17 +10,23 @@ import { pageAlternates } from "@/lib/seo"
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 const PAGE_SIZE = 12
 
-export const metadata: Metadata = {
-  title: "Blog — Local News, Tips & Community Stories",
-  description:
-    "Discover local stories, business spotlights, community events, and insider tips for Lompoc, CA. Stay connected with what's happening in your city.",
-  openGraph: {
-    title: "Blog — Lompoc Locals",
-    description: "Local stories, tips, and community news for Lompoc, CA.",
-    url: `${siteUrl}/blog`,
-    images: [{ url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" }],
-  },
-  alternates: pageAlternates("/blog"),
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  return {
+    title: "Blog — Local News, Tips & Community Stories",
+    description:
+      "Discover local stories, business spotlights, community events, and insider tips for Lompoc, CA. Stay connected with what's happening in your city.",
+    openGraph: {
+      title: "Blog — Lompoc Locals",
+      description: "Local stories, tips, and community news for Lompoc, CA.",
+      url: `${siteUrl}/blog`,
+      images: [{ url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" }],
+    },
+    alternates: pageAlternates("/blog", params.locale),
+  }
 }
 
 export default async function BlogIndexPage({

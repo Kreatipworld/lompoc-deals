@@ -16,11 +16,13 @@ import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import type { DealCardData } from "@/lib/queries"
+import { pageAlternates } from "@/lib/seo"
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const t = await getTranslations("deals.page")
   return {
     title: t("metaTitle"),
+    alternates: pageAlternates("/deals", params.locale),
     description: t("metaDescription"),
     keywords: t("metaKeywords").split(","),
     openGraph: {

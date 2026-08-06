@@ -9,13 +9,13 @@ import { FeedCard } from "@/components/feed-card"
 import { GarageSalesMapSection } from "@/components/garage-sales-map-section"
 import { pageAlternates } from "@/lib/seo"
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: { locale: string } }) {
   const t = await getTranslations("garageSalesPage")
   return {
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
     title: { absolute: t("metaTitle") },
     description: t("metaDescription"),
-    alternates: pageAlternates("/garage-sales"),
+    alternates: pageAlternates("/garage-sales", params.locale),
   }
 }
 

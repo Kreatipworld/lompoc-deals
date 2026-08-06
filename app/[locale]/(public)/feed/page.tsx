@@ -11,12 +11,12 @@ import { pageAlternates } from "@/lib/seo"
 // the next deploy.
 export const revalidate = 300
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: { locale: string } }) {
   const t = await getTranslations("feed")
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
-    alternates: pageAlternates("/feed"),
+    alternates: pageAlternates("/feed", params.locale),
   }
 }
 

@@ -8,7 +8,7 @@ import type { Metadata } from "next"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "favorites" })
-  return { title: t("metaTitle") }
+  return { title: t("metaTitle"), robots: { index: false, follow: true } }
 }
 
 export default async function FavoritesPage() {

@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation"
 import { ArrowLeft, Calendar, MapPin, Tag } from "lucide-react"
 import { getFeedPostById } from "@/lib/feed-queries"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 function formatPrice(cents: number | null, freeLabel: string, freeOboLabel: string): string {
   if (cents === null) return freeOboLabel
@@ -25,6 +26,7 @@ export async function generateMetadata({
   const t = await getTranslations("feed")
   return {
     title: t("detail.metaTitle", { title: post.title }),
+    alternates: pageAlternates(`/feed/${id}`, params.locale),
   }
 }
 

@@ -3,6 +3,7 @@ import { CategoryPatternBg } from "@/components/category-pattern-bg"
 import { SubscribeForm } from "@/components/subscribe-form"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
+import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata({
   params,
@@ -13,6 +14,7 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    alternates: pageAlternates("/subscribe", params.locale),
   }
 }
 

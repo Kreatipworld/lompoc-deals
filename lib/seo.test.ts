@@ -21,4 +21,17 @@ assert.deepEqual(pageAlternates("/"), {
   languages: { en: "/", es: "/es", "x-default": "/" },
 })
 
+// es locale: canonical must be self-referential, not the English URL
+assert.equal(pageAlternates("/businesses", "es").canonical, "/es/businesses")
+assert.equal(pageAlternates("/", "es").canonical, "/es")
+// en (explicit + default) keeps the unprefixed canonical
+assert.equal(pageAlternates("/businesses", "en").canonical, "/businesses")
+assert.equal(pageAlternates("/businesses").canonical, "/businesses")
+// languages map is locale-independent
+assert.deepEqual(pageAlternates("/map", "es").languages, {
+  en: "/map",
+  es: "/es/map",
+  "x-default": "/map",
+})
+
 console.log("seo.test.ts OK")

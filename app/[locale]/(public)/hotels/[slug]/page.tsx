@@ -28,7 +28,7 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string; locale: string }
 }): Promise<Metadata> {
   const hotel = getHotelBySlug(params.slug)
   if (!hotel) return { title: "Hotel" }
@@ -48,7 +48,7 @@ export async function generateMetadata({
       // wherever the link was shared.
       images: hotel.photos?.length ? [{ url: hotel.photos[0], alt: hotel.name }] : undefined,
     },
-    alternates: pageAlternates(`/hotels/${params.slug}`),
+    alternates: pageAlternates(`/hotels/${params.slug}`, params.locale),
   }
 }
 

@@ -21,7 +21,7 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
-    alternates: pageAlternates("/hotels"),
+    alternates: pageAlternates("/hotels", locale),
   }
 }
 

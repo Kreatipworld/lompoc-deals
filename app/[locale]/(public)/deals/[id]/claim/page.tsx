@@ -11,7 +11,7 @@ import { CouponCodeBlock } from "@/components/coupon-code-block"
 
 export async function generateMetadata() {
   const t = await getTranslations("claim")
-  return { title: t("metaTitle") }
+  return { title: t("metaTitle"), robots: { index: false, follow: true } }
 }
 
 export default async function ClaimPage({

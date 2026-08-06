@@ -31,7 +31,7 @@ import { pageAlternates } from "@/lib/seo"
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string; locale: string }
 }) {
   const cat = await db.query.categories.findFirst({
     where: (c, { eq }) => eq(c.slug, params.slug),
@@ -42,7 +42,7 @@ export async function generateMetadata({
     title: `Lompoc ${cat.name} — Local Businesses & Deals`,
     description: `Browse ${catLower} businesses in Lompoc, CA — local listings, active deals, and coupons. Updated daily.`,
     keywords: [`lompoc ${catLower}`, `lompoc ${catLower} businesses`, `lompoc ${catLower} deals`, "lompoc ca"],
-    alternates: pageAlternates(`/category/${params.slug}`),
+    alternates: pageAlternates(`/category/${params.slug}`, params.locale),
   }
 }
 

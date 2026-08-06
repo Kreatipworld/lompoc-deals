@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     // No openGraph override here — inherit the layout's branded openGraph +
     // the branded cover from app/opengraph-image.tsx. (Defining openGraph on the
     // page suppresses the file-based image.)
-    alternates: pageAlternates("/"),
+    alternates: pageAlternates("/", params.locale),
   }
 }
 
@@ -62,6 +62,42 @@ function getCategoryImage(slug: string): string | null {
 // the same few businesses would own the homepage forever.
 export const dynamic = "force-dynamic"
 
+const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+
+/**
+ * Site-entity structured data, home page only. WebSite + SearchAction makes
+ * the site eligible for the sitelinks search box; Organization anchors the
+ * brand entity Google reconciles across pages and social profiles.
+ */
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      name: "Lompoc Locals",
+      url: siteUrl,
+      inLanguage: ["en", "es"],
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteUrl}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#org`,
+      name: "Lompoc Locals",
+      url: siteUrl,
+      logo: `${siteUrl}/brand/lompoc-locals-logo.svg`,
+      sameAs: [
+        "https://www.instagram.com/lompoclocals_/",
+        "https://www.tiktok.com/@lompoclocals",
+      ],
+    },
+  ],
+}
+
 export default async function HomePage({ params }: { params: { locale: string } }) {
   const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, t] = await Promise.all([
     getAllCategories(),
@@ -76,6 +112,10 @@ export default async function HomePage({ params }: { params: { locale: string } 
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd).replace(/</g, "\\u003c") }}
+      />
       {/* ─────────────────────────────────────────────────
           HERO — Search-first with Lompoc image background
          ───────────────────────────────────────────────── */}

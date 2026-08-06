@@ -10,6 +10,7 @@ import { EventsSection } from "@/components/events-section"
 import { FeaturedBusinessesMarquee } from "@/components/featured-businesses-marquee"
 import { Reveal } from "@/components/reveal"
 import { SubscribeForm } from "@/components/subscribe-form"
+import { pageAlternates } from "@/lib/seo"
 import {
   Heart,
   Bell,
@@ -31,6 +32,7 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    alternates: pageAlternates("/locals", locale),
   }
 }
 

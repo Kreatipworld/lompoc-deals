@@ -14,13 +14,13 @@ export const revalidate = 300
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: { locale: string } }) {
   const t = await getTranslations("eventsPage")
   return {
     // metaTitle carries the brand suffix — bypass the layout template
     title: { absolute: t("metaTitle") },
     description: t("metaDescription"),
-    alternates: pageAlternates("/events"),
+    alternates: pageAlternates("/events", params.locale),
   }
 }
 

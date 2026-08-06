@@ -51,7 +51,7 @@ export const revalidate = 300
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string; locale: string }
 }): Promise<Metadata> {
   const [data, t] = await Promise.all([
     getBusinessBySlug(params.slug),
@@ -76,7 +76,7 @@ export async function generateMetadata({
     title: `${name} — ${t("metaTitleSuffix")}`,
     description: metaDescription,
     keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
-    alternates: pageAlternates(`/biz/${params.slug}`),
+    alternates: pageAlternates(`/biz/${params.slug}`, params.locale),
     openGraph: {
       title: `${name} ${t("metaOgSuffix")}`,
       description: metaDescription,

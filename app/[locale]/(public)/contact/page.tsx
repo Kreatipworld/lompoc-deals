@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { Mail, Building2, Heart } from "lucide-react"
+import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata({
   params,
@@ -12,6 +13,7 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    alternates: pageAlternates("/contact", locale),
   }
 }
 

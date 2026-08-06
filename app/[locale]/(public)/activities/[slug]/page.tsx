@@ -45,7 +45,7 @@ export async function generateMetadata({
       description: activity.description ?? undefined,
       images: activity.imageUrl ? [{ url: activity.imageUrl }] : undefined,
     },
-    alternates: pageAlternates(`/activities/${slug}`),
+    alternates: pageAlternates(`/activities/${slug}`, locale),
   }
 }
 

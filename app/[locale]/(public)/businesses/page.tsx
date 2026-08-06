@@ -23,12 +23,12 @@ import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const t = await getTranslations("businesses.directory")
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
-    alternates: pageAlternates("/businesses"),
+    alternates: pageAlternates("/businesses", params.locale),
   }
 }
 

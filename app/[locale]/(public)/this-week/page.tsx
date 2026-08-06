@@ -33,7 +33,7 @@ export async function generateMetadata({
       description: t("metaDescription"),
       images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
     },
-    alternates: pageAlternates("/this-week"),
+    alternates: pageAlternates("/this-week", params.locale),
   }
 }
 

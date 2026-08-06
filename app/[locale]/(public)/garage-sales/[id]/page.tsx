@@ -6,6 +6,7 @@ import { garageSales } from "@/db/schema"
 import { eq, and } from "drizzle-orm"
 import { MapPin, Clock, Tag, Navigation, ArrowLeft, ShoppingBag } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 
 interface Props {
   params: { id: string; locale: string }
@@ -28,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Garage Sale at ${sale.address}`,
     description: sale.description.slice(0, 160),
+    alternates: pageAlternates(`/garage-sales/${id}`, params.locale),
   }
 }
 
