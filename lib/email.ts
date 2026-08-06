@@ -139,42 +139,42 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
   const content =
     locale === "es"
       ? {
-          subject: "Bienvenido a Lompoc Locals — tu página está activa (prueba Growth gratis)",
+          subject: "Bienvenido a Lompoc Locals — tu página está activa",
           html: welcomeHtml({
             heading: "Bienvenido al vecindario.",
             intro:
               greet + `gracias por sumar tu negocio a Lompoc Locals — el punto de encuentro donde los vecinos de Lompoc y Vandenberg descubren los lugares que hacen nuestro pueblo. Tu perfil ya está activo: los locales pueden encontrarte en el directorio, en el mapa y en la búsqueda local. Es tuyo para gestionar — agrega fotos, horarios y tu historia cuando quieras desde <a href="${dashUrl}" style="color:#650C75;font-weight:600;">tu panel</a>.`,
-            bulletsTitle: "¿Quieres hacer más? Empieza una prueba gratis de 14 días de Growth:",
+            bulletsTitle: "¿Quieres hacer más? Con el plan Growth puedes:",
             bullets: [
               "Publica ofertas y cupones cuando quieras — aparecen en el feed y en nuestro resumen semanal de la comunidad",
               "Lugar destacado en ese resumen semanal para que más vecinos te vean",
               "Mira cuántos locales visitan tu página cada semana — números reales",
               "Aparece primero en tu categoría para que los vecinos te encuentren",
             ],
-            ctaLabel: "Empieza tu prueba gratis de 14 días",
+            ctaLabel: "Activa Growth",
             ctaUrl: billingUrl,
             closing:
-              "$39.99/mes después de la prueba — cancela cuando quieras, y tu perfil sigue gratis de todos modos. Responde a este correo cuando quieras; lo lee una persona real aquí en Lompoc.",
+              "$39.99/mes — cancela cuando quieras, y tu perfil sigue gratis de todos modos. Responde a este correo cuando quieras; lo lee una persona real aquí en Lompoc.",
             signoff: "— El equipo de Lompoc Locals",
           }),
         }
       : {
-          subject: "Welcome to Lompoc Locals — your page is live (start Growth free)",
+          subject: "Welcome to Lompoc Locals — your page is live",
           html: welcomeHtml({
             heading: "Welcome to the neighborhood.",
             intro:
               greet + `thanks for adding your business to Lompoc Locals — the community hub where Lompoc and Vandenberg neighbors discover the places that make our town ours. Your listing is live, so locals can already find you in the directory, on the map, and in local search. It's yours to run — add photos, hours, and your story anytime from <a href="${dashUrl}" style="color:#650C75;font-weight:600;">your dashboard</a>.`,
-            bulletsTitle: "Want to do more? Start a 14-day free Growth trial:",
+            bulletsTitle: "Want to do more? With Growth you can:",
             bullets: [
               "Post specials &amp; coupons anytime — they hit the feed and our weekly community digest to locals' inboxes",
               "Featured placement in that weekly digest so more neighbors see you",
               "See how many locals view your page each week — real numbers",
               "Show up first in your category so neighbors find you first",
             ],
-            ctaLabel: "Start your 14-day free trial",
+            ctaLabel: "Upgrade to Growth",
             ctaUrl: billingUrl,
             closing:
-              "$39.99/month after the trial — cancel anytime, and your listing stays free either way. Reply to this email anytime; it reaches a real person here in Lompoc.",
+              "$39.99/month — cancel anytime, and your listing stays free either way. Reply to this email anytime; it reaches a real person here in Lompoc.",
             signoff: "— The Lompoc Locals team",
           }),
         }

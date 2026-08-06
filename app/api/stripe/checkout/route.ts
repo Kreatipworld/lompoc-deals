@@ -161,11 +161,6 @@ export async function POST(request: Request) {
     }
   }
 
-  // One trial per account: anyone who has ever held a real subscription
-  // (active, trialing, or canceled) checks out without a trial — the card
-  // is charged today. Fresh members still get the 14 free days.
-  const hadSubscription = Boolean(existing?.stripeSubscriptionId)
-
   const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
   let checkoutSession
@@ -184,8 +179,9 @@ export async function POST(request: Request) {
       // enter a card too; they're still never charged.
       payment_method_collection: "always",
       metadata: { userId: String(userId), tier },
+      // No trial for new members — the card is charged today. Subscriptions
+      // already mid-trial in Stripe are untouched and run out their free days.
       subscription_data: {
-        ...(hadSubscription ? {} : { trial_period_days: 14 }),
         metadata: { userId: String(userId), tier },
       },
     })
