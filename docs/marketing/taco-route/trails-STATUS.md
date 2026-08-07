@@ -25,3 +25,11 @@ and CDN .../1d04ddf5-6aa5-44f9-b978-bc3782d58567.mp4 — do NOT publish (voice s
 - Cover legend: "01 BODGER · 02 LA PURISIMA · 03 BURTON MESA · 04 OCEAN BEACH"
 - NEXT UPGRADE (user wants): "point of view" follow-cam — crop window tracks the
   route head as it draws (2D flyover, GIS-reel style like tiktok @mbforrgis).
+
+## SHIPPED-READY (Aug 7 night) — rendered LOCALLY
+Higgsfield sandbox was down all evening; installed static ffmpeg/ffprobe on the
+Mac (scratchpad/bin, evermeet.cx builds, quarantine removed) and rendered locally
+with no time limits. Local pipeline: PATH=<scratchpad>/bin python3 build.py
+prep|anim|final in a work dir. Scene timings synced to the approved v3 narration
+via ffmpeg silencedetect (no whisper needed). Robust multi-host tile fetch added.
+FINAL: ~/Downloads/trails-of-lompoc-FINAL.mp4 (40.4s) — awaiting user approval to post.

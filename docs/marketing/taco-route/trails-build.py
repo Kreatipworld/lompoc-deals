@@ -10,7 +10,7 @@ INK = (36, 22, 41)
 PURPLE = (101, 12, 117)
 GOLD = (239, 198, 24)
 CREAM = (247, 243, 233)
-FONT = "/usr/share/fonts/truetype/higgsfield/Montserrat-ExtraBold.ttf"
+FONT = "/private/tmp/claude-501/-Users-kreatip-Projects-lompoc-deals/753a18a0-0733-4d51-9b67-1f19fbd2978e/scratchpad/Montserrat-ExtraBold-real.ttf"
 
 NARR = "https://d8j0ntlcm91z4.cloudfront.net/user_3CuWntmy2lNmJohSFZzzxO6qy1E/hf_20260807_213153_c48ee313-ac1d-4bac-9d62-d1553830c311.mp3"
 AERIAL = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Lompoc_CA_aerial_2007.jpg/1920px-Lompoc_CA_aerial_2007.jpg"
@@ -141,10 +141,15 @@ def fetch_map(ways, pw, ph, pad=0.30, out="map.png", zmax=16):
     canvas = Image.new("RGB", ((tx1 - tx0 + 1) * 256, (ty1 - ty0 + 1) * 256), (224, 222, 210))
     for tx in range(tx0, tx1 + 1):
         for ty in range(ty0, ty1 + 1):
-            url = TILE_URLS[(tx + ty) % 3].format(z=z, x=tx, y=ty)
             fn = f"tile_{z}_{tx}_{ty}.png"
-            if not os.path.exists(fn):
-                sh(f"curl -sfL --retry 2 --retry-all-errors --retry-delay 1 -A 'LompocLocalsTownGuides/1.0 (hello@lompoclocals.com)' -o {fn} '{url}' || true")
+            hosts = ["a.tile.opentopomap.org", "b.tile.opentopomap.org",
+                     "c.tile.opentopomap.org", "tile.openstreetmap.org"]
+            for h in hosts:
+                if os.path.exists(fn) and os.path.getsize(fn) > 800:
+                    break
+                sh(f"curl -sfL --max-time 25 -A 'LompocLocalsTownGuides/1.0 (hello@lompoclocals.com)' -o {fn} 'https://{h}/{z}/{tx}/{ty}.png' || true")
+                if os.path.exists(fn) and os.path.getsize(fn) <= 800:
+                    os.remove(fn)
             try:
                 canvas.paste(Image.open(fn).convert("RGB"), ((tx - tx0) * 256, (ty - ty0) * 256))
             except Exception:
@@ -311,12 +316,12 @@ if PHASE == "prep":
     im.save("c_end.png")
 
     shots = [
-        ("cover", 0.0, 4.75),
-        ("bodger", 4.75, 13.02),
-        ("purisima", 13.02, 20.05),
-        ("burton", 20.05, 25.46),
-        ("ocean", 25.46, 34.27),
-        ("end", 34.27, dur + 0.7),
+        ("cover", 0.0, 4.55),
+        ("bodger", 4.55, 14.55),
+        ("purisima", 14.55, 23.78),
+        ("burton", 23.78, 28.00),
+        ("ocean", 28.00, 36.60),
+        ("end", 36.60, dur + 1.4),
     ]
     json.dump({"shots": shots, "dur": dur}, open("shots.json", "w"))
     print("PREP_DONE", json.dumps(shots))
@@ -378,12 +383,12 @@ with open("concat.txt", "w") as f:
         f.write(f"file '{s}'\n")
 
 CAPS = [
-    (0.2, 4.7, "Lompoc — a town you can walk right out of"),
-    (4.8, 12.9, "Bodger Trail · the valley at your feet"),
-    (13.1, 19.9, "La Purísima · 25 miles of trails"),
-    (20.1, 25.3, "Burton Mesa · rare chaparral country"),
-    (25.5, 34.1, "Ocean Beach · where the walk ends at the sea"),
-    (34.4, 41.9, "Every trail · every park · all in one place — lompoclocals.com"),
+    (0.2, 4.3, "Lompoc — a town you can walk right out of"),
+    (4.8, 14.2, "Bodger Trail · the valley at your feet"),
+    (14.8, 23.5, "La Purísima · 25 miles of trails"),
+    (24.1, 27.8, "Burton Mesa · rare chaparral country"),
+    (28.5, 36.1, "Ocean Beach · where the walk ends at the sea"),
+    (36.8, 39.9, "Every trail · every park · all in one place — lompoclocals.com"),
 ]
 
 def ts(t):
@@ -403,7 +408,7 @@ with open("caps.ass", "w") as f:
 
 total = shots[-1][2] + 1 / FPS
 sh(f"ffmpeg -y -loglevel error -f concat -safe 0 -i concat.txt -i narration.mp3 "
-   f"-filter_complex \"[0:v]subtitles=caps.ass:fontsdir=/usr/share/fonts,"
+   f"-filter_complex \"[0:v]subtitles=caps.ass:fontsdir=/private/tmp/claude-501/-Users-kreatip-Projects-lompoc-deals/753a18a0-0733-4d51-9b67-1f19fbd2978e/scratchpad,"
    f"fade=t=out:st={total-0.6:.3f}:d=0.6[v];[1:a]highpass=f=60,loudnorm=I=-14:TP=-1.5:LRA=11,apad,afade=t=out:st={total-0.6:.3f}:d=0.6[a]\" "
    f"-map '[v]' -map '[a]' -c:v libx264 -preset veryfast -crf 19 "
    f"-c:a aac -b:a 192k -t {total:.3f} -movflags +faststart final.mp4")
