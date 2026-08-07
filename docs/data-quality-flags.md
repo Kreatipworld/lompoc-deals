@@ -90,3 +90,11 @@ pass for that business.
   (124 vs 120 N A St).
 - #439 Reliability Works flagged "unlicensed contractor" on Angi — left as-is; owner's
   matter, not ours to adjudicate.
+
+## Closure checks (Aug 6 evening)
+- Deleted: #290 Hangar7 "Permanantly Closed" row; #559 Second Shot (zero web footprint,
+  no phone — phantom).
+- Kept: #387 La Cherry Moda (ACTIVE — LLC filed May 2025, live IG/TikTok, recent pop-up
+  sale); #501 Cinco De Mayo (real per menu directories, current address unconfirmed);
+  #514 Black Rose Tattoos (possible home-based artist, "Black Rose Tattoo Co" FB may be
+  them — unverified).
