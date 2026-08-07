@@ -55,3 +55,21 @@ pass for that business.
   place locals can eat; shares the hospital main line by design.
 - Earlier same-brand merges: Kaizen, Planet Fitness, Compass, Keller Williams,
   Grocery Outlet, La Botte, CVS ×2, Circle K.
+
+## Resolved by the Aug 6 wrong-website fixer pass
+- #110 renamed Fast Pass Car Wash (638 N H St, real identity of the row); #184 renamed
+  Box Shop (740 N H St, FedEx ShipCenter, about written); #188 renamed Cosmoton Academy
+  (barbering school, 736 N H St, about written); #289 Bodger Trail confirmed real —
+  website now the Explore Lompoc trail page, about written; #573 Fort Storage address
+  corrected to 1013 W Chestnut + phone filled; #583 Extra Space recategorized Services;
+  #558 VTC name kept (BEACON not yet the public Lompoc name), address moved to 116 N I St;
+  #149 Fiddlehead moved to "the Farm" (appointment-only, new address unpublished) —
+  address/coords nulled to service-area pattern; #288 Explanada verified real (jaripeo
+  venue, MMG is its promoter).
+- Deleted after verification: #127 Mission Auto Care (phantom duplicating #214, fake 555
+  number, address is an office building) and #75 Target Lompoc (no Target exists in
+  Lompoc per Target's own store directory).
+- Rows renamed to their true identity (#110/#184/#188) kept their old slugs — cosmetic,
+  fix only if it ever matters for SEO.
+- Fiddlehead's existing about may still reference the Wine Ghetto location — needs a
+  human read.
