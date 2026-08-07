@@ -404,7 +404,7 @@ with open("caps.ass", "w") as f:
 total = shots[-1][2] + 1 / FPS
 sh(f"ffmpeg -y -loglevel error -f concat -safe 0 -i concat.txt -i narration.mp3 "
    f"-filter_complex \"[0:v]subtitles=caps.ass:fontsdir=/usr/share/fonts,"
-   f"fade=t=out:st={total-0.6:.3f}:d=0.6[v];[1:a]apad,afade=t=out:st={total-0.6:.3f}:d=0.6[a]\" "
+   f"fade=t=out:st={total-0.6:.3f}:d=0.6[v];[1:a]highpass=f=60,loudnorm=I=-14:TP=-1.5:LRA=11,apad,afade=t=out:st={total-0.6:.3f}:d=0.6[a]\" "
    f"-map '[v]' -map '[a]' -c:v libx264 -preset veryfast -crf 19 "
    f"-c:a aac -b:a 192k -t {total:.3f} -movflags +faststart final.mp4")
 info = subprocess.run("ffprobe -v error -show_entries format=duration,size -of csv=p=0 final.mp4",
