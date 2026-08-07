@@ -144,7 +144,7 @@ def fetch_map(ways, pw, ph, pad=0.30, out="map.png", zmax=16):
             url = TILE_URLS[(tx + ty) % 3].format(z=z, x=tx, y=ty)
             fn = f"tile_{z}_{tx}_{ty}.png"
             if not os.path.exists(fn):
-                sh(f"curl -sfL --retry 3 --retry-all-errors -A 'LompocLocalsTownGuides/1.0 (hello@lompoclocals.com)' -o {fn} '{url}' || true")
+                sh(f"curl -sfL --retry 2 --retry-all-errors --retry-delay 1 -A 'LompocLocalsTownGuides/1.0 (hello@lompoclocals.com)' -o {fn} '{url}' || true")
             try:
                 canvas.paste(Image.open(fn).convert("RGB"), ((tx - tx0) * 256, (ty - ty0) * 256))
             except Exception:
@@ -198,16 +198,19 @@ def draw_route(im, tr, prog):
         _PROJ[key] = ways
     ways = _PROJ[key]
     hi = tr.get("highlight")
+    if hi is None and ways:
+        # no explicit highlight: the longest path is THE trail; rest is context
+        hi = max(ways, key=lambda w: len(w["px"]))["id"]
     clipbox = (70, 560, 1010, 1200)
     def inside(pt):
         return clipbox[0] - 30 <= pt[0] <= clipbox[2] + 30 and clipbox[1] - 30 <= pt[1] <= clipbox[3] + 30
-    ctx = [w for w in ways if w["id"] != hi]
+    ctx = [w for w in ways if w["id"] != hi and len(w["px"]) >= 6]
     main = [w for w in ways if w["id"] == hi]
     n_ctx = int(len(ctx) * ease(min(1.0, prog)))
     for w in ctx[:n_ctx]:
         pts = [p for p in w["px"] if inside(p)]
         if len(pts) >= 2:
-            d.line(pts, fill=(GOLD if hi is None else PURPLE), width=9 if hi is None else 7, joint="curve")
+            d.line(pts, fill=(96, 80, 106), width=5, joint="curve")
     if main:
         pts = main[0]["px"]
         n = max(2, int(len(pts) * ease(prog)))
@@ -247,13 +250,13 @@ if PHASE == "prep":
     for _k in ("bodger", "purisima", "burton", "ocean"):
         _g = geo()[_k]
         _src = ([w for w in _g if w["id"] == 16228351] or _g) if _k == "bodger" else _g
-        _T = fetch_map(_src, 940, 640, pad=0.35, out=f"mapbg_{_k}.png")
+        _T = fetch_map(_src, 940, 640, pad=0.35, out=f"mapbg_{_k}.png", zmax=14)
         json.dump(_T, open(f"maptf_{_k}.json", "w"))
 
     # cover: real topo map of the valley with markers at true trail spots
     g = geo()
     allw = g["roads"] + [w for a in ("bodger", "purisima", "burton") for w in g[a]]
-    Tc = fetch_map(allw, W, 1150, pad=0.10, out="mapbg_cover.png", zmax=13)
+    Tc = fetch_map(allw, W, 1150, pad=0.10, out="mapbg_cover.png", zmax=12)
     cov = Image.open("mapbg_cover.png").convert("RGB")
     im = Image.new("RGB", (W, H), INK)
     im.paste(cov, (0, 0))
@@ -273,6 +276,9 @@ if PHASE == "prep":
         grad.putpixel((0, y), min(a, 250))
     im = Image.composite(Image.new("RGB", (W, H), INK), im, grad.resize((W, H)))
     d = ImageDraw.Draw(im)
+    leg = "01 BODGER · 02 LA PURÍSIMA · 03 BURTON MESA · 04 OCEAN BEACH"
+    f_l = F(27)
+    d.text(((W - tw(d, leg, f_l)) // 2, 1100), leg, font=f_l, fill=(228, 220, 234))
     pill = "TOWN GUIDES · Nº 2"
     f_p = F(34)
     w_p = tw(d, pill, f_p)
@@ -321,7 +327,7 @@ shots, dur = plan["shots"], plan["dur"]
 BY = {t["key"]: t for t in TRAILS}
 
 if PHASE == "anim":
-    DRAW_S = 1.3
+    DRAW_S = 1.0
     for key, t0, t1 in shots:
         if os.path.exists(f"seg_{key}.mp4"):
             print("SEG", key, "cached"); continue

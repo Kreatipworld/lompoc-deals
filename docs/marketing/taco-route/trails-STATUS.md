@@ -18,3 +18,10 @@ seconds tonight): one sandbox_exec run, ~90s:
 
 LAST GOOD RENDER (old voice, 2 gray cover tiles): ~/Downloads/trails-of-lompoc-final.mp4
 and CDN .../1d04ddf5-6aa5-44f9-b978-bc3782d58567.mp4 — do NOT publish (voice superseded).
+
+## v13 (current, Aug 7 late) — CLARITY PASS, user-approved direction
+- One bold gold route per card (explicit highlight or longest way), start/end markers
+- Other paths faint grey context; fragments <6 pts dropped
+- Cover legend: "01 BODGER · 02 LA PURISIMA · 03 BURTON MESA · 04 OCEAN BEACH"
+- NEXT UPGRADE (user wants): "point of view" follow-cam — crop window tracks the
+  route head as it draws (2D flyover, GIS-reel style like tiktok @mbforrgis).
