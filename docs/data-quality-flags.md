@@ -73,3 +73,20 @@ pass for that business.
   fix only if it ever matters for SEO.
 - Fiddlehead's existing about may still reference the Wine Ghetto location — needs a
   human read.
+
+## Social-research pass results (Aug 6, batches A+B)
+- 74 abouts written from verified social/directory/news sources; 45 social links and
+  8 recovered websites added. Logs: scratchpad social-log-A/B.jsonl (per-row sources).
+- Deleted junk rows: #572 "Nearby Self Storage Units" (SEO spam), #580 generic
+  "Car Wash" (unverifiable), #595 Conservmart (parcel-number address, dup of Conserv
+  Fuel #609).
+- Manual-look queue: #501 Cinco De Mayo (503 N H St now a tire shop — closed or moved
+  truck?), #559 Second Shot, #514 Black Rose TATTOOS (no verifiable trace), #387 La
+  Cherry Moda (IG hints at possible closure), #326 Thacker Verne DVM = Village
+  Veterinary Clinic (same phone — merge candidate), #290 "Permanantly Closed Off Base
+  at Hangar7" (delete candidate, name says closed).
+- Address discrepancies to verify before touching: Silver Syndicate (205 vs 1010 N H
+  St), California Realty Executives (312 N H St on own site vs 129 N I St), John Maida
+  (124 vs 120 N A St).
+- #439 Reliability Works flagged "unlicensed contractor" on Angi — left as-is; owner's
+  matter, not ours to adjudicate.
