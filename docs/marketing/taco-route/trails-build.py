@@ -249,11 +249,6 @@ if PHASE == "prep":
         _src = ([w for w in _g if w["id"] == 16228351] or _g) if _k == "bodger" else _g
         _T = fetch_map(_src, 940, 640, pad=0.35, out=f"mapbg_{_k}.png")
         json.dump(_T, open(f"maptf_{_k}.json", "w"))
-    a_hills = find("hills", 0.10)
-    a_feet = find("feet", 0.30, a_hills)
-    a_history = find("history", 0.50, a_feet)
-    a_paths = find("paths", 0.66, a_history)
-    a_every = find("every", 0.88, a_paths)
 
     # cover: real topo map of the valley with markers at true trail spots
     g = geo()
