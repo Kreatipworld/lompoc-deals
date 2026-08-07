@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm"
 import { db } from "@/db/client"
 import { events } from "@/db/schema"
+import { findSameDayDuplicate } from "@/lib/event-dedup"
 import type { SyncReport } from "@/lib/event-sync"
 
 // explorelompoc.com (Lompoc tourism bureau) runs WordPress + The Events
@@ -126,6 +127,10 @@ export async function syncExploreLompocEvents(): Promise<SyncReport> {
             .update(events)
             .set(values)
             .where(eq(events.id, existing[0].id))
+          skipped++
+        } else if (await findSameDayDuplicate(values.title, values.startsAt)) {
+          // Same real-world event already on the calendar from another feed
+          // (or re-published by the city under a fresh id) — don't double it.
           skipped++
         } else {
           await db.insert(events).values(values)

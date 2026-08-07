@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm"
 import { db } from "@/db/client"
 import { events } from "@/db/schema"
+import { findSameDayDuplicate } from "@/lib/event-dedup"
 import type { SyncReport } from "@/lib/event-sync"
 
 // Launch Library 2 (thespacedevs) — the structured database behind sites like
@@ -98,8 +99,14 @@ export async function syncVandenbergLaunches(): Promise<SyncReport> {
         await db.update(events).set(values).where(eq(events.id, existing[0].id))
         skipped++
       } else if (upcoming) {
-        await db.insert(events).values(values)
-        inserted++
+        // The city calendar also lists Vandenberg launches under its own
+        // naming — content-level same-day check stops the double listing.
+        if (await findSameDayDuplicate(values.title, values.startsAt)) {
+          skipped++
+        } else {
+          await db.insert(events).values(values)
+          inserted++
+        }
       }
     } catch {
       errors++
