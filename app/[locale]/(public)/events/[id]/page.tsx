@@ -5,7 +5,7 @@ import { ArrowLeft, Calendar, MapPin } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
-import { events } from "@/db/schema"
+import { businesses, events } from "@/db/schema"
 import { pageAlternates } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
@@ -15,10 +15,23 @@ export const revalidate = 300
 
 async function getApprovedEvent(id: number) {
   if (Number.isNaN(id)) return null
-  const rows = await db.select().from(events).where(eq(events.id, id)).limit(1)
-  const ev = rows[0]
-  if (!ev || ev.status !== "approved") return null
-  return ev
+  const rows = await db
+    .select({
+      event: events,
+      organizerName: businesses.name,
+      organizerWebsite: businesses.website,
+    })
+    .from(events)
+    .leftJoin(businesses, eq(events.businessId, businesses.id))
+    .where(eq(events.id, id))
+    .limit(1)
+  const row = rows[0]
+  if (!row || row.event.status !== "approved") return null
+  return {
+    ...row.event,
+    organizerName: row.organizerName,
+    organizerWebsite: row.organizerWebsite,
+  }
 }
 
 export async function generateMetadata({
@@ -61,6 +74,17 @@ export default async function EventDetailPage({
     "@context": "https://schema.org",
     "@type": "Event",
     name: ev.title,
+    // Cancelled events are unpublished (404), so anything rendered is scheduled
+    eventStatus: "https://schema.org/EventScheduled",
+    ...(ev.organizerName
+      ? {
+          organizer: {
+            "@type": "Organization",
+            name: ev.organizerName,
+            ...(ev.organizerWebsite ? { url: ev.organizerWebsite } : {}),
+          },
+        }
+      : {}),
     startDate: ev.startsAt.toISOString(),
     ...(ev.endsAt ? { endDate: ev.endsAt.toISOString() } : {}),
     ...(ev.description ? { description: ev.description } : {}),
