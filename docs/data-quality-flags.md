@@ -38,3 +38,20 @@ pass for that business.
   own site.
 - #583 Extra Space Storage — categorized "Auto"; should likely be Services.
 - #612 Circle K (gasoline) — categorized "Retail"; arguably Auto/fuel.
+
+## Resolved by the Aug 6 web-verification pass (all researched, sources in session log)
+- Deleted phantom/duplicate rows: Pep Boys #108 (no Pep Boys exists in Lompoc), Lompoc
+  Animal Hospital #185 (directory alias of Animal Care Hospital #322), Tachito #495
+  (same family/building as Taqueria Don Tacho #492), Lompoc Cuts Barbershop #128,
+  Salon Innovations #93 (defunct), Lompoc Dental Group #95 (alias of Lompoc Dental &
+  Associates #452), Exxon #610 (the fuel brand on Stuart's Petroleum #598), Regal
+  Edwards #111 (theater is in Santa Maria; town cinema is Movies Lompoc), Marian
+  Regional #181 (Santa Maria hospital — out of Lompoc scope).
+- Century 21: #37 Hometown merged into #522, renamed "CENTURY 21 Masters" (absorbed
+  Hometown), local phone (805) 736-5663.
+- Motel 6 #311 phone corrected to (805) 735-7631; Target #75 wrong phone cleared
+  (real store number still needed).
+- Ocean's Seven Café #205 kept deliberately — it's LVMC's in-hospital café, a real
+  place locals can eat; shares the hospital main line by design.
+- Earlier same-brand merges: Kaizen, Planet Fitness, Compass, Keller Williams,
+  Grocery Outlet, La Botte, CVS ×2, Circle K.
