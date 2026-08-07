@@ -12,7 +12,7 @@ GOLD = (239, 198, 24)
 CREAM = (247, 243, 233)
 FONT = "/usr/share/fonts/truetype/higgsfield/Montserrat-ExtraBold.ttf"
 
-NARR = "https://d8j0ntlcm91z4.cloudfront.net/user_3CuWntmy2lNmJohSFZzzxO6qy1E/hf_20260807_200415_57f36e40-d383-4c0e-88df-89e82ae3ca8a.mp3"
+NARR = "https://d8j0ntlcm91z4.cloudfront.net/user_3CuWntmy2lNmJohSFZzzxO6qy1E/hf_20260807_213153_c48ee313-ac1d-4bac-9d62-d1553830c311.mp3"
 AERIAL = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Lompoc_CA_aerial_2007.jpg/1920px-Lompoc_CA_aerial_2007.jpg"
 
 def sh(cmd):
@@ -244,19 +244,19 @@ PHASE = sys.argv[1] if len(sys.argv) > 1 else "prep"
 if PHASE == "prep":
     sh(f"curl -sfL -A 'LompocLocals/1.0' -o narration.mp3 '{NARR}'")
     sh("curl -sfL -o geo.json 'https://d2ol7oe51mr4n9.cloudfront.net/user_3CuWntmy2lNmJohSFZzzxO6qy1E/13b92c32-ba11-489a-849b-75d9b01afee2.json'")
-    dur = 42.260816
+    dur = float(subprocess.run("ffprobe -v error -show_entries format=duration -of csv=p=0 narration.mp3", shell=True, capture_output=True, text=True).stdout.strip())
     a_hills, a_feet, a_history, a_paths, a_every = 4.40, 12.47, 19.50, 24.86, 33.90
 
     for _k in ("bodger", "purisima", "burton", "ocean"):
         _g = geo()[_k]
         _src = ([w for w in _g if w["id"] == 16228351] or _g) if _k == "bodger" else _g
-        _T = fetch_map(_src, 940, 640, pad=0.35, out=f"mapbg_{_k}.png", zmax=14)
+        _T = fetch_map(_src, 940, 640, pad=0.85, out=f"mapbg_{_k}.png", zmax=14)
         json.dump(_T, open(f"maptf_{_k}.json", "w"))
 
     # cover: real topo map of the valley with markers at true trail spots
     g = geo()
     allw = g["roads"] + [w for a in ("bodger", "purisima", "burton") for w in g[a]]
-    Tc = fetch_map(allw, W, 1150, pad=0.10, out="mapbg_cover.png", zmax=12)
+    Tc = fetch_map(allw, W, 1150, pad=0.22, out="mapbg_cover.png", zmax=12)
     cov = Image.open("mapbg_cover.png").convert("RGB")
     im = Image.new("RGB", (W, H), INK)
     im.paste(cov, (0, 0))
@@ -300,7 +300,7 @@ if PHASE == "prep":
     d.rectangle([0, H - 12, W, H], fill=GOLD)
     t = "TRAILS OF LOMPOC"
     d.text(((W - tw(d, t, F(84))) // 2, 810), t, font=F(84), fill=(255, 255, 255))
-    t = "Every trail · Every park · Every weekend"
+    t = "Every trail · Every park · All in one place"
     d.text(((W - tw(d, t, F(40))) // 2, 940), t, font=F(40), fill=(200, 182, 208))
     t = "lompoclocals.com"
     d.text(((W - tw(d, t, F(56))) // 2, 1040), t, font=F(56), fill=GOLD)
@@ -316,7 +316,7 @@ if PHASE == "prep":
         ("purisima", 13.02, 20.05),
         ("burton", 20.05, 25.46),
         ("ocean", 25.46, 34.27),
-        ("end", 34.27, 42.96),
+        ("end", 34.27, dur + 0.7),
     ]
     json.dump({"shots": shots, "dur": dur}, open("shots.json", "w"))
     print("PREP_DONE", json.dumps(shots))
@@ -383,7 +383,7 @@ CAPS = [
     (13.1, 19.9, "La Purísima · 25 miles of trails"),
     (20.1, 25.3, "Burton Mesa · rare chaparral country"),
     (25.5, 34.1, "Ocean Beach · where the walk ends at the sea"),
-    (34.4, 42.2, "Every trail · every park · lompoclocals.com"),
+    (34.4, 41.9, "Every trail · every park · all in one place — lompoclocals.com"),
 ]
 
 def ts(t):
