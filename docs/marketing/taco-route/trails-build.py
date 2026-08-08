@@ -108,15 +108,6 @@ def card_base(tr):
     # lower third
     d.rectangle([0, 1560, W, H], fill=INK)
     d.rectangle([0, 1560, W, 1566], fill=GOLD)
-    x = 70
-    for st in tr["stats"]:
-        f_s = F(30)
-        w_s = tw(d, st, f_s)
-        if x + w_s + 44 > W - 40:
-            break
-        d.rounded_rectangle([x, 1600, x + w_s + 44, 1664], radius=14, fill=(255, 255, 255))
-        d.text((x + 22, 1614), st, font=f_s, fill=INK)
-        x += w_s + 64
     d.text((70, 1692), tr["note"], font=F(30), fill=(200, 186, 208))
     return im
 
@@ -228,6 +219,44 @@ def draw_route(im, tr, prog):
             d.line([hx, hy - 18, hx, hy - 78], fill=INK, width=8)
             d.polygon([(hx, hy - 78), (hx + 58, hy - 61), (hx, hy - 45)], fill=GOLD)
 
+import re as _re
+def draw_stats_anim(im, tr, fi, chip_start):
+    """Chips pop in staggered; leading numbers count up. fi = current frame."""
+    d = ImageDraw.Draw(im, "RGBA")
+    x = 70
+    for i, st in enumerate(tr["stats"]):
+        t0 = chip_start + i * 7
+        p = (fi - t0) / 8.0
+        if p <= 0:
+            break
+        p = min(1.0, p)
+        ep = 1 - (1 - p) ** 3
+        f_s = F(30)
+        # count-up on a leading number during the pop
+        m = _re.match(r"([0-9][0-9,\.]*)(.*)", st)
+        label = st
+        if m and p < 1.0:
+            num = m.group(1).replace(",", "")
+            try:
+                val = float(num) * ep
+                if "." in m.group(1):
+                    shown = f"{val:.1f}"
+                elif float(num) >= 1000:
+                    shown = f"{int(val):,}"
+                else:
+                    shown = str(int(val))
+                label = shown + m.group(2)
+            except ValueError:
+                pass
+        w_s = tw(d, st, f_s)  # reserve final width so chips don't shift
+        if x + w_s + 44 > W - 40:
+            break
+        yoff = int(24 * (1 - ep))
+        a = int(255 * ep)
+        d.rounded_rectangle([x, 1600 + yoff, x + w_s + 44, 1664 + yoff], radius=14, fill=(255, 255, 255, a))
+        d.text((x + 22, 1614 + yoff), label, font=f_s, fill=(36, 22, 41, a))
+        x += w_s + 64
+
 def draw_stats(im, tr, k):
     return
 
@@ -311,11 +340,11 @@ if PHASE == "prep":
 
     shots = [
         ("cover", 0.0, 4.55),
-        ("bodger", 4.55, 14.55),
-        ("purisima", 14.55, 23.78),
-        ("burton", 23.78, 28.00),
-        ("ocean", 28.00, 36.60),
-        ("end", 36.60, dur + 1.4),
+        ("bodger", 4.55, 12.00),
+        ("purisima", 12.00, 18.85),
+        ("burton", 18.85, 23.78),
+        ("ocean", 23.78, 32.40),
+        ("end", 32.40, dur + 1.4),
     ]
     json.dump({"shots": shots, "dur": dur}, open("shots.json", "w"))
     print("PREP_DONE", json.dumps(shots))
@@ -352,11 +381,7 @@ if PHASE == "anim":
             p = min(1.0, fi / max(draw_f, 1))
             draw_route(im, tr, p)
             # pills appear stepwise after the line lands
-            k = 0
-            for si in range(3):
-                if fi >= draw_f + int(0.28 * FPS) * si:
-                    k = si + 1
-            draw_stats(im, tr, k)
+            draw_stats_anim(im, tr, fi, draw_f + 4)
             im.save(f"fr_{key}/{fi:04d}.jpg", quality=90)
         fades = f",fade=t=out:st={max(0.0, d_s - 0.18):.3f}:d=0.18"
         sh(f"ffmpeg -y -loglevel error -framerate {FPS} -i fr_{key}/%04d.jpg "
@@ -377,11 +402,11 @@ with open("concat.txt", "w") as f:
         f.write(f"file '{s}'\n")
 
 CAPS = [
-    (4.8, 14.2, "Bodger Trail · the valley at your feet"),
-    (14.8, 23.5, "La Purísima · 25 miles of trails"),
-    (24.1, 27.8, "Burton Mesa · rare chaparral country"),
-    (28.5, 36.1, "Ocean Beach · where the walk ends at the sea"),
-    (36.8, 39.9, "Every trail · every park · all in one place — lompoclocals.com"),
+    (4.8, 11.7, "Bodger Trail · the valley at your feet"),
+    (12.3, 18.5, "La Purísima · 25 miles of trails"),
+    (19.1, 23.4, "Burton Mesa · rare chaparral country"),
+    (24.2, 32.0, "Ocean Beach · where the walk ends at the sea"),
+    (32.7, 39.9, "Every trail · every park · all in one place — lompoclocals.com"),
 ]
 
 def ts(t):
@@ -401,7 +426,7 @@ with open("caps.ass", "w") as f:
 
 total = shots[-1][2] + 1 / FPS
 sh(f"ffmpeg -y -loglevel error -f concat -safe 0 -i concat.txt -i narration.mp3 "
-   f"-filter_complex \"[0:v]subtitles=caps.ass:fontsdir=/private/tmp/claude-501/-Users-kreatip-Projects-lompoc-deals/753a18a0-0733-4d51-9b67-1f19fbd2978e/scratchpad,"
+   f"-filter_complex \"[0:v]null,"
    f"fade=t=out:st={total-0.6:.3f}:d=0.6[v];[1:a]highpass=f=60,loudnorm=I=-14:TP=-1.5:LRA=11,apad,afade=t=out:st={total-0.6:.3f}:d=0.6[a]\" "
    f"-map '[v]' -map '[a]' -c:v libx264 -preset veryfast -crf 19 "
    f"-c:a aac -b:a 192k -t {total:.3f} -movflags +faststart final.mp4")
