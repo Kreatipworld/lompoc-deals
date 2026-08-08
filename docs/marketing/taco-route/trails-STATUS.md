@@ -40,3 +40,12 @@ FINAL: ~/Downloads/trails-of-lompoc-FINAL.mp4 (40.4s) — awaiting user approval
 - Files: ~/Downloads/trails-of-lompoc-EPISODE.mp4; sting render videos/trails-theme/renders/sting.mp4.
 - Publish plan: Buffer all 4 placements, thumbnailOffset ~3.9s (sting lockup frame).
 - Theme is the reusable series intro: edit "nº 2" line + re-render (25s) per episode.
+
+## NEWS EDITION (Aug 8) — Mapbox upgrade, current final
+- Maps now Mapbox Static Images API (outdoors-v12, @2x seamless — NO tile squares),
+  token read from .env.local NEXT_PUBLIC_MAPBOX_TOKEN at build time (not committed).
+- News layout: full-bleed 1080x1230 map per card, ink header band (auto-fit headline),
+  lower-third stat chips, white-cased gold routes, cover = 1080x1500 valley map + band.
+- Credits: "Maps © Mapbox · © OpenStreetMap · Trail data © OSM contributors" (end card).
+- Episode: sting + reel = 44.4s -> ~/Downloads/trails-of-lompoc-EPISODE.mp4. Publish
+  pending user approval; Buffer thumbnailOffset ~3.9s (sting lockup).

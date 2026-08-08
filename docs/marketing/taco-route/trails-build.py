@@ -84,84 +84,89 @@ TRAILS = [
 def card_base(tr):
     key = tr["area"]
     im = Image.new("RGB", (W, H), INK)
-    d = ImageDraw.Draw(im)
-    PX, PY, PW2, PH2 = 70, 560, 940, 640
     mapf = f"mapbg_{key}.png"
     if os.path.exists(mapf):
-        panel = Image.open(mapf).convert("RGB")
-        mask = Image.new("L", (PW2, PH2), 0)
-        ImageDraw.Draw(mask).rounded_rectangle([0, 0, PW2, PH2], radius=34, fill=255)
-        im.paste(panel, (PX, PY), mask)
-        d.rounded_rectangle([PX, PY, PX + PW2, PY + PH2], radius=34, outline=GOLD, width=6)
-    d.rectangle([0, 0, W, 14], fill=GOLD)
-    d.rectangle([0, H - 14, W, H], fill=GOLD)
-    f_p = F(30)
+        im.paste(Image.open(mapf).convert("RGB"), (0, 330))
+    d = ImageDraw.Draw(im)
+    # top news band
+    d.rectangle([0, 0, W, 330], fill=INK)
+    d.rectangle([0, 324, W, 330], fill=GOLD)
+    f_p = F(28)
     w_p = tw(d, tr["no"], f_p)
-    x0 = (W - w_p) // 2 - 22
-    d.rounded_rectangle([x0, 180, x0 + w_p + 44, 238], radius=29, fill=GOLD)
-    d.text(((W - w_p) // 2, 193), tr["no"], font=f_p, fill=INK)
-    y = 290
-    for i, line in enumerate(tr["name"]):
-        f_n = F(96 if i == 0 else 74)
-        d.text(((W - tw(d, line, f_n)) // 2, y), line, font=f_n,
-               fill=(255, 255, 255) if i == 0 else GOLD)
-        y += 116 if i == 0 else 92
+    d.rounded_rectangle([70, 80, 70 + w_p + 44, 136], radius=28, fill=GOLD)
+    d.text((92, 92), tr["no"], font=f_p, fill=INK)
+    # auto-fit the two-part headline inside the band
+    size = 78
+    while size > 40:
+        f_a, f_b = F(size), F(int(size * 0.74))
+        total = tw(d, tr["name"][0] + " ", f_a) + tw(d, tr["name"][1], f_b)
+        if total <= W - 140:
+            break
+        size -= 3
+    d.text((70, 152 + (78 - size)), tr["name"][0], font=f_a, fill=(255, 255, 255))
+    d.text((70 + tw(d, tr["name"][0] + " ", f_a), 152 + (78 - size) + int(size * 0.2)), tr["name"][1], font=f_b, fill=GOLD)
+    # lower third
+    d.rectangle([0, 1560, W, H], fill=INK)
+    d.rectangle([0, 1560, W, 1566], fill=GOLD)
+    x = 70
+    for st in tr["stats"]:
+        f_s = F(30)
+        w_s = tw(d, st, f_s)
+        if x + w_s + 44 > W - 40:
+            break
+        d.rounded_rectangle([x, 1600, x + w_s + 44, 1664], radius=14, fill=(255, 255, 255))
+        d.text((x + 22, 1614), st, font=f_s, fill=INK)
+        x += w_s + 64
+    d.text((70, 1692), tr["note"], font=F(30), fill=(200, 186, 208))
     return im
 
 import math as _m
 
-TILE_URLS = ["https://a.tile.opentopomap.org/{z}/{x}/{y}.png",
-             "https://b.tile.opentopomap.org/{z}/{x}/{y}.png",
-             "https://c.tile.opentopomap.org/{z}/{x}/{y}.png"]
+MAPBOX_TOKEN = None
+def mb_token():
+    global MAPBOX_TOKEN
+    if MAPBOX_TOKEN is None:
+        for line in open("/Users/kreatip/Projects/lompoc-deals/.env.local"):
+            if line.startswith("NEXT_PUBLIC_MAPBOX_TOKEN"):
+                MAPBOX_TOKEN = line.split("=",1)[1].strip().strip('"')
+    return MAPBOX_TOKEN
 
-def _merc(lat, lon, z):
-    n = 256 * (2 ** z)
+def _merc512(lat, lon, z):
+    n = 512 * (2 ** z)
     x = n * (lon + 180.0) / 360.0
     la = _m.radians(lat)
     y = n * (1 - _m.log(_m.tan(la) + 1 / _m.cos(la)) / _m.pi) / 2
     return x, y
 
-def fetch_map(ways, pw, ph, pad=0.30, out="map.png", zmax=16):
+def fetch_map(ways, pw, ph, pad=0.30, out="map.png", zmax=16, style="outdoors-v12"):
+    """One seamless Mapbox Static image. pw/ph are CSS px; fetched @2x then downscaled crisp."""
     la = [p[0] for w in ways for p in w["pts"]]
     lo = [p[1] for w in ways for p in w["pts"]]
     la0, la1 = min(la), max(la); lo0, lo1 = min(lo), max(lo)
-    dla = (la1 - la0) * pad + 1e-4; dlo = (lo1 - lo0) * pad + 1e-4
-    la0 -= dla; la1 += dla; lo0 -= dlo; lo1 += dlo
-    z = zmax
-    while z > 10:
-        x0, y1 = _merc(la0, lo0, z); x1, y0 = _merc(la1, lo1, z)
-        if (x1 - x0) <= pw and (y1 - y0) <= ph:
+    cla, clo = (la0 + la1) / 2, (lo0 + lo1) / 2
+    # fractional zoom to fit padded bbox
+    z = zmax + 0.0
+    while z > 8:
+        x0, y1 = _merc512(la0, lo0, z); x1, y0 = _merc512(la1, lo1, z)
+        if (x1 - x0) * (1 + pad * 2) <= pw and (y1 - y0) * (1 + pad * 2) <= ph:
             break
-        z -= 1
-    x0, y1 = _merc(la0, lo0, z); x1, y0 = _merc(la1, lo1, z)
-    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
-    px0, py0 = cx - pw / 2, cy - ph / 2
-    tx0, ty0 = int(px0 // 256), int(py0 // 256)
-    tx1, ty1 = int((px0 + pw) // 256), int((py0 + ph) // 256)
-    canvas = Image.new("RGB", ((tx1 - tx0 + 1) * 256, (ty1 - ty0 + 1) * 256), (224, 222, 210))
-    for tx in range(tx0, tx1 + 1):
-        for ty in range(ty0, ty1 + 1):
-            fn = f"tile_{z}_{tx}_{ty}.png"
-            hosts = ["a.tile.opentopomap.org", "b.tile.opentopomap.org",
-                     "c.tile.opentopomap.org", "tile.openstreetmap.org"]
-            for h in hosts:
-                if os.path.exists(fn) and os.path.getsize(fn) > 800:
-                    break
-                sh(f"curl -sfL --max-time 25 -A 'LompocLocalsTownGuides/1.0 (hello@lompoclocals.com)' -o {fn} 'https://{h}/{z}/{tx}/{ty}.png' || true")
-                if os.path.exists(fn) and os.path.getsize(fn) <= 800:
-                    os.remove(fn)
-            try:
-                canvas.paste(Image.open(fn).convert("RGB"), ((tx - tx0) * 256, (ty - ty0) * 256))
-            except Exception:
-                pass
-    crop = canvas.crop((int(px0 - tx0 * 256), int(py0 - ty0 * 256),
-                        int(px0 - tx0 * 256) + pw, int(py0 - ty0 * 256) + ph))
-    crop.save(out)
-    return {"z": z, "px0": px0, "py0": py0}
+        z -= 0.05
+    z = round(z, 2)
+    req_w, req_h = min(pw // 2, 1280), min(ph // 2, 1280)
+    url = (f"https://api.mapbox.com/styles/v1/mapbox/{style}/static/"
+           f"{clo:.5f},{cla:.5f},{z},0/{req_w}x{req_h}@2x"
+           f"?access_token={mb_token()}&logo=false&attribution=false")
+    sh(f"curl -sfL --retry 3 --max-time 40 -o {out} '{url}'")
+    img = Image.open(out).convert("RGB")
+    if img.size != (pw, ph):
+        img = img.resize((pw, ph), Image.LANCZOS)
+        img.save(out)
+    return {"z": z, "clat": cla, "clon": clo, "pw": pw, "ph": ph}
 
 def to_panel(lat, lon, T, ox, oy):
-    x, y = _merc(lat, lon, T["z"])
-    return ox + x - T["px0"], oy + y - T["py0"]
+    x, y = _merc512(lat, lon, T["z"])
+    cx, cy = _merc512(T["clat"], T["clon"], T["z"])
+    return ox + T["pw"] / 2 + (x - cx), oy + T["ph"] / 2 + (y - cy)
 
 GEO = None
 def geo():
@@ -198,38 +203,34 @@ def draw_route(im, tr, prog):
         g = geo()[key]
         ways = []
         for w in g:
-            px = [to_panel(p[0], p[1], T, 70, 560) for p in w["pts"]]
+            px = [to_panel(p[0], p[1], T, 0, 330) for p in w["pts"]]
             ways.append({"id": w["id"], "px": px})
         _PROJ[key] = ways
     ways = _PROJ[key]
     hi = tr.get("highlight")
     if hi is None and ways:
-        # no explicit highlight: the longest path is THE trail; rest is context
         hi = max(ways, key=lambda w: len(w["px"]))["id"]
-    clipbox = (70, 560, 1010, 1200)
+    clipbox = (0, 330, W, 1560)
     def inside(pt):
         return clipbox[0] - 30 <= pt[0] <= clipbox[2] + 30 and clipbox[1] - 30 <= pt[1] <= clipbox[3] + 30
-    ctx = [w for w in ways if w["id"] != hi and len(w["px"]) >= 6]
     main = [w for w in ways if w["id"] == hi]
-    n_ctx = int(len(ctx) * ease(min(1.0, prog)))
-    for w in ctx[:n_ctx]:
-        pts = [p for p in w["px"] if inside(p)]
-        if len(pts) >= 2:
-            d.line(pts, fill=(96, 80, 106), width=5, joint="curve")
     if main:
-        pts = main[0]["px"]
+        pts = [p for p in main[0]["px"]]
         n = max(2, int(len(pts) * ease(prog)))
         seg = pts[:n]
         if len(seg) >= 2:
-            d.line(seg, fill=GOLD, width=13, joint="curve")
-        d.ellipse([pts[0][0] - 13, pts[0][1] - 13, pts[0][0] + 13, pts[0][1] + 13], fill=INK, outline=(255, 255, 255), width=4)
+            d.line(seg, fill=(255, 255, 255), width=20, joint="curve")
+            d.line(seg, fill=GOLD, width=12, joint="curve")
+        d.ellipse([pts[0][0] - 14, pts[0][1] - 14, pts[0][0] + 14, pts[0][1] + 14], fill=INK, outline=(255, 255, 255), width=4)
         hx, hy = seg[-1]
-        d.ellipse([hx - 17, hy - 17, hx + 17, hy + 17], fill=GOLD, outline=INK, width=4)
+        d.ellipse([hx - 18, hy - 18, hx + 18, hy + 18], fill=GOLD, outline=INK, width=4)
         if prog >= 0.999 and tr["summit"]:
-            d.line([hx, hy - 17, hx, hy - 76], fill=INK, width=8)
-            d.polygon([(hx, hy - 76), (hx + 56, hy - 60), (hx, hy - 44)], fill=GOLD)
+            d.line([hx, hy - 18, hx, hy - 78], fill=INK, width=8)
+            d.polygon([(hx, hy - 78), (hx + 58, hy - 61), (hx, hy - 45)], fill=GOLD)
 
 def draw_stats(im, tr, k):
+    return
+
     # k = how many stat pills visible (0..3) + note when all visible
     d = ImageDraw.Draw(im)
     y = 1250
@@ -255,47 +256,40 @@ if PHASE == "prep":
     for _k in ("bodger", "purisima", "burton", "ocean"):
         _g = geo()[_k]
         _src = ([w for w in _g if w["id"] == 16228351] or _g) if _k == "bodger" else _g
-        _T = fetch_map(_src, 940, 640, pad=0.85, out=f"mapbg_{_k}.png", zmax=14)
+        _T = fetch_map(_src, 1080, 1230, pad=0.55, out=f"mapbg_{_k}.png", zmax=15)
         json.dump(_T, open(f"maptf_{_k}.json", "w"))
 
-    # cover: real topo map of the valley with markers at true trail spots
+    # cover: seamless Mapbox map of the whole valley + news title band
     g = geo()
     allw = g["roads"] + [w for a in ("bodger", "purisima", "burton") for w in g[a]]
-    Tc = fetch_map(allw, W, 1150, pad=0.22, out="mapbg_cover.png", zmax=12)
-    cov = Image.open("mapbg_cover.png").convert("RGB")
+    Tc = fetch_map(allw, W, 1500, pad=0.18, out="mapbg_cover.png", zmax=12, style="outdoors-v12")
     im = Image.new("RGB", (W, H), INK)
-    im.paste(cov, (0, 0))
+    im.paste(Image.open("mapbg_cover.png").convert("RGB"), (0, 0))
     d = ImageDraw.Draw(im)
     for i, a in enumerate(["bodger", "purisima", "burton", "ocean"]):
         pp = [p for w in g[a] for p in w["pts"]]
         la = sum(p[0] for p in pp) / len(pp); lo = sum(p[1] for p in pp) / len(pp)
         x, y = to_panel(la, lo, Tc, 0, 0)
-        x = max(64, min(W - 64, x)); y = max(150, min(1060, y))
-        d.ellipse([x - 32, y - 32, x + 32, y + 32], fill=GOLD, outline=INK, width=5)
+        x = max(64, min(W - 64, x)); y = max(150, min(1430, y))
+        d.ellipse([x - 34, y - 34, x + 34, y + 34], fill=GOLD, outline=INK, width=5)
         f_m = F(30)
         num = f"0{i+1}"
-        d.text((x - tw(d, num, f_m) / 2, y - 20), num, font=f_m, fill=INK)
-    grad = Image.new("L", (1, H), 0)
-    for y in range(H):
-        a = 0 if y < H * 0.44 else int(250 * ((y - H * 0.44) / (H * 0.56)) ** 1.15)
-        grad.putpixel((0, y), min(a, 250))
-    im = Image.composite(Image.new("RGB", (W, H), INK), im, grad.resize((W, H)))
-    d = ImageDraw.Draw(im)
+        d.text((x - tw(d, num, f_m) / 2, y - 21), num, font=f_m, fill=INK)
+    d.rectangle([0, 1500, W, H], fill=INK)
+    d.rectangle([0, 1494, W, 1500], fill=GOLD)
     leg = "01 BODGER · 02 LA PURÍSIMA · 03 BURTON MESA · 04 OCEAN BEACH"
-    f_l = F(27)
-    d.text(((W - tw(d, leg, f_l)) // 2, 1100), leg, font=f_l, fill=(228, 220, 234))
+    f_l = F(25)
+    d.text(((W - tw(d, leg, f_l)) // 2, 1524), leg, font=f_l, fill=(210, 198, 218))
     pill = "TOWN GUIDES · Nº 2"
-    f_p = F(34)
+    f_p = F(30)
     w_p = tw(d, pill, f_p)
-    px0 = (W - w_p) // 2 - 26
-    d.rounded_rectangle([px0, 1150, px0 + w_p + 52, 1218], radius=34, fill=GOLD)
-    d.text(((W - w_p) // 2, 1166), pill, font=f_p, fill=INK)
-    t = "TRAILS OF"
-    d.text(((W - tw(d, t, F(110))) // 2, 1270), t, font=F(110), fill=(255, 255, 255))
-    t = "LOMPOC"
-    d.text(((W - tw(d, t, F(150))) // 2, 1395), t, font=F(150), fill=GOLD)
+    px0 = (W - w_p) // 2 - 24
+    d.rounded_rectangle([px0, 1580, px0 + w_p + 48, 1640], radius=30, fill=GOLD)
+    d.text(((W - w_p) // 2, 1594), pill, font=f_p, fill=INK)
+    t = "TRAILS OF LOMPOC"
+    d.text(((W - tw(d, t, F(92))) // 2, 1668), t, font=F(92), fill=(255, 255, 255))
     t = "Four walks out of town"
-    d.text(((W - tw(d, t, F(44))) // 2, 1595), t, font=F(44), fill=(228, 220, 234))
+    d.text(((W - tw(d, t, F(38))) // 2, 1790), t, font=F(38), fill=(228, 220, 234))
     im.save("c_title.png")
 
     # end card
@@ -311,7 +305,7 @@ if PHASE == "prep":
     d.text(((W - tw(d, t, F(56))) // 2, 1040), t, font=F(56), fill=GOLD)
     t = "From the Lompoc Locals town guides"
     d.text(((W - tw(d, t, F(32))) // 2, 1500), t, font=F(32), fill=(170, 158, 178))
-    t = "Maps © OpenStreetMap contributors, SRTM · © OpenTopoMap (CC-BY-SA)"
+    t = "Maps © Mapbox · © OpenStreetMap · Trail data © OSM contributors"
     d.text(((W - tw(d, t, F(26))) // 2, 1560), t, font=F(26), fill=(130, 118, 140))
     im.save("c_end.png")
 
@@ -383,7 +377,6 @@ with open("concat.txt", "w") as f:
         f.write(f"file '{s}'\n")
 
 CAPS = [
-    (0.2, 4.3, "Lompoc — a town you can walk right out of"),
     (4.8, 14.2, "Bodger Trail · the valley at your feet"),
     (14.8, 23.5, "La Purísima · 25 miles of trails"),
     (24.1, 27.8, "Burton Mesa · rare chaparral country"),
@@ -401,7 +394,7 @@ with open("caps.ass", "w") as f:
     f.write("[Script Info]\nPlayResX: 1080\nPlayResY: 1920\n\n[V4+ Styles]\n"
             "Format: Name, Fontname, Fontsize, PrimaryColour, OutlineColour, BackColour,"
             " Bold, Outline, Shadow, Alignment, MarginL, MarginR, MarginV\n"
-            "Style: cap,Montserrat,54,&H00FFFFFF,&H00000000,&H80000000,-1,3,1,2,60,60,190\n\n"
+            "Style: cap,Montserrat,44,&H00FFFFFF,&H00000000,&H80000000,-1,3,1,2,60,60,74\n\n"
             "[Events]\nFormat: Layer, Start, End, Style, Text\n")
     for t0, t1, txt in ev:
         f.write(f"Dialogue: 0,{ts(t0)},{ts(t1)},cap,{{\\fad(120,80)}}{txt}\n")
