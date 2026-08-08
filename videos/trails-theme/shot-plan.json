@@ -1,0 +1,62 @@
+{
+  "category": "kinetic-type",
+  "duration_s": 4,
+  "fps": 30,
+  "canvas": { "w": 1080, "h": 1920, "aspect": "9:16" },
+  "style": "energetic editorial motion graphics — Lompoc Locals series sting. Deep purple field, gold trail line as the signature motif, flat layered hill silhouettes rising like a print poster coming alive. Confident, punchy, ends on a poised series title card.",
+  "palette": ["#650C75", "#EFC618", "#0B992F", "#F7F3E9"],
+  "font": "Montserrat",
+  "beats": [1.5, 2.2],
+  "export": "mp4",
+
+  "asset_needs": [],
+
+  "block": "caption-kinetic-slam",
+  "customize": {
+    "text": "TRAILS OF LOMPOC",
+    "emphasis_words": ["TRAILS", "LOMPOC"],
+    "palette": {
+      "bg": "transparent (sits over hand-authored purple #650C75 scenic backdrop)",
+      "ink": "#F7F3E9",
+      "accent": "#EFC618"
+    },
+    "font": "Montserrat ExtraBold (weight 800, uppercase, tight tracking)",
+    "timing": "slam lands at t=1.5s on beat 1; land-shake amplitude modest so the pill entrance at 2.2s reads clean",
+    "layout": "two stacked lines — 'TRAILS OF' smaller (~72px) above 'LOMPOC' huge (~168px) — centered, vertical center of frame at ~46% height, above the hill horizon"
+  },
+
+  "content": {
+    "scenes": [
+      {
+        "id": "trail-and-hills",
+        "start": 0,
+        "end": 1.4,
+        "text": "",
+        "emphasis_words": [],
+        "emotion": "anticipation, adventurous",
+        "motion": "HOOK (first 0.5s): a gold #EFC618 SVG trail path (dashed wandering line with a rounded terminal dot, like a hiking-map route) draws on via stroke-dashoffset from bottom-left to upper-right across the purple #650C75 field, duration 0.9s, ease power2.inOut. From t=0.6s, three layered hill/mountain silhouettes slide_bottom into the lower third — back ridge desaturated purple (#650C75 lightened ~20%), middle ridge green #0B992F, front ridge deep purple (#650C75 darkened ~25%) — stagger 0.12s, ease power4.out, each overshooting ~10px then settling. Trail line z-sits behind the front ridge so the hills appear to rise through it.",
+        "beats": []
+      },
+      {
+        "id": "title-slam-and-pill",
+        "start": 1.4,
+        "end": 2.6,
+        "text": "TRAILS OF LOMPOC / TOWN GUIDES · Nº 2",
+        "emphasis_words": ["TRAILS", "LOMPOC"],
+        "emotion": "impact, confident",
+        "motion": "caption-kinetic-slam drives the title: 'TRAILS OF' then 'LOMPOC' slam in (motion-vocab `slam`: from y:-300, power4.out) landing exactly on beat 1 (t=1.5s), with land `shake` and a one-frame chromatic flash on the emphasis words in gold #EFC618. Simultaneous 6px y-jolt on the hill layers sells the impact. At beat 2 (t=2.2s, anticipated ~0.1s) the badge pill — gold #EFC618 rounded-full pill, purple #650C75 Montserrat ExtraBold text 'TOWN GUIDES · Nº 2', letterspaced small caps ~34px — enters via `scale_punch` (from scale:0.6, back.out(2.2)) centered directly above the title block. `underline_sweep` in gold draws left-to-right under 'LOMPOC' from 2.3–2.6s, transformOrigin left center.",
+        "beats": [1.5, 2.2]
+      },
+      {
+        "id": "confident-hold",
+        "start": 2.6,
+        "end": 4,
+        "text": "TRAILS OF LOMPOC / TOWN GUIDES · Nº 2",
+        "emphasis_words": ["LOMPOC"],
+        "emotion": "poised, premium",
+        "motion": "Series-card hold: whole lockup (pill + title + underline) breathes via `hold_breath` (to scale:1.015, sine.inOut, slow yoyo). One `shimmer-sweep` registry pass crosses the title glyphs at ~3.0s (cream #F7F3E9 sheen, single pass, subtle). The gold trail line's terminal dot gets a soft `glow` pulse (gold, yoyo once) as a quiet echo of the motif. No exit — end frozen on the full lockup at t=4 so the last frame works as the standalone series title card / poster frame.",
+        "beats": []
+      }
+    ]
+  }
+}

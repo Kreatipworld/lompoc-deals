@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Trails of Lompoc — series sting</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* Local embeddable font — deterministic, no network at render time */
+      @font-face {
+        font-family: "Montserrat";
+        font-style: normal;
+        font-weight: 800;
+        font-display: block;
+        src: url("assets/fonts/montserrat-800-latin.woff2") format("woff2");
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* palette — single source of truth */
+        --purple: #650c75;
+        --gold: #efc618;
+        --green: #0b992f;
+        --cream: #f7f3e9;
+        --ink: #241629;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--cream);
+      }
+
+      #stage {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        /* editorial paper: flat warm cream */
+        background: var(--cream);
+        font-family: "Montserrat", sans-serif;
+      }
+
+      #scene {
+        position: absolute;
+        inset: 0;
+      }
+
+      /* ---------- gold dashed trail (full-bleed) ---------- */
+      .fullbleed-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      #trail-svg {
+        z-index: 3;
+      }
+
+      #trail-halo {
+        opacity: 0;
+        filter: blur(10px);
+      }
+
+      /* ---------- washi tape tabs off the top edge ---------- */
+      .tape {
+        position: absolute;
+        background: rgba(239, 198, 24, 0.85);
+        z-index: 20;
+        opacity: 0;
+        visibility: hidden;
+      }
+      #tape-l {
+        left: 250px;
+        top: -34px;
+        width: 190px;
+        height: 110px;
+      }
+      #tape-r {
+        left: 660px;
+        top: -30px;
+        width: 190px;
+        height: 104px;
+      }
+
+      /* ---------- ambient gold dust ---------- */
+      #dust {
+        position: absolute;
+        inset: 0;
+        z-index: 6;
+        pointer-events: none;
+      }
+      .dust-p {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      /* ---------- purple footer band ---------- */
+      #footer-band {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 240px;
+        background: var(--purple);
+        z-index: 8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #footer-rule {
+        position: absolute;
+        left: 0;
+        top: -8px;
+        width: 100%;
+        height: 8px;
+        background: var(--gold);
+      }
+      #footer-url {
+        font-size: 54px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        color: var(--gold);
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* ---------- vignette: extremely subtle warm corners ---------- */
+      #vignette {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(60, 40, 20, 0.06) 100%
+        );
+      }
+
+      /* ---------- title lockup ---------- */
+      #lockup {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* shifts optical center up to ~46% frame height, clear of the footer band */
+        padding: 0 80px 154px;
+      }
+
+      /* green italic-serif script accent above the title */
+      #kicker {
+        font-family: Georgia, "Times New Roman", serif;
+        font-style: italic;
+        font-size: 44px;
+        letter-spacing: normal;
+        color: var(--green);
+        margin-bottom: 38px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      #titleBlock {
+        display: inline-block;
+        text-align: center;
+      }
+
+      .title-line {
+        line-height: 1.04;
+        opacity: 0;
+        visibility: hidden;
+        /* soft depth shadow — filter (not text-shadow) so the chromatic-flash
+           textShadow set/reset never wipes it */
+        filter: drop-shadow(0 6px 18px rgba(36, 22, 41, 0.16));
+      }
+
+      .word {
+        display: inline-block;
+      }
+
+      #line1 {
+        font-size: 80px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+
+      #line2 {
+        font-size: 190px;
+        font-weight: 800;
+        letter-spacing: -0.015em;
+        color: var(--ink);
+      }
+      /* the editorial period is the signature — drawn as a gold dot so the
+         brand gold stays exact (a text glyph in gold would fail AA on cream) */
+      #period {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--gold);
+        margin-left: 10px;
+      }
+
+      #underline {
+        width: 700px;
+        height: 14px;
+        border-radius: 7px;
+        background: var(--gold);
+        margin-top: 14px;
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+
+      /* ---------- shimmer-sweep (registry component, pasted per its usage doc) ---------- */
+      .shimmer-sweep-target {
+        position: relative;
+        display: inline-block;
+      }
+      .shimmer-sweep-target .shimmer-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background: linear-gradient(
+          var(--shimmer-angle, 120deg),
+          transparent 0%,
+          transparent calc(var(--shimmer-pos, -20%) - var(--shimmer-width, 20%) / 2),
+          var(--shimmer-color, rgba(247, 243, 233, 0.55)) var(--shimmer-pos, -20%),
+          transparent calc(var(--shimmer-pos, -20%) + var(--shimmer-width, 20%) / 2),
+          transparent 100%
+        );
+        mix-blend-mode: overlay;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="trails-theme"
+      data-start="0"
+      data-duration="4"
+      data-fps="30"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div id="scene" class="clip" data-start="0" data-duration="4" data-track-index="0">
+        <!-- gold trail line: dashed route draw-on via masked stroke-dashoffset
+             (path intentionally starts off-canvas bottom-left) -->
+        <svg
+          id="trail-svg"
+          class="fullbleed-svg"
+          viewBox="0 0 1080 1920"
+          aria-hidden="true"
+          data-layout-allow-overflow
+        >
+          <defs>
+            <mask id="trail-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920">
+              <rect x="0" y="0" width="1080" height="1920" fill="black" />
+              <path
+                id="trail-reveal-stroke"
+                d="M -40 1980 C 240 1860, 340 1740, 300 1600 C 260 1470, 110 1420, 190 1280 C 270 1140, 560 1200, 660 1050 C 760 900, 610 800, 690 660 C 750 555, 850 500, 915 445"
+                fill="none"
+                stroke="white"
+                stroke-width="26"
+                stroke-linecap="round"
+                pathLength="1000"
+                stroke-dasharray="1000"
+                stroke-dashoffset="1000"
+              />
+            </mask>
+            <filter id="runner-blur" x="-150%" y="-150%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="7" />
+            </filter>
+          </defs>
+          <path
+            id="trail-line"
+            d="M -40 1980 C 240 1860, 340 1740, 300 1600 C 260 1470, 110 1420, 190 1280 C 270 1140, 560 1200, 660 1050 C 760 900, 610 800, 690 660 C 750 555, 850 500, 915 445"
+            fill="none"
+            stroke="var(--gold)"
+            stroke-width="9"
+            stroke-linecap="round"
+            stroke-dasharray="26 20"
+            mask="url(#trail-reveal)"
+          />
+          <circle id="trail-halo" cx="915" cy="445" r="26" fill="var(--gold)" />
+          <circle id="trail-dot" cx="915" cy="445" r="13" fill="var(--gold)" opacity="0" />
+          <!-- leading dot that rides the trail tip during draw-on (starts off-canvas) -->
+          <g id="trail-runner">
+            <circle
+              id="runner-glow"
+              cx="-40"
+              cy="1980"
+              r="22"
+              fill="var(--gold)"
+              opacity="0.4"
+              filter="url(#runner-blur)"
+            />
+            <circle id="runner-core" cx="-40" cy="1980" r="9" fill="var(--gold)" />
+          </g>
+        </svg>
+
+        <!-- gold washi tape tabs hanging off the top edge (bleed off-canvas by design) -->
+        <div id="tape-l" class="tape" data-layout-allow-overflow></div>
+        <div id="tape-r" class="tape" data-layout-allow-overflow></div>
+
+        <!-- title lockup: green script kicker + ink slam title + underline -->
+        <div id="lockup">
+          <div id="kicker">town guides &middot; n&ordm; 2</div>
+          <div id="titleBlock" class="shimmer-sweep-target">
+            <div id="line1" class="title-line">
+              <span id="w-trails" class="em word">Trails</span>
+              <span id="w-of" class="word">of</span>
+            </div>
+            <div id="line2" class="title-line em">Lompoc<span id="period" aria-hidden="true"></span></div>
+          </div>
+          <div id="underline"></div>
+        </div>
+
+        <!-- ambient gold dust (hard-coded, deterministic) -->
+        <div id="dust" aria-hidden="true"></div>
+
+        <!-- purple footer band with gold rule + URL -->
+        <div id="footer-band">
+          <div id="footer-rule"></div>
+          <div id="footer-url">lompoclocals.com</div>
+        </div>
+
+        <!-- extremely subtle warm corner vignette -->
+        <div id="vignette"></div>
+      </div>
+    </div>
+
+    <!-- shimmer-sweep component: auto-inject .shimmer-mask into targets -->
+    <script>
+      (function () {
+        document.querySelectorAll(".shimmer-sweep-target").forEach(function (el) {
+          if (!el.querySelector(".shimmer-mask")) {
+            var mask = document.createElement("div");
+            mask.className = "shimmer-mask";
+            el.appendChild(mask);
+          }
+        });
+      })();
+    </script>
+
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+
+        /* ---------- ambient gold dust: 14 hard-coded particles (no runtime randomness) ----------
+           x/y = resting position (px), s = size, o = opacity (max 0.35 on cream),
+           dx/dy = drift extent, d = half-cycle duration, r = yoyo repeats (d * (r + 1) <= 4s) */
+        var DUST = [
+          { x: 96, y: 1420, s: 4, o: 0.35, dx: 18, dy: -110, d: 2.0, r: 1 },
+          { x: 220, y: 980, s: 3, o: 0.3, dx: -14, dy: -80, d: 1.0, r: 3 },
+          { x: 340, y: 1610, s: 5, o: 0.35, dx: 22, dy: -130, d: 2.0, r: 1 },
+          { x: 455, y: 760, s: 2, o: 0.25, dx: 10, dy: -60, d: 1.0, r: 3 },
+          { x: 540, y: 1330, s: 3, o: 0.35, dx: -20, dy: -95, d: 1.3, r: 2 },
+          { x: 640, y: 520, s: 2, o: 0.2, dx: 12, dy: -55, d: 2.0, r: 1 },
+          { x: 705, y: 1560, s: 4, o: 0.35, dx: -16, dy: -120, d: 2.0, r: 1 },
+          { x: 800, y: 1150, s: 3, o: 0.3, dx: 15, dy: -85, d: 1.0, r: 3 },
+          { x: 905, y: 1680, s: 5, o: 0.35, dx: -24, dy: -140, d: 2.0, r: 1 },
+          { x: 975, y: 880, s: 2, o: 0.25, dx: 9, dy: -50, d: 1.3, r: 2 },
+          { x: 160, y: 640, s: 3, o: 0.28, dx: -11, dy: -70, d: 2.0, r: 1 },
+          { x: 60, y: 1740, s: 4, o: 0.35, dx: 20, dy: -125, d: 2.0, r: 1 },
+          { x: 860, y: 380, s: 2, o: 0.22, dx: -8, dy: -45, d: 1.3, r: 2 },
+          { x: 420, y: 1820, s: 5, o: 0.35, dx: 17, dy: -135, d: 2.0, r: 1 },
+        ];
+        var dustWrap = document.getElementById("dust");
+        var dustEls = DUST.map(function (p) {
+          var el = document.createElement("div");
+          el.className = "dust-p";
+          el.style.left = p.x + "px";
+          el.style.top = p.y + "px";
+          el.style.width = p.s + "px";
+          el.style.height = p.s + "px";
+          el.style.opacity = String(p.o);
+          dustWrap.appendChild(el);
+          return el;
+        });
+
+        /* ================= scene 1 · trail-on-paper (0 – 1.4) ================= */
+
+        // ambient: dust drifts up/sideways and eases back (yoyo loops inside the 4s)
+        DUST.forEach(function (p, i) {
+          tl.to(
+            dustEls[i],
+            { x: p.dx, y: p.dy, duration: p.d, ease: "sine.inOut", yoyo: true, repeat: p.r },
+            0,
+          );
+        });
+
+        // gold washi tape tabs slide 20px down into place off the top edge (0 – 0.4)
+        ["#tape-l", "#tape-r"].forEach(function (sel, i) {
+          var rot = i === 0 ? -2 : 2;
+          tl.fromTo(
+            sel,
+            { y: -20, rotation: rot, autoAlpha: 0 },
+            { y: 0, rotation: rot, autoAlpha: 1, duration: 0.4, ease: "power2.out" },
+            0,
+          );
+        });
+
+        // HOOK: gold trail draws on bottom-left -> upper-right (0 – 0.9)
+        tl.fromTo(
+          "#trail-reveal-stroke",
+          { attr: { "stroke-dashoffset": 1000 } },
+          { attr: { "stroke-dashoffset": 0 }, duration: 0.9, ease: "power2.inOut" },
+          0,
+        );
+
+        // leading gold dot rides the tip of the trail during the draw-on.
+        // MotionPath plugin is not bundled, so it follows 8 hard-coded waypoints
+        // sampled from the trail path, with the same power2.inOut as the draw.
+        var RUNNER_PTS = [
+          { x: -40, y: 1980 },
+          { x: 273, y: 1767 },
+          { x: 300, y: 1600 },
+          { x: 190, y: 1280 },
+          { x: 497, y: 1150 },
+          { x: 660, y: 1050 },
+          { x: 690, y: 660 },
+          { x: 915, y: 445 },
+        ];
+        var runnerInterp = gsap.utils.interpolate(RUNNER_PTS);
+        var runnerState = { p: 0 };
+        function runnerApply() {
+          var pt = runnerInterp(runnerState.p);
+          gsap.set("#runner-glow", { attr: { cx: pt.x, cy: pt.y } });
+          gsap.set("#runner-core", { attr: { cx: pt.x, cy: pt.y } });
+        }
+        tl.to(
+          runnerState,
+          { p: 1, duration: 0.9, ease: "power2.inOut", onUpdate: runnerApply },
+          0,
+        );
+        // hand off to the terminal dot: runner fades as it arrives
+        tl.to("#trail-runner", { opacity: 0, duration: 0.25, ease: "sine.out" }, 0.9);
+
+        // terminal dot pops as the line completes
+        tl.fromTo(
+          "#trail-dot",
+          { scale: 0, autoAlpha: 0, transformOrigin: "50% 50%" },
+          { scale: 1, autoAlpha: 1, duration: 0.3, ease: "back.out(2.5)" },
+          0.75,
+        );
+
+        // green script kicker rises in gently above the title (1.0)
+        tl.fromTo(
+          "#kicker",
+          { y: 24, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.5, ease: "power2.out" },
+          1.0,
+        );
+
+        /* ============ scene 2 · ink-title-slam (1.4 – 2.6) ============ */
+
+        // "Trails of" pops per-word (80ms stagger, -3deg settle) just before the slam;
+        // then "Lompoc." slams and lands exactly on beat 1 (t=1.5)
+        tl.set("#line1", { autoAlpha: 1 }, 1.15);
+        var line1Words = ["#w-trails", "#w-of"];
+        line1Words.forEach(function (sel, i) {
+          tl.fromTo(
+            sel,
+            { y: 46, scale: 0.7, rotation: -3, autoAlpha: 0, transformOrigin: "50% 100%" },
+            {
+              y: 0,
+              scale: 1,
+              rotation: 0,
+              autoAlpha: 1,
+              duration: 0.32,
+              ease: "back.out(1.8)",
+            },
+            1.15 + i * 0.08,
+          );
+        });
+        tl.fromTo(
+          "#line2",
+          { y: -300, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.3, ease: "power4.out" },
+          1.2,
+        );
+
+        // land shake (modest amplitude so the kicker stays readable)
+        tl.to(
+          "#titleBlock",
+          {
+            keyframes: [
+              { x: -9, duration: 0.04 },
+              { x: 7, duration: 0.05 },
+              { x: -4, duration: 0.04 },
+              { x: 0, duration: 0.05 },
+            ],
+            ease: "none",
+          },
+          1.5,
+        );
+
+        // one-frame chromatic flash on the emphasis words (gold + purple fringe on ink)
+        tl.set(
+          ".em",
+          { textShadow: "-7px 0 rgba(239,198,24,0.9), 7px 0 rgba(101,12,117,0.45)" },
+          1.5,
+        );
+        tl.set(".em", { textShadow: "0 0 0 rgba(0,0,0,0)" }, 1.5 + 1 / 30);
+
+        // purple footer band rises from the bottom edge (2.1), gold rule riding its top
+        tl.fromTo(
+          "#footer-band",
+          { y: 260 },
+          { y: 0, duration: 0.5, ease: "power3.out" },
+          2.1,
+        );
+
+        // underline_sweep under "Lompoc.", left -> right (2.3 – 2.6)
+        tl.fromTo(
+          "#underline",
+          { scaleX: 0, transformOrigin: "left center" },
+          { scaleX: 1, duration: 0.3, ease: "power2.out" },
+          2.3,
+        );
+
+        // gold URL fades in inside the band (2.4)
+        tl.fromTo(
+          "#footer-url",
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.4, ease: "sine.out" },
+          2.4,
+        );
+
+        /* ============== scene 3 · confident-hold (2.6 – 4.0) ============== */
+
+        // hold_breath on the whole lockup (returns to 1 — frozen poster frame at t=4)
+        tl.to(
+          "#lockup",
+          { scale: 1.015, duration: 0.65, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          2.66,
+        );
+
+        // single shimmer-sweep pass across the ink title glyphs (~3.0s)
+        tl.fromTo(
+          "#titleBlock",
+          { "--shimmer-pos": "-20%" },
+          { "--shimmer-pos": "120%", duration: 0.9, ease: "power2.inOut" },
+          2.9,
+        );
+
+        // quiet echo of the motif: soft gold glow pulse on the trail's terminal dot
+        tl.fromTo(
+          "#trail-halo",
+          { autoAlpha: 0, scale: 0.7, transformOrigin: "50% 50%" },
+          {
+            autoAlpha: 0.85,
+            scale: 1.5,
+            duration: 0.38,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: 1,
+          },
+          3.1,
+        );
+
+        tl.seek(0);
+        window.__timelines["trails-theme"] = tl;
+      })();
+    </script>
+  </body>
+</html>

@@ -33,3 +33,10 @@ with no time limits. Local pipeline: PATH=<scratchpad>/bin python3 build.py
 prep|anim|final in a work dir. Scene timings synced to the approved v3 narration
 via ffmpeg silencedetect (no whisper needed). Robust multi-host tile fetch added.
 FINAL: ~/Downloads/trails-of-lompoc-FINAL.mp4 (40.4s) — awaiting user approval to post.
+
+## EPISODE ASSEMBLED (Aug 8) — awaiting post approval
+- HyperFrames theme sting (videos/trails-theme, editorial-paper style v3: cream/tape/green
+  script/ink title/purple band) + map documentary, concat locally -> 44.4s episode.
+- Files: ~/Downloads/trails-of-lompoc-EPISODE.mp4; sting render videos/trails-theme/renders/sting.mp4.
+- Publish plan: Buffer all 4 placements, thumbnailOffset ~3.9s (sting lockup frame).
+- Theme is the reusable series intro: edit "nº 2" line + re-render (25s) per episode.
