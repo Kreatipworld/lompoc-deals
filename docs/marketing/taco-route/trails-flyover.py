@@ -69,6 +69,50 @@ def punch(im, s):
     x0, y0 = (W - w2) // 2, (H - h2) // 2
     return im.crop((x0, y0, x0 + w2, y0 + h2)).resize((W, H), Image.LANCZOS)
 
+# one signature move per transfer (index = outgoing scene)
+TRANS = {0: "dive", 1: "whip_l", 2: "whip_up", 3: "bank", 4: "fade"}
+XF = {0: 0.9, 1: 0.65, 2: 0.65, 3: 0.85, 4: 1.1}
+
+def whip(fa, fb, b, vertical=False):
+    """Swipe transfer: A exits, B enters, gold seam bar sweeps through."""
+    e = smooth(b)
+    if not vertical:
+        canvas = Image.new("RGB", (2 * W, H))
+        canvas.paste(fa, (0, 0)); canvas.paste(fb, (W, 0))
+        x0 = int(e * W)
+        im = canvas.crop((x0, 0, x0 + W, H))
+    else:
+        canvas = Image.new("RGB", (W, 2 * H))
+        canvas.paste(fa, (0, 0)); canvas.paste(fb, (0, H))
+        y0 = int(e * H)
+        im = canvas.crop((0, y0, W, y0 + H))
+    blur = 13.0 * math.sin(math.pi * b)
+    if blur > 1.0:
+        im = im.filter(ImageFilter.GaussianBlur(blur))
+    d = ImageDraw.Draw(im)
+    if not vertical:
+        sx = W - int(e * W)
+        if -8 <= sx <= W + 8:
+            d.rectangle([sx - 5, 0, sx + 5, H], fill=GOLD)
+    else:
+        sy = H - int(e * H)
+        if -8 <= sy <= H + 8:
+            d.rectangle([0, sy - 5, W, sy + 5], fill=GOLD)
+    return im
+
+def bank(fa, fb, b):
+    """Banking-turn transfer: A rotates out, B rotates in, blur mid."""
+    e = smooth(b)
+    fa2 = punch(fa.rotate(9.0 * e, resample=Image.BILINEAR), 1.32)
+    fb2 = punch(fb.rotate(-9.0 * (1 - e), resample=Image.BILINEAR), 1.32)
+    blur = 10.0 * math.sin(math.pi * b)
+    if blur > 1.0:
+        fa2 = fa2.filter(ImageFilter.GaussianBlur(blur))
+        fb2 = fb2.filter(ImageFilter.GaussianBlur(blur))
+    mix = min(1.0, max(0.0, (b - 0.22) / 0.56))
+    im = Image.blend(fa2, fb2, smooth(mix))
+    return ImageEnhance.Brightness(im).enhance(1.0 - 0.12 * math.sin(math.pi * b))
+
 MAPBOX_TOKEN = None
 def mb_token():
     global MAPBOX_TOKEN
@@ -403,6 +447,11 @@ def trail_frame(key, trel, dur, vh_mult=1.0, show_ui=True):
         g = (trel - settle) / max(0.001, dur - settle - 0.25)
         p_cam = smooth(min(1.0, g))
         vh = glide_h(key)
+        # per-trail camera personality: reveal, breathe, run
+        if key == "purisima":
+            vh = glide_h(key) * (0.85 + 0.42 * p_cam)   # tight -> wide network reveal
+        elif key == "burton":
+            vh = glide_h(key) * (1.04 - 0.20 * math.sin(math.pi * p_cam))  # breathe around the loop
     if "tour" in tr:
         T = TF[key]
         a = to_src(*tr["tour"][0], T); b = to_src(*tr["tour"][1], T)
@@ -469,21 +518,35 @@ if sys.argv[1] == "render":
         key, s, e = SHOTS[idx]
         trel = gt - s
         nxt = idx + 1 if idx + 1 < len(SHOTS) else None
-        if nxt is not None and gt >= e - XFADE:
-            b = (gt - (e - XFADE)) / XFADE       # 0..1 across the blend
+        xf = XF.get(idx, XFADE)
+        if nxt is not None and gt >= e - xf:
+            b = (gt - (e - xf)) / xf             # 0..1 across the transfer
             sb = smooth(b)
-            fa = scene_frame(idx, trel, vh_mult=1.0 + 0.9 * sb, show_ui=b < 0.3)
-            fb = scene_frame(nxt, 0.0, vh_mult=1.0 + 1.2 * (1 - sb), show_ui=False)
-            # drone-style transfer: speed-ramp punch + motion blur + luma dip
-            fa = punch(fa, 1.0 + 0.22 * sb)
-            fb = punch(fb, 1.0 + 0.12 * (1 - sb))
-            ba = 9.0 * sb; bb = 9.0 * (1 - sb)
-            if ba > 0.6:
-                fa = fa.filter(ImageFilter.GaussianBlur(ba))
-            if bb > 0.6:
-                fb = fb.filter(ImageFilter.GaussianBlur(bb))
-            im = Image.blend(fa, fb, sb)
-            im = ImageEnhance.Brightness(im).enhance(1.0 - 0.16 * math.sin(math.pi * b))
+            style = TRANS.get(idx, "dive")
+            if style == "dive":
+                fa = scene_frame(idx, trel, vh_mult=1.0 + 0.9 * sb, show_ui=b < 0.3)
+                fb = scene_frame(nxt, 0.0, vh_mult=1.0 + 1.2 * (1 - sb), show_ui=False)
+                fa = punch(fa, 1.0 + 0.22 * sb)
+                fb = punch(fb, 1.0 + 0.12 * (1 - sb))
+                ba = 9.0 * sb; bb = 9.0 * (1 - sb)
+                if ba > 0.6:
+                    fa = fa.filter(ImageFilter.GaussianBlur(ba))
+                if bb > 0.6:
+                    fb = fb.filter(ImageFilter.GaussianBlur(bb))
+                im = Image.blend(fa, fb, sb)
+                im = ImageEnhance.Brightness(im).enhance(1.0 - 0.16 * math.sin(math.pi * b))
+            elif style in ("whip_l", "whip_up"):
+                fa = scene_frame(idx, trel, show_ui=b < 0.2)
+                fb = scene_frame(nxt, 0.0, show_ui=False)
+                im = whip(fa, fb, b, vertical=(style == "whip_up"))
+            elif style == "bank":
+                fa = scene_frame(idx, trel, show_ui=b < 0.25)
+                fb = scene_frame(nxt, 0.0, show_ui=False)
+                im = bank(fa, fb, b)
+            else:  # fade — calm landing
+                fa = scene_frame(idx, trel, vh_mult=1.0 + 0.10 * sb, show_ui=b < 0.4)
+                fb = scene_frame(nxt, 0.0, show_ui=False)
+                im = Image.blend(fa, fb, sb)
         else:
             im = scene_frame(idx, trel)
         im.save(f"fr_fly/{gf:05d}.jpg", quality=90)
