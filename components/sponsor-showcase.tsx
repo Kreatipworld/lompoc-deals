@@ -57,20 +57,20 @@ export async function SponsorShowcase({
           /* Ambient marquee — cards drift continuously, pause on hover */
           <div className="marquee-group -mx-4 overflow-hidden px-4">
             <div className="animate-marquee flex w-max gap-4 pb-1">
-              {[...members, ...members].map((s, i) => card(s, `${s.id}-${i}`))}
+              {[...members, ...members].map((s, i) => card(s, `${s.id}-${i}`, i < 3))}
             </div>
           </div>
         ) : (
           /* Manual horizontal scroll (category slides / small sets) */
           <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:thin]">
-            {members.map((s) => card(s, s.id))}
+            {members.map((s, i) => card(s, s.id, i < 3))}
           </div>
         )}
       </div>
     </section>
   )
 
-  function card(s: (typeof members)[number], key: string | number) {
+  function card(s: (typeof members)[number], key: string | number, eager = false) {
     return (
       <Link
         key={key}
@@ -82,6 +82,8 @@ export async function SponsorShowcase({
             src={s.coverUrl}
             alt={s.name}
             className="h-full w-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
+            optWidth={640}
+            loading={eager ? "eager" : undefined}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/[0.04]" />
@@ -99,6 +101,7 @@ export async function SponsorShowcase({
               src={s.logoUrl}
               alt=""
               className="h-11 w-11 flex-shrink-0 rounded-xl bg-white object-contain p-1 shadow-md ring-1 ring-black/5"
+              optWidth={128}
             />
           )}
           <div className="min-w-0">

@@ -20,7 +20,9 @@ type SafeImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
 
 /** Hosts the Next optimizer is allowed to touch (next.config remotePatterns + our own /public). */
 const optimizable = (src: string) =>
-  src.startsWith("/") || /https:\/\/[^/]*\.public\.blob\.vercel-storage\.com\//.test(src)
+  src.startsWith("/") ||
+  /https:\/\/[^/]*\.public\.blob\.vercel-storage\.com\//.test(src) ||
+  src.startsWith("https://lh3.googleusercontent.com/")
 
 /**
  * Renders an <img> that hides itself on load error.
