@@ -151,6 +151,9 @@ export default async function HomePage({ params }: { params: { locale: string } 
         />
 
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
+          {/* CSS background images are discovered after stylesheet parse — this
+              preload lets the LCP hero start downloading with the HTML. */}
+          <link rel="preload" as="image" href="/lompoc-hero.jpg" />
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             <MapPin className="h-3 w-3" />
             {t("location")}
