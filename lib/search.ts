@@ -3,7 +3,7 @@ import { businesses, categories } from "@/db/schema"
 import { and, eq, inArray, or, sql } from "drizzle-orm"
 import { searchDeals, type DealCardData } from "@/lib/queries"
 import { isChain } from "@/lib/chains"
-import { normalizeForSearch, normalizedName, looseLike, dropCompetitorMentions } from "@/lib/search-match"
+import { normalizeForSearch, normalizedName, looseLike, dropCompetitorMentions, queryVariants } from "@/lib/search-match"
 
 // Re-exported so existing importers of "@/lib/search" keep working.
 export { normalizeForSearch, normalizedName, looseLike, dropCompetitorMentions }
@@ -70,6 +70,7 @@ export type BizHit = {
   slug: string
   logoUrl: string | null
   categoryName: string | null
+  categorySlug: string | null
   description: string | null
 }
 export type SearchResults = {
@@ -102,6 +103,7 @@ export async function fuzzyBusinessSearch(q: string, limit = 4): Promise<BizHit[
         slug: businesses.slug,
         logoUrl: businesses.logoUrl,
         categoryName: categories.name,
+        categorySlug: categories.slug,
         description: businesses.description,
       })
       .from(businesses)
@@ -167,6 +169,9 @@ export function rankBusinessHits<T extends { name: string; description?: string 
   limit: number
 ): T[] {
   const lower = normalizeForSearch(q)
+  // Plural-blind name test: "tacos" must see the name "Mr. Taco" (and vice versa).
+  const variants = queryVariants(q)
+  const nameHas = (name: string) => variants.some((v) => name.includes(v))
   const nameRank = (r: T) => {
     const name = normalizeForSearch(r.name)
     if (name.startsWith(lower)) return 0 // they typed who they wanted
@@ -174,10 +179,11 @@ export function rankBusinessHits<T extends { name: string; description?: string 
   }
   // Word matches rank by where the evidence lives: description before about, earlier before later.
   const wordRank = (r: T) => {
-    const at = normalizeForSearch(r.description ?? "").indexOf(lower)
-    return (at >= 0 ? 0 : 1000) + (at >= 0 ? at / 1000 : 0) + (isChain(r.name) ? 2000 : 0)
+    const desc = normalizeForSearch(r.description ?? "")
+    const at = Math.min(...variants.map((v) => { const i = desc.indexOf(v); return i < 0 ? 10 ** 6 : i }))
+    return (at < 10 ** 6 ? at / 1000 : 1000) + (isChain(r.name) ? 2000 : 0)
   }
-  const keyed = rows.map((r, i) => ({ r, i, isName: normalizeForSearch(r.name).includes(lower) }))
+  const keyed = rows.map((r, i) => ({ r, i, isName: nameHas(normalizeForSearch(r.name)) }))
   const sortBy = (f: (r: T) => number) => (a: (typeof keyed)[0], b: (typeof keyed)[0]) => f(a.r) - f(b.r) || a.i - b.i
 
   const lookup = keyed.filter((x) => normalizeForSearch(x.r.name).startsWith(lower))
@@ -242,11 +248,11 @@ export async function searchAll(q: string): Promise<SearchResults> {
    * point of a directory. The synonym still drives the category chip, which is the honest
    * place to offer "browse all 103 Food & Drink".
    */
-  const bizConditions = [
-    looseLike(businesses.name, q),
-    looseLike(businesses.description, q),
-    looseLike(businesses.about, q),
-  ]
+  const bizConditions = queryVariants(q).flatMap((v) => [
+    looseLike(businesses.name, v),
+    looseLike(businesses.description, v),
+    looseLike(businesses.about, v),
+  ])
 
   const [bizRows, deals] = await Promise.all([
     db
@@ -256,6 +262,7 @@ export async function searchAll(q: string): Promise<SearchResults> {
         slug: businesses.slug,
         logoUrl: businesses.logoUrl,
         categoryName: categories.name,
+        categorySlug: categories.slug,
         description: businesses.description,
       })
       .from(businesses)
@@ -283,6 +290,7 @@ export async function searchAll(q: string): Promise<SearchResults> {
         slug: businesses.slug,
         logoUrl: businesses.logoUrl,
         categoryName: categories.name,
+        categorySlug: categories.slug,
         description: businesses.description,
       })
       .from(businesses)

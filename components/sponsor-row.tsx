@@ -7,9 +7,14 @@ import { getSponsoredBusinesses } from "@/lib/sponsors"
 /**
  * Plus-tier sponsor carousel — a horizontal card row ("Popular right now"
  * style) shown at the bottom of search. Renders nothing with no sponsors.
+ *
+ * When `categorySlug` is given the row is scoped to that category and stays
+ * hidden if it has no partners — a taco search never advertises a plumber.
  */
-export async function SponsorRow() {
-  const sponsors = await getSponsoredBusinesses({ limit: 8 })
+export async function SponsorRow({ categorySlug }: { categorySlug?: string | null } = {}) {
+  const sponsors = await getSponsoredBusinesses(
+    categorySlug ? { limit: 8, categorySlug } : { limit: 8 }
+  )
   if (sponsors.length === 0) return null
   const t = await getTranslations("sponsors")
 

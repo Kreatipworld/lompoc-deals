@@ -183,8 +183,23 @@ export default async function SearchPage({
           </p>
         )}
 
-        {/* PLUS-TIER SPONSOR — ad row at the bottom of search */}
-        <SponsorRow />
+        {/* PLUS-TIER SPONSOR — ad row at the bottom of search, scoped to the
+            dominant result category so a taco search never advertises a
+            plumber. With no query (or no clear category) the row stays broad. */}
+        <SponsorRow
+          categorySlug={
+            q
+              ? (() => {
+                  const tally = new Map<string, number>()
+                  for (const b of results.businesses.slice(0, 8)) {
+                    if (b.categorySlug) tally.set(b.categorySlug, (tally.get(b.categorySlug) ?? 0) + 1)
+                  }
+                  const top = Array.from(tally.entries()).sort((a, b) => b[1] - a[1])[0]
+                  return top && top[1] >= 2 ? top[0] : null
+                })()
+              : null
+          }
+        />
       </section>
     </div>
   )

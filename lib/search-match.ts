@@ -37,6 +37,23 @@ export const normalizedCol = (col: AnyColumn | SQL) =>
 export const looseLike = (col: AnyColumn | SQL, q: string) =>
   sql`${normalizedCol(col)} like ${`%${normalizeForSearch(q)}%`}`
 
+/**
+ * The query plus its naive singular ("tacos" → "taco"). A searcher typing the
+ * plural means the same thing as the singular, but substring matching doesn't:
+ * "tacos" never appears inside "Mr. Taco", so every taquería *named* Taco
+ * ranked below description matches. Words of 3 letters or fewer keep their s
+ * ("gas" is not the plural of "ga"). Applied to both matching and ranking so
+ * the two can never disagree about what counts as a name hit.
+ */
+export const queryVariants = (q: string): string[] => {
+  const norm = normalizeForSearch(q)
+  const singular = norm
+    .split(" ")
+    .map((w) => (w.length > 3 && w.endsWith("s") ? w.slice(0, -1) : w))
+    .join(" ")
+  return singular !== norm ? [norm, singular] : [norm]
+}
+
 /** Business names, folded — used by both matching and the fuzzy fallback. */
 export const normalizedName = normalizedCol(businesses.name)
 
