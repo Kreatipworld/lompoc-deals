@@ -249,6 +249,7 @@ export async function sendLocalWelcomeEmail(email: string, name: string, locale:
             bullets: [
               "Explora negocios locales y mira qué hay cerca en el mapa",
               "Aprovecha ofertas y cupones de lugares del pueblo",
+              "❤️ Guarda tus ofertas favoritas con el corazón — tu propia lista en tu cuenta",
               "Descubre próximos eventos de la comunidad",
               `Recibe el <a href="${siteUrl("/es/subscribe")}" style="color:#650C75;font-weight:600;">resumen semanal</a> para no perderte nada nuevo`,
             ],
@@ -269,6 +270,7 @@ export async function sendLocalWelcomeEmail(email: string, name: string, locale:
             bullets: [
               "Browse local businesses and see what's nearby on the map",
               "Grab deals and coupons from spots around town",
+              "❤️ Tap the heart on any deal to save it to your own list",
               "Check out upcoming community events",
               `Get the <a href="${siteUrl("/subscribe")}" style="color:#650C75;font-weight:600;">weekly digest</a> so you never miss what's new`,
             ],
