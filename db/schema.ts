@@ -20,6 +20,9 @@ export const businessStatus = pgEnum("business_status", [
   "pending",
   "approved",
   "rejected",
+  // Permanently closed in the real world — unpublished, but never shown in the
+  // admin approval queue, so a closure can't be resurrected by an approve tap.
+  "closed",
 ])
 export const dealType = pgEnum("deal_type", [
   "coupon",
