@@ -287,6 +287,49 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
   return rows
 }
 
+/**
+ * Food & drink spots for the homepage "hungry" rail. Photo required — this rail
+ * is appetite-driven. Businesses with live deals lead; random() rotates the rest
+ * so the rail changes every visit as the directory grows.
+ */
+export async function getFoodSpots(limit = 10): Promise<DirectoryBusiness[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      description: businesses.description,
+      address: businesses.address,
+      phone: businesses.phone,
+      website: businesses.website,
+      logoUrl: businesses.logoUrl,
+      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      categoryId: businesses.categoryId,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
+      tierRank: sql<number>`0`,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .where(
+      and(
+        eq(businesses.status, "approved"),
+        eq(categories.slug, "food-drink"),
+        sql`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl}) is not null`
+      )
+    )
+    .groupBy(businesses.id, categories.id)
+    .orderBy(
+      sql`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now()) desc`,
+      sql`random()`
+    )
+    .limit(limit)
+  return rows
+}
+
 export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusiness[]> {
   const rows = await db
     .select({
@@ -1069,9 +1112,15 @@ export type RelatedBusinessCard = {
   slug: string
   logoUrl: string | null
   categoryName: string | null
+  photoUrl: string | null
+  activeDealCount: number
 }
 
-/** Other approved businesses in the same category, for internal linking. */
+/**
+ * Other approved businesses in the same category, for internal linking.
+ * Photo-first and randomized so every business page hands the visitor a fresh,
+ * clickable next stop — the anti-dead-end rail.
+ */
 export async function getRelatedBusinesses(
   categoryId: number | null,
   excludeId: number,
@@ -1084,9 +1133,12 @@ export async function getRelatedBusinesses(
       slug: businesses.slug,
       logoUrl: businesses.logoUrl,
       categoryName: categories.name,
+      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
     .where(
       and(
         eq(businesses.status, "approved"),
@@ -1094,7 +1146,11 @@ export async function getRelatedBusinesses(
         ne(businesses.id, excludeId)
       )
     )
-    .orderBy(businesses.name)
+    .groupBy(businesses.id, categories.id)
+    .orderBy(
+      sql`(coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl}) is not null) desc`,
+      sql`random()`
+    )
     .limit(limit)
   return rows
 }

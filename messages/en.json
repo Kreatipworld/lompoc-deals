@@ -191,7 +191,27 @@
       "a5": "For now, yes. We're 100% focused on Lompoc. That's what makes it work — every deal is from someone local, for someone local.",
       "q6": "How do I get the weekly email?",
       "a6": "Subscribe with your email — it's free. Every Saturday at 9am you'll get one email with what's happening around Lompoc that week."
-    }
+    },
+    "quickChips": [
+      {
+        "label": "🍕 Pizza",
+        "href": "/search?q=pizza"
+      },
+      {
+        "label": "🌮 Tacos",
+        "href": "/search?q=tacos"
+      },
+      {
+        "label": "☕ Coffee",
+        "href": "/search?q=coffee"
+      },
+      {
+        "label": "💸 Today's deals",
+        "href": "/deals"
+      }
+    ],
+    "hungryHeading": "Hungry right now?",
+    "hungrySubheading": "Local kitchens worth leaving the house for — deals first."
   },
   "meta": {
     "homeTitle": "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
@@ -1202,7 +1222,8 @@
       "hoursUnknown": "Hours not listed.",
       "hoursUnknownCall": "Hours not listed — call to confirm:",
       "ownerCta": "Own this business? Get your deals in front of Lompoc locals →",
-      "placesNearby": "Places to go nearby"
+      "placesNearby": "Places to go nearby",
+      "relatedDealCount": "{count, plural, one {# deal} other {# deals}}"
     },
     "amenities": {
       "wheelchair_accessible": "Wheelchair accessible",
@@ -1294,7 +1315,7 @@
     "expired2": "Expired",
     "unsaveDeal": "Unsave deal",
     "saveDeal": "Save deal",
-    "signInToSave": "Sign in to save deals",
+    "signInToSave": "Sign in free to save deals",
     "adminDelete": "Admin: soft-delete",
     "typeCoupon": "Coupon",
     "typeSpecial": "Special",

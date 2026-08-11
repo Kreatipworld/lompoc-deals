@@ -191,7 +191,27 @@
       "a5": "Por ahora, sí. Estamos 100% enfocados en Lompoc. Eso es lo que lo hace funcionar — cada oferta es de alguien local, para alguien local.",
       "q6": "¿Cómo recibo el correo semanal?",
       "a6": "Suscríbete con tu correo — es gratis. Cada sábado a las 9am te llega un correo con lo que pasa en Lompoc esa semana."
-    }
+    },
+    "quickChips": [
+      {
+        "label": "🍕 Pizza",
+        "href": "/search?q=pizza"
+      },
+      {
+        "label": "🌮 Tacos",
+        "href": "/search?q=tacos"
+      },
+      {
+        "label": "☕ Café",
+        "href": "/search?q=cafe"
+      },
+      {
+        "label": "💸 Ofertas de hoy",
+        "href": "/deals"
+      }
+    ],
+    "hungryHeading": "¿Se te antoja algo?",
+    "hungrySubheading": "Cocinas locales que valen la salida — las ofertas primero."
   },
   "meta": {
     "homeTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer en Lompoc, CA",
@@ -1202,7 +1222,8 @@
       "hoursUnknown": "Horario no disponible.",
       "hoursUnknownCall": "Horario no disponible — llama para confirmar:",
       "ownerCta": "¿Es tu negocio? Pon tus ofertas frente a los vecinos de Lompoc →",
-      "placesNearby": "Lugares que visitar cerca"
+      "placesNearby": "Lugares que visitar cerca",
+      "relatedDealCount": "{count, plural, one {# oferta} other {# ofertas}}"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",
@@ -1294,7 +1315,7 @@
     "expired2": "Vencida",
     "unsaveDeal": "Quitar de guardados",
     "saveDeal": "Guardar oferta",
-    "signInToSave": "Inicia sesión para guardar ofertas",
+    "signInToSave": "Inicia sesión gratis para guardar ofertas",
     "adminDelete": "Admin: eliminar",
     "typeCoupon": "Cupón",
     "typeSpecial": "Especial",

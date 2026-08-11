@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation"
 import {
   ArrowRight, MapPin, Mail, Sparkles, ChevronDown, Compass
 } from "lucide-react"
-import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages } from "@/lib/queries"
+import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots } from "@/lib/queries"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
@@ -99,13 +99,14 @@ const siteJsonLd = {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, t] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t] = await Promise.all([
     getAllCategories(),
     getFeaturedBusinesses(6),
     getSiteStats(),
     getFeaturedActivities(6, params.locale),
     getActiveDeals(12),
     getCategoryCoverImages(),
+    getFoodSpots(10),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
@@ -167,6 +168,20 @@ export default async function HomePage({ params }: { params: { locale: string } 
             <SearchBar size="lg" scrim />
           </div>
 
+          {/* Quick-intent chips — food dominates our search analytics, so the
+              top cravings are one tap away before anyone has to type. */}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            {(t.raw("quickChips") as { label: string; href: string }[]).map((chip) => (
+              <Link
+                key={chip.href}
+                href={chip.href}
+                className="rounded-full border border-white/30 bg-white/15 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-sm [transition:background_180ms_ease] hover:bg-white/30"
+              >
+                {chip.label}
+              </Link>
+            ))}
+          </div>
+
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
@@ -185,6 +200,27 @@ export default async function HomePage({ params }: { params: { locale: string } 
           (Plus / Category-Exclusive sponsors). Renders null when none.
          ───────────────────────────────────────────────── */}
       <SponsorShowcase />
+
+      {/* ─────────────────────────────────────────────────
+          HUNGRY RIGHT NOW — food is the #1 search intent; feed it first
+         ───────────────────────────────────────────────── */}
+      {foodSpots.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 pt-14">
+          <AnimeReveal direction="up" delay={0} duration={600} className="mb-6">
+            <h2 className="font-display text-3xl font-bold tracking-tight">
+              {t("hungryHeading")}
+            </h2>
+            <p className="mt-1 text-muted-foreground">{t("hungrySubheading")}</p>
+          </AnimeReveal>
+          <FeaturedBusinessesMarquee
+            businesses={foodSpots}
+            dealLabel={t("deal")}
+            dealsLabel={t("deals")}
+            prevLabel={t("carouselPrev")}
+            nextLabel={t("carouselNext")}
+          />
+        </section>
+      )}
 
       {/* ─────────────────────────────────────────────────
           EXPLORE BY CATEGORY — the hub's front door: browse first

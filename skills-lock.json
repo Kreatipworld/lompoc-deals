@@ -7,6 +7,12 @@
       "skillPath": "skills/ads/SKILL.md",
       "computedHash": "569e690ae2defe2abaea3d63dc955e0af5d99cbe2b52d2cb977fd2039aae31a2"
     },
+    "general-video": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/general-video/SKILL.md",
+      "computedHash": "4f0c6cac18a6ef22765713e59e083af80916b423d3cb5b7f588b49fd0dfb65c8"
+    },
     "neon-postgres": {
       "source": "neondatabase/agent-skills",
       "sourceType": "github",

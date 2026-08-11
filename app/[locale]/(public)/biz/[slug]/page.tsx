@@ -585,14 +585,32 @@ export default async function BusinessPage({
             <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
               {t("moreInCategory", { category: business.category.name })}
             </h2>
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {relatedBusinesses.map((rb) => (
                 <li key={rb.slug}>
-                  <Link
-                    href={`/biz/${rb.slug}`}
-                    className="flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm transition-colors hover:bg-secondary"
-                  >
-                    <span className="truncate">{rb.name}</span>
+                  <Link href={`/biz/${rb.slug}`} className="group block">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-accent ring-1 ring-black/[0.06] shadow-sm [transition:box-shadow_220ms_ease] group-hover:shadow-md">
+                      {rb.photoUrl ? (
+                        <SafeImage
+                          src={rb.photoUrl}
+                          alt={rb.name}
+                          className="h-full w-full object-cover [transition:transform_320ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
+                          fallback={<div className="h-full w-full bg-gradient-to-br from-muted to-accent" />}
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-muted to-accent">
+                          <Store className="h-8 w-8 text-muted-foreground/50" />
+                        </div>
+                      )}
+                      {rb.activeDealCount > 0 && (
+                        <span className="absolute left-2 top-2 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-gold-foreground shadow">
+                          {t("relatedDealCount", { count: rb.activeDealCount })}
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-2 truncate px-0.5 text-sm font-semibold tracking-tight [transition:color_180ms_ease] group-hover:text-primary">
+                      {rb.name}
+                    </p>
                   </Link>
                 </li>
               ))}
