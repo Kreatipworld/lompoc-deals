@@ -98,3 +98,16 @@ pass for that business.
   sale); #501 Cinco De Mayo (real per menu directories, current address unconfirmed);
   #514 Black Rose Tattoos (possible home-based artist, "Black Rose Tattoo Co" FB may be
   them — unverified).
+
+## Aug 11 2026 — enrichment sweep (5 agents) flags for owner judgment
+- #524 California Realty Executives: site says 312 N H St; DB has 129 N I St ste A — verify address.
+- #558 VTC Enterprises: rebranded BEACON (VTC–LOVARC merger) — rename once local branding confirmed.
+- #549: name carries "(UNDER NEW MANAGEMENT)" — keep or drop?
+- #267 SB Veterans Services: apostrophe vs official spelling.
+- #456 Warren & McCune DDS: Dr. Warren retired; practice now Village Dental Center (Dr. McCune).
+- #501 Cinco De Mayo: listing shows 640 N H St vs our 503 N H St.
+- #442 Wolf Electric: BBB "out-of-business suspected" but license active — re-check.
+- #510 Fortified Tattoo: Retail vs Health & Beauty categorization call.
+- Dead/wrong website URLs to clear: #240, #254 (security-flagged domain), #416, #528, #600, #608.
+- #605 Lompoc Fuel / #609 Conserv Fuel: existence unverified — candidates for closed status pending a drive-by.
+- Closed (status='closed'): #302 Dark Water Winery, #514 Black Rose TATTOOS, #341 Sav-On Pharmacy (dup of #339).
