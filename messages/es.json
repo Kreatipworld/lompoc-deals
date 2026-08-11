@@ -1538,7 +1538,8 @@
     "colInvoice": "Factura",
     "paid": "Pagado",
     "view": "Ver",
-    "historyHint": "Tus facturas recientes. Usa Gestionar suscripción para el historial completo, actualizar tu tarjeta o cancelar."
+    "historyHint": "Tus facturas recientes. Usa Gestionar suscripción para el historial completo, actualizar tu tarjeta o cancelar.",
+    "keepPlan": "Conserva {name} — agrega tu tarjeta"
   },
   "dashboardStats": {
     "title": "Estadísticas",

@@ -1538,7 +1538,8 @@
     "colInvoice": "Invoice",
     "paid": "Paid",
     "view": "View",
-    "historyHint": "Your recent invoices. Use Manage subscription for the full history, to update your card, or to cancel."
+    "historyHint": "Your recent invoices. Use Manage subscription for the full history, to update your card, or to cancel.",
+    "keepPlan": "Keep {name} — add your card"
   },
   "dashboardStats": {
     "title": "Stats",

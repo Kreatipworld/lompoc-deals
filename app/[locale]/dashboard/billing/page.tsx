@@ -52,6 +52,9 @@ export default async function BillingPage({
   // Base entitlements on the effective tier so comps, trials, and grace-period
   // members see the right plan/features/limits — not the raw subscription row.
   const currentTier = await getEffectiveTierForUser(userId)
+  // Comped members (plan override, no Stripe subscription) still need a way to
+  // put a card down — "Current plan" with no button was a conversion dead end.
+  const compedNoSub = currentTier !== "free" && !sub
   const tierConfig = TIERS[currentTier]
   const features = getPlanFeatures(currentTier)
 
@@ -311,9 +314,20 @@ export default async function BillingPage({
               </div>
               <div className="mt-6">
                 {currentTier === key ? (
-                  <div className="w-full rounded-xl bg-primary/10 py-2 text-center text-sm font-medium text-primary">
-                    {t("currentPlanLabel")}
-                  </div>
+                  compedNoSub && key !== "free" ? (
+                    // Their plan is a courtesy override — one button to make it
+                    // permanent by adding a card. Checkout carries no trial.
+                    <BillingActions
+                      hasSubscription={false}
+                      mode="subscribe"
+                      tier={key}
+                      label={t("keepPlan", { name: tier.name })}
+                    />
+                  ) : (
+                    <div className="w-full rounded-xl bg-primary/10 py-2 text-center text-sm font-medium text-primary">
+                      {t("currentPlanLabel")}
+                    </div>
+                  )
                 ) : key === "premium" ? (
                   // Plus is contact-led (listings tier), not self-serve checkout.
                   <a
