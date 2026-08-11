@@ -22,7 +22,7 @@ export default async function SignupPage({
   searchParams,
 }: {
   params: { locale: string }
-  searchParams: { claim?: string; plan?: string; canceled?: string; from?: string }
+  searchParams: { claim?: string; plan?: string; canceled?: string; from?: string; email?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "auth" })
 
@@ -93,6 +93,7 @@ export default async function SignupPage({
           <SignupForm
             claimSlug={claimSlug}
             defaultPlan={defaultPlan}
+            defaultEmail={searchParams.email ?? null}
             showCanceled={showCanceled}
             submitLabel={
               claimingBusinessName

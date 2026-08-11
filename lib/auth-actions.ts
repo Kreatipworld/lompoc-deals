@@ -148,9 +148,18 @@ export async function signupAction(
     throw err
   }
 
-  // Premium signup: create Stripe checkout session and redirect there
-  if (selectedRole === "premium" && newUserId) {
-    const priceId = TIERS.premium.priceId
+  // Paid signup: create Stripe checkout session and redirect straight there.
+  // "premium" arrives via the role selector; a claim-invite can also carry
+  // checkoutPlan=standard so a claiming owner goes password → card in one flow.
+  const checkoutPlanRaw = formData.get("checkoutPlan")?.toString()
+  const checkoutTier: "standard" | "premium" | null =
+    selectedRole === "premium"
+      ? "premium"
+      : checkoutPlanRaw === "standard" || checkoutPlanRaw === "premium"
+        ? checkoutPlanRaw
+        : null
+  if (checkoutTier && newUserId) {
+    const priceId = TIERS[checkoutTier].priceId
     const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
     if (priceId) {
@@ -173,10 +182,12 @@ export async function signupAction(
           payment_method_types: ["card"],
           line_items: [{ price: priceId, quantity: 1 }],
           success_url: `${baseUrl}/dashboard/billing?success=1`,
-          cancel_url: `${baseUrl}/signup?plan=premium&canceled=1`,
-          metadata: { userId: String(newUserId), tier: "premium" },
+          cancel_url: claimSlug
+            ? `${baseUrl}/dashboard/billing?canceled=1`
+            : `${baseUrl}/signup?plan=${checkoutTier}&canceled=1`,
+          metadata: { userId: String(newUserId), tier: checkoutTier },
           subscription_data: {
-            metadata: { userId: String(newUserId), tier: "premium" },
+            metadata: { userId: String(newUserId), tier: checkoutTier },
           },
         })
         if (!checkoutSession.url) {

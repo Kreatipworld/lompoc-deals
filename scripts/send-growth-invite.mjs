@@ -23,8 +23,12 @@ const CLAIM = process.env.CLAIM || ""
 const OWNER = process.env.OWNER || ""
 const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
+// EMAIL=<owner email>: pre-associates the account email on the signup form —
+// the owner only picks a password, then goes straight to the Stripe card form
+// (plan=standard rides along so signup flows password → card in one motion).
+const EMAIL = process.env.EMAIL || ""
 const billing = CLAIM
-  ? `https://www.lompoclocals.com/signup?claim=${encodeURIComponent(CLAIM)}`
+  ? `https://www.lompoclocals.com/signup?claim=${encodeURIComponent(CLAIM)}&plan=standard${EMAIL ? `&email=${encodeURIComponent(EMAIL)}` : ""}`
   : "https://www.lompoclocals.com/dashboard/billing"
 
 const subject = `Unlock Growth for ${NAME} — your page is ready`
@@ -45,7 +49,7 @@ const html = `
       <div style="height:3px; width:52px; background:#EFC618; border-radius:2px; margin:0 0 18px;"></div>
       <p style="color:#444; line-height:1.6; margin:0 0 16px;">${
         CLAIM
-          ? `${OWNER ? `Hi ${OWNER}` : "Hi there"} &mdash; your ${NAME} page is already live on Lompoc Locals (photos, hours, map pin), and neighbors are finding it. Claiming it takes about two minutes, and <strong>Growth is one click away in your dashboard</strong> &mdash; $39.99/month, cancel anytime.`
+          ? `${OWNER ? `Hi ${OWNER}` : "Hi there"} &mdash; your ${NAME} page is already live on Lompoc Locals (photos, hours, map pin), and neighbors are finding it. Making it officially yours takes about a minute: <strong>pick a password, add your card, done</strong> &mdash; $39.99/month, cancel anytime.`
           : `${OWNER ? `Hi ${OWNER}` : "Hi there"} &mdash; thanks for claiming your ${NAME} page on Lompoc Locals. It's live and neighbors are already finding you. Here's how to turn that attention into repeat customers: <strong>upgrade to Growth</strong> &mdash; $39.99/month, cancel anytime.`
       }</p>
       <p style="color:#1a1a1a; font-weight:700; margin:0 0 8px; font-size:15px;">With Growth you can:</p>

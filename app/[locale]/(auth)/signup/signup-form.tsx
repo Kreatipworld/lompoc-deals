@@ -26,12 +26,15 @@ function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: st
 export function SignupForm({
   claimSlug,
   defaultPlan,
+  defaultEmail,
   showCanceled,
   submitLabel,
   submitPendingLabel,
 }: {
   claimSlug?: string | null
   defaultPlan?: string | null
+  /** Invite links pre-associate the owner's email — they only pick a password. */
+  defaultEmail?: string | null
   showCanceled?: boolean
   submitLabel?: string
   submitPendingLabel?: string
@@ -46,6 +49,11 @@ export function SignupForm({
   return (
     <form action={action} className="space-y-5">
       {claimSlug && <input type="hidden" name="claimSlug" value={claimSlug} />}
+      {/* A claim invite that names a paid plan sends the new owner straight from
+          password to the Stripe card form — the whole point of the invite. */}
+      {claimSlug && (defaultPlan === "standard" || defaultPlan === "premium") && (
+        <input type="hidden" name="checkoutPlan" value={defaultPlan} />
+      )}
 
       {showCanceled && (
         <p className="rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-sm text-amber-800">
@@ -121,6 +129,7 @@ export function SignupForm({
             type="email"
             autoComplete="email"
             required
+            defaultValue={defaultEmail ?? undefined}
             placeholder="you@example.com"
             className="h-11 w-full rounded-full border border-input bg-background pl-10 pr-4 text-sm outline-none ring-primary/20 transition focus:border-primary focus:ring-4"
           />
