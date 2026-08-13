@@ -133,6 +133,27 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
   if (!resend) return
   const dashUrl = siteUrl(`/${locale}/dashboard`)
   const billingUrl = siteUrl(`/${locale}/dashboard/billing`)
+  // Social proof with LIVE numbers — hardcoded counts go stale, and stale
+  // numbers in an owner's first email cost trust. Falls back to prose if the
+  // query hiccups; the email still sends.
+  let bizCountLine = { en: "hundreds of Lompoc businesses", es: "cientos de negocios de Lompoc" }
+  try {
+    const { db } = await import("@/db/client")
+    const { sql } = await import("drizzle-orm")
+    const res = await db.execute(sql`select count(*)::int as c from businesses where status = 'approved'`)
+    // tolerate both driver result shapes ({rows: [...]} or a bare array)
+    const first = (res as unknown as { rows?: { c: number }[] }).rows?.[0]
+      ?? (Array.isArray(res) ? (res as { c: number }[])[0] : undefined)
+    const c = Number(first?.c ?? 0)
+    if (c > 0) {
+      const rounded = `${Math.floor(c / 10) * 10}+`
+      bizCountLine = { en: `${rounded} Lompoc businesses`, es: `más de ${Math.floor(c / 10) * 10} negocios de Lompoc` }
+    }
+  } catch { /* keep the prose fallback */ }
+  const proof = {
+    en: `<br><br>You're in good company: ${bizCountLine.en} are already on the platform, and neighbors browse thousands of business pages here every month. Official Partners like Eddie's Grill, Eye on I, and Vargas Jewelers sit at the top of the most-viewed list — that's the spot Growth puts you in.`,
+    es: `<br><br>Estás en buena compañía: ${bizCountLine.es} ya están en la plataforma, y los vecinos visitan miles de páginas de negocios cada mes. Socios oficiales como Eddie's Grill, Eye on I y Vargas Jewelers encabezan la lista de los más vistos — ese es el lugar que Growth te da.`,
+  }
   const greet = name?.trim()
     ? locale === "es" ? `Hola ${name.trim()}, ` : `Hi ${name.trim()}, `
     : locale === "es" ? "Hola, " : "Hi there, "
@@ -143,7 +164,7 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
           html: welcomeHtml({
             heading: "Bienvenido al vecindario.",
             intro:
-              greet + `gracias por sumar tu negocio a Lompoc Locals — el punto de encuentro donde los vecinos de Lompoc y Vandenberg descubren los lugares que hacen nuestro pueblo. Tu perfil ya está activo: los locales pueden encontrarte en el directorio, en el mapa y en la búsqueda local. Es tuyo para gestionar — agrega fotos, horarios y tu historia cuando quieras desde <a href="${dashUrl}" style="color:#650C75;font-weight:600;">tu panel</a>.`,
+              greet + `gracias por sumar tu negocio a Lompoc Locals — el punto de encuentro donde los vecinos de Lompoc y Vandenberg descubren los lugares que hacen nuestro pueblo. Tu perfil ya está activo: los locales pueden encontrarte en el directorio, en el mapa y en la búsqueda local. Es tuyo para gestionar — agrega fotos, horarios y tu historia cuando quieras desde <a href="${dashUrl}" style="color:#650C75;font-weight:600;">tu panel</a>.` + proof.es,
             bulletsTitle: "¿Quieres hacer más? Con el plan Growth puedes:",
             bullets: [
               "Publica ofertas y cupones cuando quieras — aparecen en el feed y en nuestro resumen semanal de la comunidad",
@@ -163,7 +184,7 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
           html: welcomeHtml({
             heading: "Welcome to the neighborhood.",
             intro:
-              greet + `thanks for adding your business to Lompoc Locals — the community hub where Lompoc and Vandenberg neighbors discover the places that make our town ours. Your listing is live, so locals can already find you in the directory, on the map, and in local search. It's yours to run — add photos, hours, and your story anytime from <a href="${dashUrl}" style="color:#650C75;font-weight:600;">your dashboard</a>.`,
+              greet + `thanks for adding your business to Lompoc Locals — the community hub where Lompoc and Vandenberg neighbors discover the places that make our town ours. Your listing is live, so locals can already find you in the directory, on the map, and in local search. It's yours to run — add photos, hours, and your story anytime from <a href="${dashUrl}" style="color:#650C75;font-weight:600;">your dashboard</a>.` + proof.en,
             bulletsTitle: "Want to do more? With Growth you can:",
             bullets: [
               "Post specials &amp; coupons anytime — they hit the feed and our weekly community digest to locals' inboxes",
