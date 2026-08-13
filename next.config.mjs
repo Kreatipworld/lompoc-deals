@@ -24,11 +24,12 @@ const nextConfig = {
       { source: "/for-businesses", destination: "/partners", permanent: true },
       { source: "/en/for-businesses", destination: "/partners", permanent: true },
       { source: "/es/for-businesses", destination: "/es/partners", permanent: true },
-      // The master Growth link — printable, speakable, shareable. Lands on
-      // business signup preselected for Growth: password → card → dashboard.
-      { source: "/grow", destination: "/signup?plan=standard", permanent: false },
-      { source: "/en/grow", destination: "/signup?plan=standard", permanent: false },
-      { source: "/es/grow", destination: "/es/signup?plan=standard", permanent: false },
+      // The master Growth link — printable, speakable, shareable. Lands on the
+      // business signup wizard (Growth preselected): list the business, pick
+      // the plan, card, done — the Rieck flow, self-serve for anybody.
+      { source: "/grow", destination: "/signup/business", permanent: false },
+      { source: "/en/grow", destination: "/signup/business", permanent: false },
+      { source: "/es/grow", destination: "/es/signup/business", permanent: false },
     ]
   },
 }
