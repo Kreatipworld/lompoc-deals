@@ -24,6 +24,11 @@ const nextConfig = {
       { source: "/for-businesses", destination: "/partners", permanent: true },
       { source: "/en/for-businesses", destination: "/partners", permanent: true },
       { source: "/es/for-businesses", destination: "/es/partners", permanent: true },
+      // The master Growth link — printable, speakable, shareable. Lands on
+      // business signup preselected for Growth: password → card → dashboard.
+      { source: "/grow", destination: "/signup?plan=standard", permanent: false },
+      { source: "/en/grow", destination: "/signup?plan=standard", permanent: false },
+      { source: "/es/grow", destination: "/es/signup?plan=standard", permanent: false },
     ]
   },
 }

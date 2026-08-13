@@ -45,13 +45,17 @@ export function SignupForm({
   )
 
   const isPremiumDefault = defaultPlan === "premium"
+  // ?plan=standard is the "master Growth link": business role preselected and
+  // signup flows password → Stripe card in one motion (server gates by role).
+  const isGrowthDefault = defaultPlan === "standard"
 
   return (
     <form action={action} className="space-y-5">
       {claimSlug && <input type="hidden" name="claimSlug" value={claimSlug} />}
-      {/* A claim invite that names a paid plan sends the new owner straight from
-          password to the Stripe card form — the whole point of the invite. */}
-      {claimSlug && (defaultPlan === "standard" || defaultPlan === "premium") && (
+      {/* A signup link that names a paid plan (claim invite OR the master Growth
+          link) sends the new owner straight from password to the Stripe card
+          form. The server only honors it for business-role signups. */}
+      {(defaultPlan === "standard" || defaultPlan === "premium") && (
         <input type="hidden" name="checkoutPlan" value={defaultPlan} />
       )}
 
@@ -69,7 +73,7 @@ export function SignupForm({
               type="radio"
               name="role"
               value="local"
-              defaultChecked={!isPremiumDefault}
+              defaultChecked={!isPremiumDefault && !isGrowthDefault}
               className="peer sr-only"
             />
             <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-3 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">
@@ -85,6 +89,7 @@ export function SignupForm({
               type="radio"
               name="role"
               value="business"
+              defaultChecked={isGrowthDefault}
               className="peer sr-only"
             />
             <div className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-background p-3 transition hover:border-primary/40 peer-checked:border-primary peer-checked:bg-primary/5">

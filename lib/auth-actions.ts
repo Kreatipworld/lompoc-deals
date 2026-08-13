@@ -158,7 +158,7 @@ export async function signupAction(
       : checkoutPlanRaw === "standard" || checkoutPlanRaw === "premium"
         ? checkoutPlanRaw
         : null
-  if (checkoutTier && newUserId) {
+  if (checkoutTier && newUserId && dbRole === "business") {
     const priceId = TIERS[checkoutTier].priceId
     const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
