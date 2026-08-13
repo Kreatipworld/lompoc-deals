@@ -1039,7 +1039,9 @@
       "createAccount": "Create account",
       "payAndCreate": "Pay & create account",
       "pleaseWait": "Please wait…"
-    }
+    },
+    "alreadyListed": "Already on Lompoc Locals? Find your business and claim your existing page instead — no duplicate needed.",
+    "alreadyListedCta": "Find my business"
   },
   "feed": {
     "metaTitle": "Lompoc Neighborhood — local listings, yard sales, info, and events",

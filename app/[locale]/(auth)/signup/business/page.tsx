@@ -1,5 +1,6 @@
 import { db } from "@/db/client"
 import { Store } from "lucide-react"
+import { Link } from "@/i18n/navigation"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { BusinessSignupWizard } from "./business-signup-wizard"
@@ -43,6 +44,14 @@ export default async function BusinessSignupPage({
           </h1>
           <p className="text-sm text-muted-foreground">
             {t("pageSubtitle")}
+          </p>
+          {/* Duplicate guard: most Lompoc businesses are already listed — an
+              owner who signs up fresh here would create a second page. */}
+          <p className="text-xs text-muted-foreground">
+            {t("alreadyListed")}{" "}
+            <Link href="/businesses" className="font-medium text-primary hover:underline">
+              {t("alreadyListedCta")} →
+            </Link>
           </p>
         </div>
       </div>

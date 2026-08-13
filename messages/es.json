@@ -1039,7 +1039,9 @@
       "createAccount": "Crear cuenta",
       "payAndCreate": "Pagar y crear cuenta",
       "pleaseWait": "Por favor espera…"
-    }
+    },
+    "alreadyListed": "¿Ya estás en Lompoc Locals? Busca tu negocio y reclama tu página existente — no hace falta duplicarla.",
+    "alreadyListedCta": "Buscar mi negocio"
   },
   "feed": {
     "metaTitle": "Vecindario de Lompoc — anuncios locales, ventas de patio, información y eventos",
