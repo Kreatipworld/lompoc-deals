@@ -10,6 +10,43 @@ import { readFileSync } from "node:fs"
 const env = readFileSync("/Users/kreatip/Projects/lompoc-deals/.env.local", "utf8")
 const key = (env.match(/^RESEND_API_KEY\s*=\s*"?([^"\n]+)"?/m) || [])[1]
 if (!key) { console.error("no RESEND_API_KEY"); process.exit(1) }
+const dbUrl = (env.match(/^DATABASE_URL\s*=\s*"?([^"\n]+)"?/m) || [])[1]
+
+// Live social proof: real partner brands (name + logo) and real view metrics.
+// Queried at send time — stale numbers in a sales email cost trust.
+let PROOF = { partners: [], views30d: 0, topName: "", topViews: 0 }
+if (dbUrl) {
+  try {
+    const { neon } = await import("@neondatabase/serverless")
+    const sql = neon(dbUrl)
+    const partners = await sql`
+      select distinct b.name, b.logo_url from businesses b
+      left join subscriptions s on s.user_id = b.owner_user_id
+      where b.status='approved' and b.logo_url is not null and b.logo_url != ''
+        and (b.plan_override is not null or (s.status in ('active','trialing') and s.tier != 'free'))`
+    const prefer = ["Eddie's Grill", "Eye on I", "In&Out Tires Lpc", "Jasper's Saloon", "Lompoc Valley Florist", "J's Glass Co"]
+    PROOF.partners = prefer.map((n) => partners.find((p) => p.name === n)).filter(Boolean).slice(0, 6)
+    const [tot] = await sql`select count(*)::int c from analytics_events where event_name='business_page_viewed' and created_at > now() - interval '30 days'`
+    PROOF.views30d = tot?.c ?? 0
+    const [top] = await sql`
+      select b.name, count(*)::int c from analytics_events a join businesses b on b.id = a.target_id
+      where a.event_name='business_page_viewed' and a.created_at > now() - interval '30 days'
+        and (b.plan_override is not null or exists (select 1 from subscriptions s where s.user_id=b.owner_user_id and s.status in ('active','trialing') and s.tier != 'free'))
+      group by b.name order by c desc limit 1`
+    if (top) { PROOF.topName = top.name; PROOF.topViews = top.c }
+  } catch (e) { console.error("proof query failed (email still sends):", String(e).slice(0, 80)) }
+}
+const proofBlock = PROOF.partners.length
+  ? `
+      <div style="margin:4px 0 22px; padding:16px 18px; background:#F7F3E9; border-radius:12px;">
+        <p style="margin:0 0 10px; font-size:13px; font-weight:700; letter-spacing:0.04em; color:#650C75;">YOU'D BE IN GOOD COMPANY</p>
+        <div>
+          ${PROOF.partners.map((p) => `<img src="${p.logo_url}" alt="${p.name.replace(/"/g, "")}" width="46" height="46" style="display:inline-block; width:46px; height:46px; object-fit:cover; border-radius:10px; background:#ffffff; border:1px solid #e5ddcc; margin:0 6px 6px 0;">`).join("")}
+        </div>
+        <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${PROOF.partners.map((p) => p.name).join(" · ")} — all Growth partners here in Lompoc.</p>
+        ${PROOF.views30d ? `<p style="margin:10px 0 0; font-size:13px; color:#555; line-height:1.5;">Neighbors viewed local business pages <strong>${PROOF.views30d.toLocaleString()} times in the last 30 days</strong>${PROOF.topName ? ` — partner pages lead that list (<strong>${PROOF.topName}</strong> alone took <strong>${PROOF.topViews}</strong> of them)` : ""}. Growth is how your page joins the front of it.</p>` : ""}
+      </div>`
+  : ""
 
 const FROM = "Lompoc Locals <hello@lompoclocals.com>"
 const TO = process.env.TO || "hello@lompoclocals.com"
@@ -56,6 +93,7 @@ const html = `
       <ul style="color:#444; line-height:1.7; margin:0 0 24px; padding-left:20px;">
         ${bullets.map((b) => `<li style="margin-bottom:6px;">${b}</li>`).join("")}
       </ul>
+      ${proofBlock}
       <p style="margin:0 0 10px;">
         <a href="${billing}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">${CLAIM ? `Claim ${NAME} &amp; start Growth` : "Upgrade to Growth"}</a>
       </p>
