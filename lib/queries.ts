@@ -586,7 +586,10 @@ export async function getCategoryCoverImages(): Promise<Record<string, string>> 
     ORDER BY c.slug,
       COALESCE(b.plan_override = 'premium', false) DESC,
       (b.about_source = 'website') DESC,
-      jsonb_array_length(COALESCE(b.photos_json, '[]'::jsonb)) DESC,
+      -- photos_json is occasionally a legacy scalar string; jsonb_array_length
+      -- on a scalar is a query-killing error (it 500'd the homepage on Aug 14),
+      -- so guard on the type instead of trusting the shape.
+      CASE WHEN jsonb_typeof(b.photos_json) = 'array' THEN jsonb_array_length(b.photos_json) ELSE 0 END DESC,
       b.id
   `)
   const rows = (res as unknown as { rows?: Array<{ slug: string; cover_url: string }> }).rows
