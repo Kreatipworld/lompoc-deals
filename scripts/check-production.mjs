@@ -65,12 +65,37 @@ async function realQueries(limit = 12) {
 
 console.log(`\nChecking ${SITE}\n`)
 
-// ── 1. pages that must not break ──────────────────────────────────────────────
+// ── 1. pages that must not break — and must actually RENDER ──────────────────
+// Status alone lies: the error boundary answers 200 while showing "Something
+// went wrong" (a malformed photos_json row 500'd the homepage on Aug 14 and
+// the status check waved it through). So every page is read like a resident:
+// no error boundary text, and a page-specific marker where one is stable.
 console.log("Pages")
-for (const p of ["/en", "/es", "/en/businesses", "/en/events", "/en/map", "/en/partners", "/en/deals", "/sitemap.xml"]) {
+// The boundary's fallback text is inlined in EVERY page's payload as a dormant
+// template, so "does the error string appear" is useless. The reliable signal
+// is positive: each page's own h1/content marker must be present in the HTML.
+const PAGES = [
+  { p: "/en", marker: "All of Lompoc" },
+  { p: "/es", marker: "Todo Lompoc" },
+  { p: "/en/businesses", marker: "Lompoc Business Directory" },
+  { p: "/en/events", marker: "Events in Lompoc" },
+  { p: "/en/map", marker: "Businesses on the map" },
+  { p: "/en/partners", marker: "Get found by the locals" },
+  { p: "/en/deals", marker: "Deals &amp; Coupons" },
+  { p: "/en/search?q=tacos", marker: "Taco" },
+  { p: "/en/signup/business", marker: "claim your existing page" },
+  { p: "/sitemap.xml", marker: "<urlset" },
+]
+for (const { p, marker } of PAGES) {
   try {
-    const res = await fetch(`${SITE}${p}`, { headers: { "user-agent": "lompoc-locals-healthcheck" } })
-    res.ok ? pass(`${p} → ${res.status}`) : fail(`${p} → ${res.status}`)
+    const res = await fetch(`${SITE}${p}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "follow" })
+    if (!res.ok) { fail(`${p} → ${res.status}`); continue }
+    const body = await res.text()
+    if (!body.includes(marker)) {
+      fail(`${p} → 200 but missing "${marker}" — likely the error boundary; the page is down for residents`)
+    } else {
+      pass(`${p} → ${res.status}, renders`)
+    }
   } catch (e) {
     fail(`${p} → ${e.message}`)
   }
