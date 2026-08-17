@@ -101,6 +101,22 @@ for (const { p, marker } of PAGES) {
   }
 }
 
+// ── 1b. deal images must be alive and on OUR storage ─────────────────────────
+// Google place-photo URLs expire silently (all 9 deal cards went blank on
+// Aug 17). Deal images must live on the blob store, and answer 200.
+console.log("\nDeal images")
+try {
+  const rows = await sql`select d.id, d.image_url from deals d where d.image_url is not null and (d.expires_at is null or d.expires_at > now())`
+  let offsite = 0, dead = 0
+  for (const r of rows) {
+    if (!/blob\.vercel-storage\.com/.test(r.image_url)) { offsite++; continue }
+    const res = await fetch(r.image_url, { method: "HEAD" }).catch(() => null)
+    if (!res || !res.ok) dead++
+  }
+  offsite === 0 ? pass(`${rows.length} deal image(s) all on our storage`) : fail(`${offsite} deal image(s) hosted off-site — they WILL expire`)
+  dead === 0 ? pass("all deal images answer 200") : fail(`${dead} deal image(s) dead`)
+} catch (e) { fail(`deal image check: ${e.message}`) }
+
 // ── 2. search returns something for what people type ──────────────────────────
 console.log("\nSearch — the terms residents actually use")
 let queries = []
