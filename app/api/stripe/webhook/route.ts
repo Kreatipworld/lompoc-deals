@@ -311,6 +311,14 @@ export async function POST(request: Request) {
         // Recover the card before the grace period lapses to free.
         const member = await resolveMember({ userId: existing.userId, customerId })
         if (member) await sendPaymentFailedEmail(member.email, member.name)
+        // The owner should hear about a failing member card the moment Stripe
+        // does — an at-risk $39.99/mo was invisible until a manual check.
+        await notifyPlatform("⚠️ Payment failed — member at risk", [
+          `Member: ${member?.name || customerId}`,
+          `Email: ${member?.email || "unknown"}`,
+          `Status: past_due — recovery email sent to the member`,
+          `Grace period ends: ${gracePeriodEndsAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
+        ])
       }
       break
     }
@@ -344,10 +352,15 @@ export async function POST(request: Request) {
 
       // Win-back if a trial lapsed without ever converting to active (guarded by
       // the pre-update status, so an already-processed cancel won't re-send).
+      const canceledMember = await resolveMember({ userId, customerId })
       if (before?.status === "trialing") {
-        const member = await resolveMember({ userId, customerId })
-        if (member) await sendTrialEndedEmail(member.email, member.name)
+        if (canceledMember) await sendTrialEndedEmail(canceledMember.email, canceledMember.name)
       }
+      await notifyPlatform("❌ Membership canceled", [
+        `Member: ${canceledMember?.name || customerId || String(userId)}`,
+        `Email: ${canceledMember?.email || "unknown"}`,
+        `Was: ${before?.status ?? "unknown"} — now canceled, tier reset to free`,
+      ])
       break
     }
 
