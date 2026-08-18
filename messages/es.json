@@ -866,7 +866,11 @@
       "growthClaims": "Reclamos",
       "growthSignups": "Registros",
       "commsTitle": "Comunicaciones",
-      "commsSubtitle": "Resumen, difusiones y bienvenidas"
+      "commsSubtitle": "Resumen, difusiones y bienvenidas",
+      "pulseMembers": "Miembros de pago",
+      "pulseMembersSub": "${mrr}/mes · {comped} cortesía",
+      "memberAtRisk": "{count, plural, one {# tarjeta de miembro fallando} other {# tarjetas de miembros fallando}}",
+      "memberGraceEnds": "gracia termina {date}"
     },
     "events": {
       "metaTitle": "Admin — Eventos",

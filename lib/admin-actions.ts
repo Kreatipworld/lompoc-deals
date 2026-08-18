@@ -71,6 +71,38 @@ export async function getPendingBusinesses() {
   })
 }
 
+
+/**
+ * Member health for the admin pulse: who pays, what it's worth, who's slipping.
+ * Born the day a past_due member sat invisible for days — the dashboard now
+ * carries the counter the owner asked for.
+ */
+export async function getMemberHealth() {
+  await requireAdmin()
+  const [paying] = await db.execute(sql`
+    select
+      count(*) filter (where s.status = 'active' and s.tier <> 'free')::int as paying,
+      coalesce(sum(case when s.status = 'active' and s.tier = 'standard' then 39.99
+                        when s.status = 'active' and s.tier = 'premium' then 99.99 else 0 end), 0)::numeric(10,2) as mrr
+    from subscriptions s`).then((r) => (Array.isArray(r) ? r : (r as { rows: unknown[] }).rows)) as [{ paying: number; mrr: string }]
+  const atRiskRows = await db.execute(sql`
+    select b.name, b.grace_period_ends_at
+    from subscriptions s
+    join businesses b on b.owner_user_id = s.user_id
+    where s.status = 'past_due'
+    order by b.grace_period_ends_at nulls last`).then((r) => (Array.isArray(r) ? r : (r as { rows: unknown[] }).rows)) as { name: string; grace_period_ends_at: string | null }[]
+  const [comped] = await db.execute(sql`
+    select count(*)::int as n from businesses b
+    where b.plan_override is not null and b.status = 'approved'
+      and not exists (select 1 from subscriptions s where s.user_id = b.owner_user_id and s.status in ('active','trialing') and s.tier <> 'free')`).then((r) => (Array.isArray(r) ? r : (r as { rows: unknown[] }).rows)) as [{ n: number }]
+  return {
+    paying: Number(paying?.paying ?? 0),
+    mrr: Number(paying?.mrr ?? 0),
+    atRisk: atRiskRows.map((r) => ({ name: r.name, graceEndsAt: r.grace_period_ends_at })),
+    comped: Number(comped?.n ?? 0),
+  }
+}
+
 export async function getAdminStats() {
   await requireAdmin()
   const now = new Date()

@@ -31,6 +31,7 @@ import {
   getPulseExtras,
   getNewPeople,
   getGrowthWeeks,
+  getMemberHealth,
   approveBusinessAction,
   rejectBusinessAction,
   approveClaimAction,
@@ -111,7 +112,7 @@ function PulseTile({
 export default async function AdminPage() {
   const t = await getTranslations("admin.home")
 
-  const [statsResult, pendingResult, claimsResult, feedResult, pulseResult, peopleResult, growthResult] =
+  const [statsResult, pendingResult, claimsResult, feedResult, pulseResult, peopleResult, growthResult, memberResult] =
     await Promise.allSettled([
       getAdminStats(),
       getPendingBusinesses(),
@@ -120,9 +121,11 @@ export default async function AdminPage() {
       getPulseExtras(),
       getNewPeople(7),
       getGrowthWeeks(4),
+      getMemberHealth(),
     ])
 
   const stats = statsResult.status === "fulfilled" ? statsResult.value : DEFAULT_STATS
+  const members = memberResult.status === "fulfilled" ? memberResult.value : { paying: 0, mrr: 0, atRisk: [], comped: 0 }
   const pending = pendingResult.status === "fulfilled" ? pendingResult.value : []
   const claims = claimsResult.status === "fulfilled" ? claimsResult.value : []
   const feed = feedResult.status === "fulfilled" ? feedResult.value : []
@@ -155,7 +158,7 @@ export default async function AdminPage() {
       </header>
 
       {/* PULSE — the numbers that matter, every tile is a door */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         <PulseTile
           href="/admin/businesses"
           icon={<Store className="h-3.5 w-3.5" />}
@@ -192,7 +195,32 @@ export default async function AdminPage() {
           value={stats.totalUsers}
           sub={t("pulseUsersSub", { count: pulse.newUsers7d })}
         />
+        <PulseTile
+          href="/admin/businesses"
+          icon={<BadgeCheck className="h-3.5 w-3.5" />}
+          label={t("pulseMembers")}
+          value={members.paying}
+          sub={t("pulseMembersSub", { mrr: members.mrr.toFixed(2), comped: members.comped })}
+          attention={members.atRisk.length}
+        />
       </div>
+
+      {/* MEMBER AT-RISK STRIP — a failing card is money walking out; it gets a
+          banner, not a buried row. Renders nothing when everyone's healthy. */}
+      {members.atRisk.length > 0 && (
+        <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 px-4 py-3">
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-700 dark:text-amber-400">
+            <Clock className="h-4 w-4" />
+            {t("memberAtRisk", { count: members.atRisk.length })}
+          </span>
+          {members.atRisk.map((m: { name: string; graceEndsAt: string | null }) => (
+            <span key={m.name} className="rounded-full border border-amber-500/40 bg-background px-3 py-1 text-xs font-medium">
+              {m.name}
+              {m.graceEndsAt ? ` — ${t("memberGraceEnds", { date: format(new Date(m.graceEndsAt), "MMM d") })}` : ""}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* ACTION QUEUE */}
       <section>
