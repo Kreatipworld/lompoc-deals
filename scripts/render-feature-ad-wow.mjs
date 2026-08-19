@@ -93,10 +93,16 @@ async function gather() {
         from businesses where status='approved'`,
   ])
 
-  // md5 ordering, not random: the same run twice produces the same ad.
+  // md5 ordering, not random: the same run twice produces the same ad. Thrift and consignment
+  // shops are excluded from the pool — a resale storefront under "your whole town, one place"
+  // undersold the beat — and food-and-drink storefronts sort first, because the panel picker
+  // works by aspect ratio and should find an inviting one before it finds anything else.
   const biz = await sql`select name, photos_json from businesses
     where status='approved' and jsonb_array_length(coalesce(photos_json,'[]'::jsonb)) >= 3
-    order by md5(slug) limit 40`
+      and name !~* 'thrift|second.?hand|consign|pawn'
+      and name !~* 'starbucks|mcdonald|subway|domino|pizza hut|taco bell|burger king|carl.?s jr|jack in the box|kfc|wendy|little caesars|panda express|ihop|denny|walmart|target|albertsons|vons|grocery outlet|rite aid|cvs|walgreens|7.eleven|dollar (tree|general)|autozone|o.?reilly|napa auto|big 5|ross|marshalls'
+    order by (name ~* 'grill|coffee|caf|bak|restaurant|saloon|taproom|winery|market|florist|garden') desc,
+      md5(slug) limit 40`
   const act = await sql`select title, photos_json from activities
     where jsonb_array_length(coalesce(photos_json,'[]'::jsonb)) >= 1 order by md5(slug) limit 14`
 
@@ -630,10 +636,9 @@ const toBlob = () => new Promise(r => out.toBlob(r,'image/jpeg',0.94));
 const COPY = {
   en: {
     open:  { head: "Something’s always happening.", sub: "You hear about it after." },
-    biz:   { head: "Now it’s all in one place.", label: () => "businesses in town, listed" },
-    event: { head: "Know before it happens.",
-             label: (n) => `events coming up — ${n.launches} of them launches` },
-    photo: { head: "See it before you go.", label: () => "photos of real places in town" },
+    biz:   { head: "Your whole town, one place.", sub: "The restaurants. The shops. The one-of-a-kinds." },
+    event: { head: "Know before it happens.", sub: "Every event. Every launch. Every weekend." },
+    photo: { head: "Find your next favorite spot.", sub: "See it before you go." },
     was:   { head: "It used to be scattered.", sub: "Flyers. Group chats. Word of mouth." },
     both:  { head: "En inglés y en español.", sub: "Because it’s everyone’s town." },
     flash: { head: "Stop missing your own town." },
@@ -641,11 +646,9 @@ const COPY = {
   },
   es: {
     open:  { head: "Siempre está pasando algo.", sub: "Y uno se entera hasta después." },
-    biz:   { head: "Ahora todo está en un solo lugar.",
-             label: () => "negocios del pueblo, ya en la lista" },
-    event: { head: "Entérate antes, no después.",
-             label: (n) => `eventos que vienen — ${n.launches} son lanzamientos` },
-    photo: { head: "Míralo antes de ir.", label: () => "fotos de lugares reales del pueblo" },
+    biz:   { head: "Todo tu pueblo, en un solo lugar.", sub: "Los restaurantes. Las tiendas. Los rincones únicos." },
+    event: { head: "Entérate antes, no después.", sub: "Cada evento. Cada lanzamiento. Cada fin de semana." },
+    photo: { head: "Encuentra tu nuevo lugar favorito.", sub: "Míralo antes de ir." },
     was:   { head: "Antes andaba todo regado.", sub: "Volantes. Chats de grupo. De boca en boca." },
     both:  { head: "Toda la página, también en español.", sub: "Porque el pueblo es de todos." },
     flash: { head: "No te quedes fuera de tu pueblo." },
@@ -658,10 +661,11 @@ const COPY = {
  * place, and here is the proof → this is what it replaces → both languages, because it is the whole
  * town → stop missing it → where to go.
  *
- * The numbers are evidence that the hub is complete. They are never introduced as features, and the
- * labels say what they are proof of.
+ * No numbers anywhere. The counters looked like proof but aged the moment they rendered, and a
+ * narration recorded against one day's figures disagreed with the next render's screen. The film
+ * now argues in benefits only, so the picture and any read stay true indefinitely.
  *
- * Rule for the type: gold is for numbers and for the sub-line on a dark field. Nothing else.
+ * Rule for the type: gold is for the sub-line on a dark field. Nothing else.
  */
 const beats = (n, cast, lang) => {
   const t = COPY[lang]
@@ -670,16 +674,13 @@ const beats = (n, cast, lang) => {
       head: t.open.head, sub: t.open.sub, subColour: "gold" },
 
     { kind: "panel", bg: "purple", photo: "storefront", dur: 3.4,
-      head: t.biz.head,
-      stat: n.businesses, statColour: "gold", label: t.biz.label(n) },
+      head: t.biz.head, sub: t.biz.sub },
 
     { kind: "photo", bg: "purple", photo: cast.launch, dur: 3.3,
-      head: t.event.head,
-      stat: n.events, statColour: "gold", label: t.event.label(n) },
+      head: t.event.head, sub: t.event.sub },
 
     { kind: "photo", bg: "purple", photo: cast.land, dur: 3.3,
-      head: t.photo.head,
-      stat: n.photos, statColour: "gold", label: t.photo.label(n) },
+      head: t.photo.head, sub: t.photo.sub },
 
     { kind: "color", bg: "gold", dur: 2.3,
       head: t.was.head, sub: t.was.sub, headColour: "ink", subColour: "purple" },
@@ -943,8 +944,20 @@ const actAt = (re, taken = []) => {
 }
 const launch = actAt(/launch|vandenberg|rocket|space/i)
 const land = actAt(/beach|dune|park|valley|trail|river|lake|bluff|garden|flower|ranch|hill/i, [launch?.key])
+// The food-and-drink storefronts sort first (see gather), but the panel picker chooses by aspect
+// ratio across its whole range — so the range itself is confined to that preferred prefix whenever
+// one exists. posAt walks forward past any photos that failed to cache.
+const PREFER = /grill|coffee|caf|bak|restaurant|saloon|taproom|winery|market|florist|garden/i
+const preferredCount = bizPhotos.filter((b) => PREFER.test(b.title)).length
+const posAt = (k) => {
+  for (let i = k; i <= bizPhotos.length; i++) {
+    const p = position.get(i)
+    if (p !== undefined) return p
+  }
+  return files.length
+}
 const cast = {
-  bizRange: [0, position.get(bizPhotos.length) ?? files.length],
+  bizRange: [0, preferredCount > 0 ? posAt(preferredCount) : posAt(bizPhotos.length)],
   launch: launch?.at ?? 0,
   land: land?.at ?? 0,
 }

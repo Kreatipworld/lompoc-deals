@@ -27,13 +27,13 @@ const OUT = VID
 // Cuts to master. Each VO was measured after generation; start times are set so the read ends
 // ~0.5s before the picture does, leaving the end card a beat of its own.
 const CUTS = [
-  // Sterling is the picked English read — an American broadcast voice. At 20.07s it is the
-  // shortest take, which leaves the end card 2.3s of its own rather than the 0.8s Emily left.
-  { lang: "en", vo: "en-male-sterling.wav", voLen: 20.07, start: 0.75 },
-  // The Spanish read is its own script, not a translation of the English one at English length —
-  // the first attempt ran 37s against a 22.4s picture. Its spoken numbers must match whatever the
-  // picture rendered that day, so re-render the es cut and re-cut this VO together, never one alone.
-  { lang: "es", vo: "es-male-hugo-v2.wav", voLen: 20.28, start: 0.55 },
+  // Emily reads the no-numbers script (Aug 19) — the counters left the picture entirely, so the
+  // narration argues in benefits and can never disagree with the screen. At 21.30s her last line
+  // ("Know what's going on") lands on the end card, whose kicker says the same words.
+  { lang: "en", vo: "en-emily-trim.wav", voLen: 21.3, start: 0.4 },
+  // The Spanish cut is DISABLED until its picture is re-rendered against the no-numbers beats and
+  // a matching Spanish read is generated — the old Hugo VO speaks July's numbers over new lettering.
+  // { lang: "es", vo: "es-male-hugo-v2.wav", voLen: 20.28, start: 0.55 },
 ]
 // The picture is per-language, not shared. This used to point at the one English render for both
 // cuts, which put a Spanish read over English lettering — the exact half-measure the bilingual
