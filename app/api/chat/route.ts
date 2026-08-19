@@ -37,13 +37,30 @@ Linking rules (ALWAYS follow these):
 - Always include at least one link when you have relevant tool results — this helps users navigate directly`
 
 export async function POST(req: Request) {
+  // This endpoint spends real API money on every call, so it only answers the
+  // site itself: same-origin requests, bounded conversation, bounded reply.
+  // Anything scripted from elsewhere gets a 403 before a token is spent.
+  const origin = req.headers.get("origin") ?? req.headers.get("referer") ?? ""
+  const allowed = process.env.AUTH_URL ?? "http://localhost:3000"
+  if (origin && !origin.startsWith(allowed) && !origin.startsWith("http://localhost")) {
+    return new Response("Forbidden", { status: 403 })
+  }
+
   const { messages } = await req.json()
+  if (!Array.isArray(messages) || messages.length > 30) {
+    return new Response("Bad request", { status: 400 })
+  }
+  const totalChars = JSON.stringify(messages).length
+  if (totalChars > 24_000) {
+    return new Response("Conversation too long — refresh to start a new chat.", { status: 413 })
+  }
 
   const result = streamText({
     model: anthropic("claude-haiku-4-5-20251001"),
     system: SYSTEM_PROMPT,
-    messages: await convertToModelMessages(messages),
+    messages: await convertToModelMessages(messages.slice(-12)),
     stopWhen: stepCountIs(5),
+    maxOutputTokens: 900,
     tools: {
       searchDeals: tool({
         description: "Search for active deals and coupons in Lompoc by keyword or category",
