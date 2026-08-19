@@ -4,6 +4,11 @@ import { businesses, categories, subscriptions } from "@/db/schema"
 import { eq, and, isNotNull, sql } from "drizzle-orm"
 import type { CategoryId } from "@/lib/map-categories"
 
+// Without this, Next statically optimizes the GET at build time and the whole
+// map freezes at deploy — new businesses and partner-status changes only
+// appeared after the next deploy. The CDN header below is the real cache.
+export const dynamic = "force-dynamic"
+
 // Map DB category slugs to valid map CategoryId values
 const VALID_CATEGORY_IDS = new Set<CategoryId>([
   "wineries",
