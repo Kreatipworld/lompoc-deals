@@ -13,8 +13,13 @@ export default async function AdminLayout({
     redirect("/login")
   }
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-6">
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 lg:flex-row">
+      <aside className="lg:w-60">
+        <div className="mb-4 px-3">
+          <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Admin
+          </h2>
+        </div>
         <DashboardNav
           links={[
             {
@@ -64,8 +69,8 @@ export default async function AdminLayout({
             },
           ]}
         />
-      </div>
-      {children}
+      </aside>
+      <main className="flex-1 space-y-6">{children}</main>
     </div>
   )
 }
