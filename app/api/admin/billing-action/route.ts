@@ -15,8 +15,15 @@ export const dynamic = "force-dynamic"
  *                  proration none). Use AFTER charge_now to grant bonus days:
  *                  charged today, next invoice at +days, monthly after that.
  *  - inspect:      read-only snapshot (status, card on file, upcoming invoice).
+ *  - pay_link:     recovery links for a past-due member — the hosted page of the
+ *                  open invoice (stable URL; paying it saves the new card) plus a
+ *                  fresh billing-portal session (short-lived, mint on demand).
  */
-const ALLOWED_SUBSCRIPTIONS = new Set(["sub_1U1BrpGlg4SBRCBhWhuSwcev"])
+const ALLOWED_SUBSCRIPTIONS = new Set([
+  "sub_1U1BrpGlg4SBRCBhWhuSwcev",
+  // Eye on I — past_due since Aug 18; recovery links only.
+  "sub_1U0DsCGlg4SBRCBhKCAWbGsc",
+])
 
 export async function POST(request: Request) {
   const auth = request.headers.get("authorization")
@@ -47,6 +54,23 @@ export async function POST(request: Request) {
       current_period_end: sub.items.data[0]?.current_period_end ?? null,
       has_payment_method: hasCard,
       upcoming,
+    })
+  }
+
+  if (action === "pay_link") {
+    const invoices = await stripe.invoices.list({ customer: customer.id, limit: 5 })
+    const open = invoices.data.find((i) => i.status === "open")
+    const portal = await stripe.billingPortal.sessions.create({
+      customer: customer.id,
+      return_url: `${process.env.AUTH_URL ?? "https://www.lompoclocals.com"}/dashboard/billing`,
+    })
+    return NextResponse.json({
+      status: sub.status,
+      has_payment_method: hasCard,
+      open_invoice: open
+        ? { id: open.id, amount_due: open.amount_due, hosted_invoice_url: open.hosted_invoice_url }
+        : null,
+      portal_url: portal.url,
     })
   }
 
