@@ -47,7 +47,8 @@
     "home": "Inicio de Lompoc Locals",
     "neighborhood": "Vecindario",
     "search": "Buscar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "news": "Noticias"
   },
   "footer": {
     "tagline": "Conectando a vecinos, negocios y visitantes en todo el Valle de Lompoc.",
@@ -936,7 +937,8 @@
     "businesses": "Negocios",
     "account": "Cuenta",
     "signIn": "Iniciar sesión",
-    "signUp": "Registrarse"
+    "signUp": "Registrarse",
+    "news": "Noticias"
   },
   "signupBusiness": {
     "metaTitle": "Publica tu negocio",
@@ -2373,5 +2375,17 @@
   "distance": {
     "shortWalk": "a 5 min caminando",
     "milesAway": "a {miles} mi"
+  },
+  "news": {
+    "eyebrow": "Lompoc, ahora mismo",
+    "heading": "Noticias de Lompoc",
+    "subheading": "Lo que está pasando en el pueblo, contado por vecinos — aperturas, lanzamientos y lo que significa para ti.",
+    "noPosts": "Todavía no hay noticias — vuelve pronto.",
+    "latestBadge": "Última noticia",
+    "readStory": "Leer la noticia",
+    "paginationPrev": "Anterior",
+    "paginationNext": "Siguiente",
+    "paginationPage": "Página {page} de {total}",
+    "paginationLabel": "Páginas de noticias"
   }
 }

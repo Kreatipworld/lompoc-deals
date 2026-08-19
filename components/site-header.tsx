@@ -22,6 +22,7 @@ export async function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-6 sm:flex">
+          <NavLink href="/news">{t("news")}</NavLink>
           <NavLink href="/deals">{t("deals")}</NavLink>
           <NavLink href="/businesses">{t("directory")}</NavLink>
           <NavLink href="/map">{t("map")}</NavLink>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag } from "lucide-react"
+import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag, Newspaper } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import { LocaleSwitcher } from "@/components/locale-switcher"
@@ -15,6 +15,7 @@ export function MobileMenu() {
 
   const navItems = [
     { href: "/", icon: Home, label: t("home") },
+    { href: "/news", icon: Newspaper, label: t("news") },
     { href: "/deals", icon: Tag, label: t("deals") },
     { href: "/search", icon: Search, label: t("search") },
     { href: "/businesses", icon: LayoutGrid, label: t("directory") },

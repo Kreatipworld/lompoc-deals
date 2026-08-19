@@ -47,7 +47,8 @@
     "home": "Lompoc Locals home",
     "neighborhood": "Neighborhood",
     "search": "Search",
-    "close": "Close"
+    "close": "Close",
+    "news": "News"
   },
   "footer": {
     "tagline": "Connecting locals, businesses, and visitors across the Lompoc Valley.",
@@ -936,7 +937,8 @@
     "businesses": "Businesses",
     "account": "Account",
     "signIn": "Sign in",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "news": "News"
   },
   "signupBusiness": {
     "metaTitle": "List your business",
@@ -2373,5 +2375,17 @@
   "distance": {
     "shortWalk": "a 5-min walk",
     "milesAway": "{miles} mi"
+  },
+  "news": {
+    "eyebrow": "Lompoc, right now",
+    "heading": "Lompoc News",
+    "subheading": "What's happening in town, written by neighbors — openings, launches, and what it means for you.",
+    "noPosts": "No stories yet — check back soon.",
+    "latestBadge": "Latest story",
+    "readStory": "Read the story",
+    "paginationPrev": "Previous",
+    "paginationNext": "Next",
+    "paginationPage": "Page {page} of {total}",
+    "paginationLabel": "News pages"
   }
 }

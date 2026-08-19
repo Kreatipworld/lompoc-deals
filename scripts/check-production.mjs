@@ -84,6 +84,7 @@ const PAGES = [
   { p: "/en/deals", marker: "Deals &amp; Coupons" },
   { p: "/en/search?q=tacos", marker: "Taco" },
   { p: "/en/signup/business", marker: "claim your existing page" },
+  { p: "/en/news", marker: "Lompoc News" },
   { p: "/sitemap.xml", marker: "<urlset" },
 ]
 for (const { p, marker } of PAGES) {
