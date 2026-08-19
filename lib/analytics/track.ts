@@ -1,4 +1,4 @@
-import { cookies } from "next/headers"
+import { cookies, headers } from "next/headers"
 import { db } from "@/db/client"
 import { analyticsEvents } from "@/db/schema"
 import { and, eq, gt, isNull, sql } from "drizzle-orm"
@@ -36,9 +36,30 @@ function campaignProps(): Record<string, string> {
   }
 }
 
+/**
+ * Crawlers read every page and used to count as "views" — a member's dashboard
+ * number is a promise about neighbors, not about Googlebot. Matched requests are
+ * dropped at the door; requests with no UA at all (cron, scripts) are kept, since
+ * those are our own calls. The healthcheck's UA is deliberately NOT matched — its
+ * probe asserts that recording works, and it deletes its own row afterwards.
+ */
+const BOT_UA =
+  /bot|crawl|spider|slurp|bingpreview|headless|lighthouse|pingdom|facebookexternalhit|meta-externalagent|whatsapp|telegrambot|skypeuricheck|embedly|quora link preview|vkshare|curl\/|wget\/|python-requests|httpx\/|go-http-client/i
+
+function isBotRequest(): boolean {
+  try {
+    const ua = headers().get("user-agent") ?? ""
+    return ua !== "" && BOT_UA.test(ua)
+  } catch {
+    // headers() throws outside a request scope (cron, scripts) — our own calls, never bots.
+    return false
+  }
+}
+
 /** Fire-and-forget insert into the analytics_events table. Never throws. */
 export async function track<N extends EventName>(name: N, args: TrackArgs<N> = {}): Promise<void> {
   try {
+    if (isBotRequest()) return
     await db.insert(analyticsEvents).values({
       eventName: name,
       userId: args.userId ?? null,
