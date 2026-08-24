@@ -413,3 +413,46 @@
   from { opacity: 0; transform: translateY(8px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* ── Article body typography ─────────────────────────────────────────
+   The blog template renders post HTML inside `.prose`, but the Tailwind
+   typography plugin isn't installed, so these are the working styles.
+   Scoped to .prose to style only long-form article content. */
+.prose {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: hsl(var(--foreground) / 0.9);
+}
+.prose p {
+  margin: 0 0 1.25em;
+}
+.prose h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 2em 0 0.75em;
+}
+.prose h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 1.75em 0 0.5em;
+}
+.prose ul, .prose ol {
+  margin: 0 0 1.25em;
+  padding-left: 1.5em;
+}
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin: 0.375em 0; }
+.prose blockquote {
+  border-left: 3px solid hsl(var(--primary));
+  padding-left: 1em;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+.prose strong { font-weight: 600; }
+.prose em { color: hsl(var(--muted-foreground)); }
+.prose img { border-radius: 0.75rem; margin: 1.5em 0; }
+.prose > :first-child { margin-top: 0; }
+.prose > :last-child { margin-bottom: 0; }
