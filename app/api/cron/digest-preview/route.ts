@@ -36,7 +36,7 @@ export async function GET(request: Request) {
   const dealCount = content.deals?.length ?? 0
   const banner =
     dealCount === 0
-      ? `<div style="background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-family:system-ui,sans-serif;font-size:14px;"><strong>Heads up:</strong> zero deals in this edition — nothing was posted in the last 7 days. Nudge a partner or add one before Monday.</div>`
+      ? `<div style="background:#f5f0fa;border:1px solid #d9c6e2;color:#650C75;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-family:system-ui,sans-serif;font-size:14px;"><strong>Editor's note:</strong> this edition leads with news and events — no new deals were posted this week, so that section simply doesn't appear. Subscribers only ever see what the town has.</div>`
       : ""
   const { error } = await resend.emails.send({
     from: "Lompoc Locals <hello@lompoclocals.com>",

@@ -1,7 +1,7 @@
 import { Resend } from "resend"
 import crypto from "node:crypto"
 import type { DealCardData } from "@/lib/queries"
-import type { DigestEvent, ThemedDigestContent, MasterDigestContent } from "@/lib/digest"
+import type { DigestEvent, ThemedDigestContent, MasterDigestContent, DigestNews } from "@/lib/digest"
 import { selectLead } from "@/lib/digest"
 
 export type DealNotificationData = {
@@ -1043,183 +1043,205 @@ function npKicker(label: string): string {
   </div>`
 }
 
-/** Render the weekly digest as a dense newspaper front page. Pure — no network. */
+/**
+ * Render the weekly digest — mobile-first. 95% of readers open this on a
+ * phone, so: one column, generous type, real air between sections, and no
+ * side-by-side table cells anywhere. Empty sections simply don't render —
+ * the paper only ever shows what the town actually has. Pure — no network.
+ */
 export function renderMasterDigestHtml(
   c: MasterDigestContent,
   locale: "en" | "es",
   opts: { unsubUrl: string; now: Date }
 ): string {
   const es = locale === "es"
-  const dateLabel = (d: Date) =>
-    d.toLocaleDateString(es ? "es-US" : "en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
   const shortDate = (d: Date) =>
     d.toLocaleDateString(es ? "es-US" : "en-US", { weekday: "short", day: "numeric", timeZone: "America/Los_Angeles" })
-  // week-of-year -> cosmetic edition number
   const start = Date.UTC(opts.now.getUTCFullYear(), 0, 1)
   const weekNo = Math.ceil(((opts.now.getTime() - start) / 86400000 + 1) / 7)
   const fullDate = opts.now.toLocaleDateString(es ? "es-US" : "en-US", { weekday: "short", month: "long", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles" })
 
-  const lead = c.news.length ? null : selectLead(c)
-  // section lists with the lead item removed to avoid duplication
-  const events = lead?.kind === "event" ? c.events.slice(1) : c.events
-  const deals = lead?.kind === "deal" ? c.deals.slice(1) : c.deals
+  const hairline = (i: number, len: number) => (i < len - 1 ? "border-bottom:1px solid #e6dfd2;" : "")
+  const row = (inner: string, i: number, len: number) =>
+    `<div style="padding:13px 0;${hairline(i, len)}">${inner}</div>`
+  const titleLink = (href: string, text: string) =>
+    `<a href="${href}" style="font-size:16px;line-height:1.35;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(text)}</a>`
+  const meta = (text: string) =>
+    `<div style="font-size:13px;color:#7a6f60;line-height:1.5;margin-top:2px;">${text}</div>`
 
-  // ── Lead story ──
+  // ── Lead: the freshest news story, else soonest event, else top deal ──
   let leadHtml = ""
-  if (lead?.kind === "event") {
-    const e = lead.event
-    const img = absImg(e.imageUrl)
-    leadHtml = `
-    <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;border-bottom:2px solid #1a1712;"><tr>
-      <td width="58%" style="vertical-align:top;padding:0 12px 14px 0;">
-        <div style="color:#650C75;font-size:10px;font-weight:bold;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:3px;">${es ? "Nota principal" : "Lead Story"}</div>
-        <a href="${siteUrl(`/events/${e.id}`)}" style="display:block;font-size:25px;line-height:1.1;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;margin-bottom:5px;">${escapeHtml(e.title)}</a>
-        <div style="font-size:12px;color:#7a6f60;font-style:italic;">${dateLabel(e.startsAt)}${e.location ? " · " + escapeHtml(e.location) : ""}</div>
-      </td>
-      ${img ? `<td width="42%" style="vertical-align:top;padding-bottom:14px;"><img src="${img}" alt="" width="100%" style="display:block;width:100%;height:150px;object-fit:cover;border:1px solid #d8cfc0;" /></td>` : ""}
-    </tr></table>`
-  } else if (lead?.kind === "deal") {
-    const d = lead.deal
-    const img = absImg(d.imageUrl ?? d.business.coverUrl)
-    leadHtml = `
-    <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;border-bottom:2px solid #1a1712;"><tr>
-      <td width="58%" style="vertical-align:top;padding:0 12px 14px 0;">
-        <div style="color:#650C75;font-size:10px;font-weight:bold;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:3px;">${es ? "Oferta principal" : "Lead Story"}</div>
-        ${d.discountText ? `<span style="display:inline-block;background:#EFC618;color:#3a2600;font-weight:bold;font-size:11px;padding:2px 8px;letter-spacing:0.03em;text-transform:uppercase;margin-bottom:5px;">${escapeHtml(d.discountText)}</span>` : ""}
-        <a href="${siteUrl(`/biz/${d.business.slug}`)}" style="display:block;font-size:23px;line-height:1.12;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;margin-bottom:5px;">${escapeHtml(d.title)}</a>
-        <div style="font-size:12px;color:#7a6f60;font-style:italic;">${escapeHtml(d.business.name)}</div>
-      </td>
-      ${img ? `<td width="42%" style="vertical-align:top;padding-bottom:14px;"><img src="${img}" alt="" width="100%" style="display:block;width:100%;height:150px;object-fit:cover;border:1px solid #d8cfc0;" /></td>` : ""}
-    </tr></table>`
-  }
-
-  // ── The week's news ──
-  // The town's front page: the freshest story leads the paper with its photo;
-  // the remaining stories run as a headline column after the calendar.
-  let newsLeadHtml = ""
-  let newsRestHtml = ""
+  const newsRest: DigestNews[] = c.news.slice(1)
+  const leadKicker = (label: string) =>
+    `<div style="color:#650C75;font-size:11px;font-weight:bold;letter-spacing:0.18em;text-transform:uppercase;margin:0 0 6px;">${label}</div>`
   if (c.news.length) {
-    const [top, ...rest] = c.news
-    const topImg = absImg(top.imageUrl)
-    newsLeadHtml = `
-    <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;border-bottom:2px solid #1a1712;"><tr>
-      <td width="58%" style="vertical-align:top;padding:0 12px 14px 0;">
-        <div style="color:#650C75;font-size:10px;font-weight:bold;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:3px;">${es ? "Nota principal" : "Lead Story"}</div>
-        <a href="${siteUrl(`/blog/${top.slug}`)}" style="display:block;font-size:25px;line-height:1.1;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;margin-bottom:5px;">${escapeHtml(top.title)}</a>
-        ${top.excerpt ? `<div style="font-size:13px;color:#4a4238;line-height:1.5;">${escapeHtml(top.excerpt)}</div>` : ""}
-      </td>
-      ${topImg ? `<td width="42%" style="vertical-align:top;padding-bottom:14px;"><img src="${topImg}" alt="" width="100%" style="display:block;width:100%;height:150px;object-fit:cover;border:1px solid #d8cfc0;" /></td>` : ""}
-    </tr></table>`
-    if (rest.length) {
-      newsRestHtml =
-        npKicker(es ? "📰 Noticias locales" : "📰 The Local News") +
-        `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
-        rest
-          .slice(0, 3)
-          .map(
-            (n, i, arr) => `
-      <tr><td style="vertical-align:top;padding:7px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
-        <a href="${siteUrl(`/blog/${n.slug}`)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(n.title)}</a>
-        ${n.excerpt ? `<div style="font-size:12px;color:#7a6f60;line-height:1.45;margin-top:1px;">${escapeHtml(n.excerpt)}</div>` : ""}
-      </td></tr>`
-          )
-          .join("") +
-        `</table>` +
-        `<div style="text-align:right;margin:4px 0 2px;"><a href="${siteUrl("/news")}" style="font-size:12px;color:#650C75;font-weight:bold;text-decoration:none;">${es ? "Todas las noticias" : "All the local news"} →</a></div>`
+    const top = c.news[0]
+    const img = absImg(top.imageUrl)
+    leadHtml = `
+    <div style="border-bottom:2px solid #1a1712;padding-bottom:18px;">
+      ${img ? `<img src="${img}" alt="" width="100%" style="display:block;width:100%;height:200px;object-fit:cover;border:1px solid #d8cfc0;margin-bottom:12px;" />` : ""}
+      ${leadKicker(es ? "Nota principal" : "Lead Story")}
+      <a href="${siteUrl(`/blog/${top.slug}`)}" style="display:block;font-size:23px;line-height:1.2;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;">${escapeHtml(top.title)}</a>
+      ${top.excerpt ? `<div style="font-size:15px;color:#4a4238;line-height:1.6;margin-top:7px;">${escapeHtml(top.excerpt)}</div>` : ""}
+    </div>`
+  } else {
+    const lead = selectLead(c)
+    if (lead?.kind === "event") {
+      const e = lead.event
+      const img = absImg(e.imageUrl)
+      leadHtml = `
+    <div style="border-bottom:2px solid #1a1712;padding-bottom:18px;">
+      ${img ? `<img src="${img}" alt="" width="100%" style="display:block;width:100%;height:200px;object-fit:cover;border:1px solid #d8cfc0;margin-bottom:12px;" />` : ""}
+      ${leadKicker(es ? "Nota principal" : "Lead Story")}
+      <a href="${siteUrl(`/events/${e.id}`)}" style="display:block;font-size:23px;line-height:1.2;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;">${escapeHtml(e.title)}</a>
+      ${meta(`${shortDate(e.startsAt)}${e.location ? " · " + escapeHtml(e.location) : ""}`)}
+    </div>`
+    } else if (lead?.kind === "deal") {
+      const d = lead.deal
+      const img = absImg(d.imageUrl ?? d.business.coverUrl)
+      leadHtml = `
+    <div style="border-bottom:2px solid #1a1712;padding-bottom:18px;">
+      ${img ? `<img src="${img}" alt="" width="100%" style="display:block;width:100%;height:200px;object-fit:cover;border:1px solid #d8cfc0;margin-bottom:12px;" />` : ""}
+      ${leadKicker(es ? "Oferta principal" : "Lead Story")}
+      ${d.discountText ? `<span style="display:inline-block;background:#EFC618;color:#3a2600;font-weight:bold;font-size:12px;padding:3px 9px;letter-spacing:0.03em;text-transform:uppercase;margin-bottom:6px;">${escapeHtml(d.discountText)}</span>` : ""}
+      <a href="${siteUrl(`/biz/${d.business.slug}`)}" style="display:block;font-size:23px;line-height:1.2;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;">${escapeHtml(d.title)}</a>
+      ${meta(escapeHtml(d.business.name))}
+    </div>`
     }
   }
 
-  // ── Events ──
-  const eventsHtml = events.length ? npKicker(es ? "📅 El calendario de la semana" : "📅 This Week's Calendar") +
-    `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
-    events.slice(0, 5).map((e, i, arr) => `
-      <tr>
-        <td width="16%" style="vertical-align:top;padding:7px 8px 7px 0;color:#650C75;font-size:11px;font-weight:bold;text-transform:uppercase;white-space:nowrap;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">${shortDate(e.startsAt)}</td>
-        <td style="vertical-align:top;padding:7px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
-          <a href="${siteUrl(`/events/${e.id}`)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(e.title)}</a>${e.location ? `<span style="font-size:12px;color:#7a6f60;font-style:italic;"> — ${escapeHtml(e.location)}</span>` : ""}
-        </td>
-      </tr>`).join("") + `</table>` : ""
+  // ── This week's calendar ──
+  const evList = c.news.length ? c.events : c.events.slice(c.events.length && selectLead(c)?.kind === "event" ? 1 : 0)
+  const eventsHtml = evList.length
+    ? npKicker(es ? "📅 El calendario de la semana" : "📅 This Week's Calendar") +
+      evList
+        .slice(0, 5)
+        .map((e, i, arr) =>
+          row(
+            `<div style="color:#650C75;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">${shortDate(e.startsAt)}</div>
+             ${titleLink(siteUrl(`/events/${e.id}`), e.title)}
+             ${e.location ? meta(escapeHtml(e.location)) : ""}`,
+            i,
+            Math.min(arr.length, 5)
+          )
+        )
+        .join("")
+    : ""
 
-  // ── Deals ──
-  const dealsHtml = deals.length ? npKicker(es ? "🎟️ Ofertas de la semana" : "🎟️ Deals of the Week") +
-    `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
-    deals.slice(0, 4).map((d, i, arr) => `
-      <tr><td style="vertical-align:top;padding:8px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
-        ${d.discountText ? `<span style="display:inline-block;background:#EFC618;color:#3a2600;font-weight:bold;font-size:10px;padding:2px 7px;letter-spacing:0.03em;text-transform:uppercase;">${escapeHtml(d.discountText)}</span> ` : ""}<a href="${siteUrl(`/biz/${d.business.slug}`)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(d.title)}</a>
-        <div style="font-size:12px;color:#7a6f60;">${escapeHtml(d.business.name)}</div>
-      </td></tr>`).join("") + `</table>` : ""
+  // ── The local news (headlines after the lead) ──
+  const newsRestHtml = newsRest.length
+    ? npKicker(es ? "📰 Noticias locales" : "📰 The Local News") +
+      newsRest
+        .slice(0, 3)
+        .map((n, i, arr) =>
+          row(
+            `${titleLink(siteUrl(`/blog/${n.slug}`), n.title)}
+             ${n.excerpt ? meta(escapeHtml(n.excerpt)) : ""}`,
+            i,
+            Math.min(arr.length, 3)
+          )
+        )
+        .join("") +
+      `<div style="text-align:right;margin-top:6px;"><a href="${siteUrl("/news")}" style="font-size:13px;color:#650C75;font-weight:bold;text-decoration:none;">${es ? "Todas las noticias" : "All the local news"} →</a></div>`
+    : ""
 
   // ── Where to eat ──
-  // The most-asked question in any town, and the category with the deepest content: 103 approved
-  // restaurants, every one of them with a photo. Rotates weekly (see digestWeekIndex).
-  const restaurantsHtml = c.restaurants.length ? npKicker(es ? "🍽️ Dónde comer" : "🍽️ Where to Eat") +
-    `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
-    c.restaurants.slice(0, 3).map((r, i, arr) => `
-      <tr><td style="vertical-align:top;padding:8px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
-        <a href="${siteUrl(`/biz/${r.slug}`)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(r.name)}</a>${r.address ? `<span style="font-size:12px;color:#7a6f60;font-style:italic;"> — ${escapeHtml(String(r.address).split(",")[0])}</span>` : ""}
-        ${r.blurb ? `<div style="font-size:13px;color:#4a4238;line-height:1.5;margin-top:2px;">${escapeHtml(r.blurb)}</div>` : ""}
-      </td></tr>`).join("") + `</table>` : ""
+  const restaurantsHtml = c.restaurants.length
+    ? npKicker(es ? "🍽️ Dónde comer" : "🍽️ Where to Eat") +
+      c.restaurants
+        .slice(0, 3)
+        .map((r, i, arr) =>
+          row(
+            `${titleLink(siteUrl(`/biz/${r.slug}`), r.name)}${r.address ? `<span style="font-size:13px;color:#7a6f60;font-style:italic;"> — ${escapeHtml(String(r.address).split(",")[0])}</span>` : ""}
+             ${r.blurb ? `<div style="font-size:14px;color:#4a4238;line-height:1.55;margin-top:3px;">${escapeHtml(r.blurb)}</div>` : ""}`,
+            i,
+            Math.min(arr.length, 3)
+          )
+        )
+        .join("")
+    : ""
+
+  // ── Deals (only when the town actually has them) ──
+  const dealsHtml = c.deals.length
+    ? npKicker(es ? "🎟️ Ofertas de la semana" : "🎟️ Deals of the Week") +
+      c.deals
+        .slice(0, 4)
+        .map((d, i, arr) =>
+          row(
+            `${d.discountText ? `<span style="display:inline-block;background:#EFC618;color:#3a2600;font-weight:bold;font-size:11px;padding:2px 8px;letter-spacing:0.03em;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.discountText)}</span><br/>` : ""}${titleLink(siteUrl(`/biz/${d.business.slug}`), d.title)}
+             ${meta(escapeHtml(d.business.name))}`,
+            i,
+            Math.min(arr.length, 4)
+          )
+        )
+        .join("")
+    : ""
 
   // ── One business, told properly ──
-  // The email's equivalent of the "On the record" post: a single listing whose about text we
-  // actually wrote, so the feature has something true to say rather than a restated category.
-  const featureHtml = c.feature ? npKicker(es ? "📍 En el registro" : "📍 On the Record") + `
-    <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;"><tr>
-      ${c.feature.coverUrl ? `<td width="88" style="vertical-align:top;padding:6px 12px 6px 0;"><img src="${c.feature.coverUrl}" width="88" height="88" alt="" style="display:block;width:88px;height:88px;object-fit:cover;border:1px solid #d8cfc0;"></td>` : ""}
-      <td style="vertical-align:top;padding:6px 0;">
-        <a href="${siteUrl(`/biz/${c.feature.slug}`)}" style="font-size:16px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(c.feature.name)}</a>${c.feature.categoryName ? `<span style="font-size:11px;color:#7a6f60;"> · ${escapeHtml(c.feature.categoryName)}</span>` : ""}
-        ${c.feature.blurb ? `<div style="font-size:13px;color:#4a4238;line-height:1.55;margin-top:3px;">${escapeHtml(c.feature.blurb)}</div>` : ""}
-      </td>
-    </tr></table>` : ""
+  const featureHtml = c.feature
+    ? npKicker(es ? "📍 En el registro" : "📍 On the Record") +
+      `<div style="padding:6px 0;">
+        ${c.feature.coverUrl ? `<img src="${c.feature.coverUrl}" alt="" width="100%" style="display:block;width:100%;height:160px;object-fit:cover;border:1px solid #d8cfc0;margin-bottom:10px;" />` : ""}
+        ${titleLink(siteUrl(`/biz/${c.feature.slug}`), c.feature.name)}${c.feature.categoryName ? `<span style="font-size:12px;color:#7a6f60;"> · ${escapeHtml(c.feature.categoryName)}</span>` : ""}
+        ${c.feature.blurb ? `<div style="font-size:14px;color:#4a4238;line-height:1.6;margin-top:5px;">${escapeHtml(c.feature.blurb)}</div>` : ""}
+      </div>`
+    : ""
 
-  // ── Somewhere to go ──
-  // Parks, beaches and trails, read from `activities` — every row there carries an image, tips and
-  // seasonality, and reading only from that table avoids the handful that also exist as thin
-  // business rows (Beattie Park, La Purisima Golf Course) showing up twice.
-  const outdoorsHtml = c.outdoors.length ? npKicker(es ? "🌲 Vale la pena ir" : "🌲 Worth the Trip") +
-    `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
-    c.outdoors.map((o, i, arr) => `
-      <tr><td style="vertical-align:top;padding:8px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
-        <a href="${siteUrl(o.href)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(o.title)}</a>
-        ${o.subtitle ? `<div style="font-size:13px;color:#4a4238;line-height:1.5;margin-top:2px;">${escapeHtml(o.subtitle)}</div>` : ""}
-      </td></tr>`).join("") + `</table>` : ""
+  // ── Worth the trip ──
+  const outdoorsHtml = c.outdoors.length
+    ? npKicker(es ? "🌲 Vale la pena ir" : "🌲 Worth the Trip") +
+      c.outdoors
+        .map((o, i, arr) =>
+          row(
+            `${titleLink(siteUrl(o.href), o.title)}
+             ${o.subtitle ? `<div style="font-size:14px;color:#4a4238;line-height:1.55;margin-top:3px;">${escapeHtml(o.subtitle)}</div>` : ""}`,
+            i,
+            arr.length
+          )
+        )
+        .join("")
+    : ""
 
-  // ── Around Town + Neighbors (two columns) ──
-  const thingsCol = c.things.length ? `
-    <div style="border-bottom:1px solid #650C75;margin-bottom:8px;padding-bottom:4px;"><span style="color:#650C75;font-size:11px;font-weight:bold;letter-spacing:0.16em;text-transform:uppercase;">🌟 ${es ? "Qué hacer" : "Around Town"}</span></div>
-    ${c.things.slice(0, 4).map((t, i, arr) => `<a href="${siteUrl(t.href)}" style="display:block;font-size:14px;font-weight:bold;color:#1a1712;text-decoration:none;padding:5px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">${escapeHtml(t.title)}</a>`).join("")}` : ""
-  const partnersCol = c.partners.length ? `
-    <div style="border-bottom:1px solid #650C75;margin-bottom:8px;padding-bottom:4px;"><span style="color:#650C75;font-size:11px;font-weight:bold;letter-spacing:0.16em;text-transform:uppercase;">🤝 ${es ? "Vecinos" : "Neighbors"}</span></div>
-    ${c.partners.slice(0, 4).map((p, i, arr) => `<a href="${siteUrl(`/biz/${p.slug}`)}" style="display:block;padding:5px 0;text-decoration:none;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}"><span style="font-size:14px;font-weight:bold;color:#1a1712;">${escapeHtml(p.name)}</span>${p.categoryName ? `<span style="font-size:11px;color:#7a6f60;"> · ${escapeHtml(p.categoryName)}</span>` : ""}</a>`).join("")}` : ""
-  const twoColHtml =
-    thingsCol && partnersCol
-      ? `
-    <table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;margin-top:20px;"><tr>
-      <td width="50%" style="vertical-align:top;padding-right:12px;border-right:1px solid #d8cfc0;">${thingsCol}</td>
-      <td width="50%" style="vertical-align:top;padding-left:12px;">${partnersCol}</td>
-    </tr></table>`
-      : thingsCol || partnersCol
-        ? `<div style="margin-top:20px;">${thingsCol || partnersCol}</div>`
-        : ""
+  // ── Around town & neighbors — stacked, never columns ──
+  const thingsHtml = c.things.length
+    ? npKicker(es ? "🌟 Qué hacer" : "🌟 Around Town") +
+      c.things
+        .slice(0, 3)
+        .map((t, i, arr) => row(titleLink(siteUrl(t.href), t.title), i, Math.min(arr.length, 3)))
+        .join("")
+    : ""
+  const partnersHtml = c.partners.length
+    ? npKicker(es ? "🤝 Vecinos" : "🤝 Neighbors") +
+      c.partners
+        .slice(0, 3)
+        .map((p, i, arr) =>
+          row(
+            `${titleLink(siteUrl(`/biz/${p.slug}`), p.name)}${p.categoryName ? `<span style="font-size:12px;color:#7a6f60;"> · ${escapeHtml(p.categoryName)}</span>` : ""}`,
+            i,
+            Math.min(arr.length, 3)
+          )
+        )
+        .join("")
+    : ""
 
   return `
-    <div style="font-family:Georgia,'Times New Roman',serif;max-width:620px;margin:0 auto;background:#f7f3ec;">
-      <div style="background:#650C75;padding:16px 22px 12px;text-align:center;">
-        <div style="color:#ffffff;font-size:32px;font-weight:bold;margin:0;font-family:Georgia,'Times New Roman',serif;line-height:1;">The Lompoc Locals</div>
-        <div style="height:2px;background:#EFC618;width:92%;margin:9px auto 7px;"></div>
-        <div style="color:rgba(255,255,255,0.82);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;">${fullDate} &nbsp;·&nbsp; Vol. I, No. ${weekNo} &nbsp;·&nbsp; lompoclocals.com</div>
+    <div style="background:#f7f3ec;padding:0;margin:0;">
+    <div style="font-family:Georgia,'Times New Roman',serif;width:100%;max-width:600px;margin:0 auto;background:#f7f3ec;">
+      <div style="background:#650C75;padding:18px 20px 14px;text-align:center;">
+        <div style="color:#ffffff;font-size:27px;font-weight:bold;margin:0;font-family:Georgia,'Times New Roman',serif;line-height:1;">The Lompoc Locals</div>
+        <div style="height:2px;background:#EFC618;width:88%;margin:10px auto 8px;"></div>
+        <div style="color:rgba(255,255,255,0.82);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;">${fullDate} · Vol. I, No. ${weekNo}</div>
       </div>
-      <div style="padding:18px 24px 22px;">
-        ${newsLeadHtml}${leadHtml}${eventsHtml}${newsRestHtml}${restaurantsHtml}${dealsHtml}${featureHtml}${outdoorsHtml}${twoColHtml}
-        <div style="text-align:center;margin:24px 0 2px;">
-          <a href="${siteUrl("/this-week")}" style="display:inline-block;background:#650C75;color:#ffffff;padding:11px 26px;text-decoration:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;">${es ? "Leer la edición completa" : "Read the full edition online"} →</a>
-        </div>
+      <div style="padding:22px 18px 26px;">
+        ${leadHtml}${eventsHtml}${newsRestHtml}${restaurantsHtml}${dealsHtml}${featureHtml}${outdoorsHtml}${thingsHtml}${partnersHtml}
+        <a href="${siteUrl("/this-week")}" style="display:block;background:#650C75;color:#ffffff;padding:15px 20px;margin:30px 0 4px;text-align:center;text-decoration:none;font-weight:bold;font-size:15px;font-family:Georgia,serif;">${es ? "Leer la edición completa" : "Read the full edition online"} →</a>
       </div>
-      <div style="background:#efe9df;border-top:2px solid #650C75;padding:14px 22px;text-align:center;">
-        <p style="color:#8a8175;font-size:11px;line-height:1.6;margin:0;">
+      <div style="background:#efe9df;border-top:2px solid #650C75;padding:16px 20px;text-align:center;">
+        <p style="color:#8a8175;font-size:12px;line-height:1.7;margin:0;">
           ${es ? "Estás suscrito a Lompoc Locals" : "You subscribe to Lompoc Locals"} · <a href="${opts.unsubUrl}" style="color:#8a8175;">${es ? "Cancelar" : "Unsubscribe"}</a> · <a href="${siteUrl()}" style="color:#8a8175;">lompoclocals.com</a>
         </p>
       </div>
+    </div>
     </div>`
 }
 
