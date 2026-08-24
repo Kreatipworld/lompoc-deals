@@ -1,0 +1,300 @@
+<template>
+  <div
+    data-composition-id="d2-stories"
+    data-width="1080"
+    data-height="1920"
+    data-duration="22.85"
+    style="position: absolute; inset: 0; overflow: hidden; background: #241629"
+  >
+    <style>
+      [data-composition-id="d2-stories"] .d2-phase {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+      [data-composition-id="d2-stories"] .d2-photo-wrap {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      [data-composition-id="d2-stories"] .d2-photo-wrap img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      [data-composition-id="d2-stories"] .d2-scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(36, 22, 41, 0.95) 0%,
+          rgba(36, 22, 41, 0.58) 45%,
+          rgba(36, 22, 41, 0.22) 100%
+        );
+      }
+      [data-composition-id="d2-stories"] .d2-copy {
+        position: absolute;
+        left: 84px;
+        right: 84px;
+        bottom: 23%;
+      }
+      [data-composition-id="d2-stories"] .d2-h {
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 88px;
+        line-height: 1.06;
+      }
+      [data-composition-id="d2-stories"] .d2-serif {
+        font-family: Georgia, serif;
+        font-style: italic;
+        color: #efc618;
+        font-size: 44px;
+        margin-top: 26px;
+      }
+      [data-composition-id="d2-stories"] .d2-credit {
+        position: absolute;
+        left: 84px;
+        bottom: 17.2%;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+      [data-composition-id="d2-stories"] .d2-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.07;
+        z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n2)' opacity='1'/%3E%3C/svg%3E");
+      }
+    </style>
+
+    <!-- ============ phase 1 — Falcon 9 launch (photo) ============ -->
+    <div class="d2-phase" id="d2-p1">
+      <div class="d2-photo-wrap">
+        <img id="d2-p1-img" src="public/story-launch.jpg" alt="" />
+      </div>
+      <div class="d2-scrim"></div>
+      <div class="d2-copy">
+        <div class="d2-h" id="d2-p1-h">Set an alarm: 2:27&nbsp;a.m. Wednesday Falcon&nbsp;9.</div>
+        <div class="d2-serif" id="d2-p1-s">the window moves — check /news before you head out</div>
+      </div>
+      <div class="d2-credit" id="d2-p1-c">photo: U.S. Space Force</div>
+    </div>
+
+    <!-- ============ phase 2 — fire chief (brand card) ============ -->
+    <div class="d2-phase" id="d2-p2" style="background: #241629">
+      <div
+        id="d2-p2-glow"
+        style="
+          position: absolute;
+          top: 8%;
+          left: 50%;
+          margin-left: -420px;
+          width: 840px;
+          height: 840px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(239, 198, 24, 0.26), rgba(239, 198, 24, 0) 62%);
+        "
+      ></div>
+      <div
+        style="
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 40%;
+          background: radial-gradient(ellipse 130% 100% at 50% 100%, rgba(101, 12, 117, 0.55), rgba(101, 12, 117, 0) 70%);
+        "
+      ></div>
+      <!-- abstract badge shape -->
+      <div
+        id="d2-p2-badge"
+        style="
+          position: absolute;
+          top: 17%;
+          left: 50%;
+          margin-left: -170px;
+          width: 340px;
+          height: 340px;
+          border-radius: 34% 34% 50% 50%;
+          border: 10px solid rgba(239, 198, 24, 0.75);
+          background: rgba(239, 198, 24, 0.08);
+        "
+      ><svg id="d2-p2-flame" viewBox="0 0 100 120" style="position: absolute; top: 50%; left: 50%; width: 130px; height: 156px; margin: -78px 0 0 -65px" xmlns="http://www.w3.org/2000/svg"><path d="M50 6 C58 30 82 40 82 70 C82 94 68 110 50 112 C32 110 18 94 18 70 C18 52 28 46 32 34 C40 46 44 50 50 44 C42 32 46 18 50 6 Z" fill="rgba(239,198,24,0.85)"/><path d="M50 52 C55 64 66 70 66 84 C66 98 58 106 50 107 C42 106 34 98 34 84 C34 74 40 68 44 60 C47 66 50 66 52 62 C48 56 49 55 50 52 Z" fill="#650c75"/></svg></div>
+      <div class="d2-copy">
+        <div class="d2-h" id="d2-p2-h">Kevin Shay named Lompoc fire chief.</div>
+        <div class="d2-serif" id="d2-p2-s">18 years in the department</div>
+      </div>
+    </div>
+
+    <!-- ============ phase 3 — utility portal (brand card) ============ -->
+    <div class="d2-phase" id="d2-p3" style="background: #241629">
+      <div
+        style="
+          position: absolute;
+          bottom: 10%;
+          right: -240px;
+          width: 800px;
+          height: 800px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(11, 153, 47, 0.24), rgba(11, 153, 47, 0) 65%);
+        "
+      ></div>
+      <!-- abstract browser card -->
+      <div
+        id="d2-p3-card"
+        style="
+          position: absolute;
+          top: 15%;
+          left: 130px;
+          right: 130px;
+          height: 430px;
+          border-radius: 28px;
+          background: rgba(250, 245, 236, 0.1);
+          border: 3px solid rgba(250, 245, 236, 0.35);
+          overflow: hidden;
+        "
+      >
+        <div style="height: 76px; background: rgba(250, 245, 236, 0.16); display: flex; align-items: center; padding: 0 30px; gap: 14px">
+          <span style="width: 22px; height: 22px; border-radius: 50%; background: #efc618"></span>
+          <span style="width: 22px; height: 22px; border-radius: 50%; background: #0b992f"></span>
+          <span style="width: 22px; height: 22px; border-radius: 50%; background: #650c75"></span>
+        </div>
+        <div id="d2-p3-bar1" style="margin: 46px 30px 0; height: 34px; border-radius: 17px; width: 62%; background: rgba(239, 198, 24, 0.55)"></div>
+        <div id="d2-p3-bar2" style="margin: 28px 30px 0; height: 34px; border-radius: 17px; width: 44%; background: rgba(250, 245, 236, 0.35)"></div>
+        <div id="d2-p3-bar3" style="margin: 28px 30px 0; height: 34px; border-radius: 17px; width: 52%; background: rgba(11, 153, 47, 0.5)"></div>
+      </div>
+      <div class="d2-copy">
+        <div class="d2-h" id="d2-p3-h">City utility bills have a new portal.</div>
+        <div class="d2-serif" id="d2-p3-s">log in, check your autopay</div>
+      </div>
+    </div>
+
+    <!-- ============ phase 4 — spaceport (photo) ============ -->
+    <div class="d2-phase" id="d2-p4">
+      <div class="d2-photo-wrap">
+        <img id="d2-p4-img" src="public/story-spaceport.jpg" alt="" />
+      </div>
+      <div class="d2-scrim"></div>
+      <div class="d2-copy">
+        <div class="d2-h" id="d2-p4-h">Vandenberg plans the "spaceport of the future."</div>
+        <div class="d2-serif" id="d2-p4-s">Lompoc is the town outside the gates</div>
+      </div>
+      <div class="d2-credit" id="d2-p4-c">photo: U.S. Space Force</div>
+    </div>
+
+    <!-- ============ pinned anchors ============ -->
+    <img src="public/mark-white.png" alt="" style="position: absolute; top: 4.9%; right: 84px; width: 96px; height: auto; z-index: 40" />
+
+    <div style="position: absolute; top: 5.2%; left: 84px; z-index: 40">
+      <span
+        style="
+          display: inline-block;
+          background: #efc618;
+          color: #241629;
+          font-weight: 800;
+          font-size: 32px;
+          letter-spacing: 3px;
+          padding: 14px 26px;
+          border-radius: 10px;
+        "
+        >LOMPOC NEWS</span
+      >
+    </div>
+    <div
+      style="
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 130px;
+        background: #650c75;
+        display: flex;
+        align-items: center;
+        padding: 0 84px;
+        z-index: 40;
+      "
+    >
+      <span style="color: #efc618; font-weight: 800; font-size: 42px; letter-spacing: 1px"
+        >lompoclocals.com/news</span
+      >
+    </div>
+
+    <div class="d2-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        const XFADE = 0.35;
+        // phase boundaries (comp-local): p1 0–8.05, p2 8.05–13.65, p3 13.65–17.75, p4 17.75–22.85
+        const B1 = 8.05, B2 = 13.65, B3 = 17.75;
+
+        tl.set("#d2-p1", { opacity: 1 }, 0);
+        tl.to("#d2-p1", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, B1);
+        tl.to("#d2-p2", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, B1);
+        tl.to("#d2-p2", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, B2);
+        tl.to("#d2-p3", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, B2);
+        tl.to("#d2-p3", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, B3);
+        tl.to("#d2-p4", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, B3);
+
+        // slow breathe on the photos
+        tl.fromTo("#d2-p1-img", { scale: 1 }, { scale: 1.06, duration: B1 + XFADE, ease: "none" }, 0);
+        tl.fromTo(
+          "#d2-p4-img",
+          { scale: 1.06 },
+          { scale: 1, duration: 22.85 - B3 + XFADE, ease: "none" },
+          B3 - XFADE
+        );
+
+        const copyIn = (h, s, at, credit) => {
+          tl.fromTo(h, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, at);
+          tl.fromTo(s, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, at + 0.18);
+          if (credit) {
+            tl.fromTo(credit, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, at + 0.35);
+          }
+        };
+        copyIn("#d2-p1-h", "#d2-p1-s", 0.2, "#d2-p1-c");
+        copyIn("#d2-p2-h", "#d2-p2-s", B1 + 0.25, null);
+        copyIn("#d2-p3-h", "#d2-p3-s", B2 + 0.25, null);
+        copyIn("#d2-p4-h", "#d2-p4-s", B3 + 0.25, "#d2-p4-c");
+
+        // badge settles in on phase 2
+        tl.fromTo(
+          "#d2-p2-badge",
+          { opacity: 0, scale: 0.7, rotation: -8 },
+          { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.4)" },
+          B1 + 0.35
+        );
+        tl.fromTo(
+          "#d2-p2-glow",
+          { scale: 0.9 },
+          { scale: 1.08, duration: 2.2, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          B1 + 0.4
+        );
+
+        // portal card + rows build on phase 3
+        tl.fromTo(
+          "#d2-p3-card",
+          { opacity: 0, y: 44 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+          B2 + 0.3
+        );
+        ["#d2-p3-bar1", "#d2-p3-bar2", "#d2-p3-bar3"].forEach((sel, i) => {
+          tl.fromTo(
+            sel,
+            { scaleX: 0, transformOrigin: "left center" },
+            { scaleX: 1, duration: 0.45, ease: "power2.out" },
+            B2 + 0.75 + i * 0.18
+          );
+        });
+
+        window.__timelines["d2-stories"] = tl;
+      })();
+    </script>
+  </div>
+</template>

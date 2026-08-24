@@ -1,0 +1,210 @@
+<template>
+  <div
+    data-composition-id="d1-open"
+    data-width="1080"
+    data-height="1350"
+    data-duration="3.6"
+    style="position: absolute; inset: 0; overflow: hidden"
+  >
+    <style>
+      [data-composition-id="d1-open"] .d1-fill {
+        position: absolute;
+        inset: 0;
+      }
+      [data-composition-id="d1-open"] .d1-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.07;
+        z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      }
+      [data-composition-id="d1-open"] .d1-serif {
+        font-family: Georgia, serif;
+        font-style: italic;
+      }
+    </style>
+
+    <!-- ground -->
+    <div class="d1-fill" style="background: #650c75"></div>
+    <div
+      class="d1-fill"
+      style="
+        background: radial-gradient(
+          ellipse 120% 70% at 50% 85%,
+          rgba(36, 22, 41, 0.55),
+          rgba(36, 22, 41, 0) 60%
+        );
+      "
+    ></div>
+
+    <!-- breathing glows -->
+    <div
+      id="d1-glow-a"
+      style="
+        position: absolute;
+        top: 9%;
+        left: -220px;
+        width: 720px;
+        height: 720px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(239, 198, 24, 0.22), rgba(239, 198, 24, 0) 65%);
+      "
+    ></div>
+    <div
+      id="d1-glow-b"
+      style="
+        position: absolute;
+        bottom: 14%;
+        right: -260px;
+        width: 820px;
+        height: 820px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(11, 153, 47, 0.18), rgba(11, 153, 47, 0) 65%);
+      "
+    ></div>
+
+    <!-- ghost word -->
+    <div
+      id="d1-ghost"
+      style="
+        position: absolute;
+        top: 15%;
+        left: -60px;
+        width: 1400px;
+        height: 520px;
+        background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='520'%3E%3Ctext x='20' y='400' font-family='Georgia, serif' font-style='italic' font-weight='700' font-size='340' fill='rgba(250,245,236,0.10)'%3Edigest%3C/text%3E%3C/svg%3E&quot;);
+        background-repeat: no-repeat;
+      "
+    ></div>
+
+    <!-- brand watermark -->
+    <img src="public/mark-white.png" alt="" style="position: absolute; top: 4.9%; right: 84px; width: 96px; height: auto; z-index: 40" />
+
+    <!-- tri-color structural bar -->
+    <div
+      style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(90deg, #efc618, #650c75 45%, #0b992f);
+      "
+    ></div>
+
+    <!-- content, bottom-anchored -->
+    <div style="position: absolute; left: 84px; right: 84px; bottom: 22%">
+      <span
+        id="d1-kicker"
+        style="
+          display: inline-block;
+          background: #efc618;
+          color: #241629;
+          font-weight: 800;
+          font-size: 34px;
+          letter-spacing: 3px;
+          padding: 16px 30px;
+          border-radius: 10px;
+        "
+        >THE MONDAY DIGEST</span
+      >
+      <div style="margin-top: 46px; color: #ffffff; font-weight: 800; font-size: 128px; line-height: 1.02">
+        <span id="d1-w1" style="display: inline-block">It's Monday,</span><br />
+        <span id="d1-w2" style="display: inline-block">Lompoc.</span>
+      </div>
+      <div
+        id="d1-underline"
+        style="
+          display: block;
+          margin-top: 26px;
+          width: 560px;
+          height: 14px;
+          border-radius: 7px;
+          background: #efc618;
+        "
+      ></div>
+      <div
+        id="d1-sub"
+        class="d1-serif"
+        style="margin-top: 40px; color: #efc618; font-size: 48px"
+      >
+        your week, in one minute &nbsp;·&nbsp; Aug 24
+      </div>
+    </div>
+
+    <div
+      style="
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 130px;
+        background: #241629;
+        display: flex;
+        align-items: center;
+        padding: 0 84px;
+      "
+    >
+      <span style="color: #efc618; font-weight: 800; font-size: 42px; letter-spacing: 1px"
+        >lompoclocals.com</span
+      >
+    </div>
+
+    <div class="d1-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo(
+          "#d1-glow-a",
+          { scale: 1 },
+          { scale: 1.16, duration: 1.8, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0
+        );
+        tl.fromTo(
+          "#d1-glow-b",
+          { scale: 1.1 },
+          { scale: 0.96, duration: 1.8, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0
+        );
+        tl.fromTo("#d1-ghost", { x: 0 }, { x: 60, duration: 3.6, ease: "none" }, 0);
+
+        tl.fromTo(
+          "#d1-kicker",
+          { scale: 1 },
+          { scale: 1.04, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0.15
+        );
+
+        const words = ["#d1-w1", "#d1-w2"];
+        words.forEach((sel, i) => {
+          tl.fromTo(
+            sel,
+            { opacity: 0, y: 26, scale: 0.9 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" },
+            0.25 + i * 0.28
+          );
+        });
+
+        tl.fromTo(
+          "#d1-underline",
+          { scaleX: 0, transformOrigin: "left center" },
+          { scaleX: 1, duration: 0.5, ease: "power3.out" },
+          1.1
+        );
+
+        tl.fromTo(
+          "#d1-sub",
+          { opacity: 0, y: 26 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          1.45
+        );
+
+        window.__timelines["d1-open"] = tl;
+      })();
+    </script>
+  </div>
+</template>
