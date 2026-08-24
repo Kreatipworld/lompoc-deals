@@ -1036,10 +1036,12 @@ export type BlogPostFull = BlogPostCard & {
 export async function getPublishedBlogPosts(
   limit = 20,
   offset = 0,
-  category?: string
+  category?: string,
+  topicTag?: string
 ): Promise<BlogPostCard[]> {
   const conditions = [eq(blogPosts.status, "published")]
   if (category) conditions.push(eq(blogPosts.category, category))
+  if (topicTag) conditions.push(sql`${blogPosts.tags} @> ${JSON.stringify([topicTag])}::jsonb`)
 
   const rows = await db
     .select({
@@ -1096,9 +1098,10 @@ export async function getBlogCategories(): Promise<string[]> {
   return rows.map((r) => r.category).filter(Boolean) as string[]
 }
 
-export async function countPublishedBlogPosts(category?: string): Promise<number> {
+export async function countPublishedBlogPosts(category?: string, topicTag?: string): Promise<number> {
   const conditions = [eq(blogPosts.status, "published")]
   if (category) conditions.push(eq(blogPosts.category, category))
+  if (topicTag) conditions.push(sql`${blogPosts.tags} @> ${JSON.stringify([topicTag])}::jsonb`)
   const rows = await db
     .select({ count: sql<number>`count(*)` })
     .from(blogPosts)

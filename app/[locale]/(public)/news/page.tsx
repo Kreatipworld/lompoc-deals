@@ -6,6 +6,7 @@ import { getPublishedBlogPosts, countPublishedBlogPosts } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
+import { NEWS_TOPICS, topicBySlug, topicTag, deriveTopic } from "@/lib/news-topics"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 const PAGE_SIZE = 12
@@ -37,16 +38,19 @@ export default async function NewsIndexPage({
   searchParams,
 }: {
   params: { locale: string }
-  searchParams: { page?: string }
+  searchParams: { page?: string; topic?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "news" })
 
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10))
   const offset = (page - 1) * PAGE_SIZE
+  const es = params.locale === "es"
+  const activeTopic = searchParams.topic ? topicBySlug(searchParams.topic) : undefined
+  const activeTag = activeTopic ? topicTag(activeTopic.slug) : undefined
 
   const [posts, total] = await Promise.all([
-    getPublishedBlogPosts(PAGE_SIZE, offset, NEWS_CATEGORY),
-    countPublishedBlogPosts(NEWS_CATEGORY),
+    getPublishedBlogPosts(PAGE_SIZE, offset, NEWS_CATEGORY, activeTag),
+    countPublishedBlogPosts(NEWS_CATEGORY, activeTag),
   ])
 
   const totalPages = Math.ceil(total / PAGE_SIZE)
@@ -62,6 +66,33 @@ export default async function NewsIndexPage({
         <h1 className="text-4xl font-bold text-gray-900 mb-2">{t("heading")}</h1>
         <p className="text-gray-500 text-lg max-w-xl">{t("subheading")}</p>
       </header>
+
+      {/* Topic chips — the curated sections of the town's front page */}
+      <nav className="mb-8 flex flex-wrap gap-2" aria-label="News topics">
+        <Link
+          href="/news"
+          className={`rounded-full px-4 py-1.5 text-sm font-semibold border transition-colors ${
+            !activeTopic
+              ? "bg-primary text-white border-primary"
+              : "bg-white text-gray-600 border-gray-200 hover:border-primary/40 hover:text-primary"
+          }`}
+        >
+          {es ? "Todo" : "All"}
+        </Link>
+        {NEWS_TOPICS.map((topic) => (
+          <Link
+            key={topic.slug}
+            href={`/news?topic=${topic.slug}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-semibold border transition-colors ${
+              activeTopic?.slug === topic.slug
+                ? "bg-primary text-white border-primary"
+                : "bg-white text-gray-600 border-gray-200 hover:border-primary/40 hover:text-primary"
+            }`}
+          >
+            {topic.emoji} {es ? topic.es : topic.en}
+          </Link>
+        ))}
+      </nav>
 
       {posts.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
@@ -135,9 +166,12 @@ export default async function NewsIndexPage({
                     <p className="text-gray-500 text-sm line-clamp-2 mb-3">{post.excerpt}</p>
                   )}
                   {post.publishedAt && (
-                    <span className="mt-auto flex items-center gap-1 text-xs text-gray-400 pt-3 border-t border-gray-50">
-                      <CalendarDays className="w-3 h-3" />
-                      {format(post.publishedAt, "MMM d, yyyy")}
+                    <span className="mt-auto flex items-center gap-2 text-xs text-gray-400 pt-3 border-t border-gray-50">
+                      <span className="font-semibold text-primary">
+                        {(() => { const tp = deriveTopic(post.tags as string[] | null, post.title); return `${tp.emoji} ${es ? tp.es : tp.en}` })()}
+                      </span>
+                      <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" />
+                      {format(post.publishedAt, "MMM d, yyyy")}</span>
                     </span>
                   )}
                 </div>
@@ -149,7 +183,7 @@ export default async function NewsIndexPage({
             <nav className="mt-12 flex items-center justify-center gap-2" aria-label={t("paginationLabel")}>
               {page > 1 && (
                 <Link
-                  href={`/news?page=${page - 1}`}
+                  href={`/news?page=${page - 1}${activeTopic ? `&topic=${activeTopic.slug}` : ""}`}
                   className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" /> {t("paginationPrev")}
@@ -160,7 +194,7 @@ export default async function NewsIndexPage({
               </span>
               {page < totalPages && (
                 <Link
-                  href={`/news?page=${page + 1}`}
+                  href={`/news?page=${page + 1}${activeTopic ? `&topic=${activeTopic.slug}` : ""}`}
                   className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
                 >
                   {t("paginationNext")} <ChevronRight className="w-4 h-4" />

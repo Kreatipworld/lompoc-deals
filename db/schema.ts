@@ -662,3 +662,27 @@ export const cronRuns = pgTable(
     nameCreatedIdx: index("cron_runs_name_created_idx").on(t.name, t.createdAt),
   })
 )
+
+/**
+ * Raw material for the news desk: headlines harvested daily from local RSS
+ * feeds. Never published directly — a human/editor session turns the good
+ * ones into original stories with source-credit links. One fetch per feed
+ * per day keeps us invisible to any rate limit.
+ */
+export const newsLeads = pgTable(
+  "news_leads",
+  {
+    id: serial("id").primaryKey(),
+    title: varchar("title", { length: 500 }).notNull(),
+    url: varchar("url", { length: 1000 }).notNull().unique(),
+    source: varchar("source", { length: 100 }).notNull(),
+    summary: text("summary"),
+    topicGuess: varchar("topic_guess", { length: 50 }),
+    status: varchar("status", { length: 20 }).notNull().default("new"), // new | used | dismissed
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    statusIdx: index("news_leads_status_idx").on(t.status, t.createdAt),
+  })
+)
