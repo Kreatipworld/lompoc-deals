@@ -32,11 +32,11 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const reports: { source: string; found: number; inserted: number; error?: string }[] = []
+  const reports: { source: string; parsed?: number; found: number; inserted: number; error?: string }[] = []
   for (const feed of FEEDS) {
     try {
       const res = await fetch(feed.url, {
-        headers: { "user-agent": "LompocLocals-NewsDesk/1.0 (news curation; hello@lompoclocals.com)" },
+        headers: { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36 LompocLocalsNewsDesk/1.0" },
         signal: AbortSignal.timeout(15_000),
         cache: "no-store",
       })
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
           .returning({ id: newsLeads.id })
         if (r.length) inserted++
       }
-      reports.push({ source: feed.source, found: local.length, inserted })
+      reports.push({ source: feed.source, parsed: items.length, found: local.length, inserted })
     } catch (err) {
       reports.push({ source: feed.source, found: 0, inserted: 0, error: err instanceof Error ? err.message : String(err) })
     }
