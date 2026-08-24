@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
 import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
+import { ensureDigestSubscription } from "@/lib/digest-subscribe"
 import { users, businesses, subscriptions } from "@/db/schema"
 import { signIn } from "@/auth"
 import { stripe, validStripeCustomerId, TIERS } from "@/lib/stripe"
@@ -207,6 +208,9 @@ export async function businessSignupSubmitAction(
     .returning({ id: users.id })
 
   const userId = newUser.id
+
+  // Partners get the Monday digest from day one (idempotent, unsub-safe).
+  await ensureDigestSubscription(email, locale as "en" | "es")
 
   // Stitch anonymous session to new user, then track signup
   const sid = getSessionId()

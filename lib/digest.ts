@@ -1,6 +1,6 @@
 import { gt, lt, asc, and, eq, desc, sql, inArray } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, events, categories } from "@/db/schema"
+import { deals, businesses, events, categories, blogPosts } from "@/db/schema"
 import type { DealCardData } from "@/lib/queries"
 import { getFeaturedActivities } from "@/lib/queries"
 import { isChain } from "@/lib/chains"
@@ -10,7 +10,7 @@ import { isChain } from "@/lib/chains"
 // always has a fresh reason to open (see docs/marketing/digest-email-plan.md).
 export type DigestTheme = "events" | "deals" | "thingsToDo" | "partners"
 
-/** Which theme this Saturday's digest uses, by week-of-month (1st→events … 4th→partners). */
+/** Which theme this Monday's digest uses, by week-of-month (1st→events … 4th→partners). */
 export function digestThemeForDate(d: Date): DigestTheme {
   const weekIdx = Math.floor((d.getDate() - 1) / 7) // 0-based week of the month
   const order: DigestTheme[] = ["events", "deals", "thingsToDo", "partners"]
@@ -19,7 +19,7 @@ export function digestThemeForDate(d: Date): DigestTheme {
 
 /**
  * The deals that go into the weekly digest: top 10 active deals created in
- * the past 7 days from approved businesses. Shared by the Saturday cron
+ * the past 7 days from approved businesses. Shared by the Monday cron
  * (app/api/cron/digest) and the admin comms hub preview/test-send.
  */
 export async function getDigestDeals(): Promise<DealCardData[]> {
@@ -85,7 +85,7 @@ export type DigestEvent = {
 }
 
 /**
- * Upcoming approved events for the Saturday digest: everything happening in
+ * Upcoming approved events for the Monday digest: everything happening in
  * the next 7 days, soonest first. Rocket launches and city events land here
  * via the daily sync-events cron.
  */
@@ -343,6 +343,44 @@ export async function getDigestOutdoors(week: number, limit = 2): Promise<Digest
   }))
 }
 
+
+/** A local-news story for the digest's front page. */
+export type DigestNews = {
+  id: number
+  slug: string
+  title: string
+  excerpt: string | null
+  imageUrl: string | null
+  publishedAt: Date | null
+}
+
+/**
+ * The week's local news, newest first — the section that makes the Monday
+ * edition read like the town's front page rather than a listings sheet.
+ */
+export async function getDigestNews(limit = 4): Promise<DigestNews[]> {
+  const rows = await db
+    .select({
+      id: blogPosts.id,
+      slug: blogPosts.slug,
+      title: blogPosts.title,
+      excerpt: blogPosts.excerpt,
+      imageUrl: blogPosts.imageUrl,
+      publishedAt: blogPosts.publishedAt,
+    })
+    .from(blogPosts)
+    .where(
+      and(
+        eq(blogPosts.category, "local-news"),
+        eq(blogPosts.status, "published"),
+        gt(blogPosts.publishedAt, sql`now() - interval '10 days'`)
+      )
+    )
+    .orderBy(desc(blogPosts.publishedAt))
+    .limit(limit)
+  return rows
+}
+
 export type MasterDigestContent = {
   events: DigestEvent[]
   deals: DealCardData[]
@@ -352,11 +390,12 @@ export type MasterDigestContent = {
   restaurants: DigestPlace[]
   feature: DigestPlace | null
   outdoors: DigestThing[]
+  news: DigestNews[]
 }
 
 export async function getMasterDigestContent(): Promise<MasterDigestContent> {
   const week = digestWeekIndex()
-  const [events, deals, things, partners, restaurants, feature, outdoors] = await Promise.all([
+  const [events, deals, things, partners, restaurants, feature, outdoors, news] = await Promise.all([
     getDigestEvents(21, 6),
     getDigestDeals(),
     getDigestThingsToDo(6),
@@ -364,8 +403,9 @@ export async function getMasterDigestContent(): Promise<MasterDigestContent> {
     getDigestRestaurants(week, 3),
     getDigestBusinessFeature(week),
     getDigestOutdoors(week, 2),
+    getDigestNews(4),
   ])
-  return { events, deals: deals.slice(0, 6), things, partners, restaurants, feature, outdoors }
+  return { events, deals: deals.slice(0, 6), things, partners, restaurants, feature, outdoors, news }
 }
 
 /** The front-page lead: soonest event, else top deal, else nothing. */
@@ -391,6 +431,7 @@ export function hasMasterDigestContent(c: MasterDigestContent): boolean {
       c.partners.length +
       c.restaurants.length +
       c.outdoors.length +
+      c.news.length +
       (c.feature ? 1 : 0) >
     0
   )

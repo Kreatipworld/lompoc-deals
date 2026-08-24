@@ -344,7 +344,7 @@ export async function sendConfirmationEmail(
       : welcomeHtml({
           heading: "Confirm your subscription",
           intro:
-            "One click and you're in: confirm your email to start getting The Lompoc Locals — the Saturday-morning weekly on the businesses, deals, and events happening in town.",
+            "One click and you're in: confirm your email to start getting The Lompoc Locals — the Monday-morning weekly on the businesses, deals, and events happening in town.",
           bulletsTitle: "",
           bullets: [],
           ctaLabel: "Confirm subscription",
@@ -1093,6 +1093,39 @@ export function renderMasterDigestHtml(
     </tr></table>`
   }
 
+  // ── The week's news ──
+  // The section that makes this the town's front page: real local stories from
+  // /news, top story with art, the rest as headline rows.
+  let newsHtml = ""
+  if (c.news.length) {
+    const [top, ...rest] = c.news
+    const topImg = absImg(top.imageUrl)
+    newsHtml =
+      npKicker(es ? "📰 Noticias locales" : "📰 The Local News") +
+      `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;"><tr>
+        ${topImg ? `<td width="42%" style="vertical-align:top;padding:6px 12px 10px 0;"><img src="${topImg}" alt="" width="100%" style="display:block;width:100%;height:130px;object-fit:cover;border:1px solid #d8cfc0;" /></td>` : ""}
+        <td style="vertical-align:top;padding:6px 0 10px;">
+          <a href="${siteUrl(`/blog/${top.slug}`)}" style="display:block;font-size:19px;line-height:1.15;color:#1a1712;font-weight:bold;text-decoration:none;font-family:Georgia,serif;margin-bottom:4px;">${escapeHtml(top.title)}</a>
+          ${top.excerpt ? `<div style="font-size:13px;color:#4a4238;line-height:1.5;">${escapeHtml(top.excerpt)}</div>` : ""}
+        </td>
+      </tr></table>` +
+      (rest.length
+        ? `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
+          rest
+            .slice(0, 3)
+            .map(
+              (n, i, arr) => `
+      <tr><td style="vertical-align:top;padding:7px 0;${i < arr.length - 1 ? "border-bottom:1px solid #e3dbcd;" : ""}">
+        <a href="${siteUrl(`/blog/${n.slug}`)}" style="font-size:15px;font-weight:bold;color:#1a1712;text-decoration:none;">${escapeHtml(n.title)}</a>
+        ${n.excerpt ? `<div style="font-size:12px;color:#7a6f60;line-height:1.45;margin-top:1px;">${escapeHtml(n.excerpt)}</div>` : ""}
+      </td></tr>`
+            )
+            .join("") +
+          `</table>`
+        : "") +
+      `<div style="text-align:right;margin:4px 0 2px;"><a href="${siteUrl("/news")}" style="font-size:12px;color:#650C75;font-weight:bold;text-decoration:none;">${es ? "Todas las noticias" : "All the local news"} →</a></div>`
+  }
+
   // ── Events ──
   const eventsHtml = events.length ? npKicker(es ? "📅 El calendario de la semana" : "📅 This Week's Calendar") +
     `<table role="presentation" width="100%" style="border-collapse:separate;border-spacing:0;">` +
@@ -1174,7 +1207,7 @@ export function renderMasterDigestHtml(
         <div style="color:rgba(255,255,255,0.82);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;">${fullDate} &nbsp;·&nbsp; Vol. I, No. ${weekNo} &nbsp;·&nbsp; lompoclocals.com</div>
       </div>
       <div style="padding:18px 24px 22px;">
-        ${leadHtml}${eventsHtml}${restaurantsHtml}${featureHtml}${outdoorsHtml}${dealsHtml}${twoColHtml}
+        ${leadHtml}${newsHtml}${eventsHtml}${restaurantsHtml}${featureHtml}${outdoorsHtml}${dealsHtml}${twoColHtml}
         <div style="text-align:center;margin:24px 0 2px;">
           <a href="${siteUrl("/this-week")}" style="display:inline-block;background:#650C75;color:#ffffff;padding:11px 26px;text-decoration:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;">${es ? "Leer la edición completa" : "Read the full edition online"} →</a>
         </div>

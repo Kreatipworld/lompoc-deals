@@ -28,7 +28,7 @@ export async function GET(request: Request) {
   }
 
   // Confirmed subscribers minus anyone on the suppression list — a one-click
-  // unsubscribe from ANY of our emails must also stop the Saturday digest.
+  // unsubscribe from ANY of our emails must also stop the Monday digest.
   const confirmedSubs = await db
     .select({
       email: subscribers.email,

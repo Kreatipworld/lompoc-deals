@@ -5,12 +5,8 @@
       "schedule": "0 15 * * 1"
     },
     {
-      "path": "/api/cron/digest",
-      "schedule": "0 16 * * 6"
-    },
-    {
       "path": "/api/cron/digest-preview",
-      "schedule": "0 16 * * 4"
+      "schedule": "0 16 * * 6"
     },
     {
       "path": "/api/cron/sync-listings",

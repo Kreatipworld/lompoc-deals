@@ -36,6 +36,7 @@ const content: MasterDigestContent = {
     { title: "Lompoc Museum", href: "/activities/lompoc-museum", imageUrl: "/img/museum.jpg",
       subtitle: "On South H Street." },
   ],
+  news: [],
 }
 const opts = { unsubUrl: "https://x/unsub?token=abc", now: NOW }
 
@@ -85,7 +86,7 @@ assert.ok(htmlEs.includes("Vale la pena ir"), "es outdoors label")
 assert.ok(!htmlEs.includes("Where to Eat"), "es edition has no english section header")
 
 // empty content -> still valid shell, no crash, omits empty sections
-const empty: MasterDigestContent = { events: [], deals: [], things: [], partners: [], restaurants: [], feature: null, outdoors: [] }
+const empty: MasterDigestContent = { events: [], deals: [], things: [], partners: [], restaurants: [], feature: null, outdoors: [], news: [] }
 const htmlEmpty = renderMasterDigestHtml(empty, "en", opts)
 assert.ok(htmlEmpty.includes("The Lompoc Locals"), "empty still renders masthead")
 assert.ok(!htmlEmpty.includes("Deals of the Week"), "empty omits deals header")
@@ -104,6 +105,7 @@ const onlyThings: MasterDigestContent = {
     restaurants: [],
     feature: null,
     outdoors: [],
+    news: [],
 }
 const htmlOnlyThings = renderMasterDigestHtml(onlyThings, "en", opts)
 assert.ok(!htmlOnlyThings.includes('width="50%"'), "single-column row has no 50% cell")
@@ -122,6 +124,7 @@ const onlyPartners: MasterDigestContent = {
     restaurants: [],
     feature: null,
     outdoors: [],
+    news: [],
 }
 const htmlOnlyPartners = renderMasterDigestHtml(onlyPartners, "en", opts)
 assert.ok(!htmlOnlyPartners.includes('width="50%"'), "single-column row has no 50% cell (partners-only)")
@@ -129,3 +132,24 @@ assert.ok(htmlOnlyPartners.includes("One Plant"), "partners content present")
 assert.ok(htmlOnlyPartners.includes("Neighbors"), "partners section header present")
 
 console.log("renderMasterDigestHtml: all assertions passed")
+
+// news section renders: top story with excerpt + headline rows + /news link
+{
+  const withNews: MasterDigestContent = {
+    events: [], deals: [], things: [], partners: [], restaurants: [], feature: null, outdoors: [],
+    news: [
+      { id: 108, slug: "vandenberg-starlink-launch-august-26", title: "Set an Alarm: Falcon 9 Wednesday", excerpt: "The current window and where to watch.", imageUrl: "https://img.example/launch.jpeg", publishedAt: new Date("2026-08-23T00:00:00Z") },
+      { id: 104, slug: "vandenberg-food-donation-center", title: "Food Donation Center Opens", excerpt: null, imageUrl: null, publishedAt: new Date("2026-08-22T00:00:00Z") },
+    ],
+  }
+  const h = renderMasterDigestHtml(withNews, "en", { unsubUrl: "https://x/unsub", now: new Date("2026-08-24T16:00:00Z") })
+  assert.ok(h.includes("The Local News"), "news kicker")
+  assert.ok(h.includes("/blog/vandenberg-starlink-launch-august-26"), "top story link")
+  assert.ok(h.includes("Set an Alarm: Falcon 9 Wednesday"), "top story title")
+  assert.ok(h.includes("https://img.example/launch.jpeg"), "top story image")
+  assert.ok(h.includes("/blog/vandenberg-food-donation-center"), "headline row link")
+  assert.ok(h.includes('/news"'), "all-news link")
+  const hEs = renderMasterDigestHtml(withNews, "es", { unsubUrl: "https://x/unsub", now: new Date("2026-08-24T16:00:00Z") })
+  assert.ok(hEs.includes("Noticias locales"), "es news kicker")
+  console.log("news section: all assertions passed")
+}

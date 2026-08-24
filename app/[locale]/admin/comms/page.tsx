@@ -45,7 +45,7 @@ export default async function AdminCommsPage() {
     const body = encodeURIComponent(
       role === "business"
         ? "Hi! I'm Andres from Lompoc Locals — saw your business join and wanted to say welcome personally. If you want a hand setting up your profile or your first deal, just reply to this email and I'll walk you through it.\n\n— Andres"
-        : "Hi! I'm Andres from Lompoc Locals — just wanted to say welcome personally. Every Saturday morning we send one email with what's on around Lompoc that week, and everything on the site is free for locals. If anything's confusing, just reply — I read every email.\n\n— Andres"
+        : "Hi! I'm Andres from Lompoc Locals — just wanted to say welcome personally. Every Monday morning we send one email with what's on around Lompoc that week, and everything on the site is free for locals. If anything's confusing, just reply — I read every email.\n\n— Andres"
     )
     return `mailto:${email}?subject=${subject}&body=${body}`
   }
@@ -63,7 +63,7 @@ export default async function AdminCommsPage() {
       <section className="rounded-3xl border bg-card p-6 shadow-sm">
         <div className="flex items-center gap-2">
           <Mail className="h-5 w-5 text-primary" />
-          <h2 className="font-display text-xl font-semibold tracking-tight">Saturday digest</h2>
+          <h2 className="font-display text-xl font-semibold tracking-tight">Monday digest</h2>
         </div>
         <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="rounded-2xl border bg-background p-4">
@@ -79,7 +79,7 @@ export default async function AdminCommsPage() {
             </p>
             <p className="mt-1 flex items-center gap-1.5 font-display text-lg font-semibold">
               <CalendarClock className="h-4 w-4 text-primary" />
-              Saturday, 9:00 AM
+              Monday, 9:00 AM
             </p>
             <p className="text-xs text-muted-foreground">Automatic (cron) · skipped if no fresh deals</p>
           </div>

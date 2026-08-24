@@ -10,7 +10,7 @@ const deal = (id: number, title: string): MasterDigestContent["deals"][number] =
   business: { id: 1, name: "Biz", slug: "biz", logoUrl: null, coverUrl: null,
     categoryName: null, categorySlug: null, address: null, phone: null },
 })
-const base: MasterDigestContent = { events: [], deals: [], things: [], partners: [], restaurants: [], feature: null, outdoors: [] }
+const base: MasterDigestContent = { events: [], deals: [], things: [], partners: [], restaurants: [], feature: null, outdoors: [], news: [] }
 
 // event present -> event lead
 let lead = selectLead({ ...base, events: [ev(1, "Launch"), ev(2, "Market")], deals: [deal(9, "20% off")] })

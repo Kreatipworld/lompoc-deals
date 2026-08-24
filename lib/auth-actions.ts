@@ -9,6 +9,7 @@ import { AuthError } from "next-auth"
 import { randomBytes } from "crypto"
 import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
+import { ensureDigestSubscription } from "@/lib/digest-subscribe"
 import { users, businesses, businessClaims, subscriptions, passwordResetTokens } from "@/db/schema"
 import { isUnclaimedBusiness } from "@/lib/business-ownership"
 import { signIn, signOut } from "@/auth"
@@ -63,6 +64,9 @@ export async function signupAction(
     .values({ email, passwordHash, role: dbRole })
     .returning({ id: users.id })
   const newUserId = inserted[0]?.id
+
+  // Business accounts join the Monday digest automatically (idempotent).
+  if (dbRole === "business") await ensureDigestSubscription(email)
 
   // If claiming, find the business and create a claim. When the new account's
   // email matches the email already on the listing, the claimant demonstrably
