@@ -111,6 +111,15 @@ export async function syncExploreLompocEvents(): Promise<SyncReport> {
           externalId: String(evt.id),
         }
 
+        // Rocket launches are owned by the launch-library feed, which re-syncs
+        // shifting launch windows daily. The city calendar's copies go stale and
+        // duplicate them under different titles (seen Aug 23: Starlink 15-22
+        // listed twice with conflicting times) — skip them at the door.
+        if (/rocket\s*launch/i.test(values.title)) {
+          skipped++
+          continue
+        }
+
         const existing = await db
           .select({ id: events.id })
           .from(events)
