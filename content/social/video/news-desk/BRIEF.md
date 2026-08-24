@@ -34,3 +34,9 @@ A 4:5 variant follows the approved 9:16 master.
 - Brand truth: purple #650C75 / green #0B992F / gold #EFC618, cream #FAF5EC, ink #241629; Plus Jakarta Sans + Georgia italic serif; gold kicker chips; grain overlay; bottom-of-frame URL band — mirror the news-kit card DNA.
 - Never use source-outlet photos; only member photos and platform-owned imagery, credited.
 - End card holds lompoclocals.com/news.
+
+## Customizations (added 2026-08-23 evening)
+
+- Logo watermark: white mark top-right on s1/s2 (dark scenes), full-color logo.svg on s3 (cream); s4 unchanged (logo is the hero). DONE in compositions/ + compositions-4x5/ — needs re-render of both aspects.
+- Voiceover: APPROVED — Higgsfield Emily, ONE full-script read (~3.6 credits, user said yes 2026-08-23), sliced per scene. Script lives in audio_request.json (6 lines, conversational, "Hey Lompoc" opener). Verify actual billed credits via transactions after generating. Higgsfield MCP OAuth was wedged in the prior session — re-authorize fresh, ONE authenticate call only, don't restart the flow while the user is authorizing.
+- After VO: place per-line audio at root index (track 10) in BOTH index.html and index-4x5.tmpl, nudge line starts to scene starts (s1 0.3, s2 phases 4.7/9.0/13.3, s3 17.7, s4 21.6 approx), duck nothing (no BGM), re-check, re-render, verify, re-send.

@@ -1,0 +1,33 @@
+{
+  "lang": "en",
+  "lines": [
+    {
+      "id": "s1",
+      "text": "Hey Lompoc. We've got our own news page now."
+    },
+    {
+      "id": "s2a",
+      "text": "That new grocery store on North H? It's open."
+    },
+    {
+      "id": "s2b",
+      "text": "Those rockets that light up the sky? You'll know before they go."
+    },
+    {
+      "id": "s2c",
+      "text": "And Friday night lights are back."
+    },
+    {
+      "id": "s3",
+      "text": "Real stories, written by your neighbors."
+    },
+    {
+      "id": "s4",
+      "text": "Lompoc Locals dot com, slash news. Your town, on the record."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "af_heart"
+}
