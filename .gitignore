@@ -65,3 +65,10 @@ content/social/assets/generated-people/
 # heavy media stays local + CDN — never in git
 docs/marketing/taco-route/*.mp4
 docs/marketing/taco-route/*.wav
+
+# news-kit rendered cards + news-desk video project generated artifacts
+content/social/news-kit/*.png
+content/social/video/news-desk/renders/
+content/social/video/news-desk/snapshots*/
+content/social/video/news-desk/node_modules/
+content/social/video/news-desk/.hyperframes/

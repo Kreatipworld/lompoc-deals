@@ -1,0 +1,166 @@
+<template>
+  <div
+    data-composition-id="s3-value"
+    data-width="1080"
+    data-height="1350"
+    data-duration="4"
+    style="position: absolute; inset: 0; overflow: hidden"
+  >
+    <style>
+      [data-composition-id="s3-value"] .s3-serif {
+        font-family: Georgia, serif;
+        font-style: italic;
+      }
+      [data-composition-id="s3-value"] .s3-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.06;
+        z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n3)' opacity='1'/%3E%3C/svg%3E");
+      }
+    </style>
+
+    <!-- cream ground -->
+    <div style="position: absolute; inset: 0; background: #faf5ec"></div>
+    <!-- faint warm glow -->
+    <div
+      id="s3-glow"
+      style="
+        position: absolute;
+        top: 30%;
+        left: 140px;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(239, 198, 24, 0.16), rgba(239, 198, 24, 0) 65%);
+      "
+    ></div>
+
+    <!-- tri-color structural bar -->
+    <div
+      style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(90deg, #efc618, #650c75 45%, #0b992f);
+      "
+    ></div>
+
+    <!-- label -->
+    <div
+      id="s3-label"
+      class="s3-serif"
+      style="position: absolute; top: 32%; left: 0; right: 0; text-align: center; color: #0b992f; font-size: 46px"
+    >
+      lompoc news
+    </div>
+
+    <!-- the two swapped lines share one center stage -->
+    <div style="position: absolute; top: 38%; left: 90px; right: 90px; height: 30%">
+      <div
+        id="s3-line1"
+        style="
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          color: #241629;
+          font-weight: 800;
+          font-size: 84px;
+          line-height: 1.15;
+        "
+      >
+        what's opening&nbsp;· what's launching&nbsp;· what's next
+      </div>
+      <div
+        id="s3-line2"
+        style="
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        "
+      >
+        <div style="color: #241629; font-weight: 800; font-size: 104px; line-height: 1.05">
+          written by neighbors.
+        </div>
+        <div
+          id="s3-marker"
+          style="display: block; margin-top: 30px; width: 460px; height: 14px; border-radius: 7px; background: #efc618"
+        ></div>
+      </div>
+    </div>
+
+    <!-- footer band -->
+    <div
+      style="
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 130px;
+        background: #650c75;
+        display: flex;
+        align-items: center;
+        padding: 0 84px;
+      "
+    >
+      <span style="color: #efc618; font-weight: 800; font-size: 42px; letter-spacing: 1px"
+        >lompoclocals.com/news</span
+      >
+    </div>
+
+    <div class="s3-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // one restrained move at a time — titlecard register
+        tl.fromTo("#s3-label", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0.15);
+
+        tl.set("#s3-line2", { opacity: 0 }, 0);
+        tl.fromTo(
+          "#s3-line1",
+          { opacity: 0, scale: 0.95 },
+          { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" },
+          0.35
+        );
+
+        // the single slide-up crossfade
+        tl.to("#s3-line1", { opacity: 0, y: -44, duration: 0.45, ease: "power2.in" }, 2.0);
+        tl.fromTo(
+          "#s3-line2",
+          { opacity: 0, y: 44 },
+          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+          2.25
+        );
+        tl.fromTo(
+          "#s3-marker",
+          { scaleX: 0, transformOrigin: "left center" },
+          { scaleX: 1, duration: 0.45, ease: "power3.out" },
+          2.75
+        );
+
+        // subtle breathing on the glow — the one live element of the hold
+        tl.fromTo(
+          "#s3-glow",
+          { scale: 1 },
+          { scale: 1.1, duration: 2, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0
+        );
+
+        window.__timelines["s3-value"] = tl;
+      })();
+    </script>
+  </div>
+</template>

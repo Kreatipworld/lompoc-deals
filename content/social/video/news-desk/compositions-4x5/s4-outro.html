@@ -1,0 +1,136 @@
+<template>
+  <div
+    data-composition-id="s4-outro"
+    data-width="1080"
+    data-height="1350"
+    data-duration="4.6"
+    style="position: absolute; inset: 0; overflow: hidden"
+  >
+    <style>
+      [data-composition-id="s4-outro"] .s4-serif {
+        font-family: Georgia, serif;
+        font-style: italic;
+      }
+      [data-composition-id="s4-outro"] .s4-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.07;
+        z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n4'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n4)' opacity='1'/%3E%3C/svg%3E");
+      }
+    </style>
+
+    <!-- purple ground with deep vignette -->
+    <div style="position: absolute; inset: 0; background: #650c75"></div>
+    <div
+      style="
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 130% 90% at 50% 42%, rgba(36, 22, 41, 0) 30%, rgba(36, 22, 41, 0.6) 100%);
+      "
+    ></div>
+
+    <!-- glow bloom behind the lockup -->
+    <div
+      id="s4-bloom"
+      style="
+        position: absolute;
+        top: 25%;
+        left: 140px;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(239, 198, 24, 0.3), rgba(239, 198, 24, 0) 62%);
+      "
+    ></div>
+
+    <!-- lockup -->
+    <div
+      style="
+        position: absolute;
+        top: 34%;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      "
+    >
+      <img id="s4-mark" src="public/mark-white.png" alt="" style="display: block; width: 210px; height: auto" />
+      <div id="s4-word" style="margin-top: 44px; color: #ffffff; font-weight: 800; font-size: 96px">
+        Lompoc Locals
+      </div>
+      <div id="s4-tag" class="s4-serif" style="margin-top: 20px; color: #efc618; font-size: 48px">
+        your town, on the record
+      </div>
+      <div
+        id="s4-url"
+        style="
+          margin-top: 80px;
+          display: inline-block;
+          background: #241629;
+          color: #efc618;
+          font-weight: 800;
+          font-size: 52px;
+          letter-spacing: 1px;
+          padding: 28px 48px;
+          border-radius: 16px;
+        "
+      >
+        lompoclocals.com/news
+      </div>
+    </div>
+
+    <!-- tri-color structural bar, bottom -->
+    <div
+      style="
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(90deg, #efc618, #650c75 45%, #0b992f);
+      "
+    ></div>
+
+    <div class="s4-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // bloom rises, then breathes through the hold (finite)
+        tl.fromTo("#s4-bloom", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" }, 0.05);
+        tl.fromTo(
+          "#s4-bloom",
+          { scale: 1 },
+          { scale: 1.1, duration: 1.9, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0.8
+        );
+
+        // mark pops with restrained overshoot
+        tl.fromTo(
+          "#s4-mark",
+          { opacity: 0, scale: 0.5 },
+          { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.6)" },
+          0.25
+        );
+        tl.fromTo("#s4-word", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.6);
+        tl.fromTo("#s4-tag", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.9);
+
+        // the URL spring-settles, then holds — the longest beat of the film
+        tl.fromTo(
+          "#s4-url",
+          { opacity: 0, scale: 0.8, y: 30 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.65, ease: "back.out(1.4)" },
+          1.35
+        );
+
+        window.__timelines["s4-outro"] = tl;
+      })();
+    </script>
+  </div>
+</template>

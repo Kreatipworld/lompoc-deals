@@ -1,0 +1,213 @@
+<template>
+  <div
+    data-composition-id="s1-hook"
+    data-width="1080"
+    data-height="1350"
+    data-duration="4.5"
+    style="position: absolute; inset: 0; overflow: hidden"
+  >
+    <style>
+      [data-composition-id="s1-hook"] .s1-fill {
+        position: absolute;
+        inset: 0;
+      }
+      [data-composition-id="s1-hook"] .s1-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.07;
+        z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      }
+      [data-composition-id="s1-hook"] .s1-serif {
+        font-family: Georgia, serif;
+        font-style: italic;
+      }
+    </style>
+
+    <!-- ground -->
+    <div class="s1-fill" style="background: #650c75"></div>
+    <div
+      class="s1-fill"
+      style="
+        background: radial-gradient(
+          ellipse 120% 70% at 50% 85%,
+          rgba(36, 22, 41, 0.55),
+          rgba(36, 22, 41, 0) 60%
+        );
+      "
+    ></div>
+
+    <!-- breathing glows -->
+    <div
+      id="s1-glow-a"
+      style="
+        position: absolute;
+        top: 9%;
+        left: -220px;
+        width: 720px;
+        height: 720px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(239, 198, 24, 0.22), rgba(239, 198, 24, 0) 65%);
+      "
+    ></div>
+    <div
+      id="s1-glow-b"
+      style="
+        position: absolute;
+        bottom: 14%;
+        right: -260px;
+        width: 820px;
+        height: 820px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(11, 153, 47, 0.18), rgba(11, 153, 47, 0) 65%);
+      "
+    ></div>
+
+    <!-- ghost word (SVG background — decorative, not text content) -->
+    <div
+      id="s1-ghost"
+      style="
+        position: absolute;
+        top: 15%;
+        left: -60px;
+        width: 1400px;
+        height: 520px;
+        background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='520'%3E%3Ctext x='20' y='400' font-family='Georgia, serif' font-style='italic' font-weight='700' font-size='380' fill='rgba(250,245,236,0.10)'%3Enews%3C/text%3E%3C/svg%3E&quot;);
+        background-repeat: no-repeat;
+      "
+    ></div>
+
+    <!-- tri-color structural bar -->
+    <div
+      style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(90deg, #efc618, #650c75 45%, #0b992f);
+      "
+    ></div>
+
+    <!-- content, bottom-anchored -->
+    <div style="position: absolute; left: 84px; right: 84px; bottom: 22%">
+      <span
+        id="s1-kicker"
+        style="
+          display: inline-block;
+          background: #efc618;
+          color: #241629;
+          font-weight: 800;
+          font-size: 34px;
+          letter-spacing: 3px;
+          padding: 16px 30px;
+          border-radius: 10px;
+        "
+        >NEW ON LOMPOC LOCALS</span
+      >
+      <div style="margin-top: 46px; color: #ffffff; font-weight: 800; font-size: 128px; line-height: 1.02">
+        <span id="s1-w1" style="display: inline-block">Lompoc</span><br />
+        <span id="s1-w2" style="display: inline-block">has a</span><br />
+        <span id="s1-w3" style="display: inline-block">news page.</span>
+      </div>
+      <div
+        id="s1-underline"
+        style="
+          display: block;
+          margin-top: 26px;
+          width: 560px;
+          height: 14px;
+          border-radius: 7px;
+          background: #efc618;
+        "
+      ></div>
+      <div
+        id="s1-sub"
+        class="s1-serif"
+        style="margin-top: 40px; color: #efc618; font-size: 48px"
+      >
+        real headlines, written by neighbors
+      </div>
+    </div>
+
+    <div
+      style="
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 130px;
+        background: #241629;
+        display: flex;
+        align-items: center;
+        padding: 0 84px;
+      "
+    >
+      <span style="color: #efc618; font-weight: 800; font-size: 42px; letter-spacing: 1px"
+        >lompoclocals.com/news</span
+      >
+    </div>
+
+    <div class="s1-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // ambient: glows breathe (finite), ghost drifts once across the scene
+        tl.fromTo(
+          "#s1-glow-a",
+          { scale: 1 },
+          { scale: 1.16, duration: 2.25, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0
+        );
+        tl.fromTo(
+          "#s1-glow-b",
+          { scale: 1.1 },
+          { scale: 0.96, duration: 2.25, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0
+        );
+        tl.fromTo("#s1-ghost", { x: 0 }, { x: 60, duration: 4.5, ease: "none" }, 0);
+
+        // kicker is static at frame 0 (poster rule) — only a subtle settle
+        tl.fromTo(
+          "#s1-kicker",
+          { scale: 1 },
+          { scale: 1.04, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          0.15
+        );
+
+        // headline builds word-group by word-group
+        const words = ["#s1-w1", "#s1-w2", "#s1-w3"];
+        words.forEach((sel, i) => {
+          tl.fromTo(
+            sel,
+            { opacity: 0, y: 26, scale: 0.9 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" },
+            0.3 + i * 0.28
+          );
+        });
+
+        // gold underline draws left → right
+        tl.fromTo(
+          "#s1-underline",
+          { scaleX: 0, transformOrigin: "left center" },
+          { scaleX: 1, duration: 0.5, ease: "power3.out" },
+          1.5
+        );
+
+        // serif subline
+        tl.fromTo(
+          "#s1-sub",
+          { opacity: 0, y: 26 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          1.95
+        );
+
+        window.__timelines["s1-hook"] = tl;
+      })();
+    </script>
+  </div>
+</template>

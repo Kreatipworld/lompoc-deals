@@ -1,0 +1,237 @@
+<template>
+  <div
+    data-composition-id="s2-headlines"
+    data-width="1080"
+    data-height="1350"
+    data-duration="12.9"
+    style="position: absolute; inset: 0; overflow: hidden; background: #241629"
+  >
+    <style>
+      [data-composition-id="s2-headlines"] .s2-phase {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+      [data-composition-id="s2-headlines"] .s2-photo-wrap {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      [data-composition-id="s2-headlines"] .s2-photo-wrap img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      [data-composition-id="s2-headlines"] .s2-scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(36, 22, 41, 0.95) 0%,
+          rgba(36, 22, 41, 0.58) 45%,
+          rgba(36, 22, 41, 0.22) 100%
+        );
+      }
+      [data-composition-id="s2-headlines"] .s2-copy {
+        position: absolute;
+        left: 84px;
+        right: 84px;
+        bottom: 23%;
+      }
+      [data-composition-id="s2-headlines"] .s2-h {
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 96px;
+        line-height: 1.04;
+      }
+      [data-composition-id="s2-headlines"] .s2-serif {
+        font-family: Georgia, serif;
+        font-style: italic;
+        color: #efc618;
+        font-size: 46px;
+        margin-top: 26px;
+      }
+      [data-composition-id="s2-headlines"] .s2-credit {
+        position: absolute;
+        left: 84px;
+        bottom: 17.2%;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+      [data-composition-id="s2-headlines"] .s2-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.07;
+        z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n2)' opacity='1'/%3E%3C/svg%3E");
+      }
+    </style>
+
+    <!-- ============ phase 1 — Spencer's ============ -->
+    <div class="s2-phase" id="s2-p1">
+      <div class="s2-photo-wrap">
+        <img id="s2-p1-img" src="public/spencers-meat-dept.jpg" alt="" />
+      </div>
+      <div class="s2-scrim"></div>
+      <div class="s2-copy">
+        <div class="s2-h" id="s2-p1-h">Spencer's Fresh Market is open on North&nbsp;H.</div>
+        <div class="s2-serif" id="s2-p1-s">family-run · deli counter · local produce</div>
+      </div>
+      <div class="s2-credit" id="s2-p1-c">photo: Spencer's Fresh Market</div>
+    </div>
+
+    <!-- ============ phase 2 — launches ============ -->
+    <div class="s2-phase" id="s2-p2">
+      <div class="s2-photo-wrap">
+        <img id="s2-p2-img" src="public/launch-night.jpg" alt="" />
+      </div>
+      <div class="s2-scrim"></div>
+      <div class="s2-copy">
+        <div class="s2-h" id="s2-p2-h">Every launch over the valley — with a viewing guide.</div>
+        <div class="s2-serif" id="s2-p2-s">know when the sky lights up, before it does</div>
+      </div>
+      <div class="s2-credit" id="s2-p2-c">photo: U.S. Space Force</div>
+    </div>
+
+    <!-- ============ phase 3 — Friday night lights (brand card) ============ -->
+    <div class="s2-phase" id="s2-p3" style="background: #241629">
+      <!-- stadium glow cones -->
+      <div
+        id="s2-p3-cone-a"
+        style="
+          position: absolute;
+          top: -140px;
+          left: 60px;
+          width: 380px;
+          height: 1100px;
+          background: linear-gradient(to bottom, rgba(239, 198, 24, 0.3), rgba(239, 198, 24, 0) 75%);
+          transform-origin: top center;
+        "
+      ></div>
+      <div
+        id="s2-p3-cone-b"
+        style="
+          position: absolute;
+          top: -140px;
+          right: 60px;
+          width: 380px;
+          height: 1100px;
+          background: linear-gradient(to bottom, rgba(250, 245, 236, 0.2), rgba(250, 245, 236, 0) 75%);
+          transform-origin: top center;
+        "
+      ></div>
+      <!-- field glow -->
+      <div
+        style="
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 36%;
+          background: radial-gradient(ellipse 130% 100% at 50% 100%, rgba(11, 153, 47, 0.35), rgba(11, 153, 47, 0) 70%);
+        "
+      ></div>
+      <div class="s2-copy">
+        <div class="s2-h" id="s2-p3-h">Friday night lights are back.</div>
+        <div class="s2-serif" id="s2-p3-s">Braves &amp; Conqs kick off the 2026 season</div>
+      </div>
+    </div>
+
+    <!-- ============ pinned anchors ============ -->
+    <div style="position: absolute; top: 5.2%; left: 84px; z-index: 40">
+      <span
+        style="
+          display: inline-block;
+          background: #efc618;
+          color: #241629;
+          font-weight: 800;
+          font-size: 32px;
+          letter-spacing: 3px;
+          padding: 14px 26px;
+          border-radius: 10px;
+        "
+        >LOMPOC NEWS</span
+      >
+    </div>
+    <div
+      style="
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 130px;
+        background: #650c75;
+        display: flex;
+        align-items: center;
+        padding: 0 84px;
+        z-index: 40;
+      "
+    >
+      <span style="color: #efc618; font-weight: 800; font-size: 42px; letter-spacing: 1px"
+        >lompoclocals.com/news</span
+      >
+    </div>
+
+    <div class="s2-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        const PHASE = 4.3;
+        const XFADE = 0.35;
+
+        // phase visibility: crossfades at 4.3 and 8.6
+        tl.set("#s2-p1", { opacity: 1 }, 0);
+        tl.set("#s2-p3-cone-a", { rotation: 14 }, 0);
+        tl.set("#s2-p3-cone-b", { rotation: -14 }, 0);
+        tl.to("#s2-p1", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, PHASE);
+        tl.to("#s2-p2", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, PHASE);
+        tl.to("#s2-p2", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, PHASE * 2);
+        tl.to("#s2-p3", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, PHASE * 2);
+
+        // slow breathe on the photos across their phase (incl. the crossfade tails)
+        tl.fromTo("#s2-p1-img", { scale: 1 }, { scale: 1.06, duration: PHASE + XFADE, ease: "none" }, 0);
+        tl.fromTo(
+          "#s2-p2-img",
+          { scale: 1.06 },
+          { scale: 1, duration: PHASE + XFADE, ease: "none" },
+          PHASE - XFADE
+        );
+
+        // per-phase copy entrances
+        const copyIn = (h, s, at, credit) => {
+          tl.fromTo(h, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, at);
+          tl.fromTo(s, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, at + 0.18);
+          if (credit) {
+            tl.fromTo(credit, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, at + 0.35);
+          }
+        };
+        copyIn("#s2-p1-h", "#s2-p1-s", 0.2, "#s2-p1-c");
+        copyIn("#s2-p2-h", "#s2-p2-s", PHASE + 0.25, "#s2-p2-c");
+        copyIn("#s2-p3-h", "#s2-p3-s", PHASE * 2 + 0.25, null);
+
+        // stadium cones sway gently during phase 3 (finite)
+        tl.fromTo(
+          "#s2-p3-cone-a",
+          { rotation: 14 },
+          { rotation: 10, duration: 2.0, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          PHASE * 2 + 0.2
+        );
+        tl.fromTo(
+          "#s2-p3-cone-b",
+          { rotation: -14 },
+          { rotation: -10, duration: 2.0, ease: "sine.inOut", yoyo: true, repeat: 1 },
+          PHASE * 2 + 0.2
+        );
+
+        window.__timelines["s2-headlines"] = tl;
+      })();
+    </script>
+  </div>
+</template>

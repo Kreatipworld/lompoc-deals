@@ -1,0 +1,169 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#650C75; --gold:#EFC618; --green:#0B992F; --cream:#FAF5EC; --ink:#241629; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#333; font-family:'Plus Jakarta Sans',sans-serif; }
+  .card { position:relative; overflow:hidden; margin:20px auto; }
+  .ig { width:1080px; height:1350px; }
+  .tt { width:1080px; height:1920px; }
+  .grain::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:.07; z-index:50;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); }
+  .serif { font-family:Georgia,serif; font-style:italic; }
+  .photo { position:absolute; inset:0; background-size:cover; background-position:center; }
+  .scrim { position:absolute; inset:0; background:linear-gradient(to top, rgba(36,22,41,.94) 0%, rgba(36,22,41,.55) 45%, rgba(36,22,41,.18) 100%); }
+  .kicker { display:inline-block; background:var(--gold); color:var(--ink); font-weight:800; font-size:34px; letter-spacing:3px; padding:14px 28px; border-radius:10px; }
+  .url { color:var(--gold); font-weight:800; font-size:44px; letter-spacing:1px; }
+
+  /* headline list rows on announcement */
+  .h-row { display:flex; gap:24px; align-items:flex-start; padding:26px 0; border-top:3px solid rgba(250,245,236,.18); }
+  .h-row .dot { color:var(--gold); font-size:40px; line-height:1.15; }
+  .h-row .t { color:#fff; font-weight:700; font-size:44px; line-height:1.18; }
+</style></head><body>
+
+<!-- ============ NEWS ANNOUNCE — feed 4:5 ============ -->
+<div class="card ig grain" id="news-announce-ig">
+  <div class="photo" style="background-image:url('https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/spencers-fresh-market-lompoc/produce-XUUbuUZVxnW4OUKOqBdMmoR2s74ZAe.jpg');"></div>
+  <div class="scrim"></div>
+  <div style="position:absolute; left:70px; right:70px; bottom:190px;">
+    <span class="kicker">NEW ON LOMPOC LOCALS</span>
+    <div style="color:#fff; font-weight:800; font-size:104px; line-height:1.0; margin-top:30px;">Lompoc has<br>a news page.</div>
+    <div class="serif" style="color:var(--gold); font-size:44px; margin-top:22px;">what's opening · what's launching · what's next</div>
+    <div style="margin-top:36px;">
+      <div class="h-row" style="border-top:none; padding-top:0;"><div class="dot">●</div><div class="t">A new grocery store just opened on North&nbsp;H</div></div>
+      <div class="h-row"><div class="dot">●</div><div class="t">Every launch over the valley — with viewing guides</div></div>
+      <div class="h-row"><div class="dot">●</div><div class="t">Friday-night football is back</div></div>
+    </div>
+  </div>
+  <div style="position:absolute; left:70px; bottom:74px;"><span class="url">lompoclocals.com/news</span></div>
+</div>
+
+<!-- ============ NEWS ANNOUNCE — 9:16 ============ -->
+<div class="card tt grain" id="news-announce-tt">
+  <div class="photo" style="background-image:url('https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/spencers-fresh-market-lompoc/produce-XUUbuUZVxnW4OUKOqBdMmoR2s74ZAe.jpg');"></div>
+  <div class="scrim"></div>
+  <div style="position:absolute; left:70px; right:70px; bottom:330px;">
+    <span class="kicker">NEW ON LOMPOC LOCALS</span>
+    <div style="color:#fff; font-weight:800; font-size:118px; line-height:1.0; margin-top:32px;">Lompoc has<br>a news page.</div>
+    <div class="serif" style="color:var(--gold); font-size:48px; margin-top:24px;">what's opening · what's launching · what's next</div>
+    <div style="margin-top:44px;">
+      <div class="h-row" style="border-top:none; padding-top:0;"><div class="dot">●</div><div class="t">A new grocery store just opened on North&nbsp;H</div></div>
+      <div class="h-row"><div class="dot">●</div><div class="t">Every launch over the valley — with viewing guides</div></div>
+      <div class="h-row"><div class="dot">●</div><div class="t">Friday-night football is back</div></div>
+    </div>
+  </div>
+  <div style="position:absolute; left:70px; bottom:120px;"><span class="url">lompoclocals.com/news</span></div>
+</div>
+
+<!-- ============ MAPLE HIGH HOUSING — feed 4:5, abstract brand card (no owned photo) ============ -->
+<div class="card ig grain" id="maple-ig" style="background:var(--cream);">
+  <div style="position:absolute; top:0; left:0; right:0; height:22px; background:linear-gradient(90deg, var(--gold), var(--purple), var(--green));"></div>
+  <div style="padding:96px 84px 0;">
+    <div class="serif" style="color:var(--green); font-size:44px;">lompoc news</div>
+    <div style="color:var(--ink); font-weight:800; font-size:96px; line-height:1.02; margin-top:14px;">200 workforce<br>homes, at the<br>Maple High site?</div>
+  </div>
+  <div style="position:absolute; left:84px; right:84px; top:640px;">
+    <div style="background:#fff; border:3px solid rgba(36,22,41,.08); border-radius:24px; padding:44px 48px; box-shadow:0 10px 30px rgba(36,22,41,.08);">
+      <div style="color:var(--purple); font-weight:800; font-size:34px; letter-spacing:2px;">WHAT WE KNOW</div>
+      <div style="color:var(--ink); font-weight:700; font-size:42px; line-height:1.3; margin-top:18px;">A 200-unit workforce housing project is proposed on the 11-acre Vandenberg Village school property. Negotiations are ongoing — nothing is final.</div>
+    </div>
+    <div class="serif" style="color:rgba(36,22,41,.6); font-size:38px; margin-top:36px;">the full story, in plain language →</div>
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:0; height:130px; background:var(--purple); display:flex; align-items:center; padding:0 84px;">
+    <span class="url" style="font-size:42px;">lompoclocals.com/news</span>
+  </div>
+</div>
+
+<!-- ============ SPACEPORT — feed 4:5, launch photo ============ -->
+<div class="card ig grain" id="spaceport-ig">
+  <div class="photo" style="background-image:url('https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/activities/g-vandenberg-launches-2.jpeg');"></div>
+  <div class="scrim"></div>
+  <div style="position:absolute; left:70px; right:70px; bottom:200px;">
+    <span class="kicker">LOMPOC NEWS</span>
+    <div style="color:#fff; font-weight:800; font-size:96px; line-height:1.02; margin-top:30px;">Why the sky keeps<br>lighting up.</div>
+    <div class="serif" style="color:var(--gold); font-size:44px; margin-top:24px;">Vandenberg is building the "Spaceport of the Future" — and Lompoc is the town outside the gates.</div>
+  </div>
+  <div style="position:absolute; left:70px; bottom:74px;"><span class="url">lompoclocals.com/news</span></div>
+</div>
+
+<!-- ============ MOVING TRUCK — feed 4:5, brand card ============ -->
+<div class="card ig grain" id="truck-ig" style="background:var(--purple);">
+  <div style="padding:110px 84px 0;">
+    <div class="serif" style="color:var(--gold); font-size:44px;">lompoc news · good neighbors</div>
+    <div style="color:#fff; font-weight:800; font-size:100px; line-height:1.03; margin-top:16px;">A local business<br>bought a moving<br>truck — for the<br>community.</div>
+  </div>
+  <div style="position:absolute; left:84px; right:84px; top:760px;">
+    <div style="border-left:10px solid var(--gold); padding-left:40px;">
+      <div style="color:rgba(250,245,236,.92); font-weight:600; font-size:46px; line-height:1.35;">A 14-foot truck, a ribbon-cutting, and one idea: moving day shouldn't be the hardest day in Lompoc.</div>
+    </div>
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:0; height:130px; background:var(--ink); display:flex; align-items:center; padding:0 84px;">
+    <span class="url" style="font-size:42px;">lompoclocals.com/news</span>
+  </div>
+</div>
+
+<!-- ============ SENTINEL CAMPUS — feed 4:5, abstract brand card (no owned photo) ============ -->
+<div class="card ig grain" id="sentinel-ig" style="background:var(--cream);">
+  <div style="position:absolute; top:0; left:0; right:0; height:22px; background:linear-gradient(90deg, var(--gold), var(--purple), var(--green));"></div>
+  <div style="padding:96px 84px 0;">
+    <div class="serif" style="color:var(--green); font-size:44px;">lompoc news</div>
+    <div style="color:var(--ink); font-weight:800; font-size:92px; line-height:1.03; margin-top:14px;">Vandenberg breaks<br>ground on its biggest<br>Sentinel project.</div>
+  </div>
+  <div style="position:absolute; left:84px; right:84px; top:660px;">
+    <div style="background:#fff; border:3px solid rgba(36,22,41,.08); border-radius:24px; padding:44px 48px; box-shadow:0 10px 30px rgba(36,22,41,.08);">
+      <div style="color:var(--purple); font-weight:800; font-size:34px; letter-spacing:2px;">WHAT WE KNOW</div>
+      <div style="color:var(--ink); font-weight:700; font-size:42px; line-height:1.3; margin-top:18px;">A $114 million training campus — 177,490 square feet — is going up at the base. It's Vandenberg's largest Sentinel project to date.</div>
+    </div>
+    <div class="serif" style="color:rgba(36,22,41,.6); font-size:38px; margin-top:36px;">the full story, in plain language →</div>
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:0; height:130px; background:var(--purple); display:flex; align-items:center; padding:0 84px;">
+    <span class="url" style="font-size:42px;">lompoclocals.com/news</span>
+  </div>
+</div>
+
+<!-- ============ SENTINEL CAMPUS — 9:16 ============ -->
+<div class="card tt grain" id="sentinel-tt" style="background:var(--cream);">
+  <div style="position:absolute; top:0; left:0; right:0; height:22px; background:linear-gradient(90deg, var(--gold), var(--purple), var(--green));"></div>
+  <div style="padding:200px 84px 0;">
+    <div class="serif" style="color:var(--green); font-size:48px;">lompoc news</div>
+    <div style="color:var(--ink); font-weight:800; font-size:100px; line-height:1.03; margin-top:16px;">Vandenberg breaks<br>ground on its biggest<br>Sentinel project.</div>
+  </div>
+  <div style="position:absolute; left:84px; right:84px; top:900px;">
+    <div style="background:#fff; border:3px solid rgba(36,22,41,.08); border-radius:24px; padding:48px 52px; box-shadow:0 10px 30px rgba(36,22,41,.08);">
+      <div style="color:var(--purple); font-weight:800; font-size:36px; letter-spacing:2px;">WHAT WE KNOW</div>
+      <div style="color:var(--ink); font-weight:700; font-size:46px; line-height:1.3; margin-top:20px;">A $114 million training campus — 177,490 square feet — is going up at the base. It's Vandenberg's largest Sentinel project to date.</div>
+    </div>
+    <div class="serif" style="color:rgba(36,22,41,.6); font-size:40px; margin-top:40px;">the full story, in plain language →</div>
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:0; height:150px; background:var(--purple); display:flex; align-items:center; padding:0 84px;">
+    <span class="url" style="font-size:44px;">lompoclocals.com/news</span>
+  </div>
+</div>
+
+<!-- ============ FRIDAY NIGHT LIGHTS — feed 4:5, brand card ============ -->
+<div class="card ig grain" id="football-ig" style="background:var(--ink);">
+  <div style="position:absolute; top:-120px; left:40px; width:300px; height:900px; background:linear-gradient(to bottom, rgba(239,198,24,.30), rgba(239,198,24,0) 75%); transform:rotate(14deg); transform-origin:top center;"></div>
+  <div style="position:absolute; top:-120px; right:40px; width:300px; height:900px; background:linear-gradient(to bottom, rgba(250,245,236,.20), rgba(250,245,236,0) 75%); transform:rotate(-14deg); transform-origin:top center;"></div>
+  <div style="position:absolute; left:0; right:0; bottom:0; height:560px; background:radial-gradient(ellipse 130% 100% at 50% 100%, rgba(11,153,47,.35), rgba(11,153,47,0) 70%);"></div>
+  <div style="position:absolute; left:70px; right:70px; bottom:240px;">
+    <span class="kicker">LOMPOC NEWS</span>
+    <div style="color:#fff; font-weight:800; font-size:104px; line-height:1.02; margin-top:30px;">Friday night<br>lights are back.</div>
+    <div class="serif" style="color:var(--gold); font-size:46px; margin-top:24px;">Braves &amp; Conqs kick off the 2026 season</div>
+  </div>
+  <div style="position:absolute; left:70px; bottom:74px;"><span class="url">lompoclocals.com/news</span></div>
+</div>
+
+<!-- ============ FRIDAY NIGHT LIGHTS — 9:16 ============ -->
+<div class="card tt grain" id="football-tt" style="background:var(--ink);">
+  <div style="position:absolute; top:-140px; left:60px; width:340px; height:1200px; background:linear-gradient(to bottom, rgba(239,198,24,.30), rgba(239,198,24,0) 75%); transform:rotate(14deg); transform-origin:top center;"></div>
+  <div style="position:absolute; top:-140px; right:60px; width:340px; height:1200px; background:linear-gradient(to bottom, rgba(250,245,236,.20), rgba(250,245,236,0) 75%); transform:rotate(-14deg); transform-origin:top center;"></div>
+  <div style="position:absolute; left:0; right:0; bottom:0; height:760px; background:radial-gradient(ellipse 130% 100% at 50% 100%, rgba(11,153,47,.35), rgba(11,153,47,0) 70%);"></div>
+  <div style="position:absolute; left:70px; right:70px; bottom:380px;">
+    <span class="kicker">LOMPOC NEWS</span>
+    <div style="color:#fff; font-weight:800; font-size:114px; line-height:1.02; margin-top:32px;">Friday night<br>lights are back.</div>
+    <div class="serif" style="color:var(--gold); font-size:48px; margin-top:26px;">Braves &amp; Conqs kick off the 2026 season</div>
+  </div>
+  <div style="position:absolute; left:70px; bottom:120px;"><span class="url">lompoclocals.com/news</span></div>
+</div>
+
+</body></html>
