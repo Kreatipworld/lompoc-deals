@@ -21,6 +21,19 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  // One edition per cycle: if a successful send already went out in the last
+  // 20 hours (e.g. a manual founder-approved send before the 9 AM cron), the
+  // scheduled run steps aside instead of double-mailing the town.
+  const recent = await db.execute(sql`
+    SELECT 1 FROM cron_runs
+    WHERE name = 'digest' AND ok = true
+      AND (result->>'sent')::int > 0
+      AND created_at > now() - interval '20 hours'
+    LIMIT 1`)
+  if ((recent as unknown as { rows?: unknown[] }).rows?.length || (Array.isArray(recent) && recent.length)) {
+    return NextResponse.json({ sent: 0, skipped: "already sent this cycle" })
+  }
+
   const content = await getMasterDigestContent()
   if (!hasMasterDigestContent(content)) {
     await logCronRun("digest", { sent: 0, skipped: "no content this week" })
