@@ -1,18 +1,18 @@
 {
   "tts_provider": "higgsfield",
-  "tts_model": "seed_audio",
-  "tts_variant": null,
+  "tts_model": "text2speech_v2",
+  "tts_variant": "elevenlabs",
   "voice_id": "6b3e3642-f7b7-4cb8-9688-51e233c4b92f",
   "voice_name": "Emily",
-  "generation_job_id": "f4c172ea-b187-41af-8e9a-a942ffab6521 + 57e1b5e3-b23e-4f05-8df8-497caa635c52",
-  "credits_billed": 3.3,
-  "credits_note": "2.0 seed_audio full read (used for s1-s3) + 0.9 elevenlabs take (rejected in A/B) + 0.4 seed_audio new closer; verified via transactions 2026-08-24",
-  "bgm": null,
+  "generation_job_id": "ab7e9bfd (full read) + cf5e5e42 (new closer)",
+  "credits_billed": 3.6,
+  "credits_note": "2.0 seed_audio (rejected) + 0.9 elevenlabs full read (USED s1-s3) + 0.4 seed_audio closer (rejected) + 0.3 elevenlabs closer (USED); verify via transactions",
+  "bgm": "public/bgm-deliberate-thought.mp3",
   "bgm_pending": false,
-  "bgm_provider": null,
+  "bgm_provider": "incompetech",
   "bgm_pid": null,
   "bgm_log": null,
-  "bgm_mode": null,
+  "bgm_mode": "carved bed, volume 0.55, dynamic voiceover carve strength 0.25",
   "bgm_target_duration_s": null,
   "bgm_seed_duration_s": null,
   "bgm_loop_count": null,
@@ -21,40 +21,41 @@
       "id": "vo-s1",
       "file": "public/vo-s1.wav",
       "start": 0.3,
-      "duration": 3.2
+      "duration": 2.7
     },
     {
       "id": "vo-s2a",
       "file": "public/vo-s2a.wav",
       "start": 4.7,
-      "duration": 2.95
+      "duration": 2.97
     },
     {
       "id": "vo-s2b",
       "file": "public/vo-s2b.wav",
       "start": 9.0,
-      "duration": 3.65
+      "duration": 3.23
     },
     {
       "id": "vo-s2c",
       "file": "public/vo-s2c.wav",
       "start": 13.3,
-      "duration": 2.05
+      "duration": 1.89
     },
     {
       "id": "vo-s3",
       "file": "public/vo-s3.wav",
       "start": 17.7,
-      "duration": 2.35
+      "duration": 2.07
     },
     {
       "id": "vo-s4",
       "file": "public/vo-s4.wav",
       "start": 21.45,
-      "duration": 4.51,
-      "note": "new line 'Your town, your news.' - avoids Lompoc Record collision; pause tightened + atempo 1.07"
+      "duration": 4.08,
+      "note": "'Your town, your news.' elevenlabs regen"
     }
   ],
   "sfx": [],
-  "total_duration_s": 26
+  "total_duration_s": 26,
+  "bgm_license": "'Deliberate Thought' by Kevin MacLeod (incompetech.com), CC BY 4.0 - CREDIT REQUIRED in post captions"
 }
