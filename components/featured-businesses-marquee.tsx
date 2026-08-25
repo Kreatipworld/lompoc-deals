@@ -84,12 +84,15 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
   }
 
   // Mouse drag-to-scroll (touch devices already scroll natively).
+  // IMPORTANT: don't capture the pointer on pointerdown — capturing retargets
+  // the compat mouseup to the scroller, so the click's common-ancestor target
+  // is never the card's <Link> and plain clicks silently die (seen on the
+  // homepage "Hungry right now?" rail). Capture only once a real drag starts.
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType !== "mouse" || e.button !== 0) return
     const el = scrollerRef.current
     if (!el) return
     dragRef.current = { startX: e.clientX, startScroll: el.scrollLeft, moved: 0, dragging: true }
-    el.setPointerCapture(e.pointerId)
   }
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const d = dragRef.current
@@ -97,7 +100,9 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
     if (!d.dragging || !el) return
     const dx = e.clientX - d.startX
     d.moved = Math.max(d.moved, Math.abs(dx))
-    if (d.moved > 0) holdDrift()
+    if (d.moved <= DRAG_CLICK_THRESHOLD) return // still a click, not a drag
+    if (!el.hasPointerCapture(e.pointerId)) el.setPointerCapture(e.pointerId)
+    holdDrift()
     el.scrollLeft = d.startScroll - dx
   }
   const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
