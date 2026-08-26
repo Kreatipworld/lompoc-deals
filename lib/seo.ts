@@ -18,5 +18,7 @@ export function pageAlternates(
   return {
     canonical: locale === "es" ? esPath : path,
     languages: { en: path, es: esPath, "x-default": path },
+    // Page-level alternates replace the root's, so feed discovery rides along here.
+    types: { "application/rss+xml": "/api/blog/rss" },
   }
 }
