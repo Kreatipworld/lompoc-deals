@@ -162,7 +162,7 @@ const rows = await sql`
     WHERE event_name='business_page_viewed' AND target_type='business' AND created_at > now() - interval '30 days'
     GROUP BY target_id
   )
-  SELECT b.id, b.name, b.slug, lower(b.email) AS email, COALESCE(c.name,'Other') AS category, COALESCE(v.views30,0)::int AS views30
+  SELECT b.id, b.name, b.slug, lower(b.email) AS email, b.emails_json, COALESCE(c.name,'Other') AS category, COALESCE(v.views30,0)::int AS views30
   FROM businesses b
   LEFT JOIN users u ON u.id=b.owner_user_id
   LEFT JOIN categories c ON c.id=b.category_id
@@ -217,8 +217,11 @@ console.log(`This run: ${list.length} email(s)  [OFFSET ${OFFSET}${LIMIT ? `, LI
 
 let ok = 0, fail = 0
 for (const b of list) {
-  const to = PREVIEW ? "hello@lompoclocals.com" : b.email
-  if (!SEND) { console.log(`  · ${b.name}  (${b.category}, ${b.views30}v)  →  ${to}`); continue }
+  // Every address on the listing rides one thread (info@ + the owner), capped at 3.
+  const extra = Array.isArray(b.emails_json) ? b.emails_json.map((e) => String(e).trim().toLowerCase()).filter(validEmail) : []
+  const recipients = [...new Set([b.email, ...extra])].filter((e) => !suppressed.has(e)).slice(0, 3)
+  const to = PREVIEW ? "hello@lompoclocals.com" : recipients
+  if (!SEND) { console.log(`  · ${b.name}  (${b.category}, ${b.views30}v)  →  ${[].concat(to).join(", ")}`); continue }
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
@@ -234,7 +237,7 @@ for (const b of list) {
   const body = await res.json().catch(() => ({}))
   if (res.ok) {
     ok++; console.log(`  ✓ ${b.name}  →  ${to}  (${body.id})`)
-    if (!PREVIEW) { mkdirSync(dirname(SENT_LOG), { recursive: true }); appendFileSync(SENT_LOG, b.email + "\n") }
+    if (!PREVIEW) { mkdirSync(dirname(SENT_LOG), { recursive: true }); appendFileSync(SENT_LOG, recipients.join("\n") + "\n") }
   } else { fail++; console.log(`  ✗ ${b.name}  →  ${to}  FAILED ${JSON.stringify(body)}`) }
   await new Promise((r) => setTimeout(r, SLEEP_MS))
 }
