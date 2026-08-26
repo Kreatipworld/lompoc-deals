@@ -37,6 +37,8 @@
  * Usage:
  *   node scripts/render-highlight-of-week.mjs vargas-jewelers-trophies-awards
  *   node scripts/render-highlight-of-week.mjs <slug> --only=tt --week=2026-07-27
+ *   node scripts/render-highlight-of-week.mjs <slug> --series=week     (the dated weekly slot)
+ *   default --series=spotlight: "MEMBER SPOTLIGHT", undated, with the member's logo
  */
 import http from "node:http"
 import fs from "node:fs"
@@ -68,11 +70,38 @@ const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || "").sli
 const ONLY = arg("only").split(",").filter(Boolean)
 const WEEK_ARG = arg("week")
 
+/**
+ * Two series share one film. "spotlight" (default) is the standing Member Spotlight — no week
+ * stamp, nothing that says "this week", so several can run in one week. "week" is the original
+ * Highlight of the Week slot, kept for when a single weekly pick is wanted.
+ */
+const SERIES = (arg("series") || "spotlight") === "week"
+  ? { key: "highlight-of-week", label: "HIGHLIGHT OF THE WEEK", big: "HIGHLIGHT", small: "OF THE WEEK",
+      stamp: true, welcomeNew: "New this week on Lompoc Locals.", welcomeOld: "Now on Lompoc Locals.",
+      eyebrowNew: "NEW THIS WEEK", eyebrowOld: "THIS WEEK'S HIGHLIGHT" }
+  : { key: "member-spotlight", label: "MEMBER SPOTLIGHT", big: "MEMBER", small: "SPOTLIGHT",
+      stamp: false, welcomeNew: "New on Lompoc Locals.", welcomeOld: "Now on Lompoc Locals.",
+      eyebrowNew: "NEW MEMBER", eyebrowOld: "ON LOMPOC LOCALS" }
+
 const dbUrl = fs
   .readFileSync(".env.local", "utf8")
   .match(/^DATABASE_URL=(.*)$/m)[1]
   .replace(/^["']|["']$/g, "")
 const sql = neon(dbUrl)
+
+/** The member's own logo, when the row has one — it signs the end card and the info panel. */
+async function cacheLogo(url, dir) {
+  if (!url || !/^https?:\/\//.test(url)) return null
+  try {
+    const res = await fetch(url)
+    if (!res.ok) return null
+    const buf = Buffer.from(await res.arrayBuffer())
+    if (buf.length < 500) return null
+    const ext = /\.svg/i.test(url) ? "svg" : /\.png/i.test(url) ? "png" : "jpg"
+    fs.writeFileSync(path.join(dir, `logo.${ext}`), buf)
+    return `logo.${ext}`
+  } catch { return null }
+}
 
 /* ------------------------------------------------------------------ *
  * The row
@@ -95,7 +124,7 @@ const PLAN_LABEL = { premium: "PLUS MEMBER", standard: "GROWTH MEMBER" }
 async function loadBusiness(slug) {
   const [row] = await sql`
     select b.id, b.name, b.slug, b.address, b.about, b.hours_json, b.photos_json, b.status,
-           b.plan_override, b.owner_user_id, b.created_at, b.cover_url,
+           b.plan_override, b.owner_user_id, b.created_at, b.cover_url, b.logo_url,
            c.name as category,
            u.email as owner_email, u.created_at as owner_created_at
     from businesses b
@@ -523,7 +552,22 @@ const load = src => new Promise(res => {
   const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src;
 });
 
-let MARK_W, PHOTOS = [], BANDS = [], FOCUS = [], GRAIN;
+let MARK_W, LOGO = null, PHOTOS = [], BANDS = [], FOCUS = [], GRAIN;
+
+/** The member's logo on a white plate, contained, never stretched. Returns the plate height. */
+function logoPlate(cx,y,maxH,maxW,alpha){
+  if(!LOGO||alpha<=0.01) return 0;
+  const pad=Math.round(W*0.022);
+  const ar=LOGO.naturalWidth/LOGO.naturalHeight;
+  let h=maxH, w=h*ar;
+  if(w>maxW-pad*2){ w=maxW-pad*2; h=w/ar; }
+  const pw=Math.round(w+pad*2), ph=Math.round(h+pad*2);
+  g.save(); g.globalAlpha=alpha;
+  g.fillStyle='#FFFFFF'; roundRect(Math.round(cx-pw/2),y,pw,ph,Math.round(W*0.018)); g.fill();
+  g.drawImage(LOGO,Math.round(cx-w/2),y+pad,Math.round(w),Math.round(h));
+  g.restore();
+  return ph;
+}
 
 function makeGrain(){
   const o=document.createElement('canvas'); o.width=260; o.height=260;
@@ -680,10 +724,10 @@ function bug(alpha){
   const size=Math.round(W*0.026), track=Math.round(W*0.0075);
   g.save(); g.globalAlpha=alpha;
   g.font=font('800',size); g.textBaseline='alphabetic';
-  const tw=trackedW('HIGHLIGHT OF THE WEEK',track);
+  const tw=trackedW(spec.series.label,track);
   const px=Math.round(W*0.030), h=Math.round(size*2.15);
   g.fillStyle=GOLD; roundRect(PAD,TOP,tw+px*2,h,h/2); g.fill();
-  g.fillStyle=PURPLE; drawTracked('HIGHLIGHT OF THE WEEK',PAD+px,TOP+h/2+size*0.36,track);
+  g.fillStyle=PURPLE; drawTracked(spec.series.label,PAD+px,TOP+h/2+size*0.36,track);
   g.restore();
   return TOP+h;
 }
@@ -708,16 +752,17 @@ function lockup(p){
   const a1=easeOut(clamp01((p-0.06)/0.20));
   g.save(); g.globalAlpha=a1; g.fillStyle=CREAM;
   g.font=font('800',big);
-  g.fillText('HIGHLIGHT',PAD,y+big*0.80+(1-a1)*big*0.14);
+  g.fillText(spec.series.big,PAD,y+big*0.80+(1-a1)*big*0.14);
   g.restore();
   y+=big*0.98;
 
   const a2=easeOut(clamp01((p-0.14)/0.20));
   g.save(); g.globalAlpha=a2; g.fillStyle=GOLD;
   g.font=font('800',small);
-  drawTracked('OF THE WEEK',PAD,y+small*0.80+(1-a2)*small*0.20,track);
+  drawTracked(spec.series.small,PAD,y+small*0.80+(1-a2)*small*0.20,track);
   g.restore();
   y+=small*1.30;
+  if(!spec.series.stamp) return y;
 
   const a3=easeOut(clamp01((p-0.26)/0.22));
   g.save(); g.globalAlpha=a3*0.78; g.fillStyle=CREAM;
@@ -866,7 +911,7 @@ function paintName(b,p){
   drawTracked(spec.biz.strap.toUpperCase(),PAD,top+nh+gap+strap.size*0.82+(1-a)*18,strap.track);
   g.restore();
 
-  bug(easeOut(clamp01(p/0.18)));
+  cornerLogo(bug(easeOut(clamp01(p/0.18))),p);
   grain(GRAIN_ALPHA);
 }
 
@@ -895,7 +940,7 @@ function paintLine(b,p){
   reveal(b.head,{y:top+size*0.80,size,weight:'800',colour:CREAM,
     maxW:W-x-PAD,x,p:clamp01((p-0.06)/0.94),stagger:0.09});
 
-  bug(easeOut(clamp01(p/0.18)));
+  cornerLogo(bug(easeOut(clamp01(p/0.18))),p);
   grain(GRAIN_ALPHA);
 }
 
@@ -944,7 +989,7 @@ function paintBands(b,p){
   drawTracked(label,(W-trackedW(label,fit.track))/2,bottom+labelRoom*0.62,fit.track);
   g.restore();
 
-  bug(easeOut(clamp01(p/0.18)));
+  cornerLogo(bug(easeOut(clamp01(p/0.18))),p);
   grain(GRAIN_ALPHA);
 }
 
@@ -953,6 +998,23 @@ function paintBands(b,p){
  * in a row is a wash and because the one thing in the piece somebody might act on should not be
  * the darkest frame in it.
  */
+/** Their mark, top-right, level with the series bug — on the beats an owner would screenshot. */
+function cornerLogo(bugBottom,p){
+  if(!LOGO||!bugBottom) return;
+  const h=Math.round(bugBottom-TOP), pad=Math.round(W*0.016);
+  const ar=LOGO.naturalWidth/LOGO.naturalHeight;
+  let lh=Math.round(h*1.35), lw=lh*ar; const maxLw=Math.round(W*0.30);
+  if(lw>maxLw){ lw=maxLw; lh=lw/ar; }
+  const a=easeOut(clamp01((p-0.05)/0.22));
+  g.save(); g.globalAlpha=a;
+  const pw=Math.round(lw+pad*2), ph=Math.round(lh+pad*2);
+  const x=W-PAD-pw, yy=TOP+Math.round((h-ph)/2);
+  g.fillStyle='#FFFFFF'; roundRect(x,yy,pw,ph,Math.round(W*0.012)); g.fill();
+  g.strokeStyle='rgba(36,22,41,0.10)'; g.lineWidth=2; roundRect(x,yy,pw,ph,Math.round(W*0.012)); g.stroke();
+  g.drawImage(LOGO,x+pad,yy+pad,Math.round(lw),Math.round(lh));
+  g.restore();
+}
+
 function paintPanel(b,p){
   g.fillStyle=CREAM; g.fillRect(0,0,W,H);
 
@@ -999,7 +1061,7 @@ function paintPanel(b,p){
     y+=r.h;
   });
 
-  bug(easeOut(clamp01(p/0.18)));
+  cornerLogo(bug(easeOut(clamp01(p/0.18))),p);
   grain(GRAIN_ALPHA);
 }
 
@@ -1021,9 +1083,16 @@ function paintEnd(b,p){
   const chipH=Math.round(chipSize*2.2);
   const markH=Math.round(W*0.135);
   const urlSize=fitLine(spec.biz.url,{max:Math.round(W*0.034),min:Math.round(W*0.022),weight:'700',maxW});
+  // The member's logo sits on a white plate above their name; its height is what the plate
+  // would be at the logo's own aspect, so the block is measured before anything is drawn.
+  const logoMaxH=Math.round(W*0.150), logoPad=Math.round(W*0.022);
+  let logoH=0;
+  if(LOGO){ const ar=LOGO.naturalWidth/LOGO.naturalHeight; let h=logoMaxH, w=h*ar;
+    if(w>maxW*0.7-logoPad*2){ w=maxW*0.7-logoPad*2; h=w/ar; } logoH=Math.round(h+logoPad*2); }
+  const gapL=Math.round(W*0.045);
 
   const gapA=Math.round(W*0.055), gapB=Math.round(W*0.075), gapC=Math.round(W*0.090);
-  const total=serSize+gapA+eyeSize+Math.round(W*0.040)+nh+
+  const total=serSize+gapA+eyeSize+Math.round(W*0.040)+(logoH?logoH+gapL:0)+nh+
     (spec.chip?gapB+chipH:0)+gapC+markH+Math.round(W*0.050)+urlSize;
   // Measured, then centred as one block between the top of the frame and the safe margin. Pinning
   // the mark to a fixed fraction of the height left the 9:16 url 800px off the bottom.
@@ -1035,8 +1104,8 @@ function paintEnd(b,p){
   const a0=easeOut(clamp01(p/0.18));
   g.save(); g.globalAlpha=a0; g.fillStyle=GOLD;
   g.font=font('800',serSize);
-  const sw=trackedW('HIGHLIGHT OF THE WEEK',serTrack);
-  drawTracked('HIGHLIGHT OF THE WEEK',(W-sw)/2,y+serSize*0.85,serTrack);
+  const sw=trackedW(spec.series.label,serTrack);
+  drawTracked(spec.series.label,(W-sw)/2,y+serSize*0.85,serTrack);
   g.fillRect((W-Math.round(W*0.16))/2,y+serSize*1.65,Math.round(W*0.16)*a0,3);
   g.restore();
   y+=serSize+gapA;
@@ -1048,6 +1117,14 @@ function paintEnd(b,p){
   drawTracked(spec.eyebrow,(W-ew)/2,y+eyeSize*0.85,eyeTrack);
   g.restore();
   y+=eyeSize+Math.round(W*0.040);
+
+  if(logoH){
+    const aL=easeOut(clamp01((p-0.12)/0.22));
+    g.save(); g.translate(0,(1-aL)*16);
+    logoPlate(W/2,y,logoMaxH,maxW*0.7,aL);
+    g.restore();
+    y+=logoH+gapL;
+  }
 
   reveal(spec.biz.name,{y:y+nameSize*0.80,size:nameSize,weight:'800',colour:GOLD,
     maxW,x:W/2,p:clamp01((p-0.14)/0.86),stagger:0.09,align:'center'});
@@ -1098,6 +1175,7 @@ const toJpeg = () => new Promise(r => cv.toBlob(r,'image/jpeg',0.94));
 
 (async () => {
   MARK_W = await load('/brand/lompoc-locals-mark-white.svg');
+  LOGO = spec.logo ? await load('/p/'+spec.logo) : null;
   PHOTOS = await Promise.all(spec.photos.map(f => load('/p/'+f)));
   const ORIG = await Promise.all(spec.bandPhotos.map(b => load('/p/'+b.file)));
   // A null fy means "wherever this photograph's subject is" — measured, so a band centres on the
@@ -1183,7 +1261,8 @@ function serve(photoDir, W, H, spec, onFrame) {
     if (url.pathname.startsWith("/p/")) {
       const f = path.join(photoDir, path.basename(url.pathname))
       if (!fs.existsSync(f)) { res.writeHead(404); return res.end() }
-      res.writeHead(200, { "content-type": "image/jpeg" })
+      const ct = /\.png$/i.test(f) ? "image/png" : /\.svg$/i.test(f) ? "image/svg+xml" : "image/jpeg"
+      res.writeHead(200, { "content-type": ct })
       return res.end(fs.readFileSync(f))
     }
     if (url.pathname === "/frame" && req.method === "POST") {
@@ -1270,6 +1349,8 @@ console.log(`${biz.name} — ${biz.category || "uncategorised"}, ${biz.photos.le
 
 const photoDir = fs.mkdtempSync(path.join(os.tmpdir(), "how-photos-"))
 const files = await cachePhotos(biz.photos, photoDir)
+const logoFile = await cacheLogo(biz.logo_url, photoDir)
+if (logoFile) console.log(`logo: ${biz.logo_url}`)
 const live = files.filter(Boolean)
 if (!live.length) throw new Error(`${SLUG}: no photo downloaded`)
 
@@ -1318,8 +1399,8 @@ const url = `lompoclocals.com/biz/${biz.slug}`
 // listed it, inside the last ten days. The slot runs weekly, so anything older gets a line that is
 // true of any member on any week instead.
 const isNew = biz.daysSinceJoin <= 10
-const welcome = isNew ? "New this week on Lompoc Locals." : "Now on Lompoc Locals."
-const eyebrow = isNew ? "NEW THIS WEEK" : "THIS WEEK'S HIGHLIGHT"
+const welcome = isNew ? SERIES.welcomeNew : SERIES.welcomeOld
+const eyebrow = isNew ? SERIES.eyebrowNew : SERIES.eyebrowOld
 
 // Three rows at most, and no filler: a row that says "Retail" under a headline that already said
 // what the shop is earns nothing. WHAT only appears when the row can't supply both of the others.
@@ -1345,7 +1426,9 @@ console.log(`  details: ${details.map((d) => `${d.label} ${d.value}`).join("  | 
 
 const base = {
   photos: pool,
-  series: { stamp: weekStamp(WEEK_ARG) },
+  series: { label: SERIES.label, big: SERIES.big, small: SERIES.small,
+    stamp: SERIES.stamp ? weekStamp(WEEK_ARG) : null },
+  logo: logoFile,
   biz: { name: biz.name, strap, place, url },
   welcome, eyebrow, details,
   chip: plan,
@@ -1370,7 +1453,7 @@ for (const key of Object.keys(SHAPES)) {
   const { suffix, h, w } = SHAPES[key]
   const bandPhotos = h > w * 1.5 ? bandSources : bandSources.slice(0, 2)
   await renderVideo(key, { ...base, bandPhotos },
-    photoDir, bedPath, path.join(VIDEO_DIR, `highlight-of-week-${biz.slug}-${suffix}.mp4`))
+    photoDir, bedPath, path.join(VIDEO_DIR, `${SERIES.key}-${biz.slug}-${suffix}.mp4`))
 }
 
 fs.rmSync(photoDir, { recursive: true, force: true })

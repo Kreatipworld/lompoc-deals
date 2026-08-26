@@ -58,11 +58,14 @@ const voPath = voArg || path.join(VO_DIR, `highlight-${slug.split("-").slice(0, 
 if (!fs.existsSync(voPath)) throw new Error(`missing narration ${voPath} (pass --vo=…)`)
 const voLen = await duration(voPath)
 
+// Either series the renderer produces: the undated Member Spotlight (default) or the weekly slot.
+const PREFIXES = ["member-spotlight", "highlight-of-week"]
 for (const tag of SHAPES) {
-  const src = path.join(VID, `highlight-of-week-${slug}-${tag}.mp4`)
-  if (!fs.existsSync(src)) {
-    throw new Error(`missing picture ${src} — render it first:\n  node scripts/render-highlight-of-week.mjs ${slug}`)
+  const prefix = PREFIXES.find((pfx) => fs.existsSync(path.join(VID, `${pfx}-${slug}-${tag}.mp4`)))
+  if (!prefix) {
+    throw new Error(`missing picture for ${slug} (${tag}) — render it first:\n  node scripts/render-highlight-of-week.mjs ${slug}`)
   }
+  const src = path.join(VID, `${prefix}-${slug}-${tag}.mp4`)
   const total = await duration(src)
   const budget = total - HEAD - TAIL
   const tempo = voLen > budget ? voLen / budget : 1
@@ -85,7 +88,7 @@ for (const tag of SHAPES) {
       `loudnorm=I=-14:TP=-1.5:LRA=11[a]`,
   ].join(";")
 
-  const out = path.join(VID, `highlight-of-week-${slug}-${tag}-vo.mp4`)
+  const out = path.join(VID, `${prefix}-${slug}-${tag}-vo.mp4`)
   const { code, err } = await run([
     "-y", "-i", src, "-i", voPath,
     "-filter_complex", filter,
