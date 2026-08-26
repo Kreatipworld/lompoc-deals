@@ -61,7 +61,7 @@ const html = `
 </div>`
 
 const subject = `Clark Builders is on Lompoc Locals — come be part of it`
-const to = PREVIEW ? (process.env.PREVIEW_TO || "hello@lompoclocals.com") : biz.emails
+const to = PREVIEW ? "hello@lompoclocals.com" : biz.emails
 if (!SEND) { console.log(`DRY RUN → ${[].concat(to).join(", ")}\n${subject}`); process.exit(0) }
 const res = await fetch("https://api.resend.com/emails", {
   method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
