@@ -1,0 +1,83 @@
+<template>
+  <div
+    data-composition-id="s3-page"
+    data-width="1080"
+    data-height="1920"
+    data-duration="8.48"
+    style="position: absolute; inset: 0; overflow: hidden; background: #241629"
+  >
+    <style>
+      [data-composition-id="s3-page"] .s3-chip { position: absolute; z-index: 30; display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 3px; padding: 16px 28px; border-radius: 12px; box-shadow: 0 18px 40px rgba(0,0,0,0.35); opacity: 0; }
+      [data-composition-id="s3-page"] .s3-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='ns3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23ns3)' opacity='1'/%3E%3C/svg%3E"); }
+    </style>
+
+    <div style="position: absolute; inset: 0; background: #650c75"></div>
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 100%, rgba(36,22,41,0.7), rgba(36,22,41,0) 60%)"></div>
+    <div id="s3-bloom" style="position: absolute; top: -10%; right: -260px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(11,153,47,0.28), rgba(11,153,47,0) 62%)"></div>
+
+    <!-- headline -->
+    <div style="position: absolute; left: 84px; right: 84px; top: 11.5%; z-index: 20">
+      <div id="s3-h" style="color: #fff; font-weight: 800; font-size: 76px; line-height: 1.02; letter-spacing: -2px">Every one of them has a page on Lompoc&nbsp;Locals.</div>
+    </div>
+
+    <!-- phone -->
+    <div id="s3-phone" style="position: absolute; left: 130px; top: 30%; width: 820px; height: 1240px; border-radius: 48px; background: #0f0a12; padding: 14px; box-shadow: 0 50px 120px rgba(0,0,0,0.5); z-index: 10">
+      <div style="position: relative; width: 792px; height: 1212px; border-radius: 36px; overflow: hidden; background: #fff">
+        <div id="s3-scroll" style="position: absolute; left: 0; top: 0; width: 792px; will-change: transform">
+          <img id="s3-en" src="public/ui/biz.png" alt="" style="display: block; width: 792px; height: auto" />
+          <img id="s3-es" src="public/ui/biz-es.png" alt="" style="display: block; width: 792px; height: auto; position: absolute; left: 0; top: 0; opacity: 0" />
+        </div>
+      </div>
+    </div>
+
+    <!-- callout chips, placed over the phone -->
+    <div class="s3-chip" id="s3-c1" style="left: 84px; top: 34%">PHOTOS</div>
+    <div class="s3-chip" id="s3-c2" style="left: 84px; top: 34%">HOURS</div>
+    <div class="s3-chip" id="s3-c3" style="left: 84px; top: 34%">MAP &amp; DIRECTIONS</div>
+    <div class="s3-chip" id="s3-c4" style="left: 84px; top: 34%; background: #0b992f; color: #fff">EN · ES</div>
+
+    <div style="position: absolute; top: 5.2%; left: 84px; z-index: 40">
+      <span style="display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 32px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px">YOUR PAGE</span>
+    </div>
+    <img src="public/mark-white.png" alt="" style="position: absolute; top: 4.9%; right: 84px; width: 96px; height: auto; z-index: 40" />
+    <div class="s3-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        // VO (comp-local): "Every one of them has a page on Lompoc Locals." 0–2.84 ·
+        // "Their photos. Their hours. Their map." 3.36–6.25 · "In English and Spanish." 6.68–8.08
+        const S = 792 / 860; // screenshot scale
+        const Y_HOURS = -Math.round(3700 * S) + 40;
+        const Y_MAP = -Math.round(1280 * S) + 30;
+
+        tl.fromTo("#s3-bloom", { opacity: 0 }, { opacity: 1, duration: 0.8 }, 0);
+        tl.fromTo("#s3-h", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.55, ease: "power4.out" }, 0.1);
+        tl.fromTo("#s3-phone", { opacity: 0, y: 360, rotation: -2 }, { opacity: 1, y: 0, rotation: 0, duration: 0.9, ease: "power4.out" }, 0.35);
+        tl.set("#s3-scroll", { y: 0 }, 0);
+
+        const chip = (sel, at, hold) => {
+          tl.fromTo(sel, { opacity: 0, x: -30, scale: 0.9 }, { opacity: 1, x: 0, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, at);
+          tl.to(sel, { opacity: 0, duration: 0.2 }, at + hold);
+        };
+        // photos: a gentle punch on the strip
+        chip("#s3-c1", 3.3, 0.85);
+        tl.to("#s3-phone", { scale: 1.03, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }, 3.3);
+        // hours
+        chip("#s3-c2", 4.25, 0.85);
+        tl.to("#s3-scroll", { y: Y_HOURS, duration: 0.65, ease: "power3.inOut" }, 4.15);
+        // map & directions (address + Get directions on the page)
+        chip("#s3-c3", 5.3, 1.2);
+        tl.to("#s3-scroll", { y: Y_MAP, duration: 0.65, ease: "power3.inOut" }, 5.2);
+        // EN → ES swap at the same offset
+        tl.to("#s3-h", { opacity: 0, y: -20, duration: 0.3 }, 6.5);
+        tl.to("#s3-es", { opacity: 1, duration: 0.35, ease: "power1.inOut" }, 6.75);
+        chip("#s3-c4", 6.8, 1.5);
+
+        window.__timelines["s3-page"] = tl;
+      })();
+    </script>
+  </div>
+</template>

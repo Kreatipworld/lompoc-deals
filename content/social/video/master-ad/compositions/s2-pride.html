@@ -1,0 +1,125 @@
+<template>
+  <div
+    data-composition-id="s2-pride"
+    data-width="1080"
+    data-height="1920"
+    data-duration="10.06"
+    style="position: absolute; inset: 0; overflow: hidden; background: #241629"
+  >
+    <style>
+      [data-composition-id="s2-pride"] .s2-phase { position: absolute; inset: 0; opacity: 0; }
+      [data-composition-id="s2-pride"] .s2-photo { position: absolute; inset: 0; overflow: hidden; }
+      [data-composition-id="s2-pride"] .s2-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      [data-composition-id="s2-pride"] .s2-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(36,22,41,0.94) 0%, rgba(36,22,41,0.5) 42%, rgba(36,22,41,0.12) 100%); }
+      [data-composition-id="s2-pride"] .s2-copy { position: absolute; left: 84px; right: 84px; bottom: 23%; }
+      [data-composition-id="s2-pride"] .s2-h { color: #fff; font-weight: 800; font-size: 96px; line-height: 1.02; letter-spacing: -2px; }
+      [data-composition-id="s2-pride"] .s2-name { display: inline-block; margin-bottom: 26px; background: #efc618; color: #241629; font-weight: 800; font-size: 30px; letter-spacing: 3px; padding: 12px 22px; border-radius: 10px; text-transform: uppercase; }
+      [data-composition-id="s2-pride"] .s2-credit { position: absolute; left: 84px; bottom: 17.2%; color: rgba(255,255,255,0.78); font-size: 24px; font-weight: 500; letter-spacing: 1px; }
+      [data-composition-id="s2-pride"] .s2-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='ns2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23ns2)' opacity='1'/%3E%3C/svg%3E"); }
+    </style>
+
+    <!-- p0 florist: "We picture this. Flowers on H Street." -->
+    <div class="s2-phase" id="s2-p0">
+      <div class="s2-photo"><img id="s2-p0-img" src="public/cast/lompoc-valley-florist-0.jpg" alt="" /></div>
+      <div class="s2-scrim"></div>
+      <div class="s2-copy">
+        <div><span class="s2-name" id="s2-p0-n">Lompoc Valley Florist</span></div>
+        <div class="s2-h" id="s2-p0-h">We picture this.</div>
+        <div class="s2-h" id="s2-p0-h2" style="color: #efc618; margin-top: 10px">Flowers on H&nbsp;Street.</div>
+      </div>
+      <div class="s2-credit" id="s2-p0-c">photo: Lompoc Valley Florist</div>
+    </div>
+
+    <!-- p1 Eye on I -->
+    <div class="s2-phase" id="s2-p1">
+      <div class="s2-photo"><img id="s2-p1-img" src="public/cast/eye-on-i-0.jpg" alt="" /></div>
+      <div class="s2-scrim"></div>
+      <div class="s2-copy">
+        <div><span class="s2-name" id="s2-p1-n">Eye on I</span></div>
+        <div class="s2-h" id="s2-p1-h">Pizza on I&nbsp;Street.</div>
+      </div>
+      <div class="s2-credit" id="s2-p1-c">photo: Eye on I</div>
+    </div>
+
+    <!-- p2 Flying Goat -->
+    <div class="s2-phase" id="s2-p2">
+      <div class="s2-photo"><img id="s2-p2-img" src="public/cast/flying-goat-cellars-1.jpg" alt="" /></div>
+      <div class="s2-scrim"></div>
+      <div class="s2-copy">
+        <div><span class="s2-name" id="s2-p2-n">Flying Goat Cellars</span></div>
+        <div class="s2-h" id="s2-p2-h">Pinot in the Wine&nbsp;Ghetto.</div>
+      </div>
+      <div class="s2-credit" id="s2-p2-c">photo: Flying Goat Cellars</div>
+    </div>
+
+    <!-- p3 Hangar 7 -->
+    <div class="s2-phase" id="s2-p3">
+      <div class="s2-photo"><img id="s2-p3-img" src="public/cast/hanger-7-social-house-7.jpg" alt="" /></div>
+      <div class="s2-scrim"></div>
+      <div class="s2-copy">
+        <div><span class="s2-name" id="s2-p3-n">Hangar 7 Social House</span></div>
+        <div class="s2-h" id="s2-p3-h">A patio on Ocean.</div>
+      </div>
+      <div class="s2-credit" id="s2-p3-c">photo: Hangar 7 Social House</div>
+    </div>
+
+    <!-- p4 launch -->
+    <div class="s2-phase" id="s2-p4">
+      <div class="s2-photo"><img id="s2-p4-img" src="public/cast/launch-a-usspaceforce-pd.jpg" alt="" /></div>
+      <div class="s2-scrim"></div>
+      <div class="s2-copy">
+        <div><span class="s2-name" id="s2-p4-n">Vandenberg SFB</span></div>
+        <div class="s2-h" id="s2-p4-h">And a rocket over all&nbsp;of&nbsp;it.</div>
+      </div>
+      <div class="s2-credit" id="s2-p4-c">photo: U.S. Space Force</div>
+    </div>
+
+    <img src="public/mark-white.png" alt="" style="position: absolute; top: 4.9%; right: 84px; width: 96px; height: auto; z-index: 40" />
+    <div style="position: absolute; top: 5.2%; left: 84px; z-index: 40">
+      <span style="display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 32px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px">THIS IS LOMPOC</span>
+    </div>
+    <div class="s2-grain"></div>
+
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        // comp starts at main 4.86. VO: "We picture this. Flowers on H Street." 0–2.61 ·
+        // "Pizza on I Street. Pinot in the Wine Ghetto. A patio on Ocean." 2.99–7.52 · "And a rocket over all of it." 7.87–9.68
+        const B1 = 2.99, B2 = 4.5, B3 = 6.0, B4 = 7.87, END = 10.06, X = 0.3;
+
+        const cutTo = (from, to, at, fade) => {
+          if (fade) { tl.to(from, { opacity: 0, duration: X, ease: "power1.inOut" }, at); tl.to(to, { opacity: 1, duration: X, ease: "power1.inOut" }, at); }
+          else { tl.set(from, { opacity: 0 }, at); tl.set(to, { opacity: 1 }, at); }
+        };
+        tl.set("#s2-p0", { opacity: 1 }, 0);
+        cutTo("#s2-p0", "#s2-p1", B1, false);
+        cutTo("#s2-p1", "#s2-p2", B2, false);
+        cutTo("#s2-p2", "#s2-p3", B3, false);
+        cutTo("#s2-p3", "#s2-p4", B4, true);
+
+        tl.fromTo("#s2-p0-img", { scale: 1.08 }, { scale: 1, duration: B1, ease: "none" }, 0);
+        tl.fromTo("#s2-p1-img", { scale: 1 }, { scale: 1.07, duration: B2 - B1, ease: "none" }, B1);
+        tl.fromTo("#s2-p2-img", { scale: 1.07 }, { scale: 1, duration: B3 - B2, ease: "none" }, B2);
+        tl.fromTo("#s2-p3-img", { scale: 1 }, { scale: 1.07, duration: B4 - B3 + X, ease: "none" }, B3);
+        tl.fromTo("#s2-p4-img", { scale: 1.1 }, { scale: 1, duration: END - B4 + X, ease: "none" }, B4 - X);
+
+        const copyIn = (n, h, c, at, fast) => {
+          const d = fast ? 0.28 : 0.5;
+          tl.fromTo(n, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: d, ease: "power3.out" }, at);
+          tl.fromTo(h, { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: d + 0.1, ease: "power4.out" }, at + 0.05);
+          tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.3 }, at + 0.25);
+        };
+        copyIn("#s2-p0-n", "#s2-p0-h", "#s2-p0-c", 0.05, false);
+        tl.fromTo("#s2-p0-h2", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.5, ease: "power4.out" }, 1.15);
+        copyIn("#s2-p1-n", "#s2-p1-h", "#s2-p1-c", B1 + 0.02, true);
+        copyIn("#s2-p2-n", "#s2-p2-h", "#s2-p2-c", B2 + 0.02, true);
+        copyIn("#s2-p3-n", "#s2-p3-h", "#s2-p3-c", B3 + 0.02, true);
+        copyIn("#s2-p4-n", "#s2-p4-h", "#s2-p4-c", B4 + 0.15, false);
+
+        window.__timelines["s2-pride"] = tl;
+      })();
+    </script>
+  </div>
+</template>
