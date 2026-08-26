@@ -323,28 +323,9 @@ function Step2({
   return (
     <div data-wide-step className="space-y-6">
       {/* pt-3 keeps the floating "most popular" badge from crowding the step bar */}
-      <div className="grid grid-cols-1 gap-4 pt-3 md:grid-cols-3">
-        {/* Free — understated */}
-        <button
-          type="button"
-          onClick={() => setSelected("free")}
-          aria-pressed={selected === "free"}
-          className={`relative flex h-full flex-col rounded-3xl border-2 p-6 text-left transition-all duration-200 active:scale-[0.99] ${
-            selected === "free"
-              ? "border-primary bg-primary/5 shadow-md"
-              : "border-border bg-card shadow-sm hover:border-primary/40"
-          }`}
-        >
-          {selectDot(selected === "free")}
-          <div className="font-display text-lg font-semibold">{TIERS.free.name}</div>
-          <div className="mt-1 flex items-baseline gap-1">
-            <span className="font-display text-3xl font-bold tracking-tight">
-              {t("step2.free")}
-            </span>
-          </div>
-          {featureList(TIERS.free.features, true)}
-        </button>
-
+      <div className="grid grid-cols-1 gap-4 pt-3 md:grid-cols-2">
+        {/* Free is no longer offered self-serve — Growth is the membership. The "free" plan
+            code path stays for support-led cases (comps, legacy accounts). */}
         {/* Growth — the hero: preselected, most popular, richest treatment */}
         <button
           type="button"
