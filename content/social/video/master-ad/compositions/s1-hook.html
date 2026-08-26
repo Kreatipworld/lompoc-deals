@@ -13,9 +13,12 @@
         color: #faf5ec; font-weight: 800; font-size: 200px; line-height: 0.95; letter-spacing: -6px;
       }
       [data-composition-id="s1-hook"] .s1-stereo {
-        position: absolute; left: 84px; right: 84px; top: 52%;
-        font-family: Georgia, serif; font-style: italic; color: #efc618; font-size: 92px; line-height: 1.05;
+        position: absolute; left: 84px; right: 84px; top: 52%; overflow: hidden; padding-bottom: 12px;
       }
+      [data-composition-id="s1-hook"] .s1-stereo > span {
+        display: block; font-family: Georgia, serif; font-style: italic; color: #efc618; font-size: 92px; line-height: 1.05; will-change: transform;
+      }
+      [data-composition-id="s1-hook"] .s1-cut img { will-change: transform; }
       [data-composition-id="s1-hook"] .s1-grain {
         position: absolute; inset: 0; pointer-events: none; opacity: 0.09; z-index: 50;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='ns1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23ns1)' opacity='1'/%3E%3C/svg%3E");
@@ -27,14 +30,14 @@
       <div id="s1-road" style="position: absolute; left: -10%; right: -10%; top: 74%; height: 6px; background: rgba(250,245,236,0.22); transform-origin: left center"></div>
       <div id="s1-dash" style="position: absolute; left: 0; right: 0; top: 74%; height: 6px; margin-top: -60px; background: repeating-linear-gradient(90deg, rgba(239,198,24,0.5) 0 60px, transparent 60px 120px); transform-origin: left center"></div>
       <div class="s1-word" id="s1-w1">Lompoc.</div>
-      <div class="s1-stereo" id="s1-t1">the highway.</div>
+      <div class="s1-stereo"><span id="s1-t1">the highway.</span></div>
     </div>
 
     <!-- cut 2: the fog — a soft grey field -->
     <div class="s1-cut" id="s1-c2" style="background: #2b2331">
       <div id="s1-fog" style="position: absolute; inset: -20%; background: radial-gradient(ellipse 80% 55% at 50% 60%, rgba(250,245,236,0.34), rgba(250,245,236,0) 70%); filter: blur(40px)"></div>
       <div class="s1-word" id="s1-w2" style="color: rgba(250,245,236,0.92)">Lompoc.</div>
-      <div class="s1-stereo" id="s1-t2" style="color: rgba(250,245,236,0.7)">the fog.</div>
+      <div class="s1-stereo"><span id="s1-t2" style="color: rgba(250,245,236,0.7)">the fog.</span></div>
     </div>
 
     <!-- cut 3: the base — the launch, held dark -->
@@ -44,7 +47,7 @@
       </div>
       <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(36,22,41,0.9), rgba(36,22,41,0.25) 60%)"></div>
       <div class="s1-word" id="s1-w3">Lompoc.</div>
-      <div class="s1-stereo" id="s1-t3">the base.</div>
+      <div class="s1-stereo"><span id="s1-t3">the base.</span></div>
       <div style="position: absolute; left: 84px; bottom: 17.2%; color: rgba(255,255,255,0.7); font-size: 24px; letter-spacing: 1px">photo: U.S. Space Force</div>
     </div>
 
@@ -54,30 +57,31 @@
     <script>
       (() => {
         window.__timelines = window.__timelines || {};
-        const tl = gsap.timeline({ paused: true });
+        const tl = gsap.timeline({ paused: true, defaults: { duration: 0.45, ease: "power4.out" } });
         // VO: "Say Lompoc, and people picture the highway." 0–2.40 · "The fog." ~2.84–3.6 · "The base." ~3.7–4.43
         const C2 = 2.84, C3 = 3.65, END = 4.86;
+        tl.addLabel("highway", 0).addLabel("fog", C2).addLabel("base", C3);
 
-        tl.set("#s1-c1", { opacity: 1 }, 0);
+        tl.set("#s1-c1", { autoAlpha: 1 }, "highway");
         tl.set("#s1-w1", { opacity: 1 }, 0);
         tl.fromTo("#s1-w1", { scale: 0.97 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
         tl.fromTo("#s1-road", { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: "power3.inOut" }, 0.2);
         tl.fromTo("#s1-dash", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 1.1, ease: "power3.inOut" }, 0.35);
-        tl.fromTo("#s1-t1", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 1.55);
+        tl.fromTo("#s1-t1", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.55 }, "highway+=1.55");
 
         // hard cut
-        tl.set("#s1-c1", { opacity: 0 }, C2);
-        tl.set("#s1-c2", { opacity: 1 }, C2);
+        tl.set("#s1-c1", { autoAlpha: 0 }, "fog");
+        tl.set("#s1-c2", { autoAlpha: 1 }, "fog");
         tl.fromTo("#s1-fog", { scale: 0.9, opacity: 0.6 }, { scale: 1.15, opacity: 1, duration: 1.2, ease: "sine.out" }, C2);
-        tl.fromTo("#s1-w2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "power4.out" }, C2 + 0.02);
-        tl.fromTo("#s1-t2", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "power3.out" }, C2 + 0.12);
+        tl.fromTo("#s1-w2", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.35 }, "fog+=0.02");
+        tl.fromTo("#s1-t2", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0 }, "fog+=0.1");
 
         // hard cut
-        tl.set("#s1-c2", { opacity: 0 }, C3);
-        tl.set("#s1-c3", { opacity: 1 }, C3);
+        tl.set("#s1-c2", { autoAlpha: 0 }, "base");
+        tl.set("#s1-c3", { autoAlpha: 1 }, "base");
         tl.fromTo("#s1-launch", { scale: 1.08 }, { scale: 1.0, duration: END - C3, ease: "none" }, C3);
-        tl.fromTo("#s1-w3", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "power4.out" }, C3 + 0.02);
-        tl.fromTo("#s1-t3", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "power3.out" }, C3 + 0.12);
+        tl.fromTo("#s1-w3", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.35 }, "base+=0.02");
+        tl.fromTo("#s1-t3", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0 }, "base+=0.1");
 
         window.__timelines["s1-hook"] = tl;
       })();

@@ -13,10 +13,41 @@
       "skillPath": "skills/general-video/SKILL.md",
       "computedHash": "4f0c6cac18a6ef22765713e59e083af80916b423d3cb5b7f588b49fd0dfb65c8"
     },
+    "gsap-core": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-core/SKILL.md",
+      "computedHash": "c4a01101d9e1aafbf4b49f75d74f9349790d8741981ba0237c990093863035a6"
+    },
+    "gsap-performance": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-performance/SKILL.md",
+      "computedHash": "863842ac2d7aee53fd4f0025c960173d7ad3e658a5715b89b2211fa280213c1f"
+    },
+    "gsap-timeline": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-timeline/SKILL.md",
+      "computedHash": "54981c2feec5a9c0d57988aeb32315af32bdeadd261550d5e9db7a7b1f08b487"
+    },
+    "gsap-utils": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-utils/SKILL.md",
+      "computedHash": "1ab2387f6e694718a4f1b5acf2a4ab16e1b884c3428adf5f6b26d830f00826cf"
+    },
+    "neon": {
+      "source": "neondatabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/neon/SKILL.md",
+      "computedHash": "3e94f961d9910d23fd0b0f636004418742242aae073389f0739d42ed93a3d2fb"
+    },
     "neon-postgres": {
       "source": "neondatabase/agent-skills",
       "sourceType": "github",
-      "computedHash": "391693eee67001639ab65474df185da3ea5cf9ee4b99badecfd64561113edbb4"
+      "skillPath": "skills/neon-postgres/SKILL.md",
+      "computedHash": "9386efb7f97bd96f01d0c84f467e8e6e41be54f73cc1ece9c92f4f1dbd76f10f"
     },
     "postbridge-social-growth": {
       "source": "giulioco/skills",

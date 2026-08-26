@@ -15,8 +15,8 @@
     <div id="s4-bloom" style="position: absolute; bottom: -10%; left: -240px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(239,198,24,0.4), rgba(239,198,24,0) 62%)"></div>
 
     <div style="position: absolute; left: 84px; right: 84px; top: 11.5%; z-index: 20">
-      <div id="s4-h1" style="color: #650c75; font-weight: 800; font-size: 84px; line-height: 1.0; letter-spacing: -2px">The page is free.</div>
-      <div id="s4-h2" style="margin-top: 22px; font-family: Georgia, serif; font-style: italic; color: #241629; font-size: 54px; line-height: 1.12">and when they've got something to say, the whole town hears it.</div>
+      <div style="overflow: hidden; padding-bottom: 8px"><div id="s4-h1" style="color: #650c75; font-weight: 800; font-size: 84px; line-height: 1.0; letter-spacing: -2px; will-change: transform">The page is free.</div></div>
+      <div style="overflow: hidden; padding-bottom: 8px"><div id="s4-h2" style="margin-top: 22px; font-family: Georgia, serif; font-style: italic; color: #241629; font-size: 54px; line-height: 1.12; will-change: transform">and when they've got something to say, the whole town hears it.</div></div>
     </div>
 
     <!-- deal card: a straight crop of the live deals page -->
@@ -26,7 +26,7 @@
     <div id="s4-dchip" style="position: absolute; left: 84px; top: 37.5%; z-index: 30; display: inline-block; background: #650c75; color: #fff; font-weight: 800; font-size: 32px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px">DEALS &amp; ANNOUNCEMENTS</div>
 
     <!-- the spotlight reel, playing -->
-    <div id="s4-phone" style="position: absolute; left: 190px; top: 36%; width: 700px; height: 1150px; border-radius: 44px; background: #0f0a12; padding: 12px; box-shadow: 0 50px 120px rgba(36,22,41,0.45); z-index: 12">
+    <div id="s4-phone" style="position: absolute; left: 190px; top: 36%; width: 700px; height: 1150px; border-radius: 44px; background: #0f0a12; padding: 12px; box-shadow: 0 50px 120px rgba(36,22,41,0.45); z-index: 12; will-change: transform">
       <div style="position: relative; width: 676px; height: 1126px; border-radius: 34px; overflow: hidden; background: #241629">
         <video id="s4-reel" class="clip" src="public/spotlight.mp4" data-start="2.1" data-duration="2.69" data-media-start="4.2" muted style="display: block; width: 676px; height: 1126px; object-fit: cover"></video>
       </div>
@@ -42,21 +42,24 @@
     <script>
       (() => {
         window.__timelines = window.__timelines || {};
-        const tl = gsap.timeline({ paused: true });
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         // VO (comp-local): "The page is free — and when they have got something to say, the whole town hears it." 0–4.33
         const SWAP = 2.1;
-        tl.fromTo("#s4-bloom", { opacity: 0 }, { opacity: 1, duration: 0.8 }, 0);
-        tl.fromTo("#s4-h1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power4.out" }, 0.05);
-        tl.fromTo("#s4-deal", { opacity: 0, y: 200, rotation: 2 }, { opacity: 1, y: 0, rotation: 0, duration: 0.7, ease: "power4.out" }, 0.2);
-        tl.fromTo("#s4-dchip", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(1.5)" }, 0.6);
-        tl.fromTo("#s4-h2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.3);
+        tl.addLabel("free", 0).addLabel("loud", SWAP);
+        tl.fromTo("#s4-bloom", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, ease: "none" }, "free");
+        tl.fromTo("#s4-h1", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.55 }, "free+=0.05");
+        tl.fromTo("#s4-deal", { autoAlpha: 0, y: 200, rotation: 2 }, { autoAlpha: 1, y: 0, rotation: 0, duration: 0.7 }, "free+=0.2");
+        tl.fromTo("#s4-dchip", { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "back.out(1.5)" }, "free+=0.6");
+        tl.fromTo("#s4-h2", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.6 }, "free+=1.3");
         // swap to the reel
-        tl.to("#s4-deal", { opacity: 0, y: -80, duration: 0.35, ease: "power2.in" }, SWAP - 0.1);
-        tl.to("#s4-dchip", { opacity: 0, duration: 0.2 }, SWAP - 0.1);
-        tl.set("#s4-phone", { opacity: 0 }, 0);
-        tl.fromTo("#s4-phone", { opacity: 0, y: 260, rotation: -2 }, { opacity: 1, y: 0, rotation: 0, duration: 0.7, ease: "power4.out" }, SWAP);
-        tl.set("#s4-pchip", { opacity: 0 }, 0);
-        tl.fromTo("#s4-pchip", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(1.5)" }, SWAP + 0.45);
+        tl.to("#s4-deal", { autoAlpha: 0, y: -80, duration: 0.35, ease: "power2.in" }, SWAP - 0.35);
+        tl.to("#s4-dchip", { autoAlpha: 0, duration: 0.2, ease: "none" }, SWAP - 0.3);
+        tl.set("#s4-deal", { autoAlpha: 0 }, SWAP);
+        tl.set("#s4-dchip", { autoAlpha: 0 }, SWAP);
+        tl.set("#s4-phone", { autoAlpha: 0 }, 0);
+        tl.fromTo("#s4-phone", { autoAlpha: 0, y: 260, rotation: -2 }, { autoAlpha: 1, y: 0, rotation: 0, duration: 0.7, immediateRender: false }, "loud");
+        tl.set("#s4-pchip", { autoAlpha: 0 }, 0);
+        tl.fromTo("#s4-pchip", { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "back.out(1.5)", immediateRender: false }, "loud+=0.45");
         window.__timelines["s4-loud"] = tl;
       })();
     </script>
