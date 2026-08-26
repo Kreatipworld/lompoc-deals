@@ -15,6 +15,8 @@ const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  // Feed discovery for readers, aggregators, and news crawlers.
+  alternates: { types: { "application/rss+xml": `${siteUrl}/api/blog/rss` } },
   title: {
     default: "Lompoc Locals — local coupons, specials, and announcements",
     template: "%s | Lompoc Locals",

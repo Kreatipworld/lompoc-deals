@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return [] as { slug: string }[]
       }),
     db
-      .select({ slug: blogPosts.slug, publishedAt: blogPosts.publishedAt, updatedAt: blogPosts.updatedAt })
+      .select({ slug: blogPosts.slug, publishedAt: blogPosts.publishedAt, updatedAt: blogPosts.updatedAt, category: blogPosts.category })
       .from(blogPosts)
       .where(eq(blogPosts.status, "published"))
       .catch((err) => {
@@ -74,11 +74,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency:
-      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" ? ("daily" as const)
+      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" ? ("daily" as const)
       : path === "/contact" || path === "/privacy" || path === "/terms" ? ("monthly" as const)
       : ("weekly" as const),
     priority:
       path === "" ? 1
+      : path === "/news" || path === "/events" ? 0.9
       : path === "/feed" || path === "/garage-sales" || path === "/blog" || path === "/deals" ? 0.8
       : path === "/contact" ? 0.4
       : path === "/privacy" || path === "/terms" ? 0.3
@@ -102,8 +103,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogPages = posts.map((p) => ({
     url: `${siteUrl}/blog/${p.slug}`,
     lastModified: p.updatedAt ?? p.publishedAt ?? new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
+    changeFrequency: (("category" in p && p.category === "local-news") ? "weekly" : "monthly") as "weekly" | "monthly",
+    priority: "category" in p && p.category === "local-news" ? 0.8 : 0.7,
   }))
 
   const hotelPages = HOTELS.map((h) => ({

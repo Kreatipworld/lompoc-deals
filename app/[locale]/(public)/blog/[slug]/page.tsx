@@ -61,13 +61,18 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
   const relatedPosts = recentPosts.filter((p) => p.slug !== post.slug).slice(0, 2)
 
   // Schema.org BlogPosting structured data
+  // Local news gets NewsArticle (Top Stories / Google News eligibility); everything
+  // else stays BlogPosting. Images are required for Discover, so fall back to the
+  // town hero rather than omitting the field.
+  const isNews = post.category === "local-news"
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": isNews ? "NewsArticle" : "BlogPosting",
     headline: post.title,
     description: post.metaDescription ?? post.excerpt ?? undefined,
-    image: post.imageUrl ?? undefined,
+    image: [post.imageUrl ?? `${siteUrl}/lompoc-hero.jpg`],
     url: `${siteUrl}/blog/${post.slug}`,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${siteUrl}/blog/${post.slug}` },
     datePublished: post.publishedAt?.toISOString(),
     dateModified: post.updatedAt.toISOString(),
     author: {
@@ -78,15 +83,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
       "@type": "Organization",
       name: "Lompoc Locals",
       url: siteUrl,
+      logo: { "@type": "ImageObject", url: `${siteUrl}/icon.svg` },
     },
     keywords: post.tags?.join(", "),
     articleSection: post.category ?? undefined,
     inLanguage: "en-US",
-    isPartOf: {
-      "@type": "Blog",
-      name: "Lompoc Locals Blog",
-      url: `${siteUrl}/blog`,
-    },
+    isPartOf: isNews
+      ? { "@type": "WebPage", name: "Lompoc News", url: `${siteUrl}/news` }
+      : { "@type": "Blog", name: "Lompoc Locals Blog", url: `${siteUrl}/blog` },
   }
 
   return (
