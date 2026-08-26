@@ -84,5 +84,24 @@ def main():
                 print(json.dumps(t, indent=2))
 
 
+# --- token refresh -------------------------------------------------------
+# Run `python3 hf-mcp.py refresh` when calls return "session has expired". The
+# refresh_token grant works without a browser (proven 2026-08-26).
+if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "refresh":
+    import urllib.parse as up
+    p = os.path.join(DIR, "hf-token.json")
+    t = json.load(open(p))
+    data = up.urlencode({"grant_type": "refresh_token", "refresh_token": t["refresh_token"],
+                         "client_id": t["_client_id"], "resource": "https://mcp.higgsfield.ai/mcp"}).encode()
+    req = ur.Request("https://mcp.higgsfield.ai/oauth2/token", data=data,
+                     headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"})
+    new = json.loads(ur.urlopen(req, timeout=60).read())
+    new["_client_id"] = t["_client_id"]
+    new.setdefault("refresh_token", t["refresh_token"])
+    json.dump(new, open(p, "w"), indent=2)
+    print("TOKEN_REFRESHED expires_in", new.get("expires_in"))
+    sys.exit(0)
+
+
 if __name__ == "__main__":
     main()

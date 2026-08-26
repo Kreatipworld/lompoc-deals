@@ -72,3 +72,7 @@ content/social/video/news-desk/renders/
 content/social/video/news-desk/snapshots*/
 content/social/video/news-desk/node_modules/
 content/social/video/news-desk/.hyperframes/
+
+# Higgsfield OAuth token (scripts/higgsfield-mcp)
+hf-token.json
+hf-mcp-session.txt

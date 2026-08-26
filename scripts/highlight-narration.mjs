@@ -47,7 +47,9 @@ function streetOf(address) {
   if (!address) return null
   const m = address.match(/^\s*\d+\s+([^,]+)/)
   if (!m) return null
+  // "322 N H St SUITE A" — the suite is for the mail carrier, not the listener.
   return m[1]
+    .replace(/\s+(suite|ste|unit|apt|#)\.?\s*[\w-]+\s*$/i, "")
     .replace(/\bN\b\.?/i, "North").replace(/\bS\b\.?/i, "South")
     .replace(/\bE\b\.?/i, "East").replace(/\bW\b\.?/i, "West")
     .replace(/\bSt\b\.?/i, "Street").replace(/\bAve\b\.?/i, "Avenue")
