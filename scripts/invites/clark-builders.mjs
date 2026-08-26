@@ -35,7 +35,7 @@ const html = `
     <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">Heidi, Clark Builders is on Lompoc Locals.</h1>
     <div style="height:3px; width:52px; background:${Y}; border-radius:2px; margin:0 0 18px;"></div>
     <p style="color:#444; line-height:1.6; margin:0 0 14px;">Hi Heidi &mdash; I'm Andres, from <strong>Lompoc Locals</strong>, the #1 local hub in Lompoc: where neighbors find local businesses, read local news, and see what's happening in town each week. We built a page for Clark Builders with your kitchens and decks front and center &mdash; <a href="${profileUrl}" style="color:${P}; font-weight:700;">take a look</a>. It's yours to claim, free, and it always will be.</p>
-    <p style="color:#444; line-height:1.6; margin:0 0 18px;">A few facts: <strong>${F.listed} Lompoc businesses</strong> are on the map and in local search, neighbors opened <strong>${F.views7d} business pages</strong> in the last week, and every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in local inboxes across town. Fellow trades like <strong>Wm Rieck Plumbing</strong>, <strong>Terrones Plumbing</strong>, and <strong>J's Glass Co</strong> are already members.</p>
+    <p style="color:#444; line-height:1.6; margin:0 0 18px;">A few facts: <strong>${F.listed} Lompoc businesses</strong> are on the map and in local search, neighbors opened <strong>${F.views7d} business pages</strong> in the last week, and every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in local inboxes across town. Fellow trades like <strong>Wm Rieck Plumbing</strong>, <strong>Terrones Plumbing</strong>, and <strong>J's Glass Co</strong> are already Growth members &mdash; so are <strong>Eddie's Grill</strong>, <strong>Vargas Jewelers</strong>, <strong>Lompoc Valley Florist</strong>, and <strong>Sweet Baking Co.</strong>, with the partner badge on the map, a spot in the homepage partner spotlight, and their deals and announcements in the Monday email (Eddie's and Vargas have offers running right now).</p>
 
     <div style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:20px 22px; margin:0 0 22px;">
       <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">We'd love to have you as a Growth member</div>
@@ -61,7 +61,7 @@ const html = `
 </div>`
 
 const subject = `Clark Builders is on Lompoc Locals — come be part of it`
-const to = PREVIEW ? "hello@lompoclocals.com" : biz.emails
+const to = PREVIEW ? (process.env.PREVIEW_TO || "hello@lompoclocals.com") : biz.emails
 if (!SEND) { console.log(`DRY RUN → ${[].concat(to).join(", ")}\n${subject}`); process.exit(0) }
 const res = await fetch("https://api.resend.com/emails", {
   method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
