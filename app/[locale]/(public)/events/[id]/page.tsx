@@ -43,11 +43,13 @@ export async function generateMetadata({
   if (!ev) return {}
   return {
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
+    // The date is what makes a recurring series unique, so it always survives:
+    // the event name is what gets trimmed when the whole title won't fit.
     title: {
-      absolute: `${seoTitle(
-        `${ev.title} — ${ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" })}`,
-        params.locale === "es" ? "Evento en Lompoc" : "Event in Lompoc"
-      )} | Lompoc Locals`,
+      absolute: (() => {
+        const date = ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
+        return `${seoTitle(ev.title, undefined, { max: 60 - (date.length + 3) })} — ${date} | Lompoc Locals`
+      })(),
     },
     description: ev.description?.slice(0, 160) ?? undefined,
     alternates: pageAlternates(`/events/${ev.id}`, params.locale),

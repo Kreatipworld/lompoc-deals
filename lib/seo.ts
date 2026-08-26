@@ -33,8 +33,8 @@ export const TITLE_MAX = 60
  * trimmed at a word boundary. Names that already say "Lompoc" skip the
  * descriptor — "Rolling Tire — Auto Repair Lompoc CA — Lompoc, CA" helps nobody.
  */
-export function seoTitle(name: string, descriptor?: string, opts: { absolute?: boolean } = {}): string {
-  const budget = TITLE_MAX - (opts.absolute ? 0 : BRAND_SUFFIX_LEN)
+export function seoTitle(name: string, descriptor?: string, opts: { absolute?: boolean; max?: number } = {}): string {
+  const budget = (opts.max ?? TITLE_MAX) - (opts.absolute ? 0 : BRAND_SUFFIX_LEN)
   const clean = name.replace(/\s+/g, " ").trim()
   const saysLompoc = /lompoc/i.test(clean)
   const withDesc = descriptor && !saysLompoc ? `${clean} — ${descriptor}` : clean
