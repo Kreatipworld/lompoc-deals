@@ -19,7 +19,7 @@ import {
   Navigation,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
-import { pageAlternates } from "@/lib/seo"
+import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
 
 export function generateStaticParams() {
   return HOTELS.map((h) => ({ slug: h.slug }))
@@ -33,8 +33,8 @@ export async function generateMetadata({
   const hotel = getHotelBySlug(params.slug)
   if (!hotel) return { title: "Hotel" }
   return {
-    title: `${hotel.name} — Lompoc Hotel`,
-    description: `${hotel.tagline}. ${hotel.description.slice(0, 120)}…`,
+    title: seoTitle(hotel.name, "Lompoc Hotel"),
+    description: seoDescription(`${hotel.tagline}. ${hotel.description}`, ""),
     keywords: [
       `${hotel.name.toLowerCase()}`,
       "lompoc hotels",

@@ -382,7 +382,7 @@
     "mobileFollowSocial": "Síguelos para ver dónde están hoy"
   },
   "activities": {
-    "metaTitle": "Qué hacer en Lompoc, CA — Aventuras y Actividades",
+    "metaTitle": "Qué hacer en Lompoc, CA",
     "metaDescription": "Descubre las mejores cosas que hacer en Lompoc, CA — misiones históricas, campos de flores, cata de vinos, playas, murales y aventuras al aire libre. Actualizado por locales.",
     "metaOgTitle": "Qué hacer en Lompoc, CA",
     "metaOgDescription": "Explora Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más.",
@@ -453,7 +453,7 @@
   },
   "hotels": {
     "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse",
-    "metaDescription": "Encuentra hoteles seleccionados en Lompoc, CA. Desde moteles económicos hasta suites de lujo — cerca de Vandenberg Space Force Base, el centro de Lompoc y la región vinícola de Santa Rita Hills.",
+    "metaDescription": "Encuentra hoteles seleccionados en Lompoc, CA. Desde moteles económicos hasta suites de lujo — cerca de Vandenberg Space Force Base, el centro de Lompoc…",
     "priceUpscale": "De lujo",
     "priceMidRange": "Precio moderado",
     "priceBudget": "Económico",
@@ -681,7 +681,7 @@
   },
   "partners": {
     "metaTitle": "Sé socio de Lompoc Locals — Que los locales te encuentren",
-    "metaDescription": "Únete a los negocios que ya están en Lompoc Locals, el centro local de Lompoc y Vandenberg. Que te descubran tus vecinos, aparece en el boletín semanal y destaca en la búsqueda local. Anuncio gratis.",
+    "metaDescription": "Únete a los negocios que ya están en Lompoc Locals, el centro local de Lompoc y Vandenberg. Que te descubran tus vecinos, aparece en el boletín semanal y…",
     "metaOgTitle": "Lompoc Locals — Que te encuentren los vecinos que ya te están buscando",
     "metaOgDescription": "El centro local #1 de Lompoc y Vandenberg. Anuncia tu página gratis, que te encuentren los vecinos y aparece en el correo del lunes.",
     "hero": {
@@ -1050,7 +1050,7 @@
     "alreadyListedCta": "Buscar mi negocio"
   },
   "feed": {
-    "metaTitle": "Vecindario de Lompoc — anuncios locales, ventas de patio, información y eventos",
+    "metaTitle": "Vecindario de Lompoc — Anuncios y ventas de garaje",
     "metaDescription": "Explora el feed del vecindario de Lompoc: artículos en venta, ventas de patio, información del vecindario y próximos eventos de tus vecinos.",
     "heading": "Lo que está pasando en Lompoc",
     "postLink": "Publicar en el vecindario →",
@@ -2300,7 +2300,7 @@
     "notFoundTitle": "Evento no encontrado"
   },
   "garageSalesPage": {
-    "metaTitle": "Ventas de garaje en Lompoc, CA | Lompoc Locals",
+    "metaTitle": "Ventas de garaje en Lompoc este fin de semana | Lompoc Locals",
     "metaDescription": "Encuentra ventas de garaje en Lompoc este fin de semana — publicadas por tus vecinos, con mapa, fechas y fotos. Publica la tuya gratis.",
     "h1": "Ventas de garaje en Lompoc",
     "intro": "Todas las ventas de garaje publicadas por vecinos de Lompoc — actualizadas toda la semana y organizadas por vecindario. Las ventas de este fin de semana aparecen primero.",
@@ -2348,7 +2348,7 @@
     "sub": "Las mejores ofertas de negocios de Lompoc hoy"
   },
   "thisWeek": {
-    "metaTitle": "Esta semana en Lompoc — Eventos, ofertas y qué hacer",
+    "metaTitle": "Esta semana en Lompoc — Eventos y ofertas",
     "metaDescription": "La edición semanal de Lompoc Locals: qué pasa en la ciudad, las ofertas locales de la semana, qué hacer y los negocios detrás de todo.",
     "kicker": "Desde 2026 · Lompoc y Vandenberg",
     "nameplate": "The Lompoc Locals",

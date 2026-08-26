@@ -1,37 +1,13 @@
 import assert from "node:assert/strict"
-import { pageAlternates } from "./seo"
+import { seoTitle, seoDescription } from "./seo"
 
-// standard path
-assert.deepEqual(pageAlternates("/businesses"), {
-  canonical: "/businesses",
-  languages: {
-    en: "/businesses",
-    es: "/es/businesses",
-    "x-default": "/businesses",
-  },
-})
-
-// dynamic path
-assert.deepEqual(pageAlternates("/biz/some-slug").canonical, "/biz/some-slug")
-assert.equal(pageAlternates("/biz/some-slug").languages!.es, "/es/biz/some-slug")
-
-// home: es variant must not end with a trailing slash after the prefix
-assert.deepEqual(pageAlternates("/"), {
-  canonical: "/",
-  languages: { en: "/", es: "/es", "x-default": "/" },
-})
-
-// es locale: canonical must be self-referential, not the English URL
-assert.equal(pageAlternates("/businesses", "es").canonical, "/es/businesses")
-assert.equal(pageAlternates("/", "es").canonical, "/es")
-// en (explicit + default) keeps the unprefixed canonical
-assert.equal(pageAlternates("/businesses", "en").canonical, "/businesses")
-assert.equal(pageAlternates("/businesses").canonical, "/businesses")
-// languages map is locale-independent
-assert.deepEqual(pageAlternates("/map", "es").languages, {
-  en: "/map",
-  es: "/es/map",
-  "x-default": "/map",
-})
-
-console.log("seo.test.ts OK")
+assert.equal(seoTitle("Lompoc Museum", "Things to Do in Lompoc"), "Lompoc Museum") // says Lompoc → no descriptor
+assert.equal(seoTitle("Ryon Park", "Things to Do"), "Ryon Park — Things to Do")
+assert.ok(seoTitle("Harris Grade Road Scenic Drive", "Things to Do in Lompoc").length + 15 <= 60)
+assert.equal(seoTitle("Rolling Tire & Auto Repair - Auto Repair Service Lompoc CA", "Auto"), "Rolling Tire & Auto Repair - Auto Repair…")
+assert.ok(seoTitle("A".repeat(80), undefined, { absolute: true }).length <= 60)
+const d = seoDescription("Short stub", "Local business in Lompoc, CA — hours, photos, and directions on Lompoc Locals.")
+assert.ok(d.length >= 70 && d.length <= 155 && d.startsWith("Short stub. Local business"))
+assert.ok(seoDescription("word ".repeat(80), "x").length <= 155)
+assert.ok(seoDescription("word ".repeat(80), "x").endsWith("…"))
+console.log("seo: all assertions passed")

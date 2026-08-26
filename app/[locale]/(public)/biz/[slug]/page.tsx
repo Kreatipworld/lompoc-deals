@@ -41,7 +41,7 @@ import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
-import { pageAlternates } from "@/lib/seo"
+import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
 import { isUnclaimedBusiness } from "@/lib/business-ownership"
 
 // Profiles are living data (enrichment sweeps, claims, unpublishes). Without
@@ -71,9 +71,9 @@ export async function generateMetadata({
   const aboutSnippet = about?.trim()
     ? about.trim().slice(0, 155).replace(/\s+\S*$/, "") + (about.trim().length > 155 ? "…" : "")
     : null
-  const metaDescription = aboutSnippet ?? description ?? fallbackDescription
+  const metaDescription = seoDescription(aboutSnippet ?? description, fallbackDescription)
   return {
-    title: `${name} — ${t("metaTitleSuffix")}`,
+    title: seoTitle(name, t("metaTitleSuffix")),
     description: metaDescription,
     keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
     alternates: pageAlternates(`/biz/${params.slug}`, params.locale),

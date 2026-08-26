@@ -13,7 +13,7 @@ import { NearbyBusinesses, NearbyPlaces } from "@/components/nearby-links"
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import { getTranslations } from "next-intl/server"
-import { pageAlternates } from "@/lib/seo"
+import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
 
 // Lazy-load single-pin map to avoid SSR issues with Leaflet
 const ActivityMapPin = dynamic(
@@ -37,9 +37,8 @@ export async function generateMetadata({
   const tm = await getTranslations({ locale, namespace: "activities" })
   return {
     // No brand in the string — the root layout's template appends "| Lompoc Locals".
-    title: tm("detailTitle", { title: activity.title }),
-    description:
-      activity.description ?? tm("detailFallbackDescription", { title: activity.title }),
+    title: seoTitle(activity.title, (await params).locale === "es" ? "Qué hacer en Lompoc" : "Things to Do in Lompoc"),
+    description: seoDescription(activity.description, tm("detailFallbackDescription", { title: activity.title })),
     openGraph: {
       title: activity.title,
       description: activity.description ?? undefined,

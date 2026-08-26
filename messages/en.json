@@ -382,7 +382,7 @@
     "mobileFollowSocial": "Follow for today's location"
   },
   "activities": {
-    "metaTitle": "Things to Do in Lompoc, CA — Adventures & Activities",
+    "metaTitle": "Things to Do in Lompoc, CA",
     "metaDescription": "Discover the best things to do in Lompoc, CA — historic missions, flower fields, wine tasting, beaches, murals, and outdoor adventures. Updated by locals.",
     "metaOgTitle": "Things to Do in Lompoc, CA",
     "metaOgDescription": "Explore Lompoc — missions, flower fields, wine tasting, rocket launches, and more.",
@@ -453,7 +453,7 @@
   },
   "hotels": {
     "metaTitle": "Lompoc Hotels & Accommodations — Where to Stay",
-    "metaDescription": "Find curated hotels in Lompoc, CA. From budget-friendly motels to upscale suites — near Vandenberg Space Force Base, downtown Lompoc, and the Santa Rita Hills wine country.",
+    "metaDescription": "Find curated hotels in Lompoc, CA. From budget-friendly motels to upscale suites — near Vandenberg Space Force Base, downtown Lompoc, and the Santa Rita…",
     "priceUpscale": "Upscale",
     "priceMidRange": "Mid-Range",
     "priceBudget": "Budget",
@@ -681,7 +681,7 @@
   },
   "partners": {
     "metaTitle": "Partner With Lompoc Locals — Get Found by Locals",
-    "metaDescription": "Join the businesses already on Lompoc Locals — the local hub for Lompoc & Vandenberg. Get discovered by neighbors, featured in the weekly digest, and showcased in local search. Free to list.",
+    "metaDescription": "Join the businesses already on Lompoc Locals — the local hub for Lompoc & Vandenberg. Get discovered by neighbors, featured in the weekly digest, and…",
     "metaOgTitle": "Lompoc Locals — Get found by the locals already looking for you",
     "metaOgDescription": "The #1 local hub for Lompoc & Vandenberg. Claim your free page, get found by neighbors, and land in the Monday email.",
     "hero": {
@@ -1050,7 +1050,7 @@
     "alreadyListedCta": "Find my business"
   },
   "feed": {
-    "metaTitle": "Lompoc Neighborhood — local listings, yard sales, info, and events",
+    "metaTitle": "Lompoc Neighborhood — Listings & Yard Sales",
     "metaDescription": "Browse the Lompoc neighborhood feed: items for sale, yard sales, neighborhood info, and upcoming events from your neighbors.",
     "heading": "What's happening in Lompoc",
     "postLink": "Post to the neighborhood →",
@@ -2300,7 +2300,7 @@
     "notFoundTitle": "Event not found"
   },
   "garageSalesPage": {
-    "metaTitle": "Garage Sales in Lompoc, CA — This Weekend's Yard Sales | Lompoc Locals",
+    "metaTitle": "Garage Sales in Lompoc This Weekend | Lompoc Locals",
     "metaDescription": "Find garage sales and yard sales happening in Lompoc this weekend — posted by your neighbors, with map, dates, and photos. Post yours free.",
     "h1": "Garage Sales in Lompoc",
     "intro": "Every garage sale and yard sale posted by Lompoc neighbors — updated all week, mapped by neighborhood. Sales happening this weekend are listed first.",
@@ -2348,7 +2348,7 @@
     "sub": "Today's best offers from Lompoc businesses"
   },
   "thisWeek": {
-    "metaTitle": "This Week in Lompoc — Events, Deals & Things to Do",
+    "metaTitle": "This Week in Lompoc — Events & Deals",
     "metaDescription": "The Lompoc Locals weekly edition: what's happening around town, this week's local deals, things to do, and the businesses behind them.",
     "kicker": "Est. 2026 · Lompoc & Vandenberg",
     "nameplate": "The Lompoc Locals",

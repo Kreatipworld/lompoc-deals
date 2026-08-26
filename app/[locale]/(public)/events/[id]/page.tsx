@@ -6,7 +6,7 @@ import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
 import { businesses, events } from "@/db/schema"
-import { pageAlternates } from "@/lib/seo"
+import { pageAlternates, seoTitle } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -41,14 +41,13 @@ export async function generateMetadata({
 }) {
   const ev = await getApprovedEvent(parseInt(params.id, 10))
   if (!ev) return {}
-  const t = await getTranslations("eventDetail")
   return {
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
     title: {
-      absolute: t("metaTitle", {
-        title: ev.title,
-        date: ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" }),
-      }),
+      absolute: `${seoTitle(
+        `${ev.title} — ${ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" })}`,
+        params.locale === "es" ? "Evento en Lompoc" : "Event in Lompoc"
+      )} | Lompoc Locals`,
     },
     description: ev.description?.slice(0, 160) ?? undefined,
     alternates: pageAlternates(`/events/${ev.id}`, params.locale),
