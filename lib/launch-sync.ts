@@ -13,12 +13,17 @@ const LL2_URL =
 // LL2 status abbrevs that mean the launch is still expected to happen
 const UPCOMING_STATUSES = new Set(["Go", "TBC", "TBD", "Hold"])
 const CANCELLED_STATUSES = new Set(["Failure", "Partial Failure"])
+// A launch pencilled in for "Q4" arrives from the feed as Dec 31 00:00 UTC. Nine of those on
+// one calendar day is noise, not news — they stay hidden until the window is at least a day.
+const FIRM_PRECISION = new Set(["Second", "Minute", "Hour", "Day"])
 
 interface LL2Launch {
   id: string
   name: string // "Falcon 9 Block 5 | Starlink Group 17-39"
   net: string // ISO launch time (No Earlier Than)
   status: { abbrev: string; name: string }
+  /** How firm `net` is: "Second"/"Minute"/"Hour"/"Day" are real schedules; "Month"/"Quarter"/"Year" are placeholders. */
+  net_precision?: { name?: string } | null
   image?: string | null
   mission?: { name?: string; description?: string | null } | null
   rocket?: { configuration?: { full_name?: string } } | null
@@ -65,9 +70,10 @@ export async function syncVandenbergLaunches(): Promise<SyncReport> {
   for (const launch of launches) {
     try {
       const cancelled = CANCELLED_STATUSES.has(launch.status.abbrev)
-      const upcoming = UPCOMING_STATUSES.has(launch.status.abbrev)
+      const vague = !FIRM_PRECISION.has(launch.net_precision?.name ?? "Day")
+      const upcoming = UPCOMING_STATUSES.has(launch.status.abbrev) && !vague
       // "Success" = already flew; leave whatever row exists as history
-      if (!upcoming && !cancelled) {
+      if (!upcoming && !cancelled && !vague) {
         skipped++
         continue
       }
@@ -79,7 +85,7 @@ export async function syncVandenbergLaunches(): Promise<SyncReport> {
         imageUrl: launch.image?.slice(0, 1000) ?? null,
         category: "community" as const,
         startsAt: new Date(launch.net),
-        status: cancelled ? ("cancelled" as const) : ("approved" as const),
+        status: cancelled || vague ? ("cancelled" as const) : ("approved" as const),
         source: "launch-library",
         externalId: launch.id,
       }

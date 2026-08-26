@@ -48,7 +48,11 @@ export async function generateMetadata({
     title: {
       absolute: (() => {
         const date = ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
-        return `${seoTitle(ev.title, undefined, { max: 60 - (date.length + 3) })} — ${date} | Lompoc Locals`
+        // "Rocket Launch: Falcon 9 Block 5 — Starlink Group 15-23" → "Starlink Group 15-23 Launch":
+        // the payload is the identity; the rocket variant is what truncation would otherwise keep.
+        const launch = ev.title.match(/^Rocket Launch:\s*(?:.*?—\s*)?(.+)$/)
+        const name = launch ? `${launch[1].trim()} Launch` : ev.title
+        return `${seoTitle(name, undefined, { max: 60 - (date.length + 3) })} — ${date} | Lompoc Locals`
       })(),
     },
     description: ev.description?.slice(0, 160) ?? undefined,

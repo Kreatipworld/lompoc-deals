@@ -36,8 +36,13 @@ export const TITLE_MAX = 60
 export function seoTitle(name: string, descriptor?: string, opts: { absolute?: boolean; max?: number } = {}): string {
   const budget = (opts.max ?? TITLE_MAX) - (opts.absolute ? 0 : BRAND_SUFFIX_LEN)
   const clean = name.replace(/\s+/g, " ").trim()
-  const saysLompoc = /lompoc/i.test(clean)
-  const withDesc = descriptor && !saysLompoc ? `${clean} — ${descriptor}` : clean
+  // A name that already says "Lompoc" drops the redundant town from the descriptor
+  // ("Lompoc Museum — Things to Do", not "— Things to Do in Lompoc"), but keeps the
+  // descriptor itself: it's what separates a /hotels page from the same hotel's /biz page.
+  const desc = /lompoc/i.test(clean) && descriptor
+    ? descriptor.replace(/\s*(?:in|en|de|—|-)?\s*Lompoc(?:,?\s*CA)?/i, "").replace(/\s+/g, " ").trim()
+    : descriptor
+  const withDesc = desc ? `${clean} — ${desc}` : clean
   if (withDesc.length <= budget) return withDesc
   if (clean.length <= budget) return clean
   return clean.slice(0, budget - 1).replace(/\s+\S*$/, "") + "…"

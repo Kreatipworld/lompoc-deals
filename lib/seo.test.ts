@@ -1,7 +1,9 @@
 import assert from "node:assert/strict"
 import { seoTitle, seoDescription } from "./seo"
 
-assert.equal(seoTitle("Lompoc Museum", "Things to Do in Lompoc"), "Lompoc Museum") // says Lompoc → no descriptor
+assert.equal(seoTitle("Lompoc Museum", "Things to Do in Lompoc"), "Lompoc Museum — Things to Do") // town dropped, descriptor kept
+assert.equal(seoTitle("Hilton Garden Inn Lompoc", "Lompoc Hotel"), "Hilton Garden Inn Lompoc — Hotel")
+assert.equal(seoTitle("ALDI Lompoc", "Lompoc, CA"), "ALDI Lompoc")
 assert.equal(seoTitle("Ryon Park", "Things to Do"), "Ryon Park — Things to Do")
 assert.ok(seoTitle("Harris Grade Road Scenic Drive", "Things to Do in Lompoc").length + 15 <= 60)
 assert.equal(seoTitle("Rolling Tire & Auto Repair - Auto Repair Service Lompoc CA", "Auto"), "Rolling Tire & Auto Repair - Auto Repair…")
