@@ -32,37 +32,24 @@ const html = `
   </div>
   <div style="height:6px; background:linear-gradient(90deg,${Y} 0%,${G} 55%,${P} 100%);"></div>
   <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
-    <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">Heidi, Clark Builders is on Lompoc Locals — and neighbors are already looking.</h1>
+    <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">Heidi, Clark Builders is on Lompoc Locals.</h1>
     <div style="height:3px; width:52px; background:${Y}; border-radius:2px; margin:0 0 18px;"></div>
-    <p style="color:#444; line-height:1.6; margin:0 0 14px;">Hi Heidi &mdash; I'm Andres, from <strong>Lompoc Locals</strong>, the local hub where Lompoc finds its businesses, news, and events. We built a page for Clark Builders with your kitchens and decks front and center: <a href="${profileUrl}" style="color:${P}; font-weight:700;">take a look</a>. It's yours to claim, free, and it always will be.</p>
-
-    <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:18px 0 8px;">The numbers, honestly</div>
-    <ul style="color:#444; line-height:1.7; margin:0 0 18px; padding-left:20px;">
-      <li style="margin-bottom:6px;"><strong>${F.listed} Lompoc businesses</strong> are on the map and in local search &mdash; <strong>${F.services} of them in Services</strong>, your category.</li>
-      <li style="margin-bottom:6px;"><strong>${F.views7d} business-page views in the last 7 days</strong>, from real neighbors (we stopped counting bots last week, so that's the clean number).</li>
-      <li style="margin-bottom:6px;">Every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in <strong>${F.subs} local inboxes</strong>, plus every member's. It just started; it grows every week.</li>
-    </ul>
-
-    <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">Who you'd stand beside</div>
-    <p style="color:#444; line-height:1.6; margin:0 0 18px;"><strong>${F.members} Lompoc businesses are Growth members</strong> today &mdash; and the trades are already here: <strong>Wm Rieck Plumbing</strong>, <strong>Terrones Plumbing</strong>, and <strong>J's Glass Co</strong> are three of the most-viewed service pages on the site this week. Rey's Liquor Store claimed their page and joined the day it went live.</p>
-
-    <div style="background:#FFF8E6; border:1px solid ${Y}; border-radius:12px; padding:18px 22px; margin:0 0 20px;">
-      <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#7a5a00; margin:0 0 8px;">What an unclaimed page is missing</div>
-      <ul style="color:#444; line-height:1.7; margin:0; padding-left:20px;">
-        <li style="margin-bottom:6px;">Right now Clark Builders sits in the list with 80 other service businesses. <strong>Members show up first</strong> when a neighbor searches for a contractor, kitchen, or ADU.</li>
-        <li style="margin-bottom:6px;">You can't post anything yet. Members' deals and announcements go into the feed <em>and</em> the Monday email &mdash; a "book a fall remodel consultation" note reaches the whole town.</li>
-        <li>No numbers. Members see how many neighbors looked at their page each week.</li>
-      </ul>
-    </div>
+    <p style="color:#444; line-height:1.6; margin:0 0 14px;">Hi Heidi &mdash; I'm Andres, from <strong>Lompoc Locals</strong>, the #1 local hub in Lompoc: where neighbors find local businesses, read local news, and see what's happening in town each week. We built a page for Clark Builders with your kitchens and decks front and center &mdash; <a href="${profileUrl}" style="color:${P}; font-weight:700;">take a look</a>. It's yours to claim, free, and it always will be.</p>
+    <p style="color:#444; line-height:1.6; margin:0 0 18px;">A few facts: <strong>${F.listed} Lompoc businesses</strong> are on the map and in local search, neighbors opened <strong>${F.views7d} business pages</strong> in the last week, and every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in local inboxes across town. Fellow trades like <strong>Wm Rieck Plumbing</strong>, <strong>Terrones Plumbing</strong>, and <strong>J's Glass Co</strong> are already members.</p>
 
     <div style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:20px 22px; margin:0 0 22px;">
-      <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">Growth membership</div>
-      <p style="color:#1a1a1a; line-height:1.6; margin:0 0 12px; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month &mdash; <strong>first 14 days free</strong>, cancel anytime, no contract. Claim the page, set a password, add a card, and you're a member in about three minutes &mdash; that's exactly how Rieck Plumbing did it.</p>
+      <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">We'd love to have you as a Growth member</div>
+      <ul style="color:#444; line-height:1.7; margin:0 0 14px; padding-left:20px;">
+        <li style="margin-bottom:6px;"><strong>Show up first</strong> when a neighbor searches for a contractor, a kitchen, or an ADU.</li>
+        <li style="margin-bottom:6px;"><strong>Post deals and announcements</strong> &mdash; they go into the feed <em>and</em> the Monday email, town-wide.</li>
+        <li><strong>See your numbers</strong> &mdash; how many neighbors looked at your page each week.</li>
+      </ul>
+      <p style="color:#1a1a1a; line-height:1.6; margin:0 0 12px; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month &mdash; <strong>first 14 days free</strong>, cancel anytime. Claim the page, set a password, add a card &mdash; about three minutes.</p>
       <p style="margin:0;"><a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim Clark Builders &amp; start the free trial</a></p>
     </div>
 
-    <p style="color:#444; line-height:1.6; margin:0 0 16px;"><strong>Or let's just meet.</strong> I'm in Lompoc &mdash; I'll come by your office on East Chestnut Court this week for 15 minutes, walk you through the page, and set everything up with you. Reply with a day and time that works and I'll be there.</p>
-    <p style="color:#444; line-height:1.6; margin:0 0 16px;">Everything the platform does for a business like yours is in the <a href="${GUIDE}" style="color:${P}; font-weight:700;">partner guide</a>. No pressure either way &mdash; the page is yours to keep, free, regardless.</p>
+    <p style="color:#444; line-height:1.6; margin:0 0 16px;"><strong>Or let's meet.</strong> I'm here in Lompoc &mdash; happy to come by your office on East Chestnut Court this week for 15 minutes, walk you through the page, and set it up together. Just reply with a day and time.</p>
+    <p style="color:#444; line-height:1.6; margin:0 0 16px;">Everything the platform does for a business like yours is in the <a href="${GUIDE}" style="color:${P}; font-weight:700;">partner guide</a>. Either way, the page is yours to keep.</p>
     <p style="color:#888; margin:16px 0 0;">&mdash; Andres, Lompoc Locals</p>
     <div style="margin-top:26px; padding-top:18px; border-top:1px solid #eee; text-align:center;">
       <div style="margin-bottom:8px;"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:${P}; margin:0 3px;"></span><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:${Y}; margin:0 3px;"></span><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:${G}; margin:0 3px;"></span></div>
@@ -73,7 +60,7 @@ const html = `
   </div>
 </div>`
 
-const subject = `Clark Builders is on Lompoc Locals — the numbers, and a 15-minute visit`
+const subject = `Clark Builders is on Lompoc Locals — come be part of it`
 const to = PREVIEW ? "hello@lompoclocals.com" : biz.emails
 if (!SEND) { console.log(`DRY RUN → ${[].concat(to).join(", ")}\n${subject}`); process.exit(0) }
 const res = await fetch("https://api.resend.com/emails", {
