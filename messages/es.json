@@ -2293,7 +2293,7 @@
     "badge": "Destacado"
   },
   "eventDetail": {
-    "metaTitle": "{title} — Evento en Lompoc | Lompoc Locals",
+    "metaTitle": "{title} — {date} · Evento en Lompoc | Lompoc Locals",
     "backToFeed": "Volver al feed del vecindario",
     "when": "Cuándo",
     "where": "Dónde",

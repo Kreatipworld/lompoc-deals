@@ -44,7 +44,12 @@ export async function generateMetadata({
   const t = await getTranslations("eventDetail")
   return {
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
-    title: { absolute: t("metaTitle", { title: ev.title }) },
+    title: {
+      absolute: t("metaTitle", {
+        title: ev.title,
+        date: ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" }),
+      }),
+    },
     description: ev.description?.slice(0, 160) ?? undefined,
     alternates: pageAlternates(`/events/${ev.id}`, params.locale),
   }

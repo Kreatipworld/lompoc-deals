@@ -43,11 +43,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     db.query.events
       .findMany({
         where: (e, { and, eq, gt }) => and(eq(e.status, "approved"), gt(e.startsAt, new Date(Date.now() - 24 * 60 * 60 * 1000))),
-        columns: { id: true, createdAt: true },
+        columns: { id: true, createdAt: true, title: true, startsAt: true },
+        orderBy: (e, { asc }) => [asc(e.startsAt)],
+      })
+      // Recurring series (a daily gallery show, weekly live music) collapse to their next
+      // occurrence — 40 near-identical URLs for one show read as duplicate content.
+      .then((rows) => {
+        const seen = new Set<string>()
+        return rows.filter((r) => (seen.has(r.title) ? false : (seen.add(r.title), true)))
       })
       .catch((err) => {
         console.error("sitemap events query failed:", err)
-        return [] as { id: number; createdAt: Date }[]
+        return [] as { id: number; createdAt: Date; title: string; startsAt: Date }[]
       }),
   ])
 
