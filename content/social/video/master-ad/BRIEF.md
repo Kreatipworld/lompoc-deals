@@ -8,7 +8,7 @@ aspect: 1080x1920 (master) + 1080x1350
 language: en (es cut only after the en cut earns it)
 length: ~30s
 angle: master-ad / partner-recruitment / tag-loop
-status: brief approved 2026-08-26 — script pending sign-off, nothing rendered
+status: brief + script approved 2026-08-26 — assets pulled & checked, VO preflight 1.5cr awaiting yes, nothing rendered
 ---
 
 ## Why this exists
@@ -57,14 +57,17 @@ base and the prison." No sarcasm about the stereotype; we name it in four second
 | pride 1 | Lompoc Valley Florist | lompoc-valley-florist | website | "Flowers on H Street." |
 | pride 2 | Eye on I | eye-on-i | owner | "Pizza on I Street." |
 | pride 3 | Flying Goat Cellars | flying-goat-cellars | website | "Pinot in the Wine Ghetto." |
-| pride 4 | Downtown murals (own flyover/mural footage from Aug 16–17 posts) | — | own render | "Murals on Ocean." |
-| pride 5 | Mission La Purísima | mission-la-purisima | google — swap for own photo or state park PD image | "A mission that came back." |
-| pride 6 | Spencer's Fresh Markets | spencers-fresh-market-lompoc | website | "A new grocery store on H." |
-| pride 7 | Falcon 9 over the base | — | U.S. Space Force PD | "And a rocket over all of it." |
-| owner turn | Lompoc Valley Florist page (live UI) | /en/biz/lompoc-valley-florist | screenshots | — |
+| pride 4 | Downtown murals — needs an OWNED photo (see asset check below) | — | tbd | "Murals on Ocean." |
+| pride 5 | Falcon 9 over the base | — | U.S. Space Force PD | "And a rocket over all of it." |
+| owner turn | Lompoc Valley Florist page (live UI, 2× headless-Chrome captures in public/ui/) | /en/biz/lompoc-valley-florist | screenshots | — |
 
-Pride 5 is the one soft spot: its photos are Google-sourced. Use only if we have an owned or
-public-domain image; otherwise drop to six places. Six is enough.
+Asset check 2026-08-26: dropped Mission La Purísima (Google-sourced photos) and Spencer's (website
+photos include a corporate flyer with Morro Bay/Santa Maria addresses — not provably the Lompoc
+store). The murals beat has no owned photo: our flyover render (public/cast/murals-flyover-own-
+render.mp4) is a satellite map with pins, not murals; the Aug 17 reel used Lompoc Mural Society
+photos by courtesy, not ours to reuse in a paid ad. Options: user shoots one mural photo, or the
+line becomes Hangar 7 (107 W Ocean Ave) — "A patio on Ocean." Attribution ledger:
+public/cast/LEDGER.json (27 member photos eyeballed, each credited on frame).
 
 ## VO
 
