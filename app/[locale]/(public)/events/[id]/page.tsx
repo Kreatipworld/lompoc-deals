@@ -40,7 +40,9 @@ export async function generateMetadata({
   params: { id: string; locale: string }
 }) {
   const ev = await getApprovedEvent(parseInt(params.id, 10))
-  if (!ev) return {}
+  // A cancelled or unknown event still streams a 200 (loading boundary), so say noindex
+  // here rather than letting the page inherit the site's default title.
+  if (!ev) return { title: "Event not found", robots: { index: false, follow: true } }
   return {
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
     // The date is what makes a recurring series unique, so it always survives:

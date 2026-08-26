@@ -4,6 +4,10 @@ import { eq } from "drizzle-orm"
 import { blogPosts } from "@/db/schema"
 import { HOTELS } from "@/lib/hotels-data"
 
+// Regenerate hourly: events cancel, businesses close, stories publish — a build-time
+// sitemap would advertise dead URLs until the next deploy.
+export const revalidate = 3600
+
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
