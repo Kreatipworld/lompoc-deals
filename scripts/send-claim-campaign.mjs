@@ -91,7 +91,7 @@ const CAT = {
   "Entertainment":  { deal: "a locals&rsquo; offer on your next event", search: "something to do in Lompoc" },
 }
 const catFor = (c) => CAT[c] || { deal: "a little something just for locals", search: "a local spot" }
-const subjectFor = (b) => `Your ${b.name} page on Lompoc Locals — ready to claim (free)`
+const subjectFor = (b) => `${b.name} is on Lompoc Locals — come be part of it`
 
 function htmlFor(b) {
   const c = catFor(b.category)
@@ -100,15 +100,10 @@ function htmlFor(b) {
     ? `it&rsquo;s already getting found: <strong>${b.views30} neighbors looked up ${b.name} here in the last month.</strong>`
     : `neighbors are already finding it here.`
   const lookups = b.views30 >= 10 ? `those ${b.views30} lookups` : "the neighbors already finding you"
-  const freeBullets = [
-    "Your page becomes yours to run — edit photos, your story, hours, and links any time.",
-    `You show up in the directory, on the map, and in local search when neighbors look for ${c.search}.`,
-    "Reply to this email any time — a real person here in Lompoc reads it.",
-  ]
   const growthBullets = [
-    `<strong>Post a deal &mdash; something like ${c.deal}</strong> &mdash; and it drops into the feed <em>and</em> our weekly email digest to locals' inboxes across Lompoc.`,
-    `<strong>Show up first in your category</strong> &mdash; when a neighbor searches for ${c.search}, ${b.name} is a name they see.`,
-    "<strong>See how many locals viewed your page each week</strong> &mdash; real numbers, so you know what's bringing people in.",
+    `<strong>Show up first</strong> when a neighbor searches for ${c.search}.`,
+    `<strong>Post deals and announcements &mdash; something like ${c.deal}</strong> &mdash; into the feed <em>and</em> the Monday email, town-wide.`,
+    "<strong>See your numbers</strong> &mdash; how many neighbors looked at your page each week.",
   ]
   return `
   <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
@@ -119,24 +114,17 @@ function htmlFor(b) {
     <div style="padding:28px 24px; border:1px solid #eee; border-top:none; border-radius:0 0 12px 12px;">
       <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">${b.name} is on Lompoc Locals.</h1>
       <div style="height:3px; width:52px; background:#EFC618; border-radius:2px; margin:0 0 18px;"></div>
-      <p style="color:#444; line-height:1.6; margin:0 0 16px;">Hi there &mdash; we're <strong>Lompoc Locals</strong>, a community hub where neighbors find the local spots that make Lompoc, Lompoc. We built a page for ${b.name}, and ${seen}</p>
-      <p style="color:#1a1a1a; font-weight:700; margin:0 0 8px; font-size:15px;">Claiming your page is free &mdash; and always will be.</p>
-      <ul style="color:#444; line-height:1.7; margin:0 0 22px; padding-left:20px;">
-        ${freeBullets.map((x) => `<li style="margin-bottom:6px;">${x}</li>`).join("")}
-      </ul>
+      <p style="color:#444; line-height:1.6; margin:0 0 16px;">Hi there &mdash; we're <strong>Lompoc Locals</strong>, the #1 local hub in Lompoc: where neighbors find local businesses, read local news, and see what's happening in town each week. We built a page for ${b.name}, and ${seen}</p>
+      <p style="color:#444; line-height:1.6; margin:0 0 18px;">Fellow Lompoc businesses like <strong>Eddie's Grill</strong>, <strong>Wm Rieck Plumbing</strong>, <strong>Lompoc Valley Florist</strong>, and <strong>Vargas Jewelers</strong> are already Growth members &mdash; with the partner badge on the map, a spot in the homepage partner spotlight, and their deals and announcements in the Monday email.</p>
       <div style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:20px 22px; margin:0 0 22px;">
-        <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">Turn lookups into regulars &mdash; try Growth</div>
-        <p style="color:#444; line-height:1.6; margin:0 0 12px;">The attention&rsquo;s already there &mdash; Growth is how you turn ${lookups} into repeat customers:</p>
+        <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">We'd love to have ${b.name} as a Growth member</div>
         <ul style="color:#444; line-height:1.7; margin:0 0 14px; padding-left:20px;">
           ${growthBullets.map((x) => `<li style="margin-bottom:8px;">${x}</li>`).join("")}
         </ul>
-        <p style="color:#1a1a1a; line-height:1.6; margin:0; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month. Cancel anytime; no long-term anything.</p>
+        <p style="color:#1a1a1a; line-height:1.6; margin:0 0 12px; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month, cancel anytime. Claim your page, set a password, add a card &mdash; about three minutes.</p>
+        <p style="margin:0;"><a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim ${b.name} &amp; become a member</a></p>
       </div>
-      <p style="margin:0 0 8px;">
-        <a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim ${b.name} &amp; become a member</a>
-      </p>
-      <p style="color:#777; line-height:1.5; margin:0 0 22px; font-size:13px;">Claiming your page is always free &mdash; you&rsquo;ll see the option to join Growth right after.</p>
-      <p style="color:#444; line-height:1.6; margin:0 0 16px;">And consider this a personal invitation: <a href="${GUIDE}" style="color:${P}; font-weight:700;">take a look at our partner guide</a> &mdash; it walks through everything Lompoc Locals does for neighborhood spots like yours. No pressure at all; claiming the page is free and yours to keep either way.</p>
+      <p style="color:#444; line-height:1.6; margin:0 0 16px;">Everything the platform does for a business like yours is in the <a href="${GUIDE}" style="color:${P}; font-weight:700;">partner guide</a>.</p>
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">We're just neighbors trying to help local spots get found. Reply any time; this reaches a real person here in Lompoc.</p>
       <p style="color:#888; margin:16px 0 0;">&mdash; The Lompoc Locals team</p>
       <div style="margin-top:26px; padding-top:18px; border-top:1px solid #eee; text-align:center;">

@@ -195,7 +195,7 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
             ctaLabel: "Upgrade to Growth",
             ctaUrl: billingUrl,
             closing:
-              "$39.99/month — cancel anytime, and your listing stays free either way. Reply to this email anytime; it reaches a real person here in Lompoc.",
+              "$39.99/month, cancel anytime. Reply to this email anytime; it reaches a real person here in Lompoc.",
             signoff: "— The Lompoc Locals team",
           }),
         }
@@ -475,7 +475,7 @@ export async function sendTrialEndingEmail(email: string, name: string): Promise
     ctaLabel: "Keep Growth — add your card",
     ctaUrl: billingUrl,
     closing:
-      "Prefer to stop here? No problem — do nothing and your page simply stays on the free plan, still listed and findable. Reply anytime; a real person here in Lompoc reads it.",
+      "Reply anytime; a real person here in Lompoc reads it.",
     signoff: "— The Lompoc Locals team",
   })
   try {
@@ -500,7 +500,7 @@ export async function sendTrialEndedEmail(email: string, name: string): Promise<
     ctaLabel: "Restart Growth",
     ctaUrl: billingUrl,
     closing:
-      "No pressure at all — your free listing stays put either way. Whenever you're ready, we're right here. Reply anytime; a real person in Lompoc reads it.",
+      "Whenever you're ready, we're right here. Reply anytime; a real person in Lompoc reads it.",
     signoff: "— The Lompoc Locals team",
   })
   try {
