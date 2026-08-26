@@ -130,12 +130,12 @@ function htmlFor(b) {
         <ul style="color:#444; line-height:1.7; margin:0 0 14px; padding-left:20px;">
           ${growthBullets.map((x) => `<li style="margin-bottom:8px;">${x}</li>`).join("")}
         </ul>
-        <p style="color:#1a1a1a; line-height:1.6; margin:0; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month &mdash; and your <strong>first 14 days are free</strong>. Cancel anytime; no long-term anything.</p>
+        <p style="color:#1a1a1a; line-height:1.6; margin:0; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month. Cancel anytime; no long-term anything.</p>
       </div>
       <p style="margin:0 0 8px;">
-        <a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim ${b.name} &amp; start your free trial</a>
+        <a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim ${b.name} &amp; become a member</a>
       </p>
-      <p style="color:#777; line-height:1.5; margin:0 0 22px; font-size:13px;">Claiming your page is always free &mdash; you&rsquo;ll see the option to start Growth free for 14 days right after. No charge to begin.</p>
+      <p style="color:#777; line-height:1.5; margin:0 0 22px; font-size:13px;">Claiming your page is always free &mdash; you&rsquo;ll see the option to join Growth right after.</p>
       <p style="color:#444; line-height:1.6; margin:0 0 16px;">And consider this a personal invitation: <a href="${GUIDE}" style="color:${P}; font-weight:700;">take a look at our partner guide</a> &mdash; it walks through everything Lompoc Locals does for neighborhood spots like yours. No pressure at all; claiming the page is free and yours to keep either way.</p>
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">We're just neighbors trying to help local spots get found. Reply any time; this reaches a real person here in Lompoc.</p>
       <p style="color:#888; margin:16px 0 0;">&mdash; The Lompoc Locals team</p>

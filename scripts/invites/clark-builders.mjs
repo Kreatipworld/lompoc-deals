@@ -44,8 +44,8 @@ const html = `
         <li style="margin-bottom:6px;"><strong>Post deals and announcements</strong> &mdash; they go into the feed <em>and</em> the Monday email, town-wide.</li>
         <li><strong>See your numbers</strong> &mdash; how many neighbors looked at your page each week.</li>
       </ul>
-      <p style="color:#1a1a1a; line-height:1.6; margin:0 0 12px; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month &mdash; <strong>first 14 days free</strong>, cancel anytime. Claim the page, set a password, add a card &mdash; about three minutes.</p>
-      <p style="margin:0;"><a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim Clark Builders &amp; start the free trial</a></p>
+      <p style="color:#1a1a1a; line-height:1.6; margin:0 0 12px; font-size:14px;"><strong style="font-size:19px; color:${P};">$39.99</strong>/month, cancel anytime. Claim the page, set a password, add a card &mdash; about three minutes.</p>
+      <p style="margin:0;"><a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim Clark Builders &amp; become a member</a></p>
     </div>
 
     <p style="color:#444; line-height:1.6; margin:0 0 16px;"><strong>Or let's meet.</strong> I'm here in Lompoc &mdash; happy to come by your office on East Chestnut Court this week for 15 minutes, walk you through the page, and set it up together. Just reply with a day and time.</p>
