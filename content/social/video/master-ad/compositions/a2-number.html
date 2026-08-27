@@ -3,21 +3,21 @@
     <style>
       [data-composition-id="a2-number"] .a2-line { display: block; color: #fff; font-weight: 800; font-size: 118px; line-height: 1.0; letter-spacing: -4px; will-change: transform; }
       [data-composition-id="a2-number"] .a2-mask { padding-bottom: 14px; }
-      [data-composition-id="a2-number"] .a2-card { position: absolute; width: 400px; height: 700px; border-radius: 30px; overflow: hidden; background: #faf5ec; box-shadow: 0 40px 90px rgba(36,22,41,0.45); border: 8px solid #0f0a12; will-change: transform; }
-      [data-composition-id="a2-number"] .a2-bar { height: 64px; display: flex; align-items: center; gap: 10px; padding: 0 22px; background: #650c75; color: #fff; font-weight: 800; font-size: 22px; }
+      [data-composition-id="a2-number"] .a2-card { position: absolute; width: 330px; height: 660px; border-radius: 30px; overflow: hidden; background: #faf5ec; box-shadow: 0 40px 90px rgba(36,22,41,0.45); border: 8px solid #0f0a12; will-change: transform; }
+      [data-composition-id="a2-number"] .a2-bar { height: 58px; display: flex; align-items: center; gap: 10px; padding: 0 18px; background: #650c75; color: #fff; font-weight: 800; font-size: 19px; }
       [data-composition-id="a2-number"] .a2-dot { width: 14px; height: 14px; border-radius: 50%; background: #efc618; display: inline-block; }
-      [data-composition-id="a2-number"] .a2-row { margin: 16px 18px 0; background: #fff; border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: center; box-shadow: 0 6px 18px rgba(36,22,41,0.08); opacity: 0; will-change: transform; }
-      [data-composition-id="a2-number"] .a2-n img { width: 96px; height: 64px; border-radius: 10px; object-fit: cover; flex: none; }
-      [data-composition-id="a2-number"] .a2-n span { color: #241629; font-weight: 700; font-size: 19px; line-height: 1.2; }
-      [data-composition-id="a2-number"] .a2-e b { flex: none; background: #efc618; color: #241629; font-size: 15px; font-weight: 800; letter-spacing: 1px; padding: 10px 10px; border-radius: 10px; }
-      [data-composition-id="a2-number"] .a2-e span { color: #241629; font-weight: 700; font-size: 20px; line-height: 1.15; display: block; }
+      [data-composition-id="a2-number"] .a2-row { margin: 14px 14px 0; background: #fff; border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: center; box-shadow: 0 6px 18px rgba(36,22,41,0.08); opacity: 0; will-change: transform; }
+      [data-composition-id="a2-number"] .a2-n img { width: 84px; height: 56px; border-radius: 10px; object-fit: cover; flex: none; }
+      [data-composition-id="a2-number"] .a2-n span { color: #241629; font-weight: 700; font-size: 16px; line-height: 1.2; }
+      [data-composition-id="a2-number"] .a2-e b { flex: none; background: #efc618; color: #241629; font-size: 13px; font-weight: 800; letter-spacing: 1px; padding: 10px 10px; border-radius: 10px; }
+      [data-composition-id="a2-number"] .a2-e span { color: #241629; font-weight: 700; font-size: 17px; line-height: 1.15; display: block; }
       [data-composition-id="a2-number"] .a2-e small { display: block; color: #6b5f70; font-weight: 500; font-size: 15px; margin-top: 4px; }
       [data-composition-id="a2-number"] .a2-deal { margin: 18px; background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 6px 18px rgba(36,22,41,0.08); }
       [data-composition-id="a2-number"] .a2-pick { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 14px; letter-spacing: 1px; padding: 8px 12px; border-radius: 8px; opacity: 0; }
-      [data-composition-id="a2-number"] .a2-off { margin-top: 16px; color: #650c75; font-weight: 800; font-size: 74px; line-height: 1; letter-spacing: -2px; opacity: 0; }
-      [data-composition-id="a2-number"] .a2-what { margin-top: 10px; color: #241629; font-weight: 800; font-size: 24px; opacity: 0; }
-      [data-composition-id="a2-number"] .a2-who { margin-top: 6px; color: #6b5f70; font-weight: 600; font-size: 16px; opacity: 0; }
-      [data-composition-id="a2-number"] .a2-claim { margin-top: 18px; background: #650c75; color: #fff; font-weight: 800; font-size: 20px; text-align: center; padding: 16px; border-radius: 40px; opacity: 0; will-change: transform; }
+      [data-composition-id="a2-number"] .a2-off { margin-top: 14px; color: #650c75; font-weight: 800; font-size: 56px; line-height: 1.15; letter-spacing: -2px; opacity: 0; }
+      [data-composition-id="a2-number"] .a2-what { margin-top: 16px; color: #241629; font-weight: 800; font-size: 19px; line-height: 1.25; opacity: 0; }
+      [data-composition-id="a2-number"] .a2-who { margin-top: 12px; color: #6b5f70; font-weight: 600; font-size: 15px; line-height: 1.3; opacity: 0; }
+      [data-composition-id="a2-number"] .a2-claim { margin-top: 20px; background: #4a0856; color: #ffffff; font-weight: 800; font-size: 19px; text-align: center; padding: 16px; border-radius: 40px; opacity: 0; }
       [data-composition-id="a2-number"] .a2-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='na2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23na2)' opacity='1'/%3E%3C/svg%3E"); }
     </style>
     <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 130% 90% at 50% 30%, rgba(36,22,41,0) 30%, rgba(36,22,41,0.55) 100%)"></div>
@@ -32,19 +32,19 @@
 
     <!-- phase B: three of our screens, rebuilt in HTML with real content and animated (no cropped screenshots) -->
     <div id="a2-cards" style="position: absolute; left: 0; right: 0; top: 52%; height: 900px; opacity: 0">
-      <div id="a2-k1" class="a2-card" style="left: 60px; top: 60px; transform: rotate(-6deg)">
+      <div id="a2-k1" class="a2-card" style="left: 28px; top: 70px; transform: rotate(-3deg)">
         <div class="a2-bar"><span class="a2-dot"></span>Lompoc News</div>
         <div class="a2-row a2-n"><img src="public/covers/community.jpg" alt="" /><span>Tonight in Lompoc: a free Medi-Cal town hall, with dinner</span></div>
         <div class="a2-row a2-n"><img src="public/covers/schools-sports.jpg" alt="" /><span>Youth soccer coaches get an AED — and the training</span></div>
         <div class="a2-row a2-n"><img src="public/covers/vandenberg-space.jpg" alt="" /><span>Falcon 9 lit up Lompoc at 2:35 a.m.</span></div>
       </div>
-      <div id="a2-k2" class="a2-card" style="left: 340px; top: 20px; transform: rotate(2deg)">
+      <div id="a2-k2" class="a2-card" style="left: 375px; top: 20px; transform: rotate(1deg)">
         <div class="a2-bar"><span class="a2-dot" style="background:#0b992f"></span>Events in Lompoc</div>
         <div class="a2-row a2-e"><b>THU AUG 27</b><span>Pouring My Art Out<small>Cypress Gallery</small></span></div>
         <div class="a2-row a2-e"><b>FRI AUG 28</b><span>Cocktail Class<small>Rock 12 Distillery</small></span></div>
         <div class="a2-row a2-e"><b>SAT AUG 29</b><span>Demonstration Days<small>La Purísima Mission</small></span></div>
       </div>
-      <div id="a2-k3" class="a2-card" style="left: 620px; top: 70px; transform: rotate(7deg)">
+      <div id="a2-k3" class="a2-card" style="left: 722px; top: 70px; transform: rotate(2.5deg)">
         <div class="a2-bar"><span class="a2-dot" style="background:#efc618"></span>Deals &amp; Coupons</div>
         <div class="a2-deal">
           <div class="a2-pick">★ THIS WEEK'S PICK</div>
@@ -92,16 +92,15 @@
         tl.set("#a2-cards", { autoAlpha: 1 }, "everything");
         const AT = [0.02, 0.98, 1.99];
         ["#a2-k1", "#a2-k2", "#a2-k3"].forEach((sel, i) => {
-          tl.fromTo(sel, { autoAlpha: 0, y: 260, rotation: [-6, 2, 7][i] - 6 }, { autoAlpha: 1, y: 0, rotation: [-6, 2, 7][i], duration: 0.7 }, "everything+=" + AT[i]);
+          tl.fromTo(sel, { autoAlpha: 0, y: 260, rotation: [-3, 1, 2.5][i] - 5 }, { autoAlpha: 1, y: 0, rotation: [-3, 1, 2.5][i], duration: 0.7 }, "everything+=" + AT[i]);
         });
         // each screen assembles itself: rows stagger in, the deal builds, the claim button lands
         tl.fromTo("#a2-k1 .a2-row", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.12, ease: "power3.out" }, "everything+=" + (AT[0] + 0.3));
         tl.fromTo("#a2-k2 .a2-row", { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.45, stagger: 0.12, ease: "power3.out" }, "everything+=" + (AT[1] + 0.3));
         tl.fromTo("#a2-k3 .a2-pick", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.3 }, "everything+=" + (AT[2] + 0.3));
         tl.fromTo("#a2-k3 .a2-off", { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, "everything+=" + (AT[2] + 0.45));
-        tl.fromTo("#a2-k3 .a2-what, #a2-k3 .a2-who", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.1 }, "everything+=" + (AT[2] + 0.7));
+        tl.fromTo("#a2-k3 .a2-what, #a2-k3 .a2-who", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, stagger: 0.1 }, "everything+=" + (AT[2] + 0.7));
         tl.fromTo("#a2-claim", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "back.out(1.4)" }, "everything+=" + (AT[2] + 0.95));
-        tl.to("#a2-claim", { scale: 1.05, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, "everything+=" + (AT[2] + 1.5));
         ["#a2-l1", "#a2-l2", "#a2-l3"].forEach((sel, i) => {
           tl.fromTo(sel, { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.5 }, "everything+=" + [0.02, 0.98, 1.99][i]);
         });
