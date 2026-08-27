@@ -54,7 +54,7 @@
 
         // Sweet Baking Co.: q 0.00 → cut 1.51 → facts 2.83 → end 5.82
         tl.set("#lf-0-q", { autoAlpha: 1 }, 0.00);
-        tl.fromTo("#lf-0-qt", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.5 }, 0.02);
+        tl.set('#lf-0-qt', { clipPath: 'inset(0 0 0% 0)', y: 0 }, 0); tl.fromTo('#lf-0-qt', { scale: 0.985 }, { scale: 1, duration: 0.7, ease: 'power3.out' }, 0);
         tl.set("#lf-0-q", { autoAlpha: 0 }, 1.51);
         tl.set("#lf-0-m", { autoAlpha: 1 }, 1.51);
         tl.set("#lf-0-m", { autoAlpha: 0 }, 5.82);        tl.set("#lf-0-p0", { autoAlpha: 1 }, 1.51);
