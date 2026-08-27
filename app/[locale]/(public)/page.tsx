@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation"
 import {
   ArrowRight, MapPin, Mail, Sparkles, ChevronDown, Compass
 } from "lucide-react"
-import { getFeaturedBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots } from "@/lib/queries"
+import { getPartnerBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots } from "@/lib/queries"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
@@ -103,7 +103,7 @@ const siteJsonLd = {
 export default async function HomePage({ params }: { params: { locale: string } }) {
   const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t] = await Promise.all([
     getAllCategories(),
-    getFeaturedBusinesses(6),
+    getPartnerBusinesses(),
     getSiteStats(),
     getFeaturedActivities(6, params.locale),
     getActiveDeals(12),

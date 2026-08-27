@@ -170,9 +170,14 @@ export async function getDigestPartners(limit = 6): Promise<DigestPartner[]> {
       )
     )
     .orderBy(businesses.name)
-    .limit(limit)
 
   if (rows.length === 0) return []
+  // Rotate the window by week so every member takes a turn in the digest and
+  // the partners spotlight — alphabetical order alone would feature the same
+  // six forever and newer members never.
+  const start = rows.length > limit ? digestWeekIndex() % rows.length : 0
+  const rotated = rows.slice(start).concat(rows.slice(0, start)).slice(0, limit)
+  rows.length = 0; rows.push(...rotated)
 
   // Attach each partner's soonest-expiring live coupon
   const ids = rows.map((r) => r.id)

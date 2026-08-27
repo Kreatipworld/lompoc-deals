@@ -371,6 +371,41 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
   return weightedSlots(partners, unpaid, limit, PARTNER_SLOT_CHANCE)
 }
 
+/**
+ * Every paying member (Growth or Plus, subscription or comp), newest member
+ * first — the homepage "Featured members" front row. No sampling, no limit:
+ * joining IS the listing here, automatically, the moment the card is in.
+ */
+export async function getPartnerBusinesses(): Promise<DirectoryBusiness[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      description: businesses.description,
+      address: businesses.address,
+      phone: businesses.phone,
+      website: businesses.website,
+      logoUrl: businesses.logoUrl,
+      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      categoryId: businesses.categoryId,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      hoursJson: businesses.hoursJson,
+      tierRank: sql<number>`max(${tierRank})::int`,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
+    .where(eq(businesses.status, "approved"))
+    .groupBy(businesses.id, categories.id)
+    .having(sql`max(${tierRank}) > 0`)
+    .orderBy(sql`coalesce(max(${subscriptions.createdAt}), ${businesses.createdAt}) desc`)
+  return rows
+}
+
 export type PropertyListing = {
   id: number
   type: "for-sale" | "for-rent"
