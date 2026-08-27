@@ -14,3 +14,6 @@ User direction: keep the pictures, drop the launches, shorter and simpler, lead 
 
 **Words:** 43. **Claims:** 452 approved businesses on 2026-08-26 (floor, only grows) · /news live ·
 59 upcoming events · 9 live deals · EN/ES pages · free page ✓. Launch imagery removed.
+
+
+**Rotation (2026-08-27, rule: check the last posts first):** opens on Sweet Baking Co. (Growth partner), then The Waxed Honey, then Hangar 7; the page beat is Sweet Baking Co.'s page. Lompoc Valley Florist was removed from the open and the page beat because its Member Spotlight ran on Aug 26; Eye on I ran Aug 13; The Garden Shoppe Aug 18. Hangar 7 and The Waxed Honey have not been posted.

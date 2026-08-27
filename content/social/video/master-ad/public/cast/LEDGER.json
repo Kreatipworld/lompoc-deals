@@ -302,5 +302,134 @@
   "attribution": "own render (Town Guides No.3 flyover)",
   "source": "blob social/murals-of-lompoc",
   "checked": "own asset"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-0.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/ecc07f29be.jpg",
+  "source": "website",
+  "cover": true,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-1.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/34d2014457.jpg",
+  "source": "website",
+  "cover": false,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-2.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/4e5249a51f.jpg",
+  "source": "website",
+  "cover": false,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-3.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/a709ef57c8.jpg",
+  "source": "website",
+  "cover": false,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-4.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/265d6cfc2e.jpg",
+  "source": "website",
+  "cover": false,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-5.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/a5343a860d.jpg",
+  "source": "website",
+  "cover": false,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-6.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/3de14e3c49.jpg",
+  "source": "website",
+  "cover": false,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "file": "sweet-baking-co-7.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/c4b75f0f7c.jpg",
+  "source": "website",
+  "cover": false,
+  "attribution": "photo: Sweet Baking Co.",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "805-bees-knees-the-garden-shoppe",
+  "name": "805 Bees Knees @The Garden Shoppe",
+  "file": "805-bees-knees-the-garden-shoppe-0.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/photos/1776639950836-5qkr73.jpeg",
+  "source": "instagram",
+  "cover": true,
+  "attribution": "photo: 805 Bees Knees @The Garden Shoppe",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "805-bees-knees-the-garden-shoppe",
+  "name": "805 Bees Knees @The Garden Shoppe",
+  "file": "805-bees-knees-the-garden-shoppe-1.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/photos/1776639951935-iiaxhq.jpeg",
+  "source": "instagram",
+  "cover": false,
+  "attribution": "photo: 805 Bees Knees @The Garden Shoppe",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "805-bees-knees-the-garden-shoppe",
+  "name": "805 Bees Knees @The Garden Shoppe",
+  "file": "805-bees-knees-the-garden-shoppe-2.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/photos/1776639953348-fct2th.jpeg",
+  "source": "instagram",
+  "cover": false,
+  "attribution": "photo: 805 Bees Knees @The Garden Shoppe",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "805-bees-knees-the-garden-shoppe",
+  "name": "805 Bees Knees @The Garden Shoppe",
+  "file": "805-bees-knees-the-garden-shoppe-3.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/photos/1776639954897-bb8ojl.png",
+  "source": "instagram",
+  "cover": false,
+  "attribution": "photo: 805 Bees Knees @The Garden Shoppe",
+  "checked": "pending eyeball 2026-08-27"
+ },
+ {
+  "slug": "the-waxed-honey",
+  "name": "The Waxed Honey",
+  "file": "the-waxed-honey-0.jpg",
+  "url": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/the-waxed-honey/wax-5m1g8BSQIneqf9C1AIA3x68XSkzr8j.jpg",
+  "source": "website",
+  "attribution": "photo: The Waxed Honey",
+  "checked": "pending eyeball 2026-08-27"
  }
 ]
