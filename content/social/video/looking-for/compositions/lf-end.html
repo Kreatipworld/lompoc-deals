@@ -1,0 +1,39 @@
+<template>
+  <div
+    data-composition-id="lf-end"
+    data-width="1080"
+    data-height="1920"
+    data-duration="2.6"
+    style="position: absolute; inset: 0; overflow: hidden; background: #650c75"
+  >
+    <style>
+      [data-composition-id="lf-end"] .s6-serif { font-family: Georgia, serif; font-style: italic; }
+      [data-composition-id="lf-end"] .s6-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='nlfe'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23nlfe)' opacity='1'/%3E%3C/svg%3E"); }
+    </style>
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 130% 90% at 50% 42%, rgba(36,22,41,0) 30%, rgba(36,22,41,0.6) 100%)"></div>
+    <div id="s6-bloom" style="position: absolute; top: 25%; left: 140px; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, rgba(239,198,24,0.3), rgba(239,198,24,0) 62%)"></div>
+    <div style="position: absolute; top: 32%; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; text-align: center">
+      <img id="s6-mark" src="public/mark-white.png" alt="" style="display: block; width: 210px; height: auto" />
+      <div id="s6-word" style="margin-top: 44px; color: #fff; font-weight: 800; font-size: 96px">Lompoc Locals</div>
+      <div id="s6-tag" class="s6-serif" style="margin-top: 20px; color: #efc618; font-size: 48px">the real, true Lompoc</div>
+      <div id="s6-url" style="margin-top: 74px; display: inline-block; background: #241629; color: #efc618; font-weight: 800; font-size: 52px; letter-spacing: 1px; padding: 28px 48px; border-radius: 16px">lompoclocals.com</div>
+      <div id="s6-sub" style="margin-top: 34px; color: rgba(250,245,236,0.9); font-size: 38px; font-weight: 700; letter-spacing: 2px">TAG A LOMPOC BUSINESS 👇</div>
+    </div>
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 20px; background: linear-gradient(90deg, #efc618, #650c75 45%, #0b992f)"></div>
+    <div class="s6-grain"></div>
+    <script>
+      (() => {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s6-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out" }, 0.05);
+        tl.fromTo("#s6-mark", { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, 0.1);
+        tl.fromTo("#s6-word", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0 }, 0.4);
+        tl.fromTo("#s6-tag", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0 }, 0.7);
+        tl.fromTo("#s6-url", { autoAlpha: 0, scale: 0.8, y: 30 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.65, ease: "back.out(1.4)" }, 1.0);
+        tl.fromTo("#s6-sub", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0 }, 1.4);
+        window.__timelines["lf-end"] = tl;
+      })();
+    </script>
+  </div>
+</template>

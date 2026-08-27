@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @font-face { font-family: "Plus Jakarta Sans"; src: url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #241629; }
+      body { font-family: "Plus Jakarta Sans", sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #root > div[data-composition-src] { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="45.88" data-width="1080" data-height="1920">
+      <div id="el-m" data-composition-id="lf-members" data-composition-src="compositions/lf-members.html" data-start="0" data-duration="37.64" data-track-index="1"></div>
+      <div id="el-c" data-composition-id="lf-close" data-composition-src="compositions/lf-close.html" data-start="37.64" data-duration="5.64" data-track-index="1"></div>
+      <div id="el-e" data-composition-id="lf-end" data-composition-src="compositions/lf-end.html" data-start="43.28" data-duration="2.6" data-track-index="1"></div>
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-tight.wav" data-start="0" data-duration="42.98" data-track-index="10" data-volume="1"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bgm-digest.mp3" data-start="0" data-duration="45.88" data-track-index="11" data-volume="0.5" data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.3}'></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
