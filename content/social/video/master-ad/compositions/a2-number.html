@@ -1,8 +1,10 @@
 <template>
-  <div data-composition-id="a2-number" data-width="1080" data-height="1920" data-duration="8.65" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+  <div data-composition-id="a2-number" data-width="1080" data-height="1920" data-duration="9.0" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
     <style>
       [data-composition-id="a2-number"] .a2-line { display: block; color: #fff; font-weight: 800; font-size: 118px; line-height: 1.0; letter-spacing: -4px; will-change: transform; }
       [data-composition-id="a2-number"] .a2-mask { overflow: hidden; padding-bottom: 10px; }
+      [data-composition-id="a2-number"] .a2-card { position: absolute; width: 400px; height: 700px; border-radius: 30px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(36,22,41,0.45); border: 8px solid #0f0a12; will-change: transform; }
+      [data-composition-id="a2-number"] .a2-card img { position: absolute; left: 0; width: 384px; height: auto; display: block; }
       [data-composition-id="a2-number"] .a2-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='na2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23na2)' opacity='1'/%3E%3C/svg%3E"); }
     </style>
     <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 130% 90% at 50% 30%, rgba(36,22,41,0) 30%, rgba(36,22,41,0.55) 100%)"></div>
@@ -15,6 +17,12 @@
       <div id="a2-sub" style="margin-top: 30px; font-family: Georgia, serif; font-style: italic; color: rgba(250,245,236,0.85); font-size: 46px">listed on Lompoc Locals</div>
     </div>
 
+    <!-- phase B: three real pages fan in behind the lines -->
+    <div id="a2-cards" style="position: absolute; left: 0; right: 0; top: 52%; height: 900px; opacity: 0">
+      <div id="a2-k1" class="a2-card" style="left: 60px; top: 60px; transform: rotate(-6deg)"><img src="public/ui/news.png" alt="" style="top: -1560px" /></div>
+      <div id="a2-k2" class="a2-card" style="left: 340px; top: 20px; transform: rotate(2deg)"><img src="public/ui/events.png" alt="" style="top: -2060px" /></div>
+      <div id="a2-k3" class="a2-card" style="left: 620px; top: 70px; transform: rotate(7deg)"><img src="public/ui/deals.png" alt="" style="top: -640px" /></div>
+    </div>
     <!-- phase B: everything -->
     <div id="a2-pb" style="position: absolute; left: 84px; right: 84px; top: 22%; opacity: 0">
       <div class="a2-mask"><div id="a2-l1" class="a2-line">The news.</div></div>
@@ -35,7 +43,7 @@
       (() => {
         window.__timelines = window.__timelines || {};
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
-        const B = 2.74; // "The news." starts here (VO-mapped)
+        const B = 2.87; // "The news." starts here (VO-mapped, Lompoke read)
         tl.addLabel("number", 0).addLabel("everything", B);
         const numEl = document.getElementById("a2-num");
         const counter = { n: 0 };
@@ -49,11 +57,15 @@
         tl.to("#a2-pa", { autoAlpha: 0, y: -30, duration: 0.3, ease: "power2.in" }, "everything-=0.3");
         tl.set("#a2-pa", { autoAlpha: 0 }, "everything");
         tl.set("#a2-pb", { autoAlpha: 1 }, "everything");
-        ["#a2-l1", "#a2-l2", "#a2-l3"].forEach((sel, i) => {
-          tl.fromTo(sel, { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.5 }, "everything+=" + (0.02 + i * 0.92));
+        tl.set("#a2-cards", { autoAlpha: 1 }, "everything");
+        ["#a2-k1", "#a2-k2", "#a2-k3"].forEach((sel, i) => {
+          tl.fromTo(sel, { autoAlpha: 0, y: 260, rotation: [-6, 2, 7][i] - 6 }, { autoAlpha: 1, y: 0, rotation: [-6, 2, 7][i], duration: 0.7 }, "everything+=" + [0.02, 0.98, 1.99][i]);
         });
-        tl.fromTo("#a2-one", { autoAlpha: 0, scale: 0.85, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.4)" }, "everything+=2.77");
-        tl.fromTo("#a2-es", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0 }, "everything+=4.27");
+        ["#a2-l1", "#a2-l2", "#a2-l3"].forEach((sel, i) => {
+          tl.fromTo(sel, { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.5 }, "everything+=" + [0.02, 0.98, 1.99][i]);
+        });
+        tl.fromTo("#a2-one", { autoAlpha: 0, scale: 0.85, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.4)" }, "everything+=3.02");
+        tl.fromTo("#a2-es", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0 }, "everything+=4.56");
         window.__timelines["a2-number"] = tl;
       })();
     </script>

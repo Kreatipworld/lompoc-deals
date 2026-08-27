@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="a3-page" data-width="1080" data-height="1920" data-duration="2.9" style="position: absolute; inset: 0; overflow: hidden; background: #241629">
+  <div data-composition-id="a3-page" data-width="1080" data-height="1920" data-duration="2.85" style="position: absolute; inset: 0; overflow: hidden; background: #241629">
     <style>
       [data-composition-id="a3-page"] .a3-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='na3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23na3)' opacity='1'/%3E%3C/svg%3E"); }
     </style>
@@ -26,7 +26,7 @@
         tl.fromTo("#a3-bloom", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, ease: "none" }, "page");
         tl.fromTo("#a3-h", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.6 }, "page+=0.05");
         tl.fromTo("#a3-phone", { autoAlpha: 0, y: 360, rotation: -2 }, { autoAlpha: 1, y: 0, rotation: 0, duration: 0.9 }, "page+=0.2");
-        tl.fromTo("#a3-free", { autoAlpha: 0, scale: 0.8, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.5)" }, "page+=1.9");
+        tl.fromTo("#a3-free", { autoAlpha: 0, scale: 0.8, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.5)" }, "page+=2.05");
         window.__timelines["a3-page"] = tl;
       })();
     </script>

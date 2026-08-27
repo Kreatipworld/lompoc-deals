@@ -28,7 +28,8 @@
         tl.fromTo("#a1-i0", { scale: 1.08 }, { scale: 1.0, duration: C1, ease: "none" }, "florist");
         tl.fromTo("#a1-i1", { scale: 1.0 }, { scale: 1.07, duration: C2 - C1, ease: "none" }, "pizza");
         tl.fromTo("#a1-i2", { scale: 1.08 }, { scale: 1.0, duration: END - C2, ease: "none" }, "patio");
-        tl.fromTo("#a1-h", { clipPath: "inset(0 0 100% 0)", y: 30 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.6 }, "florist+=0.1");
+        tl.set("#a1-h", { clipPath: "inset(0 0 0% 0)", y: 0 }, 0);
+        tl.fromTo("#a1-h", { scale: 0.985 }, { scale: 1, duration: 0.7, ease: "power3.out" }, 0);
         window.__timelines["a1-lompoc"] = tl;
       })();
     </script>
