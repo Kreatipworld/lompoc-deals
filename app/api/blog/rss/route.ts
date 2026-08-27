@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getPublishedBlogPosts } from "@/lib/queries"
+import { newsCoverUrl } from "@/lib/news-cover"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -21,8 +22,11 @@ export async function GET() {
       const pubDate = post.publishedAt?.toUTCString() ?? new Date().toUTCString()
       const description = post.excerpt ? escapeXml(post.excerpt) : ""
       const category = post.category ? `<category>${escapeXml(post.category)}</category>` : ""
-      const image = post.imageUrl
-        ? `<enclosure url="${escapeXml(post.imageUrl)}" type="image/jpeg" length="0" />`
+      // Every news story ships a cover (its own photo or the topic card) so readers
+      // never render a bare item; other blog posts keep their optional image.
+      const coverUrl = post.imageUrl ?? (post.category === "local-news" ? newsCoverUrl(post, siteUrl) : null)
+      const image = coverUrl
+        ? `<enclosure url="${escapeXml(coverUrl)}" type="${/\.png($|\?)/i.test(coverUrl) ? "image/png" : "image/jpeg"}" length="0" />`
         : ""
 
       return `    <item>

@@ -6,6 +6,7 @@ import { format } from "date-fns"
 import { CalendarDays, Tag, ArrowLeft, User } from "lucide-react"
 import { getBlogPostBySlug, getRecentBlogPosts, getBusinessesForBlogCategory } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
+import { newsCoverUrl } from "@/lib/news-cover"
 import { BlogRelatedLinks } from "@/components/blog-related-links"
 import { BlogBusinessSpotlight } from "@/components/blog-business-spotlight"
 import { getTranslations } from "next-intl/server"
@@ -39,7 +40,9 @@ export async function generateMetadata({
       images: [
         post.imageUrl
           ? { url: post.imageUrl, alt: post.title }
-          : { url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" },
+          : post.category === "local-news"
+            ? { url: newsCoverUrl(post, siteUrl), alt: post.title }
+            : { url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" },
       ],
     },
     alternates: pageAlternates(`/blog/${params.slug}`, params.locale),
@@ -70,7 +73,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
     "@type": isNews ? "NewsArticle" : "BlogPosting",
     headline: post.title,
     description: post.metaDescription ?? post.excerpt ?? undefined,
-    image: [post.imageUrl ?? `${siteUrl}/lompoc-hero.jpg`],
+    image: [post.imageUrl ?? (isNews ? newsCoverUrl(post, siteUrl) : `${siteUrl}/lompoc-hero.jpg`)],
     url: `${siteUrl}/blog/${post.slug}`,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${siteUrl}/blog/${post.slug}` },
     datePublished: post.publishedAt?.toISOString(),
@@ -143,10 +146,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
           </div>
 
           {/* Featured image */}
-          {post.imageUrl && (
+          {(
             <div className="mb-8 rounded-2xl overflow-hidden aspect-[16/9] bg-gray-100">
               <SafeImage
-                src={post.imageUrl}
+                src={newsCoverUrl(post)}
                 alt={post.title}
                 className="w-full h-full object-cover"
               />

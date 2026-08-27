@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
 import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight, Newspaper } from "lucide-react"
 import { getPublishedBlogPosts, countPublishedBlogPosts } from "@/lib/queries"
+import { newsCoverUrl } from "@/lib/news-cover"
 import { SafeImage } from "@/components/safe-image"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
@@ -104,10 +105,10 @@ export default async function NewsIndexPage({
           {heroPost && (
             <Link href={`/blog/${heroPost.slug}`} className="group block mb-10">
               <article className="relative rounded-3xl overflow-hidden bg-gray-900 min-h-[380px] flex flex-col justify-end">
-                {heroPost.imageUrl && (
+                {(
                   <div className="absolute inset-0">
                     <SafeImage
-                      src={heroPost.imageUrl}
+                      src={newsCoverUrl(heroPost)}
                       alt={heroPost.title}
                       className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-300"
                     />
@@ -147,10 +148,10 @@ export default async function NewsIndexPage({
                 key={post.id}
                 className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-primary/20 transition-all flex flex-col"
               >
-                {post.imageUrl && (
+                {(
                   <Link href={`/blog/${post.slug}`} className="group block aspect-[16/9] overflow-hidden bg-gray-100">
                     <SafeImage
-                      src={post.imageUrl}
+                      src={newsCoverUrl(post)}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />

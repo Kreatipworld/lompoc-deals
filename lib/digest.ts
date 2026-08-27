@@ -1,4 +1,5 @@
 import { gt, lt, asc, and, eq, desc, sql, inArray } from "drizzle-orm"
+import { newsCoverUrl } from "./news-cover"
 import { db } from "@/db/client"
 import { deals, businesses, events, categories, blogPosts } from "@/db/schema"
 import type { DealCardData } from "@/lib/queries"
@@ -366,6 +367,7 @@ export async function getDigestNews(limit = 4): Promise<DigestNews[]> {
       title: blogPosts.title,
       excerpt: blogPosts.excerpt,
       imageUrl: blogPosts.imageUrl,
+      tags: blogPosts.tags,
       publishedAt: blogPosts.publishedAt,
     })
     .from(blogPosts)
@@ -378,7 +380,12 @@ export async function getDigestNews(limit = 4): Promise<DigestNews[]> {
     )
     .orderBy(desc(blogPosts.publishedAt))
     .limit(limit)
-  return rows
+  // Email needs absolute URLs, and a story without a photo still gets its topic cover.
+  const origin = process.env.AUTH_URL ?? "https://www.lompoclocals.com"
+  return rows.map(({ tags, ...r }) => ({
+    ...r,
+    imageUrl: newsCoverUrl({ imageUrl: r.imageUrl, tags: tags as string[] | null, title: r.title }, origin),
+  }))
 }
 
 export type MasterDigestContent = {
