@@ -125,11 +125,21 @@
   background: linear-gradient(
     90deg,
     hsl(var(--muted)) 25%,
-    hsl(var(--muted-foreground) / 0.06) 50%,
+    hsl(var(--card)) 50%,
     hsl(var(--muted)) 75%
   );
   background-size: 400% 100%;
   animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Toasts (sonner): slide in from the bottom-right + fade, house easing ── */
+[data-sonner-toaster] [data-sonner-toast] {
+  transition: transform 350ms var(--ease-out), opacity 350ms var(--ease-out),
+              height 350ms var(--ease-out), box-shadow 200ms;
+}
+/* Pre-mount resting spot: a touch to the right and below its slot, so it glides in diagonally */
+[data-sonner-toaster][data-x-position='right'] [data-sonner-toast]:not([data-mounted='true']) {
+  --y: translate(24px, 100%);
 }
 
 /* ── Stagger fade-up entrance (apply animate-fade-up + animation-delay via style) ── */
@@ -233,7 +243,8 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up { animation: none; }
   .animate-marquee { animation: none; }
-  .skeleton { animation: none; }
+  .skeleton { animation: none; background: hsl(var(--muted)); }
+  [data-sonner-toaster] [data-sonner-toast] { transition: none; }
   .card-lift { transition: none; }
   .form-message-enter { animation: none; }
   .user-menu-dropdown { animation: none; }

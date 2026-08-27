@@ -7,6 +7,7 @@ import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { getMyBusiness, getMyDeals, deleteDealAction, toggleDealPausedAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { StatCard } from "@/components/stat-card"
+import { SuccessCheck } from "@/components/motion/success-check"
 import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "My deals" }
@@ -32,7 +33,11 @@ function ExpiryLabel({ expiresAt, labels }: { expiresAt: Date; labels: { expired
   return <span className={colorClass}>{label}</span>
 }
 
-export default async function MyDealsPage() {
+export default async function MyDealsPage({
+  searchParams,
+}: {
+  searchParams?: { saved?: string }
+}) {
   const [biz, deals, t] = await Promise.all([getMyBusiness(), getMyDeals(), getTranslations("dashboardDeals")])
   const expiryLabels = {
     expired: t("expired"),
@@ -71,8 +76,20 @@ export default async function MyDealsPage() {
   const dealLimit = TIERS[tier].dealLimit
   const canPostDeals = dealLimit !== 0
 
+  const saved = searchParams?.saved === "created" ? "created" : searchParams?.saved === "updated" ? "updated" : null
+
   return (
     <div className="space-y-6">
+      {saved && (
+        <div
+          role="status"
+          className="flex items-center gap-3 rounded-2xl border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success"
+        >
+          <SuccessCheck size={28} strokeWidth={3} />
+          <span>{saved === "created" ? t("savedCreated") : t("savedUpdated")}</span>
+        </div>
+      )}
+
       <header className="flex items-start justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight">

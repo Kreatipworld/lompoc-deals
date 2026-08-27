@@ -5,6 +5,7 @@ import { TIERS } from "@/lib/stripe"
 import { eq, and, gt, sql } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { Link } from "@/i18n/navigation"
+import { SuccessCheck } from "@/components/motion/success-check"
 import {
   CreditCard,
   Tag,
@@ -107,8 +108,8 @@ export default async function DashboardHomePage() {
       )}
 
       {biz?.status === "approved" && (
-        <div className="flex items-start gap-2.5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
-          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+        <div className="flex items-center gap-2.5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          <SuccessCheck size={20} strokeWidth={3.5} className="text-green-700" />
           <span>{t("approvedBanner")}</span>
         </div>
       )}

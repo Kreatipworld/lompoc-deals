@@ -1406,6 +1406,8 @@
     "noBusiness": "Necesitas crear un perfil de negocio antes de publicar ofertas.",
     "createProfile": "crear un perfil de negocio",
     "newDeal": "Nueva oferta",
+    "savedCreated": "Oferta publicada.",
+    "savedUpdated": "Cambios guardados.",
     "activeDeals": "Ofertas activas",
     "lifetimeViews": "Visitas totales",
     "lifetimeClicks": "Clics totales",

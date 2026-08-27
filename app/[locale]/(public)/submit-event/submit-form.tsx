@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { CheckCircle2 } from "lucide-react"
+import { SuccessCheck } from "@/components/motion/success-check"
 import { useTranslations } from "next-intl"
 
 const CATEGORY_KEYS = [
@@ -69,7 +69,7 @@ export function SubmitEventForm() {
   if (status === "success") {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border bg-card p-10 text-center">
-        <CheckCircle2 className="h-10 w-10 text-green-500" />
+        <SuccessCheck size={44} strokeWidth={3} />
         <h2 className="text-xl font-semibold">{t("successHeading")}</h2>
         <p className="text-sm text-muted-foreground">
           {t("successBody")}

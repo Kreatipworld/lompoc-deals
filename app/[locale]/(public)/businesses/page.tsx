@@ -18,6 +18,7 @@ import { filterOpenNow } from "@/lib/hours"
 import { SearchBar } from "@/components/search-bar"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { BusinessAvatar } from "@/components/business-avatar"
+import { TiltCard } from "@/components/motion/tilt-card"
 import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
@@ -207,6 +208,7 @@ export default async function BusinessesPage({
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {mostActive.map((b, bi) => (
                 <AnimeReveal key={b.id} as="li" direction="up" delay={bi * 50} duration={520}>
+                  <TiltCard className="h-full rounded-2xl">
                   <Link
                     href={`/biz/${b.slug}`}
                     className="group relative flex h-full items-center gap-4 overflow-hidden rounded-2xl border border-gold/40 bg-card p-4 shadow-sm ring-1 ring-gold/20 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
@@ -236,6 +238,7 @@ export default async function BusinessesPage({
                     </div>
                     <ArrowUpRight className="relative h-4 w-4 flex-shrink-0 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
                   </Link>
+                  </TiltCard>
                 </AnimeReveal>
               ))}
             </ul>
@@ -292,6 +295,7 @@ export default async function BusinessesPage({
                       delay={Math.min(bi, 8) * 45}
                       duration={520}
                     >
+                      <TiltCard className="h-full rounded-2xl">
                       <Link
                         href={`/biz/${b.slug}`}
                         className={`group relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
@@ -359,6 +363,7 @@ export default async function BusinessesPage({
                           <ArrowRight className="ml-1 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
                         </div>
                       </Link>
+                      </TiltCard>
                     </AnimeReveal>
                   )
                 })}

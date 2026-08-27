@@ -20,6 +20,7 @@ import type { DealCardData } from "@/lib/queries"
 import type { Viewer } from "@/lib/viewer"
 import { SafeImage } from "@/components/safe-image"
 import { FeaturedBadge } from "@/components/featured-badge"
+import { TiltCard } from "@/components/motion/tilt-card"
 import { getTranslations } from "next-intl/server"
 
 type TypeKey = DealCardData["type"]
@@ -70,12 +71,13 @@ export async function DealCard({
 
   if (variant === "tripadvisor") {
     return (
+      <TiltCard className="rounded-xl">
       <article
         className="group flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:shadow-lg hover:-translate-y-0.5 card-enter"
         style={{ animationDelay: `${Math.min(staggerIndex, 5) * 60}ms` }}
       >
         {/* IMAGE */}
-        <Link href={`/biz/${deal.business.slug}`} className="relative block h-44 overflow-hidden flex-shrink-0">
+        <Link href={`/biz/${deal.business.slug}`} data-tilt="img" className="relative block h-44 overflow-hidden flex-shrink-0">
           <SafeImage
             src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
             alt={deal.imageUrl ? deal.title : deal.business.name}
@@ -259,17 +261,19 @@ export async function DealCard({
           </div>
         )}
       </article>
+      </TiltCard>
     )
   }
 
   return (
+    <TiltCard className="h-full rounded-2xl">
     <article
       className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm card-lift card-enter hover:-translate-y-1 hover:shadow-lg"
       style={{ animationDelay: `${Math.min(staggerIndex, 5) * 60}ms` }}
     >
       {/* MEDIA */}
       <div className="relative h-52 overflow-hidden">
-        <Link href={`/biz/${deal.business.slug}`} className="block h-full w-full" aria-label={deal.title}>
+        <Link href={`/biz/${deal.business.slug}`} data-tilt="img" className="block h-full w-full" aria-label={deal.title}>
           <SafeImage
             src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
             alt={deal.imageUrl ? deal.title : deal.business.name}
@@ -454,6 +458,7 @@ export async function DealCard({
         </div>
       )}
     </article>
+    </TiltCard>
   )
 }
 

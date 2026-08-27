@@ -1406,6 +1406,8 @@
     "noBusiness": "You need to create a business profile before you can post deals.",
     "createProfile": "create a business profile",
     "newDeal": "New deal",
+    "savedCreated": "Deal published.",
+    "savedUpdated": "Changes saved.",
     "activeDeals": "Active deals",
     "lifetimeViews": "Lifetime views",
     "lifetimeClicks": "Lifetime clicks",

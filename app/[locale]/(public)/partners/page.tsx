@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
+import type { ReactNode } from "react"
 import { and, eq, gt, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { analyticsEvents, events } from "@/db/schema"
@@ -24,6 +25,8 @@ import { pageAlternates } from "@/lib/seo"
 import { BrandLogo } from "@/components/brand-logo"
 import { SafeImage } from "@/components/safe-image"
 import { Reveal } from "@/components/reveal"
+import { HeroIntro } from "@/components/motion/hero-intro"
+import { CountUp } from "@/components/motion/count-up"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
 
 export async function generateMetadata({
@@ -68,10 +71,9 @@ async function getThirtyDayVisitorCount() {
   return row?.n ?? 0
 }
 
-/** Floors to the nearest 100 and formats as a friendly "2,400+" figure. */
-function friendlyCount(n: number) {
-  const floored = Math.floor(n / 100) * 100
-  return `${floored.toLocaleString("en-US")}+`
+/** Floors to the nearest 100 so the hero shows a friendly "2,400+" figure. */
+function friendlyFloor(n: number) {
+  return Math.floor(n / 100) * 100
 }
 
 export default async function PartnersPage({
@@ -102,24 +104,24 @@ export default async function PartnersPage({
       {/* ─────────────────────────────────────────────────
           HERO — brand purple, logo plate, live stats
          ───────────────────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden bg-primary">
+      <HeroIntro as="section" className="relative isolate overflow-hidden bg-primary">
         <div
           aria-hidden
           className="absolute inset-0 -z-10 bg-[radial-gradient(120%_80%_at_85%_-10%,hsl(287_65%_35%/0.55)_0%,transparent_55%),linear-gradient(165deg,hsl(287_75%_20%)_0%,hsl(var(--primary))_52%,hsl(287_80%_15%)_100%)]"
         />
         <div className={`${PAGE_CONTAINER} py-16 text-center sm:py-24 lg:py-28`}>
-          <Reveal preset="stagger" as="div" className="mx-auto flex max-w-2xl flex-col items-center">
-            <div className="inline-flex rounded-2xl bg-white p-3.5 shadow-xl sm:p-4">
+          <div className="mx-auto flex max-w-2xl flex-col items-center">
+            <div data-hero="line" className="inline-flex rounded-2xl bg-white p-3.5 shadow-xl sm:p-4">
               <BrandLogo className="h-10 w-auto sm:h-12" />
             </div>
 
-            <div className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold">
+            <div data-hero="line" className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold">
               {t("hero.kicker")}
             </div>
 
-            <h1 className="mt-4 font-display text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.75rem]">
+            <h1 data-hero="line" className="mt-4 font-display text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.75rem]">
               {t("hero.h1")}{" "}
-              <span className="relative inline-block italic text-gold">
+              <span data-hero="accent" className="relative inline-block italic text-gold">
                 {t("hero.h1Italic")}
                 <span
                   aria-hidden
@@ -128,11 +130,11 @@ export default async function PartnersPage({
               </span>
             </h1>
 
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/85 sm:text-lg">
+            <p data-hero="line" className="mt-5 max-w-lg text-base leading-relaxed text-white/85 sm:text-lg">
               {t("hero.subtitle")}
             </p>
 
-            <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+            <div data-hero="cta" className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
               <Link
                 href="/signup/business"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-gold-foreground shadow-lg shadow-black/20 transition [transition:transform_100ms_cubic-bezier(0.23,1,0.32,1)] hover:brightness-105 active:scale-[0.97]"
@@ -148,19 +150,22 @@ export default async function PartnersPage({
               </Link>
             </div>
 
-            <p className="mt-5 text-xs text-white/70">{t("hero.trustLine")}</p>
-          </Reveal>
+            <p data-hero="cta" className="mt-5 text-xs text-white/70">{t("hero.trustLine")}</p>
+          </div>
 
-          <Reveal
-            preset="stagger"
+          {/* The strip glides in with the CTAs (~1.2s); the counts run a bit
+              longer than default so the last stretch of every number lands
+              while the strip is already visible. */}
+          <div
+            data-hero="cta"
             className="mx-auto mt-12 grid max-w-xl grid-cols-3 divide-x divide-white/20 rounded-2xl border border-white/15 bg-white/5 py-6 backdrop-blur-sm"
           >
-            <HeroStat value={friendlyCount(visitors30d)} label={t("hero.statVisitorsLabel")} />
-            <HeroStat value={stats.businesses.toLocaleString("en-US")} label={t("hero.statBusinessesLabel")} />
-            <HeroStat value={`${upcomingEvents.toLocaleString("en-US")}+`} label={t("hero.statEventsLabel")} />
-          </Reveal>
+            <HeroStat value={<CountUp value={friendlyFloor(visitors30d)} suffix="+" duration={1.4} delay={1.1} />} label={t("hero.statVisitorsLabel")} />
+            <HeroStat value={<CountUp value={stats.businesses} duration={1.4} delay={1.1} />} label={t("hero.statBusinessesLabel")} />
+            <HeroStat value={<CountUp value={upcomingEvents} suffix="+" duration={1.4} delay={1.1} />} label={t("hero.statEventsLabel")} />
+          </div>
         </div>
-      </section>
+      </HeroIntro>
 
       {/* ─────────────────────────────────────────────────
           INTRO VIDEO — a neighbor explains the platform
@@ -487,7 +492,7 @@ export default async function PartnersPage({
   )
 }
 
-function HeroStat({ value, label }: { value: string; label: string }) {
+function HeroStat({ value, label }: { value: ReactNode; label: string }) {
   return (
     <div className="flex flex-col items-center px-2 text-center">
       <div className="font-display text-2xl font-semibold leading-none text-white sm:text-3xl">

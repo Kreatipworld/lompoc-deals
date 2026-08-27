@@ -24,6 +24,7 @@ import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 import { BusinessAvatar } from "@/components/business-avatar"
+import { TiltCard } from "@/components/motion/tilt-card"
 import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
@@ -193,7 +194,7 @@ export default async function CategoryPage({
             ) : (
               <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {categoryBusinesses.map((b) => (
-                  <li key={b.id}>
+                  <TiltCard as="li" key={b.id} className="h-full rounded-2xl">
                     <Link
                       href={`/biz/${b.slug}`}
                       className="group flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
@@ -254,7 +255,7 @@ export default async function CategoryPage({
                         <ArrowRight className="ml-1 h-3 w-3" />
                       </div>
                     </Link>
-                  </li>
+                  </TiltCard>
                 ))}
               </ul>
             )}

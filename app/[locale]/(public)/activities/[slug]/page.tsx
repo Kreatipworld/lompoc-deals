@@ -18,7 +18,7 @@ import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
 // Lazy-load single-pin map to avoid SSR issues with Leaflet
 const ActivityMapPin = dynamic(
   () => import("@/components/activity-map-pin"),
-  { ssr: false, loading: () => <div className="h-64 w-full animate-pulse rounded-xl bg-accent" /> }
+  { ssr: false, loading: () => <div className="skeleton h-64 w-full rounded-xl" /> }
 )
 
 export async function generateStaticParams() {

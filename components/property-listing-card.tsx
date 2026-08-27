@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation"
 import { Bed, Bath, Maximize, MapPin } from "lucide-react"
 import type { PropertyListing } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
+import { TiltCard } from "@/components/motion/tilt-card"
 import { getTranslations } from "next-intl/server"
 
 function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
@@ -18,12 +19,13 @@ export async function PropertyListingCard({
   const t = await getTranslations("propertyCard")
   const isForSale = listing.type === "for-sale"
   return (
+    <TiltCard className="h-full rounded-2xl">
     <Link
       href={`/listings/${listing.id}`}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
     >
       {/* Image */}
-      <div className="relative h-52 overflow-hidden">
+      <div data-tilt="img" className="relative h-52 overflow-hidden">
         <SafeImage
           src={listing.imageUrl ?? undefined}
           alt={listing.title}
@@ -95,6 +97,7 @@ export async function PropertyListingCard({
         </div>
       </div>
     </Link>
+    </TiltCard>
   )
 }
 

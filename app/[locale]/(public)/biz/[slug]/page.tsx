@@ -38,6 +38,7 @@ import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import { BusinessAbout } from "@/components/business-about"
 import { OutboundLink } from "@/components/outbound-link"
 import { SafeImage } from "@/components/safe-image"
+import { Reveal } from "@/components/motion/reveal"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
@@ -585,7 +586,7 @@ export default async function BusinessPage({
             <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
               {t("moreInCategory", { category: business.category.name })}
             </h2>
-            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <Reveal as="ul" stagger={0.06} className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {relatedBusinesses.map((rb) => (
                 <li key={rb.slug}>
                   <Link href={`/biz/${rb.slug}`} className="group block">
@@ -614,7 +615,7 @@ export default async function BusinessPage({
                   </Link>
                 </li>
               ))}
-            </ul>
+            </Reveal>
           </div>
         </section>
       )}

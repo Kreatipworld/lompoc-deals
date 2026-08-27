@@ -25,6 +25,7 @@ import {
 import { TIERS } from "@/lib/stripe"
 import { DURATION, EASE, usePrefersReducedMotion } from "@/lib/motion"
 import type { Category } from "./page"
+import { SuccessCheck } from "@/components/motion/success-check"
 
 // ── Shared submit button ────────────────────────────────────────────────────
 
@@ -516,17 +517,8 @@ function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
       const { animate } = await import("animejs")
       if (cancelled) return
 
-      const check = container.querySelector<HTMLElement>("[data-check]")
       const sweep = container.querySelector<HTMLElement>("[data-sweep]")
 
-      if (check) {
-        animate(check, {
-          opacity: [0, 1],
-          scale: [0.6, 1.1, 1],
-          duration: 450,
-          easing: EASE.standard,
-        })
-      }
       if (sweep) {
         animate(sweep, {
           scaleX: [0, 1],
@@ -556,13 +548,7 @@ function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
       aria-live="polite"
       aria-label={t("successMoment.ariaLabel")}
     >
-      <div
-        data-check
-        className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg"
-        style={{ opacity: reducedMotion ? 1 : 0 }}
-      >
-        <Check className="h-10 w-10" strokeWidth={3} />
-      </div>
+      <SuccessCheck size={80} strokeWidth={3} className="text-primary" />
       <div className="flex flex-col items-center gap-3">
         <p className="font-display text-xl font-semibold tracking-tight">
           {t("successMoment.accountCreated")}

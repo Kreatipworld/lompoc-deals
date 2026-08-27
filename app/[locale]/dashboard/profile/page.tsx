@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react"
+import { SuccessCheck } from "@/components/motion/success-check"
 import { getCategoriesList, getMyBusiness } from "@/lib/biz-actions"
 import { ProfileForm } from "./profile-form"
 import { PhotoManager } from "@/components/photo-manager"
@@ -34,9 +34,7 @@ export default async function ProfilePage({
     <div className="space-y-6">
       {searchParams.claimed && (
         <div className="flex items-start gap-3 rounded-2xl border border-primary/20 bg-accent p-4">
-          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <Sparkles className="h-4 w-4" />
-          </div>
+          <SuccessCheck size={36} strokeWidth={3} className="text-primary" />
           <div className="text-sm">
             <p className="font-semibold text-accent-foreground">
               {t("claimReceived", { name: decodeURIComponent(searchParams.claimed) })}

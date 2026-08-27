@@ -492,7 +492,7 @@ export async function saveDealAction(
 
   revalidatePath("/dashboard/deals")
   revalidatePath("/")
-  redirect("/dashboard/deals")
+  redirect(`/dashboard/deals?saved=${dealId ? "updated" : "created"}`)
 }
 
 export async function toggleDealPausedAction(formData: FormData) {

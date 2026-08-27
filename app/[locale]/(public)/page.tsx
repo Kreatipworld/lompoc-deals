@@ -10,6 +10,8 @@ import { FeaturedBusinessesMarquee } from "@/components/featured-businesses-marq
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { AnimeReveal } from "@/components/anime-reveal"
+import { Reveal as MotionReveal } from "@/components/motion/reveal"
+import { HeroIntro } from "@/components/motion/hero-intro"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
 import { CouponDemo } from "@/components/coupon-demo"
@@ -124,19 +126,24 @@ export default async function HomePage({ params }: { params: { locale: string } 
           so the search autocomplete dropdown can extend past the hero instead
           of being clipped. The background layers are `absolute inset-0`, so
           they stay bounded to the section on their own. */}
-      <section className="relative border-b">
+      <HeroIntro as="section" className="relative border-b">
         {/* Flower-field photo base, washed in the Lompoc Locals purple brand
             gradient, then warmed by a gold glow top-right and green glow
-            bottom-left. The photo shows through the semi-transparent purple. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-30 overflow-hidden"
-          style={{
-            backgroundImage: "url('/lompoc-hero.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center 40%",
-          }}
-        />
+            bottom-left. The photo shows through the semi-transparent purple.
+            The outer div clips; the inner layer carries the image so the slow
+            Ken Burns scale (HeroIntro data-hero="bg") never bleeds past the
+            section — this section has no overflow-hidden of its own. */}
+        <div aria-hidden className="absolute inset-0 -z-30 overflow-hidden">
+          <div
+            data-hero="bg"
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/lompoc-hero.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center 40%",
+            }}
+          />
+        </div>
         <div
           aria-hidden
           className="absolute inset-0 -z-20 bg-gradient-to-br from-[#4a0857]/90 via-[#650C75]/85 to-[#37043f]/90"
@@ -154,26 +161,26 @@ export default async function HomePage({ params }: { params: { locale: string } 
           {/* CSS background images are discovered after stylesheet parse — this
               preload lets the LCP hero start downloading with the HTML. */}
           <link rel="preload" as="image" href="/lompoc-hero.jpg" />
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+          <div data-hero="line" className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             <MapPin className="h-3 w-3" />
             {t("location")}
           </div>
 
-          <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h1 data-hero="line" className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
             {t("heroTitle")} <br className="sm:hidden" />
-            <span className="italic text-gold">{t("heroHighlight")}</span>
+            <span data-hero="accent" className="inline-block italic text-gold">{t("heroHighlight")}</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
+          <p data-hero="line" className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
             {t("heroSubheadline")}
           </p>
 
-          <div className="mx-auto mt-8 max-w-xl">
+          <div data-hero="cta" className="mx-auto mt-8 max-w-xl">
             <SearchBar size="lg" scrim />
           </div>
 
           {/* Quick-intent chips — food dominates our search analytics, so the
               top cravings are one tap away before anyone has to type. */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <div data-hero="cta" className="mt-4 flex flex-wrap items-center justify-center gap-2">
             {(t.raw("quickChips") as { label: string; href: string }[]).map((chip) => (
               <Link
                 key={chip.href}
@@ -185,7 +192,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
             ))}
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
+          <div data-hero="cta" className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
               <AnimatedCounter value={stats.activeDeals} duration={1200} delay={600} /> {t("statActiveDeals")}
@@ -196,7 +203,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
             <span><AnimatedCounter value={stats.categories} duration={1000} delay={800} /> {t("statCategories")}</span>
           </div>
         </div>
-      </section>
+      </HeroIntro>
 
       {/* ─────────────────────────────────────────────────
           FEATURED LOCAL PARTNERS — homepage sponsor showcase
@@ -240,16 +247,15 @@ export default async function HomePage({ params }: { params: { locale: string } 
 
         {/* Mobile: two rows that scroll sideways. Desktop: filling 5-col grid
             (two full rows), centered across the section. */}
-        <div className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0">
-          {categories.map((cat, i) => {
+        <MotionReveal stagger={0.06} className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0">
+          {categories.map((cat) => {
             // Real business photo when available, else the static category image
             const image = categoryCovers[cat.slug] ?? getCategoryImage(cat.slug)
             return (
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
-                style={{ animationDelay: `${i * 55}ms` }}
-                className="group snap-start animate-fade-up"
+                className="group snap-start"
               >
                 {/* Clean photo card — no overlay, label sits below. */}
                 <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-accent shadow-sm ring-1 ring-black/[0.06] [transition:box-shadow_220ms_ease] group-hover:shadow-md">
@@ -270,7 +276,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
               </Link>
             )
           })}
-        </div>
+        </MotionReveal>
       </section>
 
       {/* ─────────────────────────────────────────────────
@@ -351,13 +357,12 @@ export default async function HomePage({ params }: { params: { locale: string } 
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredActivities.map((activity, i) => (
+          <MotionReveal stagger={0.06} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredActivities.map((activity) => (
               <Link
                 key={activity.id}
                 href={`/activities/${activity.slug}`}
-                style={{ animationDelay: `${i * 70}ms` }}
-                className="group relative overflow-hidden rounded-2xl border bg-background shadow-sm animate-fade-up card-lift hover:shadow-lg hover:-translate-y-1"
+                className="group relative overflow-hidden rounded-2xl border bg-background shadow-sm card-lift hover:shadow-lg hover:-translate-y-1"
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-accent">
                   {activity.imageUrl && (
@@ -392,7 +397,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
                 </div>
               </Link>
             ))}
-          </div>
+          </MotionReveal>
 
           <div className="mt-6 flex items-center justify-between">
             <div className="sm:hidden">

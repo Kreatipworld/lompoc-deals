@@ -5,6 +5,8 @@ import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight, Newspaper } from "
 import { getPublishedBlogPosts, countPublishedBlogPosts } from "@/lib/queries"
 import { newsCoverUrl } from "@/lib/news-cover"
 import { SafeImage } from "@/components/safe-image"
+import { Reveal } from "@/components/motion/reveal"
+import { TiltCard } from "@/components/motion/tilt-card"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 import { NEWS_TOPICS, topicBySlug, topicTag, deriveTopic } from "@/lib/news-topics"
@@ -142,14 +144,14 @@ export default async function NewsIndexPage({
             </Link>
           )}
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <Reveal stagger={0.06} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {gridPosts.map((post) => (
+              <TiltCard key={post.id} className="rounded-2xl">
               <article
-                key={post.id}
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-primary/20 transition-all flex flex-col"
+                className="h-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-primary/20 transition-all flex flex-col"
               >
                 {(
-                  <Link href={`/blog/${post.slug}`} className="group block aspect-[16/9] overflow-hidden bg-gray-100">
+                  <Link href={`/blog/${post.slug}`} data-tilt="img" className="group block aspect-[16/9] overflow-hidden bg-gray-100">
                     <SafeImage
                       src={newsCoverUrl(post)}
                       alt={post.title}
@@ -177,8 +179,9 @@ export default async function NewsIndexPage({
                   )}
                 </div>
               </article>
+              </TiltCard>
             ))}
-          </div>
+          </Reveal>
 
           {totalPages > 1 && (
             <nav className="mt-12 flex items-center justify-center gap-2" aria-label={t("paginationLabel")}>

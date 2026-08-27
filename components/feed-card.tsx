@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
 import { isThisWeekend } from "@/lib/feed-interleave"
 import { neighborhoodLabel } from "@/lib/neighborhoods"
+import { TiltCard } from "@/components/motion/tilt-card"
 
 function formatPrice(cents: number | null, freeLabel: string, locale: string): string | null {
   if (cents === null) return null
@@ -57,6 +58,7 @@ export function FeedCard({ item }: { item: FeedDisplayItem }) {
     isThisWeekend(item.saleStartsAt, item.saleEndsAt, new Date())
 
   return (
+    <TiltCard className="rounded-2xl">
     <div className="group relative overflow-hidden rounded-2xl border bg-card shadow-sm transition-[transform,box-shadow] duration-[220ms] ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-lg">
       <Link href={item.href} className="absolute inset-0 z-[1]" aria-label={item.title} />
 
@@ -72,7 +74,7 @@ export function FeedCard({ item }: { item: FeedDisplayItem }) {
       )}
 
       {item.imageUrl ? (
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+        <div data-tilt="img" className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={item.imageUrl}
@@ -128,5 +130,6 @@ export function FeedCard({ item }: { item: FeedDisplayItem }) {
         )}
       </div>
     </div>
+    </TiltCard>
   )
 }

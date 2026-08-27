@@ -4,10 +4,10 @@ export default function Loading() {
       {/* Section header skeleton */}
       <div className="mb-6 flex items-end justify-between">
         <div className="space-y-2">
-          <div className="h-7 w-40 animate-pulse rounded-lg bg-muted" />
-          <div className="h-4 w-64 animate-pulse rounded bg-muted" />
+          <div className="h-7 w-40 skeleton rounded-lg" />
+          <div className="h-4 w-64 skeleton rounded" />
         </div>
-        <div className="hidden h-4 w-32 animate-pulse rounded bg-muted sm:block" />
+        <div className="hidden h-4 w-32 skeleton rounded sm:block" />
       </div>
 
       {/* Card grid skeleton — mirrors actual DealCard layout */}
@@ -15,28 +15,28 @@ export default function Loading() {
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="overflow-hidden rounded-2xl border bg-card shadow-sm">
             {/* Image area */}
-            <div className="h-48 animate-pulse bg-muted" />
+            <div className="h-48 skeleton" />
 
             {/* Body */}
             <div className="flex flex-col gap-3 p-5">
               {/* Title + business name */}
               <div className="space-y-2">
-                <div className="h-5 w-4/5 animate-pulse rounded bg-muted" />
-                <div className="h-5 w-3/5 animate-pulse rounded bg-muted" />
-                <div className="h-4 w-2/5 animate-pulse rounded bg-muted" />
+                <div className="h-5 w-4/5 skeleton rounded" />
+                <div className="h-5 w-3/5 skeleton rounded" />
+                <div className="h-4 w-2/5 skeleton rounded" />
               </div>
               {/* Description */}
               <div className="space-y-1.5">
-                <div className="h-3.5 w-full animate-pulse rounded bg-muted" />
-                <div className="h-3.5 w-4/5 animate-pulse rounded bg-muted" />
+                <div className="h-3.5 w-full skeleton rounded" />
+                <div className="h-3.5 w-4/5 skeleton rounded" />
               </div>
               {/* Footer row */}
               <div className="mt-2 flex items-center justify-between">
-                <div className="h-3 w-24 animate-pulse rounded bg-muted" />
-                <div className="h-3 w-16 animate-pulse rounded bg-muted" />
+                <div className="h-3 w-24 skeleton rounded" />
+                <div className="h-3 w-16 skeleton rounded" />
               </div>
               {/* CTA button */}
-              <div className="h-10 w-full animate-pulse rounded-full bg-muted" />
+              <div className="h-10 w-full skeleton rounded-full" />
             </div>
           </div>
         ))}
