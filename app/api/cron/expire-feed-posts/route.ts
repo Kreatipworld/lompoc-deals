@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { and, eq, lte } from "drizzle-orm"
 import { db } from "@/db/client"
 import { feedPosts } from "@/db/schema"
 
 export async function GET(req: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   // Vercel Cron sends a Bearer token equal to CRON_SECRET
   const authHeader = req.headers.get("authorization")
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {

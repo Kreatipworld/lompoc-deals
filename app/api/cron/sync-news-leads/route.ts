@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { db } from "@/db/client"
 import { newsLeads } from "@/db/schema"
 import { deriveTopic } from "@/lib/news-topics"
@@ -33,6 +34,9 @@ const KEYWORDS = /lompoc|vandenberg|la purisima|jalama|mission hills|vsfb/i
 
 
 export async function GET(request: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const auth = request.headers.get("authorization")
   if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

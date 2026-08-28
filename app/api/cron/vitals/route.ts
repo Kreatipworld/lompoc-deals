@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { Resend } from "resend"
@@ -15,6 +16,9 @@ const TIER_PRICE: Record<string, number> = { standard: 39.99, premium: 99.99 }
 /** Weekly platform vitals — the demand-side numbers that tell us if Lompoc
  *  Locals is growing: members, claims, subscribers, revenue. Runs Mondays. */
 export async function GET(req: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const authHeader = req.headers.get("authorization")
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { Resend } from "resend"
 import { list, put } from "@vercel/blob"
 import {
@@ -27,7 +28,7 @@ const NEON_BILLING = "https://console.neon.tech/app/orgs/org-proud-cell-62155403
 async function checkDatabase(): Promise<CheckFailure | null> {
   try {
     const { neon } = await import("@neondatabase/serverless")
-    const sql = neon(process.env.DATABASE_URL!, { fetchOptions: { cache: "no-store" } })
+    const sql = neon(process.env.DATABASE_URL!)
     await Promise.race([
       sql`select 1`,
       new Promise((_, rej) => setTimeout(() => rej(new Error("timed out after 10s")), 10_000)),
@@ -136,6 +137,9 @@ async function sendAlertEmail(subject: string, html: string): Promise<string | n
 }
 
 export async function GET(request: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const auth = request.headers.get("authorization")
   if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { neon } from "@neondatabase/serverless"
 import { sendReengagementEmail } from "@/lib/email"
 import { logCronRun } from "@/lib/cron-log"
@@ -22,11 +23,14 @@ const BATCH = 25 // cap per run so we never burst
  * and not a paying/trialing Growth member. One email per owner per run.
  */
 export async function GET(request: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const auth = request.headers.get("authorization")
   if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
-  const sql = neon(process.env.DATABASE_URL!, { fetchOptions: { cache: "no-store" } })
+  const sql = neon(process.env.DATABASE_URL!)
 
   const rows = await sql`
     SELECT DISTINCT ON (u.id)

@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { syncZillowListings } from "@/lib/zillow-sync"
 
 export const maxDuration = 300 // 5 minutes for the Apify call
 
 export async function GET(request: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const auth = request.headers.get("authorization")
   const expected = `Bearer ${process.env.CRON_SECRET}`
   if (!process.env.CRON_SECRET || auth !== expected) {

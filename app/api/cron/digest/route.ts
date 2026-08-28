@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { and, isNotNull, isNull, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { subscribers, emailSuppressions } from "@/db/schema"
@@ -15,6 +16,9 @@ export const maxDuration = 300
 const THROTTLE_MS = 550
 
 export async function GET(request: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const auth = request.headers.get("authorization")
   const expected = `Bearer ${process.env.CRON_SECRET}`
   if (!process.env.CRON_SECRET || auth !== expected) {

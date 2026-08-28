@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { syncEventbriteEvents } from "@/lib/event-sync"
 import { syncVandenbergLaunches } from "@/lib/launch-sync"
 import { syncExploreLompocEvents } from "@/lib/city-events-sync"
@@ -6,6 +7,9 @@ import { syncExploreLompocEvents } from "@/lib/city-events-sync"
 export const maxDuration = 120
 
 export async function GET(request: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const auth = request.headers.get("authorization")
   const expected = `Bearer ${process.env.CRON_SECRET}`
   if (!process.env.CRON_SECRET || auth !== expected) {

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { Resend } from "resend"
 import { getMasterDigestContent, hasMasterDigestContent } from "@/lib/digest"
 import { renderMasterDigestHtml } from "@/lib/email"
@@ -14,6 +15,9 @@ export const maxDuration = 60
  * (new events/deals), but this is the honest dress rehearsal.
  */
 export async function GET(request: Request) {
+  // Crons must read the live database, never Next's fetch cache (the Neon
+  // driver goes through fetch, and GET handlers cache identical fetches).
+  unstable_noStore()
   const auth = request.headers.get("authorization")
   if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
