@@ -8,6 +8,7 @@ assert.equal(isLompocLead({ title: "Day of Hope Car Show showcases cars", summar
 assert.equal(isLompocLead({ title: "Santa Maria council approves budget", summary: "Lompoc mentioned once" }), false) // elsewhere in title
 assert.equal(isLompocLead({ title: "Chinese chicken salad: a light summer dinner", summary: "Lompoc recipe" }), false) // recipe
 assert.equal(isLompocLead({ title: "Vandenberg breaks ground on Sentinel facility", summary: null }), true)
+assert.equal(isLompocLead({ title: "Santa Barbara, Dos Pueblos girls golf open season at Lompoc course", summary: null }), false) // their teams, our course
 
 // extractor: JSON-LD body, paywall boilerplate stripped
 const html = `<script type="application/ld+json">{"@type":"NewsArticle","articleBody":"Please log in, or sign up for a new account and purchase a subscription to continue reading. The City of Lompoc opened a new park Tuesday. It has ${"x ".repeat(250)}"}</script><p>ignored</p>`

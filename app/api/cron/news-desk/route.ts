@@ -6,7 +6,7 @@ import { z } from "zod"
 import { Resend } from "resend"
 import { db } from "@/db/client"
 import { blogPosts, newsLeads, businesses } from "@/db/schema"
-import { and, desc, eq, gt, ilike, sql } from "drizzle-orm"
+import { and, desc, eq, gt, sql } from "drizzle-orm"
 import { logCronRun } from "@/lib/cron-log"
 import { isLompocLead, extractArticleText, chooseCover, slugifyTitle, topicFromSlug } from "@/lib/news-desk"
 import { NEWS_TOPICS, topicTag } from "@/lib/news-topics"
@@ -39,7 +39,7 @@ const StorySchema = z.object({
 
 async function writeStory(anthropic: ReturnType<typeof createAnthropic>, lead: { title: string; source: string; url: string }, text: string) {
   const system = `You are the news desk of Lompoc Locals, the local hub for Lompoc, California. Write an original local-news story in a warm, plain, neighborly voice for people who live here.
-HARD RULES: Use ONLY facts present in the SOURCE TEXT. Never add numbers, dates, names, quotes, or claims that are not in it. If the source is thin, write a shorter story. No sensational framing. Positive, useful tone — what it means for Lompoc.
+lompoc_relevant is true ONLY when the story's subject is Lompoc, Vandenberg SFB, or a Lompoc Valley person, business, school, or institution — not when Lompoc is merely the venue for another town's team or event.\nHARD RULES: Use ONLY facts present in the SOURCE TEXT. Never add numbers, dates, names, quotes, or claims that are not in it. If the source is thin, write a shorter story. No sensational framing. Positive, useful tone — what it means for Lompoc.
 Do not copy sentences from the source; write it fresh. Do not mention the outlet in the body. Where natural, point readers to a Lompoc Locals surface with a relative link: /events for happenings, /news for more local news, /businesses for the directory, /biz/<slug> only if you are certain of the slug (otherwise do not link a business).
 Return HTML for content_html: <p> paragraphs and one <h2>, nothing else.`
   const prompt = `LEAD TITLE: ${lead.title}\nOUTLET: ${lead.source}\n\nSOURCE TEXT:\n${text.slice(0, 9000)}`
@@ -69,7 +69,7 @@ export async function GET(request: Request) {
   const leads = await db
     .select({ id: newsLeads.id, title: newsLeads.title, summary: newsLeads.summary, url: newsLeads.url, source: newsLeads.source, publishedAt: newsLeads.publishedAt })
     .from(newsLeads)
-    .where(and(eq(newsLeads.status, "new"), gt(newsLeads.createdAt, sql`now() - interval '6 days'`)))
+    .where(and(eq(newsLeads.status, "new"), gt(newsLeads.createdAt, sql`now() - interval '6 days'`), gt(newsLeads.publishedAt, sql`now() - interval '5 days'`)))
     .orderBy(desc(newsLeads.publishedAt))
     .limit(40)
 
@@ -89,7 +89,7 @@ export async function GET(request: Request) {
     if (!isLompocLead(lead)) { dismissed.push(lead.id); continue }
     // same story already told?
     const words = lead.title.toLowerCase().split(/\W+/).filter((w) => w.length > 4)
-    if (recentTitles.some((t) => words.filter((w) => t.includes(w)).length >= Math.max(3, Math.ceil(words.length * 0.6)))) {
+    if (recentTitles.some((t) => words.filter((w) => t.includes(w)).length >= 3)) {
       skipped.push({ lead: lead.id, reason: "already covered" }); continue
     }
     let text = ""
@@ -109,8 +109,9 @@ export async function GET(request: Request) {
     // cover: the subject's own media first, then the real-photo pools
     let subjectCover: string | null = null
     if (story.subject_business) {
+      const needle = story.subject_business.replace(/[’‘]/g, "'").toLowerCase()
       const [biz] = await db.select({ coverUrl: businesses.coverUrl }).from(businesses)
-        .where(and(eq(businesses.status, "approved"), ilike(businesses.name, story.subject_business))).limit(1)
+        .where(and(eq(businesses.status, "approved"), sql`lower(replace(${businesses.name}, '’', '''')) like ${needle + "%"}`)).limit(1)
       subjectCover = biz?.coverUrl ?? null
     }
     const topic = topicFromSlug(story.topic)

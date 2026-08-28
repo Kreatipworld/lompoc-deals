@@ -8,7 +8,7 @@ import { NEWS_TOPICS, deriveTopic, type NewsTopic } from "@/lib/news-topics"
 export type Lead = { id: number; title: string; summary: string | null; url: string; source: string }
 
 const LOCAL = /\b(lompoc|vandenberg|vsfb|lompoc valley|cabrillo high|lompoc high|allan hancock|la purisima|jalama|mission hills|vandenberg village|surf beach)\b/i
-const ELSEWHERE = /\b(santa maria|orcutt|santa ynez|solvang|buellton|los olivos|los alamos|goleta|carpinteria|isla vista|montecito|santa barbara county courthouse|san luis obispo|paso robles|guadalupe|nipomo|arroyo grande)\b/i
+const ELSEWHERE = /\b(santa maria|orcutt|santa ynez|solvang|buellton|los olivos|los alamos|goleta|carpinteria|isla vista|montecito|santa barbara(?! county)|dos pueblos|san marcos|pioneer valley|righetti|st\.? joseph|san luis obispo|paso robles|guadalupe|nipomo|arroyo grande)\b/i
 const NOT_NEWS = /\b(recipe|obituar|pet of the week|horoscope|crossword|letters? to the editor|opinion|commentary|column)\b/i
 
 /** Lompoc/Vandenberg only — a story that only mentions us in passing is not ours. */
@@ -16,8 +16,9 @@ export function isLompocLead(lead: Pick<Lead, "title" | "summary">): boolean {
   const t = `${lead.title} ${lead.summary ?? ""}`
   if (NOT_NEWS.test(t)) return false
   if (!LOCAL.test(t)) return false
-  // Elsewhere in the title with no Lompoc in the title → about another town.
-  if (ELSEWHERE.test(lead.title) && !LOCAL.test(lead.title)) return false
+  // Another town in the headline means the story is theirs — even when our
+  // course, our police, or our venue is the supporting detail.
+  if (ELSEWHERE.test(lead.title)) return false
   return true
 }
 
