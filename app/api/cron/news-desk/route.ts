@@ -6,7 +6,7 @@ import { z } from "zod"
 import { Resend } from "resend"
 import { db } from "@/db/client"
 import { blogPosts, newsLeads, businesses } from "@/db/schema"
-import { and, desc, eq, gt, sql } from "drizzle-orm"
+import { and, desc, eq, gt, inArray, sql } from "drizzle-orm"
 import { logCronRun } from "@/lib/cron-log"
 import { isLompocLead, extractArticleText, chooseCover, slugifyTitle, topicFromSlug } from "@/lib/news-desk"
 import { NEWS_TOPICS, topicTag } from "@/lib/news-topics"
@@ -134,7 +134,7 @@ export async function GET(request: Request) {
   }
 
   if (!dry && dismissed.length) {
-    await db.update(newsLeads).set({ status: "dismissed" }).where(sql`${newsLeads.id} = any(${dismissed})`)
+    await db.update(newsLeads).set({ status: "dismissed" }).where(inArray(newsLeads.id, dismissed))
   }
   if (!dry && published.length) {
     for (const p of ["", "/en", "/es"]) { revalidatePath(`${p}/news`); revalidatePath(`${p}/`) }
