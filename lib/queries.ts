@@ -238,7 +238,7 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
-      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      photoUrl: sql<string | null>`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0)`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -265,7 +265,7 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
-      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      photoUrl: sql<string | null>`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0)`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -303,7 +303,7 @@ export async function getFoodSpots(limit = 10): Promise<DirectoryBusiness[]> {
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
-      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      photoUrl: sql<string | null>`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0)`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -318,7 +318,7 @@ export async function getFoodSpots(limit = 10): Promise<DirectoryBusiness[]> {
       and(
         eq(businesses.status, "approved"),
         eq(categories.slug, "food-drink"),
-        sql`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl}) is not null`
+        sql`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0) is not null`
       )
     )
     .groupBy(businesses.id, categories.id)
@@ -341,7 +341,7 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
-      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      photoUrl: sql<string | null>`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0)`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -387,7 +387,7 @@ export async function getPartnerBusinesses(): Promise<DirectoryBusiness[]> {
       phone: businesses.phone,
       website: businesses.website,
       logoUrl: businesses.logoUrl,
-      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      photoUrl: sql<string | null>`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0)`,
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -1174,7 +1174,7 @@ export async function getRelatedBusinesses(
       slug: businesses.slug,
       logoUrl: businesses.logoUrl,
       categoryName: categories.name,
-      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      photoUrl: sql<string | null>`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0)`,
       activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
     })
     .from(businesses)
@@ -1189,7 +1189,7 @@ export async function getRelatedBusinesses(
     )
     .groupBy(businesses.id, categories.id)
     .orderBy(
-      sql`(coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl}) is not null) desc`,
+      sql`(coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0) is not null) desc`,
       sql`random()`
     )
     .limit(limit)
@@ -1314,7 +1314,7 @@ export async function getBusinessesNearPoint(
       name: businesses.name,
       slug: businesses.slug,
       address: businesses.address,
-      photoUrl: sql<string | null>`coalesce(${businesses.photosJson}->>0, ${businesses.coverUrl})`,
+      photoUrl: sql<string | null>`coalesce(${businesses.coverUrl}, ${businesses.photosJson}->>0)`,
       categoryName: categories.name,
       categorySlug: categories.slug,
       activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now() and ${deals.paused} = false)::int`,

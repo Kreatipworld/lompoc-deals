@@ -12,6 +12,7 @@ import { Reveal } from "@/components/reveal"
 import { SubscribeForm } from "@/components/subscribe-form"
 import { pageAlternates } from "@/lib/seo"
 import {
+
   Heart,
   Bell,
   Mail,
@@ -21,6 +22,11 @@ import {
   Store,
   Sparkles,
 } from "lucide-react"
+
+// Members change photos, hours, and deals all day; a page built once at deploy
+// time showed stale cards for weeks. Regenerate at most every 10 minutes, and
+// business saves bust it immediately (lib/revalidate-business).
+export const revalidate = 600
 
 export async function generateMetadata({
   params,

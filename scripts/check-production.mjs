@@ -215,6 +215,35 @@ try {
   fail(`digest content: ${e.message}`)
 }
 
+// ── 7. an owner's chosen cover is what neighbors see ──────────────────────────
+// Members uploaded new covers and the old first gallery photo kept showing on
+// their page and every card. The cover the owner picked must lead everywhere.
+console.log("\nPhotos — the owner's cover is what neighbors see")
+try {
+  const owners = await sql`
+    select b.slug, b.cover_url, c.slug as category_slug
+    from businesses b join users u on u.id = b.owner_user_id
+    left join categories c on c.id = b.category_id
+    where u.role = 'business' and u.email not like '%lompocdeals%' and u.email not like '%lompoc-locals%'
+      and b.status = 'approved' and b.cover_url like '%/covers/%'
+    order by b.id desc limit 3`
+  if (owners.length === 0) pass("no owner-uploaded covers to verify yet")
+  for (const o of owners) {
+    const html = await fetch(`${SITE}/biz/${o.slug}`, { cache: "no-store" }).then((r) => r.text())
+    const gallery = html.indexOf("/photos/")
+    const cover = html.indexOf(o.cover_url)
+    if (cover === -1) fail(`${o.slug}: uploaded cover missing from the profile page`)
+    else if (gallery !== -1 && gallery < cover) fail(`${o.slug}: a gallery photo still leads the profile — cover should come first`)
+    else pass(`${o.slug}: owner's cover leads the profile`)
+    if (o.category_slug) {
+      const cat = await fetch(`${SITE}/category/${o.category_slug}`, { cache: "no-store" }).then((r) => r.text())
+      cat.includes(o.cover_url) ? pass(`${o.slug}: cover on the ${o.category_slug} category card`) : fail(`${o.slug}: category card does not show the owner's cover`)
+    }
+  }
+} catch (e) {
+  fail(`owner covers: ${e.message}`)
+}
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

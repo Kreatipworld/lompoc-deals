@@ -172,14 +172,14 @@ export default async function BusinessPage({
   const isUnclaimed = isUnclaimedBusiness(business.ownerEmail)
   const reviewsUrl = googleReviewsUrl(business)
 
-  // Build photo array: photosJson takes priority, then fall back to coverUrl
+  // The cover the owner chose leads; the gallery follows it (deduped). Owners
+  // upload a new cover and expect to see it — for months the gallery's first
+  // photo silently won instead.
   const photosJson = business.photosJson as string[] | null
-  const photos: string[] =
-    Array.isArray(photosJson) && photosJson.length > 0
-      ? photosJson
-      : business.coverUrl
-      ? [business.coverUrl]
-      : []
+  const gallery = Array.isArray(photosJson) ? photosJson.filter((u): u is string => typeof u === "string" && u.length > 0) : []
+  const photos: string[] = business.coverUrl
+    ? [business.coverUrl, ...gallery.filter((u) => u !== business.coverUrl)]
+    : gallery
 
   const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
   const jsonLd = buildLocalBusinessJsonLd(business, {

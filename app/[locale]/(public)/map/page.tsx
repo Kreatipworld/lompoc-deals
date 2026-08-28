@@ -6,6 +6,11 @@ import { ArrowRight, Store, Tag, CalendarDays, MapPin } from "lucide-react"
 import { getAllCategories } from "@/lib/queries"
 import { pageAlternates } from "@/lib/seo"
 
+// Members change photos, hours, and deals all day; a page built once at deploy
+// time showed stale cards for weeks. Regenerate at most every 10 minutes, and
+// business saves bust it immediately (lib/revalidate-business).
+export const revalidate = 600
+
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "map" })
   return {

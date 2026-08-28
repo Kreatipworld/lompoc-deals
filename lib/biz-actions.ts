@@ -2,6 +2,7 @@
 
 import { z } from "zod"
 import { revalidatePath } from "next/cache"
+import { revalidateBusinessSurfaces } from "@/lib/revalidate-business"
 import { redirect } from "next/navigation"
 import { and, eq, gt, sql } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
@@ -223,13 +224,10 @@ export async function saveProfileAction(
   })
 
   revalidatePath("/dashboard/profile")
-  revalidatePath("/")
-  revalidatePath("/map")
-  // Push the owner's public page live immediately instead of waiting for the
-  // 5-minute ISR window. Cover the new slug and (if the name changed) the old.
+  // Push the owner's public page — and every listing that shows their card —
+  // live immediately, in every locale, instead of waiting for ISR.
   const savedSlug = slugify(data.name)
-  revalidatePath(`/biz/${savedSlug}`)
-  if (existing && existing.slug !== savedSlug) revalidatePath(`/biz/${existing.slug}`)
+  revalidateBusinessSurfaces({ slug: savedSlug, previousSlug: existing?.slug ?? null })
   return { success: "Profile saved" }
 }
 
@@ -316,8 +314,7 @@ export async function saveGalleryAction(
     .where(eq(businesses.id, biz.id))
 
   revalidatePath("/dashboard/profile")
-  revalidatePath(`/biz/${biz.slug}`)
-  revalidatePath("/")
+  revalidateBusinessSurfaces({ slug: biz.slug })
 
   return { ok: true }
 }
@@ -491,7 +488,7 @@ export async function saveDealAction(
   }
 
   revalidatePath("/dashboard/deals")
-  revalidatePath("/")
+  revalidateBusinessSurfaces({ slug: biz.slug })
   redirect(`/dashboard/deals?saved=${dealId ? "updated" : "created"}`)
 }
 
@@ -510,7 +507,7 @@ export async function toggleDealPausedAction(formData: FormData) {
     .where(and(eq(deals.id, dealId), eq(deals.businessId, biz.id)))
 
   revalidatePath("/dashboard/deals")
-  revalidatePath("/")
+  revalidateBusinessSurfaces({ slug: biz.slug })
 }
 
 export async function deleteDealAction(formData: FormData) {
@@ -528,7 +525,7 @@ export async function deleteDealAction(formData: FormData) {
     .where(and(eq(deals.id, dealId), eq(deals.businessId, biz.id)))
 
   revalidatePath("/dashboard/deals")
-  revalidatePath("/")
+  revalidateBusinessSurfaces({ slug: biz.slug })
 }
 
 // ============ notification helpers ============
@@ -726,7 +723,7 @@ export async function upsertPropertyAction(
   }
 
   revalidatePath("/dashboard/properties")
-  revalidatePath("/")
+  revalidateBusinessSurfaces({ slug: biz.slug })
   redirect("/dashboard/properties")
 }
 
@@ -744,7 +741,7 @@ export async function deletePropertyAction(formData: FormData) {
     .where(and(eq(propertyListings.id, listingId), eq(propertyListings.businessId, biz.id)))
 
   revalidatePath("/dashboard/properties")
-  revalidatePath("/")
+  revalidateBusinessSurfaces({ slug: biz.slug })
 }
 
 export async function getMyProperties() {
