@@ -18,7 +18,13 @@ export const maxDuration = 60
 const FEEDS: { source: string; url: string; needsKeyword: boolean }[] = [
   // Town paper: everything is local by definition.
   { source: "Lompoc Record", url: "https://lompocrecord.com/search/?f=rss&t=article&c=news/local&l=25", needsKeyword: false },
-  // Regional outlets: keep only Lompoc/Vandenberg items.
+  // Regional outlets with Lompoc-specific sections/tags — already ours, no keyword needed.
+  { source: "KSBY", url: "https://www.ksby.com/lompoc-valley.rss", needsKeyword: false },
+  { source: "KEYT", url: "https://keyt.com/tag/lompoc/feed/", needsKeyword: false },
+  { source: "KEYT", url: "https://keyt.com/category/vandenberg-space-base/feed/", needsKeyword: false },
+  { source: "Santa Maria Times", url: "https://santamariatimes.com/search/?f=rss&t=article&q=lompoc&l=25", needsKeyword: true },
+  { source: "Edhat", url: "https://www.edhat.com/tag/lompoc/feed/", needsKeyword: false },
+  // General regional feeds: keep only Lompoc/Vandenberg items.
   { source: "Noozhawk", url: "https://www.noozhawk.com/feed/", needsKeyword: true },
   { source: "SB Independent", url: "https://www.independent.com/feed/", needsKeyword: true },
 ]
@@ -35,11 +41,14 @@ export async function GET(request: Request) {
   const reports: { source: string; parsed?: number; found: number; inserted: number; error?: string }[] = []
   for (const feed of FEEDS) {
     try {
-      const res = await fetch(feed.url, {
+      const get = () => fetch(feed.url, {
         headers: { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36 LompocLocalsNewsDesk/1.0" },
         signal: AbortSignal.timeout(15_000),
         cache: "no-store",
       })
+      let res = await get()
+      // Publishers throttle bursts; one polite retry covers the 429s we've seen.
+      if (res.status === 429 || res.status >= 500) { await new Promise((r) => setTimeout(r, 2500)); res = await get() }
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const items = parseRssItems(await res.text())
       const local = feed.needsKeyword
