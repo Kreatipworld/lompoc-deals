@@ -26,7 +26,7 @@ export async function GET(request: Request) {
   if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
-  const sql = neon(process.env.DATABASE_URL!)
+  const sql = neon(process.env.DATABASE_URL!, { fetchOptions: { cache: "no-store" } })
 
   const rows = await sql`
     SELECT DISTINCT ON (u.id)

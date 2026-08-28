@@ -63,6 +63,16 @@ export async function GET(request: Request) {
   }
   const url = new URL(request.url)
   const dry = url.searchParams.get("dry") === "1"
+  if (url.searchParams.get("debug") === "1") {
+    // Which database is this function actually talking to, and what does it see?
+    const host = (() => { try { return new URL(process.env.DATABASE_URL ?? "").host } catch { return "unparseable" } })()
+    const res = (await db.execute(sql`select now() as db_now, (select count(*)::int from news_leads) as leads_total,
+      (select count(*)::int from news_leads where status = 'new' and created_at > now() - interval '6 days' and published_at > now() - interval '5 days') as leads_fresh,
+      (select count(*)::int from subscribers where confirmed_at is not null) as subscribers,
+      (select max(created_at) from news_leads) as newest_lead`)) as unknown as { rows?: Record<string, unknown>[] } | Record<string, unknown>[]
+    const stats = Array.isArray(res) ? res[0] : res.rows?.[0]
+    return NextResponse.json({ host, ...(stats ?? {}) })
+  }
   const limit = Math.min(Number(url.searchParams.get("limit") ?? MAX_STORIES), 5)
 
   const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -72,6 +82,10 @@ export async function GET(request: Request) {
     .where(and(eq(newsLeads.status, "new"), gt(newsLeads.createdAt, sql`now() - interval '6 days'`), gt(newsLeads.publishedAt, sql`now() - interval '5 days'`)))
     .orderBy(desc(newsLeads.publishedAt))
     .limit(40)
+
+  if (url.searchParams.get("debug") === "2") {
+    return NextResponse.json({ drizzleLeads: leads.length, ids: leads.map((l) => l.id), sample: leads.slice(0, 3).map((l) => ({ id: l.id, pub: l.publishedAt, title: l.title.slice(0, 60) })) })
+  }
 
   const recentPosts = await db
     .select({ title: blogPosts.title, imageUrl: blogPosts.imageUrl })

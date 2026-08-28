@@ -28,7 +28,7 @@ export type CronRunSummary = {
 
 /** Last run + 30-day run count per cron name, for the admin automation page. */
 export async function getCronRunSummary(): Promise<Record<string, CronRunSummary>> {
-  const sql = neon(process.env.DATABASE_URL!)
+  const sql = neon(process.env.DATABASE_URL!, { fetchOptions: { cache: "no-store" } })
   const [last, counts] = await Promise.all([
     sql`SELECT DISTINCT ON (name) name, created_at, ok, result
         FROM cron_runs ORDER BY name, created_at DESC`,

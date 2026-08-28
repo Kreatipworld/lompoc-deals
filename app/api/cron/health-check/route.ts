@@ -27,7 +27,7 @@ const NEON_BILLING = "https://console.neon.tech/app/orgs/org-proud-cell-62155403
 async function checkDatabase(): Promise<CheckFailure | null> {
   try {
     const { neon } = await import("@neondatabase/serverless")
-    const sql = neon(process.env.DATABASE_URL!)
+    const sql = neon(process.env.DATABASE_URL!, { fetchOptions: { cache: "no-store" } })
     await Promise.race([
       sql`select 1`,
       new Promise((_, rej) => setTimeout(() => rej(new Error("timed out after 10s")), 10_000)),
