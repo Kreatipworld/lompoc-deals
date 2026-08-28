@@ -1,0 +1,61 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#650C75; --gold:#EFC618; --green:#0B992F; --cream:#FAF5EC; --ink:#241629; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#333; font-family:'Plus Jakarta Sans',sans-serif; }
+  .card { position:relative; overflow:hidden; margin:20px auto; }
+  .ig { width:1080px; height:1350px; }
+  .tt { width:1080px; height:1920px; }
+  .grain::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:.07; z-index:50;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); }
+  .serif { font-family:Georgia,serif; font-style:italic; }
+  .photo { position:absolute; inset:0; background-size:cover; background-position:center 40%; }
+  .scrim { position:absolute; inset:0; background:linear-gradient(to top, rgba(36,22,41,.95) 0%, rgba(36,22,41,.62) 42%, rgba(36,22,41,.12) 100%); }
+  .kicker { display:inline-block; background:var(--gold); color:var(--ink); font-weight:800; font-size:34px; letter-spacing:3px; padding:14px 28px; border-radius:10px; }
+  .url { color:var(--gold); font-weight:800; font-size:44px; letter-spacing:1px; }
+  .logo { position:absolute; top:64px; left:70px; background:rgba(250,245,236,.96); border-radius:22px; padding:16px 22px; }
+  .logo img { height:96px; display:block; }
+  .credit { position:absolute; right:70px; color:rgba(250,245,236,.7); font-size:24px; font-weight:600; letter-spacing:1px; }
+  .fact { display:flex; gap:22px; align-items:center; color:#fff; font-weight:700; font-size:46px; line-height:1.2; padding:16px 0; }
+  .fact .ic { color:var(--gold); font-size:44px; width:64px; text-align:center; }
+</style></head><body>
+
+<!-- ROCK 12 COCKTAIL CLASS — feed 4:5 -->
+<div class="card ig grain" id="rock12-class-ig">
+  <div class="photo" style="background-image:url('https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/rock-12-distillery/tasting-room-bar-LM89HXT8HL8abp4A6mHsKH5ephkYxn.jpg');"></div>
+  <div class="scrim"></div>
+  <div class="logo"><img src="https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/rock-12-distillery-OjcfGs6zspSIvtOTNTz25113RudpF9.png" alt="Rock 12 Distillery"></div>
+  <div class="credit" style="top:84px;">Photo: Rock 12 Distillery</div>
+  <div style="position:absolute; left:70px; right:70px; bottom:210px;">
+    <span class="kicker">TONIGHT IN LOMPOC</span>
+    <div style="color:#fff; font-weight:800; font-size:108px; line-height:0.98; margin-top:30px;">Cocktail class<br>at Rock 12.</div>
+    <div class="serif" style="color:var(--gold); font-size:46px; margin-top:22px;">learn the basics, pour a few, take the recipes home</div>
+    <div style="margin-top:40px; border-top:3px solid rgba(250,245,236,.18); padding-top:14px;">
+      <div class="fact"><div class="ic">🕕</div><div>Friday · 6:00 PM</div></div>
+      <div class="fact"><div class="ic">📍</div><div>6605 Highway 246 · Santa Rita Hills</div></div>
+      <div class="fact"><div class="ic">🍸</div><div>Supplies provided — just bring friends</div></div>
+    </div>
+  </div>
+  <div style="position:absolute; left:70px; bottom:80px;"><span class="url">lompoclocals.com/events</span></div>
+</div>
+
+<!-- ROCK 12 COCKTAIL CLASS — story 9:16 (link sticker goes over the URL line) -->
+<div class="card tt grain" id="rock12-class-tt">
+  <div class="photo" style="background-image:url('https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/rock-12-distillery/tasting-room-bar-LM89HXT8HL8abp4A6mHsKH5ephkYxn.jpg');"></div>
+  <div class="scrim"></div>
+  <div class="logo" style="top:220px;"><img src="https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/rock-12-distillery-OjcfGs6zspSIvtOTNTz25113RudpF9.png" alt="Rock 12 Distillery"></div>
+  <div class="credit" style="top:240px;">Photo: Rock 12 Distillery</div>
+  <div style="position:absolute; left:70px; right:70px; bottom:420px;">
+    <span class="kicker">TONIGHT IN LOMPOC</span>
+    <div style="color:#fff; font-weight:800; font-size:122px; line-height:0.98; margin-top:32px;">Cocktail class<br>at Rock 12.</div>
+    <div class="serif" style="color:var(--gold); font-size:50px; margin-top:24px;">learn the basics, pour a few, take the recipes home</div>
+    <div style="margin-top:44px; border-top:3px solid rgba(250,245,236,.18); padding-top:16px;">
+      <div class="fact"><div class="ic">🕕</div><div>Friday · 6:00 PM</div></div>
+      <div class="fact"><div class="ic">📍</div><div>6605 Highway 246 · Santa Rita Hills</div></div>
+      <div class="fact"><div class="ic">🍸</div><div>Supplies provided — just bring friends</div></div>
+    </div>
+  </div>
+  <div style="position:absolute; left:70px; bottom:250px;"><span class="url">lompoclocals.com/events</span></div>
+</div>
+</body></html>
