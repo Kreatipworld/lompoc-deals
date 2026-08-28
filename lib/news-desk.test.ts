@@ -8,6 +8,9 @@ assert.equal(isLompocLead({ title: "Day of Hope Car Show showcases cars", summar
 assert.equal(isLompocLead({ title: "Santa Maria council approves budget", summary: "Lompoc mentioned once" }), false) // elsewhere in title
 assert.equal(isLompocLead({ title: "Chinese chicken salad: a light summer dinner", summary: "Lompoc recipe" }), false) // recipe
 assert.equal(isLompocLead({ title: "Vandenberg breaks ground on Sentinel facility", summary: null }), true)
+assert.equal(isLompocLead({ title: "Bill Macfadyen: Highway 1 Big-Rig Collision That Killed Lompoc Man Is a Fatal Attraction", summary: null }), false) // columnist + tragedy
+assert.equal(isLompocLead({ title: "Ashlee Buzzard appears for another court hearing in child murder case", summary: "Lompoc" }), false) // crime
+assert.equal(isLompocLead({ title: "Lompoc PD hosting community pickleball tournament Oct. 11-12", summary: null }), true) // positive civic
 assert.equal(isLompocLead({ title: "Santa Barbara, Dos Pueblos girls golf open season at Lompoc course", summary: null }), false) // their teams, our course
 
 // extractor: JSON-LD body, paywall boilerplate stripped

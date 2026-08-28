@@ -10,11 +10,18 @@ export type Lead = { id: number; title: string; summary: string | null; url: str
 const LOCAL = /\b(lompoc|vandenberg|vsfb|lompoc valley|cabrillo high|lompoc high|allan hancock|la purisima|jalama|mission hills|vandenberg village|surf beach)\b/i
 const ELSEWHERE = /\b(santa maria|orcutt|santa ynez|solvang|buellton|los olivos|los alamos|goleta|carpinteria|isla vista|montecito|santa barbara(?! county)|dos pueblos|san marcos|pioneer valley|righetti|st\.? joseph|san luis obispo|paso robles|guadalupe|nipomo|arroyo grande)\b/i
 const NOT_NEWS = /\b(recipe|obituar|pet of the week|horoscope|crossword|letters? to the editor|opinion|commentary|column)\b/i
+// Columnist bylines ("Bill Macfadyen: …") are opinion, not reporting.
+const BYLINE = /^[A-Z][a-z]+(?: [A-Z][a-z]+){1,2}:\s/
+// The hub brings neighbors what's good and useful about Lompoc. Crime, crashes
+// and court news have their outlets; they are not ours.
+const TRAGEDY = /\b(killed|dies|died|dead|death|fatal|murder|homicide|stabbing|shooting|shot|crash|collision|arrest(?:ed)?|court hearing|sentenced|pleads|guilty|fraud|lawsuit|sues?|overdose|assault|robbery|burglary|dui|manhunt)\b/i
 
 /** Lompoc/Vandenberg only — a story that only mentions us in passing is not ours. */
 export function isLompocLead(lead: Pick<Lead, "title" | "summary">): boolean {
   const t = `${lead.title} ${lead.summary ?? ""}`
   if (NOT_NEWS.test(t)) return false
+  if (BYLINE.test(lead.title)) return false
+  if (TRAGEDY.test(lead.title)) return false
   if (!LOCAL.test(t)) return false
   // Another town in the headline means the story is theirs — even when our
   // course, our police, or our venue is the supporting detail.
