@@ -11,6 +11,9 @@ import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 import { NEWS_TOPICS, topicBySlug, topicTag, deriveTopic } from "@/lib/news-topics"
 
+// Stories publish every two days from the news desk; never serve a build-time snapshot.
+export const revalidate = 600
+
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 const PAGE_SIZE = 12
 // News lives in the blog engine under one reserved category — same table, same

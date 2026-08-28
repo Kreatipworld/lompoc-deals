@@ -35,6 +35,10 @@
     {
       "path": "/api/cron/sync-news-leads",
       "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/news-desk",
+      "schedule": "0 15 */2 * *"
     }
   ]
 }
