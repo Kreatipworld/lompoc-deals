@@ -10,7 +10,6 @@
     <div id="a3-bloom" style="position: absolute; top: -10%; right: -260px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(11,153,47,0.28), rgba(11,153,47,0) 62%)"></div>
     <div style="position: absolute; left: 84px; right: 84px; top: 11.5%; z-index: 20">
       <div style="padding-bottom: 14px"><div id="a3-h" style="color: #fff; font-weight: 800; font-size: 84px; line-height: 1.0; letter-spacing: -2px; will-change: transform">Every one of them gets a page.</div></div>
-      <div id="a3-free" style="margin-top: 22px; display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 56px; letter-spacing: 2px; padding: 20px 36px; border-radius: 14px">FREE.</div>
     </div>
     <!-- Sweet Baking Co.'s page, assembling itself — real name, photos, hours, address -->
     <div id="a3-phone" style="position: absolute; left: 130px; top: 33%; width: 820px; height: 1200px; border-radius: 48px; background: #0f0a12; padding: 14px; box-shadow: 0 50px 120px rgba(0,0,0,0.5); z-index: 10; will-change: transform">
@@ -48,7 +47,6 @@
         tl.fromTo("#a3-name", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.45 }, "page+=1.0");
         tl.fromTo("#a3-cat", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, "page+=1.2");
         tl.fromTo(".a3-chip", { autoAlpha: 0, y: 18, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.14, ease: "back.out(1.5)" }, "page+=1.35");
-        tl.fromTo("#a3-free", { autoAlpha: 0, scale: 0.8, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.5)" }, "page+=2.05");
         window.__timelines["a3-page"] = tl;
       })();
     </script>
