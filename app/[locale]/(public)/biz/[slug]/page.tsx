@@ -63,10 +63,10 @@ export async function generateMetadata({
     getTranslations("hoursUi"),
   ])
   if (!data) {
-    // A slug with no business behind it still renders (a loading.tsx boundary upstream means the
-    // response has already streamed with a 200, so notFound() cannot change the status). Say
-    // noindex here, at the source, rather than relying on the not-found boundary's tag winning a
-    // conflict — without this the page emitted "index, follow" AND "noindex" together.
+    // notFound() below returns a real 404 — as long as no loading.tsx sits above this route (a
+    // group-level one streamed a 200 shell first and silently turned every missing business into
+    // a soft 404 until 2026-08-29). Keep the noindex here too, at the source, so the page never
+    // emits "index, follow" AND "noindex" together.
     return { title: t("metaNotFound"), robots: { index: false, follow: true } }
   }
   const { name, description, about } = data.business
