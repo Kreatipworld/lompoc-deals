@@ -244,6 +244,32 @@ try {
   fail(`owner covers: ${e.message}`)
 }
 
+console.log("\nMissing pages answer 404 — a loading.tsx above a notFound() route turns these into 200")
+for (const p of ["/biz/no-such-business-xyz", "/es/biz/no-such-business-xyz", "/category/bogus-xyz", "/events/999999", "/es/activities/bogus-xyz", "/es/blog/bogus-xyz"]) {
+  try {
+    const res = await fetch(`${SITE}${p}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "manual", cache: "no-store" })
+    res.status === 404 ? pass(`${p} → 404`) : fail(`${p} → ${res.status} (soft 404 — Google will index the mistyped URL)`)
+  } catch (e) { fail(`${p} → ${e.message}`) }
+}
+
+console.log("\nSpanish — /es must read Spanish, not English wearing a prefix")
+try {
+  const home = await fetch(`${SITE}/es`, { cache: "no-store" }).then((r) => r.text())
+  home.includes('og:locale" content="es_US"') ? pass("/es og:locale es_US") : fail("/es og:locale is not es_US")
+  const langEs = /<html[^>]*lang="es"/.test(home)
+  langEs ? pass("/es html lang=es") : fail("/es html lang is not es")
+  const biz = await fetch(`${SITE}/es/biz/lompoc-tires`, { cache: "no-store" }).then((r) => r.text())
+  const bizText = biz.replace(/<[^>]*>/g, " ")
+  const hoursEs = /\b(Lun|Cerrado)\b/.test(bizText) && !/\bMon \d/.test(bizText)
+  hoursEs ? pass("/es/biz hours read Lun…Dom / Cerrado") : fail("/es/biz hours still English (Mon…Sun / Closed)")
+  const deals = await fetch(`${SITE}/es/deals`, { cache: "no-store" }).then((r) => r.text()).then((h) => h.replace(/<[^>]*>/g, " "))
+  const expiryEn = /Vence en \d+ (month|day)s?\b/.test(deals)
+  expiryEn ? fail("/es/deals expiry uses English units (Vence en 2 months)") : pass("/es/deals expiry is Spanish")
+  const sitemap = await fetch(`${SITE}/sitemap.xml`, { cache: "no-store" }).then((r) => r.text())
+  const esAlt = (sitemap.match(/hreflang="es"/g) || []).length
+  esAlt > 50 ? pass(`sitemap carries ${esAlt} es alternates`) : fail(`sitemap has only ${esAlt} es alternates`)
+} catch (e) { fail(`spanish: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`
