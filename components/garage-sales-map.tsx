@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
+import { useLocale } from "next-intl"
 import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
 import { Link } from "@/i18n/navigation"
 import { MapPin, Clock } from "lucide-react"
@@ -52,17 +53,19 @@ function GaragePin({ selected }: { selected?: boolean }) {
   )
 }
 
-function formatDateRange(startDate: string, endDate: string) {
+function formatDateRange(startDate: string, endDate: string, intl: string) {
   const start = new Date(startDate)
   const end = new Date(endDate)
   const opts: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" }
   if (start.toDateString() === end.toDateString()) {
-    return start.toLocaleDateString("en-US", { ...opts, weekday: "short" })
+    return start.toLocaleDateString(intl, { ...opts, weekday: "short" })
   }
-  return `${start.toLocaleDateString("en-US", opts)} – ${end.toLocaleDateString("en-US", opts)}`
+  return `${start.toLocaleDateString(intl, opts)} – ${end.toLocaleDateString(intl, opts)}`
 }
 
 export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
+  const locale = useLocale()
+  const intl = locale === "es" ? "es-US" : "en-US"
   const [selected, setSelected] = useState<GarageSaleLite | null>(null)
 
   const handleMapClick = useCallback(() => {
@@ -121,7 +124,7 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
             </div>
             <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
               <Clock className="h-3 w-3 shrink-0" />
-              <span>{formatDateRange(selected.startDate, selected.endDate)}</span>
+              <span>{formatDateRange(selected.startDate, selected.endDate, intl)}</span>
               {selected.startTime && (
                 <span>· {selected.startTime}{selected.endTime ? `–${selected.endTime}` : ""}</span>
               )}

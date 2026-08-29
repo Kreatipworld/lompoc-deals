@@ -1,19 +1,23 @@
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
+import { es as dateEs } from "date-fns/locale"
 import { ArrowRight } from "lucide-react"
 import type { BlogPostCard } from "@/lib/queries"
 
 interface BlogRelatedLinksProps {
   posts: BlogPostCard[]
   title?: string
+  /** Page locale — drives the date format ("Aug 3, 2026" vs "3 ago 2026"). */
+  locale?: string
 }
 
 /**
  * Internal linking component — renders related blog post links.
  * Use in blog post pages to build topical clusters and reduce bounce rate.
  */
-export function BlogRelatedLinks({ posts, title = "Related Articles" }: BlogRelatedLinksProps) {
+export function BlogRelatedLinks({ posts, title = "Related Articles", locale = "en" }: BlogRelatedLinksProps) {
   if (posts.length === 0) return null
+  const es = locale === "es"
 
   return (
     <aside className="mt-10 pt-8 border-t border-gray-100">
@@ -31,7 +35,7 @@ export function BlogRelatedLinks({ posts, title = "Related Articles" }: BlogRela
                 </p>
                 {post.publishedAt && (
                   <p className="text-xs text-gray-400 mt-0.5">
-                    {format(post.publishedAt, "MMM d, yyyy")}
+                    {format(post.publishedAt, es ? "d MMM yyyy" : "MMM d, yyyy", { locale: es ? dateEs : undefined })}
                   </p>
                 )}
               </div>

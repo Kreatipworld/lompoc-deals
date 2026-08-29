@@ -12,6 +12,8 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { formatDistanceToNowStrict, isPast, differenceInHours } from "date-fns"
+import { es } from "date-fns/locale"
+import { categoryLabel } from "@/lib/category-label"
 import { Button } from "@/components/ui/button"
 import { adminSoftDeleteDealAction } from "@/lib/admin-actions"
 import { toggleFavoriteAction } from "@/lib/favorite-actions"
@@ -21,7 +23,7 @@ import type { Viewer } from "@/lib/viewer"
 import { SafeImage } from "@/components/safe-image"
 import { FeaturedBadge } from "@/components/featured-badge"
 import { TiltCard } from "@/components/motion/tilt-card"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 type TypeKey = DealCardData["type"]
 const TYPE_ICON: Record<TypeKey, LucideIcon> = {
@@ -57,7 +59,13 @@ export async function DealCard({
   variant?: "default" | "tripadvisor"
   staggerIndex?: number
 }) {
-  const t = await getTranslations("dealCard")
+  const [t, tc, locale] = await Promise.all([
+    getTranslations("dealCard"),
+    getTranslations("categoryLabels"),
+    getLocale(),
+  ])
+  const dateLocale = locale === "es" ? es : undefined
+  const catLabel = categoryLabel(tc, deal.business.categorySlug, deal.business.categoryName)
   const tf = await getTranslations("featured")
   const isFavorited = viewer.favoritedDealIds.has(deal.id)
   const expired = isPast(deal.expiresAt)
@@ -170,7 +178,7 @@ export async function DealCard({
               className="mb-1.5 inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary hover:bg-primary/20 [transition:background-color_150ms_ease]"
             >
               <TypeIcon className="h-2.5 w-2.5" />
-              {deal.business.categoryName ?? typeLabel}
+              {catLabel || typeLabel}
             </Link>
           ) : (
             <span className="mb-1.5 inline-flex w-fit items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
@@ -221,7 +229,7 @@ export async function DealCard({
           {/* Expiry */}
           <p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
             <Clock className="h-3 w-3" />
-            {expired ? t("expired") : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt) })}
+            {expired ? t("expired") : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt, { locale: dateLocale }) })}
           </p>
 
           {/* Terms hint */}
@@ -413,14 +421,14 @@ export async function DealCard({
             <Clock className="h-3 w-3" />
             {expired
               ? t("expired")
-              : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt) })}
+              : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt, { locale: dateLocale }) })}
           </span>
           {deal.business.categorySlug && (
             <Link
               href={`/category/${deal.business.categorySlug}`}
               className="hover:text-foreground hover:underline"
             >
-              {deal.business.categoryName}
+              {catLabel}
             </Link>
           )}
         </div>

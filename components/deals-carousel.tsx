@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation"
 import { ArrowRight, Tag, Sparkles, Megaphone } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import type { DealCardData } from "@/lib/queries"
+import { getTranslations } from "next-intl/server"
 
 // 6 deterministic gradient palettes — same set as DealCard for consistency
 const GRADIENTS = [
@@ -65,7 +66,7 @@ function DealsCarouselCard({ deal, index }: { deal: DealCardData; index: number 
   )
 }
 
-export function DealsCarousel({
+export async function DealsCarousel({
   deals,
   heading = "Featured Deals",
   sub = "Today's best offers from Lompoc businesses",
@@ -75,6 +76,7 @@ export function DealsCarousel({
   sub?: string
 }) {
   if (deals.length === 0) return null
+  const tu = await getTranslations("hoursUi")
 
   return (
     <section className="border-t bg-accent/10 py-10">
@@ -90,7 +92,7 @@ export function DealsCarousel({
             href="/deals"
             className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
           >
-            See all deals
+            {tu("seeAllDeals")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -109,7 +111,7 @@ export function DealsCarousel({
             href="/deals"
             className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
           >
-            See all deals
+            {tu("seeAllDeals")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

@@ -29,6 +29,7 @@ const NAV_ITEMS = [
 
 export function BottomNav() {
   const t = useTranslations("bottomNav")
+  const tu = useTranslations("hoursUi")
   const pathname = usePathname()
   const [hidden, setHidden] = useState(false)
   const lastScrollY = useRef(0)
@@ -60,7 +61,7 @@ export function BottomNav() {
 
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label={tu("mainNav")}
       className={cn(
         "fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur-sm sm:hidden",
         "transition-transform duration-300 ease-in-out",

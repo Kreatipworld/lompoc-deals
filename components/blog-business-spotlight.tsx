@@ -1,6 +1,8 @@
 import { Link } from "@/i18n/navigation"
 import { Building2, Tag, ArrowRight, Store } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { SafeImage } from "@/components/safe-image"
+import { categoryLabel } from "@/lib/category-label"
 import type { BlogBusinessCard } from "@/lib/queries"
 
 interface BlogBusinessSpotlightProps {
@@ -8,19 +10,27 @@ interface BlogBusinessSpotlightProps {
   title?: string
   supportLocalText?: string
   browseAllText?: string
+  /** Plural-safe, translated "{count} active deals" line; the page owns the wording. */
+  activeDealsLabel?: (count: number) => string
+}
+
+function defaultActiveDealsLabel(count: number): string {
+  return `${count} active deal${count !== 1 ? "s" : ""}`
 }
 
 /**
  * Shows platform businesses relevant to the blog post's category.
  * Renders as a sidebar-style card list below article content.
  */
-export function BlogBusinessSpotlight({
+export async function BlogBusinessSpotlight({
   businesses,
   title = "Local Businesses on Lompoc Locals",
   supportLocalText = "Support local — these businesses are listed on Lompoc Locals.",
   browseAllText = "Browse all Lompoc businesses",
+  activeDealsLabel = defaultActiveDealsLabel,
 }: BlogBusinessSpotlightProps) {
   if (businesses.length === 0) return null
+  const tCat = await getTranslations("categoryLabels")
 
   return (
     <aside className="mt-10 pt-8 border-t border-gray-100">
@@ -61,7 +71,7 @@ export function BlogBusinessSpotlight({
                 {biz.categoryName && (
                   <span className="inline-flex items-center gap-0.5 text-xs text-primary mt-0.5">
                     <Tag className="w-3 h-3" />
-                    {biz.categoryName}
+                    {categoryLabel(tCat, biz.categorySlug, biz.categoryName)}
                   </span>
                 )}
                 {biz.description && (
@@ -71,8 +81,7 @@ export function BlogBusinessSpotlight({
                 )}
                 {biz.activeDealCount > 0 && (
                   <p className="text-xs font-medium text-primary mt-1">
-                    {biz.activeDealCount} active deal{biz.activeDealCount !== 1 ? "s" : ""}
-                    {/* Note: activeDealCount text intentionally kept as-is; parent can pass translated text if needed */}
+                    {activeDealsLabel(biz.activeDealCount)}
                   </p>
                 )}
               </div>

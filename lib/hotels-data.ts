@@ -9,19 +9,55 @@ export type Hotel = {
   name: string
   category: "budget" | "mid-range" | "boutique"
   tagline: string
+  taglineEs: string // Spanish tagline for /es (description stays English for now)
   description: string
   address: string
   avenue?: string // Street/avenue context for tourists
   neighborhood?: string // Area description
   phone: string
   website: string | null
-  amenities: string[]
+  amenities: AmenityKey[] // stable keys — render through amenityLabel()
   priceRange: "$" | "$$" | "$$$"
   rating: number // Google rating, out of 5
   coverUrl: string | null
   photos: string[] // gallery photos (photo #1 == coverUrl)
   lat: number
   lng: number
+}
+
+// Amenities are stable keys so the filter grid can match on them and every
+// surface renders the reader's language via amenityLabel().
+export const AMENITY_LABELS = {
+  wifi: { en: "Free Wi-Fi", es: "Wi-Fi gratis" },
+  breakfast: { en: "Free Breakfast", es: "Desayuno gratis" },
+  hotBreakfast: { en: "Hot Breakfast", es: "Desayuno caliente" },
+  continentalBreakfast: { en: "Continental Breakfast", es: "Desayuno continental" },
+  eveningReception: { en: "Evening Reception", es: "Recepción vespertina" },
+  indoorPool: { en: "Indoor Pool", es: "Alberca techada" },
+  outdoorPool: { en: "Outdoor Pool", es: "Alberca al aire libre" },
+  fitness: { en: "Fitness Center", es: "Gimnasio" },
+  parking: { en: "Free Parking", es: "Estacionamiento gratis" },
+  restaurant: { en: "On-Site Restaurant", es: "Restaurante en el hotel" },
+  frontDesk24: { en: "24-hr Front Desk", es: "Recepción 24 horas" },
+  businessCenter: { en: "Business Center", es: "Centro de negocios" },
+  petFriendly: { en: "Pet-Friendly", es: "Acepta mascotas" },
+  microwaveFridge: { en: "Microwave & Fridge in rooms", es: "Microondas y refrigerador en la habitación" },
+} as const
+
+export type AmenityKey = keyof typeof AMENITY_LABELS
+
+export function amenityLabel(key: AmenityKey, locale: string): string {
+  return locale === "es" ? AMENITY_LABELS[key].es : AMENITY_LABELS[key].en
+}
+
+export function hotelTagline(hotel: Pick<Hotel, "tagline" | "taglineEs">, locale: string): string {
+  return locale === "es" ? hotel.taglineEs : hotel.tagline
+}
+
+/** The avenue line is a street name plus an English parenthetical; only the parenthetical translates. */
+export function hotelAvenue(hotel: Pick<Hotel, "avenue">, locale: string): string | undefined {
+  if (!hotel.avenue || locale !== "es") return hotel.avenue
+  return hotel.avenue.replace("(Hotel Corridor)", "(corredor hotelero)")
 }
 
 const BLOB = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/hotels"
@@ -38,6 +74,7 @@ export const HOTELS: Hotel[] = [
     name: "Embassy Suites by Hilton Lompoc",
     category: "boutique",
     tagline: "All-suite stays with complimentary reception",
+    taglineEs: "Suites completas con recepción de cortesía",
     description:
       "Hilton's all-suite Embassy brand in Lompoc. Every room is a two-room suite, and guests enjoy the complimentary evening reception with drinks and snacks — perfect after a day of wine tasting in the Santa Rita Hills.",
     address: "1117 N H St, Lompoc, CA 93436",
@@ -45,7 +82,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "North Lompoc — near major dining and shopping",
     phone: "(805) 735-8311",
     website: "https://www.hilton.com/en/hotels/lomcaes-embassy-suites-lompoc-central-coast/",
-    amenities: ["Free Wi-Fi", "Free Breakfast", "Evening Reception", "Indoor Pool", "Fitness Center", "Free Parking"],
+    amenities: ["wifi", "breakfast", "eveningReception", "indoorPool", "fitness", "parking"],
     priceRange: "$$$",
     rating: 4.0,
     coverUrl: `${BLOB}/v2-embassy-suites-lompoc.jpeg`,
@@ -58,6 +95,7 @@ export const HOTELS: Hotel[] = [
     name: "Hilton Garden Inn Lompoc",
     category: "mid-range",
     tagline: "Modern comfort in the heart of Lompoc",
+    taglineEs: "Comodidad moderna en el corazón de Lompoc",
     description:
       "A contemporary Hilton Garden Inn with an on-site restaurant, outdoor pool, and well-appointed rooms. Ideal for business travelers visiting Vandenberg Space Force Base and leisure guests exploring the Central Coast wine region.",
     address: "1201 N H St, Lompoc, CA 93436",
@@ -65,7 +103,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "North Lompoc — walkable to restaurants and shops",
     phone: "(805) 735-1880",
     website: "https://www.hilton.com/en/hotels/lpcnhgi-hilton-garden-inn-lompoc/",
-    amenities: ["Free Wi-Fi", "On-Site Restaurant", "Outdoor Pool", "Fitness Center", "Free Parking", "24-hr Front Desk"],
+    amenities: ["wifi", "restaurant", "outdoorPool", "fitness", "parking", "frontDesk24"],
     priceRange: "$$$",
     rating: 4.5,
     coverUrl: `${BLOB}/v2-hilton-garden-inn-lompoc.jpeg`,
@@ -80,6 +118,7 @@ export const HOTELS: Hotel[] = [
     name: "Holiday Inn Express Lompoc",
     category: "mid-range",
     tagline: "Smart stays in the Lompoc Valley",
+    taglineEs: "Estancias prácticas en el Valle de Lompoc",
     description:
       "Modern comfort in the heart of Lompoc. Spacious rooms, a complimentary hot breakfast, and easy access to wine tasting rooms and the historic downtown make this a top pick for families and business travelers alike.",
     address: "1417 N H St, Lompoc, CA 93436",
@@ -87,7 +126,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "North Lompoc — walkable to restaurants, 3 blocks from Ocean Ave",
     phone: "(805) 736-2391",
     website: "https://www.ihg.com/holidayinnexpress/hotels/us/en/lompoc/lpcca/hoteldetail",
-    amenities: ["Free Wi-Fi", "Hot Breakfast", "Indoor Pool", "Fitness Center", "Business Center", "Free Parking"],
+    amenities: ["wifi", "hotBreakfast", "indoorPool", "fitness", "businessCenter", "parking"],
     priceRange: "$$",
     rating: 4.3,
     coverUrl: `${BLOB}/v2-holiday-inn-express-lompoc.jpeg`,
@@ -100,6 +139,7 @@ export const HOTELS: Hotel[] = [
     name: "O'Cairns Inn & Suites",
     category: "mid-range",
     tagline: "Lompoc's highest-rated stay, family-run",
+    taglineEs: "El hospedaje mejor calificado de Lompoc, de familia",
     description:
       "A beloved locally owned inn on East Ocean Avenue and the highest-rated lodging in Lompoc. Personalized service sets O'Cairns apart — a great base for exploring Old Town murals, the Wine Ghetto, and nearby flower fields.",
     address: "940 E Ocean Ave, Lompoc, CA 93436",
@@ -107,7 +147,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "Central Lompoc — on the main commercial boulevard",
     phone: "(805) 735-7731",
     website: "https://www.ocairnsinnandsuites.com/",
-    amenities: ["Free Wi-Fi", "Free Parking", "Continental Breakfast"],
+    amenities: ["wifi", "parking", "continentalBreakfast"],
     priceRange: "$$",
     rating: 4.6,
     coverUrl: `${BLOB}/v2-ocairns-inn-lompoc.jpeg`,
@@ -120,6 +160,7 @@ export const HOTELS: Hotel[] = [
     name: "Inn at Highway 1",
     category: "boutique",
     tagline: "Independent boutique rooms on the hotel corridor",
+    taglineEs: "Habitaciones boutique independientes en el corredor hotelero",
     description:
       "An independently run inn with a boutique feel, directly on the N H Street hotel corridor across from the big chains. Well-reviewed rooms and a personal touch — a solid alternative for travelers who prefer independents.",
     address: "1200 N H St, Lompoc, CA 93436",
@@ -127,7 +168,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "North Lompoc — near major dining and shopping",
     phone: "(805) 735-3737",
     website: "http://www.innathighway1.com/",
-    amenities: ["Free Wi-Fi", "Free Parking"],
+    amenities: ["wifi", "parking"],
     priceRange: "$$",
     rating: 4.1,
     coverUrl: `${BLOB}/v2-inn-at-highway-1.jpeg`,
@@ -140,6 +181,7 @@ export const HOTELS: Hotel[] = [
     name: "Lompoc Valley Inn & Suites",
     category: "mid-range",
     tagline: "Value rooms at the north end of the corridor",
+    taglineEs: "Habitaciones económicas al norte del corredor",
     description:
       "A straightforward value hotel at the north end of the H Street hotel corridor, minutes from the Vandenberg gate. Practical rooms and suites for families and crews staying more than a night.",
     address: "1621 N H St, Lompoc, CA 93436",
@@ -147,7 +189,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "North Lompoc — 10 min to Vandenberg Gate",
     phone: "(805) 735-8555",
     website: "http://www.lompocvalleyinnandsuites.com/",
-    amenities: ["Free Wi-Fi", "Free Parking"],
+    amenities: ["wifi", "parking"],
     priceRange: "$$",
     rating: 3.7,
     coverUrl: `${BLOB}/v2-lompoc-valley-inn-suites.jpeg`,
@@ -162,6 +204,7 @@ export const HOTELS: Hotel[] = [
     name: "Budget Inn Lompoc",
     category: "budget",
     tagline: "Family-run and well-reviewed for the price",
+    taglineEs: "Familiar y bien calificado para su precio",
     description:
       "A small, family-run motel on H Street that consistently outscores bigger budget chains in guest ratings. Clean rooms, friendly owners, and honest prices a short drive from downtown and the flower fields.",
     address: "817 N H St, Lompoc, CA 93436",
@@ -169,7 +212,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "Central Lompoc — a few blocks north of Old Town",
     phone: "(805) 736-1241",
     website: "https://www.thebudgetinnlompoc.com/",
-    amenities: ["Free Wi-Fi", "Free Parking"],
+    amenities: ["wifi", "parking"],
     priceRange: "$",
     rating: 3.9,
     coverUrl: `${BLOB}/v2-budget-inn-lompoc.jpeg`,
@@ -182,6 +225,7 @@ export const HOTELS: Hotel[] = [
     name: "Village Inn",
     category: "budget",
     tagline: "Quiet stays in Vandenberg Village",
+    taglineEs: "Estancias tranquilas en Vandenberg Village",
     description:
       "A well-rated independent inn up in Vandenberg Village, about ten minutes north of downtown Lompoc and the closest lodging to the Vandenberg Space Force Base area — popular with launch watchers and base visitors.",
     address: "3955 Apollo Way, Lompoc, CA 93436",
@@ -189,7 +233,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "Vandenberg Village — 10 min north of downtown",
     phone: "(805) 972-0999",
     website: "https://www.villageinnca.com/",
-    amenities: ["Free Wi-Fi", "Free Parking"],
+    amenities: ["wifi", "parking"],
     priceRange: "$",
     rating: 4.2,
     coverUrl: `${BLOB}/v2-village-inn-lompoc.jpeg`,
@@ -202,6 +246,7 @@ export const HOTELS: Hotel[] = [
     name: "Motel 6 Lompoc",
     category: "budget",
     tagline: "Affordable, pet-friendly — we'll leave the light on",
+    taglineEs: "Económico y acepta mascotas — te dejamos la luz encendida",
     description:
       "America's most recognized budget chain. Motel 6 Lompoc is clean, reliable, and welcoming to pets. Free parking and easy highway access make it the go-to for road-trippers and budget-conscious travelers.",
     address: "1521 N H St, Lompoc, CA 93436",
@@ -209,7 +254,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "North Lompoc — near the highway",
     phone: "(805) 362-4139",
     website: "https://www.motel6.com/en/home/motels.ca.lompoc.html",
-    amenities: ["Free Wi-Fi", "Free Parking", "Pet-Friendly", "Outdoor Pool"],
+    amenities: ["wifi", "parking", "petFriendly", "outdoorPool"],
     priceRange: "$",
     rating: 3.5,
     coverUrl: `${BLOB}/v2-motel-6-lompoc.jpeg`,
@@ -222,6 +267,7 @@ export const HOTELS: Hotel[] = [
     name: "Red Roof Inn Lompoc",
     category: "budget",
     tagline: "No-frills comfort, free parking, pet-friendly",
+    taglineEs: "Comodidad sin lujos, estacionamiento gratis, acepta mascotas",
     description:
       "Red Roof Inn delivers dependable, budget-friendly stays with free parking and a pet-friendly policy. On East Ocean Avenue close to central Lompoc — a solid base for Vandenberg visitors who want straightforward accommodations.",
     address: "1020 E Ocean Ave, Lompoc, CA 93436",
@@ -229,7 +275,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "Central Lompoc — on the main commercial boulevard",
     phone: "(805) 735-6444",
     website: "https://www.redroof.com/property/ca/lompoc/RRI774",
-    amenities: ["Free Wi-Fi", "Free Parking", "Pet-Friendly"],
+    amenities: ["wifi", "parking", "petFriendly"],
     priceRange: "$",
     rating: 3.2,
     coverUrl: `${BLOB}/v2-red-roof-inn-lompoc.jpeg`,
@@ -242,6 +288,7 @@ export const HOTELS: Hotel[] = [
     name: "Lotus of Lompoc",
     category: "budget",
     tagline: "Independent inn on East Ocean Avenue",
+    taglineEs: "Hospedaje independiente en East Ocean Avenue",
     description:
       "A small, independently operated inn on the east side of town. The Lotus of Lompoc offers simple rooms with personalized, attentive service that chain hotels can't match — a practical pick for budget travelers.",
     address: "1415 E Ocean Ave, Lompoc, CA 93436",
@@ -249,7 +296,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "East Lompoc — on the main commercial boulevard",
     phone: "(805) 736-6514",
     website: "http://www.lotusoflompocagreathospitalityinn.us/",
-    amenities: ["Free Wi-Fi", "Free Parking", "Microwave & Fridge in rooms"],
+    amenities: ["wifi", "parking", "microwaveFridge"],
     priceRange: "$",
     rating: 3.4,
     coverUrl: `${BLOB}/v2-lotus-of-lompoc.jpeg`,
@@ -262,6 +309,7 @@ export const HOTELS: Hotel[] = [
     name: "Inn of Lompoc",
     category: "budget",
     tagline: "Budget-friendly stays with outdoor pool",
+    taglineEs: "Estancias económicas con alberca al aire libre",
     description:
       "A classic roadside inn offering clean, affordable accommodations with an outdoor pool, right on the H Street corridor. A practical choice for travelers passing through or staying near Vandenberg.",
     address: "1122 N H St, Lompoc, CA 93436",
@@ -269,7 +317,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "North Lompoc — near major dining and shopping",
     phone: "(805) 735-7744",
     website: "https://www.innlompoc.com/",
-    amenities: ["Free Wi-Fi", "Free Parking", "Outdoor Pool"],
+    amenities: ["wifi", "parking", "outdoorPool"],
     priceRange: "$",
     rating: 3.1,
     coverUrl: `${BLOB}/v2-inn-of-lompoc.jpeg`,
@@ -282,6 +330,7 @@ export const HOTELS: Hotel[] = [
     name: "Star Motel",
     category: "budget",
     tagline: "Small independent motel near Old Town",
+    taglineEs: "Pequeño motel independiente cerca de Old Town",
     description:
       "A small independent motel on Ocean Avenue, the closest lodging to Lompoc's Old Town core — steps from the murals, local cafés, and the Friday farmers market.",
     address: "216 E Ocean Ave, Lompoc, CA 93436",
@@ -289,7 +338,7 @@ export const HOTELS: Hotel[] = [
     neighborhood: "Downtown Lompoc — walking distance to Old Town",
     phone: "(805) 736-8144",
     website: null,
-    amenities: ["Free Parking"],
+    amenities: ["parking"],
     priceRange: "$",
     rating: 3.4,
     coverUrl: `${BLOB}/v2-star-motel-lompoc.jpeg`,

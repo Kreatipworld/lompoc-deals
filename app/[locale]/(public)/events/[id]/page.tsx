@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
 import { businesses, events } from "@/db/schema"
 import { pageAlternates, seoTitle } from "@/lib/seo"
+import { LAUNCH_TITLE_RE, launchDescription, launchTitle } from "@/lib/launch-display"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -39,10 +40,14 @@ export async function generateMetadata({
 }: {
   params: { id: string; locale: string }
 }) {
-  const ev = await getApprovedEvent(parseInt(params.id, 10))
+  const [ev, t, tLaunch] = await Promise.all([
+    getApprovedEvent(parseInt(params.id, 10)),
+    getTranslations({ locale: params.locale, namespace: "eventDetail" }),
+    getTranslations({ locale: params.locale, namespace: "newsUi.events" }),
+  ])
   // A cancelled or unknown event still streams a 200 (loading boundary), so say noindex
   // here rather than letting the page inherit the site's default title.
-  if (!ev) return { title: "Event not found", robots: { index: false, follow: true } }
+  if (!ev) return { title: t("notFoundTitle"), robots: { index: false, follow: true } }
   return {
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
     // The date is what makes a recurring series unique, so it always survives:
@@ -52,18 +57,20 @@ export async function generateMetadata({
         const date = ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
         // "Rocket Launch: Falcon 9 Block 5 — Starlink Group 15-23" → "Starlink Group 15-23 Launch":
         // the payload is the identity; the rocket variant is what truncation would otherwise keep.
-        const launch = ev.title.match(/^Rocket Launch:\s*(?:.*?—\s*)?(.+)$/)
-        const name = launch ? `${launch[1].trim()} Launch` : ev.title
+        const launch = ev.title.match(LAUNCH_TITLE_RE)
+        const name = launch
+          ? tLaunch("launchShortTitle", { mission: launch[2].trim() })
+          : launchTitle(ev, params.locale, tLaunch)
         return `${seoTitle(name, undefined, { max: 60 - (date.length + 3) })} — ${date} | Lompoc Locals`
       })(),
     },
-    description: ev.description?.slice(0, 160) ?? undefined,
+    description: launchDescription(ev, params.locale, tLaunch)?.slice(0, 160) ?? undefined,
     alternates: pageAlternates(`/events/${ev.id}`, params.locale),
   }
 }
 
 function formatEventDate(d: Date, locale: string): string {
-  return d.toLocaleDateString(locale, {
+  return d.toLocaleDateString(locale === "es" ? "es-US" : "en-US", {
     timeZone: "America/Los_Angeles",
     weekday: "long",
     month: "long",
@@ -81,11 +88,16 @@ export default async function EventDetailPage({
   const ev = await getApprovedEvent(parseInt(params.id, 10))
   if (!ev) notFound()
   const t = await getTranslations("eventDetail")
+  const tLaunch = await getTranslations({ locale: params.locale, namespace: "newsUi.events" })
+  const es = params.locale === "es"
+  // Launch rows are stored in English; /es renders them in Spanish (lib/launch-display.ts).
+  const title = launchTitle(ev, params.locale, tLaunch)
+  const description = launchDescription(ev, params.locale, tLaunch)
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Event",
-    name: ev.title,
+    name: title,
     // Cancelled events are unpublished (404), so anything rendered is scheduled
     eventStatus: "https://schema.org/EventScheduled",
     ...(ev.organizerName
@@ -99,7 +111,7 @@ export default async function EventDetailPage({
       : {}),
     startDate: ev.startsAt.toISOString(),
     ...(ev.endsAt ? { endDate: ev.endsAt.toISOString() } : {}),
-    ...(ev.description ? { description: ev.description } : {}),
+    ...(description ? { description } : {}),
     ...(ev.imageUrl ? { image: [ev.imageUrl] } : {}),
     location: {
       "@type": "Place",
@@ -111,7 +123,7 @@ export default async function EventDetailPage({
         addressCountry: "US",
       },
     },
-    url: `${siteUrl}/events/${ev.id}`,
+    url: `${siteUrl}${es ? "/es" : ""}/events/${ev.id}`,
   }
 
   return (
@@ -132,32 +144,32 @@ export default async function EventDetailPage({
       {ev.imageUrl && (
         <div className="mb-6 overflow-hidden rounded-2xl bg-muted">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={ev.imageUrl} alt={ev.title} className="w-full object-cover" />
+          <img src={ev.imageUrl} alt={title} className="w-full object-cover" />
         </div>
       )}
 
       <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-        {ev.title}
+        {title}
       </h1>
 
       <div className="mt-4 space-y-2 text-sm">
         <p className="inline-flex items-center gap-2">
           <Calendar className="h-4 w-4 text-primary" />
-          <span className="font-semibold">{t("when")}:</span>
-          {formatEventDate(ev.startsAt, params.locale)}
+          <span className="font-semibold">{`${t("when")}:`}</span>
+          <span>{formatEventDate(ev.startsAt, params.locale)}</span>
         </p>
         {ev.location && (
           <p className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            <span className="font-semibold">{t("where")}:</span>
-            {ev.location}
+            <span className="font-semibold">{`${t("where")}:`}</span>
+            <span>{ev.location}</span>
           </p>
         )}
       </div>
 
-      {ev.description && (
+      {description && (
         <p className="mt-6 whitespace-pre-line text-base leading-relaxed text-foreground">
-          {ev.description}
+          {description}
         </p>
       )}
     </main>

@@ -26,7 +26,10 @@ export type CategoryId =
 
 export interface Category {
   id: CategoryId
+  /** English name — kept for internal matching/logging only. Render with `labelKey`. */
   name: string
+  /** next-intl key inside the `mapUi` namespace, e.g. `categories.wineries`. */
+  labelKey: string
   color: string
   icon: LucideIcon
   emoji: string
@@ -36,6 +39,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "wineries",
     name: "Wine & Wineries",
+    labelKey: "categories.wineries",
     color: "#DC2626",
     icon: Wine,
     emoji: "🍷",
@@ -43,6 +47,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "food-drink",
     name: "Food & Drink",
+    labelKey: "categories.food-drink",
     color: "#EA580C",
     icon: UtensilsCrossed,
     emoji: "🍽️",
@@ -50,6 +55,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "retail",
     name: "Shopping & Retail",
+    labelKey: "categories.retail",
     color: "#3B82F6",
     icon: ShoppingBag,
     emoji: "🛍️",
@@ -57,6 +63,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "health-beauty",
     name: "Health & Beauty",
+    labelKey: "categories.health-beauty",
     color: "#EC4899",
     icon: Heart,
     emoji: "💆",
@@ -64,6 +71,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "entertainment",
     name: "Entertainment",
+    labelKey: "categories.entertainment",
     color: "#8B5CF6",
     icon: PartyPopper,
     emoji: "🎉",
@@ -71,6 +79,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "services",
     name: "Services",
+    labelKey: "categories.services",
     color: "#64748B",
     icon: Wrench,
     emoji: "🔧",
@@ -78,6 +87,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "auto",
     name: "Auto",
+    labelKey: "categories.auto",
     color: "#1E40AF",
     icon: Car,
     emoji: "🚗",
@@ -85,6 +95,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "dispensaries",
     name: "Dispensaries",
+    labelKey: "categories.dispensaries",
     color: "#16A34A",
     icon: Leaf,
     emoji: "🌿",
@@ -92,6 +103,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "real-estate",
     name: "Real Estate",
+    labelKey: "categories.real-estate",
     color: "#D97706",
     icon: Home,
     emoji: "🏠",
@@ -99,6 +111,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "other",
     name: "Other",
+    labelKey: "categories.other",
     color: "#6B7280",
     icon: MapPin,
     emoji: "📍",

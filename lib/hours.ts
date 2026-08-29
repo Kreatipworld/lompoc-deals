@@ -44,8 +44,12 @@ export function format12h(hhmm: string): string {
   return `${hr}:${m.toString().padStart(2, "0")} ${period}`
 }
 
-export function formatHoursLine(d: DayHours): string {
-  if (d === null) return "Closed"
+/** Optional UI strings so /es pages can render "Lun … Dom" and "Cerrado" (see `hoursUi` messages). */
+export type HoursLabels = { days: Record<keyof Hours, string>; closed: string }
+
+/** `closedLabel` defaults to English so existing callers keep working. */
+export function formatHoursLine(d: DayHours, closedLabel: string = "Closed"): string {
+  if (d === null) return closedLabel
   if (isRaw(d)) return d.raw
   return `${format12h(d.open)} – ${format12h(d.close)}`
 }

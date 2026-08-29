@@ -115,7 +115,7 @@
     "browseDirectory": "Browse directory",
     "forBusinessOwners": "For business owners",
     "ownABusiness": "Own a Lompoc business?",
-    "businessCta": "List your business, get discovered by neighbors, and land in the weekly digest — with real coupons whenever you want them. Free forever for the basics.",
+    "businessCta": "List your business, get discovered by neighbors, and land in the Monday digest — with real coupons whenever you want them. Growth membership, $39.99/mo, cancel anytime.",
     "listYourBusiness": "List your business",
     "weeklyDigest": "Weekly digest",
     "findDealsInLompoc": "Find deals in Lompoc",
@@ -185,9 +185,9 @@
       "q2": "How do I claim a deal?",
       "a2": "Click \"Claim Deal\" on any offer, then show your phone at the business.",
       "q3": "How do businesses post deals?",
-      "a3": "Sign up as a business (free) and create your profile in under 5 minutes. Posting deals requires the Growth plan ($39.99/mo), which unlocks up to 5 active deals & announcements.",
+      "a3": "Join as a Growth member ($39.99/mo) and build your profile in under 5 minutes. Growth unlocks up to 5 active deals & announcements, the Monday digest, and priority placement.",
       "q4": "What does it cost to list my business?",
-      "a4": "Our Free plan is $0 forever — your business listed with hours, photos, and contact info. Growth is $39.99/month and unlocks deals (up to 5 active), analytics, and priority placement.",
+      "a4": "Growth is $39.99/month, cancel anytime — your business listed with hours, photos, and contact info, plus deals (up to 5 active), analytics, and priority placement.",
       "q5": "Is this only for Lompoc?",
       "a5": "For now, yes. We're 100% focused on Lompoc. That's what makes it work — every deal is from someone local, for someone local.",
       "q6": "How do I get the weekly email?",
@@ -2389,5 +2389,176 @@
     "paginationNext": "Next",
     "paginationPage": "Page {page} of {total}",
     "paginationLabel": "News pages"
-  }
+  },
+  "categoryLabels": {
+    "auto": "Auto",
+    "dispensaries": "Dispensaries",
+    "entertainment": "Entertainment",
+    "food-drink": "Food & Drink",
+    "health-beauty": "Health & Beauty",
+    "other": "Other",
+    "real-estate": "Real Estate",
+    "retail": "Retail",
+    "services": "Services",
+    "wineries": "Wineries"
+  },
+  "hoursUi": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun",
+    "closed": "Closed",
+    "localBusiness": "local business",
+    "allCategories": "All",
+    "seeAllDeals": "See all deals",
+    "photoAlt": "{name} — photo {n}",
+    "viewGoogleReviews": "View Google reviews",
+    "loadingMap": "Loading map…",
+    "navMenu": "Navigation menu",
+    "menu": "Menu",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "mainNav": "Main navigation",
+    "notifications": "Notifications",
+    "browse": "Browse",
+    "mostActive": "Most active",
+    "mostActiveHeading": "Where the deals are right now",
+    "mostActiveSub": "Local businesses with the most live offers this week.",
+    "withDealOne": "with a deal",
+    "withDealMany": "with deals"
+  },
+  "mapUi": {
+    "categories": {
+      "wineries": "Wine & Wineries",
+      "food-drink": "Food & Drink",
+      "retail": "Shopping & Retail",
+      "health-beauty": "Health & Beauty",
+      "entertainment": "Entertainment",
+      "services": "Services",
+      "auto": "Auto",
+      "dispensaries": "Dispensaries",
+      "real-estate": "Real Estate",
+      "other": "Other"
+    },
+    "filter": {
+      "all": "All"
+    },
+    "sidebar": {
+      "places": "{count, plural, =1 {1 place} other {# places}}",
+      "sortedByProximity": "Sorted by proximity",
+      "clickMarker": "Click a marker to explore",
+      "selected": "Selected",
+      "noMatches": "No places match your filters"
+    },
+    "search": {
+      "placeholder": "Search places…"
+    },
+    "popup": {
+      "close": "Close popup",
+      "fromCenter": "{distance} from center",
+      "directions": "Directions",
+      "viewListing": "View Listing"
+    },
+    "skeleton": {
+      "loading": "Loading Lompoc…"
+    },
+    "tour": {
+      "start": "Take a Tour",
+      "skip": "Skip",
+      "exit": "Exit",
+      "stops": {
+        "welcome": {
+          "label": "Welcome to Lompoc",
+          "sublabel": "California's hidden gem valley"
+        },
+        "wineGhetto": {
+          "label": "The Wine Ghetto",
+          "sublabel": "17+ tasting rooms, one world-class block"
+        },
+        "mission": {
+          "label": "La Purisima Mission",
+          "sublabel": "Most fully restored mission in California"
+        },
+        "flowerFields": {
+          "label": "Lompoc Flower Fields",
+          "sublabel": "Sweet pea & larkspur in bloom"
+        },
+        "jalama": {
+          "label": "Jalama Beach",
+          "sublabel": "Hidden gem surf & camping paradise"
+        },
+        "explore": {
+          "label": "Explore Lompoc",
+          "sublabel": "Your adventure starts here"
+        }
+      }
+    },
+    "controls": {
+      "switchToDay": "Switch to day mode",
+      "switchToNight": "Switch to night mode",
+      "showMyLocation": "Show my location",
+      "copyLink": "Copy map link",
+      "toggleList": "Toggle list view",
+      "resetView": "Reset view to Lompoc"
+    }
+  },
+  "newsUi": {
+    "news": {
+      "metaTitle": "Lompoc News — What's Happening in Town",
+      "metaDescription": "Local news for Lompoc, CA, written by neighbors: business openings, community updates, launches, and what it all means for you.",
+      "ogTitle": "Lompoc News — Lompoc Locals",
+      "ogDescription": "Business openings, community updates, and local happenings in Lompoc, CA.",
+      "ogImageAlt": "Lompoc, California",
+      "topicsLabel": "News topics"
+    },
+    "blog": {
+      "metaTitle": "Blog — Local News, Tips & Community Stories",
+      "metaDescription": "Discover local stories, business spotlights, community events, and insider tips for Lompoc, CA. Stay connected with what's happening in your city.",
+      "ogTitle": "Blog — Lompoc Locals",
+      "ogDescription": "Local stories, tips, and community news for Lompoc, CA.",
+      "postNotFound": "Post not found",
+      "readOnBlog": "Read {title} on the Lompoc Locals blog.",
+      "teamAuthor": "Lompoc Locals Team"
+    },
+    "blogCategories": {
+      "community-guides": "Community Guides",
+      "food-dining": "Food & Dining",
+      "local-history": "Local History",
+      "local-news": "Local News",
+      "outdoor-adventures": "Outdoor Adventures",
+      "things-to-do": "Things to Do",
+      "wine-country": "Wine Country"
+    },
+    "events": {
+      "launchTitle": "Rocket Launch: {rocket} — {mission}",
+      "launchShortTitle": "{mission} Launch",
+      "launchingFrom": "Launching from {pad}.",
+      "launchNote": "Launch times shift often — check back for updates. Visible from much of Lompoc; popular viewing spots include Ocean Ave west of town and Surf Beach (when open)."
+    },
+    "hotels": {
+      "descriptor": "Lompoc Hotel",
+      "categoryBudget": "Budget",
+      "categoryMidRange": "Mid-range",
+      "categoryBoutique": "Boutique"
+    },
+    "subscribe": {
+      "previewSchedule": "Monday · 9:00 AM"
+    }
+  },
+  "siteMeta": {
+    "titleDefault": "Lompoc Locals — Local Coupons, Specials & Things To Do",
+    "titleTemplate": "%s | Lompoc Locals",
+    "description": "The latest deals from Lompoc, California businesses — coupons, specials, and announcements updated daily.",
+    "keywords": "Lompoc, Lompoc CA, Lompoc deals, Lompoc coupons, things to do in Lompoc, local business, Vandenberg Valley",
+    "ogTitle": "Lompoc Locals — Local Coupons & Things To Do",
+    "ogDescription": "Browse deals from Lompoc, California businesses — restaurants, salons, services, and more. Updated daily.",
+    "twitterDescription": "Deals from Lompoc, CA businesses — coupons, specials, and announcements, updated daily.",
+    "categoryTitle": "Lompoc {category} — Local Businesses & Deals",
+    "categoryDescription": "Browse {category} businesses in Lompoc, CA — local listings, active deals, and coupons. Updated daily.",
+    "categoryNotFound": "Category"
+  },
+  "bizRoad": {}
 }

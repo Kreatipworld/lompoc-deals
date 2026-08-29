@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server"
+import { pageAlternates } from "@/lib/seo"
 import { searchAll } from "@/lib/search"
 import { getViewer } from "@/lib/viewer"
 import { DealGrid } from "@/components/deal-card"
@@ -9,6 +10,7 @@ import { Link } from "@/i18n/navigation"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 import { SponsorRow } from "@/components/sponsor-row"
+import { categoryLabel } from "@/lib/category-label"
 
 export async function generateMetadata({
   params,
@@ -20,6 +22,9 @@ export async function generateMetadata({
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    // Self-referential canonical per locale (otherwise /es/search inherits nothing
+    // and the page-level alternates are missing entirely). Still noindex below.
+    alternates: pageAlternates("/search", locale),
     // Internal search results: unbounded thin URL space — keep out of the index.
     robots: { index: false, follow: true },
   }
@@ -34,6 +39,7 @@ export default async function SearchPage({
 }) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: "search" })
+  const tc = await getTranslations({ locale, namespace: "categoryLabels" })
 
   const q = (searchParams.q ?? "").trim()
   const [results, viewer] = await Promise.all([
@@ -118,7 +124,7 @@ export default async function SearchPage({
                       href={`/category/${c.slug}`}
                       className="inline-flex items-center gap-1.5 rounded-full border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-primary hover:text-primary"
                     >
-                      {c.name}
+                      {categoryLabel(tc, c.slug, c.name)}
                       <span className="text-xs text-muted-foreground">({c.count})</span>
                     </Link>
                   ))}
@@ -151,7 +157,7 @@ export default async function SearchPage({
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-semibold group-hover:text-primary">{b.name}</p>
                         {b.categoryName && (
-                          <p className="truncate text-xs text-muted-foreground">{b.categoryName}</p>
+                          <p className="truncate text-xs text-muted-foreground">{categoryLabel(tc, b.categorySlug, b.categoryName)}</p>
                         )}
                       </div>
                       <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground/50 group-hover:text-primary" />

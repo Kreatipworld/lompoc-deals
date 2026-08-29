@@ -92,6 +92,10 @@ export default auth(function middleware(req) {
 
   // Tolerate legacy /en/* and /es/* URLs that may be cached or bookmarked.
   const pathnameWithoutLocale = pathname.replace(/^\/(en|es)(\/|$)/, "/") || "/"
+  // Spanish is a real prefix (localePrefix "as-needed"): a visitor on /es/dashboard
+  // must be bounced to /es/login and sent back to /es/dashboard, not dropped into
+  // English. /en is legacy-only and normalizes to the unprefixed form.
+  const localePrefix = /^\/es(\/|$)/.test(pathname) ? "/es" : ""
 
   const isProtected = protectedPaths.some((p) => pathnameWithoutLocale.startsWith(p))
 
@@ -102,15 +106,15 @@ export default auth(function middleware(req) {
 
     if (pathnameWithoutLocale.startsWith("/dashboard") && role !== "business") {
       const url = req.nextUrl.clone()
-      url.pathname = "/login"
-      url.searchParams.set("from", pathnameWithoutLocale)
+      url.pathname = `${localePrefix}/login`
+      url.searchParams.set("from", `${localePrefix}${pathnameWithoutLocale}`)
       return ensureSessionCookie(req, Response.redirect(url))
     }
 
     if (pathnameWithoutLocale.startsWith("/admin") && role !== "admin") {
       const url = req.nextUrl.clone()
-      url.pathname = "/login"
-      url.searchParams.set("from", pathnameWithoutLocale)
+      url.pathname = `${localePrefix}/login`
+      url.searchParams.set("from", `${localePrefix}${pathnameWithoutLocale}`)
       return ensureSessionCookie(req, Response.redirect(url))
     }
   }

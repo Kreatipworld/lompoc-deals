@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { useTranslations } from "next-intl"
 import { Search, X } from "lucide-react"
 import type { POI } from "@/lib/map-pois"
 import { CATEGORY_MAP } from "@/lib/map-categories"
@@ -13,6 +14,7 @@ interface SearchBoxProps {
 }
 
 export function SearchBox({ query, results, onChange, onSelect }: SearchBoxProps) {
+  const t = useTranslations("mapUi")
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -32,7 +34,7 @@ export function SearchBox({ query, results, onChange, onSelect }: SearchBoxProps
         <Search className="h-4 w-4 flex-shrink-0 text-gray-400" />
         <input
           type="text"
-          placeholder="Search places…"
+          placeholder={t("search.placeholder")}
           value={query}
           onChange={(e) => {
             onChange(e.target.value)
@@ -78,7 +80,7 @@ export function SearchBox({ query, results, onChange, onSelect }: SearchBoxProps
                   <div className="truncate font-medium text-gray-900">
                     {poi.name}
                   </div>
-                  <div className="truncate text-xs text-gray-400">{cat.name}</div>
+                  <div className="truncate text-xs text-gray-400">{t(cat.labelKey)}</div>
                 </div>
               </button>
             )

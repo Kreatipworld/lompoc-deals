@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation"
 import { CalendarDays, MapPin, Tag, ArrowRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import { categoryLabel, CATEGORY_SLUGS } from "@/lib/category-label"
 import type { Metadata } from "next"
 import { getMasterDigestContent, selectLead } from "@/lib/digest"
 import { SafeImage } from "@/components/safe-image"
@@ -44,10 +45,20 @@ function img(u: string | null | undefined): string | null {
 
 export default async function ThisWeekPage({ params }: { params: { locale: string } }) {
   const locale = params.locale === "es" ? "es" : "en"
-  const [content, t] = await Promise.all([
+  const [content, t, tc, tcEn, ta] = await Promise.all([
     getMasterDigestContent(),
     getTranslations({ locale: params.locale, namespace: "thisWeek" }),
+    getTranslations({ locale: params.locale, namespace: "categoryLabels" }),
+    getTranslations({ locale: "en", namespace: "categoryLabels" }),
+    getTranslations({ locale: params.locale, namespace: "activityCategory" }),
   ])
+  // Partners carry only the English category name; map it back to its slug so /es reads the label.
+  const slugByEnglishName = new Map(CATEGORY_SLUGS.map((slug) => [tcEn(slug), slug]))
+  const partnerCategory = (name: string | null) =>
+    name ? categoryLabel(tc, slugByEnglishName.get(name), name) : null
+  // "Things to do" subtitles are either an activity category slug or a sentence of description.
+  const ACTIVITY_KEYS = new Set(["outdoors", "food-wine", "history", "arts", "family", "unique"])
+  const thingSubtitle = (sub: string | null) => (sub && ACTIVITY_KEYS.has(sub) ? ta(sub) : sub)
 
   const lead = selectLead(content)
   // Keep the lead out of its own section so it never appears twice on the page.
@@ -266,7 +277,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                         <span className="block p-4">
                           {thing.subtitle && (
                             <span className="font-edition block text-xs font-bold uppercase tracking-[0.12em] text-[#650C75]">
-                              {thing.subtitle}
+                              {thingSubtitle(thing.subtitle)}
                             </span>
                           )}
                           <span className="font-edition mt-1 block text-xl font-bold leading-snug group-hover:text-[#650C75]">
@@ -312,7 +323,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                             {p.name}
                           </span>
                           <span className="font-edition mt-0.5 block text-sm italic text-[#7a6f60]">
-                            {p.dealTitle ?? p.categoryName ?? ""}
+                            {p.dealTitle ?? partnerCategory(p.categoryName) ?? ""}
                           </span>
                         </span>
                       </Link>

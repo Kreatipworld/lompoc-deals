@@ -32,6 +32,7 @@ export default async function SubscribePage({
   params: { locale: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "subscribePage" })
+  const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.subscribe" })
 
   const benefits = [
     { icon: Sparkles, title: t("benefit1Title"), desc: t("benefit1Desc") },
@@ -39,7 +40,7 @@ export default async function SubscribePage({
     { icon: ShieldCheck, title: t("benefit3Title"), desc: t("benefit3Desc") },
   ]
 
-  // Illustrative sections of the Saturday email — descriptions of what's in it,
+  // Illustrative sections of the Monday email — descriptions of what's in it,
   // not invented events or offers.
   const sampleSections = [
     {
@@ -172,7 +173,7 @@ export default async function SubscribePage({
               <h3 className="font-bold text-foreground">
                 📰 {t("previewWeekly")}
               </h3>
-              <p className="mt-1 text-xs text-muted-foreground">Saturday · 9:00 AM</p>
+              <p className="mt-1 text-xs text-muted-foreground">{tUi("previewSchedule")}</p>
 
               <div className="mt-4 space-y-3">
                 {sampleSections.map(({ title, category, body, badge, color }, i) => (

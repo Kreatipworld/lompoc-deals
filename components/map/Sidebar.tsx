@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { MapPin, Star } from "lucide-react"
 import type { POI } from "@/lib/map-pois"
 import { CATEGORIES, CATEGORY_MAP } from "@/lib/map-categories"
@@ -23,6 +24,7 @@ export function Sidebar({
   distanceMap,
   onSelect,
 }: SidebarProps) {
+  const t = useTranslations("mapUi")
   // Group by category maintaining order
   const grouped = CATEGORIES.reduce<Record<CategoryId, POI[]>>((acc, cat) => {
     const items = pois.filter((p) => p.category === cat.id)
@@ -35,10 +37,10 @@ export function Sidebar({
       {/* Header */}
       <div className="flex-shrink-0 border-b bg-white px-4 py-3">
         <p className="text-sm font-semibold text-gray-900">
-          {pois.length} places
+          {t("sidebar.places", { count: pois.length })}
         </p>
         <p className="text-xs text-gray-400">
-          {userLocation ? "Sorted by proximity" : "Click a marker to explore"}
+          {userLocation ? t("sidebar.sortedByProximity") : t("sidebar.clickMarker")}
         </p>
       </div>
 
@@ -60,7 +62,7 @@ export function Sidebar({
                   <Icon className="h-3.5 w-3.5 text-white" />
                 </div>
                 <span className="text-xs font-bold uppercase tracking-wider text-gray-600">
-                  {cat.name}
+                  {t(cat.labelKey)}
                 </span>
                 <span className="ml-auto text-xs text-gray-400">{items.length}</span>
               </div>
@@ -105,7 +107,7 @@ export function Sidebar({
                               className="flex-shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-white"
                               style={{ backgroundColor: cat.color }}
                             >
-                              Selected
+                              {t("sidebar.selected")}
                             </span>
                           )}
                         </div>
@@ -142,7 +144,7 @@ export function Sidebar({
         {pois.length === 0 && (
           <div className="flex flex-col items-center justify-center gap-2 py-16 text-center">
             <MapPin className="h-8 w-8 text-gray-300" />
-            <p className="text-sm text-gray-400">No places match your filters</p>
+            <p className="text-sm text-gray-400">{t("sidebar.noMatches")}</p>
           </div>
         )}
       </div>

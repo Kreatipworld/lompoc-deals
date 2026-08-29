@@ -7,6 +7,7 @@ import {
   useMemo,
   useEffect,
 } from "react"
+import { useLocale, useTranslations } from "next-intl"
 import MapGL, { Marker, Popup, Source, NavigationControl } from "react-map-gl/mapbox"
 import type { MapRef, MapMouseEvent } from "react-map-gl/mapbox"
 import { Compass, LocateFixed, Sun, Moon, Share2, LayoutList, Map as MapIcon } from "lucide-react"
@@ -29,6 +30,8 @@ const DAY_STYLE = "mapbox://styles/mapbox/outdoors-v12"
 const NIGHT_STYLE = "mapbox://styles/mapbox/navigation-night-v1"
 
 export function LompocInteractiveMap() {
+  const t = useTranslations("mapUi")
+  const locale = useLocale()
   const mapRef = useRef<MapRef | null>(null)
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null)
   const [hoveredPoi, setHoveredPoi] = useState<POI | null>(null)
@@ -51,8 +54,8 @@ export function LompocInteractiveMap() {
 
   // Staggered marker entrance on load
   useEffect(() => {
-    const t = setTimeout(() => setMarkersVisible(true), 300)
-    return () => clearTimeout(t)
+    const timer = setTimeout(() => setMarkersVisible(true), 300)
+    return () => clearTimeout(timer)
   }, [])
 
   // Distance map (from user if available, otherwise center)
@@ -141,9 +144,11 @@ export function LompocInteractiveMap() {
     if (!map) return
     const center = map.getCenter()
     const zoom = map.getZoom()
-    const url = `${window.location.origin}/map?lat=${center.lat.toFixed(4)}&lng=${center.lng.toFixed(4)}&zoom=${zoom.toFixed(1)}${selectedPoi ? `&poi=${selectedPoi.id}` : ""}`
+    // Keep the visitor's locale in the shared link (/es/map stays /es/map).
+    const localePrefix = locale === "en" ? "" : `/${locale}`
+    const url = `${window.location.origin}${localePrefix}/map?lat=${center.lat.toFixed(4)}&lng=${center.lng.toFixed(4)}&zoom=${zoom.toFixed(1)}${selectedPoi ? `&poi=${selectedPoi.id}` : ""}`
     navigator.clipboard.writeText(url).catch(() => {})
-  }, [selectedPoi])
+  }, [selectedPoi, locale])
 
   const onMapLoad = useCallback(() => {
     const map = mapRef.current?.getMap()
@@ -363,7 +368,7 @@ export function LompocInteractiveMap() {
           <button
             onClick={() => setNightMode((v) => !v)}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-all hover:bg-gray-50"
-            title={nightMode ? "Switch to day mode" : "Switch to night mode"}
+            title={nightMode ? t("controls.switchToDay") : t("controls.switchToNight")}
           >
             {nightMode ? (
               <Sun className="h-5 w-5 text-gold" />
@@ -377,7 +382,7 @@ export function LompocInteractiveMap() {
             onClick={handleLocateMe}
             disabled={geoLoading}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-all hover:bg-gray-50 disabled:opacity-60"
-            title="Show my location"
+            title={t("controls.showMyLocation")}
           >
             <LocateFixed
               className={`h-5 w-5 ${geoLoading ? "animate-pulse text-primary" : userLocation ? "text-primary" : "text-gray-600"}`}
@@ -388,7 +393,7 @@ export function LompocInteractiveMap() {
           <button
             onClick={handleShare}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-all hover:bg-gray-50"
-            title="Copy map link"
+            title={t("controls.copyLink")}
           >
             <Share2 className="h-5 w-5 text-gray-600" />
           </button>
@@ -397,7 +402,7 @@ export function LompocInteractiveMap() {
           <button
             onClick={() => setShowListView((v) => !v)}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-all hover:bg-gray-50 lg:hidden"
-            title="Toggle list view"
+            title={t("controls.toggleList")}
           >
             {showListView ? (
               <MapIcon className="h-5 w-5 text-gray-600" />
@@ -411,7 +416,7 @@ export function LompocInteractiveMap() {
         <button
           onClick={resetView}
           className="absolute bottom-3 right-3 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-purple-700 shadow-xl shadow-purple-900/30 ring-2 ring-white transition-all hover:bg-purple-800 active:scale-95"
-          title="Reset view to Lompoc"
+          title={t("controls.resetView")}
         >
           <Compass className="h-6 w-6 text-white" />
         </button>

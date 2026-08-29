@@ -1,7 +1,14 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
-import { HOTELS, getHotelBySlug } from "@/lib/hotels-data"
+import {
+  HOTELS,
+  getHotelBySlug,
+  amenityLabel,
+  hotelAvenue,
+  hotelTagline,
+  type AmenityKey,
+} from "@/lib/hotels-data"
 import { HotelsMap } from "@/components/hotels-map"
 import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import {
@@ -32,9 +39,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const hotel = getHotelBySlug(params.slug)
   if (!hotel) return { title: "Hotel" }
+  const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.hotels" })
+  const tagline = hotelTagline(hotel, params.locale)
   return {
-    title: seoTitle(hotel.name, "Lompoc Hotel"),
-    description: seoDescription(`${hotel.tagline}. ${hotel.description}`, ""),
+    title: seoTitle(hotel.name, tUi("descriptor")),
+    description: seoDescription(`${tagline}. ${hotel.description}`, ""),
     keywords: [
       `${hotel.name.toLowerCase()}`,
       "lompoc hotels",
@@ -43,7 +52,7 @@ export async function generateMetadata({
     ],
     openGraph: {
       title: `${hotel.name} · Lompoc, CA`,
-      description: hotel.tagline,
+      description: tagline,
       // Every hotel carries six Blob photos; without this the card rendered as a grey rectangle
       // wherever the link was shared.
       images: hotel.photos?.length ? [{ url: hotel.photos[0], alt: hotel.name }] : undefined,
@@ -54,11 +63,12 @@ export async function generateMetadata({
 
 // PRICE_LABEL is now built from translations inside the component
 
-const AMENITY_ICON: Record<string, React.ReactNode> = {
-  "Free Wi-Fi": <Wifi className="h-4 w-4" />,
-  "Free Parking": <Car className="h-4 w-4" />,
-  "Hot Breakfast": <Coffee className="h-4 w-4" />,
-  "Continental Breakfast": <Coffee className="h-4 w-4" />,
+const AMENITY_ICON: Partial<Record<AmenityKey, React.ReactNode>> = {
+  wifi: <Wifi className="h-4 w-4" />,
+  parking: <Car className="h-4 w-4" />,
+  breakfast: <Coffee className="h-4 w-4" />,
+  hotBreakfast: <Coffee className="h-4 w-4" />,
+  continentalBreakfast: <Coffee className="h-4 w-4" />,
 }
 
 function StarRating({ rating, ariaLabel, outOf5 }: { rating: number; ariaLabel: string; outOf5: string }) {
@@ -86,11 +96,17 @@ function StarRating({ rating, ariaLabel, outOf5 }: { rating: number; ariaLabel: 
 
 export default async function HotelPage({ params }: { params: { slug: string; locale: string } }) {
   const t = await getTranslations({ locale: params.locale, namespace: "hotelDetail" })
+  const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.hotels" })
 
   const PRICE_LABEL: Record<string, string> = {
     $: t("priceBudget"),
     $$: t("priceMid"),
     $$$: t("priceUpscale"),
+  }
+  const CATEGORY_LABEL: Record<string, string> = {
+    budget: tUi("categoryBudget"),
+    "mid-range": tUi("categoryMidRange"),
+    boutique: tUi("categoryBoutique"),
   }
 
   const hotel = getHotelBySlug(params.slug)
@@ -131,8 +147,8 @@ export default async function HotelPage({ params }: { params: { slug: string; lo
             {/* Title block */}
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span className="rounded-full border bg-secondary px-3 py-0.5 text-xs font-medium capitalize text-muted-foreground">
-                  {hotel.category}
+                <span className="rounded-full border bg-secondary px-3 py-0.5 text-xs font-medium text-muted-foreground">
+                  {CATEGORY_LABEL[hotel.category] ?? hotel.category}
                 </span>
                 <span className="rounded-full border bg-secondary px-3 py-0.5 text-xs font-medium text-muted-foreground">
                   {hotel.priceRange} · {PRICE_LABEL[hotel.priceRange]}
@@ -141,7 +157,7 @@ export default async function HotelPage({ params }: { params: { slug: string; lo
               <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
                 {hotel.name}
               </h1>
-              <p className="mt-2 text-lg text-muted-foreground italic">{hotel.tagline}</p>
+              <p className="mt-2 text-lg text-muted-foreground italic">{hotelTagline(hotel, params.locale)}</p>
               <div className="mt-3">
                 <StarRating
                   rating={hotel.rating}
@@ -166,7 +182,7 @@ export default async function HotelPage({ params }: { params: { slug: string; lo
                     <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
                       {AMENITY_ICON[amenity] ?? <CheckCircle2 className="h-4 w-4" />}
                     </span>
-                    {amenity}
+                    {amenityLabel(amenity, params.locale)}
                   </li>
                 ))}
               </ul>
@@ -185,7 +201,7 @@ export default async function HotelPage({ params }: { params: { slug: string; lo
                   <div>
                     <div>{hotel.address}</div>
                     {hotel.avenue && (
-                      <div className="text-xs italic text-muted-foreground/70 mt-0.5">{hotel.avenue}</div>
+                      <div className="text-xs italic text-muted-foreground/70 mt-0.5">{hotelAvenue(hotel, params.locale)}</div>
                     )}
                     {hotel.neighborhood && (
                       <div className="text-xs text-muted-foreground/60 mt-0.5">{hotel.neighborhood}</div>

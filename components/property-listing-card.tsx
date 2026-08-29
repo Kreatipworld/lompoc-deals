@@ -3,11 +3,11 @@ import { Bed, Bath, Maximize, MapPin } from "lucide-react"
 import type { PropertyListing } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { TiltCard } from "@/components/motion/tilt-card"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
-function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
+function formatPrice(cents: number, type: "for-sale" | "for-rent", intl: string): string {
   const dollars = cents / 100
-  const formatted = dollars.toLocaleString("en-US", { maximumFractionDigits: 0 })
+  const formatted = dollars.toLocaleString(intl, { maximumFractionDigits: 0 })
   return type === "for-rent" ? `$${formatted}/mo` : `$${formatted}`
 }
 
@@ -16,7 +16,8 @@ export async function PropertyListingCard({
 }: {
   listing: PropertyListing
 }) {
-  const t = await getTranslations("propertyCard")
+  const [t, locale] = await Promise.all([getTranslations("propertyCard"), getLocale()])
+  const intl = locale === "es" ? "es-US" : "en-US"
   const isForSale = listing.type === "for-sale"
   return (
     <TiltCard className="h-full rounded-2xl">
@@ -46,7 +47,7 @@ export async function PropertyListingCard({
         {/* Price overlay (bottom-left) */}
         <div className="absolute bottom-3 left-3 rounded-xl bg-background/95 px-3 py-1.5 backdrop-blur">
           <div className="font-display text-lg font-semibold leading-none tracking-tight">
-            {formatPrice(listing.priceCents, listing.type)}
+            {formatPrice(listing.priceCents, listing.type, intl)}
           </div>
         </div>
       </div>
@@ -74,7 +75,7 @@ export async function PropertyListingCard({
           {listing.sqft != null && (
             <span className="inline-flex items-center gap-1">
               <Maximize className="h-3.5 w-3.5 text-primary/60" />
-              {listing.sqft.toLocaleString()} sqft
+              {listing.sqft.toLocaleString(intl)} sqft
             </span>
           )}
         </div>

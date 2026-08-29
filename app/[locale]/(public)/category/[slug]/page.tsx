@@ -28,21 +28,28 @@ import { TiltCard } from "@/components/motion/tilt-card"
 import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
+import { categoryLabel } from "@/lib/category-label"
 
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string; locale: string }
 }) {
-  const cat = await db.query.categories.findFirst({
-    where: (c, { eq }) => eq(c.slug, params.slug),
-  })
-  if (!cat) return { title: "Category" }
-  const catLower = cat.name.toLowerCase()
+  const [cat, tMeta, tLabels] = await Promise.all([
+    db.query.categories.findFirst({
+      where: (c, { eq }) => eq(c.slug, params.slug),
+    }),
+    getTranslations({ locale: params.locale, namespace: "siteMeta" }),
+    getTranslations({ locale: params.locale, namespace: "categoryLabels" }),
+  ])
+  if (!cat) return { title: tMeta("categoryNotFound") }
+  // DB names are English-only ("Food & Drink"); the label helper localizes them.
+  const label = categoryLabel(tLabels, cat.slug, cat.name)
+  const labelLower = label.toLowerCase()
   return {
-    title: `Lompoc ${cat.name} — Local Businesses & Deals`,
-    description: `Browse ${catLower} businesses in Lompoc, CA — local listings, active deals, and coupons. Updated daily.`,
-    keywords: [`lompoc ${catLower}`, `lompoc ${catLower} businesses`, `lompoc ${catLower} deals`, "lompoc ca"],
+    title: tMeta("categoryTitle", { category: label }),
+    description: tMeta("categoryDescription", { category: labelLower }),
+    keywords: [`lompoc ${labelLower}`, `${labelLower} lompoc`, `lompoc ${labelLower} deals`, "lompoc ca"],
     alternates: pageAlternates(`/category/${params.slug}`, params.locale),
   }
 }

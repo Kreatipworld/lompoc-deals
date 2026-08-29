@@ -14,7 +14,7 @@ import {
   Store,
   Tag,
 } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 // ─── Category icon mapping (labels come from translations) ────────────────────
 
@@ -35,13 +35,13 @@ function categoryIcon(cat: string) {
 
 // ─── Date formatting ──────────────────────────────────────────────────────────
 
-function formatEventDate(startsAt: Date, endsAt: Date | null) {
-  const start = startsAt.toLocaleDateString("en-US", {
+function formatEventDate(startsAt: Date, endsAt: Date | null, intl: string) {
+  const start = startsAt.toLocaleDateString(intl, {
     month: "short",
     day: "numeric",
     timeZone: "America/Los_Angeles",
   })
-  const time = startsAt.toLocaleTimeString("en-US", {
+  const time = startsAt.toLocaleTimeString(intl, {
     hour: "numeric",
     minute: "2-digit",
     timeZone: "America/Los_Angeles",
@@ -49,12 +49,12 @@ function formatEventDate(startsAt: Date, endsAt: Date | null) {
 
   if (!endsAt) return `${start} · ${time}`
 
-  const endDay = endsAt.toLocaleDateString("en-US", {
+  const endDay = endsAt.toLocaleDateString(intl, {
     month: "short",
     day: "numeric",
     timeZone: "America/Los_Angeles",
   })
-  const endTime = endsAt.toLocaleTimeString("en-US", {
+  const endTime = endsAt.toLocaleTimeString(intl, {
     hour: "numeric",
     minute: "2-digit",
     timeZone: "America/Los_Angeles",
@@ -69,9 +69,11 @@ function formatEventDate(startsAt: Date, endsAt: Date | null) {
 function EventCard({
   event,
   label,
+  intl,
 }: {
   event: Awaited<ReturnType<typeof getUpcomingEvents>>[number]
   label: string
+  intl: string
 }) {
   const Icon = categoryIcon(event.category)
 
@@ -112,7 +114,7 @@ function EventCard({
         {/* Date */}
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <CalendarDays className="h-3.5 w-3.5 shrink-0" />
-          <span>{formatEventDate(event.startsAt, event.endsAt)}</span>
+          <span>{formatEventDate(event.startsAt, event.endsAt, intl)}</span>
         </div>
 
         {/* Location */}
@@ -166,7 +168,8 @@ function EmptyEvents({ noEvents, submitLabel }: { noEvents: string; submitLabel:
 // ─── Main section (Server Component) ─────────────────────────────────────────
 
 export async function EventsSection() {
-  const t = await getTranslations("eventsSection")
+  const [t, locale] = await Promise.all([getTranslations("eventsSection"), getLocale()])
+  const intl = locale === "es" ? "es-US" : "en-US"
 
   const CATEGORY_LABEL: Record<string, string> = {
     community: t("community"),
@@ -222,6 +225,7 @@ export async function EventsSection() {
               key={e.id}
               event={e}
               label={CATEGORY_LABEL[e.category] ?? CATEGORY_LABEL.other}
+              intl={intl}
             />
           ))
         ) : (

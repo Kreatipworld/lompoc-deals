@@ -21,6 +21,7 @@ import { BusinessAvatar } from "@/components/business-avatar"
 import { TiltCard } from "@/components/motion/tilt-card"
 import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
+import { categoryLabel } from "@/lib/category-label"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
 
@@ -53,11 +54,13 @@ export default async function BusinessesPage({
 }: {
   searchParams?: { open?: string }
 }) {
-  const [allBusinesses, cats, stats, t] = await Promise.all([
+  const [allBusinesses, cats, stats, t, tc, tu] = await Promise.all([
     getDirectoryBusinesses(),
     getAllCategories(),
     getSiteStats(),
     getTranslations("businesses.directory"),
+    getTranslations("categoryLabels"),
+    getTranslations("hoursUi"),
   ])
 
   const openNow = searchParams?.open === "1"
@@ -68,7 +71,7 @@ export default async function BusinessesPage({
     { id: number; name: string; slug: string; items: typeof businesses }
   >()
   for (const c of cats) {
-    grouped.set(c.slug, { id: c.id, name: c.name, slug: c.slug, items: [] })
+    grouped.set(c.slug, { id: c.id, name: categoryLabel(tc, c.slug, c.name), slug: c.slug, items: [] })
   }
   for (const b of businesses) {
     if (b.categorySlug && grouped.has(b.categorySlug)) {
@@ -141,7 +144,7 @@ export default async function BusinessesPage({
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
           <span className="hidden flex-shrink-0 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:flex">
             <Store className="h-3.5 w-3.5 text-primary" />
-            Browse
+            {tu("browse")}
           </span>
           <div className="scrollbar-none -mx-1 flex flex-1 items-center gap-2 overflow-x-auto px-1">
             {mostActive.length > 0 && (
@@ -150,7 +153,7 @@ export default async function BusinessesPage({
                 className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full bg-gold px-3.5 py-1.5 text-sm font-semibold text-gold-foreground shadow-sm transition-transform hover:-translate-y-0.5"
               >
                 <Flame className="h-3.5 w-3.5" />
-                Most active
+                {tu("mostActive")}
               </a>
             )}
             {populatedCategories.map((g) => (
@@ -191,13 +194,13 @@ export default async function BusinessesPage({
                       line before the business strip; unchanged at sm: and up. */}
                   <div className="hidden items-center gap-1.5 rounded-full bg-gold px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-gold-foreground sm:inline-flex">
                     <Flame className="h-3.5 w-3.5" />
-                    Most active
+                    {tu("mostActive")}
                   </div>
                   <h2 className="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-                    Where the deals are right now
+                    {tu("mostActiveHeading")}
                   </h2>
                   <p className="mt-1 hidden text-sm text-muted-foreground sm:block">
-                    Local businesses with the most live offers this week.
+                    {tu("mostActiveSub")}
                   </p>
                 </div>
                 <Link
@@ -275,7 +278,7 @@ export default async function BusinessesPage({
                     {dealCount > 0 && (
                       <span className="hidden items-center gap-1 text-xs font-semibold text-success sm:inline-flex">
                         <Tag className="h-3 w-3" />
-                        {dealCount} {dealCount === 1 ? "with a deal" : "with deals"}
+                        {dealCount} {dealCount === 1 ? tu("withDealOne") : tu("withDealMany")}
                       </span>
                     )}
                   </div>

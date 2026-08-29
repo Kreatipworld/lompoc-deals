@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation"
 import { auth } from "@/auth"
 import { getMyFeedPosts } from "@/lib/feed-queries"
 import { markSoldAction, extendExpirationAction } from "@/lib/feed-actions"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 export async function generateMetadata() {
   const t = await getTranslations("feedMy")
@@ -28,6 +28,8 @@ export default async function MyFeedPage({
   searchParams?: { submitted?: string }
 }) {
   const t = await getTranslations("feedMy")
+  const locale = await getLocale()
+  const intl = locale === "es" ? "es-US" : "en-US"
   const session = await auth()
   if (!session?.user) {
     redirect("/login?next=/feed/my")
@@ -83,11 +85,11 @@ export default async function MyFeedPage({
                     </span>
                     <h2 className="mt-1.5 truncate text-base font-semibold">{post.title}</h2>
                     <p className="text-xs text-muted-foreground">
-                      {post.type === "for_sale" ? t("typeForSale") : t("typeInfo")} · {t("submitted", { date: post.createdAt.toLocaleDateString() })}
+                      {post.type === "for_sale" ? t("typeForSale") : t("typeInfo")} · {t("submitted", { date: post.createdAt.toLocaleDateString(intl) })}
                     </p>
                     {post.status === "approved" && (
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {t("liveUntil", { date: post.expiresAt.toLocaleDateString() })}
+                        {t("liveUntil", { date: post.expiresAt.toLocaleDateString(intl) })}
                       </p>
                     )}
                     {post.status === "rejected" && post.rejectionReason && (

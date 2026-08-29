@@ -2,6 +2,8 @@ import { notFound, permanentRedirect } from "next/navigation"
 import { FeaturedDeals } from "@/components/featured-deals"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
+import { es } from "date-fns/locale"
+import { categoryLabel } from "@/lib/category-label"
 import {
   MapPin,
   Phone,
@@ -54,9 +56,11 @@ export async function generateMetadata({
 }: {
   params: { slug: string; locale: string }
 }): Promise<Metadata> {
-  const [data, t] = await Promise.all([
+  const [data, t, tc, th] = await Promise.all([
     getBusinessBySlug(params.slug),
     getTranslations("businesses.profile"),
+    getTranslations("categoryLabels"),
+    getTranslations("hoursUi"),
   ])
   if (!data) {
     // A slug with no business behind it still renders (a loading.tsx boundary upstream means the
@@ -66,7 +70,9 @@ export async function generateMetadata({
     return { title: t("metaNotFound"), robots: { index: false, follow: true } }
   }
   const { name, description, about } = data.business
-  const catLabel = data.business.category?.name ?? "local business"
+  const catLabel = data.business.category
+    ? categoryLabel(tc, data.business.category.slug, data.business.category.name)
+    : th("localBusiness")
   const fallbackDescription = t("metaFallbackDescription", { name, catLabel })
   // Prefer the longer About copy (truncated) for the meta description.
   const aboutSnippet = about?.trim()
@@ -79,7 +85,7 @@ export async function generateMetadata({
     keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
     alternates: pageAlternates(`/biz/${params.slug}`, params.locale),
     openGraph: {
-      title: `${name} ${t("metaOgSuffix")}`,
+      title: `${name} ${t("metaOgSuffix")}`.trim(),
       description: metaDescription,
     },
   }
@@ -100,12 +106,13 @@ export default async function BusinessPage({
 }: {
   params: { slug: string; locale: string }
 }) {
-  const [data, viewer, t, tsp, td] = await Promise.all([
+  const [data, viewer, t, tsp, td, tc] = await Promise.all([
     getBusinessBySlug(params.slug),
     getViewer(),
     getTranslations("businesses.profile"),
     getTranslations("sponsors"),
     getTranslations("distance"),
+    getTranslations("categoryLabels"),
   ])
   if (!data) {
     if (params.slug.startsWith("demo-")) {
@@ -126,6 +133,10 @@ export default async function BusinessPage({
   }
   const { business, deals } = data
   const isRealEstate = business.category?.slug === "real-estate"
+  const categoryName = business.category
+    ? categoryLabel(tc, business.category.slug, business.category.name)
+    : null
+  const dateLocale = params.locale === "es" ? es : undefined
 
   // "Thin" means the page has nothing of its own to say: no deals, no about text, no description.
   const isThin = !business.about && !business.description && deals.length === 0
@@ -229,7 +240,7 @@ export default async function BusinessPage({
                   href={`/category/${business.category.slug}`}
                   className="transition-colors duration-150 hover:text-foreground"
                 >
-                  {business.category.name}
+                  {categoryName}
                 </Link>
               </>
             )}
@@ -274,7 +285,7 @@ export default async function BusinessPage({
                       href={`/category/${business.category.slug}`}
                       className="mt-1 inline-block text-sm font-medium text-primary hover:underline"
                     >
-                      {business.category.name}
+                      {categoryName}
                     </Link>
                   )}
                 </div>
@@ -295,7 +306,7 @@ export default async function BusinessPage({
                   <span className="inline-flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
                     {t("trustListed", {
-                      date: format(new Date(business.createdAt), "MMM yyyy"),
+                      date: format(new Date(business.createdAt), "MMM yyyy", { locale: dateLocale }),
                     })}
                   </span>
                   {viewer.isLocal && (
@@ -504,7 +515,7 @@ export default async function BusinessPage({
             {isThin && relatedBusinesses.length > 0 && business.category && (
               <div className="mt-6 rounded-2xl border bg-card p-5">
                 <h2 className="font-display text-base font-semibold">
-                  {t("moreInCategory", { category: business.category.name })}
+                  {t("moreInCategory", { category: categoryName ?? business.category.name })}
                 </h2>
                 <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {relatedBusinesses.map((rb) => (
@@ -584,7 +595,7 @@ export default async function BusinessPage({
         <section className="mx-auto max-w-6xl px-4 pb-10">
           <div className="mt-12 border-t pt-8">
             <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
-              {t("moreInCategory", { category: business.category.name })}
+              {t("moreInCategory", { category: categoryName ?? business.category.name })}
             </h2>
             <Reveal as="ul" stagger={0.06} className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {relatedBusinesses.map((rb) => (

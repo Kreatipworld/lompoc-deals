@@ -1,11 +1,11 @@
 import { Clock } from "lucide-react"
 import {
   DAY_KEYS,
-  DAY_LABELS,
   formatHoursLine,
   isOpenNow,
   isRaw,
   parseHours,
+  type HoursLabels,
 } from "@/lib/hours"
 import { getTranslations } from "next-intl/server"
 
@@ -17,7 +17,22 @@ interface Props {
 export async function BusinessHours({ hoursJson, phone }: Props) {
   const hours = parseHours(hoursJson)
   const open = isOpenNow(hours)
-  const t = await getTranslations("businesses.profile")
+  const [t, th] = await Promise.all([
+    getTranslations("businesses.profile"),
+    getTranslations("hoursUi"),
+  ])
+  const labels: HoursLabels = {
+    days: {
+      mon: th("mon"),
+      tue: th("tue"),
+      wed: th("wed"),
+      thu: th("thu"),
+      fri: th("fri"),
+      sat: th("sat"),
+      sun: th("sun"),
+    },
+    closed: th("closed"),
+  }
 
   const anyDay = DAY_KEYS.some((k) => hours[k] !== null)
   if (!anyDay)
@@ -63,7 +78,7 @@ export async function BusinessHours({ hoursJson, phone }: Props) {
           const d = hours[k]
           return (
             <li key={k} className="flex items-center justify-between gap-3">
-              <span className="text-muted-foreground">{DAY_LABELS[k]}</span>
+              <span className="text-muted-foreground">{labels.days[k]}</span>
               <span
                 className={
                   d
@@ -73,7 +88,7 @@ export async function BusinessHours({ hoursJson, phone }: Props) {
                     : "text-muted-foreground/60"
                 }
               >
-                {formatHoursLine(d)}
+                {formatHoursLine(d, labels.closed)}
               </span>
             </li>
           )

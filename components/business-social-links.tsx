@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Star } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
 export type SocialLinks = {
   instagramUrl?: string | null
@@ -91,7 +92,7 @@ const PLATFORMS: {
   { key: "youtubeUrl", label: "YouTube", Icon: YoutubeIcon },
 ]
 
-export function BusinessSocialLinks({
+export async function BusinessSocialLinks({
   links,
   reviewUrl,
 }: {
@@ -101,6 +102,7 @@ export function BusinessSocialLinks({
   const items = PLATFORMS.filter((p) => links[p.key])
 
   if (items.length === 0 && !links.yelpUrl && !reviewUrl) return null
+  const tu = await getTranslations("hoursUi")
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -139,7 +141,7 @@ export function BusinessSocialLinks({
           className="inline-flex h-9 items-center gap-1.5 rounded-full bg-foreground px-3.5 text-xs font-medium text-background transition hover:bg-foreground/90"
         >
           <Star className="h-3.5 w-3.5 fill-current" />
-          View Google reviews
+          {tu("viewGoogleReviews")}
         </Link>
       )}
     </div>

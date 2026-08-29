@@ -36,6 +36,7 @@ export function BusinessPhotoGallery({
   logoUrl: string | null
 }) {
   const t = useTranslations("businesses.profile")
+  const tu = useTranslations("hoursUi")
   const [openAt, setOpenAt] = useState<number | null>(null)
   // Photos that failed to load (even after retry) are pruned so the mosaic
   // reflows without empty tiles — a smaller gallery beats a broken-looking one.
@@ -67,7 +68,7 @@ export function BusinessPhotoGallery({
       >
         <SafeImage
           src={src}
-          alt={`${businessName} — photo ${index + 1}`}
+          alt={tu("photoAlt", { name: businessName, n: index + 1 })}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           fallback={<div className="h-full w-full bg-gradient-to-br from-primary/15 to-accent" />}
           onFail={() => setDeadPhotos((prev) => (prev.includes(src) ? prev : [...prev, src]))}

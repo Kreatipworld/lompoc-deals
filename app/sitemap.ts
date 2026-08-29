@@ -3,12 +3,21 @@ import { db } from "@/db/client"
 import { eq } from "drizzle-orm"
 import { blogPosts } from "@/db/schema"
 import { HOTELS } from "@/lib/hotels-data"
+import { siteUrl, esUrl } from "@/lib/seo"
 
 // Regenerate hourly: events cancel, businesses close, stories publish — a build-time
 // sitemap would advertise dead URLs until the next deploy.
 export const revalidate = 3600
 
-const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+/**
+ * hreflang pair for a bilingual page: the English URL plus its /es twin. Every
+ * public page renders in both locales (next-intl, localePrefix "as-needed"), so
+ * Spanish gets crawled and clustered instead of being invisible to Google.
+ * Blog/news stories are English-only and deliberately carry no alternates.
+ */
+function bilingual(path: string) {
+  return { languages: { en: `${siteUrl}${path}`, es: esUrl(path) } }
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [bizs, cats, posts, acts, upcomingEvents] = await Promise.all([
@@ -95,6 +104,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       : path === "/contact" ? 0.4
       : path === "/privacy" || path === "/terms" ? 0.3
       : 0.7,
+    alternates: bilingual(path),
   }))
 
   const bizPages = bizs.map((b) => ({
@@ -102,6 +112,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: b.createdAt,
     changeFrequency: "weekly" as const,
     priority: 0.7,
+    alternates: bilingual(`/biz/${b.slug}`),
   }))
 
   const catPages = cats.map((c) => ({
@@ -109,6 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
     changeFrequency: "daily" as const,
     priority: 0.5,
+    alternates: bilingual(`/category/${c.slug}`),
   }))
 
   const blogPages = posts.map((p) => ({
@@ -123,6 +135,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.6,
+    alternates: bilingual(`/hotels/${h.slug}`),
   }))
 
   const activityPages = acts.map((a) => ({
@@ -130,6 +143,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: a.updatedAt,
     changeFrequency: "weekly" as const,
     priority: 0.6,
+    alternates: bilingual(`/activities/${a.slug}`),
   }))
 
   const eventPages = upcomingEvents.map((e) => ({
@@ -137,6 +151,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: e.createdAt,
     changeFrequency: "weekly" as const,
     priority: 0.6,
+    alternates: bilingual(`/events/${e.id}`),
   }))
 
   return [...staticPages, ...bizPages, ...catPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages]

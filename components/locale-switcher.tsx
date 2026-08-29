@@ -13,7 +13,12 @@ export function LocaleSwitcher({ variant = "default" }: { variant?: Variant }) {
 
   function switchTo(target: "en" | "es") {
     if (target === locale) return
-    router.replace(pathname, { locale: target })
+    // usePathname() drops the query string; /news?topic=business must survive the
+    // switch. Read it at click time (window.location) rather than useSearchParams(),
+    // which would force a Suspense boundary on every page that mounts the header.
+    const suffix =
+      typeof window === "undefined" ? "" : `${window.location.search}${window.location.hash}`
+    router.replace(`${pathname}${suffix}`, { locale: target })
   }
 
   if (variant === "mobile") {

@@ -115,7 +115,7 @@
     "browseDirectory": "Ver directorio",
     "forBusinessOwners": "Para dueños de negocios",
     "ownABusiness": "¿Tienes un negocio en Lompoc?",
-    "businessCta": "Publica tu negocio, que te descubran los vecinos y aparece en el boletín semanal — con cupones reales cuando los quieras. Gratis para siempre en lo básico.",
+    "businessCta": "Publica tu negocio, que te descubran los vecinos y aparece en el boletín del lunes — con cupones reales cuando los quieras. Membresía Growth, $39.99/mes, cancela cuando quieras.",
     "listYourBusiness": "Publica tu negocio",
     "weeklyDigest": "Resumen semanal",
     "findDealsInLompoc": "Encuentra ofertas en Lompoc",
@@ -185,9 +185,9 @@
       "q2": "¿Cómo reclamo una oferta?",
       "a2": "Haz clic en \"Reclamar oferta\" en cualquier promoción, luego muestra tu teléfono en el negocio.",
       "q3": "¿Cómo publican ofertas los negocios?",
-      "a3": "Regístrate como negocio (gratis) y crea tu perfil en menos de 5 minutos. Publicar ofertas requiere el plan Growth ($39.99/mes), que desbloquea hasta 5 ofertas y anuncios activos.",
+      "a3": "Únete como miembro Growth ($39.99/mes) y crea tu perfil en menos de 5 minutos. Growth desbloquea hasta 5 ofertas y anuncios activos, el boletín del lunes y posicionamiento prioritario.",
       "q4": "¿Cuánto cuesta publicar mi negocio?",
-      "a4": "Nuestro plan gratuito es $0 para siempre — tu negocio aparece listado con horarios, fotos e información de contacto. Growth cuesta $39.99/mes y desbloquea las ofertas (hasta 5 activas), estadísticas y posicionamiento prioritario.",
+      "a4": "Growth cuesta $39.99/mes y puedes cancelar cuando quieras — tu negocio con horarios, fotos e información de contacto, más ofertas (hasta 5 activas), estadísticas y posicionamiento prioritario.",
       "q5": "¿Esto es solo para Lompoc?",
       "a5": "Por ahora, sí. Estamos 100% enfocados en Lompoc. Eso es lo que lo hace funcionar — cada oferta es de alguien local, para alguien local.",
       "q6": "¿Cómo recibo el correo semanal?",
@@ -1195,7 +1195,7 @@
       "metaFallbackDescription": "Explora las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
       "metaOgFallback": "Ofertas actuales de {name} en Lompoc, CA. Gratis para canjear.",
       "breadcrumbHome": "Ofertas",
-      "trustActiveItem": "{count} {label} activos",
+      "trustActiveItem": "{count} {label} vigentes",
       "trustListed": "Registrado desde {date}",
       "sectionActiveListings": "Listados activos",
       "sectionActiveDeals": "Ofertas activas",
@@ -2389,5 +2389,176 @@
     "paginationNext": "Siguiente",
     "paginationPage": "Página {page} de {total}",
     "paginationLabel": "Páginas de noticias"
-  }
+  },
+  "categoryLabels": {
+    "auto": "Automotriz",
+    "dispensaries": "Dispensarios",
+    "entertainment": "Entretenimiento",
+    "food-drink": "Comida y bebida",
+    "health-beauty": "Salud y belleza",
+    "other": "Otros",
+    "real-estate": "Bienes raíces",
+    "retail": "Tiendas",
+    "services": "Servicios",
+    "wineries": "Viñedos"
+  },
+  "hoursUi": {
+    "mon": "Lun",
+    "tue": "Mar",
+    "wed": "Mié",
+    "thu": "Jue",
+    "fri": "Vie",
+    "sat": "Sáb",
+    "sun": "Dom",
+    "closed": "Cerrado",
+    "localBusiness": "negocio local",
+    "allCategories": "Todas",
+    "seeAllDeals": "Ver todas las ofertas",
+    "photoAlt": "{name} — foto {n}",
+    "viewGoogleReviews": "Ver reseñas en Google",
+    "loadingMap": "Cargando mapa…",
+    "navMenu": "Menú de navegación",
+    "menu": "Menú",
+    "openMenu": "Abrir el menú de navegación",
+    "closeMenu": "Cerrar el menú de navegación",
+    "mainNav": "Navegación principal",
+    "notifications": "Notificaciones",
+    "browse": "Explorar",
+    "mostActive": "Más activos",
+    "mostActiveHeading": "Donde están las ofertas ahora mismo",
+    "mostActiveSub": "Los negocios locales con más ofertas vigentes esta semana.",
+    "withDealOne": "con una oferta",
+    "withDealMany": "con ofertas"
+  },
+  "mapUi": {
+    "categories": {
+      "wineries": "Vinos y viñedos",
+      "food-drink": "Comida y bebida",
+      "retail": "Tiendas y compras",
+      "health-beauty": "Salud y belleza",
+      "entertainment": "Entretenimiento",
+      "services": "Servicios",
+      "auto": "Automotriz",
+      "dispensaries": "Dispensarios",
+      "real-estate": "Bienes raíces",
+      "other": "Otros"
+    },
+    "filter": {
+      "all": "Todo"
+    },
+    "sidebar": {
+      "places": "{count, plural, =1 {1 lugar} other {# lugares}}",
+      "sortedByProximity": "Ordenado por cercanía",
+      "clickMarker": "Toca un marcador para explorar",
+      "selected": "Seleccionado",
+      "noMatches": "Ningún lugar coincide con tus filtros"
+    },
+    "search": {
+      "placeholder": "Buscar lugares…"
+    },
+    "popup": {
+      "close": "Cerrar ventana",
+      "fromCenter": "a {distance} del centro",
+      "directions": "Cómo llegar",
+      "viewListing": "Ver perfil"
+    },
+    "skeleton": {
+      "loading": "Cargando Lompoc…"
+    },
+    "tour": {
+      "start": "Hacer un recorrido",
+      "skip": "Saltar",
+      "exit": "Salir",
+      "stops": {
+        "welcome": {
+          "label": "Bienvenido a Lompoc",
+          "sublabel": "El valle escondido de California"
+        },
+        "wineGhetto": {
+          "label": "El Wine Ghetto",
+          "sublabel": "Más de 17 salas de cata en una cuadra de clase mundial"
+        },
+        "mission": {
+          "label": "Misión La Purísima",
+          "sublabel": "La misión más completamente restaurada de California"
+        },
+        "flowerFields": {
+          "label": "Campos de flores de Lompoc",
+          "sublabel": "Guisantes de olor y espuelas de caballero en flor"
+        },
+        "jalama": {
+          "label": "Playa Jalama",
+          "sublabel": "Paraíso escondido para surfear y acampar"
+        },
+        "explore": {
+          "label": "Explora Lompoc",
+          "sublabel": "Tu aventura empieza aquí"
+        }
+      }
+    },
+    "controls": {
+      "switchToDay": "Cambiar a modo día",
+      "switchToNight": "Cambiar a modo noche",
+      "showMyLocation": "Mostrar mi ubicación",
+      "copyLink": "Copiar enlace del mapa",
+      "toggleList": "Mostrar u ocultar la lista",
+      "resetView": "Volver a la vista de Lompoc"
+    }
+  },
+  "newsUi": {
+    "news": {
+      "metaTitle": "Noticias de Lompoc — Lo que pasa en el pueblo",
+      "metaDescription": "Noticias locales de Lompoc, CA, escritas por vecinos: aperturas de negocios, novedades de la comunidad, lanzamientos y lo que todo eso significa para ti.",
+      "ogTitle": "Noticias de Lompoc — Lompoc Locals",
+      "ogDescription": "Aperturas de negocios, novedades de la comunidad y lo que pasa en Lompoc, CA.",
+      "ogImageAlt": "Lompoc, California",
+      "topicsLabel": "Temas de noticias"
+    },
+    "blog": {
+      "metaTitle": "Blog — Noticias locales, consejos e historias de la comunidad",
+      "metaDescription": "Descubre historias locales, negocios destacados, eventos comunitarios y consejos exclusivos para Lompoc, CA. Mantente al tanto de lo que pasa en tu ciudad.",
+      "ogTitle": "Blog — Lompoc Locals",
+      "ogDescription": "Historias locales, consejos y noticias de la comunidad de Lompoc, CA.",
+      "postNotFound": "Publicación no encontrada",
+      "readOnBlog": "Lee {title} en el blog de Lompoc Locals.",
+      "teamAuthor": "Equipo de Lompoc Locals"
+    },
+    "blogCategories": {
+      "community-guides": "Guías de la comunidad",
+      "food-dining": "Comida y restaurantes",
+      "local-history": "Historia local",
+      "local-news": "Noticias locales",
+      "outdoor-adventures": "Aventuras al aire libre",
+      "things-to-do": "Qué hacer",
+      "wine-country": "País del vino"
+    },
+    "events": {
+      "launchTitle": "Lanzamiento: {rocket} — {mission}",
+      "launchShortTitle": "Lanzamiento {mission}",
+      "launchingFrom": "Despega desde {pad}.",
+      "launchNote": "Los horarios de lanzamiento cambian con frecuencia — vuelve para ver actualizaciones. Se ve desde gran parte de Lompoc; los lugares populares para verlo incluyen Ocean Ave al oeste del pueblo y Surf Beach (cuando está abierta)."
+    },
+    "hotels": {
+      "descriptor": "Hotel en Lompoc",
+      "categoryBudget": "Económico",
+      "categoryMidRange": "Precio medio",
+      "categoryBoutique": "Boutique"
+    },
+    "subscribe": {
+      "previewSchedule": "Lunes · 9:00 AM"
+    }
+  },
+  "siteMeta": {
+    "titleDefault": "Lompoc Locals — Cupones, ofertas y qué hacer en Lompoc",
+    "titleTemplate": "%s | Lompoc Locals",
+    "description": "Las ofertas más recientes de los negocios de Lompoc, California: cupones, especiales y anuncios actualizados a diario.",
+    "keywords": "Lompoc, Lompoc CA, ofertas en Lompoc, cupones en Lompoc, qué hacer en Lompoc, negocios locales, Vandenberg Valley",
+    "ogTitle": "Lompoc Locals — Cupones locales y qué hacer en Lompoc",
+    "ogDescription": "Explora ofertas de negocios de Lompoc, California: restaurantes, salones, servicios y más. Actualizado a diario.",
+    "twitterDescription": "Ofertas de negocios de Lompoc, CA: cupones, especiales y anuncios, actualizados a diario.",
+    "categoryTitle": "{category} en Lompoc — Negocios locales y ofertas",
+    "categoryDescription": "Explora negocios de {category} en Lompoc, CA: listados locales, ofertas activas y cupones. Actualizado a diario.",
+    "categoryNotFound": "Categoría"
+  },
+  "bizRoad": {}
 }

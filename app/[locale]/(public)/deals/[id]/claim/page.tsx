@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { isPast, formatDistanceToNowStrict } from "date-fns"
+import { es } from "date-fns/locale"
 import { MapPin, Phone, Clock, FileText } from "lucide-react"
 import { getDealById } from "@/lib/queries"
 import { auth } from "@/auth"
@@ -19,7 +20,8 @@ export default async function ClaimPage({
 }: {
   params: Promise<{ locale: string; id: string }>
 }) {
-  const { id } = await params
+  const { id, locale } = await params
+  const dateLocale = locale === "es" ? es : undefined
   const t = await getTranslations("claim")
   const dealId = parseInt(id, 10)
   const deal = Number.isFinite(dealId) ? await getDealById(dealId) : null
@@ -114,7 +116,7 @@ export default async function ClaimPage({
           <div className="mt-5 space-y-1 text-xs text-muted-foreground">
             <p className="inline-flex items-center gap-1">
               <Clock className="h-3 w-3" />
-              {t("expires", { distance: formatDistanceToNowStrict(deal.expiresAt) })}
+              {t("expires", { distance: formatDistanceToNowStrict(deal.expiresAt, { locale: dateLocale }) })}
             </p>
             {deal.terms && (
               <p className="flex items-center justify-center gap-1 italic">

@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from "react"
 import Image from "next/image"
+import { useLocale } from "next-intl"
 import { Link } from "@/i18n/navigation"
-import { HOTELS, type Hotel } from "@/lib/hotels-data"
+import { HOTELS, amenityLabel, hotelAvenue, hotelTagline, type Hotel } from "@/lib/hotels-data"
 import { MapPin, Star, BedDouble, X } from "lucide-react"
 
 // Labels arrive from the server page (next-intl lives server-side there);
@@ -46,15 +47,15 @@ function matchesFilter(hotel: Hotel, active: Set<string>): boolean {
       const tier = id.slice("price-".length)
       if (hotel.priceRange !== tier) return false
     } else if (id === "amenity-pool") {
-      if (!hotel.amenities.some((a) => a.toLowerCase().includes("pool"))) return false
+      if (!hotel.amenities.some((a) => a === "indoorPool" || a === "outdoorPool")) return false
     } else if (id === "amenity-breakfast") {
-      if (!hotel.amenities.some((a) => a.toLowerCase().includes("breakfast"))) return false
+      if (!hotel.amenities.some((a) => /breakfast/i.test(a))) return false
     } else if (id === "amenity-wifi") {
-      if (!hotel.amenities.some((a) => a.toLowerCase().includes("wi-fi") || a.toLowerCase().includes("wifi"))) return false
+      if (!hotel.amenities.includes("wifi")) return false
     } else if (id === "amenity-parking") {
-      if (!hotel.amenities.some((a) => a.toLowerCase().includes("parking"))) return false
+      if (!hotel.amenities.includes("parking")) return false
     } else if (id === "amenity-pets") {
-      if (!hotel.amenities.some((a) => a.toLowerCase().includes("pet"))) return false
+      if (!hotel.amenities.includes("petFriendly")) return false
     }
   }
   return true
@@ -90,7 +91,7 @@ function StarRating({ rating }: { rating: number }) {
   )
 }
 
-function HotelCard({ hotel, labels }: { hotel: Hotel; labels: HotelsGridLabels }) {
+function HotelCard({ hotel, labels, locale }: { hotel: Hotel; labels: HotelsGridLabels; locale: string }) {
   const gradient = COVER_GRADIENT[hotel.priceRange] ?? COVER_GRADIENT["$"]
   const distance = labels.milesToDowntown.replace("{miles}", milesToDowntown(hotel))
 
@@ -139,7 +140,7 @@ function HotelCard({ hotel, labels }: { hotel: Hotel; labels: HotelsGridLabels }
           </span>
         </div>
 
-        <p className="line-clamp-1 text-sm text-muted-foreground">{hotel.tagline}</p>
+        <p className="line-clamp-1 text-sm text-muted-foreground">{hotelTagline(hotel, locale)}</p>
 
         {hotel.amenities.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
@@ -148,7 +149,7 @@ function HotelCard({ hotel, labels }: { hotel: Hotel; labels: HotelsGridLabels }
                 key={a}
                 className="rounded-full border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"
               >
-                {a}
+                {amenityLabel(a, locale)}
               </span>
             ))}
           </div>
@@ -156,7 +157,7 @@ function HotelCard({ hotel, labels }: { hotel: Hotel; labels: HotelsGridLabels }
 
         <div className="mt-auto flex items-center gap-1 text-xs text-muted-foreground">
           <MapPin className="h-3 w-3 shrink-0 text-primary/50" />
-          <span className="truncate">{hotel.avenue ?? hotel.address}</span>
+          <span className="truncate">{hotelAvenue(hotel, locale) ?? hotel.address}</span>
         </div>
       </div>
     </Link>
@@ -166,6 +167,7 @@ function HotelCard({ hotel, labels }: { hotel: Hotel; labels: HotelsGridLabels }
 // ── Main component: chips + single filtered grid ────────────────────────────
 
 export function HotelsFilterGrid({ labels }: { labels: HotelsGridLabels }) {
+  const locale = useLocale()
   const [active, setActive] = useState<Set<string>>(new Set())
 
   const priceFilters: FilterChip[] = [
@@ -233,7 +235,7 @@ export function HotelsFilterGrid({ labels }: { labels: HotelsGridLabels }) {
       {filtered.length > 0 ? (
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
           {filtered.map((hotel) => (
-            <HotelCard key={hotel.slug} hotel={hotel} labels={labels} />
+            <HotelCard key={hotel.slug} hotel={hotel} labels={labels} locale={locale} />
           ))}
         </div>
       ) : (

@@ -16,6 +16,7 @@ import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
 import { CouponDemo } from "@/components/coupon-demo"
 import { getTranslations } from "next-intl/server"
+import { categoryLabel } from "@/lib/category-label"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
 
@@ -112,6 +113,12 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
+  const tc = await getTranslations({ locale: params.locale, namespace: "categoryLabels" })
+  // Food-row cards print `categoryName` straight from the DB (English); hand them the localized label.
+  const localizedFoodSpots = foodSpots.map((b) => ({
+    ...b,
+    categoryName: categoryLabel(tc, b.categorySlug, b.categoryName),
+  }))
 
   return (
     <>
@@ -223,7 +230,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
             <p className="mt-1 text-muted-foreground">{t("hungrySubheading")}</p>
           </AnimeReveal>
           <FeaturedBusinessesMarquee
-            businesses={foodSpots}
+            businesses={localizedFoodSpots}
             dealLabel={t("deal")}
             dealsLabel={t("deals")}
             prevLabel={t("carouselPrev")}
@@ -251,6 +258,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
           {categories.map((cat) => {
             // Real business photo when available, else the static category image
             const image = categoryCovers[cat.slug] ?? getCategoryImage(cat.slug)
+            const label = categoryLabel(tc, cat.slug, cat.name)
             return (
               <Link
                 key={cat.slug}
@@ -262,7 +270,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
                   {image ? (
                     <SafeImage
                       src={image}
-                      alt={cat.name}
+                      alt={label}
                       className="h-full w-full object-cover [transition:transform_320ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
                       fallback={<div className="h-full w-full bg-gradient-to-br from-muted to-accent" />}
                     />
@@ -271,7 +279,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
                   )}
                 </div>
                 <p className="mt-2.5 px-0.5 text-sm font-semibold tracking-tight text-foreground [transition:color_180ms_ease] group-hover:text-primary">
-                  {cat.name}
+                  {label}
                 </p>
               </Link>
             )

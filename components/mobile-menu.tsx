@@ -12,6 +12,7 @@ import { LocaleSwitcher } from "@/components/locale-switcher"
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
   const t = useTranslations("mobileMenu")
+  const tu = useTranslations("hoursUi")
 
   const navItems = [
     { href: "/", icon: Home, label: t("home") },
@@ -69,14 +70,14 @@ export function MobileMenu() {
           "transition-transform duration-300 ease-in-out",
           open ? "translate-x-0" : "translate-x-full"
         )}
-        aria-label="Navigation menu"
+        aria-label={tu("navMenu")}
       >
         {/* Drawer header */}
         <div className="flex h-16 items-center justify-between border-b px-4">
-          <span className="text-lg font-semibold">Menu</span>
+          <span className="text-lg font-semibold">{tu("menu")}</span>
           <button
             onClick={() => setOpen(false)}
-            aria-label="Close navigation menu"
+            aria-label={tu("closeMenu")}
             className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
             <X className="h-5 w-5" />
@@ -149,7 +150,7 @@ export function MobileMenu() {
       {/* Hamburger button — mobile only */}
       <button
         onClick={() => setOpen(true)}
-        aria-label="Open navigation menu"
+        aria-label={tu("openMenu")}
         aria-expanded={open}
         className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:hidden"
       >

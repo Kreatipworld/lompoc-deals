@@ -1,6 +1,7 @@
 "use client"
 
 import { memo } from "react"
+import { useTranslations } from "next-intl"
 import type { Category } from "@/lib/map-categories"
 import type { POI } from "@/lib/map-pois"
 
@@ -23,6 +24,7 @@ export const MapMarker = memo(function MapMarker({
   onClick,
   onHover,
 }: MapMarkerProps) {
+  const t = useTranslations("mapUi")
   const Icon = category.icon
 
   return (
@@ -40,7 +42,7 @@ export const MapMarker = memo(function MapMarker({
       onMouseLeave={() => onHover(null)}
       tabIndex={0}
       role="button"
-      aria-label={`${poi.name} - ${category.name}`}
+      aria-label={`${poi.name} - ${t(category.labelKey)}`}
       onKeyDown={(e) => e.key === "Enter" && onClick(poi)}
     >
       {/* Pulse ring */}

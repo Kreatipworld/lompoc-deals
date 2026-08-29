@@ -1,6 +1,18 @@
 import type { Metadata } from "next"
 
 /**
+ * Absolute origin for every generated URL (sitemap, og:url, JSON-LD).
+ * AUTH_URL is the canonical domain (https://www.lompoclocals.com) in production.
+ */
+export const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+
+/** Absolute URL for the Spanish twin of an English path ("" or "/" → "/es"). */
+export function esUrl(path: string): string {
+  const p = path === "/" ? "" : path
+  return `${siteUrl}/es${p}`
+}
+
+/**
  * Canonical + hreflang alternates for a public page. Relative paths —
  * they resolve against metadataBase (AUTH_URL) in app/layout.tsx.
  * `path` must start with "/". The default locale (en) is unprefixed;
@@ -9,12 +21,22 @@ import type { Metadata } from "next"
  * The canonical must be self-referential per locale: a Spanish page that
  * canonicalizes to the English URL tells Google to drop /es from the index
  * and poisons the hreflang cluster. Always pass the rendering locale.
+ *
+ * Options:
+ *   esPath — override the Spanish alternate. Use it for content that exists
+ *   only in English (blog posts, news stories): pass the English `path` itself
+ *   so `hreflang="es"` points at the English URL instead of advertising an
+ *   /es twin that just renders the same English body. When esPath equals
+ *   path, the canonical is the English URL for BOTH locales (there is no
+ *   distinct Spanish document to self-reference).
+ *     pageAlternates(`/news/${slug}`, locale, { esPath: `/news/${slug}` })
  */
 export function pageAlternates(
   path: string,
   locale: string = "en",
+  opts: { esPath?: string } = {},
 ): NonNullable<Metadata["alternates"]> {
-  const esPath = path === "/" ? "/es" : `/es${path}`
+  const esPath = opts.esPath ?? (path === "/" ? "/es" : `/es${path}`)
   return {
     canonical: locale === "es" ? esPath : path,
     languages: { en: path, es: esPath, "x-default": path },

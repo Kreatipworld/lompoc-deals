@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
+import { es as dateEs } from "date-fns/locale"
 import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight, Newspaper } from "lucide-react"
 import { getPublishedBlogPosts, countPublishedBlogPosts } from "@/lib/queries"
 import { newsCoverUrl } from "@/lib/news-cover"
@@ -25,15 +26,17 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "newsUi.news" })
+  const es = params.locale === "es"
   return {
-    title: "Lompoc News — What's Happening in Town",
-    description:
-      "Local news for Lompoc, CA, written by neighbors: business openings, community updates, launches, and what it all means for you.",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
     openGraph: {
-      title: "Lompoc News — Lompoc Locals",
-      description: "Business openings, community updates, and local happenings in Lompoc, CA.",
-      url: `${siteUrl}/news`,
-      images: [{ url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" }],
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      url: `${siteUrl}${es ? "/es" : ""}/news`,
+      locale: es ? "es_US" : "en_US",
+      images: [{ url: `${siteUrl}/lompoc-hero.jpg`, alt: t("ogImageAlt") }],
     },
     alternates: pageAlternates("/news", params.locale),
   }
@@ -47,10 +50,14 @@ export default async function NewsIndexPage({
   searchParams: { page?: string; topic?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "news" })
+  const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.news" })
 
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10))
   const offset = (page - 1) * PAGE_SIZE
   const es = params.locale === "es"
+  const dateOpts = { locale: es ? dateEs : undefined }
+  const longDate = es ? "d 'de' MMMM 'de' yyyy" : "MMMM d, yyyy"
+  const shortDate = es ? "d MMM yyyy" : "MMM d, yyyy"
   const activeTopic = searchParams.topic ? topicBySlug(searchParams.topic) : undefined
   const activeTag = activeTopic ? topicTag(activeTopic.slug) : undefined
 
@@ -74,7 +81,7 @@ export default async function NewsIndexPage({
       </header>
 
       {/* Topic chips — the curated sections of the town's front page */}
-      <nav className="mb-8 flex flex-wrap gap-2" aria-label="News topics">
+      <nav className="mb-8 flex flex-wrap gap-2" aria-label={tUi("topicsLabel")}>
         <Link
           href="/news"
           className={`rounded-full px-4 py-1.5 text-sm font-semibold border transition-colors ${
@@ -136,7 +143,7 @@ export default async function NewsIndexPage({
                   {heroPost.publishedAt && (
                     <span className="flex items-center gap-1 text-xs text-gray-400">
                       <CalendarDays className="w-3 h-3" />
-                      {format(heroPost.publishedAt, "MMMM d, yyyy")}
+                      {format(heroPost.publishedAt, longDate, dateOpts)}
                     </span>
                   )}
                   <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold/80 group-hover:text-gold transition-colors">
@@ -177,7 +184,7 @@ export default async function NewsIndexPage({
                         {(() => { const tp = deriveTopic(post.tags as string[] | null, post.title); return `${tp.emoji} ${es ? tp.es : tp.en}` })()}
                       </span>
                       <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" />
-                      {format(post.publishedAt, "MMM d, yyyy")}</span>
+                      {format(post.publishedAt, shortDate, dateOpts)}</span>
                     </span>
                   )}
                 </div>

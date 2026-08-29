@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
+import { es as dateEs } from "date-fns/locale"
 import { CalendarDays, Tag, ChevronLeft, ChevronRight, User, ArrowRight } from "lucide-react"
 import { getPublishedBlogPosts, getBlogCategories, countPublishedBlogPosts } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
@@ -15,14 +16,16 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "newsUi.blog" })
+  const es = params.locale === "es"
   return {
-    title: "Blog — Local News, Tips & Community Stories",
-    description:
-      "Discover local stories, business spotlights, community events, and insider tips for Lompoc, CA. Stay connected with what's happening in your city.",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
     openGraph: {
-      title: "Blog — Lompoc Locals",
-      description: "Local stories, tips, and community news for Lompoc, CA.",
-      url: `${siteUrl}/blog`,
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      url: `${siteUrl}${es ? "/es" : ""}/blog`,
+      locale: es ? "es_US" : "en_US",
       images: [{ url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" }],
     },
     alternates: pageAlternates("/blog", params.locale),
@@ -37,6 +40,13 @@ export default async function BlogIndexPage({
   searchParams: { category?: string; page?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "blog" })
+  const tCat = await getTranslations({ locale: params.locale, namespace: "newsUi.blogCategories" })
+  const es = params.locale === "es"
+  const dateOpts = { locale: es ? dateEs : undefined }
+  const longDate = es ? "d 'de' MMMM 'de' yyyy" : "MMMM d, yyyy"
+  const shortDate = es ? "d MMM yyyy" : "MMM d, yyyy"
+  // Categories are slugs in the DB; unknown ones fall back to the de-hyphenated slug.
+  const categoryName = (slug: string) => (tCat.has(slug) ? tCat(slug) : slug.replace(/-/g, " "))
 
   const category = searchParams.category ?? undefined
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10))
@@ -87,13 +97,13 @@ export default async function BlogIndexPage({
             <Link
               key={cat}
               href={`/blog?category=${encodeURIComponent(cat)}`}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors capitalize ${
+              className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                 category === cat
                   ? "bg-primary text-primary-foreground border-primary"
                   : "bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary"
               }`}
             >
-              {cat.replace(/-/g, " ")}
+              {categoryName(cat)}
             </Link>
           ))}
         </nav>
@@ -125,7 +135,7 @@ export default async function BlogIndexPage({
                   {heroPost.category && (
                     <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-gold mb-3">
                       <Tag className="w-3 h-3" />
-                      {heroPost.category.replace(/-/g, " ")}
+                      {categoryName(heroPost.category)}
                     </span>
                   )}
                   <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 leading-tight group-hover:text-gold transition-colors">
@@ -140,7 +150,7 @@ export default async function BlogIndexPage({
                     {heroPost.publishedAt && (
                       <span className="flex items-center gap-1">
                         <CalendarDays className="w-3 h-3" />
-                        {format(heroPost.publishedAt, "MMMM d, yyyy")}
+                        {format(heroPost.publishedAt, longDate, dateOpts)}
                       </span>
                     )}
                     {heroPost.authorName && (
@@ -181,7 +191,7 @@ export default async function BlogIndexPage({
                       className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-primary mb-2 hover:text-primary/80 w-fit"
                     >
                       <Tag className="w-3 h-3" />
-                      {post.category.replace(/-/g, " ")}
+                      {categoryName(post.category)}
                     </Link>
                   )}
                   <h2 className="text-base font-bold text-gray-900 mb-2 leading-snug flex-1">
@@ -196,7 +206,7 @@ export default async function BlogIndexPage({
                     {post.publishedAt && (
                       <span className="flex items-center gap-1">
                         <CalendarDays className="w-3 h-3" />
-                        {format(post.publishedAt, "MMM d, yyyy")}
+                        {format(post.publishedAt, shortDate, dateOpts)}
                       </span>
                     )}
                     {post.authorName && (

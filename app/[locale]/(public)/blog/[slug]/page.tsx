@@ -3,7 +3,9 @@ import { FeaturedDeals } from "@/components/featured-deals"
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
 import { format } from "date-fns"
+import { es as dateEs } from "date-fns/locale"
 import { CalendarDays, Tag, ArrowLeft, User } from "lucide-react"
+import { TOPIC_TAG_PREFIX, topicBySlug } from "@/lib/news-topics"
 import { getBlogPostBySlug, getRecentBlogPosts, getBusinessesForBlogCategory } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
 import { newsCoverUrl } from "@/lib/news-cover"
@@ -19,11 +21,15 @@ export async function generateMetadata({
 }: {
   params: { slug: string; locale: string }
 }): Promise<Metadata> {
-  const post = await getBlogPostBySlug(params.slug)
-  if (!post) return { title: "Post not found" }
+  const [post, tUi] = await Promise.all([
+    getBlogPostBySlug(params.slug),
+    getTranslations({ locale: params.locale, namespace: "newsUi.blog" }),
+  ])
+  if (!post) return { title: tUi("postNotFound") }
 
+  const es = params.locale === "es"
   const description =
-    post.metaDescription ?? post.excerpt ?? `Read ${post.title} on the Lompoc Locals blog.`
+    post.metaDescription ?? post.excerpt ?? tUi("readOnBlog", { title: post.title })
 
   return {
     title: post.title,
@@ -31,7 +37,8 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description,
-      url: `${siteUrl}/blog/${post.slug}`,
+      url: `${siteUrl}${es ? "/es" : ""}/blog/${post.slug}`,
+      locale: es ? "es_US" : "en_US",
       type: "article",
       publishedTime: post.publishedAt?.toISOString(),
       authors: post.authorName ? [post.authorName] : undefined,
@@ -50,7 +57,12 @@ export async function generateMetadata({
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string; locale: string } }) {
-  const t = await getTranslations({ locale: params.locale, namespace: "blog" })
+  const [t, tUi, tCat] = await Promise.all([
+    getTranslations({ locale: params.locale, namespace: "blog" }),
+    getTranslations({ locale: params.locale, namespace: "newsUi.blog" }),
+    getTranslations({ locale: params.locale, namespace: "newsUi.blogCategories" }),
+  ])
+  const es = params.locale === "es"
 
   const [post, recentPosts] = await Promise.all([
     getBlogPostBySlug(params.slug),
@@ -62,6 +74,20 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
   const relatedBusinesses = await getBusinessesForBlogCategory(post.category ?? null, 3)
 
   const relatedPosts = recentPosts.filter((p) => p.slug !== post.slug).slice(0, 2)
+
+  const categoryName = post.category
+    ? tCat.has(post.category) ? tCat(post.category) : post.category.replace(/-/g, " ")
+    : null
+  // The house byline is the only author string we own; real names stay as written.
+  const authorName =
+    post.authorName === "Lompoc Locals Team" ? tUi("teamAuthor") : post.authorName
+  // `topic:<slug>` tags are internal routing for the news desk — show the topic's
+  // localized name instead of the raw tag, and drop any topic we don't recognize.
+  const visibleTags = (post.tags ?? []).flatMap((tag) => {
+    if (!tag.startsWith(TOPIC_TAG_PREFIX)) return [tag]
+    const topic = topicBySlug(tag.slice(TOPIC_TAG_PREFIX.length))
+    return topic ? [`${topic.emoji} ${es ? topic.es : topic.en}`] : []
+  })
 
   // Schema.org BlogPosting structured data
   // Local news gets NewsArticle (Top Stories / Google News eligibility); everything
@@ -121,7 +147,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
               className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-primary mb-3 hover:text-primary/80"
             >
               <Tag className="w-3 h-3" />
-              {post.category}
+              {categoryName}
             </Link>
           )}
 
@@ -134,13 +160,17 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
             {post.publishedAt && (
               <span className="flex items-center gap-1">
                 <CalendarDays className="w-4 h-4" />
-                {format(post.publishedAt, "MMMM d, yyyy")}
+                {format(
+                  post.publishedAt,
+                  es ? "d 'de' MMMM 'de' yyyy" : "MMMM d, yyyy",
+                  { locale: es ? dateEs : undefined }
+                )}
               </span>
             )}
-            {post.authorName && (
+            {authorName && (
               <span className="flex items-center gap-1">
                 <User className="w-4 h-4" />
-                {post.authorName}
+                {authorName}
               </span>
             )}
           </div>
@@ -170,11 +200,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
           />
 
           {/* Tags */}
-          {post.tags && post.tags.length > 0 && (
+          {visibleTags.length > 0 && (
             <div className="mt-8 pt-6 border-t border-gray-100">
               <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">{t("tags")}</p>
               <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
+                {visibleTags.map((tag) => (
                   <span
                     key={tag}
                     className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md"
@@ -189,11 +219,19 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
 
         {/* Internal linking — related posts + deals CTA */}
         {relatedPosts.length > 0 && (
-          <BlogRelatedLinks posts={relatedPosts} title={t("relatedArticles")} />
+          <BlogRelatedLinks posts={relatedPosts} title={t("relatedArticles")} locale={params.locale} />
         )}
 
         {/* Platform business recommendations */}
-        <BlogBusinessSpotlight businesses={relatedBusinesses} title={t("localBusinesses")} supportLocalText={t("supportLocal")} browseAllText={t("browseAllBusinesses")} />
+        <BlogBusinessSpotlight
+          businesses={relatedBusinesses}
+          title={t("localBusinesses")}
+          supportLocalText={t("supportLocal")}
+          browseAllText={t("browseAllBusinesses")}
+          activeDealsLabel={(count) =>
+            t(count === 1 ? "activeDealSingular" : "activeDealPlural", { count })
+          }
+        />
 
         {/* CTA to deals */}
         <div className="mt-10 p-6 bg-accent rounded-2xl border border-primary/20 text-center">

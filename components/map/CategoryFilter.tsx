@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { CATEGORIES } from "@/lib/map-categories"
 import type { CategoryId } from "@/lib/map-categories"
 
@@ -14,6 +15,7 @@ export function CategoryFilter({
   onToggle,
   onSelectAll,
 }: CategoryFilterProps) {
+  const t = useTranslations("mapUi")
   const allActive = activeCategories.size === CATEGORIES.length
 
   return (
@@ -26,7 +28,7 @@ export function CategoryFilter({
             : "bg-gray-100 text-gray-500 hover:bg-gray-200"
         }`}
       >
-        All
+        {t("filter.all")}
       </button>
       {CATEGORIES.map((cat) => {
         const active = activeCategories.has(cat.id)
@@ -43,7 +45,7 @@ export function CategoryFilter({
             style={active ? { backgroundColor: cat.color } : {}}
           >
             <Icon className="h-3.5 w-3.5" />
-            {cat.name}
+            {t(cat.labelKey)}
           </button>
         )
       })}

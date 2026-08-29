@@ -1,57 +1,53 @@
 "use client"
 
 import { useState, useRef } from "react"
+import { useTranslations } from "next-intl"
 import { Play, X, ChevronRight } from "lucide-react"
 import type { MapRef } from "react-map-gl/mapbox"
 
+// Labels live in messages/*.json under mapUi.tour.stops.<key>.{label,sublabel}
 const TOUR_STOPS = [
   {
     center: [-120.4579, 34.6391] as [number, number],
     zoom: 13,
     pitch: 0,
     bearing: 0,
-    label: "Welcome to Lompoc",
-    sublabel: "California's hidden gem valley",
+    key: "welcome",
   },
   {
     center: [-120.4498, 34.642] as [number, number],
     zoom: 16,
     pitch: 60,
     bearing: 30,
-    label: "The Wine Ghetto",
-    sublabel: "17+ tasting rooms, one world-class block",
+    key: "wineGhetto",
   },
   {
     center: [-120.419, 34.6689] as [number, number],
     zoom: 15,
     pitch: 50,
     bearing: -20,
-    label: "La Purisima Mission",
-    sublabel: "Most fully restored mission in California",
+    key: "mission",
   },
   {
     center: [-120.44, 34.65] as [number, number],
     zoom: 14,
     pitch: 45,
     bearing: 10,
-    label: "Lompoc Flower Fields",
-    sublabel: "Sweet pea & larkspur in bloom",
+    key: "flowerFields",
   },
   {
     center: [-120.5004, 34.5108] as [number, number],
     zoom: 14,
     pitch: 55,
     bearing: -30,
-    label: "Jalama Beach",
-    sublabel: "Hidden gem surf & camping paradise",
+    key: "jalama",
   },
   {
     center: [-120.4579, 34.6391] as [number, number],
     zoom: 12.5,
     pitch: 45,
     bearing: -15,
-    label: "Explore Lompoc",
-    sublabel: "Your adventure starts here",
+    key: "explore",
   },
 ]
 
@@ -60,6 +56,7 @@ interface TourButtonProps {
 }
 
 export function TourButton({ mapRef }: TourButtonProps) {
+  const t = useTranslations("mapUi")
   const [active, setActive] = useState(false)
   const [step, setStep] = useState(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -113,7 +110,7 @@ export function TourButton({ mapRef }: TourButtonProps) {
         className="flex items-center gap-2 rounded-xl bg-purple-700 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-purple-800 hover:shadow-purple-900/40 active:scale-95"
       >
         <Play className="h-4 w-4 fill-white" />
-        Take a Tour
+        {t("tour.start")}
       </button>
     )
   }
@@ -124,8 +121,8 @@ export function TourButton({ mapRef }: TourButtonProps) {
   return (
     <div className="flex items-center gap-3 rounded-2xl bg-gray-900/90 px-4 py-3 text-white shadow-2xl backdrop-blur-md">
       <div className="min-w-0">
-        <div className="text-sm font-bold">{current.label}</div>
-        <div className="text-xs text-gray-400">{current.sublabel}</div>
+        <div className="text-sm font-bold">{t(`tour.stops.${current.key}.label`)}</div>
+        <div className="text-xs text-gray-400">{t(`tour.stops.${current.key}.sublabel`)}</div>
         {/* Progress bar */}
         <div className="mt-2 h-1 w-40 overflow-hidden rounded-full bg-white/20">
           <div
@@ -146,14 +143,14 @@ export function TourButton({ mapRef }: TourButtonProps) {
             }}
             className="flex items-center gap-1 rounded-lg bg-white/10 px-2 py-1 text-xs font-medium hover:bg-white/20"
           >
-            Skip <ChevronRight className="h-3 w-3" />
+            {t("tour.skip")} <ChevronRight className="h-3 w-3" />
           </button>
         )}
         <button
           onClick={stopTour}
           className="flex items-center gap-1 rounded-lg bg-white/10 px-2 py-1 text-xs font-medium hover:bg-white/20"
         >
-          <X className="h-3 w-3" /> Exit
+          <X className="h-3 w-3" /> {t("tour.exit")}
         </button>
       </div>
     </div>

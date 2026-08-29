@@ -7,6 +7,7 @@ import { subscribers, users } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { auth } from "@/auth"
 import { formatDistanceToNow, format } from "date-fns"
+import { es } from "date-fns/locale"
 import { Tag, CheckCircle2, Clock, Heart, Mail, Bell, BellOff, LifeBuoy } from "lucide-react"
 import { SupportForm } from "@/app/[locale]/dashboard/support/support-form"
 import { updateNotificationPrefsAction } from "@/lib/business-follow-actions"
@@ -27,6 +28,7 @@ export default async function AccountPage({
   searchParams: { notif?: string; digest?: string }
 }) {
   const t = await getTranslations({ locale: params.locale, namespace: "account" })
+  const dateLocale = params.locale === "es" ? es : undefined
   const viewer = await getViewer()
   if (!viewer.isAuthed) {
     redirect("/login?from=/account")
@@ -277,7 +279,7 @@ export default async function AccountPage({
         ) : (
           <div className="space-y-3">
             {activeCoupons.map((coupon) => (
-              <CouponCard key={`${coupon.dealId}-${coupon.claimedAt.toISOString()}`} coupon={coupon} activeLabel={t("activeLabel")} expiredLabel={t("expiredLabel")} expiresLabel={t("expiresLabel")} />
+              <CouponCard key={`${coupon.dealId}-${coupon.claimedAt.toISOString()}`} coupon={coupon} activeLabel={t("activeLabel")} expiredLabel={t("expiredLabel")} expiresLabel={t("expiresLabel")} dateLocale={dateLocale} />
             ))}
           </div>
         )}
@@ -327,7 +329,7 @@ export default async function AccountPage({
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
-                      {format(r.redeemedAt, "MMM d, yyyy")}
+                      {format(r.redeemedAt, "MMM d, yyyy", { locale: dateLocale })}
                     </td>
                   </tr>
                 ))}
@@ -356,7 +358,7 @@ export default async function AccountPage({
           </div>
           <div className="space-y-3 opacity-60">
             {expiredCoupons.map((coupon) => (
-              <CouponCard key={`${coupon.dealId}-${coupon.claimedAt.toISOString()}`} coupon={coupon} expired activeLabel={t("activeLabel")} expiredLabel={t("expiredLabel")} expiresLabel={t("expiresLabel")} />
+              <CouponCard key={`${coupon.dealId}-${coupon.claimedAt.toISOString()}`} coupon={coupon} expired activeLabel={t("activeLabel")} expiredLabel={t("expiredLabel")} expiresLabel={t("expiresLabel")} dateLocale={dateLocale} />
             ))}
           </div>
         </section>
@@ -371,6 +373,7 @@ function CouponCard({
   activeLabel,
   expiredLabel,
   expiresLabel,
+  dateLocale,
 }: {
   coupon: {
     dealId: number
@@ -386,6 +389,7 @@ function CouponCard({
   activeLabel: string
   expiredLabel: string
   expiresLabel: string
+  dateLocale?: typeof es
 }) {
   return (
     <div className="flex items-start gap-4 rounded-xl border p-4">
@@ -414,8 +418,8 @@ function CouponCard({
           </Link>
           {" · "}
           {expired
-            ? expiredLabel.replace("{distance}", formatDistanceToNow(coupon.expiresAt, { addSuffix: true }))
-            : expiresLabel.replace("{distance}", formatDistanceToNow(coupon.expiresAt, { addSuffix: true }))}
+            ? expiredLabel.replace("{distance}", formatDistanceToNow(coupon.expiresAt, { addSuffix: true, locale: dateLocale }))
+            : expiresLabel.replace("{distance}", formatDistanceToNow(coupon.expiresAt, { addSuffix: true, locale: dateLocale }))}
         </p>
       </div>
       {!expired && (

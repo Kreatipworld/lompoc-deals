@@ -5,9 +5,7 @@ import { HOTELS } from "@/lib/hotels-data"
 import { HotelsMap } from "@/components/hotels-map"
 import { HotelsFilterGrid } from "@/components/hotels-filter-grid"
 import { ActivityTicker } from "@/components/activity-ticker"
-import { db } from "@/db/client"
-import { activities } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { getFeaturedActivities, type ActivityData } from "@/lib/queries"
 import { ArrowRight, Tag, Wine, Rocket, Flower2 } from "lucide-react"
 import { pageAlternates } from "@/lib/seo"
 
@@ -34,30 +32,10 @@ export default async function HotelsPage({
   const t = await getTranslations({ locale, namespace: "hotels" })
   const tCat = await getTranslations({ locale, namespace: "activityCategory" })
 
-  // Fetch featured activities
-  let featuredActivities: {
-    id: number
-    title: string
-    slug: string
-    category: string
-    description: string | null
-    imageUrl: string | null
-    featured: boolean
-  }[] = []
+  // Featured activities — locale-aware (description_es on /es)
+  let featuredActivities: ActivityData[] = []
   try {
-    featuredActivities = await db
-      .select({
-        id: activities.id,
-        title: activities.title,
-        slug: activities.slug,
-        category: activities.category,
-        description: activities.description,
-        imageUrl: activities.imageUrl,
-        featured: activities.featured,
-      })
-      .from(activities)
-      .where(eq(activities.featured, true))
-      .limit(6)
+    featuredActivities = await getFeaturedActivities(6, locale)
   } catch {
     // If DB unavailable during build/dev, activities section gracefully hides
   }

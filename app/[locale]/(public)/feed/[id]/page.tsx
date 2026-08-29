@@ -5,10 +5,10 @@ import { getFeedPostById } from "@/lib/feed-queries"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 
-function formatPrice(cents: number | null, freeLabel: string, freeOboLabel: string): string {
+function formatPrice(cents: number | null, freeLabel: string, freeOboLabel: string, intl: string): string {
   if (cents === null) return freeOboLabel
   if (cents === 0) return freeLabel
-  return `$${(cents / 100).toLocaleString(undefined, {
+  return `$${(cents / 100).toLocaleString(intl, {
     minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`
@@ -33,8 +33,9 @@ export async function generateMetadata({
 export default async function FeedPostDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: { id: string; locale: string }
 }) {
+  const intl = params.locale === "es" ? "es-US" : "en-US"
   const t = await getTranslations("feed")
   const tCard = await getTranslations("feedCard")
 
@@ -46,7 +47,7 @@ export default async function FeedPostDetailPage({
 
   const photos = Array.isArray(post.photos) ? (post.photos as string[]) : []
 
-  const priceStr = formatPrice(post.priceCents, tCard("free"), tCard("freeObo"))
+  const priceStr = formatPrice(post.priceCents, tCard("free"), tCard("freeObo"), intl)
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -103,7 +104,7 @@ export default async function FeedPostDetailPage({
       {post.saleStartsAt && post.saleEndsAt && (
         <p className="mt-3 inline-flex items-center gap-1 text-sm text-muted-foreground">
           <Calendar className="h-4 w-4" />
-          {post.saleStartsAt.toLocaleDateString()} – {post.saleEndsAt.toLocaleDateString()}
+          {post.saleStartsAt.toLocaleDateString(intl)} – {post.saleEndsAt.toLocaleDateString(intl)}
         </p>
       )}
     </main>

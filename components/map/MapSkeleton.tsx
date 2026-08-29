@@ -1,6 +1,9 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 export function MapSkeleton() {
+  const t = useTranslations("mapUi")
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gradient-to-br from-purple-950 to-purple-800">
       {/* Shimmer overlay */}
@@ -31,7 +34,7 @@ export function MapSkeleton() {
       {/* Loading text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
         <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-        <p className="text-sm font-medium text-white/60">Loading Lompoc…</p>
+        <p className="text-sm font-medium text-white/60">{t("skeleton.loading")}</p>
       </div>
     </div>
   )

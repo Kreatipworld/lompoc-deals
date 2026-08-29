@@ -1,6 +1,8 @@
 import { Link } from "@/i18n/navigation"
 import { MapPin, Compass, Tag } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { SafeImage } from "@/components/safe-image"
+import { categoryLabel } from "@/lib/category-label"
 import type { NearbyBusiness, NearbyActivity } from "@/lib/queries"
 
 /**
@@ -18,7 +20,7 @@ function distanceLabel(miles: number, labels: DistanceLabels): string {
  * Businesses around a place. This is the link between the two halves of the site:
  * someone reading about a park leaves knowing where to eat next to it.
  */
-export function NearbyBusinesses({
+export async function NearbyBusinesses({
   businesses,
   heading,
   subheading,
@@ -32,6 +34,7 @@ export function NearbyBusinesses({
   distanceLabels: DistanceLabels
 }) {
   if (!businesses.length) return null
+  const tCat = await getTranslations("categoryLabels")
 
   return (
     <section className="mt-10 border-t pt-8">
@@ -59,7 +62,7 @@ export function NearbyBusinesses({
                   {b.name}
                 </div>
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                  {b.categoryName && <span>{b.categoryName}</span>}
+                  {b.categoryName && <span>{categoryLabel(tCat, b.categorySlug, b.categoryName)}</span>}
                   <span className="flex items-center gap-1">
                     <MapPin className="h-3 w-3 text-primary" />
                     {distanceLabel(b.miles, distanceLabels)}

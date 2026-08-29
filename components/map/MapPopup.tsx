@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+import { Link } from "@/i18n/navigation"
 import { X, Star, Navigation, ExternalLink } from "lucide-react"
 import type { POI } from "@/lib/map-pois"
 import type { Category } from "@/lib/map-categories"
@@ -13,6 +15,7 @@ interface MapPopupProps {
 }
 
 export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProps) {
+  const t = useTranslations("mapUi")
   const Icon = category.icon
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
 
@@ -30,7 +33,7 @@ export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProp
       <button
         onClick={onClose}
         className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200"
-        aria-label="Close popup"
+        aria-label={t("popup.close")}
       >
         <X className="h-4 w-4" />
       </button>
@@ -43,7 +46,7 @@ export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProp
             style={{ backgroundColor: category.color }}
           >
             <Icon className="h-3 w-3" />
-            {category.name}
+            {t(category.labelKey)}
           </div>
           {poi.rating && (
             <div className="ml-auto flex items-center gap-1 pr-8">
@@ -73,7 +76,7 @@ export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProp
           )}
           {distanceMiles !== undefined && (
             <span className="ml-auto text-xs text-gray-400">
-              {formatDistance(distanceMiles)} from center
+              {t("popup.fromCenter", { distance: formatDistance(distanceMiles) })}
             </span>
           )}
         </div>
@@ -87,16 +90,16 @@ export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProp
             className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2.5 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50"
           >
             <Navigation className="h-3.5 w-3.5" />
-            Directions
+            {t("popup.directions")}
           </a>
-          <a
+          <Link
             href={`/biz/${poi.slug}`}
             className="flex flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-white transition-opacity hover:opacity-90"
             style={{ backgroundColor: category.color }}
           >
             <ExternalLink className="h-3.5 w-3.5" />
-            View Listing
-          </a>
+            {t("popup.viewListing")}
+          </Link>
         </div>
       </div>
     </div>

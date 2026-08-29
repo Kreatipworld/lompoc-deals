@@ -4,7 +4,8 @@ import { useState, useCallback } from "react"
 import Map, { Marker, Popup, NavigationControl, Source } from "react-map-gl/mapbox"
 import { Star, MapPin, Navigation, BedDouble } from "lucide-react"
 import { Link } from "@/i18n/navigation"
-import type { Hotel } from "@/lib/hotels-data"
+import { useLocale } from "next-intl"
+import { hotelTagline, hotelAvenue, type Hotel } from "@/lib/hotels-data"
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 // Center on the actual hotel cluster (N H St corridor + E Ocean Ave) — verified via Mapbox geocoding.
@@ -16,10 +17,9 @@ const PRICE_COLOR: Record<string, string> = {
   $$$: "#7c3aed", // violet
 }
 
-const PRICE_LABEL: Record<string, string> = {
-  $: "Budget",
-  $$: "Mid-range",
-  $$$: "Upscale",
+const PRICE_LABEL: Record<string, Record<string, string>> = {
+  en: { $: "Budget", $$: "Mid-range", $$$: "Upscale" },
+  es: { $: "Económico", $$: "Precio medio", $$$: "Exclusivo" },
 }
 
 function HotelPin({ priceRange, selected }: { priceRange: string; selected?: boolean }) {
@@ -58,6 +58,7 @@ function HotelPin({ priceRange, selected }: { priceRange: string; selected?: boo
 
 export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
   const [selected, setSelected] = useState<Hotel | null>(null)
+  const locale = useLocale()
 
   const handleMapClick = useCallback(() => {
     setSelected(null)
@@ -127,7 +128,7 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
                 style={{ background: PRICE_COLOR[selected.priceRange] ?? "#7c3aed" }}
               >
                 <BedDouble className="h-2.5 w-2.5" />
-                {selected.priceRange} · {PRICE_LABEL[selected.priceRange]}
+                {selected.priceRange} · {(PRICE_LABEL[locale] ?? PRICE_LABEL.en)[selected.priceRange]}
               </span>
             </div>
 
@@ -135,15 +136,15 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
             <div className="lompoc-popup-name mt-1">{selected.name}</div>
 
             {/* Tagline */}
-            {selected.tagline && (
-              <div className="text-[11px] text-gray-500 italic mb-1">{selected.tagline}</div>
+            {hotelTagline(selected, locale) && (
+              <div className="text-[11px] text-gray-500 italic mb-1">{hotelTagline(selected, locale)}</div>
             )}
 
             {/* Avenue / location context */}
-            {selected.avenue && (
+            {hotelAvenue(selected, locale) && (
               <div className="lompoc-popup-meta flex items-start gap-1">
                 <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                <span>{selected.avenue}</span>
+                <span>{hotelAvenue(selected, locale)}</span>
               </div>
             )}
             {selected.neighborhood && (

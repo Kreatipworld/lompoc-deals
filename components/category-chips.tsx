@@ -13,6 +13,8 @@ import {
 } from "lucide-react"
 import { getAllCategories } from "@/lib/queries"
 import { CategoryChipRow } from "@/components/category-chip-row"
+import { getTranslations } from "next-intl/server"
+import { categoryLabel } from "@/lib/category-label"
 
 const ICONS: Record<string, LucideIcon> = {
   utensils: Utensils,
@@ -45,7 +47,11 @@ export async function CategoryChips({
   /** Renders the "Open now" toggle as the first chip in the row. Omit to hide it (e.g. real estate). */
   openNow?: OpenNowChip
 }) {
-  const cats = await getAllCategories()
+  const [cats, tu, tc] = await Promise.all([
+    getAllCategories(),
+    getTranslations("hoursUi"),
+    getTranslations("categoryLabels"),
+  ])
   return (
     <CategoryChipRow>
       {openNow && (
@@ -76,7 +82,7 @@ export async function CategoryChips({
         }`}
       >
         <Sparkles className="h-3.5 w-3.5" />
-        All
+        {tu("allCategories")}
       </Link>
       {cats.map((c) => {
         const Icon = ICONS[c.icon ?? ""] ?? MoreHorizontal
@@ -93,7 +99,7 @@ export async function CategoryChips({
             }`}
           >
             <Icon className="h-3.5 w-3.5" />
-            {c.name}
+            {categoryLabel(tc, c.slug, c.name)}
           </Link>
         )
       })}

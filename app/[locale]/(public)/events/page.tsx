@@ -8,6 +8,7 @@ import { events } from "@/db/schema"
 import { pageAlternates } from "@/lib/seo"
 import { PageHeader } from "@/components/page-header"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
+import { LAUNCH_SOURCE, launchTitle } from "@/lib/launch-display"
 
 // Events sync daily via cron — keep the page fresh without a redeploy
 export const revalidate = 300
@@ -63,9 +64,13 @@ export default async function EventsPage({
   params: { locale: string }
 }) {
   const t = await getTranslations("eventsPage")
+  const tLaunch = await getTranslations({ locale: params.locale, namespace: "newsUi.events" })
+  const es = params.locale === "es"
+  // Launch rows are stored in English; /es renders them in Spanish (lib/launch-display.ts).
+  const title = (e: EventRow) => launchTitle(e, params.locale, tLaunch)
   const all = await getUpcoming()
-  const launches = all.filter((e) => e.source === "launch-library")
-  const others = collapseRecurring(all.filter((e) => e.source !== "launch-library"))
+  const launches = all.filter((e) => e.source === LAUNCH_SOURCE)
+  const others = collapseRecurring(all.filter((e) => e.source !== LAUNCH_SOURCE))
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -73,8 +78,8 @@ export default async function EventsPage({
     itemListElement: all.slice(0, 25).map((e, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `${siteUrl}/events/${e.id}`,
-      name: e.title,
+      url: `${siteUrl}${es ? "/es" : ""}/events/${e.id}`,
+      name: title(e),
     })),
   }
 
@@ -104,7 +109,7 @@ export default async function EventsPage({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={ev.imageUrl}
-                    alt={ev.title}
+                    alt={title(ev)}
                     className="h-36 w-full object-cover transition-transform group-hover:scale-105"
                   />
                 ) : (
@@ -116,7 +121,7 @@ export default async function EventsPage({
                   <p className="text-xs font-semibold uppercase tracking-wide text-primary">
                     {fmtDate(ev.startsAt, params.locale)}
                   </p>
-                  <p className="mt-1 line-clamp-2 font-medium">{ev.title}</p>
+                  <p className="mt-1 line-clamp-2 font-medium">{title(ev)}</p>
                 </div>
               </Link>
             ))}
