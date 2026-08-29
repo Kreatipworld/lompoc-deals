@@ -2558,7 +2558,12 @@
     "twitterDescription": "Ofertas de negocios de Lompoc, CA: cupones, especiales y anuncios, actualizados a diario.",
     "categoryTitle": "{category} en Lompoc — Negocios locales y ofertas",
     "categoryDescription": "Explora negocios de {category} en Lompoc, CA: listados locales, ofertas activas y cupones. Actualizado a diario.",
-    "categoryNotFound": "Categoría"
+    "categoryNotFound": "Categoría",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundHeading": "No encontrada",
+    "notFoundBody": "Esa página no existe — puede que se haya eliminado o que la dirección esté mal escrita.",
+    "notFoundHome": "Volver a Lompoc Locals",
+    "notFoundBrowse": "Explorar el directorio"
   },
   "bizRoad": {}
 }

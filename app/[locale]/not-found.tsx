@@ -1,4 +1,5 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
+import { getLocale, getTranslations } from "next-intl/server"
 import { MapPin, Search } from "lucide-react"
 
 /**
@@ -11,33 +12,35 @@ import { MapPin, Search } from "lucide-react"
  * deleting a duplicate listing and noticing its URL still answered 200.
  *
  * Keep this file. Deleting it silently reintroduces soft 404s across the whole site.
+ * Copy comes from the `siteMeta` namespace so a Spanish visitor gets a Spanish 404.
  */
-export const metadata = {
-  title: "Page not found",
-  robots: { index: false, follow: true },
+export async function generateMetadata() {
+  const locale = await getLocale()
+  const t = await getTranslations({ locale, namespace: "siteMeta" })
+  return { title: t("notFoundTitle"), robots: { index: false, follow: true } }
 }
 
-export default function LocaleNotFound() {
+export default async function LocaleNotFound() {
+  const locale = await getLocale()
+  const t = await getTranslations({ locale, namespace: "siteMeta" })
   return (
     <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
       <MapPin className="h-10 w-10 text-muted-foreground" />
-      <h1 className="mt-4 text-4xl font-bold tracking-tight">Not found</h1>
-      <p className="mt-3 text-muted-foreground">
-        That page doesn&apos;t exist — it may have been removed, or the address may be mistyped.
-      </p>
+      <h1 className="mt-4 text-4xl font-bold tracking-tight">{t("notFoundHeading")}</h1>
+      <p className="mt-3 text-muted-foreground">{t("notFoundBody")}</p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link
           href="/"
           className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
-          Back to Lompoc Locals
+          {t("notFoundHome")}
         </Link>
         <Link
           href="/businesses"
           className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
         >
           <Search className="h-4 w-4" />
-          Browse the directory
+          {t("notFoundBrowse")}
         </Link>
       </div>
     </div>
