@@ -22,6 +22,26 @@ export function isLaunchEvent(ev: { source: string }): boolean {
   return ev.source === LAUNCH_SOURCE
 }
 
+type Localizable = LaunchLike & { titleEs?: string | null; descriptionEs?: string | null }
+
+const filled = (v: string | null | undefined): v is string => !!v && v.trim().length > 0
+
+/**
+ * Title for any event on any locale. On /es the DB twin (`events.title_es`, written by the
+ * translation cron) wins; a launch row without a twin still gets its parsed Spanish shape;
+ * everything else falls back to English.
+ */
+export function eventTitle(ev: Localizable, locale: string, t: LaunchTranslator): string {
+  if (locale === "es" && filled(ev.titleEs)) return ev.titleEs
+  return launchTitle(ev, locale, t)
+}
+
+/** Description with the same precedence as `eventTitle`: DB twin → parsed launch text → English. */
+export function eventDescription(ev: Localizable, locale: string, t: LaunchTranslator): string | null {
+  if (locale === "es" && filled(ev.descriptionEs)) return ev.descriptionEs
+  return launchDescription(ev, locale, t)
+}
+
 /** Localized title for any event; non-launch and English rows return the stored title. */
 export function launchTitle(ev: LaunchLike, locale: string, t: LaunchTranslator): string {
   if (locale !== "es" || !isLaunchEvent(ev)) return ev.title

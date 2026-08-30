@@ -1,11 +1,12 @@
 import { Link } from "@/i18n/navigation"
 import { Globe, MapPin, Phone, Wine } from "lucide-react"
 import { getWineryBusinesses } from "@/lib/queries"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 export async function WineriesSection() {
   const t = await getTranslations("wineriesSection")
-  const wineries = await getWineryBusinesses()
+  const locale = await getLocale()
+  const wineries = await getWineryBusinesses(locale)
 
   if (wineries.length === 0) {
     return (

@@ -7,6 +7,7 @@ import { eq, and } from "drizzle-orm"
 import { MapPin, Clock, Tag, Navigation, ArrowLeft, ShoppingBag } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
+import { pick } from "@/lib/localize"
 
 interface Props {
   params: { id: string; locale: string }
@@ -26,20 +27,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (isNaN(id)) return {}
   const sale = await getSale(id)
   if (!sale) return {}
+  const es = params.locale === "es"
   return {
-    title: `Garage Sale at ${sale.address}`,
-    description: sale.description.slice(0, 160),
+    title: es ? `Venta de garaje en ${sale.address}` : `Garage Sale at ${sale.address}`,
+    description: pick(params.locale, sale.description, sale.descriptionEs).slice(0, 160),
     alternates: pageAlternates(`/garage-sales/${id}`, params.locale),
   }
 }
 
-function formatDateRange(startDate: Date, endDate: Date) {
+function formatDateRange(startDate: Date, endDate: Date, intl = "en-US") {
   const opts: Intl.DateTimeFormatOptions = { weekday: "long", month: "long", day: "numeric" }
   if (startDate.toDateString() === endDate.toDateString()) {
-    return startDate.toLocaleDateString("en-US", opts)
+    return startDate.toLocaleDateString(intl, opts)
   }
-  const startStr = startDate.toLocaleDateString("en-US", opts)
-  const endStr = endDate.toLocaleDateString("en-US", opts)
+  const startStr = startDate.toLocaleDateString(intl, opts)
+  const endStr = endDate.toLocaleDateString(intl, opts)
   return `${startStr} – ${endStr}`
 }
 
@@ -52,7 +54,10 @@ export default async function GarageSaleDetailPage({ params }: Props) {
   const sale = await getSale(id)
   if (!sale) notFound()
 
-  const dateStr = formatDateRange(sale.startDate, sale.endDate)
+  const intl = params.locale === "es" ? "es-US" : "en-US"
+  const dateStr = formatDateRange(sale.startDate, sale.endDate, intl)
+  // description_es is NULL until the translation cron writes it — English is the fallback.
+  const description = pick(params.locale, sale.description, sale.descriptionEs)
   const timeStr =
     sale.startTime
       ? `${sale.startTime}${sale.endTime ? ` – ${sale.endTime}` : ""}`
@@ -129,7 +134,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
             <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {t("whatsForSale")}
             </h2>
-            <p className="text-sm leading-relaxed whitespace-pre-line">{sale.description}</p>
+            <p className="text-sm leading-relaxed whitespace-pre-line">{description}</p>
           </div>
 
           {/* Item categories */}
@@ -154,7 +159,7 @@ export default async function GarageSaleDetailPage({ params }: Props) {
 
           {/* Posted date */}
           <p className="text-xs text-muted-foreground border-t pt-4">
-            {t("postedDate", { date: sale.createdAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) })}
+            {t("postedDate", { date: sale.createdAt.toLocaleDateString(intl, { month: "long", day: "numeric", year: "numeric" }) })}
           </p>
         </div>
       </div>

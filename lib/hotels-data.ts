@@ -9,11 +9,13 @@ export type Hotel = {
   name: string
   category: "budget" | "mid-range" | "boutique"
   tagline: string
-  taglineEs: string // Spanish tagline for /es (description stays English for now)
+  taglineEs: string // Spanish tagline for /es
   description: string
+  descriptionEs: string // Spanish description for /es — render through hotelDescription()
   address: string
   avenue?: string // Street/avenue context for tourists
   neighborhood?: string // Area description
+  neighborhoodEs?: string // Spanish area description — render through hotelNeighborhood()
   phone: string
   website: string | null
   amenities: AmenityKey[] // stable keys — render through amenityLabel()
@@ -54,6 +56,17 @@ export function hotelTagline(hotel: Pick<Hotel, "tagline" | "taglineEs">, locale
   return locale === "es" ? hotel.taglineEs : hotel.tagline
 }
 
+export function hotelDescription(hotel: Pick<Hotel, "description" | "descriptionEs">, locale: string): string {
+  return locale === "es" && hotel.descriptionEs ? hotel.descriptionEs : hotel.description
+}
+
+export function hotelNeighborhood(
+  hotel: Pick<Hotel, "neighborhood" | "neighborhoodEs">,
+  locale: string
+): string | undefined {
+  return locale === "es" && hotel.neighborhoodEs ? hotel.neighborhoodEs : hotel.neighborhood
+}
+
 /** The avenue line is a street name plus an English parenthetical; only the parenthetical translates. */
 export function hotelAvenue(hotel: Pick<Hotel, "avenue">, locale: string): string | undefined {
   if (!hotel.avenue || locale !== "es") return hotel.avenue
@@ -77,9 +90,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Suites completas con recepción de cortesía",
     description:
       "Hilton's all-suite Embassy brand in Lompoc. Every room is a two-room suite, and guests enjoy the complimentary evening reception with drinks and snacks — perfect after a day of wine tasting in the Santa Rita Hills.",
+    descriptionEs:
+      "La marca Embassy de Hilton, solo suites, en Lompoc. Cada habitación es una suite de dos ambientes, y los huéspedes disfrutan de la recepción vespertina de cortesía con bebidas y botanas — perfecta después de un día de cata de vinos en Santa Rita Hills.",
     address: "1117 N H St, Lompoc, CA 93436",
     avenue: "N H Street (Hotel Corridor)",
     neighborhood: "North Lompoc — near major dining and shopping",
+    neighborhoodEs: "Norte de Lompoc — cerca de los principales restaurantes y tiendas",
     phone: "(805) 735-8311",
     website: "https://www.hilton.com/en/hotels/lomcaes-embassy-suites-lompoc-central-coast/",
     amenities: ["wifi", "breakfast", "eveningReception", "indoorPool", "fitness", "parking"],
@@ -98,9 +114,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Comodidad moderna en el corazón de Lompoc",
     description:
       "A contemporary Hilton Garden Inn with an on-site restaurant, outdoor pool, and well-appointed rooms. Ideal for business travelers visiting Vandenberg Space Force Base and leisure guests exploring the Central Coast wine region.",
+    descriptionEs:
+      "Un Hilton Garden Inn contemporáneo con restaurante en el hotel, alberca al aire libre y habitaciones bien equipadas. Ideal para viajeros de negocios que visitan la Base de la Fuerza Espacial Vandenberg y para quienes exploran la región vinícola de la Costa Central.",
     address: "1201 N H St, Lompoc, CA 93436",
     avenue: "N H Street (Hotel Corridor)",
     neighborhood: "North Lompoc — walkable to restaurants and shops",
+    neighborhoodEs: "Norte de Lompoc — restaurantes y tiendas a pie",
     phone: "(805) 735-1880",
     website: "https://www.hilton.com/en/hotels/lpcnhgi-hilton-garden-inn-lompoc/",
     amenities: ["wifi", "restaurant", "outdoorPool", "fitness", "parking", "frontDesk24"],
@@ -121,9 +140,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Estancias prácticas en el Valle de Lompoc",
     description:
       "Modern comfort in the heart of Lompoc. Spacious rooms, a complimentary hot breakfast, and easy access to wine tasting rooms and the historic downtown make this a top pick for families and business travelers alike.",
+    descriptionEs:
+      "Comodidad moderna en el corazón de Lompoc. Habitaciones amplias, desayuno caliente de cortesía y fácil acceso a las salas de cata y al centro histórico lo convierten en una de las mejores opciones tanto para familias como para viajeros de negocios.",
     address: "1417 N H St, Lompoc, CA 93436",
     avenue: "N H Street (Hotel Corridor)",
     neighborhood: "North Lompoc — walkable to restaurants, 3 blocks from Ocean Ave",
+    neighborhoodEs: "Norte de Lompoc — restaurantes a pie, a 3 cuadras de Ocean Ave",
     phone: "(805) 736-2391",
     website: "https://www.ihg.com/holidayinnexpress/hotels/us/en/lompoc/lpcca/hoteldetail",
     amenities: ["wifi", "hotBreakfast", "indoorPool", "fitness", "businessCenter", "parking"],
@@ -142,9 +164,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "El hospedaje mejor calificado de Lompoc, de familia",
     description:
       "A beloved locally owned inn on East Ocean Avenue and the highest-rated lodging in Lompoc. Personalized service sets O'Cairns apart — a great base for exploring Old Town murals, the Wine Ghetto, and nearby flower fields.",
+    descriptionEs:
+      "Una querida posada de dueños locales en East Ocean Avenue y el hospedaje mejor calificado de Lompoc. El servicio personalizado distingue a O'Cairns — una excelente base para explorar los murales de Old Town, el Wine Ghetto y los campos de flores cercanos.",
     address: "940 E Ocean Ave, Lompoc, CA 93436",
     avenue: "E Ocean Avenue",
     neighborhood: "Central Lompoc — on the main commercial boulevard",
+    neighborhoodEs: "Centro de Lompoc — sobre el principal bulevar comercial",
     phone: "(805) 735-7731",
     website: "https://www.ocairnsinnandsuites.com/",
     amenities: ["wifi", "parking", "continentalBreakfast"],
@@ -163,9 +188,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Habitaciones boutique independientes en el corredor hotelero",
     description:
       "An independently run inn with a boutique feel, directly on the N H Street hotel corridor across from the big chains. Well-reviewed rooms and a personal touch — a solid alternative for travelers who prefer independents.",
+    descriptionEs:
+      "Una posada de administración independiente con aire boutique, justo en el corredor hotelero de N H Street, frente a las grandes cadenas. Habitaciones bien reseñadas y un toque personal — una buena alternativa para quienes prefieren hospedajes independientes.",
     address: "1200 N H St, Lompoc, CA 93436",
     avenue: "N H Street (Hotel Corridor)",
     neighborhood: "North Lompoc — near major dining and shopping",
+    neighborhoodEs: "Norte de Lompoc — cerca de los principales restaurantes y tiendas",
     phone: "(805) 735-3737",
     website: "http://www.innathighway1.com/",
     amenities: ["wifi", "parking"],
@@ -184,9 +212,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Habitaciones económicas al norte del corredor",
     description:
       "A straightforward value hotel at the north end of the H Street hotel corridor, minutes from the Vandenberg gate. Practical rooms and suites for families and crews staying more than a night.",
+    descriptionEs:
+      "Un hotel económico y sin complicaciones en el extremo norte del corredor hotelero de H Street, a minutos de la entrada de Vandenberg. Habitaciones y suites prácticas para familias y cuadrillas de trabajo que se quedan más de una noche.",
     address: "1621 N H St, Lompoc, CA 93436",
     avenue: "N H Street (Hotel Corridor)",
     neighborhood: "North Lompoc — 10 min to Vandenberg Gate",
+    neighborhoodEs: "Norte de Lompoc — a 10 min de la entrada de Vandenberg",
     phone: "(805) 735-8555",
     website: "http://www.lompocvalleyinnandsuites.com/",
     amenities: ["wifi", "parking"],
@@ -207,9 +238,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Familiar y bien calificado para su precio",
     description:
       "A small, family-run motel on H Street that consistently outscores bigger budget chains in guest ratings. Clean rooms, friendly owners, and honest prices a short drive from downtown and the flower fields.",
+    descriptionEs:
+      "Un motel pequeño y familiar en H Street que supera constantemente en calificaciones a las grandes cadenas económicas. Habitaciones limpias, dueños amables y precios honestos a un corto trayecto del centro y de los campos de flores.",
     address: "817 N H St, Lompoc, CA 93436",
     avenue: "N H Street",
     neighborhood: "Central Lompoc — a few blocks north of Old Town",
+    neighborhoodEs: "Centro de Lompoc — a unas cuadras al norte de Old Town",
     phone: "(805) 736-1241",
     website: "https://www.thebudgetinnlompoc.com/",
     amenities: ["wifi", "parking"],
@@ -228,9 +262,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Estancias tranquilas en Vandenberg Village",
     description:
       "A well-rated independent inn up in Vandenberg Village, about ten minutes north of downtown Lompoc and the closest lodging to the Vandenberg Space Force Base area — popular with launch watchers and base visitors.",
+    descriptionEs:
+      "Una posada independiente bien calificada en Vandenberg Village, a unos diez minutos al norte del centro de Lompoc y el hospedaje más cercano a la zona de la Base de la Fuerza Espacial Vandenberg — popular entre quienes vienen a ver lanzamientos y visitantes de la base.",
     address: "3955 Apollo Way, Lompoc, CA 93436",
     avenue: "Apollo Way (Vandenberg Village)",
     neighborhood: "Vandenberg Village — 10 min north of downtown",
+    neighborhoodEs: "Vandenberg Village — a 10 min al norte del centro",
     phone: "(805) 972-0999",
     website: "https://www.villageinnca.com/",
     amenities: ["wifi", "parking"],
@@ -249,9 +286,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Económico y acepta mascotas — te dejamos la luz encendida",
     description:
       "America's most recognized budget chain. Motel 6 Lompoc is clean, reliable, and welcoming to pets. Free parking and easy highway access make it the go-to for road-trippers and budget-conscious travelers.",
+    descriptionEs:
+      "La cadena económica más reconocida de Estados Unidos. Motel 6 Lompoc es limpio, confiable y acepta mascotas. El estacionamiento gratis y el fácil acceso a la carretera lo hacen la opción ideal para viajeros en carretera y quienes cuidan su presupuesto.",
     address: "1521 N H St, Lompoc, CA 93436",
     avenue: "N H Street (Hotel Corridor)",
     neighborhood: "North Lompoc — near the highway",
+    neighborhoodEs: "Norte de Lompoc — cerca de la carretera",
     phone: "(805) 362-4139",
     website: "https://www.motel6.com/en/home/motels.ca.lompoc.html",
     amenities: ["wifi", "parking", "petFriendly", "outdoorPool"],
@@ -270,9 +310,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Comodidad sin lujos, estacionamiento gratis, acepta mascotas",
     description:
       "Red Roof Inn delivers dependable, budget-friendly stays with free parking and a pet-friendly policy. On East Ocean Avenue close to central Lompoc — a solid base for Vandenberg visitors who want straightforward accommodations.",
+    descriptionEs:
+      "Red Roof Inn ofrece estancias confiables y económicas con estacionamiento gratis y política que acepta mascotas. En East Ocean Avenue, cerca del centro de Lompoc — una buena base para visitantes de Vandenberg que buscan un hospedaje sencillo.",
     address: "1020 E Ocean Ave, Lompoc, CA 93436",
     avenue: "E Ocean Avenue",
     neighborhood: "Central Lompoc — on the main commercial boulevard",
+    neighborhoodEs: "Centro de Lompoc — sobre el principal bulevar comercial",
     phone: "(805) 735-6444",
     website: "https://www.redroof.com/property/ca/lompoc/RRI774",
     amenities: ["wifi", "parking", "petFriendly"],
@@ -291,9 +334,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Hospedaje independiente en East Ocean Avenue",
     description:
       "A small, independently operated inn on the east side of town. The Lotus of Lompoc offers simple rooms with personalized, attentive service that chain hotels can't match — a practical pick for budget travelers.",
+    descriptionEs:
+      "Una posada pequeña de operación independiente en el lado este de la ciudad. Lotus of Lompoc ofrece habitaciones sencillas con un servicio personalizado y atento que las cadenas no igualan — una opción práctica para viajeros con presupuesto ajustado.",
     address: "1415 E Ocean Ave, Lompoc, CA 93436",
     avenue: "E Ocean Avenue",
     neighborhood: "East Lompoc — on the main commercial boulevard",
+    neighborhoodEs: "Este de Lompoc — sobre el principal bulevar comercial",
     phone: "(805) 736-6514",
     website: "http://www.lotusoflompocagreathospitalityinn.us/",
     amenities: ["wifi", "parking", "microwaveFridge"],
@@ -312,9 +358,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Estancias económicas con alberca al aire libre",
     description:
       "A classic roadside inn offering clean, affordable accommodations with an outdoor pool, right on the H Street corridor. A practical choice for travelers passing through or staying near Vandenberg.",
+    descriptionEs:
+      "Una clásica posada de carretera con habitaciones limpias y económicas y alberca al aire libre, justo en el corredor de H Street. Una opción práctica para viajeros de paso o para quienes se hospedan cerca de Vandenberg.",
     address: "1122 N H St, Lompoc, CA 93436",
     avenue: "N H Street (Hotel Corridor)",
     neighborhood: "North Lompoc — near major dining and shopping",
+    neighborhoodEs: "Norte de Lompoc — cerca de los principales restaurantes y tiendas",
     phone: "(805) 735-7744",
     website: "https://www.innlompoc.com/",
     amenities: ["wifi", "parking", "outdoorPool"],
@@ -333,9 +382,12 @@ export const HOTELS: Hotel[] = [
     taglineEs: "Pequeño motel independiente cerca de Old Town",
     description:
       "A small independent motel on Ocean Avenue, the closest lodging to Lompoc's Old Town core — steps from the murals, local cafés, and the Friday farmers market.",
+    descriptionEs:
+      "Un pequeño motel independiente en Ocean Avenue, el hospedaje más cercano al núcleo de Old Town en Lompoc — a pasos de los murales, los cafés locales y el mercado de agricultores de los viernes.",
     address: "216 E Ocean Ave, Lompoc, CA 93436",
     avenue: "E Ocean Avenue",
     neighborhood: "Downtown Lompoc — walking distance to Old Town",
+    neighborhoodEs: "Centro de Lompoc — a distancia caminable de Old Town",
     phone: "(805) 736-8144",
     website: null,
     amenities: ["parking"],

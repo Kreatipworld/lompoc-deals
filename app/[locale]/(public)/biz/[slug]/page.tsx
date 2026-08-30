@@ -57,7 +57,7 @@ export async function generateMetadata({
   params: { slug: string; locale: string }
 }): Promise<Metadata> {
   const [data, t, tc, th] = await Promise.all([
-    getBusinessBySlug(params.slug),
+    getBusinessBySlug(params.slug, params.locale),
     getTranslations("businesses.profile"),
     getTranslations("categoryLabels"),
     getTranslations("hoursUi"),
@@ -107,7 +107,7 @@ export default async function BusinessPage({
   params: { slug: string; locale: string }
 }) {
   const [data, viewer, t, tsp, td, tc] = await Promise.all([
-    getBusinessBySlug(params.slug),
+    getBusinessBySlug(params.slug, params.locale),
     getViewer(),
     getTranslations("businesses.profile"),
     getTranslations("sponsors"),
@@ -151,7 +151,7 @@ export default async function BusinessPage({
   // simply don't get the section rather than getting a wrong one.
   const nearbyPlaces =
     business.lat && business.lng
-      ? await getActivitiesNearPoint(business.lat, business.lng, 4)
+      ? await getActivitiesNearPoint(business.lat, business.lng, 4, undefined, params.locale)
       : []
 
   // For real estate businesses, fetch property listings instead

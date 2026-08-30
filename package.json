@@ -24,7 +24,8 @@
     "db:backfill-multi-range": "node --env-file=.env.local node_modules/.bin/tsx db/backfill-multi-range.ts",
     "db:enrich-hours": "node --env-file=.env.local node_modules/.bin/tsx db/enrich-hours-from-places.ts",
     "db:audit-businesses": "node --env-file=.env.local node_modules/.bin/tsx db/audit-businesses-from-places.ts",
-    "test:analytics": "node --env-file=.env.local node_modules/.bin/tsx lib/analytics/test-track.ts"
+    "test:analytics": "node --env-file=.env.local node_modules/.bin/tsx lib/analytics/test-track.ts",
+    "translate:content": "node --env-file=.env.local node_modules/.bin/tsx scripts/translate-content.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.71",

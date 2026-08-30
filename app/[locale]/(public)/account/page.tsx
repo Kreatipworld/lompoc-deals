@@ -12,7 +12,7 @@ import { Tag, CheckCircle2, Clock, Heart, Mail, Bell, BellOff, LifeBuoy } from "
 import { SupportForm } from "@/app/[locale]/dashboard/support/support-form"
 import { updateNotificationPrefsAction } from "@/lib/business-follow-actions"
 import { accountSubscribeAction, accountUnsubscribeAction } from "@/lib/subscribe-actions"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
@@ -47,10 +47,11 @@ export default async function AccountPage({
   const session = await auth()
   const userEmail = session?.user?.email ?? ""
 
+  const locale = await getLocale()
   const [coupons, redemptions, favoritedDeals, subscriber, userRow] = await Promise.all([
-    getUserClaimedCoupons(viewer.userId!),
-    getUserRedemptions(viewer.userId!),
-    getFavoritedDeals(viewer.userId!),
+    getUserClaimedCoupons(viewer.userId!, locale),
+    getUserRedemptions(viewer.userId!, locale),
+    getFavoritedDeals(viewer.userId!, locale),
     db.query.subscribers.findFirst({
       where: eq(subscribers.email, userEmail),
       columns: { confirmedAt: true },

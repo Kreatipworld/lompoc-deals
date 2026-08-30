@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 import { ArrowRight, Sparkles, BadgeCheck } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { SafeImage } from "@/components/safe-image"
@@ -10,7 +10,8 @@ import { getCategorySpotlight } from "@/lib/sponsors"
  * daily-rotated Plus sponsor. Renders nothing when the category is unsponsored.
  */
 export async function SponsorSpotlight({ categorySlug }: { categorySlug: string }) {
-  const sponsor = await getCategorySpotlight(categorySlug)
+  const locale = await getLocale()
+  const sponsor = await getCategorySpotlight(categorySlug, locale)
   if (!sponsor) return null
   const t = await getTranslations("sponsors")
   const badgeLabel = sponsor.exclusive

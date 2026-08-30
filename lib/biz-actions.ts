@@ -165,6 +165,10 @@ export async function saveProfileAction(
   let bizId: number | null = existing?.id ?? null
 
   if (existing) {
+    // An edited English field nulls its Spanish twin so the daily
+    // translate-content cron writes fresh Spanish (NULL = needs translation).
+    const descriptionChanged = (data.description ?? null) !== (existing.description ?? null)
+    const aboutChanged = (data.about ?? null) !== (existing.about ?? null)
     await db
       .update(businesses)
       .set({
@@ -173,6 +177,8 @@ export async function saveProfileAction(
         description: data.description ?? null,
         about: data.about ?? null,
         aboutSource: "owner",
+        ...(descriptionChanged ? { descriptionEs: null } : {}),
+        ...(aboutChanged ? { aboutEs: null } : {}),
         amenitiesJson: amenitiesPayload,
         amenitiesSource: "owner",
         categoryId: data.categoryId ?? null,
@@ -416,6 +422,14 @@ export async function saveDealAction(
     if (!existing || existing.businessId !== biz.id) {
       return { error: t("dealNotFound") }
     }
+    // Edited English nulls its Spanish twin; the translate-content cron
+    // re-translates anything NULL (that is the staleness mechanism).
+    const staleEs = {
+      ...(data.title !== existing.title ? { titleEs: null } : {}),
+      ...((data.description ?? null) !== (existing.description ?? null) ? { descriptionEs: null } : {}),
+      ...((data.discountText ?? null) !== (existing.discountText ?? null) ? { discountTextEs: null } : {}),
+      ...((data.terms ?? null) !== (existing.terms ?? null) ? { termsEs: null } : {}),
+    }
     await db
       .update(deals)
       .set({
@@ -424,6 +438,7 @@ export async function saveDealAction(
         description: data.description ?? null,
         discountText: data.discountText ?? null,
         terms: data.terms ?? null,
+        ...staleEs,
         startsAt,
         expiresAt,
         maxRedemptions: data.maxRedemptions ?? null,

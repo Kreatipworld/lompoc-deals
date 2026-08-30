@@ -43,7 +43,7 @@ export default async function SearchPage({
 
   const q = (searchParams.q ?? "").trim()
   const [results, viewer] = await Promise.all([
-    q ? searchAll(q) : Promise.resolve({ businesses: [], categories: [], deals: [] }),
+    q ? searchAll(q, locale) : Promise.resolve({ businesses: [], categories: [], deals: [] }),
     getViewer(),
   ])
   const count = results.businesses.length + results.categories.length + results.deals.length

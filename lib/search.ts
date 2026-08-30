@@ -3,6 +3,7 @@ import { businesses, categories } from "@/db/schema"
 import { and, eq, inArray, or, sql } from "drizzle-orm"
 import { searchDeals, type DealCardData } from "@/lib/queries"
 import { isChain } from "@/lib/chains"
+import { localizeFields, type Locale } from "@/lib/localize"
 import { normalizeForSearch, normalizedName, looseLike, dropCompetitorMentions, queryVariants } from "@/lib/search-match"
 
 // Re-exported so existing importers of "@/lib/search" keep working.
@@ -209,7 +210,7 @@ export function rankBusinessHits<T extends { name: string; description?: string 
 /** Below this many genuine matches, a term is allowed to fall back to its category. */
 const SYNONYM_FALLBACK_MIN = 3
 
-export async function searchAll(q: string): Promise<SearchResults> {
+export async function searchAll(q: string, locale: Locale = "en"): Promise<SearchResults> {
   const term = `%${q}%`
   const lower = q.toLowerCase()
   const synonymSlugs = matchedCategorySlugs(q)
@@ -264,13 +265,14 @@ export async function searchAll(q: string): Promise<SearchResults> {
         categoryName: categories.name,
         categorySlug: categories.slug,
         description: businesses.description,
+        descriptionEs: businesses.descriptionEs,
       })
       .from(businesses)
       .leftJoin(categories, eq(businesses.categoryId, categories.id))
       .where(and(eq(businesses.status, "approved"), or(...bizConditions)))
       .orderBy(sql`case when ${businesses.name} ilike ${term} then 0 else 1 end`)
       .limit(60),
-    searchDeals(q),
+    searchDeals(q, 50, locale),
   ])
 
   let ranked = rankBusinessHits(dropCompetitorMentions(bizRows, q), q, 24)
@@ -292,6 +294,7 @@ export async function searchAll(q: string): Promise<SearchResults> {
         categoryName: categories.name,
         categorySlug: categories.slug,
         description: businesses.description,
+        descriptionEs: businesses.descriptionEs,
       })
       .from(businesses)
       .innerJoin(categories, eq(categories.id, businesses.categoryId))
@@ -303,5 +306,10 @@ export async function searchAll(q: string): Promise<SearchResults> {
 
   // An empty result is the one outcome that sends a resident back to Google.
   const businessesOut = ranked.length ? ranked : await fuzzyBusinessSearch(q, 6)
-  return { businesses: businessesOut, categories: categoryHits, deals }
+  // Ranking ran on the English words (that is what the query matched); the card shows the twin.
+  return {
+    businesses: businessesOut.map((b) => localizeFields(locale, b as BizHit & Record<string, unknown>, ["description"])),
+    categories: categoryHits,
+    deals,
+  }
 }

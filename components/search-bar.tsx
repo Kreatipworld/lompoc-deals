@@ -1,5 +1,7 @@
 "use client"
 
+import { useLocale } from "next-intl"
+
 import { useRouter } from "@/i18n/navigation"
 import { Search, Building2, Tag, LayoutGrid } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
@@ -86,6 +88,7 @@ export function SearchBar({
   /** Called after any navigation, so a wrapping overlay can close itself. */
   onNavigate?: () => void
 }) {
+  const locale = useLocale()
   const t = useTranslations("searchBar")
   const router = useRouter()
   const isLarge = size === "lg"
@@ -118,7 +121,7 @@ export function SearchBar({
   const fetchPopular = useCallback(async () => {
     if (popular.length > 0) return
     try {
-      const res = await fetch(`/api/search/autocomplete?popular=1`)
+      const res = await fetch(`/api/search/autocomplete?popular=1&locale=${locale}`)
       const data: AutocompleteResult = await res.json()
       setPopular(data.categories ?? [])
     } catch {
@@ -142,7 +145,7 @@ export function SearchBar({
     }
     setLoading(true)
     try {
-      const res = await fetch(`/api/search/autocomplete?q=${encodeURIComponent(q)}`)
+      const res = await fetch(`/api/search/autocomplete?q=${encodeURIComponent(q)}&locale=${locale}`)
       const data: AutocompleteResult = await res.json()
       setResults(data)
     } catch {

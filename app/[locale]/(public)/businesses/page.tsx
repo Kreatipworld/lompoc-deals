@@ -50,12 +50,14 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 const PREVIEW_PER_CATEGORY = 12
 
 export default async function BusinessesPage({
+  params,
   searchParams,
 }: {
+  params: { locale: string }
   searchParams?: { open?: string }
 }) {
   const [allBusinesses, cats, stats, t, tc, tu] = await Promise.all([
-    getDirectoryBusinesses(),
+    getDirectoryBusinesses(params.locale),
     getAllCategories(),
     getSiteStats(),
     getTranslations("businesses.directory"),

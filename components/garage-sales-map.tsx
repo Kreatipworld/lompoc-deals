@@ -5,6 +5,7 @@ import { useLocale } from "next-intl"
 import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
 import { Link } from "@/i18n/navigation"
 import { MapPin, Clock } from "lucide-react"
+import { pick } from "@/lib/localize"
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 const LOMPOC_CENTER = { longitude: -120.4579, latitude: 34.6391 }
@@ -15,6 +16,8 @@ export interface GarageSaleLite {
   lat: number | null
   lng: number | null
   description: string
+  /** Spanish twin of `description` (NULL until translated); popups show it on /es via `pick`. */
+  descriptionEs?: string | null
   startDate: string
   endDate: string
   startTime: string | null
@@ -129,6 +132,11 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
                 <span>· {selected.startTime}{selected.endTime ? `–${selected.endTime}` : ""}</span>
               )}
             </div>
+            {selected.description && (
+              <p className="mb-1 line-clamp-2 text-xs text-muted-foreground">
+                {pick(locale, selected.description, selected.descriptionEs)}
+              </p>
+            )}
             {selected.itemCategories && selected.itemCategories.length > 0 && (
               <div className="flex flex-wrap gap-1 mb-2">
                 {selected.itemCategories.slice(0, 3).map((cat) => (
@@ -142,7 +150,7 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
               href={`/garage-sales/${selected.id}`}
               className="text-xs font-medium text-primary hover:underline"
             >
-              View details →
+              {locale === "es" ? "Ver detalles →" : "View details →"}
             </Link>
           </div>
         </Popup>

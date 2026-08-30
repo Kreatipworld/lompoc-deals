@@ -110,6 +110,8 @@ export const businesses = pgTable(
     photosJson: jsonb("photos_json"),
     about: text("about"),
     aboutSource: text("about_source"), // 'google' | 'owner' | null
+    descriptionEs: text("description_es"),
+    aboutEs: text("about_es"),
     amenitiesJson: jsonb("amenities_json"),
     amenitiesSource: text("amenities_source"), // 'google' | 'owner' | null
     email: varchar("email", { length: 320 }), // primary contact email
@@ -156,6 +158,10 @@ export const deals = pgTable("deals", {
   imageUrl: varchar("image_url", { length: 1000 }),
   discountText: varchar("discount_text", { length: 200 }),
   terms: text("terms"),
+  titleEs: varchar("title_es", { length: 300 }),
+  descriptionEs: text("description_es"),
+  termsEs: text("terms_es"),
+  discountTextEs: varchar("discount_text_es", { length: 200 }),
   startsAt: timestamp("starts_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
@@ -309,6 +315,8 @@ export const events = pgTable(
     id: serial("id").primaryKey(),
     title: varchar("title", { length: 300 }).notNull(),
     description: text("description"),
+    titleEs: varchar("title_es", { length: 300 }),
+    descriptionEs: text("description_es"),
     location: varchar("location", { length: 500 }),
     imageUrl: varchar("image_url", { length: 1000 }),
     category: eventCategory("category").notNull().default("other"),
@@ -380,6 +388,7 @@ export const activities = pgTable(
     descriptionEs: text("description_es"),
     tipsEs: text("tips_es"),
     seasonalityEs: varchar("seasonality_es", { length: 200 }),
+    titleEs: varchar("title_es", { length: 300 }),
     sourceUrl: varchar("source_url", { length: 1000 }),
     featured: boolean("featured").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -469,6 +478,10 @@ export const blogPosts = pgTable(
     publishedAt: timestamp("published_at", { withTimezone: true }),
     authorName: varchar("author_name", { length: 200 }),
     metaDescription: text("meta_description"),
+    titleEs: varchar("title_es", { length: 500 }),
+    excerptEs: text("excerpt_es"),
+    contentEs: text("content_es"),
+    metaDescriptionEs: text("meta_description_es"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -502,6 +515,7 @@ export const garageSales = pgTable("garage_sales", {
   lat: doublePrecision("lat"),
   lng: doublePrecision("lng"),
   description: text("description").notNull(),
+  descriptionEs: text("description_es"),
   startDate: timestamp("start_date", { withTimezone: true }).notNull(),
   endDate: timestamp("end_date", { withTimezone: true }).notNull(),
   startTime: varchar("start_time", { length: 10 }),

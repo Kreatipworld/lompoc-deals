@@ -104,12 +104,12 @@ const siteJsonLd = {
 export default async function HomePage({ params }: { params: { locale: string } }) {
   const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t] = await Promise.all([
     getAllCategories(),
-    getPartnerBusinesses(),
+    getPartnerBusinesses(params.locale),
     getSiteStats(),
     getFeaturedActivities(6, params.locale),
-    getActiveDeals(12),
+    getActiveDeals(12, params.locale),
     getCategoryCoverImages(),
-    getFoodSpots(10),
+    getFoodSpots(10, params.locale),
     getTranslations({ locale: params.locale, namespace: "home" }),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })

@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation"
 import { Building2, Tag, ArrowRight, Store } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
+import { localizeFields } from "@/lib/localize"
 import { SafeImage } from "@/components/safe-image"
 import { categoryLabel } from "@/lib/category-label"
 import type { BlogBusinessCard } from "@/lib/queries"
@@ -30,7 +31,9 @@ export async function BlogBusinessSpotlight({
   activeDealsLabel = defaultActiveDealsLabel,
 }: BlogBusinessSpotlightProps) {
   if (businesses.length === 0) return null
-  const tCat = await getTranslations("categoryLabels")
+  const [tCat, locale] = await Promise.all([getTranslations("categoryLabels"), getLocale()])
+  // The blog page hands us rows with the raw twin attached; swap it in for /es here.
+  const list = businesses.map((b) => localizeFields(locale, b as BlogBusinessCard & Record<string, unknown>, ["description"]))
 
   return (
     <aside className="mt-10 pt-8 border-t border-gray-100">
@@ -45,7 +48,7 @@ export async function BlogBusinessSpotlight({
       </p>
 
       <ul className="space-y-3">
-        {businesses.map((biz) => (
+        {list.map((biz) => (
           <li key={biz.id}>
             <Link
               href={`/biz/${biz.slug}`}

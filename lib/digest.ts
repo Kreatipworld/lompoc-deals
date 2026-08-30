@@ -5,6 +5,7 @@ import { deals, businesses, events, categories, blogPosts } from "@/db/schema"
 import type { DealCardData } from "@/lib/queries"
 import { getFeaturedActivities } from "@/lib/queries"
 import { isChain } from "@/lib/chains"
+import { pick, type Locale } from "@/lib/localize"
 
 // ─── Themed weekly digest ────────────────────────────────────────────────
 // One email per week, four a month, each with its own theme so the community
@@ -23,7 +24,7 @@ export function digestThemeForDate(d: Date): DigestTheme {
  * the past 7 days from approved businesses. Shared by the Monday cron
  * (app/api/cron/digest) and the admin comms hub preview/test-send.
  */
-export async function getDigestDeals(): Promise<DealCardData[]> {
+export async function getDigestDeals(locale: Locale = "en"): Promise<DealCardData[]> {
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   const rows = await db
     .select({
@@ -33,6 +34,9 @@ export async function getDigestDeals(): Promise<DealCardData[]> {
       description: deals.description,
       imageUrl: deals.imageUrl,
       discountText: deals.discountText,
+      titleEs: deals.titleEs,
+      descriptionEs: deals.descriptionEs,
+      discountTextEs: deals.discountTextEs,
       expiresAt: deals.expiresAt,
       bizId: businesses.id,
       bizName: businesses.name,
@@ -55,10 +59,10 @@ export async function getDigestDeals(): Promise<DealCardData[]> {
   return rows.map((r) => ({
     id: r.id,
     type: r.type,
-    title: r.title,
-    description: r.description,
+    title: pick(locale, r.title, r.titleEs),
+    description: pick(locale, r.description, r.descriptionEs),
     imageUrl: r.imageUrl,
-    discountText: r.discountText,
+    discountText: pick(locale, r.discountText, r.discountTextEs),
     terms: null,
     expiresAt: r.expiresAt,
     featured: false,
@@ -83,24 +87,33 @@ export type DigestEvent = {
   location: string | null
   startsAt: Date
   imageUrl: string | null
+  /** Row origin — /this-week uses it to give launch rows their Spanish shape when no twin exists. */
+  source?: string
 }
 
 /**
  * Upcoming approved events for the Monday digest: everything happening in
  * the next 7 days, soonest first. Rocket launches and city events land here
  * via the daily sync-events cron.
+ *
+ * `locale` localizes the title (DB `title_es` twin, English fallback). The email itself
+ * is English, so the digest crons keep the default; /this-week passes the page locale.
  */
-export async function getDigestEvents(days = 7, limit = 8): Promise<DigestEvent[]> {
+export async function getDigestEvents(days = 7, limit = 8, locale = "en"): Promise<DigestEvent[]> {
   const sevenDaysAhead = new Date(Date.now() + days * 24 * 60 * 60 * 1000)
   // DISTINCT ON title: recurring series (weekly markets, daily gallery shows)
   // collapse to their next occurrence instead of filling every digest slot
   const rows = await db
     .selectDistinctOn([events.title], {
       id: events.id,
-      title: events.title,
+      title:
+        locale === "es"
+          ? sql<string>`coalesce(nullif(trim(${events.titleEs}), ''), ${events.title})`
+          : events.title,
       location: events.location,
       startsAt: events.startsAt,
       imageUrl: events.imageUrl,
+      source: events.source,
     })
     .from(events)
     .where(
@@ -125,8 +138,8 @@ export type DigestThing = {
   subtitle: string | null
 }
 
-export async function getDigestThingsToDo(limit = 6): Promise<DigestThing[]> {
-  const acts = await getFeaturedActivities(limit)
+export async function getDigestThingsToDo(limit = 6, locale = "en"): Promise<DigestThing[]> {
+  const acts = await getFeaturedActivities(limit, locale)
   return acts.map((a) => ({
     title: a.title,
     href: `/activities/${a.slug}`,
@@ -145,7 +158,7 @@ export type DigestPartner = {
   discountText: string | null
 }
 
-export async function getDigestPartners(limit = 6): Promise<DigestPartner[]> {
+export async function getDigestPartners(limit = 6, locale: Locale = "en"): Promise<DigestPartner[]> {
   const rows = await db
     .select({
       id: businesses.id,
@@ -186,6 +199,8 @@ export async function getDigestPartners(limit = 6): Promise<DigestPartner[]> {
       businessId: deals.businessId,
       title: deals.title,
       discountText: deals.discountText,
+      titleEs: deals.titleEs,
+      discountTextEs: deals.discountTextEs,
       expiresAt: deals.expiresAt,
     })
     .from(deals)
@@ -194,7 +209,12 @@ export async function getDigestPartners(limit = 6): Promise<DigestPartner[]> {
 
   const dealByBiz = new Map<number, { title: string; discountText: string | null }>()
   for (const d of dealRows) {
-    if (!dealByBiz.has(d.businessId)) dealByBiz.set(d.businessId, { title: d.title, discountText: d.discountText })
+    if (!dealByBiz.has(d.businessId)) {
+      dealByBiz.set(d.businessId, {
+        title: pick(locale, d.title, d.titleEs),
+        discountText: pick(locale, d.discountText, d.discountTextEs),
+      })
+    }
   }
 
   return rows.map((r) => ({
@@ -331,9 +351,9 @@ export async function getDigestBusinessFeature(week: number): Promise<DigestPlac
  * seasonality. A couple (Beattie Park, La Purisima Golf Course) also exist as thin business rows,
  * which is why this reads only from activities — otherwise they would appear twice.
  */
-export async function getDigestOutdoors(week: number, limit = 2): Promise<DigestThing[]> {
+export async function getDigestOutdoors(week: number, limit = 2, locale = "en"): Promise<DigestThing[]> {
   const rows = await db.execute(sql`
-    select title, slug, category, image_url, description
+    select title, title_es, slug, category, image_url, description, description_es
     from activities
     where image_url is not null
     order by md5(slug)`)
@@ -341,11 +361,14 @@ export async function getDigestOutdoors(week: number, limit = 2): Promise<Digest
   if (!all.length) return []
   const start = (week * limit) % all.length
   const picked = Array.from({ length: Math.min(limit, all.length) }, (_, i) => all[(start + i) % all.length])
+  // Spanish twins are NULL until translated — the English column is always the fallback.
+  const loc = (en: unknown, es: unknown) =>
+    locale === "es" && typeof es === "string" && es.trim() ? es : ((en as string) ?? null)
   return picked.map((r) => ({
-    title: String(r.title),
+    title: String(loc(r.title, r.title_es)),
     href: `/activities/${String(r.slug)}`,
     imageUrl: (r.image_url as string) ?? null,
-    subtitle: firstSentence((r.description as string) ?? null, 90) ?? ((r.category as string) ?? null),
+    subtitle: firstSentence(loc(r.description, r.description_es), 90) ?? ((r.category as string) ?? null),
   }))
 }
 
@@ -364,13 +387,20 @@ export type DigestNews = {
  * The week's local news, newest first — the section that makes the Monday
  * edition read like the town's front page rather than a listings sheet.
  */
-export async function getDigestNews(limit = 4): Promise<DigestNews[]> {
+export async function getDigestNews(limit = 4, locale = "en"): Promise<DigestNews[]> {
+  const es = locale === "es"
   const rows = await db
     .select({
       id: blogPosts.id,
       slug: blogPosts.slug,
-      title: blogPosts.title,
-      excerpt: blogPosts.excerpt,
+      // Spanish twins (title_es / excerpt_es) are NULL until translated; English is the fallback.
+      title: es
+        ? sql<string>`coalesce(nullif(trim(${blogPosts.titleEs}), ''), ${blogPosts.title})`
+        : blogPosts.title,
+      titleEn: blogPosts.title,
+      excerpt: es
+        ? sql<string | null>`coalesce(nullif(trim(${blogPosts.excerptEs}), ''), ${blogPosts.excerpt})`
+        : blogPosts.excerpt,
       imageUrl: blogPosts.imageUrl,
       tags: blogPosts.tags,
       publishedAt: blogPosts.publishedAt,
@@ -387,9 +417,10 @@ export async function getDigestNews(limit = 4): Promise<DigestNews[]> {
     .limit(limit)
   // Email needs absolute URLs, and a story without a photo still gets its topic cover.
   const origin = process.env.AUTH_URL ?? "https://www.lompoclocals.com"
-  return rows.map(({ tags, ...r }) => ({
+  // Topic covers derive from English keywords, so the cover is keyed off the English title.
+  return rows.map(({ tags, titleEn, ...r }) => ({
     ...r,
-    imageUrl: newsCoverUrl({ imageUrl: r.imageUrl, tags: tags as string[] | null, title: r.title }, origin),
+    imageUrl: newsCoverUrl({ imageUrl: r.imageUrl, tags: tags as string[] | null, title: titleEn }, origin),
   }))
 }
 
@@ -405,17 +436,18 @@ export type MasterDigestContent = {
   news: DigestNews[]
 }
 
-export async function getMasterDigestContent(): Promise<MasterDigestContent> {
+/** `locale` localizes events / things / outdoors / news; the email crons keep the English default. */
+export async function getMasterDigestContent(locale = "en"): Promise<MasterDigestContent> {
   const week = digestWeekIndex()
   const [events, deals, things, partners, restaurants, feature, outdoors, news] = await Promise.all([
-    getDigestEvents(21, 6),
-    getDigestDeals(),
-    getDigestThingsToDo(6),
-    getDigestPartners(6),
+    getDigestEvents(21, 6, locale),
+    getDigestDeals(locale),
+    getDigestThingsToDo(6, locale),
+    getDigestPartners(6, locale),
     getDigestRestaurants(week, 3),
     getDigestBusinessFeature(week),
-    getDigestOutdoors(week, 2),
-    getDigestNews(4),
+    getDigestOutdoors(week, 2, locale),
+    getDigestNews(4, locale),
   ])
   return { events, deals: deals.slice(0, 6), things, partners, restaurants, feature, outdoors, news }
 }

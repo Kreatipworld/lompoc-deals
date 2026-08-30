@@ -4,6 +4,7 @@ import { deals, businesses, categories, favorites, propertyListings, events, dea
 import { looseLike } from "@/lib/search-match"
 import { effectiveTier } from "@/lib/tier"
 import { weightedSlots } from "@/lib/featured-rotation"
+import { localizeFields, pick, type Locale } from "@/lib/localize"
 
 /**
  * Share of homepage showcase slots that lean to paying partners. Paid listings must
@@ -43,6 +44,11 @@ const baseDealSelect = {
   imageUrl: deals.imageUrl,
   discountText: deals.discountText,
   terms: deals.terms,
+  // Spanish twins (NULL until the translation cron fills them; rowToCard falls back to English)
+  titleEs: deals.titleEs,
+  descriptionEs: deals.descriptionEs,
+  termsEs: deals.termsEs,
+  discountTextEs: deals.discountTextEs,
   expiresAt: deals.expiresAt,
   bizId: businesses.id,
   bizName: businesses.name,
@@ -68,6 +74,10 @@ type DealRow = {
   imageUrl: string | null
   discountText: string | null
   terms: string | null
+  titleEs?: string | null
+  descriptionEs?: string | null
+  termsEs?: string | null
+  discountTextEs?: string | null
   expiresAt: Date
   bizId: number
   bizName: string
@@ -85,7 +95,7 @@ type DealRow = {
   subStatus: "active" | "past_due" | "canceled" | "trialing" | null
 }
 
-function rowToCard(r: DealRow): DealCardData {
+function rowToCard(r: DealRow, locale: Locale = "en"): DealCardData {
   const tier = effectiveTier({
     planOverride: r.bizPlanOverride ?? null,
     subTier: r.subTier ?? null,
@@ -95,11 +105,11 @@ function rowToCard(r: DealRow): DealCardData {
   return {
     id: r.id,
     type: r.type,
-    title: r.title,
-    description: r.description,
+    title: pick(locale, r.title, r.titleEs),
+    description: pick(locale, r.description, r.descriptionEs),
     imageUrl: r.imageUrl,
-    discountText: r.discountText,
-    terms: r.terms,
+    discountText: pick(locale, r.discountText, r.discountTextEs),
+    terms: pick(locale, r.terms, r.termsEs),
     expiresAt: r.expiresAt,
     featured: tier === "premium",
     business: {
@@ -114,6 +124,16 @@ function rowToCard(r: DealRow): DealCardData {
       phone: r.bizPhone,
     },
   }
+}
+
+/**
+ * Business rows select the `descriptionEs` / `aboutEs` twins alongside the English;
+ * on /es the twin replaces the English field when it exists, otherwise English stays.
+ * The returned shape is unchanged, so pages keep reading `description` / `about`.
+ */
+function localizeBusinessRows<R extends Record<string, unknown>>(locale: Locale, rows: R[]): R[] {
+  if (locale !== "es") return rows
+  return rows.map((r) => localizeFields(locale, r, ["description", "about"]))
 }
 
 const activeAndApproved = and(
@@ -134,7 +154,7 @@ const tierRank = sql`case
   when ${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} = 'standard' then 1
   else 0 end`
 
-export async function getActiveDeals(limit = 50): Promise<DealCardData[]> {
+export async function getActiveDeals(limit = 50, locale: Locale = "en"): Promise<DealCardData[]> {
   const rows = await db
     .select(baseDealSelect)
     .from(deals)
@@ -144,12 +164,13 @@ export async function getActiveDeals(limit = 50): Promise<DealCardData[]> {
     .where(activeAndApproved)
     .orderBy(desc(tierRank), desc(deals.createdAt))
     .limit(limit)
-  return rows.map(rowToCard)
+  return rows.map((r) => rowToCard(r, locale))
 }
 
 export async function getDealsByCategorySlug(
   slug: string,
-  limit = 50
+  limit = 50,
+  locale: Locale = "en"
 ): Promise<DealCardData[]> {
   const rows = await db
     .select(baseDealSelect)
@@ -160,12 +181,13 @@ export async function getDealsByCategorySlug(
     .where(and(activeAndApproved, eq(categories.slug, slug)))
     .orderBy(desc(tierRank), desc(deals.createdAt))
     .limit(limit)
-  return rows.map(rowToCard)
+  return rows.map((r) => rowToCard(r, locale))
 }
 
 export async function searchDeals(
   q: string,
-  limit = 50
+  limit = 50,
+  locale: Locale = "en"
 ): Promise<DealCardData[]> {
   const rows = await db
     .select(baseDealSelect)
@@ -189,10 +211,10 @@ export async function searchDeals(
     )
     .orderBy(desc(tierRank), desc(deals.createdAt))
     .limit(limit)
-  return rows.map(rowToCard)
+  return rows.map((r) => rowToCard(r, locale))
 }
 
-export async function getDealById(id: number): Promise<DealCardData | null> {
+export async function getDealById(id: number, locale: Locale = "en"): Promise<DealCardData | null> {
   const rows = await db
     .select(baseDealSelect)
     .from(deals)
@@ -207,7 +229,7 @@ export async function getDealById(id: number): Promise<DealCardData | null> {
       )
     )
     .limit(1)
-  return rows[0] ? rowToCard(rows[0]) : null
+  return rows[0] ? rowToCard(rows[0], locale) : null
 }
 
 export type DirectoryBusiness = {
@@ -227,13 +249,14 @@ export type DirectoryBusiness = {
   hoursJson: unknown
 }
 
-export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
+export async function getDirectoryBusinesses(locale: Locale = "en"): Promise<DirectoryBusiness[]> {
   const rows = await db
     .select({
       id: businesses.id,
       name: businesses.name,
       slug: businesses.slug,
       description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
       address: businesses.address,
       phone: businesses.phone,
       website: businesses.website,
@@ -251,16 +274,17 @@ export async function getDirectoryBusinesses(): Promise<DirectoryBusiness[]> {
     .where(eq(businesses.status, "approved"))
     .groupBy(businesses.id, categories.id)
     .orderBy(businesses.name)
-  return rows
+  return localizeBusinessRows(locale, rows)
 }
 
-export async function getBusinessesByCategorySlug(categorySlug: string): Promise<DirectoryBusiness[]> {
+export async function getBusinessesByCategorySlug(categorySlug: string, locale: Locale = "en"): Promise<DirectoryBusiness[]> {
   const rows = await db
     .select({
       id: businesses.id,
       name: businesses.name,
       slug: businesses.slug,
       description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
       address: businesses.address,
       phone: businesses.phone,
       website: businesses.website,
@@ -284,7 +308,7 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
       desc(sql`coalesce(${businesses.planOverride} = 'premium', false)`),
       businesses.name
     )
-  return rows
+  return localizeBusinessRows(locale, rows)
 }
 
 /**
@@ -292,13 +316,14 @@ export async function getBusinessesByCategorySlug(categorySlug: string): Promise
  * is appetite-driven. Businesses with live deals lead; random() rotates the rest
  * so the rail changes every visit as the directory grows.
  */
-export async function getFoodSpots(limit = 10): Promise<DirectoryBusiness[]> {
+export async function getFoodSpots(limit = 10, locale: Locale = "en"): Promise<DirectoryBusiness[]> {
   const rows = await db
     .select({
       id: businesses.id,
       name: businesses.name,
       slug: businesses.slug,
       description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
       address: businesses.address,
       phone: businesses.phone,
       website: businesses.website,
@@ -327,16 +352,17 @@ export async function getFoodSpots(limit = 10): Promise<DirectoryBusiness[]> {
       sql`random()`
     )
     .limit(limit)
-  return rows
+  return localizeBusinessRows(locale, rows)
 }
 
-export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusiness[]> {
+export async function getFeaturedBusinesses(limit = 6, locale: Locale = "en"): Promise<DirectoryBusiness[]> {
   const rows = await db
     .select({
       id: businesses.id,
       name: businesses.name,
       slug: businesses.slug,
       description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
       address: businesses.address,
       phone: businesses.phone,
       website: businesses.website,
@@ -368,7 +394,7 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
   // whole town rather than only the subscriber list.
   const partners = rows.filter((r) => r.tierRank > 0)
   const unpaid = rows.filter((r) => r.tierRank === 0)
-  return weightedSlots(partners, unpaid, limit, PARTNER_SLOT_CHANCE)
+  return localizeBusinessRows(locale, weightedSlots(partners, unpaid, limit, PARTNER_SLOT_CHANCE))
 }
 
 /**
@@ -376,13 +402,14 @@ export async function getFeaturedBusinesses(limit = 6): Promise<DirectoryBusines
  * first — the homepage "Featured members" front row. No sampling, no limit:
  * joining IS the listing here, automatically, the moment the card is in.
  */
-export async function getPartnerBusinesses(): Promise<DirectoryBusiness[]> {
+export async function getPartnerBusinesses(locale: Locale = "en"): Promise<DirectoryBusiness[]> {
   const rows = await db
     .select({
       id: businesses.id,
       name: businesses.name,
       slug: businesses.slug,
       description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
       address: businesses.address,
       phone: businesses.phone,
       website: businesses.website,
@@ -403,7 +430,7 @@ export async function getPartnerBusinesses(): Promise<DirectoryBusiness[]> {
     .groupBy(businesses.id, categories.id)
     .having(sql`max(${tierRank}) > 0`)
     .orderBy(sql`coalesce(max(${subscriptions.createdAt}), ${businesses.createdAt}) desc`)
-  return rows
+  return localizeBusinessRows(locale, rows)
 }
 
 export type PropertyListing = {
@@ -643,12 +670,13 @@ export type CategoryWithDeals = {
 }
 
 export async function getDealsGroupedByCategory(
-  perCategory = 6
+  perCategory = 6,
+  locale: Locale = "en"
 ): Promise<CategoryWithDeals[]> {
   const cats = await getAllCategories()
   const results = await Promise.all(
     cats.map(async (cat) => {
-      const catDeals = await getDealsByCategorySlug(cat.slug, perCategory)
+      const catDeals = await getDealsByCategorySlug(cat.slug, perCategory, locale)
       return { ...cat, deals: catDeals }
     })
   )
@@ -667,13 +695,14 @@ export type WineryBusiness = {
   logoUrl: string | null
 }
 
-export async function getWineryBusinesses(): Promise<WineryBusiness[]> {
+export async function getWineryBusinesses(locale: Locale = "en"): Promise<WineryBusiness[]> {
   const rows = await db
     .select({
       id: businesses.id,
       name: businesses.name,
       slug: businesses.slug,
       description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
       address: businesses.address,
       phone: businesses.phone,
       website: businesses.website,
@@ -683,7 +712,7 @@ export async function getWineryBusinesses(): Promise<WineryBusiness[]> {
     .innerJoin(categories, eq(businesses.categoryId, categories.id))
     .where(and(eq(businesses.status, "approved"), eq(categories.slug, "wineries")))
     .orderBy(businesses.name)
-  return rows
+  return localizeBusinessRows(locale, rows)
 }
 
 export async function getSiteStats() {
@@ -710,7 +739,8 @@ export async function getSiteStats() {
 }
 
 export async function getFavoritedDeals(
-  userId: number
+  userId: number,
+  locale: Locale = "en"
 ): Promise<DealCardData[]> {
   const rows = await db
     .select(baseDealSelect)
@@ -721,10 +751,10 @@ export async function getFavoritedDeals(
     .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(and(eq(favorites.userId, userId), activeAndApproved))
     .orderBy(desc(deals.createdAt))
-  return rows.map(rowToCard)
+  return rows.map((r) => rowToCard(r, locale))
 }
 
-export async function getBusinessBySlug(slug: string) {
+export async function getBusinessBySlug(slug: string, locale: Locale = "en") {
   const biz = await db.query.businesses.findFirst({
     where: (b, { and: a, eq: e }) =>
       a(e(b.slug, slug), e(b.status, "approved")),
@@ -769,9 +799,12 @@ export async function getBusinessBySlug(slug: string) {
     .where(and(eq(businesses.id, biz.id), gt(deals.expiresAt, sql`now()`)))
     .orderBy(desc(deals.createdAt))
 
+  // The row carries the raw English plus the *_es twins; on /es the twin leads for
+  // description/about (the dashboard reads its own query, so the owner still edits English).
+  const localized = localizeFields(locale, biz, ["description", "about"])
   return {
-    business: { ...biz, category, ownerEmail, effectiveTier: paidTier },
-    deals: bizDeals.map(rowToCard),
+    business: { ...localized, category, ownerEmail, effectiveTier: paidTier },
+    deals: bizDeals.map((r) => rowToCard(r, locale)),
   }
 }
 
@@ -799,13 +832,15 @@ export type UserRedemptionData = {
   businessSlug: string
 }
 
-export async function getUserClaimedCoupons(userId: number): Promise<UserCouponData[]> {
+export async function getUserClaimedCoupons(userId: number, locale: Locale = "en"): Promise<UserCouponData[]> {
   const rows = await db
     .select({
       dealId: deals.id,
       dealTitle: deals.title,
+      dealTitleEs: deals.titleEs,
       dealType: deals.type,
       discountText: deals.discountText,
+      discountTextEs: deals.discountTextEs,
       imageUrl: deals.imageUrl,
       expiresAt: deals.expiresAt,
       claimedAt: dealEvents.createdAt,
@@ -819,15 +854,22 @@ export async function getUserClaimedCoupons(userId: number): Promise<UserCouponD
     .orderBy(desc(dealEvents.createdAt))
 
   const now = new Date()
-  return rows.map((r) => ({ ...r, isExpired: r.expiresAt < now }))
+  return rows.map(({ dealTitleEs, discountTextEs, ...r }) => ({
+    ...r,
+    dealTitle: pick(locale, r.dealTitle, dealTitleEs),
+    discountText: pick(locale, r.discountText, discountTextEs),
+    isExpired: r.expiresAt < now,
+  }))
 }
 
-export async function getUserRedemptions(userId: number): Promise<UserRedemptionData[]> {
+export async function getUserRedemptions(userId: number, locale: Locale = "en"): Promise<UserRedemptionData[]> {
   const rows = await db
     .select({
       dealId: deals.id,
       dealTitle: deals.title,
+      dealTitleEs: deals.titleEs,
       discountText: deals.discountText,
+      discountTextEs: deals.discountTextEs,
       redeemedAt: dealEvents.createdAt,
       businessName: businesses.name,
       businessSlug: businesses.slug,
@@ -838,7 +880,11 @@ export async function getUserRedemptions(userId: number): Promise<UserRedemption
     .where(and(eq(dealEvents.userId, userId), eq(dealEvents.eventType, "redeem")))
     .orderBy(desc(dealEvents.createdAt))
 
-  return rows
+  return rows.map(({ dealTitleEs, discountTextEs, ...r }) => ({
+    ...r,
+    dealTitle: pick(locale, r.dealTitle, dealTitleEs),
+    discountText: pick(locale, r.discountText, discountTextEs),
+  }))
 }
 
 export async function getDealEngagement(
@@ -868,25 +914,39 @@ export type EventCardData = {
   category: string
   startsAt: Date
   endsAt: Date | null
+  /** Where the row came from ("launch-library" rows get a parsed Spanish title as fallback). */
+  source: string
   business: { id: number; name: string; slug: string } | null
+}
+
+/**
+ * Localized text column: on /es prefer the `_es` twin when it has been written, else the
+ * English source. Blank twins count as missing so a half-written translation never shows.
+ */
+function esOr<T>(locale: string | undefined, en: T, es: unknown) {
+  return locale === "es"
+    ? sql<string | null>`coalesce(nullif(trim(${es}), ''), ${en})`
+    : en
 }
 
 export async function getUpcomingEvents(
   category?: string,
-  limit = 8
+  limit = 8,
+  locale?: string
 ): Promise<EventCardData[]> {
   const now = sql`now()`
 
   const rows = await db
     .select({
       id: events.id,
-      title: events.title,
-      description: events.description,
+      title: esOr(locale, events.title, events.titleEs),
+      description: esOr(locale, events.description, events.descriptionEs),
       location: events.location,
       imageUrl: events.imageUrl,
       category: events.category,
       startsAt: events.startsAt,
       endsAt: events.endsAt,
+      source: events.source,
       bizId: businesses.id,
       bizName: businesses.name,
       bizSlug: businesses.slug,
@@ -907,13 +967,14 @@ export async function getUpcomingEvents(
 
   return rows.map((r) => ({
     id: r.id,
-    title: r.title,
+    title: r.title ?? "",
     description: r.description,
     location: r.location,
     imageUrl: r.imageUrl,
     category: r.category,
     startsAt: r.startsAt,
     endsAt: r.endsAt,
+    source: r.source,
     business:
       r.bizId && r.bizName && r.bizSlug
         ? { id: r.bizId, name: r.bizName, slug: r.bizSlug }
@@ -926,6 +987,8 @@ export async function getUpcomingEvents(
 export type ActivityData = {
   id: number
   title: string
+  /** English title regardless of locale — the key for dedup/exclusion joins (businesses.name). */
+  titleEn: string
   slug: string
   category: string
   description: string | null
@@ -949,7 +1012,10 @@ function activityFields(locale?: string) {
   const es = locale === "es"
   return {
     id: activities.id,
-    title: activities.title,
+    title: es
+      ? sql<string>`coalesce(nullif(trim(${activities.titleEs}), ''), ${activities.title})`
+      : activities.title,
+    titleEn: activities.title,
     slug: activities.slug,
     category: activities.category,
     description: es
@@ -1054,6 +1120,8 @@ export type BlogPostCard = {
   id: number
   slug: string
   title: string
+  /** English title regardless of locale — topic/cover derivation keys off English keywords. */
+  titleEn: string
   excerpt: string | null
   imageUrl: string | null
   category: string | null
@@ -1066,13 +1134,16 @@ export type BlogPostFull = BlogPostCard & {
   content: string
   metaDescription: string | null
   updatedAt: Date
+  /** Language of `content` as returned — "es" only when the Spanish body was actually used. */
+  contentLang: "en" | "es"
 }
 
 export async function getPublishedBlogPosts(
   limit = 20,
   offset = 0,
   category?: string,
-  topicTag?: string
+  topicTag?: string,
+  locale?: string
 ): Promise<BlogPostCard[]> {
   const conditions = [eq(blogPosts.status, "published")]
   if (category) conditions.push(eq(blogPosts.category, category))
@@ -1082,8 +1153,9 @@ export async function getPublishedBlogPosts(
     .select({
       id: blogPosts.id,
       slug: blogPosts.slug,
-      title: blogPosts.title,
-      excerpt: blogPosts.excerpt,
+      title: esOr(locale, blogPosts.title, blogPosts.titleEs),
+      titleEn: blogPosts.title,
+      excerpt: esOr(locale, blogPosts.excerpt, blogPosts.excerptEs),
       imageUrl: blogPosts.imageUrl,
       category: blogPosts.category,
       tags: blogPosts.tags,
@@ -1099,7 +1171,7 @@ export async function getPublishedBlogPosts(
   return rows as BlogPostCard[]
 }
 
-export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | null> {
+export async function getBlogPostBySlug(slug: string, locale?: string): Promise<BlogPostFull | null> {
   const rows = await db
     .select()
     .from(blogPosts)
@@ -1108,18 +1180,24 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | nu
 
   if (!rows[0]) return null
   const r = rows[0]
+  // Spanish twins are NULL until the translation cron writes them; English is always the fallback.
+  const es = locale === "es"
+  const has = (v: string | null | undefined): v is string => !!v && v.trim().length > 0
+  const useEsContent = es && has(r.contentEs)
   return {
     id: r.id,
     slug: r.slug,
-    title: r.title,
-    excerpt: r.excerpt,
-    content: r.content,
+    title: es && has(r.titleEs) ? r.titleEs : r.title,
+    titleEn: r.title,
+    excerpt: es && has(r.excerptEs) ? r.excerptEs : r.excerpt,
+    content: useEsContent ? (r.contentEs as string) : r.content,
+    contentLang: useEsContent ? "es" : "en",
     imageUrl: r.imageUrl,
     category: r.category,
     tags: r.tags as string[] | null,
     authorName: r.authorName,
     publishedAt: r.publishedAt,
-    metaDescription: r.metaDescription,
+    metaDescription: es && has(r.metaDescriptionEs) ? r.metaDescriptionEs : r.metaDescription,
     updatedAt: r.updatedAt,
   }
 }
@@ -1144,8 +1222,8 @@ export async function countPublishedBlogPosts(category?: string, topicTag?: stri
   return Number(rows[0]?.count ?? 0)
 }
 
-export async function getRecentBlogPosts(limit = 3): Promise<BlogPostCard[]> {
-  return getPublishedBlogPosts(limit, 0)
+export async function getRecentBlogPosts(limit = 3, locale?: string): Promise<BlogPostCard[]> {
+  return getPublishedBlogPosts(limit, 0, undefined, undefined, locale)
 }
 
 export type RelatedBusinessCard = {
@@ -1224,7 +1302,8 @@ const BLOG_CATEGORY_TO_BUSINESS_SLUGS: Record<string, string[]> = {
 
 export async function getBusinessesForBlogCategory(
   blogCategory: string | null,
-  limit = 3
+  limit = 3,
+  locale: Locale = "en"
 ): Promise<BlogBusinessCard[]> {
   const slugs = blogCategory ? (BLOG_CATEGORY_TO_BUSINESS_SLUGS[blogCategory] ?? null) : null
 
@@ -1234,6 +1313,7 @@ export async function getBusinessesForBlogCategory(
       name: businesses.name,
       slug: businesses.slug,
       description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
       logoUrl: businesses.logoUrl,
       categoryName: categories.name,
       categorySlug: categories.slug,
@@ -1255,7 +1335,7 @@ export async function getBusinessesForBlogCategory(
     )
     .limit(limit)
 
-  return rows as BlogBusinessCard[]
+  return localizeBusinessRows(locale, rows) as BlogBusinessCard[]
 }
 
 // ---------------------------------------------------------------------------
@@ -1353,12 +1433,13 @@ export async function getActivitiesNearPoint(
   lat: number,
   lng: number,
   limit = 4,
-  excludeSlug?: string
+  excludeSlug?: string,
+  locale?: string
 ): Promise<NearbyActivity[]> {
   const distance = milesFrom(lat, lng, activities.lat, activities.lng)
   const rows = await db
     .select({
-      title: activities.title,
+      title: sql<string>`coalesce(${esOr(locale, activities.title, activities.titleEs)}, ${activities.title})`,
       slug: activities.slug,
       category: activities.category,
       imageUrl: activities.imageUrl,

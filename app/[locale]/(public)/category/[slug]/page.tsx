@@ -78,8 +78,8 @@ export default async function CategoryPage({
   const openNow = searchParams?.open === "1"
 
   const [allCategoryBusinesses, deals, listings, viewer] = await Promise.all([
-    isRealEstate ? Promise.resolve([]) : getBusinessesByCategorySlug(params.slug),
-    isRealEstate ? Promise.resolve([]) : getDealsByCategorySlug(params.slug),
+    isRealEstate ? Promise.resolve([]) : getBusinessesByCategorySlug(params.slug, params.locale),
+    isRealEstate ? Promise.resolve([]) : getDealsByCategorySlug(params.slug, 50, params.locale),
     isRealEstate ? getAllRealEstateListings(tab ?? undefined) : Promise.resolve([]),
     getViewer(),
   ])

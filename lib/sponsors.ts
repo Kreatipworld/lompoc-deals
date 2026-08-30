@@ -2,6 +2,7 @@ import { and, eq, sql, desc } from "drizzle-orm"
 import { db } from "@/db/client"
 import { businesses, categories, subscriptions } from "@/db/schema"
 import { fairShuffle } from "@/lib/featured-rotation"
+import { localizeFields, type Locale } from "@/lib/localize"
 
 export type SponsorBusiness = {
   id: number
@@ -33,6 +34,7 @@ const SPONSOR_SELECT = {
   name: businesses.name,
   slug: businesses.slug,
   description: businesses.description,
+  descriptionEs: businesses.descriptionEs,
   coverUrl: businesses.coverUrl,
   logoUrl: businesses.logoUrl,
   categoryName: categories.name,
@@ -49,6 +51,7 @@ const SPONSOR_SELECT = {
 export async function getSponsoredBusinesses(opts?: {
   categorySlug?: string
   limit?: number
+  locale?: Locale
 }): Promise<SponsorBusiness[]> {
   const limit = opts?.limit ?? 8
 
@@ -76,7 +79,7 @@ export async function getSponsoredBusinesses(opts?: {
   if (opts?.categorySlug) {
     shuffled.sort((a, b) => Number(b.exclusive) - Number(a.exclusive))
   }
-  return shuffled.slice(0, limit)
+  return shuffled.slice(0, limit).map((r) => localizeFields(opts?.locale ?? "en", r, ["description"]))
 }
 
 /**
@@ -85,8 +88,9 @@ export async function getSponsoredBusinesses(opts?: {
  * request so the spotlight rotates fairly. Null if unsponsored.
  */
 export async function getCategorySpotlight(
-  categorySlug: string
+  categorySlug: string,
+  locale: Locale = "en"
 ): Promise<SponsorBusiness | null> {
-  const [top] = await getSponsoredBusinesses({ categorySlug, limit: 1 })
+  const [top] = await getSponsoredBusinesses({ categorySlug, limit: 1, locale })
   return top ?? null
 }

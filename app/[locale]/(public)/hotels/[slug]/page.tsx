@@ -7,6 +7,8 @@ import {
   amenityLabel,
   hotelAvenue,
   hotelTagline,
+  hotelDescription,
+  hotelNeighborhood,
   type AmenityKey,
 } from "@/lib/hotels-data"
 import { HotelsMap } from "@/components/hotels-map"
@@ -43,7 +45,7 @@ export async function generateMetadata({
   const tagline = hotelTagline(hotel, params.locale)
   return {
     title: seoTitle(hotel.name, tUi("descriptor")),
-    description: seoDescription(`${tagline}. ${hotel.description}`, ""),
+    description: seoDescription(`${tagline}. ${hotelDescription(hotel, params.locale)}`, ""),
     keywords: [
       `${hotel.name.toLowerCase()}`,
       "lompoc hotels",
@@ -170,7 +172,7 @@ export default async function HotelPage({ params }: { params: { slug: string; lo
             {/* About */}
             <div>
               <h2 className="font-display text-xl font-semibold tracking-tight mb-3">{t("about")}</h2>
-              <p className="text-muted-foreground leading-relaxed">{hotel.description}</p>
+              <p className="text-muted-foreground leading-relaxed">{hotelDescription(hotel, params.locale)}</p>
             </div>
 
             {/* Amenities */}
@@ -203,8 +205,8 @@ export default async function HotelPage({ params }: { params: { slug: string; lo
                     {hotel.avenue && (
                       <div className="text-xs italic text-muted-foreground/70 mt-0.5">{hotelAvenue(hotel, params.locale)}</div>
                     )}
-                    {hotel.neighborhood && (
-                      <div className="text-xs text-muted-foreground/60 mt-0.5">{hotel.neighborhood}</div>
+                    {hotelNeighborhood(hotel, params.locale) && (
+                      <div className="text-xs text-muted-foreground/60 mt-0.5">{hotelNeighborhood(hotel, params.locale)}</div>
                     )}
                   </div>
                 </div>

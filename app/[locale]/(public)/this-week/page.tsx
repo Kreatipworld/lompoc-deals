@@ -8,6 +8,7 @@ import { SafeImage } from "@/components/safe-image"
 import { EditionGallery } from "@/components/edition-gallery"
 import { pageAlternates } from "@/lib/seo"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
+import { launchTitle } from "@/lib/launch-display"
 
 // The edition tracks live content (events expire, deals rotate), so render fresh
 // rather than serving a stale week from the build.
@@ -45,13 +46,20 @@ function img(u: string | null | undefined): string | null {
 
 export default async function ThisWeekPage({ params }: { params: { locale: string } }) {
   const locale = params.locale === "es" ? "es" : "en"
-  const [content, t, tc, tcEn, ta] = await Promise.all([
-    getMasterDigestContent(),
+  const [content, t, tc, tcEn, ta, tLaunch] = await Promise.all([
+    // Events / things / outdoors / news come back in the page locale (DB twins, English fallback).
+    getMasterDigestContent(locale),
     getTranslations({ locale: params.locale, namespace: "thisWeek" }),
     getTranslations({ locale: params.locale, namespace: "categoryLabels" }),
     getTranslations({ locale: "en", namespace: "categoryLabels" }),
     getTranslations({ locale: params.locale, namespace: "activityCategory" }),
+    getTranslations({ locale: params.locale, namespace: "newsUi.events" }),
   ])
+  // Launch rows with no title_es twin still get their parsed Spanish shape on /es. The query
+  // already substituted a twin when one exists, so a translated title no longer matches the
+  // launch regex and passes through untouched.
+  const eventTitle = (e: { title: string; source?: string }) =>
+    launchTitle({ title: e.title, source: e.source ?? "", description: null }, locale, tLaunch)
   // Partners carry only the English category name; map it back to its slug so /es reads the label.
   const slugByEnglishName = new Map(CATEGORY_SLUGS.map((slug) => [tcEn(slug), slug]))
   const partnerCategory = (name: string | null) =>
@@ -125,7 +133,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                         href={`/events/${lead.event.id}`}
                         className="font-edition block text-3xl font-bold leading-[1.08] hover:text-[#650C75] sm:text-5xl"
                       >
-                        {lead.event.title}
+                        {eventTitle(lead.event)}
                       </Link>
                       <p className="font-edition mt-3 text-base italic text-[#7a6f60] sm:text-lg">
                         {dateShort(lead.event.startsAt)} · {timeOf(lead.event.startsAt)}
@@ -141,7 +149,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                     {img(lead.event.imageUrl) && (
                       <SafeImage
                         src={img(lead.event.imageUrl) as string}
-                        alt={lead.event.title}
+                        alt={eventTitle(lead.event)}
                         className="h-56 w-full border border-[#d8cfc0] object-cover sm:h-72"
                       />
                     )}
@@ -198,7 +206,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                         </span>
                         <span className="flex-1">
                           <span className="font-edition block text-lg font-bold leading-snug sm:text-xl">
-                            {e.title}
+                            {eventTitle(e)}
                           </span>
                           <span className="font-edition mt-0.5 block text-sm italic text-[#7a6f60]">
                             {timeOf(e.startsAt)}

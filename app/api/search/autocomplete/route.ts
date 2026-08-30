@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { pick } from "@/lib/localize"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
 import { and, eq, gt, or, sql } from "drizzle-orm"
@@ -34,6 +35,7 @@ async function categoriesWithCounts(): Promise<CategoryHit[]> {
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q")?.trim()
   const wantPopular = req.nextUrl.searchParams.get("popular") === "1"
+  const locale = req.nextUrl.searchParams.get("locale") === "es" ? "es" : "en"
 
   // Idle "Discover" state: no query yet → return the most-populated categories.
   if (!q || q.length < 2) {
@@ -107,6 +109,8 @@ export async function GET(req: NextRequest) {
         id: deals.id,
         title: deals.title,
         discountText: deals.discountText,
+        titleEs: deals.titleEs,
+        discountTextEs: deals.discountTextEs,
         bizId: businesses.id,
         bizName: businesses.name,
         bizSlug: businesses.slug,
@@ -131,6 +135,10 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     categories: categoryHits,
     businesses: businessesOut,
-    deals: dealRows,
+    deals: dealRows.map(({ titleEs, discountTextEs, ...d }) => ({
+      ...d,
+      title: pick(locale, d.title, titleEs),
+      discountText: pick(locale, d.discountText, discountTextEs),
+    })),
   })
 }

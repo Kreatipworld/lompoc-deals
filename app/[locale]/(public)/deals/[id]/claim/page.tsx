@@ -24,7 +24,7 @@ export default async function ClaimPage({
   const dateLocale = locale === "es" ? es : undefined
   const t = await getTranslations("claim")
   const dealId = parseInt(id, 10)
-  const deal = Number.isFinite(dealId) ? await getDealById(dealId) : null
+  const deal = Number.isFinite(dealId) ? await getDealById(dealId, locale) : null
 
   if (!deal) {
     return (

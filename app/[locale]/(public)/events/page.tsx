@@ -8,7 +8,7 @@ import { events } from "@/db/schema"
 import { pageAlternates } from "@/lib/seo"
 import { PageHeader } from "@/components/page-header"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
-import { LAUNCH_SOURCE, launchTitle } from "@/lib/launch-display"
+import { LAUNCH_SOURCE, eventTitle } from "@/lib/launch-display"
 
 // Events sync daily via cron — keep the page fresh without a redeploy
 export const revalidate = 300
@@ -66,8 +66,9 @@ export default async function EventsPage({
   const t = await getTranslations("eventsPage")
   const tLaunch = await getTranslations({ locale: params.locale, namespace: "newsUi.events" })
   const es = params.locale === "es"
-  // Launch rows are stored in English; /es renders them in Spanish (lib/launch-display.ts).
-  const title = (e: EventRow) => launchTitle(e, params.locale, tLaunch)
+  // /es prefers the DB twin (title_es); launch rows without one still render their parsed
+  // Spanish shape (lib/launch-display.ts); everything else falls back to English.
+  const title = (e: EventRow) => eventTitle(e, params.locale, tLaunch)
   const all = await getUpcoming()
   const launches = all.filter((e) => e.source === LAUNCH_SOURCE)
   const others = collapseRecurring(all.filter((e) => e.source !== LAUNCH_SOURCE))
@@ -155,7 +156,7 @@ export default async function EventsPage({
                         </span>
                       )}
                     </p>
-                    <p className="truncate font-medium">{ev.title}</p>
+                    <p className="truncate font-medium">{title(ev)}</p>
                     {ev.location && (
                       <p className="mt-0.5 flex items-center gap-1 truncate text-sm text-muted-foreground">
                         <MapPin className="h-3.5 w-3.5 flex-shrink-0" />

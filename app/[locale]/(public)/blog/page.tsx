@@ -53,7 +53,7 @@ export default async function BlogIndexPage({
   const offset = (page - 1) * PAGE_SIZE
 
   const [posts, categories, total] = await Promise.all([
-    getPublishedBlogPosts(PAGE_SIZE, offset, category),
+    getPublishedBlogPosts(PAGE_SIZE, offset, category, undefined, params.locale),
     getBlogCategories(),
     countPublishedBlogPosts(category),
   ])

@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 import { BadgeCheck, Sparkles, ArrowRight } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { SafeImage } from "@/components/safe-image"
@@ -17,7 +17,8 @@ export async function SponsorShowcase({
 } = {}) {
   // Generous cap so every Official Partner rides the row; beyond it the
   // per-request shuffle rotates who appears, so no member is ever locked out.
-  const members = await getSponsoredBusinesses({ categorySlug, limit: 30 })
+  const locale = await getLocale()
+  const members = await getSponsoredBusinesses({ categorySlug, limit: 30, locale })
   if (members.length === 0) return null
   const t = await getTranslations("sponsors")
   const scoped = Boolean(categorySlug)

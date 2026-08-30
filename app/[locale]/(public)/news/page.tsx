@@ -62,7 +62,7 @@ export default async function NewsIndexPage({
   const activeTag = activeTopic ? topicTag(activeTopic.slug) : undefined
 
   const [posts, total] = await Promise.all([
-    getPublishedBlogPosts(PAGE_SIZE, offset, NEWS_CATEGORY, activeTag),
+    getPublishedBlogPosts(PAGE_SIZE, offset, NEWS_CATEGORY, activeTag, params.locale),
     countPublishedBlogPosts(NEWS_CATEGORY, activeTag),
   ])
 
@@ -120,7 +120,7 @@ export default async function NewsIndexPage({
                 {(
                   <div className="absolute inset-0">
                     <SafeImage
-                      src={newsCoverUrl(heroPost)}
+                      src={newsCoverUrl({ ...heroPost, title: heroPost.titleEn })}
                       alt={heroPost.title}
                       className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-300"
                     />
@@ -163,7 +163,7 @@ export default async function NewsIndexPage({
                 {(
                   <Link href={`/blog/${post.slug}`} data-tilt="img" className="group block aspect-[16/9] overflow-hidden bg-gray-100">
                     <SafeImage
-                      src={newsCoverUrl(post)}
+                      src={newsCoverUrl({ ...post, title: post.titleEn })}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -181,7 +181,7 @@ export default async function NewsIndexPage({
                   {post.publishedAt && (
                     <span className="mt-auto flex items-center gap-2 text-xs text-gray-400 pt-3 border-t border-gray-50">
                       <span className="font-semibold text-primary">
-                        {(() => { const tp = deriveTopic(post.tags as string[] | null, post.title); return `${tp.emoji} ${es ? tp.es : tp.en}` })()}
+                        {(() => { const tp = deriveTopic(post.tags as string[] | null, post.titleEn); return `${tp.emoji} ${es ? tp.es : tp.en}` })()}
                       </span>
                       <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" />
                       {format(post.publishedAt, shortDate, dateOpts)}</span>

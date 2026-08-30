@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation"
 import { getViewer } from "@/lib/viewer"
 import { getFavoritedDeals } from "@/lib/queries"
 import { DealGrid } from "@/components/deal-card"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
@@ -33,7 +33,8 @@ export default async function FavoritesPage() {
     )
   }
 
-  const deals = await getFavoritedDeals(viewer.userId!)
+  const locale = await getLocale()
+  const deals = await getFavoritedDeals(viewer.userId!, locale)
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-8">

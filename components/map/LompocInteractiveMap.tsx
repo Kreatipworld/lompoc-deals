@@ -43,11 +43,11 @@ export function LompocInteractiveMap() {
 
   // Fetch real business POIs from the database
   useEffect(() => {
-    fetch("/api/map-pois")
+    fetch(`/api/map-pois?locale=${locale}`)
       .then((r) => r.json())
       .then((data) => setPois(data))
       .catch(() => {})
-  }, [])
+  }, [locale])
 
   const { activeCategories, toggleCategory, selectAllCategories, searchQuery, setSearchQuery, filteredPois, searchResults } = useMapFilter(pois)
   const { location: userLocation, loading: geoLoading, requestLocation } = useGeolocation()

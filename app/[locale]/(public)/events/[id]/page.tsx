@@ -7,7 +7,7 @@ import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
 import { businesses, events } from "@/db/schema"
 import { pageAlternates, seoTitle } from "@/lib/seo"
-import { LAUNCH_TITLE_RE, launchDescription, launchTitle } from "@/lib/launch-display"
+import { LAUNCH_TITLE_RE, eventDescription, eventTitle } from "@/lib/launch-display"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -57,14 +57,23 @@ export async function generateMetadata({
         const date = ev.startsAt.toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
         // "Rocket Launch: Falcon 9 Block 5 — Starlink Group 15-23" → "Starlink Group 15-23 Launch":
         // the payload is the identity; the rocket variant is what truncation would otherwise keep.
-        const launch = ev.title.match(LAUNCH_TITLE_RE)
+        // A translated twin (title_es) wins on /es; the launch shortening only applies to the
+        // English-shaped row.
+        const hasEsTwin = params.locale === "es" && !!ev.titleEs?.trim()
+        const launch = hasEsTwin ? null : ev.title.match(LAUNCH_TITLE_RE)
         const name = launch
           ? tLaunch("launchShortTitle", { mission: launch[2].trim() })
-          : launchTitle(ev, params.locale, tLaunch)
+          : eventTitle(ev, params.locale, tLaunch)
         return `${seoTitle(name, undefined, { max: 60 - (date.length + 3) })} — ${date} | Lompoc Locals`
       })(),
     },
-    description: launchDescription(ev, params.locale, tLaunch)?.slice(0, 160) ?? undefined,
+    description: eventDescription(ev, params.locale, tLaunch)?.slice(0, 160) ?? undefined,
+    openGraph: {
+      title: eventTitle(ev, params.locale, tLaunch),
+      description: eventDescription(ev, params.locale, tLaunch)?.slice(0, 200) ?? undefined,
+      locale: params.locale === "es" ? "es_US" : "en_US",
+      ...(ev.imageUrl ? { images: [{ url: ev.imageUrl }] } : {}),
+    },
     alternates: pageAlternates(`/events/${ev.id}`, params.locale),
   }
 }
@@ -90,9 +99,10 @@ export default async function EventDetailPage({
   const t = await getTranslations("eventDetail")
   const tLaunch = await getTranslations({ locale: params.locale, namespace: "newsUi.events" })
   const es = params.locale === "es"
-  // Launch rows are stored in English; /es renders them in Spanish (lib/launch-display.ts).
-  const title = launchTitle(ev, params.locale, tLaunch)
-  const description = launchDescription(ev, params.locale, tLaunch)
+  // /es prefers the DB twins (title_es / description_es); launch rows without them still
+  // render their parsed Spanish shape (lib/launch-display.ts); else English.
+  const title = eventTitle(ev, params.locale, tLaunch)
+  const description = eventDescription(ev, params.locale, tLaunch)
 
   const jsonLd = {
     "@context": "https://schema.org",

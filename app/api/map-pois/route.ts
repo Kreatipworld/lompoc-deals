@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/client"
 import { businesses, categories, subscriptions } from "@/db/schema"
 import { eq, and, isNotNull, sql } from "drizzle-orm"
 import type { CategoryId } from "@/lib/map-categories"
+import { pick } from "@/lib/localize"
 
 // Without this, Next statically optimizes the GET at build time and the whole
 // map freezes at deploy — new businesses and partner-status changes only
@@ -30,7 +31,9 @@ function toMapCategory(slug: string | null): CategoryId {
   return "other"
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  // `?locale=es` swaps in the Spanish description for the popup highlight (English fallback).
+  const locale = req.nextUrl.searchParams.get("locale") === "es" ? "es" : "en"
   try {
     const rows = await db
       .select({
@@ -40,6 +43,7 @@ export async function GET() {
         lat: businesses.lat,
         lng: businesses.lng,
         description: businesses.description,
+        descriptionEs: businesses.descriptionEs,
         categorySlug: categories.slug,
         // Every paying member (Growth or Plus, override or live subscription)
         // is an Official Partner and gets the prominent marker.
@@ -62,7 +66,7 @@ export async function GET() {
       lat: row.lat as number,
       lng: row.lng as number,
       category: toMapCategory(row.categorySlug ?? null),
-      highlight: row.description?.slice(0, 120) ?? row.name,
+      highlight: pick(locale, row.description, row.descriptionEs)?.slice(0, 120) ?? row.name,
       partner: Boolean(row.isPartner),
     }))
 

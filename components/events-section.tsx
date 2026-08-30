@@ -15,6 +15,7 @@ import {
   Tag,
 } from "lucide-react"
 import { getLocale, getTranslations } from "next-intl/server"
+import { eventTitle, eventDescription } from "@/lib/launch-display"
 
 // ─── Category icon mapping (labels come from translations) ────────────────────
 
@@ -169,6 +170,7 @@ function EmptyEvents({ noEvents, submitLabel }: { noEvents: string; submitLabel:
 
 export async function EventsSection() {
   const [t, locale] = await Promise.all([getTranslations("eventsSection"), getLocale()])
+  const tLaunch = await getTranslations("newsUi.events")
   const intl = locale === "es" ? "es-US" : "en-US"
 
   const CATEGORY_LABEL: Record<string, string> = {
@@ -186,11 +188,18 @@ export async function EventsSection() {
   try {
     // Over-fetch, then collapse recurring series (same title) to their next
     // occurrence so a daily gallery show doesn't fill the whole row
-    const raw = await getUpcomingEvents(undefined, 24)
+    // The query already prefers the DB Spanish twin on /es; launch rows without a twin
+    // still get their parsed Spanish shape (lib/launch-display.ts).
+    const raw = await getUpcomingEvents(undefined, 24, locale)
     const seen = new Set<string>()
     evts = raw
       .filter((e) => (seen.has(e.title) ? false : (seen.add(e.title), true)))
       .slice(0, 8)
+      .map((e) => ({
+        ...e,
+        title: eventTitle(e, locale, tLaunch),
+        description: eventDescription(e, locale, tLaunch),
+      }))
   } catch {
     // If DB is unavailable, skip gracefully
     return null

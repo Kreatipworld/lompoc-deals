@@ -5,7 +5,7 @@ import Map, { Marker, Popup, NavigationControl, Source } from "react-map-gl/mapb
 import { Star, MapPin, Navigation, BedDouble } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { useLocale } from "next-intl"
-import { hotelTagline, hotelAvenue, type Hotel } from "@/lib/hotels-data"
+import { hotelTagline, hotelAvenue, hotelNeighborhood, type Hotel } from "@/lib/hotels-data"
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 // Center on the actual hotel cluster (N H St corridor + E Ocean Ave) — verified via Mapbox geocoding.
@@ -147,10 +147,10 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
                 <span>{hotelAvenue(selected, locale)}</span>
               </div>
             )}
-            {selected.neighborhood && (
+            {hotelNeighborhood(selected, locale) && (
               <div className="lompoc-popup-meta flex items-start gap-1 text-gray-400">
                 <Navigation className="mt-0.5 h-3 w-3 shrink-0" />
-                <span>{selected.neighborhood}</span>
+                <span>{hotelNeighborhood(selected, locale)}</span>
               </div>
             )}
 
@@ -177,7 +177,7 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
             {/* Footer actions */}
             <div className="lompoc-popup-footer mt-2 flex items-center gap-3">
               <Link href={`/hotels/${selected.slug}`} className="lompoc-popup-link">
-                View details →
+                {locale === "es" ? "Ver detalles →" : "View details →"}
               </Link>
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`}
@@ -185,7 +185,7 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
                 rel="noopener noreferrer"
                 className="text-[11px] text-gray-400 hover:text-gray-600 underline"
               >
-                Directions
+                {locale === "es" ? "Cómo llegar" : "Directions"}
               </a>
             </div>
           </div>

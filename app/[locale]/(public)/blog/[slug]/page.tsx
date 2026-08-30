@@ -22,7 +22,7 @@ export async function generateMetadata({
   params: { slug: string; locale: string }
 }): Promise<Metadata> {
   const [post, tUi] = await Promise.all([
-    getBlogPostBySlug(params.slug),
+    getBlogPostBySlug(params.slug, params.locale),
     getTranslations({ locale: params.locale, namespace: "newsUi.blog" }),
   ])
   if (!post) return { title: tUi("postNotFound") }
@@ -48,7 +48,7 @@ export async function generateMetadata({
         post.imageUrl
           ? { url: post.imageUrl, alt: post.title }
           : post.category === "local-news"
-            ? { url: newsCoverUrl(post, siteUrl), alt: post.title }
+            ? { url: newsCoverUrl({ ...post, title: post.titleEn }, siteUrl), alt: post.title }
             : { url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" },
       ],
     },
@@ -65,8 +65,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
   const es = params.locale === "es"
 
   const [post, recentPosts] = await Promise.all([
-    getBlogPostBySlug(params.slug),
-    getRecentBlogPosts(3),
+    getBlogPostBySlug(params.slug, params.locale),
+    getRecentBlogPosts(3, params.locale),
   ])
 
   if (!post) notFound()
@@ -99,7 +99,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
     "@type": isNews ? "NewsArticle" : "BlogPosting",
     headline: post.title,
     description: post.metaDescription ?? post.excerpt ?? undefined,
-    image: [post.imageUrl ?? (isNews ? newsCoverUrl(post, siteUrl) : `${siteUrl}/lompoc-hero.jpg`)],
+    image: [post.imageUrl ?? (isNews ? newsCoverUrl({ ...post, title: post.titleEn }, siteUrl) : `${siteUrl}/lompoc-hero.jpg`)],
     url: `${siteUrl}/blog/${post.slug}`,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${siteUrl}/blog/${post.slug}` },
     datePublished: post.publishedAt?.toISOString(),
@@ -116,7 +116,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
     },
     keywords: post.tags?.join(", "),
     articleSection: post.category ?? undefined,
-    inLanguage: "en-US",
+    // Only "es-US" when the Spanish body actually rendered — a /es page whose twin isn't
+    // translated yet is still an English article.
+    inLanguage: post.contentLang === "es" ? "es-US" : "en-US",
     isPartOf: isNews
       ? { "@type": "WebPage", name: "Lompoc News", url: `${siteUrl}/news` }
       : { "@type": "Blog", name: "Lompoc Locals Blog", url: `${siteUrl}/blog` },
@@ -179,7 +181,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
           {(
             <div className="mb-8 rounded-2xl overflow-hidden aspect-[16/9] bg-gray-100">
               <SafeImage
-                src={newsCoverUrl(post)}
+                src={newsCoverUrl({ ...post, title: post.titleEn })}
                 alt={post.title}
                 className="w-full h-full object-cover"
               />

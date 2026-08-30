@@ -79,8 +79,9 @@ export default async function ActivityDetailPage({
   const [nearbyBusinesses, nearbyPlaces] =
     activity.lat && activity.lng
       ? await Promise.all([
-          getBusinessesNearPoint(activity.lat, activity.lng, isRoute ? 3 : 1.5, 6, activity.title),
-          getActivitiesNearPoint(activity.lat, activity.lng, 4, activity.slug),
+          // Exclusion matches businesses.name, which is English — so key it off the English title.
+          getBusinessesNearPoint(activity.lat, activity.lng, isRoute ? 3 : 1.5, 6, activity.titleEn),
+          getActivitiesNearPoint(activity.lat, activity.lng, 4, activity.slug, locale),
         ])
       : [[], []]
 
