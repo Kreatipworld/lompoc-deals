@@ -60,3 +60,9 @@ Story: link sticker → https://www.lompoclocals.com/blog/lompoc-high-football-d
 ## 5. Hangar 7 live music (Sat 10:00–10:15 AM PT) — hangar7-music-{ig,tt}.png · photo-first night shot (their photo, credited)
 IG: "Saturday night sorted 🎶 Live music at @hangar7socialhouse — drinks, damn good pizza, and a band. No cover, all ages. 🕖 7:00 PM · 📍 107 W Ocean Ave. Details: link in bio. 📸 Hangar 7 Social House. #Lompoc #LiveMusic #OldTownLompoc #805 #LompocEats"
 Story: link sticker → https://www.lompoclocals.com/events/118 ("Tonight 7 PM 🎶") · FB: same + URL · TikTok: "Live music Saturday at Hangar 7 Social House 🎶 7 PM, no cover, all ages. lompoclocals.com/events #Lompoc #LiveMusic #805"
+
+## Launch slots — same-day only, never pre-scheduled
+Watcher armed (session monitor): wakes Wed Sep 2 6:30 AM PT and Sun Sep 6 7:00 AM PT, pre-verified via ll.thespacedevs.com.
+- LAUNCH-1: Starlink 15-23, event 174, uuid 63181269-b125-4c36-951c-c9bd9bbc4b55 (was Wed 12:46 AM PT)
+- LAUNCH-2: Starlink 15-24, event 175, uuid 153ef8ef-b12b-43f4-a4bf-05b225c0cd37 (was Sun 3:59 AM PT)
+Rule: compose + post the morning after ONLY if API status = Success ("last night over the valley" angle, our own launch photos, rotate one not used recently: launches-3 or launches-6). If slipped → fix the events row first, optional heads-up post with the new time. If the session is gone, run the same curl by hand before any launch post.
