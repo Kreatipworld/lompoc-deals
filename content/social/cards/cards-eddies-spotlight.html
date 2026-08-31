@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#650C75; --gold:#EFC618; --green:#0B992F; --cream:#FAF5EC; --ink:#241629; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#333; font-family:'Plus Jakarta Sans',sans-serif; }
+  .card { position:relative; overflow:hidden; margin:20px auto; }
+  .ig { width:1080px; height:1350px; }
+  .tt { width:1080px; height:1920px; }
+  .serif { font-family:Georgia,serif; font-style:italic; }
+  /* Cover system v2 — photo-first: the photo carries, no purple wash. */
+  .photo { position:absolute; inset:0; background-size:cover; background-position:center; }
+  .fade { position:absolute; left:0; right:0; bottom:0; height:46%;
+    background:linear-gradient(to top, rgba(10,8,10,.88) 0%, rgba(10,8,10,.55) 45%, rgba(10,8,10,0) 100%); }
+  .mark { position:absolute; top:56px; right:64px; height:88px; opacity:.95; }
+  .credit { position:absolute; top:70px; left:64px; color:rgba(255,255,255,.85); font-size:24px; font-weight:600; letter-spacing:1px; text-shadow:0 1px 8px rgba(0,0,0,.5); }
+  .eyebrow { color:#fff; font-weight:800; font-size:30px; letter-spacing:5px; opacity:.9; }
+  .name { color:#fff; font-weight:800; letter-spacing:-2px; }
+  .line { color:rgba(255,255,255,.92); font-weight:600; }
+  .chip { display:inline-flex; align-items:center; gap:16px; background:var(--gold); color:var(--ink); font-weight:800; border-radius:14px; }
+  .url { color:#fff; font-weight:700; opacity:.85; }
+</style></head><body>
+
+<!-- EDDIE'S GRILL — member spotlight, feed 4:5 (photo-first) -->
+<div class="card ig" id="eddies-spotlight-ig">
+  <div class="photo" style="background-image:url('https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/eddies-grill/6a96629282.jpg'); background-position:center 62%;"></div>
+  <div class="fade"></div>
+  <img class="mark" src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg">
+  <div class="credit">Photo: Eddie's Grill</div>
+  <div style="position:absolute; left:64px; right:64px; bottom:76px;">
+    <div class="eyebrow">MEMBER SPOTLIGHT</div>
+    <div class="name" style="font-size:112px; line-height:1.0; margin-top:14px;">Eddie's Grill</div>
+    <div class="line" style="font-size:42px; margin-top:16px;">Char-grilled burgers, pastrami &amp; shakes — family-run on N H Street.</div>
+    <div style="margin-top:34px;"><span class="chip" style="font-size:44px; padding:20px 30px;">🎟️&nbsp; 10% off your meal — show the coupon</span></div>
+    <div class="url" style="font-size:34px; margin-top:26px;">lompoclocals.com/biz/eddies-grill</div>
+  </div>
+</div>
+
+<!-- EDDIE'S GRILL — story 9:16 (link sticker goes above the bottom text) -->
+<div class="card tt" id="eddies-spotlight-tt">
+  <div class="photo" style="background-image:url('https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/eddies-grill/6a96629282.jpg'); background-position:center 58%;"></div>
+  <div class="fade" style="height:40%;"></div>
+  <img class="mark" src="file:///Users/kreatip/Projects/lompoc-deals/public/brand/lompoc-locals-mark-white.svg" style="top:200px;">
+  <div class="credit" style="top:214px;">Photo: Eddie's Grill</div>
+  <div style="position:absolute; left:64px; right:64px; bottom:330px;">
+    <div class="eyebrow">MEMBER SPOTLIGHT</div>
+    <div class="name" style="font-size:124px; line-height:1.0; margin-top:16px;">Eddie's Grill</div>
+    <div class="line" style="font-size:46px; margin-top:18px;">Char-grilled burgers, pastrami &amp; shakes — family-run on N H Street.</div>
+    <div style="margin-top:38px;"><span class="chip" style="font-size:48px; padding:22px 32px;">🎟️&nbsp; 10% off your meal — show the coupon</span></div>
+  </div>
+</div>
+
+</body></html>
