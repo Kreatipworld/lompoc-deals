@@ -35,3 +35,16 @@ lompoclocals.com/biz/eddies-grill — link in bio
 **TikTok:** Member spotlight: Eddie's Grill 🍔 char-grilled burgers + pastrami on N H Street. 10% off your meal on lompoclocals.com #Lompoc #LompocEats #Burgers #805
 
 ⚠️ Before posting #2: the deal copy in the DB says "Vandenberg Village" but it's attached to the N H St profile (there are two Eddie's rows: eddies-grill #55 N H St, eddie-s-grill-village #470 Constellation Rd). Card says N H Street. Confirm with the owner which location honors it — or both.
+
+---
+## Scheduled in Buffer — Aug 31
+| Post | Channel | Buffer ID | When (PT) |
+|---|---|---|---|
+| Español | IG feed | 6a95ac6053e01f69d944de81 | Mon 10:00 |
+| Español | IG Story → /es | 6a95ac6453e01f69d944dece | Mon 10:05 |
+| Español | Facebook | 6a95ac67e3b9bc5e662db7d2 | Mon 10:10 |
+| Español | TikTok | 6a95ac6b1c92e18074782e41 | Mon 10:15 |
+| Eddie's | IG feed (@eddiesgrill) | 6a95ac70857859c64a86cbe2 | Tue 11:00 |
+| Eddie's | IG Story → /deals/165/claim | 6a95ac737116b186166d6305 | Tue 11:05 |
+| Eddie's | Facebook | 6a95ac77857859c64a86cc63 | Tue 11:10 |
+| Eddie's | TikTok | 6a95ac7a1c92e18074782f33 | Tue 11:15 |
