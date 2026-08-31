@@ -48,3 +48,15 @@ lompoclocals.com/biz/eddies-grill — link in bio
 | Eddie's | IG Story → /deals/165/claim | 6a95ac737116b186166d6305 | Tue 11:05 |
 | Eddie's | Facebook | 6a95ac77857859c64a86cc63 | Tue 11:10 |
 | Eddie's | TikTok | 6a95ac7a1c92e18074782f33 | Tue 11:15 |
+
+## 3. Art Walk (Thu 10:00–10:15 AM PT) — artwalk-{ig,tt}.png · purple typographic over Lompoc Theatre sign
+IG: "Thursday is Art Walk night 🎨 First Thursday of the month, downtown turns into a showcase — art, live music, exhibitions, and vendors through Old Town. 🕔 5:00–8:00 PM · Thursday. Full calendar: link in bio. #Lompoc #LompocArtWalk #OldTownLompoc #805 #ThingsToDoLompoc"
+Story: link sticker → https://www.lompoclocals.com/events/114 ("Art Walk 🎨") · FB: same + URL https://www.lompoclocals.com/events/114 · TikTok: "Art Walk Thursday in Old Town Lompoc 🎨 5–8 PM, art + live music + vendors. lompoclocals.com/events #Lompoc #ArtWalk #805"
+
+## 4. Braves 42–0 (Fri 9:00–9:15 AM PT) — braves42-{ig,tt}.png · score-on-photo, Huyck Stadium
+IG: "42–0. The Braves opened the season by shutting out Santa Ynez — read how it went down on the Lompoc News desk. lompoclocals.com/news — link in bio. #Lompoc #LompocHigh #Braves #FridayNightLights #805"
+Story: link sticker → https://www.lompoclocals.com/blog/lompoc-high-football-dominates-santa-ynez-42-0-in-season-opener ("Read the story") · FB: same + story URL · TikTok: "42–0 season opener for the Lompoc Braves 🏈 story at lompoclocals.com/news #Lompoc #FridayNightLights #805"
+
+## 5. Hangar 7 live music (Sat 10:00–10:15 AM PT) — hangar7-music-{ig,tt}.png · photo-first night shot (their photo, credited)
+IG: "Saturday night sorted 🎶 Live music at @hangar7socialhouse — drinks, damn good pizza, and a band. No cover, all ages. 🕖 7:00 PM · 📍 107 W Ocean Ave. Details: link in bio. 📸 Hangar 7 Social House. #Lompoc #LiveMusic #OldTownLompoc #805 #LompocEats"
+Story: link sticker → https://www.lompoclocals.com/events/118 ("Tonight 7 PM 🎶") · FB: same + URL · TikTok: "Live music Saturday at Hangar 7 Social House 🎶 7 PM, no cover, all ages. lompoclocals.com/events #Lompoc #LiveMusic #805"
