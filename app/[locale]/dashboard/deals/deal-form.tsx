@@ -92,18 +92,36 @@ export function DealForm({ deal }: { deal?: Deal }) {
       {deal && <input type="hidden" name="dealId" value={deal.id} />}
 
       <div className="space-y-2">
-        <Label htmlFor="type">{t("typeLabel")}</Label>
-        <select
-          id="type"
-          name="type"
-          defaultValue={deal?.type ?? "coupon"}
-          onChange={(e) => setPreviewType(e.target.value as Deal["type"])}
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          <option value="coupon">{t("typeCoupon")}</option>
-          <option value="special">{t("typeSpecial")}</option>
-          <option value="announcement">{t("typeAnnouncement")}</option>
-        </select>
+        <Label>{t("typeLabel")}</Label>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {(
+            [
+              { value: "coupon", label: t("typeCoupon"), desc: t("typeCouponDesc") },
+              { value: "special", label: t("typeSpecial"), desc: t("typeSpecialDesc") },
+              { value: "announcement", label: t("typeAnnouncement"), desc: t("typeAnnouncementDesc") },
+            ] as const
+          ).map((opt) => (
+            <label
+              key={opt.value}
+              className={`cursor-pointer rounded-xl border p-4 transition-colors ${
+                previewType === opt.value
+                  ? "border-primary bg-primary/5 ring-1 ring-primary"
+                  : "border-input hover:border-primary/40"
+              }`}
+            >
+              <input
+                type="radio"
+                name="type"
+                value={opt.value}
+                checked={previewType === opt.value}
+                onChange={() => setPreviewType(opt.value)}
+                className="sr-only"
+              />
+              <span className="block text-sm font-semibold">{opt.label}</span>
+              <span className="mt-1 block text-xs text-muted-foreground">{opt.desc}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
       <div className="space-y-2">
@@ -142,6 +160,7 @@ export function DealForm({ deal }: { deal?: Deal }) {
         <FieldError message={state?.fieldErrors?.description} />
       </div>
 
+      {previewType !== "announcement" && (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="discountText">{t("discountLabel")}</Label>
@@ -163,6 +182,7 @@ export function DealForm({ deal }: { deal?: Deal }) {
           />
         </div>
       </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-2">
@@ -177,7 +197,7 @@ export function DealForm({ deal }: { deal?: Deal }) {
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="expiresAt">{t("expiresLabel")}</Label>
+            <Label htmlFor="expiresAt">{previewType === "announcement" ? t("showUntilLabel") : t("expiresLabel")}</Label>
             {expiresVal && (
               <span className="text-xs text-muted-foreground">{relativeLabel(expiresVal)}</span>
             )}
@@ -193,6 +213,7 @@ export function DealForm({ deal }: { deal?: Deal }) {
         </div>
       </div>
 
+      {previewType !== "announcement" && (
       <div className="space-y-3 rounded-lg border p-4">
         <div>
           <h3 className="text-sm font-medium">{t("limitsTitle")}</h3>
@@ -224,6 +245,7 @@ export function DealForm({ deal }: { deal?: Deal }) {
         </div>
         <p className="text-xs text-muted-foreground">{t("onePerCustomerNote")}</p>
       </div>
+      )}
 
       <div className="space-y-2">
         <Label htmlFor="image">{t("imageLabel")}</Label>
@@ -256,7 +278,7 @@ export function DealForm({ deal }: { deal?: Deal }) {
                 <span className="rounded-full bg-secondary px-2.5 py-0.5 text-[11px] font-medium capitalize">
                   {previewType}
                 </span>
-                {previewDiscount && (
+                {previewType !== "announcement" && previewDiscount && (
                   <span className="rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold uppercase text-primary-foreground">
                     {previewDiscount}
                   </span>

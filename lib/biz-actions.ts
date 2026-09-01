@@ -368,6 +368,15 @@ export async function saveDealAction(
   }
   const data = parsed.data
 
+  // Announcements are posts, not offers — coupon-only fields never persist,
+  // even when editing a deal that used to be a coupon.
+  if (data.type === "announcement") {
+    data.discountText = undefined
+    data.terms = undefined
+    data.maxRedemptions = null
+    data.maxPerDay = null
+  }
+
   const startsAt = new Date(data.startsAt)
   const expiresAt = new Date(data.expiresAt)
   if (expiresAt <= startsAt) {

@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server"
-import { Link } from "@/i18n/navigation"
+import { Link, redirect } from "@/i18n/navigation"
 import { isPast, formatDistanceToNowStrict } from "date-fns"
 import { es } from "date-fns/locale"
 import { MapPin, Phone, Clock, FileText } from "lucide-react"
@@ -36,6 +36,11 @@ export default async function ClaimPage({
         </Link>
       </div>
     )
+  }
+
+  // Announcements have nothing to claim — land on the business instead.
+  if (deal.type === "announcement") {
+    redirect({ href: `/biz/${deal.business.slug}`, locale })
   }
 
   if (isPast(deal.expiresAt)) {

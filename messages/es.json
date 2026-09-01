@@ -1327,7 +1327,8 @@
     "adminDelete": "Admin: eliminar",
     "typeCoupon": "Cupón",
     "typeSpecial": "Especial",
-    "typeAnnouncement": "Noticia"
+    "typeAnnouncement": "Noticia",
+    "announcementCta": "Visita su página"
   },
   "propertyCard": {
     "forSale": "En venta",
@@ -1511,7 +1512,11 @@
     "maxRedemptionsHelp": "ej. 50 — solo los primeros 50 clientes",
     "maxPerDayLabel": "Por día",
     "maxPerDayHelp": "ej. 10 por día",
-    "onePerCustomerNote": "Cada cliente puede reclamar este cupón una vez."
+    "onePerCustomerNote": "Cada cliente puede reclamar este cupón una vez.",
+    "typeCouponDesc": "Un código que los vecinos reclaman y muestran al pagar.",
+    "typeSpecialDesc": "Una oferta por tiempo limitado — sin código que canjear.",
+    "typeAnnouncementDesc": "Noticias, un volante o una novedad — nada que canjear.",
+    "showUntilLabel": "Mostrar hasta"
   },
   "dashboardBilling": {
     "title": "Facturación",

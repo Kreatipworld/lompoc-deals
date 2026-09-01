@@ -12,7 +12,8 @@ export async function getFeaturedDeals(opts: { categorySlug?: string; limit?: nu
   const { categorySlug, limit = 6, locale = "en" } = opts
   // Pull a generous active set, then filter to premium in JS (premium set is small).
   const pool = categorySlug ? await getDealsByCategorySlug(categorySlug, 200, locale) : await getActiveDeals(200, locale)
-  const premium = pool.filter((d) => d.featured)
+  // Featured slots promise offers; announcements never occupy them.
+  const premium = pool.filter((d) => d.featured && d.type !== "announcement")
 
   // One deal per business (keep first encountered = newest, since pool is newest-first).
   const seen = new Set<number>()

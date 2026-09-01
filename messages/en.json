@@ -1327,7 +1327,8 @@
     "adminDelete": "Admin: soft-delete",
     "typeCoupon": "Coupon",
     "typeSpecial": "Special",
-    "typeAnnouncement": "News"
+    "typeAnnouncement": "News",
+    "announcementCta": "Visit their page"
   },
   "propertyCard": {
     "forSale": "For sale",
@@ -1511,7 +1512,11 @@
     "maxRedemptionsHelp": "e.g. 50 — first 50 customers only",
     "maxPerDayLabel": "Per day",
     "maxPerDayHelp": "e.g. 10 per day",
-    "onePerCustomerNote": "Each customer can claim this coupon once."
+    "onePerCustomerNote": "Each customer can claim this coupon once.",
+    "typeCouponDesc": "A code neighbors claim and show at the register.",
+    "typeSpecialDesc": "A limited-time offer — no code to redeem.",
+    "typeAnnouncementDesc": "News, a flyer, or an update — nothing to redeem.",
+    "showUntilLabel": "Show until"
   },
   "dashboardBilling": {
     "title": "Billing",

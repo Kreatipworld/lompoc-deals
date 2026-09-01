@@ -51,7 +51,8 @@ export default async function DealsPage() {
     getTranslations("locals"),
   ])
 
-  const spotlight: DealCardData | undefined = featured[0] ?? allDeals[0]
+  // The spotlight hero renders claim chrome, so it must hold an offer — never an announcement.
+  const spotlight: DealCardData | undefined = featured[0] ?? allDeals.find((d) => d.type !== "announcement")
   const rest = allDeals.filter((d) => d.id !== spotlight?.id)
   const endsSoon = rest
     .filter((d) => differenceInCalendarDays(d.expiresAt, new Date()) <= ENDS_SOON_DAYS)

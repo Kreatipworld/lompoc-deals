@@ -1,4 +1,4 @@
-import { gt, lt, asc, and, eq, desc, sql, inArray } from "drizzle-orm"
+import { gt, lt, asc, and, eq, desc, sql, inArray, ne } from "drizzle-orm"
 import { newsCoverUrl } from "./news-cover"
 import { db } from "@/db/client"
 import { deals, businesses, events, categories, blogPosts } from "@/db/schema"
@@ -50,7 +50,9 @@ export async function getDigestDeals(locale: Locale = "en"): Promise<DealCardDat
       and(
         gt(deals.expiresAt, sql`now()`),
         gt(deals.createdAt, sevenDaysAgo),
-        eq(businesses.status, "approved")
+        eq(businesses.status, "approved"),
+        // The digest's deal section promises offers; announcements ride other sections.
+        ne(deals.type, "announcement")
       )
     )
     .orderBy(desc(deals.createdAt))

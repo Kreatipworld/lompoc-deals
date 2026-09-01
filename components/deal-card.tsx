@@ -76,6 +76,9 @@ export async function DealCard({
     deal.type === "coupon" ? t("typeCoupon")
     : deal.type === "special" ? t("typeSpecial")
     : t("typeAnnouncement")
+  // Announcements are posts, not offers: no discount chrome, no countdown,
+  // no claim flow — the CTA leads to the business page.
+  const isAnnouncement = deal.type === "announcement"
 
   if (variant === "tripadvisor") {
     return (
@@ -100,7 +103,7 @@ export async function DealCard({
           />
 
           {/* Discount badge */}
-          {deal.discountText && (
+          {!isAnnouncement && deal.discountText && (
             <div className="absolute left-2.5 top-2.5 rounded-full bg-amber px-2.5 py-1 text-xs font-bold text-amber-foreground shadow">
               {deal.discountText}
             </div>
@@ -123,7 +126,7 @@ export async function DealCard({
           )}
 
           {/* Expires-soon badge */}
-          {expiresSoon && (
+          {!isAnnouncement && expiresSoon && (
             <div className="absolute right-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-gold px-2 py-0.5 text-[10px] font-semibold text-gold-foreground shadow">
               <Clock className="h-2.5 w-2.5" />
               {t("endsSoon")}
@@ -226,14 +229,16 @@ export async function DealCard({
             )}
           </div>
 
-          {/* Expiry */}
-          <p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            {expired ? t("expired") : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt, { locale: dateLocale }) })}
-          </p>
+          {/* Expiry — announcements don't count down */}
+          {!isAnnouncement && (
+            <p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+              <Clock className="h-3 w-3" />
+              {expired ? t("expired") : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt, { locale: dateLocale }) })}
+            </p>
+          )}
 
           {/* Terms hint */}
-          {deal.terms && (
+          {!isAnnouncement && deal.terms && (
             <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-muted-foreground/70 italic">
               <FileText className="h-2.5 w-2.5 shrink-0" />
               <span className="line-clamp-1">{deal.terms}</span>
@@ -241,7 +246,18 @@ export async function DealCard({
           )}
 
           {/* CTA */}
-          {!expired && (
+          {!expired && isAnnouncement && (
+            <div className="mt-auto pt-3">
+              <Link
+                href={`/biz/${deal.business.slug}`}
+                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-4 text-xs font-semibold text-primary [transition:background-color_160ms_ease] hover:bg-primary/10"
+              >
+                {t("announcementCta")}
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+          )}
+          {!expired && !isAnnouncement && (
             <div className="mt-auto pt-3">
               <form action={trackClaimAction}>
                 <input type="hidden" name="dealId" value={deal.id} />
@@ -299,7 +315,7 @@ export async function DealCard({
         </Link>
 
         {/* Discount badge (top-left, amber California gold) */}
-        {deal.discountText && (
+        {!isAnnouncement && deal.discountText && (
           <div className="absolute left-3 top-3 rounded-full bg-amber px-3 py-1.5 text-sm font-bold text-amber-foreground shadow-md">
             {deal.discountText}
           </div>
@@ -328,7 +344,7 @@ export async function DealCard({
         )}
 
         {/* Expires-soon amber ribbon (< 3 days) */}
-        {expiresSoon && (
+        {!isAnnouncement && expiresSoon && (
           <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-full bg-gold px-2.5 py-1 text-[11px] font-semibold text-gold-foreground shadow-sm">
             <Clock className="h-3 w-3" />
             {t("endsSoon")}
@@ -409,7 +425,7 @@ export async function DealCard({
         </div>
 
         {/* Terms hint */}
-        {deal.terms && (
+        {!isAnnouncement && deal.terms && (
           <p className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/70 italic">
             <FileText className="h-3 w-3 shrink-0" />
             <span className="line-clamp-2">{deal.terms}</span>
@@ -417,12 +433,16 @@ export async function DealCard({
         )}
 
         <div className="mt-auto flex items-center justify-between text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            {expired
-              ? t("expired")
-              : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt, { locale: dateLocale }) })}
-          </span>
+          {isAnnouncement ? (
+            <span />
+          ) : (
+            <span className="inline-flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {expired
+                ? t("expired")
+                : t("expiresIn", { distance: formatDistanceToNowStrict(deal.expiresAt, { locale: dateLocale }) })}
+            </span>
+          )}
           {deal.business.categorySlug && (
             <Link
               href={`/category/${deal.business.categorySlug}`}
@@ -433,7 +453,18 @@ export async function DealCard({
           )}
         </div>
 
-        {!expired && (
+        {!expired && isAnnouncement && (
+          <div className="mt-1">
+            <Link
+              href={`/biz/${deal.business.slug}`}
+              className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-4 text-sm font-semibold text-primary [transition:background-color_160ms_ease] hover:bg-primary/10"
+            >
+              {t("announcementCta")}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        )}
+        {!expired && !isAnnouncement && (
           <div className="mt-1">
             <form action={trackClaimAction}>
               <input type="hidden" name="dealId" value={deal.id} />
