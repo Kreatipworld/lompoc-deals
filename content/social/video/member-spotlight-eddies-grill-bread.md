@@ -22,3 +22,5 @@ One dough beat (2.4s, title) → oven morph 5s → burger zoom → poppers → s
 Build note: split-screen halves need `scale=+4px headroom + crop exact=1` — plain cover-scale rounds odd halves down 1px and xfade rejects the stack (cost three render cycles to find).
 
 ## v8 (FINAL for watch, Sep 1): no generated smoke anywhere (poppers = real-photo zoom; morph verified clean); all captions bottom-anchored; on-screen text no longer echoes the VO (kept: title, "And the burger it holds.", the two address tags). No new spend. Blob: *-v8.mp4.
+
+## v9 SYNC (FINAL for watch, Sep 1): 23.6s. VO3 (0.9cr, job 468558ee → project ≈ 97.7cr preflight) narrates exactly what is on screen, sentence-per-beat (silence-map timed): dough → "bread is the secret"; slowed morph (1.34x) carries mix/proof/bake + buns/rolls/Homemade; burger → "the burger it holds"; poppers → "bacon-wrapped poppers"; salad → "fresh salads"; split → "two Lompoc locations." On-screen text: title + address tags only. Blob: *-sync.mp4.
