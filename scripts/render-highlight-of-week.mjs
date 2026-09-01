@@ -1349,7 +1349,9 @@ async function renderVideo(key, spec, photoDir, bedPath, outFile) {
  * ------------------------------------------------------------------ */
 
 const biz = await loadBusiness(SLUG)
-const plan = PLAN_LABEL[biz.plan_override] || null
+// The lompoc (non-member) series never shows a plan badge, even when the row
+// carries a comped plan_override — the film must not claim a membership.
+const plan = SERIES.key === "lompoc-spotlight" ? null : (PLAN_LABEL[biz.plan_override] || null)
 console.log(`${biz.name} — ${biz.category || "uncategorised"}, ${biz.photos.length} photos, ` +
   `${plan ? plan.toLowerCase() : "free listing"}, ` +
   `${biz.claimed ? "owner-claimed" : "listed by us"}, joined ${biz.daysSinceJoin}d ago`)
