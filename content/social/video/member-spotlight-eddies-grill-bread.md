@@ -17,3 +17,6 @@ Recipe: shareNow IG Reel + FB Reel + TikTok, Story ~10 min later; TikTok "sendin
 
 ## v5 (FINAL candidate, Sep 1): 21.4s — tightened open per user ("first scenes too repetitive").
 One dough beat (2.4s, title) → oven morph 5s → burger zoom → poppers → salad → two-locations split → end card. No new spend (re-edit only).
+
+## FINAL (Sep 1, v7): 21.4s. Locations beat = live split-screen of BOTH dining rooms in motion (2 Kling clips, +20cr → project total ≈ 96.8cr preflight, verify transactions) with address tags (N H STREET · 1325 N H St / VANDENBERG VILLAGE · 3787 Constellation Rd). All 9x16 lettering lifted into platform-safe zone. Blob: *-final.mp4.
+Build note: split-screen halves need `scale=+4px headroom + crop exact=1` — plain cover-scale rounds odd halves down 1px and xfade rejects the stack (cost three render cycles to find).
