@@ -20,3 +20,5 @@ One dough beat (2.4s, title) → oven morph 5s → burger zoom → poppers → s
 
 ## FINAL (Sep 1, v7): 21.4s. Locations beat = live split-screen of BOTH dining rooms in motion (2 Kling clips, +20cr → project total ≈ 96.8cr preflight, verify transactions) with address tags (N H STREET · 1325 N H St / VANDENBERG VILLAGE · 3787 Constellation Rd). All 9x16 lettering lifted into platform-safe zone. Blob: *-final.mp4.
 Build note: split-screen halves need `scale=+4px headroom + crop exact=1` — plain cover-scale rounds odd halves down 1px and xfade rejects the stack (cost three render cycles to find).
+
+## v8 (FINAL for watch, Sep 1): no generated smoke anywhere (poppers = real-photo zoom; morph verified clean); all captions bottom-anchored; on-screen text no longer echoes the VO (kept: title, "And the burger it holds.", the two address tags). No new spend. Blob: *-v8.mp4.
