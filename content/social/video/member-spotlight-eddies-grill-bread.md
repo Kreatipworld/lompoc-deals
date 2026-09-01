@@ -1,6 +1,6 @@
 # Eddie's Grill "homemade bread" spotlight — captions (replaces the Sep 1 card posts, which were deleted from Buffer)
 
-Assets: member-spotlight-eddies-grill-bread-{4x5,9x16}.mp4 · 20s · their own kitchen footage (dough + oven) + their burger photo · fresh D-F#m-E-A bed.
+ASSETS (FINAL, commercial cut): eddies-bread-commercial-{4x5,9x16}.mp4 — Emily VO (job e53ebcf4, 0.9cr) + 3 Kling v3 motion clips of THEIR photos (jobs e20e4558/20f9a72d/a97d54bf, 30cr) ≈ 30.9cr billed per preflight — verify on transactions. Superseded draft: member-spotlight-eddies-grill-bread-{4x5,9x16}.mp4 · 20s · their own kitchen footage (dough + oven) + their burger photo · fresh D-F#m-E-A bed.
 Key point (owner-stated): homemade bread for ALL burgers and hot dogs.
 
 **IG Reel (4x5, shares to feed):**
