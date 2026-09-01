@@ -14,3 +14,6 @@ Find them on Lompoc Locals — link in bio. 🎥 Eddie's Grill
 **TikTok:** The buns at Eddie's Grill are homemade 🍞🍔 baked fresh for every burger and hot dog — two Lompoc locations. lompoclocals.com #Lompoc #LompocEats #HomemadeBread #805
 
 Recipe: shareNow IG Reel + FB Reel + TikTok, Story ~10 min later; TikTok "sending" can take ~36 min — never re-post. Nothing posts until the user watches (rule).
+
+## v5 (FINAL candidate, Sep 1): 21.4s — tightened open per user ("first scenes too repetitive").
+One dough beat (2.4s, title) → oven morph 5s → burger zoom → poppers → salad → two-locations split → end card. No new spend (re-edit only).
