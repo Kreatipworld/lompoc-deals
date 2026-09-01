@@ -175,7 +175,7 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
             ctaLabel: "Activa Growth",
             ctaUrl: billingUrl,
             closing:
-              "$39.99/mes — cancela cuando quieras, y tu perfil sigue gratis de todos modos. Responde a este correo cuando quieras; lo lee una persona real aquí en Lompoc.",
+              "$39.99/mes — cancela cuando quieras. Responde a este correo cuando quieras; lo lee una persona real aquí en Lompoc.",
             signoff: "— El equipo de Lompoc Locals",
           }),
         }
