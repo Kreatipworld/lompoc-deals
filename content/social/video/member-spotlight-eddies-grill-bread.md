@@ -8,7 +8,7 @@ The secret is the bread. They mix it, proof it, and bake it fresh — every burg
 Underneath: char-grilled burgers, the popular pastrami, fresh salads, and shakes — at both Lompoc locations.
 Find them on Lompoc Locals — link in bio. 🎥 Eddie's Grill
 #Lompoc #LompocEats #HomemadeBread #Burgers #ShopLocal #LompocLocals #805
-🎵 Fiddles McGinty — Kevin MacLeod (incompetech.com), CC BY 4.0
+🎵 Bama Country — Kevin MacLeod (incompetech.com), CC BY 4.0
 
 **IG Story (9x16):** link sticker → https://www.lompoclocals.com/biz/eddies-grill ("Their page") · text "The buns? Homemade. 🍞"
 **FB Reel:** same minus @, URL written out. Credit "Video: Eddie's Grill"
@@ -28,3 +28,6 @@ Build note: split-screen halves need `scale=+4px headroom + crop exact=1` — pl
 
 
 ## v10 COUNTRY (Sep 1): 23.6s. Bed = "Fiddles McGinty" — Kevin MacLeod (incompetech.com), CC BY 4.0 — CREDIT REQUIRED in every post caption (added above). Emily closer "Come visit." (0.15cr, job f1c32894) at 20.3s. Voice A/B pending: Grady + Dylan test clips (0.3cr) sent to user; full male read would be +1.05cr and a re-sync. Project ≈ 98.2cr preflight. Blob: *-country.mp4.
+
+
+## v11 DYLAN+BAMA (FINAL for watch, Sep 1): 20.9s. Voice = Dylan (male western-radio pick; main 0.9cr job 8e5ef756 + closer 0.15cr job c28e94f6). Bed = "Bama Country" — Kevin MacLeod, CC BY 4.0 (credit updated in all captions) at -17 LUFS, duck floor 0.26. Beats re-synced to Dylan's silence map (his read runs burger→poppers without a pause; split estimated at 10.4s). Project ≈ 99.3cr preflight — verify transactions. Blob: *-dylan-bama.mp4.
