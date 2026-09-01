@@ -75,13 +75,20 @@ const WEEK_ARG = arg("week")
  * stamp, nothing that says "this week", so several can run in one week. "week" is the original
  * Highlight of the Week slot, kept for when a single weekly pick is wanted.
  */
-const SERIES = (arg("series") || "spotlight") === "week"
-  ? { key: "highlight-of-week", label: "HIGHLIGHT OF THE WEEK", big: "HIGHLIGHT", small: "OF THE WEEK",
+const SERIES_BY_KEY = {
+  week: { key: "highlight-of-week", label: "HIGHLIGHT OF THE WEEK", big: "HIGHLIGHT", small: "OF THE WEEK",
       stamp: true, welcomeNew: "New this week on Lompoc Locals.", welcomeOld: "Now on Lompoc Locals.",
-      eyebrowNew: "NEW THIS WEEK", eyebrowOld: "THIS WEEK'S HIGHLIGHT" }
-  : { key: "member-spotlight", label: "MEMBER SPOTLIGHT", big: "MEMBER", small: "SPOTLIGHT",
+      eyebrowNew: "NEW THIS WEEK", eyebrowOld: "THIS WEEK'S HIGHLIGHT" },
+  spotlight: { key: "member-spotlight", label: "MEMBER SPOTLIGHT", big: "MEMBER", small: "SPOTLIGHT",
       stamp: false, welcomeNew: "New on Lompoc Locals.", welcomeOld: "Now on Lompoc Locals.",
-      eyebrowNew: "NEW MEMBER", eyebrowOld: "ON LOMPOC LOCALS" }
+      eyebrowNew: "NEW MEMBER", eyebrowOld: "ON LOMPOC LOCALS" },
+  // Non-members get the same film without the member claim — "MEMBER" never
+  // appears for a business that is not paying ([[member-spotlight-format]]).
+  lompoc: { key: "lompoc-spotlight", label: "LOMPOC SPOTLIGHT", big: "LOMPOC", small: "SPOTLIGHT",
+      stamp: false, welcomeNew: "Now on Lompoc Locals.", welcomeOld: "Now on Lompoc Locals.",
+      eyebrowNew: "ON LOMPOC LOCALS", eyebrowOld: "ON LOMPOC LOCALS" },
+}
+const SERIES = SERIES_BY_KEY[arg("series") || "spotlight"] ?? SERIES_BY_KEY.spotlight
 
 const dbUrl = fs
   .readFileSync(".env.local", "utf8")
