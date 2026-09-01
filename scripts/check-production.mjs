@@ -122,7 +122,9 @@ try {
 console.log("\nSearch — the terms residents actually use")
 let queries = []
 try {
-  queries = await realQueries()
+  // Crawlers hit the JSON-LD SearchAction template literally ("{search_term_string}");
+  // those land in analytics but are not resident searches — never test them.
+  queries = (await realQueries()).filter((q) => !/[{}<>$]/.test(q))
 } catch (e) {
   fail(`could not read real queries from analytics: ${e.message}`)
 }
