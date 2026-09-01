@@ -27,6 +27,11 @@ const nextConfig = {
       // The master Growth link — printable, speakable, shareable. Lands on the
       // business signup wizard (Growth preselected): list the business, pick
       // the plan, card, done — the Rieck flow, self-serve for anybody.
+      // Row 409's slug carried Google's clunky listing name ("...formally (Ron's...)").
+      // The row now uses the clean slug; the indexed old URL 301s to it.
+      { source: "/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/biz/heritage-home-plumbing-services", permanent: true },
+      { source: "/en/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/en/biz/heritage-home-plumbing-services", permanent: true },
+      { source: "/es/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/es/biz/heritage-home-plumbing-services", permanent: true },
       { source: "/grow", destination: "/signup/business", permanent: false },
       { source: "/en/grow", destination: "/signup/business", permanent: false },
       { source: "/es/grow", destination: "/es/signup/business", permanent: false },
