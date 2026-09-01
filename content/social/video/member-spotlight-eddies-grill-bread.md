@@ -8,6 +8,7 @@ The secret is the bread. They mix it, proof it, and bake it fresh — every burg
 Underneath: char-grilled burgers, the popular pastrami, fresh salads, and shakes — at both Lompoc locations.
 Find them on Lompoc Locals — link in bio. 🎥 Eddie's Grill
 #Lompoc #LompocEats #HomemadeBread #Burgers #ShopLocal #LompocLocals #805
+🎵 Fiddles McGinty — Kevin MacLeod (incompetech.com), CC BY 4.0
 
 **IG Story (9x16):** link sticker → https://www.lompoclocals.com/biz/eddies-grill ("Their page") · text "The buns? Homemade. 🍞"
 **FB Reel:** same minus @, URL written out. Credit "Video: Eddie's Grill"
@@ -24,3 +25,6 @@ Build note: split-screen halves need `scale=+4px headroom + crop exact=1` — pl
 ## v8 (FINAL for watch, Sep 1): no generated smoke anywhere (poppers = real-photo zoom; morph verified clean); all captions bottom-anchored; on-screen text no longer echoes the VO (kept: title, "And the burger it holds.", the two address tags). No new spend. Blob: *-v8.mp4.
 
 ## v9 SYNC (FINAL for watch, Sep 1): 23.6s. VO3 (0.9cr, job 468558ee → project ≈ 97.7cr preflight) narrates exactly what is on screen, sentence-per-beat (silence-map timed): dough → "bread is the secret"; slowed morph (1.34x) carries mix/proof/bake + buns/rolls/Homemade; burger → "the burger it holds"; poppers → "bacon-wrapped poppers"; salad → "fresh salads"; split → "two Lompoc locations." On-screen text: title + address tags only. Blob: *-sync.mp4.
+
+
+## v10 COUNTRY (Sep 1): 23.6s. Bed = "Fiddles McGinty" — Kevin MacLeod (incompetech.com), CC BY 4.0 — CREDIT REQUIRED in every post caption (added above). Emily closer "Come visit." (0.15cr, job f1c32894) at 20.3s. Voice A/B pending: Grady + Dylan test clips (0.3cr) sent to user; full male read would be +1.05cr and a re-sync. Project ≈ 98.2cr preflight. Blob: *-country.mp4.
