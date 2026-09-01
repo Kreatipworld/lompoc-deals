@@ -59,7 +59,7 @@ if (!fs.existsSync(voPath)) throw new Error(`missing narration ${voPath} (pass -
 const voLen = await duration(voPath)
 
 // Either series the renderer produces: the undated Member Spotlight (default) or the weekly slot.
-const PREFIXES = ["member-spotlight", "highlight-of-week"]
+const PREFIXES = ["member-spotlight", "highlight-of-week", "lompoc-spotlight"]
 for (const tag of SHAPES) {
   const prefix = PREFIXES.find((pfx) => fs.existsSync(path.join(VID, `${pfx}-${slug}-${tag}.mp4`)))
   if (!prefix) {
