@@ -1,24 +1,16 @@
-# Eddie's Grill "homemade bread" spotlight — captions (replaces the Sep 1 card posts, which were deleted from Buffer)
+# Eddie's Grill "homemade bread" COMMERCIAL v4 — captions (final; no special per owner)
 
-ASSETS (FINAL, commercial cut): eddies-bread-commercial-{4x5,9x16}.mp4 — Emily VO (job e53ebcf4, 0.9cr) + 3 Kling v3 motion clips of THEIR photos (jobs e20e4558/20f9a72d/a97d54bf, 30cr) ≈ 30.9cr billed per preflight — verify on transactions. Superseded draft: member-spotlight-eddies-grill-bread-{4x5,9x16}.mp4 · 20s · their own kitchen footage (dough + oven) + their burger photo · fresh D-F#m-E-A bed.
-Key point (owner-stated): homemade bread for ALL burgers and hot dogs.
+Spend: VO1 0.9 + VO2 0.9 + 3 Kling clips 30 + Seedance morph 45 ≈ 76.8cr preflight — VERIFY on transactions (one dead preset-interrupt submit should NOT have billed).
+Cut: 24s — dough (their footage) → oven morph (Seedance from their frames) → oven → burger zoom (real photo) → poppers/salad (Kling on their photos) → two-locations split → end card.
 
-**IG Reel (4x5, shares to feed):**
-Member spotlight: EDDIE'S GRILL 🍔
-
-Here's the thing most people don't know: the buns are homemade. Every burger bun, every hot dog roll — mixed, proofed, and baked right there on N H Street by @eddiesgrill.
-
-Right now on Lompoc Locals: 🎟️ 10% off your meal — claim it on your phone, show it when you order.
-
-lompoclocals.com/biz/eddies-grill — link in bio
-
-🎥 Eddie's Grill
-
+**IG Reel:** Member spotlight: EDDIE'S GRILL 🍔
+The secret is the bread. They mix it, proof it, and bake it fresh — every burger bun, every hot dog roll. Homemade.
+Underneath: char-grilled burgers, the popular pastrami, fresh salads, and shakes — at both Lompoc locations.
+Find them on Lompoc Locals — link in bio. 🎥 Eddie's Grill
 #Lompoc #LompocEats #HomemadeBread #Burgers #ShopLocal #LompocLocals #805
 
-**IG Story (9x16):** link sticker → https://www.lompoclocals.com/deals/165/claim (label "10% off") · text: "The buns? Homemade. 🍞"
-**Facebook Reel:** same as IG minus @, URL written out: https://www.lompoclocals.com/biz/eddies-grill · credit "Video: Eddie's Grill"
-**TikTok:** The buns at Eddie's Grill are homemade 🍞🍔 every burger bun, every hot dog roll — baked on N H Street. 10% off your meal on lompoclocals.com #Lompoc #LompocEats #HomemadeBread #805
+**IG Story (9x16):** link sticker → https://www.lompoclocals.com/biz/eddies-grill ("Their page") · text "The buns? Homemade. 🍞"
+**FB Reel:** same minus @, URL written out. Credit "Video: Eddie's Grill"
+**TikTok:** The buns at Eddie's Grill are homemade 🍞🍔 baked fresh for every burger and hot dog — two Lompoc locations. lompoclocals.com #Lompoc #LompocEats #HomemadeBread #805
 
-Posting recipe: shareNow IG Reel + FB Reel + TikTok, Story ~10 min later. TikTok may sit in "sending" up to ~36 min — never re-post.
-Note: WCI spotlight also goes today 3 PM — space Eddie's at least 90 min away.
+Recipe: shareNow IG Reel + FB Reel + TikTok, Story ~10 min later; TikTok "sending" can take ~36 min — never re-post. Nothing posts until the user watches (rule).
