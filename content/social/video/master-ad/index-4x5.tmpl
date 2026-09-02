@@ -2,25 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1080, height=1920" />
+    <meta name="viewport" content="width=1080, height=1350" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       @font-face { font-family: "Plus Jakarta Sans"; src: url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
-      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #140a17; }
+      html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; background: #140a17; }
       body { font-family: "Plus Jakarta Sans", sans-serif; }
-      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #root { position: relative; width: 1080px; height: 1350px; overflow: hidden; }
       #root > div[data-composition-src] { position: absolute; inset: 0; }
     </style>
   </head>
   <body>
     <!-- v6 STORY CUT — timed to Dylan's read (word onsets, cuts land ~0.06s before the word) -->
-    <div id="root" data-composition-id="main" data-start="0" data-duration="34.0" data-width="1080" data-height="1920">
-      <div id="el-b1" data-composition-id="b1-hook"  data-composition-src="compositions/b1-hook.html"  data-start="0"     data-duration="5.55"  data-track-index="1"></div>
-      <div id="el-b2" data-composition-id="b2-pride" data-composition-src="compositions/b2-pride.html" data-start="5.55"  data-duration="11.60" data-track-index="1"></div>
-      <div id="el-b3" data-composition-id="b3-page"  data-composition-src="compositions/b3-page.html"  data-start="17.15" data-duration="8.60"  data-track-index="1"></div>
-      <div id="el-b4" data-composition-id="b4-tag"   data-composition-src="compositions/b4-tag.html"   data-start="25.75" data-duration="4.80"  data-track-index="1"></div>
-      <div id="el-b5" data-composition-id="b5-end"   data-composition-src="compositions/b5-end.html"   data-start="30.55" data-duration="3.45"  data-track-index="1"></div>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="34.0" data-width="1080" data-height="1350">
+      <div id="el-b1" data-composition-id="b1-hook"  data-composition-src="compositions-4x5/b1-hook.html"  data-start="0"     data-duration="5.55"  data-track-index="1"></div>
+      <div id="el-b2" data-composition-id="b2-pride" data-composition-src="compositions-4x5/b2-pride.html" data-start="5.55"  data-duration="11.60" data-track-index="1"></div>
+      <div id="el-b3" data-composition-id="b3-page"  data-composition-src="compositions-4x5/b3-page.html"  data-start="17.15" data-duration="8.60"  data-track-index="1"></div>
+      <div id="el-b4" data-composition-id="b4-tag"   data-composition-src="compositions-4x5/b4-tag.html"   data-start="25.75" data-duration="4.80"  data-track-index="1"></div>
+      <div id="el-b5" data-composition-id="b5-end"   data-composition-src="compositions-4x5/b5-end.html"   data-start="30.55" data-duration="3.45"  data-track-index="1"></div>
 
       <!-- VO: real Dylan read (31.68s). Bed: Bama Country, carve on VO, fade out over the last 1.5s -->
       <audio id="vo-v6" class="clip" data-audio-group="voiceover" src="public/vo-v6-dylan.wav" data-start="0" data-duration="31.68" data-media-start="0" data-track-index="10" data-volume="1"></audio>

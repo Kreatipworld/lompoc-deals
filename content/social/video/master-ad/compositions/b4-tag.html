@@ -1,0 +1,49 @@
+<template>
+  <div data-composition-id="b4-tag" data-width="1080" data-height="1920" data-duration="4.80" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+    <style>
+      [data-composition-id="b4-tag"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
+      [data-composition-id="b4-tag"] .cine-top { top: 0; } [data-composition-id="b4-tag"] .cine-bot { bottom: 0; }
+      [data-composition-id="b4-tag"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(10,6,12,0) 40%, rgba(10,6,12,0.6) 100%); }
+      [data-composition-id="b4-tag"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n-b4-tag'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n-b4-tag)' opacity='1'/%3E%3C/svg%3E"); }
+      [data-composition-id="b4-tag"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+      [data-composition-id="b4-tag"] .mark { position: absolute; top: 150px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="b4-tag"] .h { color: #fff; font-weight: 800; font-size: 150px; line-height: 0.95; letter-spacing: -6px; text-transform: uppercase; will-change: transform; }
+      [data-composition-id="b4-tag"] .cta { position: absolute; left: 84px; right: 84px; bottom: 21%; z-index: 20; background: #efc618; color: #241629; text-align: center; font-weight: 800; font-size: 54px; letter-spacing: 2px; padding: 34px 20px; border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,0.35); opacity: 0; will-change: transform; }
+    </style>
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 130% 90% at 50% 30%, rgba(36,22,41,0) 30%, rgba(36,22,41,0.55) 100%)"></div>
+    <div id="b4-bloom" data-layout-allow-overflow style="position: absolute; top: 8%; left: -200px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(239,198,24,0.28), rgba(239,198,24,0) 62%)"></div>
+    <div style="position: absolute; left: 84px; right: 84px; top: 300px; z-index: 20">
+      <span class="chip" id="b4-k">Your turn</span>
+      <div style="margin-top: 40px; padding-bottom: 20px"><div class="h" id="b4-h1">Who belongs here?</div></div>
+    </div>
+    <div id="b4-field" style="position: absolute; left: 84px; right: 84px; top: 52%; height: 150px; border-radius: 75px; background: #faf5ec; display: flex; align-items: center; padding: 0 44px 0 52px; box-shadow: 0 30px 80px rgba(0,0,0,0.35); z-index: 20">
+      <span id="b4-at" style="color: #650c75; font-weight: 800; font-size: 60px; display: inline-block">@</span>
+      <span id="b4-typed" style="margin-left: 18px; color: #241629; font-weight: 700; font-size: 50px; line-height: 1.4; white-space: nowrap; display: inline-block"></span>
+      <span id="b4-caret" style="margin-left: 6px; width: 6px; height: 64px; background: #650c75; display: inline-block"></span>
+      <span style="margin-left: auto; width: 90px; height: 90px; border-radius: 50%; background: #0b992f; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 44px">↑</span>
+    </div>
+    <div class="cta" id="b4-cta">TAG A LOMPOC BUSINESS 👇</div>
+    <div class="vig"></div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative to scene start): ASK headline, TYPE the @, CTA card slam
+        const B4 = { ASK: 0.0, TYPE: 1.15, CTA: 2.7, END: 4.8 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
+        tl.fromTo("#b4-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out" }, B4.ASK);
+        tl.fromTo("#b4-k", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out" }, B4.ASK + 0.05);
+        tl.fromTo("#b4-h1", { autoAlpha: 0, scale: 1.15 }, { autoAlpha: 1, scale: 1, duration: 0.45 }, B4.ASK + 0.15);
+        tl.fromTo("#b4-field", { autoAlpha: 0, y: 60, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.3)" }, B4.ASK + 0.55);
+        tl.fromTo("#b4-at", { scale: 0.6 }, { scale: 1, duration: 0.35, ease: "back.out(2)" }, B4.TYPE);
+        const typed = document.getElementById("b4-typed"); const word = "yourfavoritespot";
+        tl.to({}, { duration: 1.2, ease: "none", onUpdate: function () { typed.textContent = word.slice(0, Math.round(this.progress() * word.length)); } }, B4.TYPE + 0.3);
+        tl.fromTo("#b4-caret", { opacity: 1 }, { opacity: 0, duration: 0.3, repeat: 5, yoyo: true, ease: "none" }, B4.TYPE);
+        tl.fromTo("#b4-cta", { autoAlpha: 0, scale: 1.25, y: 30 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.45, ease: "power4.out" }, B4.CTA);
+        tl.to("#b4-cta", { scale: 1.03, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 3 }, B4.CTA + 0.5);
+        window.__timelines["b4-tag"] = tl;
+      })();
+    </script>
+  </div>
+</template>

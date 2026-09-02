@@ -1,0 +1,54 @@
+<template>
+  <div data-composition-id="b1-hook" data-width="1080" data-height="1350" data-duration="5.55" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+    <style>
+      [data-composition-id="b1-hook"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
+      [data-composition-id="b1-hook"] .cine-top { top: 0; } [data-composition-id="b1-hook"] .cine-bot { bottom: 0; }
+      [data-composition-id="b1-hook"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 68%, rgba(10,6,12,0.34) 100%); }
+      [data-composition-id="b1-hook"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n-b1-hook'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n-b1-hook)' opacity='1'/%3E%3C/svg%3E"); }
+      [data-composition-id="b1-hook"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+      [data-composition-id="b1-hook"] .street { display: block; margin-top: 18px; color: #fff; font-weight: 800; font-size: 60px; letter-spacing: -1px; text-transform: uppercase; line-height: 1.0; }
+      [data-composition-id="b1-hook"] .rule { display: block; margin-top: 22px; width: 160px; height: 8px; background: #efc618; border-radius: 4px; }
+      [data-composition-id="b1-hook"] .credit { display: block; margin-top: 22px; color: rgba(255,255,255,0.78); font-size: 26px; font-weight: 500; letter-spacing: 1px; }
+      [data-composition-id="b1-hook"] .mark { position: absolute; top: 100px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="b1-hook"] .stamp { position: absolute; left: 84px; right: 84px; top: 40%; color: #fff; font-weight: 800; font-size: 140px; line-height: 0.92; letter-spacing: -8px; word-spacing: 22px; text-transform: uppercase; opacity: 0; will-change: transform; z-index: 35; }
+      [data-composition-id="b1-hook"] #b1-photo { position: absolute; inset: 0; opacity: 0; }
+      [data-composition-id="b1-hook"] #b1-photo img { display: block; width: 100%; height: 100%; object-fit: cover; will-change: transform; filter: contrast(1.08) saturate(1.12); }
+      [data-composition-id="b1-hook"] .scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,10,23,0.9) 0%, rgba(20,10,23,0.62) 30%, rgba(20,10,23,0.0) 56%); }
+      [data-composition-id="b1-hook"] .hero { color: #fff; text-shadow: 0 4px 24px rgba(10,6,12,0.55); font-weight: 800; font-size: 104px; line-height: 0.95; letter-spacing: -5px; text-transform: uppercase; }
+      [data-composition-id="b1-hook"] .street { display: block; margin-top: 16px; color: #efc618; font-weight: 800; font-size: 44px; letter-spacing: 3px; text-transform: uppercase; line-height: 1.0; }
+      [data-composition-id="b1-hook"] .lower { position: absolute; left: 84px; right: 84px; bottom: 22%; z-index: 35; }
+    </style>
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 90% 60% at 50% 40%, #2b1531 0%, #140a17 70%)"></div>
+    <div id="b1-pre" style="position: absolute; left: 84px; top: 42%; z-index: 35; opacity: 0"><span class="chip">Lompoc, California</span><span class="rule" style="margin-top: 26px"></span></div>
+    <div class="stamp" id="b1-s1">The highway.</div>
+    <div class="stamp" id="b1-s2">The fog.</div>
+    <div class="stamp" id="b1-s3">The base.</div>
+    <div id="b1-photo">
+      <img id="b1-img" src="public/cast/sweet-baking-co-1.jpg" alt="" />
+      <div class="scrim"></div>
+      <div class="lower"><div class="hero">Sweet Baking Co.</div><span class="street">322 N H St</span><span class="rule"></span><span class="credit">photo: Sweet Baking Co.</span></div>
+    </div>
+    <div class="vig"></div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative to scene start): S1 highway, S2 fog, S3 base, CUT photo
+        const B1 = { PRE: 0.35, S1: 1.95, S2: 2.85, S3: 3.58, CUT: 4.25, END: 5.55 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
+        tl.fromTo("#b1-pre", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.45 }, B1.PRE);
+        tl.to("#b1-pre", { autoAlpha: 0, duration: 0.15, ease: "power2.in" }, B1.S1 - 0.15);
+        [["#b1-s1", B1.S1, B1.S2], ["#b1-s2", B1.S2, B1.S3], ["#b1-s3", B1.S3, B1.CUT]].forEach(([sel, a, b]) => {
+          tl.fromTo(sel, { autoAlpha: 0, scale: 1.18 }, { autoAlpha: 1, scale: 1.0, duration: 0.32, ease: "power4.out" }, a);
+          tl.to(sel, { scale: 1.04, duration: b - a - 0.32, ease: "none" }, a + 0.32);
+          tl.set(sel, { autoAlpha: 0 }, b);
+        });
+        tl.set("#b1-photo", { autoAlpha: 1 }, B1.CUT);
+        tl.fromTo("#b1-img", { scale: 1.0 }, { scale: 1.08, duration: B1.END - B1.CUT, ease: "none" }, B1.CUT);
+        tl.fromTo("#b1-photo .lower", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B1.CUT + 0.15);
+        window.__timelines["b1-hook"] = tl;
+      })();
+    </script>
+  </div>
+</template>

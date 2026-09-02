@@ -1,0 +1,136 @@
+<template>
+  <div data-composition-id="b3-page" data-width="1080" data-height="1920" data-duration="8.60" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+    <style>
+      [data-composition-id="b3-page"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
+      [data-composition-id="b3-page"] .cine-top { top: 0; } [data-composition-id="b3-page"] .cine-bot { bottom: 0; }
+      [data-composition-id="b3-page"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(10,6,12,0) 40%, rgba(10,6,12,0.6) 100%); }
+      [data-composition-id="b3-page"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n-b3-page'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n-b3-page)' opacity='1'/%3E%3C/svg%3E"); }
+      [data-composition-id="b3-page"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+      [data-composition-id="b3-page"] .mark { position: absolute; top: 150px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="b3-page"] .ph { will-change: transform; min-width: 0; min-height: 0; }
+      [data-composition-id="b3-page"] .pchip { display: inline-block; margin: 12px 12px 0 0; background: #fff; color: #241629; font-weight: 700; font-size: 29px; padding: 18px 26px; border-radius: 40px; box-shadow: 0 6px 18px rgba(36,22,41,0.08); opacity: 0; will-change: transform; }
+      [data-composition-id="b3-page"] .card { position: absolute; width: 860px; border-radius: 34px; overflow: hidden; background: #faf5ec; box-shadow: 0 40px 90px rgba(10,6,12,0.55); border: 8px solid #0f0a12; opacity: 0; will-change: transform; z-index: 25; }
+      [data-composition-id="b3-page"] .bar { height: 90px; display: flex; align-items: center; gap: 14px; padding: 0 28px; background: #650c75; color: #fff; font-weight: 800; font-size: 32px; }
+      [data-composition-id="b3-page"] .dot { width: 20px; height: 20px; border-radius: 50%; background: #efc618; display: inline-block; }
+      [data-composition-id="b3-page"] .row { margin: 20px 20px 0; background: #fff; border-radius: 22px; padding: 22px 24px; display: flex; gap: 18px; align-items: center; box-shadow: 0 6px 18px rgba(36,22,41,0.08); color: #241629; font-weight: 700; font-size: 31px; line-height: 1.2; opacity: 0; will-change: transform; }
+      [data-composition-id="b3-page"] .row:last-child { margin-bottom: 20px; }
+      [data-composition-id="b3-page"] .row b { flex: none; background: #efc618; color: #241629; font-size: 20px; font-weight: 800; letter-spacing: 1px; padding: 12px 14px; border-radius: 10px; }
+      [data-composition-id="b3-page"] .deal { margin: 26px; background: #fff; border-radius: 26px; padding: 30px; box-shadow: 0 6px 18px rgba(36,22,41,0.08); }
+      [data-composition-id="b3-page"] .deal .pick { display: inline-block; background: #0b992f; color: #fff; font-weight: 800; font-size: 22px; letter-spacing: 1px; padding: 12px 18px; border-radius: 10px; }
+      [data-composition-id="b3-page"] .deal .what { margin-top: 20px; color: #650c75; font-weight: 800; font-size: 62px; line-height: 1.1; letter-spacing: -1px; }
+      [data-composition-id="b3-page"] .deal .who { margin-top: 14px; color: #6b5f70; font-weight: 600; font-size: 27px; }
+      [data-composition-id="b3-page"] .deal .claim { margin-top: 26px; background: #4a0856; color: #fff; font-weight: 800; font-size: 32px; text-align: center; padding: 24px; border-radius: 50px; }
+      [data-composition-id="b3-page"] .kick { position: absolute; left: 84px; top: 150px; z-index: 40; }
+      [data-composition-id="b3-page"] .tog { display: inline-flex; border-radius: 16px; overflow: hidden; border: 3px solid rgba(36,22,41,0.15); font-weight: 800; font-size: 26px; letter-spacing: 2px; }
+      [data-composition-id="b3-page"] .tog span { padding: 10px 20px; color: #241629; background: #fff; }
+      [data-composition-id="b3-page"] .tog .on { background: #0b992f; color: #fff; }
+    </style>
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 100%, rgba(36,22,41,0.7), rgba(36,22,41,0) 60%)"></div>
+    <div id="b3-bloom" data-layout-allow-overflow style="position: absolute; top: -10%; right: -260px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(11,153,47,0.28), rgba(11,153,47,0) 62%)"></div>
+    <div class="kick"><span class="chip" id="b3-kick">Their page</span></div>
+
+    <!-- Vargas Jewelers Trophies & Awards page, assembling itself (paying member, owner photos, real live deal) -->
+    <div id="b3-phone" data-layout-allow-occlusion style="position: absolute; left: 80px; top: 300px; width: 920px; height: 1130px; border-radius: 48px; background: #0f0a12; padding: 14px; box-shadow: 0 50px 120px rgba(0,0,0,0.5); z-index: 10; will-change: transform">
+      <div style="position: relative; width: 892px; height: 1102px; border-radius: 36px; overflow: hidden; background: #faf5ec">
+        <div style="height: 116px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #fff; border-bottom: 1px solid rgba(36,22,41,0.08)"><img src="public/logo.svg" alt="" style="height: 60px; width: auto" /><div class="tog"><span id="b3-en" class="on">EN</span><span id="b3-es">ES</span></div></div>
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 250px 250px; gap: 12px; height: 532px; padding: 20px 20px 0; overflow: hidden; box-sizing: border-box">
+          <img class="ph" src="public/cast/vargas-jewelers-trophies-awards-0.jpg" alt="" style="grid-row: 1 / 3; width: 100%; height: 100%; object-fit: cover; border-radius: 22px" />
+          <img class="ph" src="public/cast/vargas-jewelers-trophies-awards-6.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px" />
+          <img class="ph" src="public/cast/vargas-jewelers-trophies-awards-1.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px" />
+          <img class="ph" src="public/cast/vargas-jewelers-trophies-awards-2.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px" />
+          <img class="ph" src="public/cast/vargas-jewelers-trophies-awards-4.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px" />
+        </div>
+        <div id="b3-info" style="padding: 30px 30px 0">
+          <div id="b3-badge" style="display: inline-block; background: #650c75; color: #fff; font-weight: 800; font-size: 24px; letter-spacing: 1px; padding: 10px 18px; border-radius: 24px; opacity: 0">✓ <span id="b3-badge-t">CLAIMED PAGE</span></div>
+          <div id="b3-name" style="margin-top: 14px; color: #241629; font-weight: 800; font-size: 52px; letter-spacing: -1px; line-height: 1.05; opacity: 0">Vargas Jewelers Trophies &amp; Awards</div>
+          <div id="b3-cat" style="margin-top: 8px; color: #650c75; font-weight: 700; font-size: 27px; opacity: 0"><span id="b3-cat-t">Jewelry, trophies &amp; awards</span></div>
+          <div class="pchip" id="b3-c1" data-layout-allow-occlusion style="margin-top: 22px">📍 640 N H St</div>
+          <div class="pchip" id="b3-c2" data-layout-allow-occlusion style="background: #0b992f; color: #fff">● <span id="b3-hours-t">OPEN NOW</span></div>
+          <div class="pchip" id="b3-c3" data-layout-allow-occlusion style="color: #650c75">➤ <span id="b3-dir-t" data-layout-allow-occlusion>Get directions</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- map pin card -->
+    <div class="card" id="b3-map" style="left: 110px; top: 930px">
+      <div class="bar"><span class="dot" style="background:#0b992f"></span>Map</div>
+      <div style="position: relative; height: 520px; background: #e9e4d8; overflow: hidden">
+        <svg viewBox="0 0 540 330" width="844" height="516" style="display:block">
+          <g stroke="#cfc7b8" stroke-width="10"><line x1="0" y1="90" x2="540" y2="90"/><line x1="0" y1="200" x2="540" y2="200"/><line x1="0" y1="300" x2="540" y2="300"/><line x1="110" y1="0" x2="110" y2="330"/><line x1="270" y1="0" x2="270" y2="330"/><line x1="430" y1="0" x2="430" y2="330"/></g>
+          <g stroke="#fff" stroke-width="4"><line x1="0" y1="90" x2="540" y2="90"/><line x1="0" y1="200" x2="540" y2="200"/><line x1="270" y1="0" x2="270" y2="330"/></g>
+          <text x="280" y="82" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="18" fill="#4a4238">N H ST</text>
+        </svg>
+        <div id="b3-pin" style="position: absolute; left: 392px; top: 190px; width: 84px; height: 84px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #650c75; border: 6px solid #fff; box-shadow: 0 14px 30px rgba(0,0,0,0.35); opacity: 0"></div>
+      </div>
+    </div>
+
+    <!-- deal card (real deal on the platform, number stripped) -->
+    <div class="card" id="b3-deal" style="left: 110px; top: 900px">
+      <div class="bar"><span class="dot"></span>Deals &amp; Coupons</div>
+      <div class="deal"><div class="pick" id="b3-live">● DEAL LIVE</div><div class="what">Gold estate jewelry</div><div class="who">Vargas Jewelers Trophies &amp; Awards</div><div class="claim">Claim this deal →</div></div>
+    </div>
+
+    <!-- Monday digest card -->
+    <div class="card" id="b3-digest" style="left: 110px; top: 900px">
+      <div class="bar"><span class="dot" style="background:#0b992f"></span>Monday digest</div>
+      <div class="row"><b>NEW</b>Vargas Jewelers Trophies &amp; Awards — this week on Lompoc Locals</div>
+      <div class="row"><b>DEALS</b>This week's coupons around town</div>
+      <div class="row"><b>EVENTS</b>What's on in Lompoc this week</div>
+    </div>
+
+    <div id="b3-credit" style="position: absolute; left: 84px; bottom: 19%; z-index: 35; color: rgba(255,255,255,0.78); font-size: 26px; font-weight: 500; letter-spacing: 1px">photo: Vargas Jewelers Trophies &amp; Awards</div>
+    <div class="vig"></div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative to scene start), timed to the read: PAGE, NAME, PHOTOS emphasis, OPEN_NOW pill, MAP pin, ES flick, EN back, DEAL live, DIGEST
+        const B3 = { PAGE: 0.0, NAME: 1.4, PHOTOS: 2.6, OPEN_NOW: 3.25, MAP: 3.9, ES: 4.95, EN: 6.3, DEAL: 6.45, DIGEST: 7.4, END: 8.6 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
+        tl.fromTo("#b3-bloom", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, ease: "none" }, B3.PAGE);
+        tl.fromTo("#b3-credit", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, B3.PAGE + 0.6);
+        tl.fromTo("#b3-kick", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.35 }, B3.PAGE + 0.05);
+        tl.fromTo("#b3-phone", { autoAlpha: 0, y: 360, rotation: -2 }, { autoAlpha: 1, y: 0, rotation: 0, duration: 0.8 }, B3.PAGE + 0.1);
+        tl.fromTo(".ph", { autoAlpha: 0, y: -40, scale: 0.92 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, stagger: 0.1, ease: "back.out(1.3)" }, B3.PAGE + 0.5);
+        tl.fromTo("#b3-badge", { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.3 }, B3.NAME);
+        tl.fromTo("#b3-name", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.45 }, B3.NAME + 0.08);
+        tl.fromTo("#b3-cat", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, B3.NAME + 0.3);
+        // "their photos": the grid breathes once
+        tl.to(".ph", { scale: 1.04, duration: 0.28, stagger: 0.06, yoyo: true, repeat: 1, ease: "sine.inOut" }, B3.PHOTOS);
+        // "their hours": address chip + OPEN NOW pill + directions
+        tl.fromTo(".pchip", { autoAlpha: 0, y: 18, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.35, stagger: 0.12, ease: "back.out(1.5)" }, B3.OPEN_NOW);
+        tl.to("#b3-c2", { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut" }, B3.OPEN_NOW + 0.45);
+        // "their map": phone steps up, map card pushes in, pin drops; the text column steps back while a card is up
+        const push = (sel, at) => tl.fromTo(sel, { autoAlpha: 0, y: 200, rotation: 1.5 }, { autoAlpha: 1, y: 0, rotation: 0, duration: 0.5 }, at);
+        const drop = (sel, at) => tl.to(sel, { autoAlpha: 0, y: 80, duration: 0.22, ease: "power2.in" }, at);
+        tl.to("#b3-phone", { y: -140, scale: 0.9, duration: 0.5, ease: "power3.inOut" }, B3.MAP - 0.2);
+        tl.to("#b3-info", { autoAlpha: 0, duration: 0.15, ease: "power2.in" }, B3.MAP - 0.3);
+        push("#b3-map", B3.MAP);
+        tl.fromTo("#b3-pin", { autoAlpha: 0, y: -160, scale: 0.6 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "bounce.out" }, B3.MAP + 0.4);
+        drop("#b3-map", B3.ES - 0.6);
+        tl.to("#b3-phone", { y: 0, scale: 1, duration: 0.4, ease: "power3.inOut" }, B3.ES - 0.45);
+        tl.set("#b3-info", { autoAlpha: 1 }, B3.ES - 0.1);
+        // "in English and Spanish": EN → ES flick, then back to EN (seek-safe: text derives from progress)
+        const flips = [["b3-badge-t", "CLAIMED PAGE", "PÁGINA RECLAMADA"], ["b3-cat-t", "Jewelry, trophies & awards", "Joyería, trofeos y premios"], ["b3-hours-t", "OPEN NOW", "ABIERTO AHORA"], ["b3-dir-t", "Get directions", "Cómo llegar"]];
+        const setLang = (es) => flips.forEach(([id, en, e]) => { document.getElementById(id).textContent = es ? e : en; });
+        tl.to("#b3-en", { backgroundColor: "#ffffff", color: "#241629", duration: 0.2 }, B3.ES);
+        tl.to("#b3-es", { backgroundColor: "#0b992f", color: "#ffffff", duration: 0.2 }, B3.ES);
+        tl.to({}, { duration: 0.01, onUpdate: function () { setLang(this.progress() >= 1); }, onReverseComplete: () => setLang(false) }, B3.ES + 0.15);
+        tl.fromTo("#b3-c3", { scale: 1 }, { scale: 1.05, duration: 0.3, yoyo: true, repeat: 1, ease: "sine.inOut" }, B3.ES + 0.3);
+        tl.to("#b3-en", { backgroundColor: "#0b992f", color: "#ffffff", duration: 0.2 }, B3.EN);
+        tl.to("#b3-es", { backgroundColor: "#ffffff", color: "#241629", duration: 0.2 }, B3.EN);
+        tl.to({}, { duration: 0.01, onUpdate: function () { setLang(this.progress() < 1); }, onReverseComplete: () => setLang(true) }, B3.EN + 0.02);
+        // "something to say": the deal goes live, then the Monday digest carries it
+        tl.to("#b3-info", { autoAlpha: 0, duration: 0.12, ease: "power2.in" }, B3.DEAL - 0.2);
+        tl.to("#b3-phone", { y: -140, scale: 0.9, duration: 0.5, ease: "power3.inOut" }, B3.DEAL - 0.15);
+        push("#b3-deal", B3.DEAL);
+        tl.fromTo("#b3-live", { scale: 0.7 }, { scale: 1, duration: 0.35, ease: "back.out(1.8)" }, B3.DEAL + 0.4);
+        drop("#b3-deal", B3.DIGEST - 0.3);
+        push("#b3-digest", B3.DIGEST);
+        tl.fromTo("#b3-digest .row", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.12, ease: "power3.out" }, B3.DIGEST + 0.3);
+        window.__timelines["b3-page"] = tl;
+      })();
+    </script>
+  </div>
+</template>
