@@ -1,6 +1,7 @@
 import { db } from "@/db/client"
 import { businessClaims, businesses, users } from "@/db/schema"
 import { sql, eq, desc } from "drizzle-orm"
+import { sessionCounts, engagedSessionsByDay, engagedSessionIds } from "@/lib/analytics/engaged"
 
 const THIRTY_DAYS = sql`now() - interval '30 days'`
 
@@ -8,7 +9,8 @@ const THIRTY_DAYS = sql`now() - interval '30 days'`
 // FUNNELS
 
 export interface FunnelStep {
-  name: string
+  /** i18n key suffix: adminAnalytics.step_<key> */
+  key: string
   count: number
 }
 
@@ -16,15 +18,6 @@ async function countWhere(predicate: string): Promise<number> {
   const result = await db.execute<{ c: number }>(
     sql.raw(
       `SELECT COUNT(*)::int AS c FROM analytics_events WHERE ${predicate} AND created_at > now() - interval '30 days'`
-    )
-  )
-  return result.rows[0]?.c ?? 0
-}
-
-async function countDistinctSessionsWhere(predicate: string): Promise<number> {
-  const result = await db.execute<{ c: number }>(
-    sql.raw(
-      `SELECT COUNT(DISTINCT session_id)::int AS c FROM analytics_events WHERE session_id IS NOT NULL AND ${predicate} AND created_at > now() - interval '30 days'`
     )
   )
   return result.rows[0]?.c ?? 0
@@ -39,36 +32,44 @@ async function countDistinctUsersWhere(predicate: string): Promise<number> {
   return result.rows[0]?.c ?? 0
 }
 
-/** Local funnel: unique sessions w/ a business page view → local_signup → favorite_added. */
+/** Distinct sessions that fired the event in the last 30 days. */
+async function countDistinctSessionsWithEvent(eventName: string): Promise<number> {
+  const result = await db.execute<{ c: number }>(sql`
+    SELECT COUNT(DISTINCT session_id)::int AS c FROM analytics_events
+    WHERE session_id IS NOT NULL AND event_name = ${eventName} AND created_at > ${THIRTY_DAYS}
+  `)
+  return result.rows[0]?.c ?? 0
+}
+
+/** Local funnel: engaged sessions → local_signup (distinct users) → deal_claim (distinct sessions). */
 export async function localFunnel(): Promise<FunnelStep[]> {
-  const pageViews = await countDistinctSessionsWhere(`event_name = 'business_page_viewed'`)
-  const signups = await countDistinctUsersWhere(`event_name = 'local_signup'`)
-  const favorites = await countDistinctUsersWhere(`event_name = 'favorite_added'`)
+  const [{ engaged }, signups, claimed] = await Promise.all([
+    sessionCounts(30),
+    countDistinctUsersWhere(`event_name = 'local_signup'`),
+    countDistinctSessionsWithEvent("deal_claim"),
+  ])
   return [
-    { name: "Visitors", count: pageViews },
-    { name: "Signed up", count: signups },
-    { name: "Favorited a deal", count: favorites },
+    { key: "visitors", count: engaged },
+    { key: "signed_up", count: signups },
+    { key: "claimed_deal", count: claimed },
   ]
 }
 
-/** Business funnel: sessions → business_signup → profile_saved → first_deal_posted → paid_upgrade. */
+/** Business funnel: engaged sessions → business_signup → profile_saved → first_deal_posted → paid_upgrade. */
 export async function businessFunnel(): Promise<FunnelStep[]> {
-  const sessionsResult = await db.execute<{ c: number }>(
-    sql`SELECT COUNT(DISTINCT session_id)::int AS c FROM analytics_events WHERE session_id IS NOT NULL AND created_at > ${THIRTY_DAYS}`
-  )
-  const sessions = sessionsResult.rows[0]?.c ?? 0
-
-  const bizSignups = await countWhere(`event_name = 'business_signup'`)
-  const profiles = await countWhere(`event_name = 'business_profile_saved'`)
-  const firstDeals = await countWhere(`event_name = 'first_deal_posted'`)
-  const paid = await countWhere(`event_name = 'paid_upgrade'`)
-
+  const [{ engaged }, bizSignups, profiles, firstDeals, paid] = await Promise.all([
+    sessionCounts(30),
+    countWhere(`event_name = 'business_signup'`),
+    countWhere(`event_name = 'business_profile_saved'`),
+    countWhere(`event_name = 'first_deal_posted'`),
+    countWhere(`event_name = 'paid_upgrade'`),
+  ])
   return [
-    { name: "All sessions", count: sessions },
-    { name: "Business signups", count: bizSignups },
-    { name: "Profile completed", count: profiles },
-    { name: "First deal posted", count: firstDeals },
-    { name: "Paid upgrade", count: paid },
+    { key: "sessions", count: engaged },
+    { key: "business_signups", count: bizSignups },
+    { key: "profile_saved", count: profiles },
+    { key: "first_deal", count: firstDeals },
+    { key: "paid", count: paid },
   ]
 }
 
@@ -149,7 +150,8 @@ export interface TopBusiness {
   name: string
   slug: string
   viewCount: number
-  claimStatus: "claimed" | "pending" | "unclaimed"
+  /** paying = real subscription · comped = plan_override only · pending = claim waiting · none */
+  membership: "paying" | "comped" | "pending" | "none"
 }
 
 export async function topBusinessesByInterest(): Promise<TopBusiness[]> {
@@ -158,20 +160,22 @@ export async function topBusinessesByInterest(): Promise<TopBusiness[]> {
     name: string
     slug: string
     view_count: number
-    claim_status: string | null
+    membership: string
   }>(sql`
     SELECT b.id, b.name, b.slug,
            COUNT(e.id)::int AS view_count,
-           COALESCE(
-             (SELECT bc.status FROM business_claims bc
-              WHERE bc.business_id = b.id
-              ORDER BY bc.created_at DESC LIMIT 1),
-             'unclaimed'
-           ) AS claim_status
+           CASE
+             WHEN EXISTS (SELECT 1 FROM subscriptions s WHERE s.user_id = b.owner_user_id
+                          AND s.status IN ('active','trialing') AND s.tier IN ('standard','premium')) THEN 'paying'
+             WHEN b.plan_override IN ('standard','premium') THEN 'comped'
+             WHEN EXISTS (SELECT 1 FROM business_claims bc WHERE bc.business_id = b.id AND bc.status = 'pending') THEN 'pending'
+             ELSE 'none'
+           END AS membership
     FROM businesses b
     JOIN analytics_events e ON e.target_type = 'business' AND e.target_id = b.id
                             AND e.event_name = 'business_page_viewed'
                             AND e.created_at > ${THIRTY_DAYS}
+                            AND e.session_id IN ${engagedSessionIds(30)}
     GROUP BY b.id, b.name, b.slug
     ORDER BY view_count DESC
     LIMIT 20
@@ -181,12 +185,7 @@ export async function topBusinessesByInterest(): Promise<TopBusiness[]> {
     name: r.name,
     slug: r.slug,
     viewCount: r.view_count,
-    claimStatus:
-      r.claim_status === "approved"
-        ? "claimed"
-        : r.claim_status === "pending"
-          ? "pending"
-          : "unclaimed",
+    membership: (["paying", "comped", "pending"].includes(r.membership) ? r.membership : "none") as TopBusiness["membership"],
   }))
 }
 
@@ -194,7 +193,8 @@ export async function topBusinessesByInterest(): Promise<TopBusiness[]> {
 // DAILY METRICS (last 30 days, one number per day, fills missing days with 0)
 
 export interface DailySeries {
-  label: string
+  /** i18n key suffix: adminAnalytics.series_<key> */
+  key: string
   points: number[]
 }
 
@@ -217,28 +217,9 @@ async function dailyCount(eventName: string): Promise<number[]> {
   return result.rows.map((r) => r.c)
 }
 
-async function dailySessions(): Promise<number[]> {
-  const result = await db.execute<{ day: string; c: number }>(sql`
-    WITH series AS (
-      SELECT generate_series(date_trunc('day', now() - interval '29 days'), date_trunc('day', now()), '1 day')::date AS day
-    ),
-    counts AS (
-      SELECT date_trunc('day', created_at)::date AS day, COUNT(DISTINCT session_id)::int AS c
-      FROM analytics_events
-      WHERE created_at > now() - interval '30 days' AND session_id IS NOT NULL
-      GROUP BY 1
-    )
-    SELECT s.day::text AS day, COALESCE(c.c, 0)::int AS c
-    FROM series s
-    LEFT JOIN counts c ON c.day = s.day
-    ORDER BY s.day
-  `)
-  return result.rows.map((r) => r.c)
-}
-
 export async function dailyMetrics(): Promise<DailySeries[]> {
   const [sessions, locals, biz, claims, dealsPosted, paid] = await Promise.all([
-    dailySessions(),
+    engagedSessionsByDay(30),
     dailyCount("local_signup"),
     dailyCount("business_signup"),
     dailyCount("business_claim_submitted"),
@@ -246,11 +227,11 @@ export async function dailyMetrics(): Promise<DailySeries[]> {
     dailyCount("paid_upgrade"),
   ])
   return [
-    { label: "Sessions", points: sessions },
-    { label: "Local signups", points: locals },
-    { label: "Business signups", points: biz },
-    { label: "Claims submitted", points: claims },
-    { label: "Deals posted", points: dealsPosted },
-    { label: "Paid upgrades", points: paid },
+    { key: "sessions", points: sessions },
+    { key: "local_signups", points: locals },
+    { key: "business_signups", points: biz },
+    { key: "claims", points: claims },
+    { key: "deals", points: dealsPosted },
+    { key: "paid", points: paid },
   ]
 }

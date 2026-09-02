@@ -6,6 +6,7 @@ import { auth } from "@/auth"
 import { db } from "@/db/client"
 import { businesses, deals, users, businessClaims, events, dealEvents } from "@/db/schema"
 import { track } from "@/lib/analytics/track"
+import { sessionCounts, engagedSessionsByWeek } from "@/lib/analytics/engaged"
 import { DAY_KEYS, type DayHours, type Hours } from "@/lib/hours"
 import { redirect } from "next/navigation"
 
@@ -458,7 +459,7 @@ export async function getPulseExtras() {
   const { subscribers, analyticsEvents } = await import("@/db/schema")
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
 
-  const [subs, engagement, newUsers] = await Promise.all([
+  const [subs, engagement, sessions, newUsers] = await Promise.all([
     db
       .select({ n: sql<number>`count(*) filter (where confirmed_at is not null)`, total: sql<number>`count(*)` })
       .from(subscribers),
@@ -466,10 +467,11 @@ export async function getPulseExtras() {
       .select({
         claims: sql<number>`count(*) filter (where event_name = 'deal_claim')`,
         redeems: sql<number>`count(*) filter (where event_name = 'deal_redeem')`,
-        views: sql<number>`count(*) filter (where event_name in ('business_page_viewed', 'deal_view'))`,
       })
       .from(analyticsEvents)
       .where(gt(analyticsEvents.createdAt, weekAgo)),
+    // Engaged (2+ events) vs raw sessions — raw is mostly crawlers.
+    sessionCounts(7),
     db.select({ n: sql<number>`count(*)` }).from(users).where(gt(users.createdAt, weekAgo)),
   ])
 
@@ -478,7 +480,8 @@ export async function getPulseExtras() {
     totalSubscribers: Number(subs[0].total),
     claims7d: Number(engagement[0].claims),
     redeems7d: Number(engagement[0].redeems),
-    views7d: Number(engagement[0].views),
+    engaged7d: sessions.engaged,
+    sessions7d: sessions.total,
     newUsers7d: Number(newUsers[0].n),
   }
 }
@@ -526,7 +529,8 @@ export async function getNewPeople(days = 7): Promise<NewPerson[]> {
 export type GrowthWeek = {
   weekStart: Date
   signups: number
-  views: number
+  /** Engaged sessions (2+ events) that started this week. */
+  visits: number
   claims: number
 }
 
@@ -535,16 +539,16 @@ export async function getGrowthWeeks(weeks = 4): Promise<GrowthWeek[]> {
   const { analyticsEvents } = await import("@/db/schema")
   const since = new Date(Date.now() - weeks * 7 * 24 * 60 * 60 * 1000)
 
-  const [eventRows, userRows] = await Promise.all([
+  const [eventRows, visitRows, userRows] = await Promise.all([
     db
       .select({
         week: sql<string>`date_trunc('week', ${analyticsEvents.createdAt})::text`,
-        views: sql<number>`count(*) filter (where event_name in ('business_page_viewed', 'deal_view'))`,
         claims: sql<number>`count(*) filter (where event_name = 'deal_claim')`,
       })
       .from(analyticsEvents)
       .where(gt(analyticsEvents.createdAt, since))
       .groupBy(sql`1`),
+    engagedSessionsByWeek(weeks),
     db
       .select({
         week: sql<string>`date_trunc('week', ${users.createdAt})::text`,
@@ -562,16 +566,17 @@ export async function getGrowthWeeks(weeks = 4): Promise<GrowthWeek[]> {
     const day = (d.getDay() + 6) % 7
     d.setDate(d.getDate() - day)
     d.setHours(0, 0, 0, 0)
-    byWeek.set(d.toISOString().slice(0, 10), { weekStart: d, signups: 0, views: 0, claims: 0 })
+    byWeek.set(d.toISOString().slice(0, 10), { weekStart: d, signups: 0, visits: 0, claims: 0 })
   }
   for (const r of eventRows) {
     const key = r.week.slice(0, 10)
     const w = byWeek.get(key)
-    if (w) {
-      w.views = Number(r.views)
-      w.claims = Number(r.claims)
-    }
+    if (w) w.claims = Number(r.claims)
   }
+  visitRows.forEach((n, key) => {
+    const w = byWeek.get(key)
+    if (w) w.visits = n
+  })
   for (const r of userRows) {
     const key = r.week.slice(0, 10)
     const w = byWeek.get(key)

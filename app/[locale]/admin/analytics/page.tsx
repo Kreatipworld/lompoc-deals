@@ -9,6 +9,9 @@ import {
 } from "./queries"
 import { FunnelStep, Sparkline, BusinessLink } from "./components"
 import { getTranslations } from "next-intl/server"
+import { format } from "date-fns"
+
+const CLAIM_STATUSES = new Set(["pending", "approved", "rejected"])
 
 export const dynamic = "force-dynamic"
 
@@ -27,11 +30,15 @@ export default async function AnalyticsPage() {
   const localMax = Math.max(...local.map((s) => s.count), 1)
   const bizMax = Math.max(...biz.map((s) => s.count), 1)
 
+  const claimStatus = (status: string) =>
+    CLAIM_STATUSES.has(status) ? t(`status_${status}` as "status_pending") : status
+
   return (
-    <main className="container mx-auto max-w-6xl space-y-8 px-4 py-8">
+    <div className="space-y-8">
       <header>
-        <h1 className="font-display text-3xl font-bold">{t("title")}</h1>
-        <p className="text-muted-foreground">{t("subtitle")}</p>
+        <h1 className="font-display text-3xl font-semibold tracking-tight">{t("title")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{t("engagedNote")}</p>
       </header>
 
       {/* 1. Top of funnel — Vercel link out */}
@@ -53,13 +60,13 @@ export default async function AnalyticsPage() {
         <div className="rounded-2xl border bg-card p-4">
           <h2 className="mb-3 font-semibold">{t("localFunnel")}</h2>
           {local.map((s) => (
-            <FunnelStep key={s.name} name={s.name} count={s.count} maxCount={localMax} />
+            <FunnelStep key={s.key} label={t(`step_${s.key}` as "step_visitors")} count={s.count} maxCount={localMax} />
           ))}
         </div>
         <div className="rounded-2xl border bg-card p-4">
           <h2 className="mb-3 font-semibold">{t("businessFunnel")}</h2>
           {biz.map((s) => (
-            <FunnelStep key={s.name} name={s.name} count={s.count} maxCount={bizMax} />
+            <FunnelStep key={s.key} label={t(`step_${s.key}` as "step_sessions")} count={s.count} maxCount={bizMax} />
           ))}
         </div>
       </section>
@@ -72,29 +79,31 @@ export default async function AnalyticsPage() {
             {t("claimsSummary", { pending: claimSum.pending, approved: claimSum.approvedThisMonth })}
           </span>
         </div>
-        <table className="w-full text-sm">
-          <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th className="py-2">{t("business")}</th>
-              <th>{t("email")}</th>
-              <th>{t("status")}</th>
-              <th>{t("submitted")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {claims.map((c) => (
-              <tr key={c.id} className="border-t">
-                <td className="py-2"><BusinessLink slug={c.businessSlug} name={c.businessName} /></td>
-                <td className="text-muted-foreground">{c.userEmail ?? "—"}</td>
-                <td>{c.status}</td>
-                <td className="text-muted-foreground">{new Date(c.submittedAt).toLocaleDateString()}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="py-2">{t("business")}</th>
+                <th>{t("email")}</th>
+                <th>{t("status")}</th>
+                <th>{t("submitted")}</th>
               </tr>
-            ))}
-            {claims.length === 0 && (
-              <tr><td colSpan={4} className="py-4 text-center text-muted-foreground">{t("noClaims")}</td></tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {claims.map((c) => (
+                <tr key={c.id} className="border-t">
+                  <td className="py-2"><BusinessLink slug={c.businessSlug} name={c.businessName} /></td>
+                  <td className="text-muted-foreground">{c.userEmail ?? "—"}</td>
+                  <td>{claimStatus(c.status)}</td>
+                  <td className="text-muted-foreground">{format(new Date(c.submittedAt), "MMM d, yyyy")}</td>
+                </tr>
+              ))}
+              {claims.length === 0 && (
+                <tr><td colSpan={4} className="py-4 text-center text-muted-foreground">{t("noClaims")}</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       {/* 4. Search gaps */}
@@ -118,24 +127,29 @@ export default async function AnalyticsPage() {
       {/* 5. Top businesses */}
       <section className="rounded-2xl border bg-card p-4">
         <h2 className="mb-3 font-semibold">{t("topBusinesses")}</h2>
-        <table className="w-full text-sm">
-          <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th className="py-2">{t("business")}</th>
-              <th className="text-right">{t("views30d")}</th>
-              <th>{t("claimStatus")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {topBusinesses.map((b) => (
-              <tr key={b.id} className="border-t">
-                <td className="py-2"><BusinessLink slug={b.slug} name={b.name} /></td>
-                <td className="text-right tabular-nums">{b.viewCount.toLocaleString()}</td>
-                <td className="text-muted-foreground">{t(`claimStatus_${b.claimStatus}`)}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="py-2">{t("business")}</th>
+                <th className="text-right">{t("views30d")}</th>
+                <th>{t("membership")}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {topBusinesses.map((b) => (
+                <tr key={b.id} className="border-t">
+                  <td className="py-2"><BusinessLink slug={b.slug} name={b.name} /></td>
+                  <td className="text-right tabular-nums">{b.viewCount.toLocaleString()}</td>
+                  <td className="text-muted-foreground">{t(`membership_${b.membership}`)}</td>
+                </tr>
+              ))}
+              {topBusinesses.length === 0 && (
+                <tr><td colSpan={3} className="py-4 text-center text-muted-foreground">{t("noTopBusinesses")}</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       {/* 6. Daily metrics */}
@@ -143,10 +157,10 @@ export default async function AnalyticsPage() {
         <h2 className="mb-3 font-semibold">{t("daily")}</h2>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
           {daily.map((s) => (
-            <Sparkline key={s.label} label={s.label} points={s.points} />
+            <Sparkline key={s.key} label={t(`series_${s.key}` as "series_sessions")} points={s.points} />
           ))}
         </div>
       </section>
-    </main>
+    </div>
   )
 }

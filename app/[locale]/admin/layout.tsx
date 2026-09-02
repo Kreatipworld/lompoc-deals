@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { DashboardNav } from "@/components/dashboard-nav"
-import { LayoutDashboard, Users, Tag, CalendarDays, Rss, Megaphone, LifeBuoy, Activity, Clock } from "lucide-react"
+import { LayoutDashboard, Users, Tag, CalendarDays, Rss, Megaphone, LifeBuoy, Activity, Clock, Store, BarChart2, Newspaper } from "lucide-react"
 
 export default async function AdminLayout({
   children,
@@ -28,19 +28,9 @@ export default async function AdminLayout({
               label: "Overview",
             },
             {
-              href: "/admin/health",
-              icon: <Activity className="h-4 w-4" />,
-              label: "Health",
-            },
-            {
-              href: "/admin/comms",
-              icon: <Megaphone className="h-4 w-4" />,
-              label: "Comms",
-            },
-            {
-              href: "/admin/users",
-              icon: <Users className="h-4 w-4" />,
-              label: "Users",
+              href: "/admin/businesses",
+              icon: <Store className="h-4 w-4" />,
+              label: "Businesses",
             },
             {
               href: "/admin/deals",
@@ -56,6 +46,31 @@ export default async function AdminLayout({
               href: "/admin/feed",
               icon: <Rss className="h-4 w-4" />,
               label: "Feed moderation",
+            },
+            {
+              href: "/admin/news-desk",
+              icon: <Newspaper className="h-4 w-4" />,
+              label: "News desk",
+            },
+            {
+              href: "/admin/users",
+              icon: <Users className="h-4 w-4" />,
+              label: "Users",
+            },
+            {
+              href: "/admin/comms",
+              icon: <Megaphone className="h-4 w-4" />,
+              label: "Comms",
+            },
+            {
+              href: "/admin/analytics",
+              icon: <BarChart2 className="h-4 w-4" />,
+              label: "Analytics",
+            },
+            {
+              href: "/admin/health",
+              icon: <Activity className="h-4 w-4" />,
+              label: "Health",
             },
             {
               href: "/admin/support",

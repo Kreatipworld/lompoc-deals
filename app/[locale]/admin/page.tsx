@@ -70,8 +70,41 @@ const DEFAULT_PULSE = {
   totalSubscribers: 0,
   claims7d: 0,
   redeems7d: 0,
-  views7d: 0,
+  engaged7d: 0,
+  sessions7d: 0,
   newUsers7d: 0,
+}
+
+function GrowthRow({
+  label,
+  color,
+  values,
+}: {
+  label: string
+  color: string
+  values: number[]
+}) {
+  const max = Math.max(1, ...values)
+  return (
+    <div className="flex items-end gap-3">
+      <span className="w-24 shrink-0 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </span>
+      <div className="flex flex-1 items-end gap-3">
+        {values.map((v, i) => (
+          <div key={i} className="flex flex-1 flex-col items-center gap-1">
+            <span className="text-xs font-semibold tabular-nums">{v}</span>
+            <div className="flex h-10 w-full items-end">
+              <div
+                className={`w-full rounded-t ${color}`}
+                style={{ height: `${Math.max(4, (v / max) * 100)}%`, opacity: v === 0 ? 0.25 : 1 }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function PulseTile({
@@ -141,7 +174,6 @@ export default async function AdminPage() {
   }
 
   const queueTotal = stats.pendingBusinesses + stats.pendingClaims + stats.pendingEvents
-  const maxGrowth = Math.max(1, ...growth.flatMap((w) => [w.signups, w.views, w.claims]))
 
   return (
     <div className="space-y-10">
@@ -178,8 +210,8 @@ export default async function AdminPage() {
           href="/admin/analytics"
           icon={<Eye className="h-3.5 w-3.5" />}
           label={t("pulseEngagement")}
-          value={pulse.views7d}
-          sub={t("pulseEngagementSub", { claims: pulse.claims7d, redeems: pulse.redeems7d })}
+          value={pulse.engaged7d}
+          sub={t("pulseEngagementSub", { sessions: pulse.sessions7d, claims: pulse.claims7d })}
         />
         <PulseTile
           href="/admin/comms"
@@ -399,44 +431,24 @@ export default async function AdminPage() {
             <TrendingUp className="h-5 w-5 text-primary/70" />
             {t("growthHeading")}
           </h2>
-          <div className="rounded-2xl border bg-card p-5 shadow-sm">
-            <div className="flex items-end justify-between gap-3">
-              {growth.map((w) => (
-                <div key={w.weekStart.toISOString()} className="flex flex-1 flex-col items-center gap-1.5">
-                  <div className="flex h-32 w-full items-end justify-center gap-1">
-                    <div
-                      className="w-1/4 rounded-t bg-primary"
-                      style={{ height: `${Math.max(4, (w.views / maxGrowth) * 100)}%` }}
-                      title={`${t("growthViews")}: ${w.views}`}
-                    />
-                    <div
-                      className="w-1/4 rounded-t bg-gold"
-                      style={{ height: `${Math.max(4, (w.claims / maxGrowth) * 100)}%` }}
-                      title={`${t("growthClaims")}: ${w.claims}`}
-                    />
-                    <div
-                      className="w-1/4 rounded-t bg-success"
-                      style={{ height: `${Math.max(4, (w.signups / maxGrowth) * 100)}%` }}
-                      title={`${t("growthSignups")}: ${w.signups}`}
-                    />
-                  </div>
-                  <span className="text-[10px] font-medium text-muted-foreground">
+          <div className="space-y-4 rounded-2xl border bg-card p-5 shadow-sm">
+            <GrowthRow label={t("growthVisits")} color="bg-primary" values={growth.map((w) => w.visits)} />
+            <GrowthRow label={t("growthClaims")} color="bg-gold" values={growth.map((w) => w.claims)} />
+            <GrowthRow label={t("growthSignups")} color="bg-success" values={growth.map((w) => w.signups)} />
+            <div className="flex items-center gap-3 border-t pt-2">
+              <span className="w-24 shrink-0" />
+              <div className="flex flex-1 gap-3">
+                {growth.map((w) => (
+                  <span
+                    key={w.weekStart.toISOString()}
+                    className="flex-1 text-center text-[10px] font-medium text-muted-foreground"
+                  >
                     {format(w.weekStart, "MMM d")}
                   </span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-primary" /> {t("growthViews")}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-gold" /> {t("growthClaims")}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-success" /> {t("growthSignups")}
-              </span>
-            </div>
+            <p className="text-xs text-muted-foreground">{t("growthHint")}</p>
           </div>
         </section>
       </div>

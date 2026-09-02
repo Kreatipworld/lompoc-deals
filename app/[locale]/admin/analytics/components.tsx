@@ -1,11 +1,11 @@
 import { Link } from "@/i18n/navigation"
 
-export function FunnelStep({ name, count, maxCount }: { name: string; count: number; maxCount: number }) {
+export function FunnelStep({ label, count, maxCount }: { label: string; count: number; maxCount: number }) {
   const pct = maxCount === 0 ? 0 : Math.round((count / maxCount) * 100)
   return (
     <div className="mb-2">
       <div className="flex items-center justify-between text-sm">
-        <span>{name}</span>
+        <span>{label}</span>
         <span className="tabular-nums text-muted-foreground">
           {count.toLocaleString()} ({pct}%)
         </span>
