@@ -31,3 +31,5 @@ Build note: split-screen halves need `scale=+4px headroom + crop exact=1` — pl
 
 
 ## v11 DYLAN+BAMA (FINAL for watch, Sep 1): 20.9s. Voice = Dylan (male western-radio pick; main 0.9cr job 8e5ef756 + closer 0.15cr job c28e94f6). Bed = "Bama Country" — Kevin MacLeod, CC BY 4.0 (credit updated in all captions) at -17 LUFS, duck floor 0.26. Beats re-synced to Dylan's silence map (his read runs burger→poppers without a pause; split estimated at 10.4s). Project ≈ 99.3cr preflight — verify transactions. Blob: *-dylan-bama.mp4.
+
+## POSTED Tue Sep 1 ~8:07 PM PT (user: "post it" after watching v11): IG Reel 6a9792d7b9407160d6aef0de · FB Reel 6a9792e3ef5558a3e0c6a45b · TikTok 6a9792ee62c34b596d27fd6d (all shareNow) · IG Story 8:20 PM (link sticker → /biz/eddies-grill). Dylan+Bama cut.
