@@ -8,7 +8,7 @@ aspect: 1080x1920 (master) + 1080x1350
 language: en (es cut only after the en cut earns it)
 length: ~30s
 angle: master-ad / partner-recruitment / tag-loop
-status: brief + script approved 2026-08-26 — assets pulled & checked, VO preflight 1.5cr awaiting yes, nothing rendered
+status: v6 STORY CUT rendered 2026-09-02 (Dylan VO, Bama Country, 34s, 9:16 + 4:5 in renders/) — delivered for watch, NOT posted; see SCRIPT.md v6 section
 ---
 
 ## Why this exists
