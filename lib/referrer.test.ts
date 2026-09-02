@@ -27,3 +27,37 @@ assert.equal(normalizeReferrer("https://www.google.co.uk/search"), "Google")
 assert.equal(normalizeReferrer("not a url"), "Other")
 
 console.log("referrer.test: all passed")
+
+// ── classifySource: in-site + UTM aware buckets for the member dashboard ──────
+import { classifySource } from "./referrer"
+
+const site = "https://www.lompoclocals.com"
+assert.equal(classifySource({ referrer: `${site}/` }), "homepage")
+assert.equal(classifySource({ referrer: `${site}/en` }), "homepage")
+assert.equal(classifySource({ referrer: `${site}/es/` }), "homepage")
+assert.equal(classifySource({ referrer: `${site}/category/food-drink` }), "category")
+assert.equal(classifySource({ referrer: `${site}/es/category/entertainment` }), "category")
+assert.equal(classifySource({ referrer: `${site}/businesses` }), "directory")
+assert.equal(classifySource({ referrer: `${site}/en/search?q=tacos` }), "search")
+assert.equal(classifySource({ referrer: `${site}/deals` }), "deals")
+assert.equal(classifySource({ referrer: `${site}/events/some-event` }), "events")
+assert.equal(classifySource({ referrer: `${site}/news/story` }), "news")
+assert.equal(classifySource({ referrer: `${site}/map` }), "map")
+assert.equal(classifySource({ referrer: `${site}/partners` }), "site_other")
+assert.equal(classifySource({ referrer: "https://lompoc-deals.vercel.app/en/category/x" }), "category")
+// UTM wins over referrer
+assert.equal(classifySource({ referrer: `${site}/`, utmSrc: "email", utmMed: "outreach" }), "email")
+assert.equal(classifySource({ referrer: null, utmSrc: "fb", utmMed: "paid" }), "facebook")
+assert.equal(classifySource({ referrer: null, utmSrc: "facebook" }), "facebook")
+assert.equal(classifySource({ referrer: null, utmSrc: "ig", utmMed: "social" }), "instagram")
+assert.equal(classifySource({ referrer: null, utmSrc: "digest" }), "email")
+// external referrers
+assert.equal(classifySource({ referrer: "https://www.google.com/" }), "google")
+assert.equal(classifySource({ referrer: "https://l.facebook.com/l.php?u=x" }), "facebook")
+assert.equal(classifySource({ referrer: "https://www.instagram.com/x" }), "instagram")
+assert.equal(classifySource({ referrer: "https://duckduckgo.com/" }), "other_search")
+assert.equal(classifySource({ referrer: "https://some-blog.com/post" }), "other")
+assert.equal(classifySource({ referrer: null }), "direct")
+assert.equal(classifySource({ referrer: "" }), "direct")
+assert.equal(classifySource({ referrer: "not a url" }), "other")
+console.log("referrer.test.ts: classifySource ok")

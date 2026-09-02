@@ -29,8 +29,8 @@ export function getPlanFeatures(tier: TierKey): TierConfig {
 /** The minimum tier that unlocks a given feature flag. */
 const FEATURE_MINIMUM_TIER: Record<FeatureFlag, TierKey> = {
   canViewAnalytics: "standard",
-  canViewTrafficSources: "premium",
-  canViewTrends: "premium",
+  canViewTrafficSources: "standard",
+  canViewTrends: "standard",
   canShowSocialLinks: "standard",
   canListRealEstate: "premium",
   priorityRanking: "premium",
