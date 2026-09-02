@@ -31,3 +31,10 @@ Broadcast style ("like Fox News" — user direction): red skew chyrons, gold bar
 
 ## Distribution plan (pending user yes)
 Replace the static "Braves 42-0" card scheduled Fri 9:00 AM with this video — all four surfaces + IG Story w/ link sticker to lompoclocals.com/events. Captions must carry the MacLeod CC-BY credit.
+
+## MASTER cut (Sep 2, in progress) — same DNA as "This is Lompoc" v6
+User: "i want to master that one" after watching the Sep 1 cut. Brief approved: satellite flyover (Mapbox, Huyck → Cabrillo, no credits) + both stadium photos + hero type + Dylan new read + Pale Rider. New HyperFrames project `content/social/video/biggame/`.
+- Facts re-verified on MaxPreps Sep 2: Fri Sep 4 7:00 PM at Cabrillo; opener W 42–0 at Santa Ynez Aug 28.
+- Dylan read job a50cb96d (0.9cr preflight = billed), 16.40s, "Huyck" respelled "Hike", ASR heard Hike/Lompoc clean. Placed as two clips (hold after "turf") → 21.5s cut.
+- Old render's school marks cropped from frames (only copies). Credits on end card: MacLeod Pale Rider CC BY + Mapbox/OSM/Maxar.
+- MASTER RENDERED Sep 2 late: `biggame/renders/biggame-master-{9x16,4x5}.mp4` (21.5s, -14.8 LUFS) → user's Downloads as `biggame-braves-at-conqs-MASTER-*.mp4`. Flyover = Mapbox `satellite-v9` (label-free; satellite-streets showed POI labels — never again for cinematic opens). Credits on end card: Pale Rider CC BY + "© Mapbox © OpenStreetMap © Maxar" — BOTH must be in every caption. NOT posted; awaiting user watch. Distribution plan unchanged: replace the Friday 9 AM static card, all 4 surfaces + IG Story → /events.

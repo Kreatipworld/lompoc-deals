@@ -76,3 +76,8 @@ content/social/video/news-desk/.hyperframes/
 # Higgsfield OAuth token (scripts/higgsfield-mcp)
 hf-token.json
 hf-mcp-session.txt
+
+# HyperFrames flyover keyframe cache (regenerable)
+**/.flycache/
+content/social/video/*/renders/
+content/social/video/*/node_modules/

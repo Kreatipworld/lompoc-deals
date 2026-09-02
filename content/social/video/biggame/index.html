@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @font-face { font-family: "Plus Jakarta Sans"; src: url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #140a17; }
+      body { font-family: "Plus Jakarta Sans", sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #root > div[data-composition-src] { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- BIG GAME — Lompoc Braves at Cabrillo Conqs, Fri Sep 4 2026 7:00 PM. Timed to Dylan's read (two VO clips; Conqs beat gets a music-only hold) -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="21.50" data-width="1080" data-height="1920">
+      <div id="el-g1" data-composition-id="g1-hook"     data-composition-src="compositions/g1-hook.html"     data-start="0"     data-duration="4.34" data-track-index="1"></div>
+      <div id="el-g2" data-composition-id="g2-braves"   data-composition-src="compositions/g2-braves.html"   data-start="4.34"  data-duration="3.14" data-track-index="1"></div>
+      <div id="el-g3" data-composition-id="g3-transfer" data-composition-src="compositions/g3-transfer.html" data-start="7.48"  data-duration="2.98" data-track-index="1"></div>
+      <div id="el-g4" data-composition-id="g4-conqs"    data-composition-src="compositions/g4-conqs.html"    data-start="10.46" data-duration="3.44" data-track-index="1"></div>
+      <div id="el-g5" data-composition-id="g5-matchup"  data-composition-src="compositions/g5-matchup.html"  data-start="13.90" data-duration="2.62" data-track-index="1"></div>
+      <div id="el-g6" data-composition-id="g6-end"      data-composition-src="compositions/g6-end.html"      data-start="16.52" data-duration="4.98" data-track-index="1"></div>
+
+      <!-- VO: Dylan read (16.40s) as two clips so the Conqs beat gets a music-only hold -->
+      <audio id="vo-a" class="clip" data-audio-group="voiceover" src="public/vo-biggame-dylan.wav" data-start="1.20"  data-media-start="0"     data-duration="11.00" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b" class="clip" data-audio-group="voiceover" src="public/vo-biggame-dylan.wav" data-start="13.90" data-media-start="11.00" data-duration="5.40"  data-track-index="10" data-volume="1"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/pale-rider.mp3" data-start="0" data-duration="21.50" data-media-start="0" data-track-index="11" data-volume="0.5" data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.3}' data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":1},{"t":20.0,"v":1},{"t":21.5,"v":0}]}]}'></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
