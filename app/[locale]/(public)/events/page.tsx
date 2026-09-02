@@ -47,6 +47,25 @@ function collapseRecurring(rows: EventRow[]): { event: EventRow; extra: number }
   return Array.from(seen.values())
 }
 
+/** Calendar day in Lompoc's timezone ("yyyy-mm-dd"). */
+const laDay = (d: Date) =>
+  d.toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" })
+
+/**
+ * LA-calendar dates for the nearest weekend: Fri–Sun for a midweek visitor,
+ * the remainder of the current weekend on Fri/Sat/Sun. String math on the LA
+ * calendar day (anchored at noon UTC) keeps DST out of the picture.
+ */
+function weekendDates(now = new Date()): Set<string> {
+  const anchor = new Date(`${laDay(now)}T12:00:00Z`)
+  const dow = anchor.getUTCDay() // 0 Sun … 6 Sat
+  const offsets =
+    dow === 0 ? [0] : dow === 5 ? [0, 1, 2] : dow === 6 ? [0, 1] : [5 - dow, 6 - dow, 7 - dow]
+  return new Set(
+    offsets.map((days) => new Date(anchor.getTime() + days * 86400000).toISOString().slice(0, 10))
+  )
+}
+
 function fmtDate(d: Date, locale: string) {
   return d.toLocaleDateString(locale === "es" ? "es-US" : "en-US", {
     timeZone: "America/Los_Angeles",
@@ -71,7 +90,12 @@ export default async function EventsPage({
   const title = (e: EventRow) => eventTitle(e, params.locale, tLaunch)
   const all = await getUpcoming()
   const launches = all.filter((e) => e.source === LAUNCH_SOURCE)
-  const others = collapseRecurring(all.filter((e) => e.source !== LAUNCH_SOURCE))
+  const nonLaunch = all.filter((e) => e.source !== LAUNCH_SOURCE)
+  // "This weekend" owns its dates; the town list keeps each series' next
+  // occurrence outside the weekend so nothing renders twice.
+  const weekend = weekendDates()
+  const weekendEvents = nonLaunch.filter((e) => weekend.has(laDay(e.startsAt)))
+  const others = collapseRecurring(nonLaunch.filter((e) => !weekend.has(laDay(e.startsAt))))
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -92,6 +116,43 @@ export default async function EventsPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
+      <p className="max-w-3xl text-muted-foreground">{t("intro")}</p>
+
+      {weekendEvents.length > 0 && (
+        <section className="mt-6">
+          <h2 className="font-display text-xl font-semibold tracking-tight">
+            {t("weekendHeading")}
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t("weekendSub")}</p>
+          <ul className="mt-4 divide-y rounded-2xl border bg-card">
+            {weekendEvents.slice(0, 8).map((ev) => (
+              <li key={ev.id}>
+                <Link
+                  href={`/events/${ev.id}`}
+                  className="flex items-start gap-4 p-4 transition-colors hover:bg-accent/40"
+                >
+                  <div className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                    <Calendar className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                      {fmtDate(ev.startsAt, params.locale)}
+                    </p>
+                    <p className="truncate font-medium">{title(ev)}</p>
+                    {ev.location && (
+                      <p className="mt-0.5 flex items-center gap-1 truncate text-sm text-muted-foreground">
+                        <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+                        {ev.location}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {launches.length > 0 && (
         <section className="mt-8 sm:mt-10">

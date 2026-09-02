@@ -20,7 +20,9 @@ export async function generateMetadata({
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: "search" })
   return {
-    title: t("metaTitle"),
+    // metaTitle embeds the brand ("Search Lompoc Locals…") — bypass the layout's
+    // "%s | Lompoc Locals" template or the suffix doubles.
+    title: { absolute: t("metaTitle") },
     description: t("metaDescription"),
     // Self-referential canonical per locale (otherwise /es/search inherits nothing
     // and the page-level alternates are missing entirely). Still noindex below.

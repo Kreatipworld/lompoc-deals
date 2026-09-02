@@ -86,6 +86,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/events",
     "/hotels",
     "/activities",
+    "/things-to-do",
     "/locals",
     "/contact",
     "/privacy",
@@ -100,7 +101,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority:
       path === "" ? 1
       : path === "/news" || path === "/events" ? 0.9
-      : path === "/feed" || path === "/garage-sales" || path === "/blog" || path === "/deals" ? 0.8
+      : path === "/feed" || path === "/garage-sales" || path === "/blog" || path === "/deals" || path === "/things-to-do" ? 0.8
       : path === "/contact" ? 0.4
       : path === "/privacy" || path === "/terms" ? 0.3
       : 0.7,

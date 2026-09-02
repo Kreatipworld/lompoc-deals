@@ -1125,7 +1125,8 @@ export function renderMasterDigestHtml(
             Math.min(arr.length, 5)
           )
         )
-        .join("")
+        .join("") +
+      `<div style="text-align:right;margin-top:6px;"><a href="${siteUrl("/events")}" style="font-size:13px;color:#650C75;font-weight:bold;text-decoration:none;">${es ? "Calendario completo de eventos" : "Full events calendar"} →</a></div>`
     : ""
 
   // ── The local news (headlines after the lead) ──

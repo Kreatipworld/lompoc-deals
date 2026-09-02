@@ -41,7 +41,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "partners" })
   return {
-    title: t("metaTitle"),
+    // metaTitle embeds the brand ("Partner With Lompoc Locals…") — bypass the layout's
+    // "%s | Lompoc Locals" template or the suffix doubles.
+    title: { absolute: t("metaTitle") },
     description: t("metaDescription"),
     keywords: [
       "list your lompoc business",

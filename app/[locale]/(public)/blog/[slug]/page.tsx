@@ -12,7 +12,7 @@ import { newsCoverUrl } from "@/lib/news-cover"
 import { BlogRelatedLinks } from "@/components/blog-related-links"
 import { BlogBusinessSpotlight } from "@/components/blog-business-spotlight"
 import { getTranslations } from "next-intl/server"
-import { pageAlternates } from "@/lib/seo"
+import { pageAlternates, seoTitle } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
@@ -32,7 +32,9 @@ export async function generateMetadata({
     post.metaDescription ?? post.excerpt ?? tUi("readOnBlog", { title: post.title })
 
   return {
-    title: post.title,
+    // Headlines run long (news desk writes for the page, not the <title>): trim at a
+    // word boundary so title + " | Lompoc Locals" stays ≤ 60. og:title keeps the full headline.
+    title: seoTitle(post.title),
     description,
     openGraph: {
       title: post.title,
@@ -248,6 +250,18 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
             className="inline-block px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             {t("browseDeals")}
+          </Link>
+        </div>
+
+        {/* CTA to events — every story routes readers to the live Lompoc events calendar */}
+        <div className="mt-4 p-6 bg-gray-50 rounded-2xl border border-gray-200 text-center">
+          <p className="text-gray-900 font-semibold mb-1">{t("whatsHappening")}</p>
+          <p className="text-gray-600 text-sm mb-4">{t("whatsHappeningBody")}</p>
+          <Link
+            href="/events"
+            className="inline-block px-5 py-2 border border-primary text-primary rounded-lg text-sm font-medium hover:bg-primary/5 transition-colors"
+          >
+            {t("browseEvents")} →
           </Link>
         </div>
       </main>
