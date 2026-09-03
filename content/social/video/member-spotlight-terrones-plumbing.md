@@ -12,3 +12,18 @@
 
 **Posting plan:** Thursday/Friday 6 PM PT (Buffer data: 6–8 PM best), all four surfaces + IG Story link sticker → /biz/terrones-plumbing. Caption credit: none needed (bed/SFX generated, logo theirs).
 - RENDERED Sep 3: `terrones/renders/terrones-that-sound-{9x16,4x5}.mp4`, 15.0s, -18.6 LUFS (silence-first by design; VO at full) → Downloads `terrones-that-sound-*.mp4`. Cover: frame 0 is near-black → set thumbnailOffset ≈ 8,600 ms (logo card) at post time. Awaiting user watch. Posting slot: tonight Thu Sep 3 6:00 PM PT if approved.
+
+## Captions (READY, not posted)
+**IG Reel**
+Member spotlight: TERRONES PLUMBING 🔧
+You know that sound. So does he. Family-owned, right here in Lompoc — any plumbing problem, one call.
+📞 (805) 294-2133 · Find them on Lompoc Locals — link in bio.
+#Lompoc #LompocLocals #Plumber #ShopLocal #805 #VandenbergVillage
+**FB Reel**
+Member spotlight: Terrones Plumbing 🔧 You know that sound. So does he. Family-owned, right here in Lompoc — any plumbing problem, one call.
+📞 (805) 294-2133 · https://www.lompoclocals.com/biz/terrones-plumbing
+**TikTok**
+That 2 AM drip? Terrones Plumbing, family-owned in Lompoc. Any plumbing problem, one call 🔧 (805) 294-2133 · lompoclocals.com #Lompoc #Plumber #805 #ShopLocal
+**IG Story**
+Text: "You know that sound 💧🔧" · link sticker → https://www.lompoclocals.com/biz/terrones-plumbing ("Their page")
+Cover: thumbnailOffset 8600 ms (logo card). Slot: Thu Sep 3 6:00 PM PT, shareNow ×4 (scheduled cap).
