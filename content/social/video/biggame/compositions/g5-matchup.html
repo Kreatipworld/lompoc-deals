@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="g5-matchup" data-width="1080" data-height="1920" data-duration="3.70" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="g5-matchup" data-width="1080" data-height="1920" data-duration="3.65" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
     <style>
       [data-composition-id="g5-matchup"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
       [data-composition-id="g5-matchup"] .cine-top { top: 0; } [data-composition-id="g5-matchup"] .cine-bot { bottom: 0; }
@@ -51,7 +51,7 @@
     <script>
       (() => {
         // BEATS (relative): SPLIT+VS 0, WHEN 0.86 (VO "Friday"), WHERE 1.38 (VO "at Cabrillo")
-        const G5 = { SPLIT: 0.00, WHEN: 0.04, WHERE: 0.90, BANNER: 1.62, END: 3.70 };
+        const G5 = { SPLIT: 0.00, WHEN: 0.10, WHERE: 0.90, BANNER: 1.54, END: 3.65 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#g5-a", { scale: 1.0 }, { scale: 1.07, duration: G5.END, ease: "none" }, 0);
         tl.fromTo("#g5-b", { scale: 1.07 }, { scale: 1.0, duration: G5.END, ease: "none" }, 0);

@@ -128,5 +128,5 @@ def clip_transfer(out, dur=4.0):
 
 if __name__ == "__main__":
     pub = os.path.join(HERE, "public")
-    clip_dive(os.path.join(pub, "fly-dive.mp4"), dur=7.0)
+    clip_dive(os.path.join(pub, "fly-dive.mp4"), dur=7.5)
     clip_transfer(os.path.join(pub, "fly-transfer.mp4"), dur=2.3)

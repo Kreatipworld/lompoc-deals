@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="g6-end" data-width="1080" data-height="1350" data-duration="5.00" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+  <div data-composition-id="g6-end" data-width="1080" data-height="1350" data-duration="4.15" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
     <style>
       [data-composition-id="g6-end"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="g6-end"] .cine-top { top: 0; } [data-composition-id="g6-end"] .cine-bot { bottom: 0; }
@@ -37,7 +37,7 @@
     <script>
       (() => {
         // BEATS (relative): L1 0 ("This is Lompoc"), L2 1.64 ("back your side"), PILL 2.40, CREDIT 2.80, hold to END
-        const G6 = { L1: 0.06, L2: 1.30, PILL: 2.20, CREDIT: 2.80, END: 5.00 };
+        const G6 = { L1: 0.07, L2: 1.23, PILL: 2.20, CREDIT: 2.80, END: 4.15 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
         tl.fromTo("#g6-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out" }, G6.L1);
         tl.fromTo("#g6-l1", { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "expo.out" }, G6.L1);
