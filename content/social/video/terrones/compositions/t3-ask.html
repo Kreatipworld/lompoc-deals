@@ -1,0 +1,49 @@
+<template>
+  <div data-composition-id="t3-ask" data-width="1080" data-height="1920" data-duration="4.80" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+    <style>
+      [data-composition-id="t3-ask"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
+      [data-composition-id="t3-ask"] .cine-top { top: 0; } [data-composition-id="t3-ask"] .cine-bot { bottom: 0; }
+      [data-composition-id="t3-ask"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 60%, rgba(10,6,12,0.4) 100%); }
+      [data-composition-id="t3-ask"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="t3-ask"] .bloom { position: absolute; left: 90px; top: 18%; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(239,198,24,0.20), rgba(239,198,24,0) 62%); }
+      [data-composition-id="t3-ask"] .card { position: absolute; left: 76px; width: 928px; top: 24%; background: #faf5ec; border-radius: 40px; padding: 56px 56px 60px; z-index: 20; box-shadow: 0 30px 80px rgba(10,6,12,0.45); will-change: transform, opacity; }
+      [data-composition-id="t3-ask"] .card .logo { display: block; width: 560px; height: 226px; margin: 0 auto; object-fit: contain; }
+      [data-composition-id="t3-ask"] .card .name { margin-top: 26px; text-align: center; color: #241629; font-weight: 800; font-size: 60px; letter-spacing: -1px; line-height: 1.05; will-change: transform, opacity; }
+      [data-composition-id="t3-ask"] .card .chip { display: block; margin: 22px auto 0; width: 520px; height: 64px; line-height: 64px; text-align: center; background: rgba(101,12,117,0.10); color: #650c75; font-weight: 800; font-size: 30px; letter-spacing: 3px; border-radius: 32px; text-transform: uppercase; white-space: nowrap; will-change: transform, opacity; }
+      [data-composition-id="t3-ask"] .card .pill { display: block; margin: 36px auto 0; width: 700px; height: 124px; line-height: 124px; text-align: center; background: #0b992f; color: #fff; font-weight: 800; font-size: 62px; letter-spacing: 1px; border-radius: 62px; box-shadow: 0 14px 34px rgba(11,153,47,0.35); will-change: transform, opacity; }
+      [data-composition-id="t3-ask"] .find { position: absolute; left: 84px; right: 84px; top: 68%; text-align: center; z-index: 20; will-change: transform, opacity; }
+      [data-composition-id="t3-ask"] .find img { display: block; width: 110px; height: auto; margin: 0 auto; }
+      [data-composition-id="t3-ask"] .find .txt { margin-top: 18px; color: #fff; font-weight: 700; font-size: 40px; letter-spacing: 0.5px; }
+      [data-composition-id="t3-ask"] .find .txt em { font-style: normal; color: #efc618; }
+      [data-composition-id="t3-ask"] .credit { position: absolute; left: 84px; right: 84px; bottom: 18.5%; text-align: center; color: rgba(250,245,236,0.62); font-size: 22px; font-weight: 500; z-index: 20; }
+    </style>
+    <div id="t3-bloom" class="bloom" data-layout-allow-overflow></div>
+    <div id="t3-card" class="card">
+      <img class="logo" src="public/logo.png" alt="Terrones Plumbing" />
+      <div id="t3-name" class="name">Terrones Plumbing</div>
+      <div id="t3-chip" class="chip">Any plumbing problem</div>
+      <div id="t3-pill" class="pill">(805) 294-2133</div>
+    </div>
+    <div id="t3-find" class="find"><img src="public/mark-white.png" alt="" /><div class="txt">Find them on <em>lompoclocals.com</em></div></div>
+    <div id="t3-credit" class="credit">logo: Terrones Plumbing</div>
+    <div class="vig"></div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative): CARD 0.00 ("Any" 10.20 abs), CHIP 0.24 ("plumbing problem"), PILL 1.34 ("one call" 11.54 abs), FIND 2.40, END 4.80
+        const T3 = { CARD: 0.00, NAME: 0.12, CHIP: 0.24, PILL: 1.34, FIND: 2.40, END: 4.80 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+        tl.fromTo("#t3-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.8, ease: "power2.out" }, T3.CARD);
+        tl.fromTo("#t3-card", { autoAlpha: 0, y: 70, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "expo.out" }, T3.CARD);
+        tl.fromTo("#t3-name", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.4 }, T3.NAME);
+        tl.fromTo("#t3-chip", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.4 }, T3.CHIP);
+        tl.fromTo("#t3-pill", { autoAlpha: 0, scale: 0.8, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.5)" }, T3.PILL);
+        tl.fromTo("#t3-find", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.5 }, T3.FIND);
+        tl.fromTo("#t3-credit", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, T3.FIND + 0.3);
+        tl.set({}, {}, T3.END);
+        window.__timelines["t3-ask"] = tl;
+      })();
+    </script>
+  </div>
+</template>

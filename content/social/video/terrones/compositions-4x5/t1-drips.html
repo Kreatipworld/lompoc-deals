@@ -1,0 +1,49 @@
+<template>
+  <div data-composition-id="t1-drips" data-width="1080" data-height="1350" data-duration="7.60" style="position: absolute; inset: 0; overflow: hidden; background: #050505">
+    <style>
+      [data-composition-id="t1-drips"] .drip { position: absolute; left: 50%; top: 50%; width: 440px; height: 440px; margin: -220px 0 0 -220px; }
+      [data-composition-id="t1-drips"] .ring { position: absolute; left: 0; top: 0; width: 440px; height: 440px; border-radius: 50%; border: 12px solid rgba(255,255,255,0.95); background: radial-gradient(circle, rgba(255,255,255,0.10), rgba(255,255,255,0) 70%); box-shadow: 0 0 40px rgba(255,255,255,0.35); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="t1-drips"] .dot { position: absolute; left: 215px; top: 215px; width: 10px; height: 10px; border-radius: 50%; background: #fff; opacity: 0; will-change: transform, opacity; box-shadow: 0 0 14px rgba(255,255,255,0.7); }
+      [data-composition-id="t1-drips"] .red .ring { border-color: rgba(232,40,46,1); background: radial-gradient(circle, rgba(217,22,28,0.18), rgba(217,22,28,0) 70%); box-shadow: 0 0 60px rgba(217,22,28,0.7), inset 0 0 40px rgba(217,22,28,0.35); }
+      [data-composition-id="t1-drips"] .red .dot { background: #ff3b40; box-shadow: 0 0 22px rgba(217,22,28,0.9); }
+      [data-composition-id="t1-drips"] .glow { position: absolute; left: 50%; top: 50%; width: 760px; height: 760px; margin: -380px 0 0 -380px; border-radius: 50%; background: radial-gradient(circle, rgba(217,22,28,0.22), rgba(217,22,28,0) 60%); opacity: 0; will-change: opacity, transform; }
+    </style>
+    <div id="t1-glow" class="glow" data-layout-allow-overflow></div>
+    <div id="t1-d0" class="drip" data-layout-allow-overflow><div class="ring" id="t1-d0-a"></div><div class="ring" id="t1-d0-b"></div><div class="dot" id="t1-d0-dot"></div></div>
+    <div id="t1-d1" class="drip" data-layout-allow-overflow><div class="ring" id="t1-d1-a"></div><div class="ring" id="t1-d1-b"></div><div class="dot" id="t1-d1-dot"></div></div>
+    <div id="t1-d2" class="drip" data-layout-allow-overflow><div class="ring" id="t1-d2-a"></div><div class="ring" id="t1-d2-b"></div><div class="dot" id="t1-d2-dot"></div></div>
+    <div id="t1-d3" class="drip" data-layout-allow-overflow><div class="ring" id="t1-d3-a"></div><div class="ring" id="t1-d3-b"></div><div class="dot" id="t1-d3-dot"></div></div>
+    <div id="t1-d4" class="drip red" data-layout-allow-overflow><div class="ring" id="t1-d4-a"></div><div class="ring" id="t1-d4-b"></div><div class="dot" id="t1-d4-dot"></div></div>
+    <div id="t1-d5" class="drip red" data-layout-allow-overflow><div class="ring" id="t1-d5-a"></div><div class="ring" id="t1-d5-b"></div><div class="dot" id="t1-d5-dot"></div></div>
+    <div id="t1-d6" class="drip red" data-layout-allow-overflow><div class="ring" id="t1-d6-a"></div><div class="ring" id="t1-d6-b"></div><div class="dot" id="t1-d6-dot"></div></div>
+    <div id="t1-d7" class="drip red" data-layout-allow-overflow><div class="ring" id="t1-d7-a"></div><div class="ring" id="t1-d7-b"></div><div class="dot" id="t1-d7-dot"></div></div>
+    <script>
+      (() => {
+        // BEATS (relative = absolute here): drips land at audio beat + 0.10 (transient offset in sfx-drip.wav).
+        const IMPACT = [0.10, 1.10, 2.10, 3.10, 4.10, 5.10, 6.10, 6.70];
+        const CLUNK = 7.00, END = 7.60;
+        const tl = gsap.timeline({ paused: true });
+        IMPACT.forEach((t, i) => {
+          const g = `#t1-d${i}`;
+          const fallDur = Math.min(0.25, t);           // first drop is clamped to the scene start
+          const last = i === IMPACT.length - 1;
+          const ringDur = last ? (CLUNK - t) : 1.10;   // the last ring runs straight into the clunk
+          // dot falls 120px, lands at t, vanishes on impact
+          tl.fromTo(`${g}-dot`, { y: -120, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: fallDur, ease: "power2.in" }, t - fallDur);
+          tl.to(`${g}-dot`, { autoAlpha: 0, duration: 0.08 }, t);
+          // two concentric rings
+          tl.fromTo(`${g}-a`, { scale: 0.02, autoAlpha: 0.95 }, { scale: 1, autoAlpha: 0, duration: ringDur, ease: "power3.out" }, t);
+          tl.fromTo(`${g}-b`, { scale: 0.02, autoAlpha: 0.7 }, { scale: 0.72, autoAlpha: 0, duration: ringDur, ease: "power2.out" }, t + 0.12);
+        });
+        // red glow breathes in with the voice (4.00) and dies with the clunk
+        tl.fromTo("#t1-glow", { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 4.00);
+        tl.to("#t1-glow", { autoAlpha: 0, scale: 0.9, duration: 0.18, ease: "power3.in" }, CLUNK);
+        // clunk: the last ring group snaps out; screen is black to END
+        tl.fromTo("#t1-d7", { scale: 1 }, { scale: 1.04, duration: 0.06, ease: "power1.out" }, CLUNK - 0.06);
+        tl.to("#t1-d7", { scale: 0, autoAlpha: 0, duration: 0.18, ease: "power3.in" }, CLUNK);
+        tl.set({}, {}, END);
+        window.__timelines["t1-drips"] = tl;
+      })();
+    </script>
+  </div>
+</template>

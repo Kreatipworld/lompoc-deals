@@ -11,3 +11,4 @@
 **Assets:** logo.png (black+red on white), phone (805) 294-2133, website terronesplumbinglompoc.com. About text on the platform carries their CSLB number (from their own site) — kept OFF the video.
 
 **Posting plan:** Thursday/Friday 6 PM PT (Buffer data: 6–8 PM best), all four surfaces + IG Story link sticker → /biz/terrones-plumbing. Caption credit: none needed (bed/SFX generated, logo theirs).
+- RENDERED Sep 3: `terrones/renders/terrones-that-sound-{9x16,4x5}.mp4`, 15.0s, -18.6 LUFS (silence-first by design; VO at full) → Downloads `terrones-that-sound-*.mp4`. Cover: frame 0 is near-black → set thumbnailOffset ≈ 8,600 ms (logo card) at post time. Awaiting user watch. Posting slot: tonight Thu Sep 3 6:00 PM PT if approved.

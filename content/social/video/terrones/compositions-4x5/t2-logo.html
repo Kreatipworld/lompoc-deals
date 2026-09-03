@@ -1,0 +1,28 @@
+<template>
+  <div data-composition-id="t2-logo" data-width="1080" data-height="1350" data-duration="2.60" style="position: absolute; inset: 0; overflow: hidden; background: #050505">
+    <style>
+      [data-composition-id="t2-logo"] .card { position: absolute; inset: 0; background: #ffffff; transform-origin: 50% 50%; will-change: transform; }
+      [data-composition-id="t2-logo"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
+      [data-composition-id="t2-logo"] .cine-top { top: 0; } [data-composition-id="t2-logo"] .cine-bot { bottom: 0; }
+      [data-composition-id="t2-logo"] .logo { position: absolute; left: 140px; top: 50%; width: 800px; height: 323px; margin-top: -210px; will-change: transform, opacity; }
+      [data-composition-id="t2-logo"] .logo img { display: block; width: 800px; height: 323px; object-fit: contain; }
+      [data-composition-id="t2-logo"] .chip { position: absolute; left: 50%; top: 50%; margin: 140px 0 0 -350px; width: 700px; height: 80px; line-height: 80px; text-align: center; background: #d9161c; color: #fff; font-weight: 800; font-size: 34px; letter-spacing: 4px; border-radius: 12px; text-transform: uppercase; white-space: nowrap; will-change: transform, opacity; box-shadow: 0 10px 30px rgba(217,22,28,0.28); }
+    </style>
+    <div id="t2-card" class="card"></div>
+    <div id="t2-logo" class="logo"><img src="public/logo.png" alt="Terrones Plumbing" /></div>
+    <div id="t2-chip" class="chip">Family-owned · Lompoc, CA</div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative): WIPE 0.00, LOGO 0.30 ("Terrones" at 7.90 abs), CHIP 1.50 ("right here" at 9.10 abs), END 2.60
+        const T2 = { WIPE: 0.00, LOGO: 0.30, CHIP: 1.50, END: 2.60 };
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo("#t2-card", { scaleX: 0 }, { scaleX: 1, duration: 0.30, ease: "power3.out" }, T2.WIPE);
+        tl.fromTo("#t2-logo", { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "expo.out" }, T2.LOGO);
+        tl.fromTo("#t2-chip", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "power3.out" }, T2.CHIP);
+        tl.set({}, {}, T2.END);
+        window.__timelines["t2-logo"] = tl;
+      })();
+    </script>
+  </div>
+</template>

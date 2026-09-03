@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @font-face { font-family: "Plus Jakarta Sans"; src: url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #050505; }
+      body { font-family: "Plus Jakarta Sans", sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #root > div[data-composition-src] { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- TERRONES PLUMBING — "That sound". Member spotlight, sound-first. 15.0s. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15.00" data-width="1080" data-height="1920">
+      <div id="el-t1" data-composition-id="t1-drips" data-composition-src="compositions/t1-drips.html" data-start="0"     data-duration="7.60" data-track-index="1"></div>
+      <div id="el-t2" data-composition-id="t2-logo"  data-composition-src="compositions/t2-logo.html"  data-start="7.60"  data-duration="2.60" data-track-index="1"></div>
+      <div id="el-t3" data-composition-id="t3-ask"   data-composition-src="compositions/t3-ask.html"   data-start="10.20" data-duration="4.80" data-track-index="1"></div>
+
+      <!-- VOICE (Dylan): "You know that sound. So does he." / "Terrones Plumbing. Right here in Lompoc. Any plumbing problem. One call." -->
+      <audio id="vo-a" class="clip" data-audio-group="voiceover" src="public/vo-dylan.wav" data-start="4.00" data-media-start="0"    data-duration="2.30" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b" class="clip" data-audio-group="voiceover" src="public/vo-dylan.wav" data-start="7.90" data-media-start="2.42" data-duration="4.30" data-track-index="10" data-volume="1"></audio>
+
+      <!-- SFX: drip transient sits at ~0.10s into the file → clip starts on the beat, visual impact lands at beat+0.10 -->
+      <audio id="sfx-d0" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="0.00" data-media-start="0" data-duration="0.90" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-d1" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="1.00" data-media-start="0" data-duration="0.90" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-d2" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="2.00" data-media-start="0" data-duration="0.90" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-d3" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="3.00" data-media-start="0" data-duration="0.90" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-d4" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="4.00" data-media-start="0" data-duration="0.90" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-d5" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="5.00" data-media-start="0" data-duration="0.90" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-d6" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="6.00" data-media-start="0" data-duration="0.60" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-d7" class="clip" data-audio-group="sfx" src="public/sfx-drip.wav" data-start="6.60" data-media-start="0" data-duration="0.40" data-track-index="12" data-volume="1"></audio>
+      <!-- clunk transient is at 1.92s into its file -->
+      <audio id="sfx-clunk" class="clip" data-audio-group="sfx" src="public/sfx-clunk.wav" data-start="7.00" data-media-start="1.88" data-duration="0.14" data-track-index="12" data-volume="1"></audio>
+
+      <!-- BED: pre-cut from 2.40s of the generated bed with a 0.6s fade-in; its final chord lands at 15.0 -->
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed-warm-cut.wav" data-start="7.60" data-media-start="0" data-duration="7.40" data-track-index="11" data-volume="0.45" data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
