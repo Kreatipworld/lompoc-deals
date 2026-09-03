@@ -47,3 +47,4 @@ User: "i want to master that one" after watching the Sep 1 cut. Brief approved: 
 IG Reel 6a98cb99de6f9cf7d4ec5422 · FB Reel 6a98cba5de6f9cf7d4ec5482 · TikTok 6a98cbb030f715efe29bb1f0 · IG Story 6a98cbbc2b1b4d897b97b4be (link sticker → /events)
 Video: Blob social/video/biggame-braves-at-conqs-9x16-bIp1KWsybP3ynv6KZiGrwDAp5uiqFG.mp4 · cover thumbnailOffset 8500ms.
 Friday 9 AM static "42–0" cards (IG/Story/FB/TikTok, ids 6a974ff2/6a974ff8/6a974ffa/6a974ffc) left in place as game-day reminder.
+All four SENT within ~2 min: IG Reel https://www.instagram.com/reel/DcznqmLkkoo/ · FB Reel https://www.facebook.com/reel/1056738023664070/ · TikTok https://tiktok.com/@lompoclocals/video/7681113104792423694 · IG Story https://www.instagram.com/stories/lompoclocals_/3977697622508865241
