@@ -14,21 +14,22 @@
     </style>
   </head>
   <body>
-    <!-- TERRONES PLUMBING v3 — "Three calls". 27.0s. Kling scenario clips (illustration), Arthur read as the business, warm bed.
-         Transitions: s1→s2 and s2→s3 horizontal push (0.28s overlap, alternating tracks), s3→s4 dip-to-black, s4→s5 white flash. -->
+    <!-- TERRONES PLUMBING v5 — "Three calls" (hard water opener). 27.0s. Kling scenario clips (illustration), Arthur read as the business, warm bed.
+         Transitions: s1→s2, s2→s3 push (0.28s overlap, alternating tracks) · s3→s4 dip-to-black · s4→s5 hard cut · s5→s6 white flash. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="27.00" data-width="1080" data-height="1350">
-      <div id="el-s1" data-composition-id="s1-burst" data-composition-src="compositions-4x5/s1-burst.html" data-start="0"     data-duration="5.00" data-track-index="1"></div>
-      <div id="el-s2" data-composition-id="s2-drain" data-composition-src="compositions-4x5/s2-drain.html" data-start="4.72"  data-duration="5.28" data-track-index="2"></div>
-      <div id="el-s3" data-composition-id="s3-leak"  data-composition-src="compositions-4x5/s3-leak.html"  data-start="9.72"  data-duration="4.88" data-track-index="1"></div>
-      <div id="el-s4" data-composition-id="s4-fix"   data-composition-src="compositions-4x5/s4-fix.html"   data-start="14.60" data-duration="7.20" data-track-index="2"></div>
-      <div id="el-s5" data-composition-id="s5-end"   data-composition-src="compositions-4x5/s5-end.html"   data-start="21.80" data-duration="5.20" data-track-index="1"></div>
+      <div id="el-s1" data-composition-id="s1-hardwater" data-composition-src="compositions-4x5/s1-hardwater.html" data-start="0"     data-duration="5.00" data-track-index="1"></div>
+      <div id="el-s2" data-composition-id="s2-burst"     data-composition-src="compositions-4x5/s2-burst.html"     data-start="4.72"  data-duration="4.78" data-track-index="2"></div>
+      <div id="el-s3" data-composition-id="s3-drain"     data-composition-src="compositions-4x5/s3-drain.html"     data-start="9.22"  data-duration="4.38" data-track-index="1"></div>
+      <div id="el-s4" data-composition-id="s4-leak"      data-composition-src="compositions-4x5/s4-leak.html"      data-start="13.60" data-duration="2.40" data-track-index="2"></div>
+      <div id="el-s5" data-composition-id="s5-fix"       data-composition-src="compositions-4x5/s5-fix.html"       data-start="16.00" data-duration="4.90" data-track-index="1"></div>
+      <div id="el-s6" data-composition-id="s6-end"       data-composition-src="compositions-4x5/s6-end.html"       data-start="20.90" data-duration="6.10" data-track-index="2"></div>
 
-      <!-- VOICE (Arthur, as the business) — five clips from the 17.57s read -->
-      <audio id="vo-a" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="1.00"  data-media-start="0.00"  data-duration="1.95" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
-      <audio id="vo-b" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="5.50"  data-media-start="2.24"  data-duration="1.25" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
-      <audio id="vo-c" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="10.00" data-media-start="3.66"  data-duration="2.35" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
-      <audio id="vo-d" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="14.60" data-media-start="6.42"  data-duration="6.95" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
-      <audio id="vo-e" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="21.80" data-media-start="13.90" data-duration="3.45" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
+      <!-- VOICE (Arthur, as the business) — five clips from the 17.98s read -->
+      <audio id="vo-a" class="clip" data-audio-group="voiceover" src="public/vo-arthur-hw.wav" data-start="1.00"  data-media-start="0.00"  data-duration="3.30" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
+      <audio id="vo-b" class="clip" data-audio-group="voiceover" src="public/vo-arthur-hw.wav" data-start="5.50"  data-media-start="3.56"  data-duration="1.00" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
+      <audio id="vo-c" class="clip" data-audio-group="voiceover" src="public/vo-arthur-hw.wav" data-start="9.50"  data-media-start="4.74"  data-duration="1.40" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
+      <audio id="vo-d" class="clip" data-audio-group="voiceover" src="public/vo-arthur-hw.wav" data-start="13.60" data-media-start="6.42"  data-duration="7.00" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
+      <audio id="vo-e" class="clip" data-audio-group="voiceover" src="public/vo-arthur-hw.wav" data-start="20.90" data-media-start="13.98" data-duration="3.95" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.05"></audio>
 
       <!-- BED: generated 24s warm bed from 3.00, resolves at 27.0 -->
       <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="3.00" data-media-start="0" data-duration="24.00" data-track-index="11" data-volume="0.32" data-fade-in="0.8" data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.5}'></audio>
