@@ -91,11 +91,12 @@ def clip_dive(out, dur=5.0):
         keys.append(fetch(f"dive{i}", lat, lon, z))
     n = int(dur * FPS); fd = os.path.join(CACHE, "fr_dive"); os.makedirs(fd, exist_ok=True)
     for i in range(n):
-        p = smooth(i / (n - 1)); z = 11.5 + (16.5 - 11.5) * p
+        u = i / (n - 1); p = 0.55 * smooth(u) + 0.45 * u   # keeps the dive moving through the back half
+        z = 11.5 + (16.5 - 11.5) * p
         lat = VALLEY[0] + (HUYCK[0] - VALLEY[0]) * p; lon = VALLEY[1] + (HUYCK[1] - VALLEY[1]) * p
         im, k, f = view(keys, lat, lon, z)
         im = grade(im)
-        t = i / FPS; land = (t - (dur - 1.3)) / 1.3
+        t = i / FPS; land = (t - (dur - 0.7)) / 0.7   # pin lands in the last 0.7s (~6.3–7.0 on the 7s dive)
         if land > 0:
             x, y = to_screen(k, f, *HUYCK, lat, lon, z); im = pin(im, x, y, land)
         im.save(f"{fd}/{i:05d}.jpg", quality=92)
@@ -127,5 +128,5 @@ def clip_transfer(out, dur=4.0):
 
 if __name__ == "__main__":
     pub = os.path.join(HERE, "public")
-    clip_dive(os.path.join(pub, "fly-dive.mp4"), dur=4.4)
-    clip_transfer(os.path.join(pub, "fly-transfer.mp4"), dur=3.0)
+    clip_dive(os.path.join(pub, "fly-dive.mp4"), dur=7.0)
+    clip_transfer(os.path.join(pub, "fly-transfer.mp4"), dur=2.3)

@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="g1-hook" data-width="1080" data-height="1350" data-duration="4.34" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="g1-hook" data-width="1080" data-height="1350" data-duration="7.00" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
     <style>
       [data-composition-id="g1-hook"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="g1-hook"] .cine-top { top: 0; } [data-composition-id="g1-hook"] .cine-bot { bottom: 0; }
@@ -20,11 +20,12 @@
       [data-composition-id="g1-hook"] .stamp { position: absolute; left: 84px; right: 84px; top: 38%; color: #fff; font-weight: 800; font-size: 124px; line-height: 0.92; letter-spacing: -7px; word-spacing: 20px; text-transform: uppercase; opacity: 0; will-change: transform; z-index: 35; text-shadow: 0 6px 30px rgba(10,6,12,0.7); }
       [data-composition-id="g1-hook"] .band { position: absolute; left: 0; right: 0; top: 30%; height: 40%; z-index: 32; opacity: 0; background: linear-gradient(to bottom, rgba(20,10,23,0) 0%, rgba(20,10,23,0.72) 25%, rgba(20,10,23,0.72) 75%, rgba(20,10,23,0) 100%); }
     </style>
-    <video id="g1-fly" class="clip" src="public/fly-dive.mp4" data-start="0" data-duration="4.34" data-track-index="0" muted playsinline></video>
+    <video id="g1-fly" class="clip" src="public/fly-dive.mp4" data-start="0" data-duration="7.00" data-track-index="0" muted playsinline></video>
     <div class="band" id="g1-band"></div>
-    <div class="stamp" id="g1-s1">One town.</div>
-    <div class="stamp" id="g1-s2">Two schools.</div>
-    <div class="stamp" id="g1-s3">One Friday night.</div>
+    <div class="stamp" id="g1-s1">Friday night.</div>
+    <div id="g1-chip" style="position: absolute; left: 84px; top: 42%; z-index: 35; opacity: 0"><span class="chip" style="font-size: 44px; padding: 18px 34px">Lompoc, California</span><span class="rule" style="margin-top: 26px"></span></div>
+    <div class="stamp" id="g1-s2">One town.</div>
+    <div class="stamp" id="g1-s3">Two schools.</div>
     <div class="vig"></div>
     <img class="mark" src="public/mark-white.png" alt="" />
     <div class="grain"></div>
@@ -32,14 +33,16 @@
     <script>
       (() => {
         // BEATS (relative): stamps on the VO words; pin lands in the clip at ~4.0
-        const G1 = { S1: 1.20, S2: 2.08, S3: 3.08, OUT: 4.00, END: 4.34 };
+        const G1 = { S1: 1.00, CHIP: 2.80, S2: 4.58, S3: 5.64, OUT: 6.60, END: 7.00 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#g1-band", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, G1.S1 - 0.1);
-        [["#g1-s1", G1.S1, G1.S2], ["#g1-s2", G1.S2, G1.S3], ["#g1-s3", G1.S3, G1.OUT]].forEach(([sel, a, b]) => {
+        [["#g1-s1", G1.S1, G1.CHIP], ["#g1-s2", G1.S2, G1.S3], ["#g1-s3", G1.S3, G1.OUT]].forEach(([sel, a, b]) => {
           tl.fromTo(sel, { autoAlpha: 0, scale: 1.18 }, { autoAlpha: 1, scale: 1.0, duration: 0.3, ease: "power4.out" }, a);
           tl.to(sel, { scale: 1.04, duration: Math.max(0.05, b - a - 0.3), ease: "none" }, a + 0.3);
           tl.to(sel, { autoAlpha: 0, duration: 0.12, ease: "power2.in" }, b - 0.12);
         });
+        tl.fromTo("#g1-chip", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.4 }, G1.CHIP);
+        tl.to("#g1-chip", { autoAlpha: 0, duration: 0.15, ease: "power2.in" }, G1.S2 - 0.15);
         tl.to("#g1-band", { autoAlpha: 0, duration: 0.25 }, G1.OUT - 0.1);
         window.__timelines["g1-hook"] = tl;
       })();

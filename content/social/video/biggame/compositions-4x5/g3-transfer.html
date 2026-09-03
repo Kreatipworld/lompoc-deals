@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="g3-transfer" data-width="1080" data-height="1350" data-duration="2.98" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="g3-transfer" data-width="1080" data-height="1350" data-duration="2.30" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
     <style>
       [data-composition-id="g3-transfer"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="g3-transfer"] .cine-top { top: 0; } [data-composition-id="g3-transfer"] .cine-bot { bottom: 0; }
@@ -21,7 +21,7 @@
       [data-composition-id="g3-transfer"] .label .chip { font-size: 38px; padding: 16px 30px; }
       [data-composition-id="g3-transfer"] .label .sub { color: #fff; text-shadow: 0 4px 18px rgba(10,6,12,0.7); }
     </style>
-    <video id="g3-fly" class="clip" src="public/fly-transfer.mp4" data-start="0" data-duration="2.98" data-track-index="0" muted playsinline></video>
+    <video id="g3-fly" class="clip" src="public/fly-transfer.mp4" data-start="0" data-duration="2.30" data-track-index="0" muted playsinline></video>
     <div class="label" id="g3-label"><span class="chip">Constellation Rd</span><span class="sub">Cabrillo High · Vandenberg Village</span></div>
     <div class="vig"></div>
     <img class="mark" src="public/mark-white.png" alt="" />
@@ -30,7 +30,7 @@
     <script>
       (() => {
         // BEATS (relative): LABEL 1.44 (VO "Constellation Road")
-        const G3 = { LABEL: 1.44, END: 2.98 };
+        const G3 = { LABEL: 1.60, END: 2.30 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.4 } });
         tl.fromTo("#g3-label", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0 }, G3.LABEL);
         window.__timelines["g3-transfer"] = tl;

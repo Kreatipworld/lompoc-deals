@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="g5-matchup" data-width="1080" data-height="1920" data-duration="2.62" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="g5-matchup" data-width="1080" data-height="1920" data-duration="3.70" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
     <style>
       [data-composition-id="g5-matchup"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
       [data-composition-id="g5-matchup"] .cine-top { top: 0; } [data-composition-id="g5-matchup"] .cine-bot { bottom: 0; }
@@ -31,6 +31,9 @@
       [data-composition-id="g5-matchup"] .t-bot { right: 84px; top: calc(50% + 70px); flex-direction: row-reverse; text-align: right; }
       [data-composition-id="g5-matchup"] .strip { position: absolute; left: 84px; right: 84px; bottom: 18.5%; z-index: 37; text-align: center; }
       [data-composition-id="g5-matchup"] .when { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 56px; letter-spacing: 2px; padding: 20px 40px; border-radius: 14px; text-transform: uppercase; white-space: nowrap; }
+      [data-composition-id="g5-matchup"] .banner { position: absolute; left: 0; right: 0; top: 50%; height: 340px; margin-top: -170px; z-index: 38; background: rgba(20,10,23,0.86); display: flex; align-items: center; padding-left: 84px; opacity: 0; will-change: transform; }
+      [data-composition-id="g5-matchup"] .banner .line { color: #fff; font-weight: 800; font-size: 112px; line-height: 0.95; letter-spacing: -5px; text-transform: uppercase; }
+      [data-composition-id="g5-matchup"] .banner .line em { font-style: normal; color: #efc618; }
       [data-composition-id="g5-matchup"] .where { display: block; margin-top: 18px; color: #fff; font-weight: 800; font-size: 34px; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 4px 18px rgba(10,6,12,0.7); }
     </style>
     <div class="half half-top"><img id="g5-a" data-layout-allow-overflow src="public/huyck-goalposts.jpg" alt="" style="object-position: 50% 42%" /><div class="tint-top"></div></div>
@@ -39,6 +42,7 @@
     <div class="vs" id="g5-vs">VS</div>
     <div class="team t-top" id="g5-t1"><img src="public/badge-braves.png" alt="" /><div class="name"><div>Lompoc</div><div>Braves</div></div></div>
     <div class="team t-bot" id="g5-t2"><img src="public/badge-conqs.png" alt="" /><div class="name"><div>Cabrillo</div><div>Conqs</div></div></div>
+    <div class="banner" id="g5-banner"><div class="line"><div>This is <em>Lompoc</em></div><div>football.</div></div></div>
     <div class="strip"><span class="when" id="g5-when">Fri Sep 4 · 7:00 PM</span><span class="where" id="g5-where">Cabrillo High · 4350 Constellation Rd</span></div>
     <div class="vig"></div>
     <img class="mark" src="public/mark-white.png" alt="" />
@@ -47,7 +51,7 @@
     <script>
       (() => {
         // BEATS (relative): SPLIT+VS 0, WHEN 0.86 (VO "Friday"), WHERE 1.38 (VO "at Cabrillo")
-        const G5 = { SPLIT: 0.00, WHEN: 0.86, WHERE: 1.38, END: 2.62 };
+        const G5 = { SPLIT: 0.00, WHEN: 0.04, WHERE: 0.90, BANNER: 1.62, END: 3.70 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#g5-a", { scale: 1.0 }, { scale: 1.07, duration: G5.END, ease: "none" }, 0);
         tl.fromTo("#g5-b", { scale: 1.07 }, { scale: 1.0, duration: G5.END, ease: "none" }, 0);
@@ -57,6 +61,10 @@
         tl.fromTo("#g5-t2", { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 0.45 }, G5.SPLIT + 0.3);
         tl.fromTo("#g5-when", { autoAlpha: 0, scale: 0.8, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.45, ease: "back.out(1.4)" }, G5.WHEN);
         tl.fromTo("#g5-where", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.4 }, G5.WHERE);
+        tl.to("#g5-vs", { autoAlpha: 0, scale: 1.4, duration: 0.22, ease: "power2.in" }, G5.BANNER - 0.36);
+        tl.to("#g5-t1, #g5-t2", { autoAlpha: 0, duration: 0.22, ease: "power2.in" }, G5.BANNER - 0.36);
+        tl.fromTo("#g5-banner", { autoAlpha: 0, scaleY: 0.2 }, { autoAlpha: 1, scaleY: 1, duration: 0.4, ease: "expo.out" }, G5.BANNER);
+        tl.fromTo("#g5-banner .line", { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "expo.out" }, G5.BANNER + 0.12);
         window.__timelines["g5-matchup"] = tl;
       })();
     </script>
