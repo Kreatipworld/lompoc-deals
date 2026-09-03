@@ -1,0 +1,65 @@
+<template>
+  <div data-composition-id="s2-drain" data-width="1080" data-height="1920" data-duration="5.28" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+    <style>
+      [data-composition-id="s2-drain"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
+      [data-composition-id="s2-drain"] .cine-top { top: 0; } [data-composition-id="s2-drain"] .cine-bot { bottom: 0; }
+      [data-composition-id="s2-drain"] .stage { position: absolute; inset: 0; will-change: transform, filter; }
+      [data-composition-id="s2-drain"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.36) 100%); }
+      [data-composition-id="s2-drain"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s2-drain"] .mark { position: absolute; top: 150px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s2-drain"] .vidwrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; }
+      [data-composition-id="s2-drain"] video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(1.15); }
+      [data-composition-id="s2-drain"] .scrim { position: absolute; inset: 0; z-index: 31; background: linear-gradient(to top, rgba(20,10,23,0.90) 0%, rgba(20,10,23,0.60) 28%, rgba(20,10,23,0.0) 56%); }
+      [data-composition-id="s2-drain"] .lower { position: absolute; left: 84px; right: 84px; bottom: 21%; z-index: 35; }
+      [data-composition-id="s2-drain"] .hero { color: #fff; text-shadow: 0 4px 24px rgba(10,6,12,0.6); font-weight: 800; font-size: 120px; line-height: 1.04; letter-spacing: -1px; text-transform: uppercase; will-change: transform; transform-origin: left bottom; opacity: 0; }
+      [data-composition-id="s2-drain"] .rule { display: block; margin-top: 22px; width: 160px; height: 8px; background: #D9161C; border-radius: 4px; opacity: 0; }
+      [data-composition-id="s2-drain"] .chip { display: inline-block; background: #D9161C; color: #fff; font-weight: 800; font-size: 32px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+      [data-composition-id="s2-drain"] .local { position: absolute; left: 84px; top: 300px; z-index: 36; display: inline-flex; align-items: center; gap: 14px; background: rgba(10,6,12,0.72); color: #f3ede4; font-weight: 700; font-size: 28px; letter-spacing: 3px; text-transform: uppercase; padding: 14px 26px 14px 20px; border-radius: 999px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-drain"] .local i { display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: #D9161C; box-shadow: 0 0 14px #D9161C; }
+      [data-composition-id="s2-drain"] .black { position: absolute; inset: 0; background: #000; z-index: 55; opacity: 0; pointer-events: none; }
+    
+      [data-composition-id="s2-drain"] .cool { position: absolute; inset: 0; z-index: 29; pointer-events: none; background: #0b1a2a; mix-blend-mode: multiply; opacity: 0.18; }
+      [data-composition-id="s2-drain"] .warm { position: absolute; inset: 0; z-index: 29; pointer-events: none; background: radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255,176,96,0.34), rgba(255,176,96,0) 70%); mix-blend-mode: screen; opacity: 0.55; }
+      [data-composition-id="s2-drain"] .leak { position: absolute; inset: -10%; z-index: 57; pointer-events: none; background: radial-gradient(ellipse 60% 70% at 80% 40%, rgba(255,140,40,0.95), rgba(255,90,20,0.45) 40%, rgba(255,90,20,0) 72%); mix-blend-mode: screen; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="s2-drain"] .hero .w { display: inline-block; opacity: 0; will-change: transform, opacity; margin-right: 0.34em; padding-right: 3px; }
+      [data-composition-id="s2-drain"] .hero .w.red { color: #FF4A50; text-shadow: 0 4px 24px rgba(217,22,28,0.55); }
+      [data-composition-id="s2-drain"] .local { background: linear-gradient(180deg, rgba(48,22,28,0.92) 0%, rgba(10,6,12,0.88) 100%); border-top: 1px solid #D9161C; box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 26px rgba(10,6,12,0.45); }
+    
+    </style>
+    <div class="stage" id="s2-drain-stage" data-layout-allow-overflow>
+    <div class="vidwrap" id="s2-drain-wrap" data-layout-allow-overflow><video id="s2-drain-vid" class="clip" src="public/c2-drain.mp4" data-start="0" data-duration="5.28" data-track-index="0" data-playback-rate="0.95" muted playsinline data-layout-allow-overflow style="object-position: 50% 50%; transform-origin: 50% 50%"></video></div>
+    <div class="scrim"></div>
+    <div class="lower">
+      <div class="hero" id="s2-drain-hero"><span class="w">Drain</span><span class="w red">backed</span><span class="w red">up.</span></div>
+      <span class="rule" id="s2-drain-rule"></span>
+    </div>
+    <div class="local" id="s2-drain-local"><i></i>A Lompoc kitchen · Sunday</div>
+    <div class="cool"></div><div class="warm"></div>
+    <div class="vig"></div>
+    </div>
+    <div class="leak" id="s2-drain-leak" data-layout-allow-overflow></div>
+    <div class="black" id="s2-drain-black"></div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const B = { HERO: 0.78, LOCAL: 0.48, END: 5.28 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
+        tl.fromTo("#s2-drain-wrap", { scale: 1.0 }, { scale: 1.04, duration: B.END, ease: "none" }, 0);
+        tl.set("#s2-drain-hero", { autoAlpha: 1 }, B.HERO);
+        tl.fromTo("#s2-drain-hero .w", { autoAlpha: 0, scale: 0.9, y: 24 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.45, stagger: 0.06, ease: "expo.out" }, B.HERO);
+        tl.fromTo("#s2-drain-stage", { scale: 1.04 }, { scale: 1.0, duration: 0.35, ease: "power3.out" }, B.HERO);
+        tl.fromTo("#s2-drain-rule", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out" }, B.HERO + 0.15);
+        tl.fromTo("#s2-drain-local", { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out" }, B.LOCAL);
+        tl.fromTo("#s2-drain-leak", { autoAlpha: 0, x: 120 }, { autoAlpha: 0.9, x: -60, duration: 0.18, ease: "power2.out" }, 0).to("#s2-drain-leak", { autoAlpha: 0, duration: 0.17, ease: "power2.in" }, 0.18);
+        tl.fromTo("#s2-drain-stage", { xPercent: 100, filter: "blur(12px)" }, { xPercent: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, 0);
+        tl.fromTo("#s2-drain-leak", { autoAlpha: 0, x: -60 }, { autoAlpha: 0.9, x: 120, duration: 0.18, ease: "power2.out" }, B.END - 0.35).to("#s2-drain-leak", { autoAlpha: 0, duration: 0.17, ease: "power2.in" }, B.END - 0.17);
+        tl.to("#s2-drain-stage", { xPercent: -100, filter: "blur(12px)", duration: 0.28, ease: "power3.in" }, B.END - 0.28);
+        tl.fromTo("#s2-drain-local i", { scale: 1 }, { scale: 1.35, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 7 }, B.LOCAL + 0.4);
+        tl.set({}, {}, B.END);
+        window.__timelines["s2-drain"] = tl;
+      })();
+    </script>
+  </div>
+</template>

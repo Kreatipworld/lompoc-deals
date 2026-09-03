@@ -58,3 +58,13 @@ Lompoc's hard water eats water heaters. Pipes burst. Drains back up. Twenty-five
 **TikTok** Lompoc's hard water killing your water heater? Terrones Plumbing, family-owned in Lompoc for 25 years — any plumbing problem, one call 🔧 (805) 294-2133 · lompoclocals.com #Lompoc #HardWater #Plumber #805
 **IG Story** Text "Any plumbing problem. One call. 🔧" · link sticker → https://www.lompoclocals.com/biz/terrones-plumbing
 Cover thumbnailOffset 1800 ms. Slot: 6:00 PM PT. Owner sees the cut before it posts.
+- FINAL v6 (Sep 3, user: "like the other cut better… just fix the midnight… more attractive"): v3 layout + v4 read ("Plumbing problem in your business?", job 4d023516) + polish pass (word-by-word hero pops with red key words #FF4A50, warm teal-orange grade, light leaks on pushes/flash, glossy chips, logo light sweep, pill pulse). `terrones-v2/renders/terrones-v6-{9x16,4x5}.mp4`, 27.0s, -16.7 LUFS → Downloads `terrones-FINAL-*.mp4`. Hard-water v5 kept as alt in renders/. NOT posted. Cover thumbnailOffset ≈ 2,200 ms.
+
+## FINAL captions (business line)
+**IG Reel** Member spotlight: TERRONES PLUMBING 🔧
+Pipe burst. Drain backed up. A leak you can't find. Twenty-five years fixing Lompoc's pipes — family-owned, right here in town, and they come to you. Home or business.
+📞 (805) 294-2133 · Find them on Lompoc Locals — link in bio.
+#Lompoc #LompocLocals #Plumber #ShopLocal #805 #VandenbergVillage
+**FB Reel** Member spotlight: Terrones Plumbing 🔧 Burst pipe, backed-up drain, a leak you can't find — 25 years fixing Lompoc's pipes, family-owned, and they come to you, home or business. 📞 (805) 294-2133 · https://www.lompoclocals.com/biz/terrones-plumbing
+**TikTok** Plumbing problem in your business? Terrones Plumbing, family-owned in Lompoc for 25 years — any plumbing problem, one call 🔧 (805) 294-2133 · lompoclocals.com #Lompoc #Plumber #805 #ShopLocal
+**IG Story** Text "Any plumbing problem. One call. 🔧" · link sticker → https://www.lompoclocals.com/biz/terrones-plumbing
