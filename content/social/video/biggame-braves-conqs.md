@@ -42,3 +42,8 @@ User: "i want to master that one" after watching the Sep 1 cut. Brief approved: 
 - Voice audition via Qwen Audio TTS (directable, instruction ≤128 chars): Arthur + Cillian test lines 0.04cr each; Dylan elevenlabs control 0.3cr. Full reads Arthur (job 4f86dd03) + Cillian (job c3e165db) 0.11cr each, 20.4s. Generated bed: sonilo_music job 36d8a220, 24.0s, 1.38cr ("Epic NFL Super Bowl promo… stadium drums, brass stabs") — ours, no credit line needed. Pale Rider dropped. Recut to 24.0s with 7.0s dive + 2.3s transfer regenerated. Awaiting user voice pick.
 - v2 RENDERED (Arthur placeholder, Sep 2 ~5:30 PM): `biggame/renders/biggame-v2-arthur-{9x16,4x5}.mp4`, 24.0s, -14.2 LUFS → Downloads `biggame-v2-ARTHUR-*.mp4`. Cillian = copy vo-cillian.wav over public/vo-biggame.wav + re-render (same timing). NOT posted.
 - FINAL v3 (Sep 2 ~6 PM): Arthur v2 read (Cabrillo respelled "Cabreeyo", job 8e165b99, 0.11cr), bed 0.30 + carve 0.55 (user: "music too loud"), dive 7.5s. `biggame/renders/biggame-v3-{9x16,4x5}.mp4`, 24.0s, -16.0 LUFS → Downloads `biggame-braves-at-conqs-FINAL-*.mp4`. User: "I like it. Make it happen" → captions in biggame-captions.md, Buffer auth requested, awaiting caption OK + timing. NOT posted.
+
+## POSTED Wed Sep 2 ~6:22 PM PT (user: "post it now everywhere") — v3 Arthur cut, all shareNow (8 posts already scheduled, cap 10)
+IG Reel 6a98cb99de6f9cf7d4ec5422 · FB Reel 6a98cba5de6f9cf7d4ec5482 · TikTok 6a98cbb030f715efe29bb1f0 · IG Story 6a98cbbc2b1b4d897b97b4be (link sticker → /events)
+Video: Blob social/video/biggame-braves-at-conqs-9x16-bIp1KWsybP3ynv6KZiGrwDAp5uiqFG.mp4 · cover thumbnailOffset 8500ms.
+Friday 9 AM static "42–0" cards (IG/Story/FB/TikTok, ids 6a974ff2/6a974ff8/6a974ffa/6a974ffc) left in place as game-day reminder.
