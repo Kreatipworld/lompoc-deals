@@ -70,3 +70,6 @@ Pipe burst. Drain backed up. A leak you can't find. Twenty-five years fixing Lom
 **IG Story** Text "Any plumbing problem. One call. 🔧" · link sticker → https://www.lompoclocals.com/biz/terrones-plumbing
 - Sep 3 3:45 PM — user: the glove/wrench fix shot "doesn't look realistic" → replaced with a NO-HANDS repair clip (c5-fix2, Kling job e9fc8bc2, 10cr): fresh copper joint → clean water into the sink. Lesson: generated hands are the AI tell; keep humans out of generated b-roll. Running spend ≈ 75cr. Balance 1381.49.
 - FINAL v7 (Sep 3 4:46 PM): fix scene = no-hands copper joint → running water. `terrones-v2/renders/terrones-v7-{9x16,4x5}.mp4`, 27.0s, -16.7 LUFS → Downloads `terrones-FINAL-*.mp4` (overwrote v6). NOT posted.
+
+## POSTED Thu Sep 3 ~4:52 PM PT (user: "post it now… everywhere") — FINAL v7, all shareNow
+IG Reel 6a9a08233c620187850f9851 · FB Reel 6a9a082f3c620187850f996a · TikTok 6a9a083abc2e4059f2c0e7df · IG Story 6a9a0846bc2e4059f2c0e882 (link sticker → /biz/terrones-plumbing). Video: Blob terrones-final-9x16-igKYXEGKjtxrWYIVidYkK4fniUCgmQ.mp4 · cover 2,200 ms. Owner-preview step skipped on user's call.
