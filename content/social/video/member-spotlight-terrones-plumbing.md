@@ -48,3 +48,13 @@ Cover thumbnailOffset 16500 ms. Slot: 6:00 PM PT (Thu/Fri). Owner sees the cut b
 - v3 RENDERED Sep 3: `terrones-v2/renders/terrones-v3-{9x16,4x5}.mp4`, 27.0s, -16.8 LUFS → Downloads `terrones-v3-*.mp4`. Awaiting user watch + "Terrones" check (Arthur read, 0:14). NOT posted. Cover thumbnailOffset ≈ 2,200 ms (spray + PIPE BURST.).
 - v4 (business line) read generated (job 4d023516, 0.11cr) then superseded. v5 HARD WATER (user: "think of the most common problem Lompoc could have" → hard water): c0-hardwater Kling job 8215b159 (10cr), read job 6ec1755f (0.11cr). Order: hard water → burst → drain → leak beat → fix → centered end. Running spend on this spot ≈ 64.9cr. Balance 1391.49.
 - v5 RENDERED Sep 3: `terrones-v2/renders/terrones-v5-{9x16,4x5}.mp4`, 27.0s, -16.1 LUFS → Downloads `terrones-hardwater-*.mp4`. Order: HARD WATER → PIPE BURST → DRAIN BACKED UP → leak beat → fix → centered logo end. Awaiting user watch + "Terrones" check (0:14 in the read / ~0:21 in the cut). NOT posted. Cover thumbnailOffset ≈ 1,800 ms (scaled faucet + HARD WATER.).
+
+## v5 captions (READY, not posted)
+**IG Reel** Member spotlight: TERRONES PLUMBING 🔧
+Lompoc's hard water eats water heaters. Pipes burst. Drains back up. Twenty-five years fixing Lompoc's pipes — family-owned, right here in town, and they come to you.
+📞 (805) 294-2133 · Find them on Lompoc Locals — link in bio.
+#Lompoc #LompocLocals #HardWater #Plumber #ShopLocal #805 #VandenbergVillage
+**FB Reel** Member spotlight: Terrones Plumbing 🔧 Hard water, burst pipes, backed-up drains — 25 years fixing Lompoc's pipes, family-owned, and they come to you. 📞 (805) 294-2133 · https://www.lompoclocals.com/biz/terrones-plumbing
+**TikTok** Lompoc's hard water killing your water heater? Terrones Plumbing, family-owned in Lompoc for 25 years — any plumbing problem, one call 🔧 (805) 294-2133 · lompoclocals.com #Lompoc #HardWater #Plumber #805
+**IG Story** Text "Any plumbing problem. One call. 🔧" · link sticker → https://www.lompoclocals.com/biz/terrones-plumbing
+Cover thumbnailOffset 1800 ms. Slot: 6:00 PM PT. Owner sees the cut before it posts.
