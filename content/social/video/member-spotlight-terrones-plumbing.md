@@ -34,3 +34,13 @@ Script (50 words): Water heater quit in the middle of a shower? Drain that won't
 Jobs: c1-heater 2e5ca69c · c2-drain 1a4ac9df · c3-leak eb09b77a · c4-fix 49dd15c8 (Kling 3.0, 5s, 9:16, 10cr each) · vo-dylan a6501e5a · bed 704695da (sonilo 24s). Billed 42.4cr at submit (balance 1454.23 → 1411.83). Budget cap 50 → one clip retry max without re-asking.
 Rule: owner should see the finished cut before it posts (read speaks as the business).
 - v2 RENDERED Sep 3: `terrones-v2/renders/terrones-three-calls-{9x16,4x5}.mp4`, 24.0s, -18.1 LUFS → Downloads `terrones-three-calls-*.mp4`. Heater clip framed on the flame (generated label out of frame). Awaiting user watch + "Terrones" pronunciation check (ASR heard "Teronius" at 11.2s). NOT posted. Cover: thumbnailOffset ≈ 16,500 ms (wrench + chip) or 2,000 ms (flame + NO HOT WATER).
+
+## v2 captions (READY, not posted)
+**IG Reel** Member spotlight: TERRONES PLUMBING 🔧
+No hot water. A drain that won't drain. A leak you can hear but can't find. Twenty-five years fixing Lompoc's pipes — family-owned, right here in town, and they come to you.
+📞 (805) 294-2133 · Find them on Lompoc Locals — link in bio.
+#Lompoc #LompocLocals #Plumber #ShopLocal #805 #VandenbergVillage
+**FB Reel** Member spotlight: Terrones Plumbing 🔧 No hot water, a stubborn drain, a leak you can't find — 25 years fixing Lompoc's pipes, family-owned, and they come to you. 📞 (805) 294-2133 · https://www.lompoclocals.com/biz/terrones-plumbing
+**TikTok** Water heater out? Drain backed up? Terrones Plumbing, family-owned in Lompoc for 25 years — any plumbing problem, one call 🔧 (805) 294-2133 · lompoclocals.com #Lompoc #Plumber #805 #ShopLocal
+**IG Story** Text "Any plumbing problem. One call. 🔧" · link sticker → https://www.lompoclocals.com/biz/terrones-plumbing
+Cover thumbnailOffset 16500 ms. Slot: 6:00 PM PT (Thu/Fri). Owner sees the cut before it posts.
