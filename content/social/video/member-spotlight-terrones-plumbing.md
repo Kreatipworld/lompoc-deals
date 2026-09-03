@@ -27,3 +27,9 @@ That 2 AM drip? Terrones Plumbing, family-owned in Lompoc. Any plumbing problem,
 **IG Story**
 Text: "You know that sound 💧🔧" · link sticker → https://www.lompoclocals.com/biz/terrones-plumbing ("Their page")
 Cover: thumbnailOffset 8600 ms (logo card). Slot: Thu Sep 3 6:00 PM PT, shareNow ×4 (scheduled cap).
+
+## v2 "THREE CALLS" (Sep 3) — user: "way more creative… scenarios… video from Higgsfield fixing plumbing things… he talks about his business"
+"That sound" v1 kept as an alt (renders/terrones-that-sound-*). New cut: 3 problem scenarios + 1 fix, generated with Kling 3.0 (no faces/trucks/logos on people — the logo card is the identity), read in the business's voice (Dylan, "we"), 24s warm bed.
+Script (50 words): Water heater quit in the middle of a shower? Drain that won't drain? A leak you can hear but can't find? We've been fixing Lompoc's pipes for twenty-five years. Family-owned, right here in town, and we come to you. Terrones Plumbing. Any plumbing problem. One call.
+Jobs: c1-heater 2e5ca69c · c2-drain 1a4ac9df · c3-leak eb09b77a · c4-fix 49dd15c8 (Kling 3.0, 5s, 9:16, 10cr each) · vo-dylan a6501e5a · bed 704695da (sonilo 24s). Billed 42.4cr at submit (balance 1454.23 → 1411.83). Budget cap 50 → one clip retry max without re-asking.
+Rule: owner should see the finished cut before it posts (read speaks as the business).
