@@ -1,0 +1,13 @@
+# Member Spotlight — Terrones Plumbing (#652, Growth, service-area, no photos) — "That sound"
+
+**Status:** in build (Sep 3 2026). NOT posted. User: showcase the business, he's in Lompoc, he helps with any plumbing problem, few details, and NOT the Braves concept — "creative and original".
+
+**Concept:** sound-first. Black field, a single drip ripples once a second; the ripple turns Terrones red when Dylan says "You know that sound. So does he."; a wrench clunk ends the drip; logo card ("FAMILY-OWNED · LOMPOC, CA"); page card with the phone pill on "one call". 15.0s, 9:16 + 4:5. No photos exist (platform, website, FB checked) — nothing generated to fake them.
+
+**Script (19 words, Dylan, "Lompoke" respell):** You know that sound. So does he. Terrones Plumbing. Right here in Lompoc. Any plumbing problem. One call.
+
+**Spend (Sep 3):** Dylan read job f11477ef 0.45cr · drip SFX (mirelo) 4d266f61 0.5 · clunk SFX 8304483f 0.5 · warm bed (sonilo 10s) 8ae5b670 0.63 → 2.08cr, billed = preflight. Note: a Higgsfield token expiry (401) cost one dead run (no billing); `hf-mcp.py refresh` fixed it.
+
+**Assets:** logo.png (black+red on white), phone (805) 294-2133, website terronesplumbinglompoc.com. About text on the platform carries their CSLB number (from their own site) — kept OFF the video.
+
+**Posting plan:** Thursday/Friday 6 PM PT (Buffer data: 6–8 PM best), all four surfaces + IG Story link sticker → /biz/terrones-plumbing. Caption credit: none needed (bed/SFX generated, logo theirs).
