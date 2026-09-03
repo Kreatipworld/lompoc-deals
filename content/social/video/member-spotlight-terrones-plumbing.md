@@ -73,3 +73,4 @@ Pipe burst. Drain backed up. A leak you can't find. Twenty-five years fixing Lom
 
 ## POSTED Thu Sep 3 ~4:52 PM PT (user: "post it now… everywhere") — FINAL v7, all shareNow
 IG Reel 6a9a08233c620187850f9851 · FB Reel 6a9a082f3c620187850f996a · TikTok 6a9a083abc2e4059f2c0e7df · IG Story 6a9a0846bc2e4059f2c0e882 (link sticker → /biz/terrones-plumbing). Video: Blob terrones-final-9x16-igKYXEGKjtxrWYIVidYkK4fniUCgmQ.mp4 · cover 2,200 ms. Owner-preview step skipped on user's call.
+All four SENT ~4:53 PM: IG Reel https://www.instagram.com/reel/Dc2COF1jnbj/ · FB Reel https://www.facebook.com/reel/1638784421003883/ · TikTok https://tiktok.com/@lompoclocals/video/7681461119751392525 · IG Story https://www.instagram.com/stories/lompoclocals_/3978377378719133162
