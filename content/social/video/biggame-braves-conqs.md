@@ -52,3 +52,16 @@ All four SENT within ~2 min: IG Reel https://www.instagram.com/reel/DcznqmLkkoo/
 ## ⚠️ VENUE CORRECTION (Sep 3 ~5:10 PM) — the posted cut says "Cabrillo High · 4350 Constellation Rd". WRONG.
 Cabrillo has had no usable field for ~a decade; ALL Cabrillo home football games are played at HUYCK STADIUM, 515 W College Ave (Lompoc High campus) — sources: cabrilloathletics.org Facilities page, Santa Maria Times / Lompoc Record Big Game coverage, KSBY stadium-project story. The Sep 1 log "corrected" MaxPreps' 515 W College Ave to Cabrillo's address — MaxPreps was RIGHT. Fixed: events #180 (title/location/description/cover → Huyck). Re-cut in progress: corrected close "Friday. Seven o'clock. Huyck Stadium, downtown Lompoc…" (Arthur job c4ffffb9, 0.04cr). Plan per launch-alert memory: corrected repost + correction Story, delete the wrong reels — awaiting user go.
 - CORRECTED v4 RENDERED Sep 3 5:58 PM: `biggame/renders/biggame-v4-huyck-{9x16,4x5}.mp4`, 27.4s, -16.0 LUFS → Downloads `biggame-CORRECTED-huyck-*.mp4`. Matchup card: FRI SEP 4 · 7:00 PM / HUYCK STADIUM · 515 W COLLEGE AVE / DOWNTOWN LOMPOC · LOMPOC HIGH CAMPUS. Close: "Friday. Seven o'clock. Huyck Stadium, downtown Lompoc. This is Lompoc football. Pick your side. Be there." Build trap: a volume automation lane's values are ABSOLUTE (override data-volume) — first render hit -10.5 LUFS with the bed at 1.0; lane must ramp to the intended 0.30. NOT posted; awaiting user go on delete-and-repost + correction Story.
+
+## Correction repost (DRAFT, awaiting go)
+Delete: IG Reel 6a98cb99…, FB Reel 6a98cba5…, TikTok 6a98cbb0… (wrong venue). Story 6a98cbbc… expires on its own.
+**IG Reel** One town. Two high schools. One Friday night. 🏈
+Lompoc Braves vs Cabrillo Conquistadores — Friday, Sept 4, 7:00 PM at HUYCK STADIUM, 515 W College Ave (Lompoc High campus — Cabrillo plays its home games there).
+The Braves come in off a 42–0 opener. The Conqs defend home turf. Pick your side. Be there. Details: link in bio.
+#Lompoc #LompocBraves #CabrilloConqs #FridayNightLights #HighSchoolFootball #LompocLocals #805
+Map © Mapbox © OpenStreetMap © Maxar
+**FB Reel** Correction on the venue, neighbors 🙏 The Big Game — Lompoc Braves vs Cabrillo Conquistadores — is Friday, Sept 4, 7:00 PM at Huyck Stadium, 515 W College Ave (Lompoc High campus; Cabrillo's home games are played there). Pick your side and be there. Details: lompoclocals.com/events · Map © Mapbox © OpenStreetMap © Maxar
+**TikTok** Braves vs Conqs. Friday 7 PM at Huyck Stadium, downtown Lompoc. Pick your side 🏈 lompoclocals.com/events #Lompoc #FridayNightLights #HighSchoolFootball #805 · Map © Mapbox © OpenStreetMap © Maxar
+**Correction Story (first)** "Correction 🙏 The Big Game is at HUYCK STADIUM, 515 W College Ave — not Cabrillo High. Friday 7 PM." · link sticker → https://www.lompoclocals.com/events
+**Reel Story (second)** "Braves vs Conqs · Friday 7 PM · Huyck Stadium 🏈" · link → /events
+Cover thumbnailOffset 8,500 ms. Precedent: the Falcon 9 correction post was the month's #2 post — corrections build trust.
