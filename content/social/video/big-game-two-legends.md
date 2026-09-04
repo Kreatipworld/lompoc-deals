@@ -65,3 +65,4 @@ IG Reel (37.5s) 6a9ad63fb978916dd718fb8a · FB Reel (37.5s) 6a9ad64adaf7c7188fd7
 - 7:33 AM: user "no I want it now / publish everything now" → 5 PM story deleted; second Story posted now (6a9ad6ae276284e54171b2d6, full cut, link → /events). SENT: IG Reel https://www.instagram.com/reel/Dc3m3Tzj0AJ/ · FB Reel https://facebook.com/1898952607093480_1362028966094578. TikTok + both Stories: sending (TikTok can take ~36 min — never re-post).
 - 7:34 AM: Story #2 SENT https://www.instagram.com/stories/lompoclocals_/3978820664483657429 · TikTok 6a9ad656… and Story #1 6a9ad662… still "sending" (re-check).
 - 7:35 AM: Story #1 SENT https://www.instagram.com/stories/lompoclocals_/3978820287557964226 · TikTok still sending at 7:40.
+- 7:41 AM: TikTok SENT https://tiktok.com/@lompoclocals/video/7681689352526744846 — all five deliveries confirmed (IG Reel, FB Reel, TikTok 24s, 2 IG Stories). Total trailer spend ≈ 128cr.
