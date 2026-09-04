@@ -50,7 +50,7 @@
     "close": "Cerrar",
     "news": "Noticias",
     "thisWeek": "Esta semana",
-    "explore": "Explorar",
+    "explore": "Directorio",
     "eventToday": "Hoy hay algo en Lompoc"
   },
   "footer": {
@@ -1014,7 +1014,7 @@
     "signUp": "Registrarse",
     "news": "Noticias",
     "thisWeek": "Esta semana",
-    "explore": "Explorar",
+    "explore": "Directorio",
     "more": "Más",
     "thingsToDo": "Qué hacer"
   },
@@ -2101,7 +2101,7 @@
     "directory": "Directorio",
     "account": "Cuenta",
     "thisWeek": "Esta semana",
-    "explore": "Explorar",
+    "explore": "Directorio",
     "map": "Mapa"
   },
   "eventsSection": {

@@ -50,7 +50,7 @@
     "close": "Close",
     "news": "News",
     "thisWeek": "This Week",
-    "explore": "Explore",
+    "explore": "Directory",
     "eventToday": "Something is happening in Lompoc today"
   },
   "footer": {
@@ -1014,7 +1014,7 @@
     "signUp": "Sign up",
     "news": "News",
     "thisWeek": "This Week",
-    "explore": "Explore",
+    "explore": "Directory",
     "more": "More",
     "thingsToDo": "Things to do"
   },
@@ -2101,7 +2101,7 @@
     "directory": "Directory",
     "account": "Account",
     "thisWeek": "This Week",
-    "explore": "Explore",
+    "explore": "Directory",
     "map": "Map"
   },
   "eventsSection": {
