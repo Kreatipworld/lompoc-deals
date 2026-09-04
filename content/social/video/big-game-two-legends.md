@@ -52,3 +52,9 @@ IG Reel: Two schools. Two legends. One field. 🏈 / THE BIG GAME — Lompoc Bra
 FB Reel: Two schools. Two legends. One field. 🏈 THE BIG GAME — Lompoc Braves vs Cabrillo Conquistadores. Friday, September 4, 7:00 PM at Huyck Stadium, 515 W College Ave, Lompoc. Details: lompoclocals.com/events · Braves or Conqs? 👇
 TikTok: THE BIG GAME 🏈 Braves vs Conqs · TONIGHT 7 PM · Huyck Stadium, Lompoc. Braves or Conqs? 👇 lompoclocals.com/events #Lompoc #BigGame #FridayNightLights #HighSchoolFootball #805
 IG Story (5 PM): "TONIGHT · 7 PM · Huyck Stadium 🏈 Braves or Conqs?" · link → https://www.lompoclocals.com/events
+
+## CAPTIONS v2 (Sep 4 AM, "mention today") — pending user lock
+IG Reel: Two schools. Two legends. One field. 🏈 / THE BIG GAME is TODAY — Lompoc Braves vs Cabrillo Conquistadores / 🕖 Tonight · 7:00 PM / 📍 Huyck Stadium, 515 W College Ave, Lompoc / Details: link in bio. / Braves or Conqs? 👇 / #Lompoc #BigGame #LompocBraves #CabrilloConqs #FridayNightLights #HighSchoolFootball #LompocLocals #805
+FB Reel: Two schools. Two legends. One field. 🏈 THE BIG GAME is TODAY — Lompoc Braves vs Cabrillo Conquistadores, tonight at 7:00 PM, Huyck Stadium, 515 W College Ave, Lompoc. / Details: lompoclocals.com/events / Braves or Conqs? 👇
+TikTok (24s cut): THE BIG GAME is TODAY 🏈 Braves vs Conqs · tonight 7 PM · Huyck Stadium, Lompoc. Braves or Conqs? 👇 lompoclocals.com/events #Lompoc #BigGame #FridayNightLights #HighSchoolFootball #805
+IG Story 11 AM: "TODAY · 7 PM · Huyck Stadium 🏈 Braves or Conqs?" → /events · IG Story 5 PM: "TONIGHT · 7 PM · Huyck Stadium 🏈 Two hours." → /events
