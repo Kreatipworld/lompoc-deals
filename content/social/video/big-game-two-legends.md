@@ -59,3 +59,6 @@ FB Reel: Two schools. Two legends. One field. 🏈 THE BIG GAME is TODAY — Lom
 TikTok (24s cut): THE BIG GAME is TODAY 🏈 Braves vs Conqs · tonight 7 PM · Huyck Stadium, Lompoc. Braves or Conqs? 👇 lompoclocals.com/events #Lompoc #BigGame #FridayNightLights #HighSchoolFootball #805
 IG Story 11 AM: "TODAY · 7 PM · Huyck Stadium 🏈 Braves or Conqs?" → /events · IG Story 5 PM: "TONIGHT · 7 PM · Huyck Stadium 🏈 Two hours." → /events
 - FINAL v5 RENDERED Sep 4 ~7:40 AM (sound design + TikTok cut): `legends/renders/two-legends-v5-{9x16,4x5,tiktok}.mp4` — full 37.5s at -14.7 LUFS (coast -23.5 ambience, slam+roar -11.8, card -16.1, tail fade), TikTok 24s at -14.0 → Downloads `big-game-two-legends-{9x16,4x5,TIKTOK-24s}.mp4`. NOT posted; 11 AM plan on user go.
+
+## POSTED Fri Sep 4 7:31 AM PT (user: "post the master legend video now… everywhere") — v5 cuts, all shareNow
+IG Reel (37.5s) 6a9ad63fb978916dd718fb8a · FB Reel (37.5s) 6a9ad64adaf7c7188fd7edfa · TikTok (24s cut) 6a9ad656daf7c7188fd7ef00 · IG Story (24s cut, link → /events) 6a9ad6629e905e8210a6836b · IG Story #2 scheduled 5:00 PM PT "TONIGHT · 7 PM · Two hours." Old wrong-venue posts left untouched (user: move on). Blob: 9x16 …BpbNk7v5…, tiktok …HvmJr5mE…
