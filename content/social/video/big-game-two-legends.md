@@ -33,3 +33,10 @@ THE BIG GAME 🏈 Braves vs Conqs · Friday 7 PM · Huyck Stadium, 515 W College
 - Sep 3 ~10:20 PM — user: Conquistador "more real, not a Mandalorian" + logos in the face-off scene. New portrait to match the Cabrillo seal (plumed morion, beard, ruff): img-conq2 job f3ba96f3 (1.25cr); clips conq2-reveal 69bc0de5 + conq2-stride 1142a1be (20cr). Badges added to s5. Running trailer spend ≈ 117cr. Balance 1224.50.
 - FINAL v3 RENDERED Sep 3 ~10:40 PM: `legends/renders/two-legends-v3-{9x16,4x5}.mp4`, 37.5s, -16.3 LUFS → Downloads `big-game-two-legends-*.mp4`. Seal-matched Conquistador in s2/s4/s5; badges on the face-off + end card. NOT posted — awaiting user go for the correction sequence.
 - FINAL v4 RENDERED Sep 3 ~11:00 PM: shields carry the badges and BUMP at 27.10 (user: "Bump"). `legends/renders/two-legends-v4-{9x16,4x5}.mp4`, 37.5s, -16.3 LUFS → Downloads `big-game-two-legends-*.mp4`. NOT posted — awaiting go for the correction sequence.
+
+## FINAL captions (Sep 4, user: no correction wording, no tool credits)
+**IG Reel** Two schools. Two legends. One field. 🏈 / THE BIG GAME — Lompoc Braves vs Cabrillo Conquistadores / 📅 Friday, Sept 4 · 7:00 PM / 📍 Huyck Stadium, 515 W College Ave, Lompoc / Pick your side. Be there. Details: link in bio. / #Lompoc #BigGame #LompocBraves #CabrilloConqs #FridayNightLights #HighSchoolFootball #LompocLocals #805
+**FB Reel** Two schools. Two legends. One field. 🏈 THE BIG GAME — Lompoc Braves vs Cabrillo Conquistadores. Friday, September 4, 7:00 PM at Huyck Stadium, 515 W College Ave, Lompoc. Pick your side and be there. Details: lompoclocals.com/events
+**TikTok** THE BIG GAME 🏈 Braves vs Conqs · Friday 7 PM · Huyck Stadium, 515 W College Ave, Lompoc. Pick your side. lompoclocals.com/events #Lompoc #BigGame #FridayNightLights #HighSchoolFootball #805
+**IG Story** "Two legends. One field. Friday 7 PM · Huyck Stadium 🏈" · link → https://www.lompoclocals.com/events
+Sequence: delete the 3 wrong-venue reels quietly → trailer ×3 shareNow → Story. Cover 25,500 ms.
