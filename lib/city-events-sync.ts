@@ -3,10 +3,15 @@ import { db } from "@/db/client"
 import { events } from "@/db/schema"
 import { findSameDayDuplicate } from "@/lib/event-dedup"
 import type { SyncReport } from "@/lib/event-sync"
+import { eventCoverUrl, isOwnCover, writeEventBlurb } from "@/lib/event-copy"
 
-// explorelompoc.com (Lompoc tourism bureau) runs WordPress + The Events
-// Calendar, which exposes a public REST API. The official city site
-// (cityoflompoc.com) blocks bots, so this is our city/community source.
+// The town's tourism calendar runs WordPress + The Events Calendar, which
+// exposes a public REST API. The official city site (cityoflompoc.com) blocks
+// bots, so this is our community-calendar source.
+//
+// FACTS ONLY. We take title, date/time, venue and category. Descriptions are
+// written in our own words (lib/event-copy) and covers are our own photos —
+// nothing from the source is quoted, hotlinked, or credited as a partner.
 const TRIBE_API = "https://explorelompoc.com/wp-json/tribe/events/v1/events"
 const SYNC_WINDOW_DAYS = 45
 
@@ -92,20 +97,18 @@ export async function syncExploreLompocEvents(): Promise<SyncReport> {
             .filter(Boolean)
             .join(", ") || "Lompoc, CA"
 
-        const values = {
+        const facts = {
           title: decodeEntities(evt.title).trim().slice(0, 300),
-          description: evt.description
-            ? stripHtml(evt.description).slice(0, 2000)
-            : null,
           location: location.slice(0, 500),
-          imageUrl:
-            (evt.image && evt.image.url ? evt.image.url : null)?.slice(0, 1000) ??
-            null,
           category: mapCategory(evt.categories),
           startsAt: toDate(evt.utc_start_date, evt.start_date),
           endsAt: evt.end_date
             ? toDate(evt.utc_end_date, evt.end_date)
             : null,
+        }
+        const sourceText = evt.description ? stripHtml(evt.description).slice(0, 2000) : null
+        const values = {
+          ...facts,
           status: "approved" as const,
           source: "explorelompoc",
           externalId: String(evt.id),
@@ -121,7 +124,7 @@ export async function syncExploreLompocEvents(): Promise<SyncReport> {
         }
 
         const existing = await db
-          .select({ id: events.id })
+          .select({ id: events.id, imageUrl: events.imageUrl })
           .from(events)
           .where(
             and(
@@ -132,9 +135,13 @@ export async function syncExploreLompocEvents(): Promise<SyncReport> {
           .limit(1)
 
         if (existing.length > 0) {
+          // Refresh the facts; keep our own description and cover. If a row
+          // still carries a third-party image from before, swap in ours.
+          const patch: Partial<typeof values> & { imageUrl?: string; descriptionEs?: null } = { ...facts }
+          if (!isOwnCover(existing[0].imageUrl)) patch.imageUrl = eventCoverUrl(facts.category)
           await db
             .update(events)
-            .set(values)
+            .set(patch)
             .where(eq(events.id, existing[0].id))
           skipped++
         } else if (await findSameDayDuplicate(values.title, values.startsAt)) {
@@ -142,7 +149,12 @@ export async function syncExploreLompocEvents(): Promise<SyncReport> {
           // (or re-published by the city under a fresh id) — don't double it.
           skipped++
         } else {
-          await db.insert(events).values(values)
+          const description = await writeEventBlurb({ ...facts, sourceText })
+          await db.insert(events).values({
+            ...values,
+            description,
+            imageUrl: eventCoverUrl(facts.category),
+          })
           inserted++
         }
       } catch {
