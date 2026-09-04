@@ -36,6 +36,8 @@ function engagedIds(days: number | null): SQL {
 export interface PlatformKpis {
   engagedVisits: number
   rawSessions: number
+  /** Page views (business pages + every other public page) from engaged sessions. */
+  siteViews: number
   dealViews: number
   actions: number
   claims: number
@@ -55,6 +57,7 @@ export async function platformKpis(window: FunnelWindow): Promise<PlatformKpis> 
       SELECT
         (SELECT COUNT(*)::int FROM eng) AS engaged_visits,
         (SELECT COUNT(DISTINCT session_id)::int FROM analytics_events WHERE session_id IS NOT NULL AND ${since(d)}) AS raw_sessions,
+        (SELECT COUNT(*)::int FROM analytics_events WHERE event_name IN ('business_page_viewed','page_viewed') AND ${since(d)} AND session_id IN (SELECT session_id FROM eng)) AS site_views,
         (SELECT COUNT(*)::int FROM analytics_events WHERE event_name = 'deal_view' AND ${since(d)} AND session_id IN (SELECT session_id FROM eng)) AS deal_views,
         (SELECT COUNT(*)::int FROM analytics_events WHERE event_name = ANY(${sql.raw(`ARRAY[${OUTBOUND_EVENTS.map((e) => `'${e}'`).join(",")}]`)}) AND ${since(d)}) AS actions,
         (SELECT COUNT(*)::int FROM analytics_events WHERE event_name = 'deal_claim' AND ${since(d)}) AS claims,
@@ -65,6 +68,7 @@ export async function platformKpis(window: FunnelWindow): Promise<PlatformKpis> 
   return {
     engagedVisits: Number(r?.engaged_visits ?? 0),
     rawSessions: Number(r?.raw_sessions ?? 0),
+    siteViews: Number(r?.site_views ?? 0),
     dealViews: Number(r?.deal_views ?? 0),
     actions: Number(r?.actions ?? 0),
     claims: Number(r?.claims ?? 0),
@@ -109,14 +113,14 @@ export async function platformDaily(window: FunnelWindow): Promise<DailyPoint[]>
 
 export type SourceRow = { source: SourceKey; count: number; pct: number }
 
-/** Where engaged visitors to any business page came from. */
+/** Where engaged visitors to any page (business pages + every other public page) came from. */
 export async function platformSources(window: FunnelWindow): Promise<SourceRow[]> {
   const d = windowDays(window)
   const r = rows<{ referrer: string | null; src: string | null; med: string | null; n: number }>(
     await db.execute(sql`
       SELECT props->>'referrer' AS referrer, props->>'src' AS src, props->>'med' AS med, COUNT(*)::int AS n
       FROM analytics_events
-      WHERE event_name = 'business_page_viewed' AND ${since(d)}
+      WHERE event_name IN ('business_page_viewed', 'page_viewed') AND ${since(d)}
         AND session_id IN ${engagedIds(d)}
       GROUP BY 1, 2, 3
     `)
@@ -207,4 +211,43 @@ export async function actionsByBusiness(window: FunnelWindow, limit = 20): Promi
     directions: Number(x.directions),
     other: Number(x.other),
   }))
+}
+
+export type TopPageRow = { path: string; views: number; sessions: number }
+
+/**
+ * Most-viewed pages, engaged sessions only. `page_viewed` rows carry the path in props; business
+ * pages fire `business_page_viewed` with the business id instead, so they are folded in as
+ * /biz/<slug> to give one honest list of what people actually open.
+ */
+export async function topPages(window: FunnelWindow, limit = 15): Promise<TopPageRow[]> {
+  const d = windowDays(window)
+  const r = rows<{ path: string; views: number; sessions: number }>(
+    await db.execute(sql`
+      WITH eng AS (
+        SELECT session_id FROM analytics_events
+        WHERE session_id IS NOT NULL AND ${since(d)}
+        GROUP BY 1 HAVING COUNT(*) > 1
+      ),
+      hits AS (
+        SELECT e.props->>'path' AS path, e.session_id
+        FROM analytics_events e
+        WHERE e.event_name = 'page_viewed' AND ${since(d, sql`e.created_at`)}
+          AND e.session_id IN (SELECT session_id FROM eng)
+          AND e.props->>'path' IS NOT NULL
+        UNION ALL
+        SELECT '/biz/' || b.slug AS path, e.session_id
+        FROM analytics_events e
+        JOIN businesses b ON b.id = e.target_id
+        WHERE e.event_name = 'business_page_viewed' AND e.target_type = 'business' AND ${since(d, sql`e.created_at`)}
+          AND e.session_id IN (SELECT session_id FROM eng)
+      )
+      SELECT path, COUNT(*)::int AS views, COUNT(DISTINCT session_id)::int AS sessions
+      FROM hits
+      GROUP BY path
+      ORDER BY views DESC, sessions DESC, path
+      LIMIT ${limit}
+    `)
+  )
+  return r.map((x) => ({ path: x.path, views: Number(x.views), sessions: Number(x.sessions) }))
 }

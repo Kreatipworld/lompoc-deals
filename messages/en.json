@@ -935,7 +935,14 @@
       "action_map_click": "Map opens",
       "action_social_click": "Social clicks",
       "action_reviews_click": "Review clicks",
-      "insightsHeading": "Funnels, claims & gaps"
+      "insightsHeading": "Funnels, claims & gaps",
+      "topPagesTitle": "Top pages",
+      "topPagesSub": "Engaged sessions only ({window}).",
+      "topPagesEmpty": "No page views recorded yet.",
+      "colPath": "Page",
+      "colViews": "Views",
+      "colSessions": "Sessions",
+      "kpiSiteViews": "{count} page views"
     },
     "events": {
       "metaTitle": "Admin — Events",

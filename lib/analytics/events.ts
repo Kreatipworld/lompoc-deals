@@ -1,4 +1,5 @@
 export type EventName =
+  | "page_viewed"
   | "search_run"
   | "map_pin_clicked"
   | "business_page_viewed"
@@ -35,6 +36,8 @@ export const OUTBOUND_EVENTS = [
 ] as const
 
 export interface EventProps {
+  /** Any public page that is NOT a business page (those fire business_page_viewed server-side). */
+  page_viewed: { path: string; locale: "en" | "es"; referrer?: string }
   search_run: { query: string; resultCount: number; locale: "en" | "es" }
   map_pin_clicked: { from: "map" | "list" }
   business_page_viewed: { locale: "en" | "es"; referrer?: string }

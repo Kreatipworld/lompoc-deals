@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { BottomNav } from "@/components/bottom-nav"
 import { MOBILE_BOTTOM_CLEARANCE } from "@/lib/layout-constants"
 import { AIChatWidget } from "@/components/ai-chat-widget"
+import { PageView } from "@/components/analytics/page-view"
 import { routing } from "@/i18n/routing"
 import { siteUrl } from "@/lib/seo"
 import { notFound } from "next/navigation"
@@ -71,6 +72,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <SiteFooter />
       <BottomNav />
       <AIChatWidget />
+      <PageView />
       <Toaster />
     </NextIntlClientProvider>
   )

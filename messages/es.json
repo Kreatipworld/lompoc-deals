@@ -935,7 +935,14 @@
       "action_map_click": "Mapa abierto",
       "action_social_click": "Clics en redes",
       "action_reviews_click": "Clics en reseñas",
-      "insightsHeading": "Embudos, reclamos y huecos"
+      "insightsHeading": "Embudos, reclamos y huecos",
+      "topPagesTitle": "Páginas más vistas",
+      "topPagesSub": "Solo sesiones reales ({window}).",
+      "topPagesEmpty": "Aún no hay vistas registradas.",
+      "colPath": "Página",
+      "colViews": "Vistas",
+      "colSessions": "Sesiones",
+      "kpiSiteViews": "{count} vistas de página"
     },
     "events": {
       "metaTitle": "Admin — Eventos",

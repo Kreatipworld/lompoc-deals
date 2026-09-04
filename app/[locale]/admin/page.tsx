@@ -48,6 +48,7 @@ import {
   platformSources,
   platformActions,
   actionsByBusiness,
+  topPages,
   windowDays,
   type PlatformKpis,
 } from "@/lib/analytics/platform-stats"
@@ -107,6 +108,7 @@ const DEFAULT_PULSE = {
 const DEFAULT_KPIS: PlatformKpis = {
   engagedVisits: 0,
   rawSessions: 0,
+  siteViews: 0,
   dealViews: 0,
   actions: 0,
   claims: 0,
@@ -272,6 +274,7 @@ export default async function AdminPage({
     sourcesResult,
     actionsResult,
     byBizResult,
+    topPagesResult,
     localResult,
     bizFunnelResult,
     recentClaimsResult,
@@ -293,6 +296,7 @@ export default async function AdminPage({
     platformSources(window),
     platformActions(window),
     actionsByBusiness(window),
+    topPages(window),
     localFunnel(days),
     businessFunnel(days),
     recentClaims(),
@@ -315,6 +319,7 @@ export default async function AdminPage({
   const sources = settled(sourcesResult, [])
   const actions = settled(actionsResult, { total: 0, rows: [] })
   const byBiz = settled(byBizResult, [])
+  const pages = settled(topPagesResult, [])
   const local = settled(localResult, [])
   const bizFunnel = settled(bizFunnelResult, [])
   const claimRows = settled(recentClaimsResult, [])
@@ -571,7 +576,7 @@ export default async function AdminPage({
             icon={<Eye className="h-3.5 w-3.5" />}
             label={t("kpiVisits")}
             value={kpis.engagedVisits}
-            sub={t("kpiVisitsSub", { count: kpis.rawSessions.toLocaleString() })}
+            sub={`${t("kpiVisitsSub", { count: kpis.rawSessions.toLocaleString() })} · ${t("kpiSiteViews", { count: kpis.siteViews.toLocaleString() })}`}
           />
           <StatTile
             icon={<Tag className="h-3.5 w-3.5" />}
@@ -674,6 +679,39 @@ export default async function AdminPage({
                 ))}
               </ul>
             )}
+          </div>
+        </div>
+
+        {/* Top pages — what people actually open, engaged sessions only */}
+        <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+          <div className="border-b px-5 py-4">
+            <h3 className="font-display text-lg font-semibold">{t("topPagesTitle")}</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground">{t("topPagesSub", { window: windowLabel })}</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="px-5 py-2">{t("colPath")}</th>
+                  <th className="px-3 py-2 text-right">{t("colViews")}</th>
+                  <th className="px-5 py-2 text-right">{t("colSessions")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pages.map((p) => (
+                  <tr key={p.path} className="border-t">
+                    <td className="max-w-[320px] truncate px-5 py-2 font-medium">
+                      <Link href={p.path} className="hover:underline">{p.path}</Link>
+                    </td>
+                    <td className="px-3 py-2 text-right font-semibold tabular-nums">{p.views.toLocaleString()}</td>
+                    <td className="px-5 py-2 text-right tabular-nums text-muted-foreground">{p.sessions.toLocaleString()}</td>
+                  </tr>
+                ))}
+                {pages.length === 0 && (
+                  <tr><td colSpan={3} className="py-6 text-center text-muted-foreground">{t("topPagesEmpty")}</td></tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
 
