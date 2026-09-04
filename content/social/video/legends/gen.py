@@ -124,7 +124,7 @@ def s4(A):
       {c} .tag-top {{ left: 84px; top: {A['MT']+150}px; color: {GOLD}; }}
       {c} .tag-bot {{ right: 84px; bottom: {A['LB']-1}%; color: #9fb6ff; }}
     """
-    body=f"""    <div class="half half-top"><div class="vidwrap" id="s4-top" data-layout-allow-overflow><video id="s4-conq" class="clip" src="public/clip-conq-stride.mp4" data-start="0" data-duration="5.00" data-track-index="0" muted playsinline></video></div><div class="tint-top"></div></div>
+    body=f"""    <div class="half half-top"><div class="vidwrap" id="s4-top" data-layout-allow-overflow><video id="s4-conq" class="clip" src="public/clip-conq2-stride.mp4" data-start="0" data-duration="5.00" data-track-index="0" muted playsinline></video></div><div class="tint-top"></div></div>
     <div class="half half-bot"><div class="vidwrap" id="s4-bot" data-layout-allow-overflow><video id="s4-brave" class="clip" src="public/clip-brave-stride.mp4" data-start="0" data-duration="5.00" data-track-index="0" muted playsinline style="transform: scaleX(-1)"></video></div><div class="tint-bot"></div></div>
     <div class="seam" id="s4-seam" data-layout-allow-overflow></div>
     <div class="tag tag-top" id="s4-tagtop">Cabrillo</div>
@@ -154,9 +154,13 @@ def s5(A):
       {c} .burst {{ position: absolute; left: 50%; top: {int(H*0.45)}px; width: 900px; height: 900px; margin: -450px 0 0 -450px; border-radius: 50%; z-index: 45; background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 20%, rgba(255,255,255,0) 62%); opacity: 0; will-change: transform; }}
       {c} .lower {{ text-align: center; z-index: 46; }}
       {c} .hero {{ transform-origin: center; }}
+      {c} .sbadge {{ position: absolute; top: {A['MT']+150}px; width: {130 if A['H']==1920 else 105}px; height: auto; z-index: 44; filter: drop-shadow(0 8px 22px rgba(10,6,12,0.6)); will-change: transform; opacity: 0; }}
+      {c} .sb-l {{ left: 84px; }} {c} .sb-r {{ right: 84px; }}
     """
     body=f"""    <div class="stage" id="s5-stage" data-layout-allow-overflow>
       <div class="plate" id="s5-plate" data-layout-allow-overflow><img src="public/faceoff-key.png" alt="" /></div>
+      <img class="sbadge sb-l" id="s5-bl" src="public/badge-conqs.png" alt="" />
+      <img class="sbadge sb-r" id="s5-br" src="public/badge-braves.png" alt="" />
       <div class="fog"></div>
       <svg class="ball" id="s5-ball" viewBox="0 0 120 72" data-layout-allow-overflow><ellipse cx="60" cy="30" rx="56" ry="28" fill="#f4f1ea"/><path d="M40 30h40M50 24v12M60 24v12M70 24v12" stroke="#050308" stroke-width="4" stroke-linecap="round"/><rect x="52" y="58" width="16" height="12" rx="3" fill="#c9c2b6"/></svg>
       <svg class="shield sh-l" id="s5-shl" viewBox="0 0 300 360" data-layout-allow-overflow><path d="M150 10 L290 60 V190 C290 280 220 330 150 350 C80 330 10 280 10 190 V60 Z" fill="{GOLD}" opacity="0.95"/></svg>
@@ -171,6 +175,7 @@ def s5(A):
         const S5 = {{ HERO: 0.40, SHOCK: 2.10, END: 4.50 }};
         const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
         tl.fromTo("#s5-plate", {{ scale: 1.0 }}, {{ scale: 1.08, duration: S5.END, ease: "none" }}, 0);
+        tl.fromTo("#s5-bl, #s5-br", {{ autoAlpha: 0, scale: 0.8 }}, {{ autoAlpha: 1, scale: 1, duration: 0.5, ease: "power3.out" }}, 0.05);
         tl.fromTo("#s5-ball", {{ autoAlpha: 0, y: 30 }}, {{ autoAlpha: 1, y: 0, duration: 0.5 }}, 0.2);
         tl.fromTo("#s5-hero", {{ autoAlpha: 0, scale: 1.2 }}, {{ autoAlpha: 1, scale: 1, duration: 0.45, ease: "expo.out" }}, S5.HERO);
         tl.fromTo("#s5-shl", {{ autoAlpha: 0, x: -700, rotation: -18 }}, {{ autoAlpha: 1, x: 0, rotation: 0, duration: 0.32, ease: "power4.in" }}, S5.SHOCK - 0.32);
@@ -264,7 +269,7 @@ def index(A, comp_dir, entries):
 """
 
 for name, A, comp_dir, idx in [("9x16", dict(H=1920,BAR=115,MT=150,HERO=120,SUB=44,LB=21), "compositions", "index.html"), ("4x5", dict(H=1350,BAR=80,MT=100,HERO=100,SUB=38,LB=19), "compositions-4x5", "index-4x5.tmpl")]:
-    scenes=[land_scene("s1a-coast","land-cabrillo.mp4",GOLD,"Vandenberg Village","From the coast.",A), land_scene("s1b-valley","land-lompoc.mp4","#9fb6ff","Lompoc Valley","From the valley.",A,push_in=True,dip_out=True,dur=5.28), hero_scene("s2-conq","clip-conq-reveal.mp4",GOLD,"Cabrillo","The Conquistador",A,frm="From Vandenberg Village"), hero_scene("s3-brave","clip-brave-reveal.mp4","#9fb6ff","Lompoc","The Brave",A,frm="From downtown Lompoc"), s4(A), s5(A), s6(A)]
+    scenes=[land_scene("s1a-coast","land-cabrillo.mp4",GOLD,"Vandenberg Village","From the coast.",A), land_scene("s1b-valley","land-lompoc.mp4","#9fb6ff","Lompoc Valley","From the valley.",A,push_in=True,dip_out=True,dur=5.28), hero_scene("s2-conq","clip-conq2-reveal.mp4",GOLD,"Cabrillo","The Conquistador",A,frm="From Vandenberg Village"), hero_scene("s3-brave","clip-brave-reveal.mp4","#9fb6ff","Lompoc","The Brave",A,frm="From downtown Lompoc"), s4(A), s5(A), s6(A)]
     starts=[0.00,4.72,10.00,15.00,20.00,25.00,29.50]; entries=[]
     for (cid,dur,html),st in zip(scenes,starts):
         open(f"{P}/{comp_dir}/{cid}.html","w").write(html); entries.append((cid,st,dur))
