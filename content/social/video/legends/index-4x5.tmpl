@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @font-face { font-family: "Plus Jakarta Sans"; src: url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+      html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; background: #050308; }
+      body { font-family: "Plus Jakarta Sans", sans-serif; }
+      #root { position: relative; width: 1080px; height: 1350px; overflow: hidden; }
+      #root > div[data-composition-src] { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- TWO LEGENDS, ONE FIELD — Big Game trailer. Lompoc Braves vs Cabrillo Conquistadores, Fri Sep 4 2026 7:00 PM, HUYCK STADIUM (515 W College Ave). 30.0s -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="32.00" data-width="1080" data-height="1350">
+      <div id="el-s1-huyck" data-composition-id="s1-huyck" data-composition-src="compositions-4x5/s1-huyck.html" data-start="0.00" data-duration="4.50" data-track-index="1"></div>
+      <div id="el-s2-conq" data-composition-id="s2-conq" data-composition-src="compositions-4x5/s2-conq.html" data-start="4.50" data-duration="5.00" data-track-index="1"></div>
+      <div id="el-s3-brave" data-composition-id="s3-brave" data-composition-src="compositions-4x5/s3-brave.html" data-start="9.50" data-duration="5.00" data-track-index="1"></div>
+      <div id="el-s4-field" data-composition-id="s4-field" data-composition-src="compositions-4x5/s4-field.html" data-start="14.50" data-duration="5.00" data-track-index="1"></div>
+      <div id="el-s5-faceoff" data-composition-id="s5-faceoff" data-composition-src="compositions-4x5/s5-faceoff.html" data-start="19.50" data-duration="4.50" data-track-index="1"></div>
+      <div id="el-s6-end" data-composition-id="s6-end" data-composition-src="compositions-4x5/s6-end.html" data-start="24.00" data-duration="8.00" data-track-index="1"></div>
+
+      <!-- VO: Arthur read split to the beats (file onsets: Two 0.00 · legends 1.76 · field 3.02 · Friday 4.80 · Big Game 7.92 · Seven 9.54 · This is 12.16). Bed: 30s trailer bed, final hit is the button. -->
+      <audio id="vo-a" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="4.80" data-media-start="0.00" data-duration="1.50" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="9.80" data-media-start="1.76" data-duration="1.20" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-c" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="14.80" data-media-start="3.02" data-duration="1.55" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-d" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="16.40" data-media-start="4.80" data-duration="2.70" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-e" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="19.80" data-media-start="7.92" data-duration="1.30" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-f" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="21.60" data-media-start="9.54" data-duration="2.60" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-g" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="25.00" data-media-start="12.16" data-duration="1.40" data-track-index="10" data-volume="1"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="30.00" data-track-index="11" data-volume="0.42" data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.4}'></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

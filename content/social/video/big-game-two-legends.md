@@ -26,3 +26,4 @@ Pick your side and be there. Details: lompoclocals.com/events · Map © Mapbox �
 THE BIG GAME 🏈 Braves vs Conqs · Friday 7 PM · Huyck Stadium, 515 W College Ave, Lompoc. Pick your side. lompoclocals.com/events #Lompoc #BigGame #FridayNightLights #HighSchoolFootball #805 · Map © Mapbox © OpenStreetMap © Maxar
 **IG Story #1 (correction)** text: "Correction 🙏 The Big Game is at HUYCK STADIUM · 515 W College Ave (Lompoc High) — Friday 7 PM" · link → https://www.lompoclocals.com/events
 **IG Story #2 (trailer)** text: "Two legends. One field. Friday 7 PM · Huyck Stadium 🏈" · link → https://www.lompoclocals.com/events
+- RENDERED Sep 3 evening: `legends/renders/two-legends-{9x16,4x5}.mp4`, 32.0s, -16.3 LUFS → Downloads `big-game-two-legends-*.mp4`. Badges on the end card only. Awaiting user watch → then the correction sequence (delete 3 wrong reels, post trailer ×3, Story #1 correction + Story #2 trailer). Cover thumbnailOffset 20,000 ms (face-off).
