@@ -40,3 +40,4 @@ THE BIG GAME 🏈 Braves vs Conqs · Friday 7 PM · Huyck Stadium, 515 W College
 **TikTok** THE BIG GAME 🏈 Braves vs Conqs · Friday 7 PM · Huyck Stadium, 515 W College Ave, Lompoc. Pick your side. lompoclocals.com/events #Lompoc #BigGame #FridayNightLights #HighSchoolFootball #805
 **IG Story** "Two legends. One field. Friday 7 PM · Huyck Stadium 🏈" · link → https://www.lompoclocals.com/events
 Sequence: delete the 3 wrong-venue reels quietly → trailer ×3 shareNow → Story. Cover 25,500 ms.
+- Sep 4 — user: audio "like a Nat Geo sports / ESPN special with sound effects". Diagnosis: 0–5.4s and 35.6–37.5s were silent, no SFX. Generated 8 SFX via mirelo_text_to_audio (coast wind + rocket, valley wind, stadium murmur, footsteps, shield hit, whoosh, crowd roar, low drone) ≈ 11cr (longer clips price higher: 6s 1.5cr, 8s 2cr). Builder mixing per plan (ambience per scene, whooshes on cuts, pre-slam dip, clang + roar, no dead air). Running trailer spend ≈ 128cr. Balance 1213.50.
