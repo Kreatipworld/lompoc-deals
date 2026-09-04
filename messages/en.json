@@ -48,7 +48,10 @@
     "neighborhood": "Neighborhood",
     "search": "Search",
     "close": "Close",
-    "news": "News"
+    "news": "News",
+    "thisWeek": "This Week",
+    "explore": "Explore",
+    "eventToday": "Something is happening in Lompoc today"
   },
   "footer": {
     "tagline": "Connecting locals, businesses, and visitors across the Lompoc Valley.",
@@ -1009,7 +1012,11 @@
     "account": "Account",
     "signIn": "Sign in",
     "signUp": "Sign up",
-    "news": "News"
+    "news": "News",
+    "thisWeek": "This Week",
+    "explore": "Explore",
+    "more": "More",
+    "thingsToDo": "Things to do"
   },
   "signupBusiness": {
     "metaTitle": "List your business",
@@ -2092,7 +2099,9 @@
     "deals": "Deals",
     "search": "Search",
     "directory": "Directory",
-    "account": "Account"
+    "account": "Account",
+    "thisWeek": "This Week",
+    "explore": "Explore"
   },
   "eventsSection": {
     "heading": "Upcoming events",

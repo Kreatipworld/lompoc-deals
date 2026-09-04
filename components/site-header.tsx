@@ -7,9 +7,16 @@ import { LocaleSwitcher } from "@/components/locale-switcher"
 import { HeaderShell } from "@/components/motion/header-shell"
 import { Link } from "@/i18n/navigation"
 import { getTranslations } from "next-intl/server"
+import { hasEventToday } from "@/lib/nav-today"
 
+/**
+ * Four tabs, one search, one button. Ordered by what engaged sessions actually
+ * do (business pages, deals, search) and by what drives our traffic (this week's
+ * events). Map, Hotels, Neighborhood, Locals live inside Explore, the mobile
+ * "More" group, and the footer — nothing was removed from the site.
+ */
 export async function SiteHeader() {
-  const t = await getTranslations("nav")
+  const [t, eventToday] = await Promise.all([getTranslations("nav"), hasEventToday()])
 
   return (
     <HeaderShell>
@@ -23,14 +30,19 @@ export async function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-6 sm:flex">
-          <NavLink href="/news">{t("news")}</NavLink>
+          <NavLink href="/this-week" className="relative">
+            {t("thisWeek")}
+            {eventToday && (
+              <span
+                className="absolute -right-2.5 top-0 h-1.5 w-1.5 rounded-full bg-[#0B992F]"
+                title={t("eventToday")}
+                aria-label={t("eventToday")}
+              />
+            )}
+          </NavLink>
           <NavLink href="/deals">{t("deals")}</NavLink>
-          <NavLink href="/businesses">{t("directory")}</NavLink>
-          <NavLink href="/map">{t("map")}</NavLink>
-          <NavLink href="/hotels">{t("hotels")}</NavLink>
-          <NavLink href="/feed">{t("neighborhood")}</NavLink>
-          <NavLink href="/partners">{t("forBusinesses")}</NavLink>
-          <NavLink href="/locals">{t("forLocals")}</NavLink>
+          <NavLink href="/businesses">{t("explore")}</NavLink>
+          <NavLink href="/news">{t("news")}</NavLink>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -38,6 +50,12 @@ export async function SiteHeader() {
           <span className="hidden sm:block">
             <LocaleSwitcher />
           </span>
+          <Link
+            href="/partners"
+            className="hidden rounded-full bg-primary px-3.5 py-1.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 md:inline-flex"
+          >
+            {t("forBusinesses")}
+          </Link>
           <UserMenu />
           <MobileMenu />
         </div>

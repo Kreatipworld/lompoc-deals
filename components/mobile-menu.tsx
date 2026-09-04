@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag, Newspaper } from "lucide-react"
+import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag, Newspaper, CalendarDays, Compass } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import { LocaleSwitcher } from "@/components/locale-switcher"
@@ -14,15 +14,20 @@ export function MobileMenu() {
   const t = useTranslations("mobileMenu")
   const tu = useTranslations("hoursUi")
 
+  // Mirrors the header: what people actually use first, everything else under "More".
   const navItems = [
     { href: "/", icon: Home, label: t("home") },
-    { href: "/news", icon: Newspaper, label: t("news") },
+    { href: "/this-week", icon: CalendarDays, label: t("thisWeek") },
     { href: "/deals", icon: Tag, label: t("deals") },
+    { href: "/businesses", icon: LayoutGrid, label: t("explore") },
+    { href: "/news", icon: Newspaper, label: t("news") },
     { href: "/search", icon: Search, label: t("search") },
-    { href: "/businesses", icon: LayoutGrid, label: t("directory") },
+  ]
+  const moreItems = [
     { href: "/map", icon: Map, label: t("map") },
     { href: "/hotels", icon: BedDouble, label: t("hotels") },
     { href: "/feed", icon: ShoppingBag, label: t("neighborhood") },
+    { href: "/things-to-do", icon: Compass, label: t("thingsToDo") },
     { href: "/locals", icon: Heart, label: t("locals") },
     { href: "/partners", icon: Building2, label: t("businesses") },
     { href: "/account", icon: User, label: t("account") },
@@ -116,6 +121,31 @@ export function MobileMenu() {
               )
             })}
           </ul>
+
+          <div className="mt-4 border-t pt-4">
+            <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">{t("more")}</p>
+            <ul className="space-y-1">
+              {moreItems.map(({ href, icon: Icon, label }) => {
+                const isActive = pathname.startsWith(href)
+                return (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                      )}
+                    >
+                      <Icon className="h-4 w-4 shrink-0" strokeWidth={isActive ? 2.25 : 1.75} />
+                      {label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
 
           <div className="mt-4 border-t pt-4">
             <ul className="space-y-1">

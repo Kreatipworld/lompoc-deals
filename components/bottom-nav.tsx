@@ -2,16 +2,16 @@
 
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-import { Home, Search, LayoutGrid, User, Tag } from "lucide-react"
+import { Home, LayoutGrid, User, Tag, CalendarDays } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
 
 const NAV_ITEMS = [
   { href: "/", icon: Home, labelKey: "home" },
+  { href: "/this-week", icon: CalendarDays, labelKey: "thisWeek" },
   { href: "/deals", icon: Tag, labelKey: "deals" },
-  { href: "/search", icon: Search, labelKey: "search" },
-  { href: "/businesses", icon: LayoutGrid, labelKey: "directory" },
+  { href: "/businesses", icon: LayoutGrid, labelKey: "explore" },
   { href: "/account", icon: User, labelKey: "account" },
 ] as const
 

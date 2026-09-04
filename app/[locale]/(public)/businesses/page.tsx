@@ -56,13 +56,14 @@ export default async function BusinessesPage({
   params: { locale: string }
   searchParams?: { open?: string }
 }) {
-  const [allBusinesses, cats, stats, t, tc, tu] = await Promise.all([
+  const [allBusinesses, cats, stats, t, tc, tu, tn] = await Promise.all([
     getDirectoryBusinesses(params.locale),
     getAllCategories(),
     getSiteStats(),
     getTranslations("businesses.directory"),
     getTranslations("categoryLabels"),
     getTranslations("hoursUi"),
+    getTranslations("nav"),
   ])
 
   const openNow = searchParams?.open === "1"
@@ -180,6 +181,17 @@ export default async function BusinessesPage({
             <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
             {t("openNowFilter")}
           </Link>
+          {/* Explore is the one tab for everything place-based: the header no
+              longer carries Map / Hotels / Neighborhood, so they live here. */}
+          {([["/map", tn("map")], ["/hotels", tn("hotels")], ["/feed", tn("neighborhood")]] as const).map(([href, label]) => (
+            <Link
+              key={href}
+              href={href}
+              className="inline-flex flex-shrink-0 items-center rounded-full border bg-card px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-foreground/30"
+            >
+              {label}
+            </Link>
+          ))}
         </div>
       </nav>
 

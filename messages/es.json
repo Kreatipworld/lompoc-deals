@@ -48,7 +48,10 @@
     "neighborhood": "Vecindario",
     "search": "Buscar",
     "close": "Cerrar",
-    "news": "Noticias"
+    "news": "Noticias",
+    "thisWeek": "Esta semana",
+    "explore": "Explorar",
+    "eventToday": "Hoy hay algo en Lompoc"
   },
   "footer": {
     "tagline": "Conectando a vecinos, negocios y visitantes en todo el Valle de Lompoc.",
@@ -1009,7 +1012,11 @@
     "account": "Cuenta",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
-    "news": "Noticias"
+    "news": "Noticias",
+    "thisWeek": "Esta semana",
+    "explore": "Explorar",
+    "more": "Más",
+    "thingsToDo": "Qué hacer"
   },
   "signupBusiness": {
     "metaTitle": "Publica tu negocio",
@@ -2092,7 +2099,9 @@
     "deals": "Ofertas",
     "search": "Buscar",
     "directory": "Directorio",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "thisWeek": "Esta semana",
+    "explore": "Explorar"
   },
   "eventsSection": {
     "heading": "Próximos eventos",
