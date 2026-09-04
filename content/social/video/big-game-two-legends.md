@@ -41,3 +41,14 @@ THE BIG GAME 🏈 Braves vs Conqs · Friday 7 PM · Huyck Stadium, 515 W College
 **IG Story** "Two legends. One field. Friday 7 PM · Huyck Stadium 🏈" · link → https://www.lompoclocals.com/events
 Sequence: delete the 3 wrong-venue reels quietly → trailer ×3 shareNow → Story. Cover 25,500 ms.
 - Sep 4 — user: audio "like a Nat Geo sports / ESPN special with sound effects". Diagnosis: 0–5.4s and 35.6–37.5s were silent, no SFX. Generated 8 SFX via mirelo_text_to_audio (coast wind + rocket, valley wind, stadium murmur, footsteps, shield hit, whoosh, crowd roar, low drone) ≈ 11cr (longer clips price higher: 6s 1.5cr, 8s 2cr). Builder mixing per plan (ambience per scene, whooshes on cuts, pre-slam dip, clang + roar, no dead air). Running trailer spend ≈ 128cr. Balance 1213.50.
+
+## HIT PLAN (Sep 4, from the Big Game v3 data: 26k views / 385 shares, TikTok avg watch 11.7s)
+- Hook: rocket launch is frame 0; sound pass removes the silent open. Cover: face-off (~27.5s full / ~18.6s TikTok).
+- Captions end with the comment prompt "Braves or Conqs? 👇" (37 TikTok comments came from "pick your side").
+- Cuts: full 37.5s on IG Reel + FB Reel; 24s TikTok edit on TikTok.
+- Timing: post 11:00 AM PT (2nd-best slot; 8h before kickoff) → Story 5:00 PM "tonight" reminder with events link. Old wrong-venue posts: user chose to move on (untouched).
+**Captions (final):**
+IG Reel: Two schools. Two legends. One field. 🏈 / THE BIG GAME — Lompoc Braves vs Cabrillo Conquistadores / 📅 Friday, Sept 4 · 7:00 PM / 📍 Huyck Stadium, 515 W College Ave, Lompoc / Details: link in bio. / Braves or Conqs? 👇 / #Lompoc #BigGame #LompocBraves #CabrilloConqs #FridayNightLights #HighSchoolFootball #LompocLocals #805
+FB Reel: Two schools. Two legends. One field. 🏈 THE BIG GAME — Lompoc Braves vs Cabrillo Conquistadores. Friday, September 4, 7:00 PM at Huyck Stadium, 515 W College Ave, Lompoc. Details: lompoclocals.com/events · Braves or Conqs? 👇
+TikTok: THE BIG GAME 🏈 Braves vs Conqs · TONIGHT 7 PM · Huyck Stadium, Lompoc. Braves or Conqs? 👇 lompoclocals.com/events #Lompoc #BigGame #FridayNightLights #HighSchoolFootball #805
+IG Story (5 PM): "TONIGHT · 7 PM · Huyck Stadium 🏈 Braves or Conqs?" · link → https://www.lompoclocals.com/events
