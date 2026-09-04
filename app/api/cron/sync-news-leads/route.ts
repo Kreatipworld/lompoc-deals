@@ -51,8 +51,13 @@ export async function GET(request: Request) {
         cache: "no-store",
       })
       let res = await get()
-      // Publishers throttle bursts; one polite retry covers the 429s we've seen.
-      if (res.status === 429 || res.status >= 500) { await new Promise((r) => setTimeout(r, 2500)); res = await get() }
+      // Publishers throttle bursts from datacenter IPs (Lee Enterprises 429s the
+      // Record feed most mornings). Back off up to three times with growing waits.
+      for (const waitMs of [6000, 15000, 30000]) {
+        if (res.status !== 429 && res.status < 500) break
+        await new Promise((r) => setTimeout(r, waitMs))
+        res = await get()
+      }
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const items = parseRssItems(await res.text())
       const local = feed.needsKeyword
