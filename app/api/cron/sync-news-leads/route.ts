@@ -7,7 +7,7 @@ import { logCronRun } from "@/lib/cron-log"
 import { parseRssItems } from "@/lib/rss"
 
 export const dynamic = "force-dynamic"
-export const maxDuration = 60
+export const maxDuration = 180
 
 /**
  * Daily harvest of local headlines for the news desk. One request per feed
