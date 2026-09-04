@@ -1,0 +1,57 @@
+<template>
+  <div data-composition-id="s4-field" data-width="1080" data-height="1920" data-duration="3.00" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
+    <style>
+      [data-composition-id="s4-field"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #050308; z-index: 60; }
+      [data-composition-id="s4-field"] .cine-top { top: 0; } [data-composition-id="s4-field"] .cine-bot { bottom: 0; }
+      [data-composition-id="s4-field"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(5,3,8,0) 42%, rgba(5,3,8,0.72) 100%); }
+      [data-composition-id="s4-field"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.10; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s4-field"] .mark { position: absolute; top: 150px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s4-field"] .chip { display: inline-block; background: rgba(8,5,10,0.78); color: #fff; font-weight: 700; font-size: 30px; letter-spacing: 4px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; border-top: 2px solid #efc618; }
+      [data-composition-id="s4-field"] .hero { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,0.7); font-weight: 800; font-size: 120px; line-height: 0.95; letter-spacing: -5px; text-transform: uppercase; will-change: transform; transform-origin: left bottom; }
+      [data-composition-id="s4-field"] .kicker { display: block; margin-bottom: 44px; font-weight: 800; font-size: 44px; letter-spacing: 8px; text-transform: uppercase; line-height: 1; }
+      [data-composition-id="s4-field"] .rule { display: block; margin-top: 22px; width: 180px; height: 8px; border-radius: 4px; }
+      [data-composition-id="s4-field"] .credit { display: block; margin-top: 22px; color: rgba(255,255,255,0.7); font-size: 24px; font-weight: 500; letter-spacing: 1px; }
+      [data-composition-id="s4-field"] .scrim { position: absolute; inset: 0; z-index: 20; background: linear-gradient(to top, rgba(5,3,8,0.94) 0%, rgba(5,3,8,0.62) 32%, rgba(5,3,8,0.0) 60%); }
+      [data-composition-id="s4-field"] .lower { position: absolute; left: 84px; right: 84px; bottom: 21%; z-index: 35; }
+      [data-composition-id="s4-field"] .vidwrap { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s4-field"] video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(0.92) brightness(0.92); }
+    
+      [data-composition-id="s4-field"] .half { position: absolute; left: 0; right: 0; overflow: hidden; }
+      [data-composition-id="s4-field"] .half-top { top: 0; height: 50%; } [data-composition-id="s4-field"] .half-bot { bottom: 0; height: 50%; }
+      [data-composition-id="s4-field"] .half .vidwrap { position: absolute; inset: 0; }
+      [data-composition-id="s4-field"] .half video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+      [data-composition-id="s4-field"] .tint-top { position: absolute; inset: 0; z-index: 15; background: linear-gradient(to bottom, rgba(5,3,8,0.45), rgba(239,198,24,0.10) 55%, rgba(5,3,8,0.75)); }
+      [data-composition-id="s4-field"] .tint-bot { position: absolute; inset: 0; z-index: 15; background: linear-gradient(to top, rgba(5,3,8,0.55), rgba(59,98,214,0.12) 55%, rgba(5,3,8,0.75)); }
+      [data-composition-id="s4-field"] .seam { position: absolute; left: -12%; width: 124%; top: 50%; height: 12px; margin-top: -6px; z-index: 34; background: linear-gradient(to right, #efc618, #fff 50%, #3b62d6); transform-origin: center; will-change: transform; box-shadow: 0 0 40px rgba(255,255,255,0.35); }
+      [data-composition-id="s4-field"] .center { position: absolute; left: 0; right: 0; top: 50%; z-index: 38; text-align: center; transform: translateY(-50%); }
+      [data-composition-id="s4-field"] .center .hero { transform-origin: center; font-size: 140px; text-align: center; }
+      [data-composition-id="s4-field"] .tag { position: absolute; z-index: 36; font-weight: 800; font-size: 40px; letter-spacing: 8px; text-transform: uppercase; }
+      [data-composition-id="s4-field"] .tag-top { left: 84px; top: 300px; color: #efc618; }
+      [data-composition-id="s4-field"] .tag-bot { right: 84px; bottom: 20%; color: #9fb6ff; }
+    
+    </style>
+    <div class="half half-top"><div class="vidwrap" id="s4-top" data-layout-allow-overflow><video id="s4-conq" class="clip" src="public/clip-conq2-stride.mp4" data-start="0" data-duration="3.00" data-track-index="0" muted playsinline></video></div><div class="tint-top"></div></div>
+    <div class="half half-bot"><div class="vidwrap" id="s4-bot" data-layout-allow-overflow><video id="s4-brave" class="clip" src="public/clip-brave-stride.mp4" data-start="0" data-duration="3.00" data-track-index="0" muted playsinline style="transform: scaleX(-1)"></video></div><div class="tint-bot"></div></div>
+    <div class="seam" id="s4-seam" data-layout-allow-overflow></div>
+    <div class="tag tag-top" id="s4-tagtop">Cabrillo</div>
+    <div class="tag tag-bot" id="s4-tagbot">Lompoc</div>
+    <div class="center"><div class="hero" id="s4-hero">One field.</div></div>
+    <div class="vig"></div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative): SEAM 0.10, HERO 0.40 ("One field."), TAGS 0.70; VO "Friday night, the whole town picks a side" runs 1.90→4.60 over the strides
+        const S4 = { SEAM: 0.10, HERO: 0.40, TAGS: 0.70, END: 3.00 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s4-top", { scale: 1.0 }, { scale: 1.06, duration: S4.END, ease: "none" }, 0);
+        tl.fromTo("#s4-bot", { scale: 1.0 }, { scale: 1.06, duration: S4.END, ease: "none" }, 0);
+        tl.fromTo("#s4-seam", { scaleX: 0, rotation: -4 }, { scaleX: 1, rotation: -4, duration: 0.5, ease: "expo.out" }, S4.SEAM);
+        tl.fromTo("#s4-hero", { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "expo.out" }, S4.HERO);
+        tl.fromTo("#s4-tagtop, #s4-tagbot", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.1 }, S4.TAGS);
+        window.__timelines["s4-field"] = tl;
+      })();
+    </script>
+  </div>
+</template>

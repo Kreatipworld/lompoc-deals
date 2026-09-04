@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="s1a-coast" data-width="1080" data-height="1920" data-duration="5.00" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
+  <div data-composition-id="s1a-coast" data-width="1080" data-height="1920" data-duration="3.00" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
     <style>
       [data-composition-id="s1a-coast"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #050308; z-index: 60; }
       [data-composition-id="s1a-coast"] .cine-top { top: 0; } [data-composition-id="s1a-coast"] .cine-bot { bottom: 0; }
@@ -26,7 +26,7 @@
     
     </style>
     <div class="stagewrap" id="s1a-coast-stage" data-layout-allow-overflow>
-      <div class="vidwrap" id="s1a-coast-wrap" data-layout-allow-overflow><video id="s1a-coast-vid" class="clip" src="public/land-cabrillo.mp4" data-start="0" data-duration="5.00" data-media-start="0.00" data-track-index="0" muted playsinline></video></div>
+      <div class="vidwrap" id="s1a-coast-wrap" data-layout-allow-overflow><video id="s1a-coast-vid" class="clip" src="public/land-cabrillo.mp4" data-start="0" data-duration="3.00" data-media-start="1.50" data-track-index="0" muted playsinline></video></div>
       <div class="tint"></div>
       <div class="scrim"></div>
       <div class="chipwrap" id="s1a-coast-chip"><span class="chip">Vandenberg Village</span></div>
@@ -43,7 +43,7 @@
     <script>
       (() => {
         // BEATS (relative): CHIP 0.60, HERO 1.20, RULE 1.45; push 1.0→1.05; push-out in the last 0.28s
-        const B = { CHIP: 0.6 + 0, HERO: 1.2 + 0, RULE: 1.45 + 0, END: 5.00 };
+        const B = { CHIP: 0.2 + 0, HERO: 0.6 + 0, RULE: 0.85 + 0, END: 3.00 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         
         tl.fromTo("#s1a-coast-wrap", { scale: 1.0 }, { scale: 1.05, duration: B.END, ease: "none" }, 0);

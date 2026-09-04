@@ -1,32 +1,32 @@
 <template>
-  <div data-composition-id="s1b-valley" data-width="1080" data-height="1350" data-duration="5.28" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
+  <div data-composition-id="s1b-valley" data-width="1080" data-height="1920" data-duration="3.28" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
     <style>
-      [data-composition-id="s1b-valley"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #050308; z-index: 60; }
+      [data-composition-id="s1b-valley"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #050308; z-index: 60; }
       [data-composition-id="s1b-valley"] .cine-top { top: 0; } [data-composition-id="s1b-valley"] .cine-bot { bottom: 0; }
       [data-composition-id="s1b-valley"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(5,3,8,0) 42%, rgba(5,3,8,0.72) 100%); }
       [data-composition-id="s1b-valley"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.10; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
-      [data-composition-id="s1b-valley"] .mark { position: absolute; top: 100px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s1b-valley"] .mark { position: absolute; top: 150px; right: 84px; width: 96px; height: auto; z-index: 40; }
       [data-composition-id="s1b-valley"] .chip { display: inline-block; background: rgba(8,5,10,0.78); color: #fff; font-weight: 700; font-size: 30px; letter-spacing: 4px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; border-top: 2px solid #efc618; }
-      [data-composition-id="s1b-valley"] .hero { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,0.7); font-weight: 800; font-size: 100px; line-height: 0.95; letter-spacing: -5px; text-transform: uppercase; will-change: transform; transform-origin: left bottom; }
-      [data-composition-id="s1b-valley"] .kicker { display: block; margin-bottom: 44px; font-weight: 800; font-size: 38px; letter-spacing: 8px; text-transform: uppercase; line-height: 1; }
+      [data-composition-id="s1b-valley"] .hero { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,0.7); font-weight: 800; font-size: 120px; line-height: 0.95; letter-spacing: -5px; text-transform: uppercase; will-change: transform; transform-origin: left bottom; }
+      [data-composition-id="s1b-valley"] .kicker { display: block; margin-bottom: 44px; font-weight: 800; font-size: 44px; letter-spacing: 8px; text-transform: uppercase; line-height: 1; }
       [data-composition-id="s1b-valley"] .rule { display: block; margin-top: 22px; width: 180px; height: 8px; border-radius: 4px; }
       [data-composition-id="s1b-valley"] .credit { display: block; margin-top: 22px; color: rgba(255,255,255,0.7); font-size: 24px; font-weight: 500; letter-spacing: 1px; }
       [data-composition-id="s1b-valley"] .scrim { position: absolute; inset: 0; z-index: 20; background: linear-gradient(to top, rgba(5,3,8,0.94) 0%, rgba(5,3,8,0.62) 32%, rgba(5,3,8,0.0) 60%); }
-      [data-composition-id="s1b-valley"] .lower { position: absolute; left: 84px; right: 84px; bottom: 19%; z-index: 35; }
+      [data-composition-id="s1b-valley"] .lower { position: absolute; left: 84px; right: 84px; bottom: 21%; z-index: 35; }
       [data-composition-id="s1b-valley"] .vidwrap { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 50%; }
       [data-composition-id="s1b-valley"] video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(0.92) brightness(0.92); }
     
       [data-composition-id="s1b-valley"] .stagewrap { position: absolute; inset: 0; z-index: 34; will-change: transform, filter; }
       [data-composition-id="s1b-valley"] .tint { position: absolute; inset: 0; z-index: 15; mix-blend-mode: soft-light; background: radial-gradient(ellipse 80% 70% at 50% 30%, #9fb6ff 0%, rgba(0,0,0,0) 70%); opacity: 0.5; }
-      [data-composition-id="s1b-valley"] .chipwrap { position: absolute; left: 84px; top: 250px; z-index: 36; opacity: 0; }
+      [data-composition-id="s1b-valley"] .chipwrap { position: absolute; left: 84px; top: 300px; z-index: 36; opacity: 0; }
       [data-composition-id="s1b-valley"] .chip { border-top-color: #9fb6ff; }
-      [data-composition-id="s1b-valley"] .hero { font-size: 90px; }
+      [data-composition-id="s1b-valley"] .hero { font-size: 110px; }
       [data-composition-id="s1b-valley"] .rule { background: #9fb6ff; }
       [data-composition-id="s1b-valley"] .dip { position: absolute; inset: 0; z-index: 58; background: #050308; opacity: 0; }
     
     </style>
     <div class="stagewrap" id="s1b-valley-stage" data-layout-allow-overflow>
-      <div class="vidwrap" id="s1b-valley-wrap" data-layout-allow-overflow><video id="s1b-valley-vid" class="clip" src="public/land-lompoc.mp4" data-start="0" data-duration="5.28" data-media-start="0.00" data-track-index="0" muted playsinline></video></div>
+      <div class="vidwrap" id="s1b-valley-wrap" data-layout-allow-overflow><video id="s1b-valley-vid" class="clip" src="public/land-lompoc.mp4" data-start="0" data-duration="3.28" data-media-start="1.00" data-track-index="0" muted playsinline></video></div>
       <div class="tint"></div>
       <div class="scrim"></div>
       <div class="chipwrap" id="s1b-valley-chip"><span class="chip">Lompoc Valley</span></div>
@@ -43,7 +43,7 @@
     <script>
       (() => {
         // BEATS (relative): CHIP 0.60, HERO 1.20, RULE 1.45; push 1.0→1.05; push-in at 0; dip to black in the last 0.25s
-        const B = { CHIP: 0.6 + 0.28, HERO: 1.2 + 0.28, RULE: 1.45 + 0.28, END: 5.28 };
+        const B = { CHIP: 0.2 + 0.28, HERO: 0.6 + 0.28, RULE: 0.85 + 0.28, END: 3.28 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#s1b-valley-stage", { xPercent: 100, filter: "blur(12px)" }, { xPercent: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, 0);
         tl.fromTo("#s1b-valley-wrap", { scale: 1.0 }, { scale: 1.05, duration: B.END, ease: "none" }, 0);

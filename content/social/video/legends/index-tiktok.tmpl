@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @font-face { font-family: "Plus Jakarta Sans"; src: url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #050308; }
+      body { font-family: "Plus Jakarta Sans", sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #root > div[data-composition-src] { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- TWO LEGENDS, ONE FIELD — Big Game trailer. Opens on the two "land" clips (coast / valley), then the reveals. Lompoc Braves vs Cabrillo Conquistadores, Fri Sep 4 2026 7:00 PM, HUYCK STADIUM (515 W College Ave). 30.0s -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.00" data-width="1080" data-height="1920">
+      <div id="el-s1a-coast" data-composition-id="s1a-coast" data-composition-src="compositions-tt/s1a-coast.html" data-start="0.00" data-duration="3.00" data-track-index="1"></div>
+      <div id="el-s1b-valley" data-composition-id="s1b-valley" data-composition-src="compositions-tt/s1b-valley.html" data-start="2.72" data-duration="3.28" data-track-index="2"></div>
+      <div id="el-s2-conq" data-composition-id="s2-conq" data-composition-src="compositions-tt/s2-conq.html" data-start="6.00" data-duration="3.50" data-track-index="1"></div>
+      <div id="el-s3-brave" data-composition-id="s3-brave" data-composition-src="compositions-tt/s3-brave.html" data-start="9.50" data-duration="3.50" data-track-index="1"></div>
+      <div id="el-s4-field" data-composition-id="s4-field" data-composition-src="compositions-tt/s4-field.html" data-start="13.00" data-duration="3.00" data-track-index="1"></div>
+      <div id="el-s5-faceoff" data-composition-id="s5-faceoff" data-composition-src="compositions-tt/s5-faceoff.html" data-start="16.00" data-duration="4.50" data-track-index="1"></div>
+      <div id="el-s6-end" data-composition-id="s6-end" data-composition-src="compositions-tt/s6-end.html" data-start="20.50" data-duration="3.50" data-track-index="1"></div>
+
+      <!-- VO: Arthur read split to the beats (file onsets: Two 0.00 · legends 1.76 · field 3.02 · Friday 4.80 · Big Game 7.92 · Seven 9.54 · This is 12.16). Bed: 30s trailer bed, final hit is the button. -->
+      <audio id="vo-a" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="6.30" data-media-start="0.00" data-duration="1.50" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="9.80" data-media-start="1.76" data-duration="1.20" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-c" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="13.30" data-media-start="3.02" data-duration="1.55" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-e" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="16.30" data-media-start="7.92" data-duration="1.30" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-f" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="18.60" data-media-start="9.54" data-duration="2.60" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-g" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="21.30" data-media-start="12.16" data-duration="1.40" data-track-index="10" data-volume="1"></audio>
+      <audio id="sfx-coast" class="clip" data-audio-group="sfx" src="public/sfx/coast-wind-rocket.wav" data-start="0.00" data-media-start="0" data-duration="2.98" data-track-index="12" data-volume="0.8" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.3,"v":0.8},{"t":2.6,"v":0.8},{"t":2.98,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-drone1" class="clip" data-audio-group="sfx" src="public/sfx/low-drone.wav" data-start="0.00" data-media-start="0" data-duration="6.00" data-track-index="13" data-volume="0.45" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.4,"v":0.45},{"t":5.5,"v":0.45},{"t":6.0,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-valley" class="clip" data-audio-group="sfx" src="public/sfx/valley-wind-birds.wav" data-start="3.00" data-media-start="0" data-duration="3.00" data-track-index="12" data-volume="0.45" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.3,"v":0.45},{"t":2.6,"v":0.45},{"t":3.0,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-whoosh1" class="clip" data-audio-group="sfx" src="public/sfx/whoosh.wav" data-start="2.72" data-media-start="0" data-duration="2.00" data-track-index="15" data-volume="0.55" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.55},{"t":1.2,"v":0.55},{"t":2.0,"v":0}]}]}'></audio>
+      <audio id="sfx-whoosh2" class="clip" data-audio-group="sfx" src="public/sfx/whoosh.wav" data-start="5.75" data-media-start="0" data-duration="2.00" data-track-index="15" data-volume="0.55" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.55},{"t":1.2,"v":0.55},{"t":2.0,"v":0}]}]}'></audio>
+      <audio id="sfx-whoosh3" class="clip" data-audio-group="sfx" src="public/sfx/whoosh.wav" data-start="12.85" data-media-start="0" data-duration="2.00" data-track-index="15" data-volume="0.55" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.55},{"t":1.2,"v":0.55},{"t":2.0,"v":0}]}]}'></audio>
+      <audio id="sfx-whoosh4" class="clip" data-audio-group="sfx" src="public/sfx/whoosh.wav" data-start="15.85" data-media-start="0" data-duration="2.00" data-track-index="15" data-volume="0.55" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.55},{"t":1.2,"v":0.55},{"t":2.0,"v":0}]}]}'></audio>
+      <audio id="sfx-whoosh5" class="clip" data-audio-group="sfx" src="public/sfx/whoosh.wav" data-start="20.35" data-media-start="0" data-duration="2.00" data-track-index="15" data-volume="0.55" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.55},{"t":1.2,"v":0.55},{"t":2.0,"v":0}]}]}'></audio>
+      <audio id="sfx-murmur1" class="clip" data-audio-group="sfx" src="public/sfx/stadium-murmur.wav" data-start="6.00" data-media-start="0" data-duration="7.00" data-track-index="12" data-volume="0.59" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.5,"v":0.59},{"t":6.5,"v":0.59},{"t":7.0,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-murmur2" class="clip" data-audio-group="sfx" src="public/sfx/stadium-murmur.wav" data-start="12.50" data-media-start="0" data-duration="4.00" data-track-index="13" data-volume="0.59" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.5,"v":0.59},{"t":1.0,"v":0.35},{"t":3.5,"v":0.35},{"t":4.0,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-murmur3" class="clip" data-audio-group="sfx" src="public/sfx/stadium-murmur.wav" data-start="16.00" data-media-start="0" data-duration="2.60" data-track-index="12" data-volume="0.35" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.35},{"t":2.5,"v":0.04},{"t":2.6,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-steps1" class="clip" data-audio-group="sfx" src="public/sfx/footsteps-turf.wav" data-start="6.40" data-media-start="0" data-duration="3.00" data-track-index="14" data-volume="0.46" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.3,"v":0.46},{"t":2.7,"v":0.46},{"t":3.0,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-steps2" class="clip" data-audio-group="sfx" src="public/sfx/footsteps-turf.wav" data-start="9.90" data-media-start="0" data-duration="3.05" data-track-index="14" data-volume="0.46" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.3,"v":0.46},{"t":2.75,"v":0.46},{"t":3.05,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-steps3" class="clip" data-audio-group="sfx" src="public/sfx/footsteps-turf.wav" data-start="13.40" data-media-start="0" data-duration="2.58" data-track-index="14" data-volume="0.46" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.3,"v":0.46},{"t":2.28,"v":0.46},{"t":2.58,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="sfx-hit" class="clip" data-audio-group="sfx" src="public/sfx/shield-hit.wav" data-start="18.60" data-media-start="0" data-duration="3.00" data-track-index="14" data-volume="0.68"></audio>
+      <audio id="sfx-roar" class="clip" data-audio-group="sfx" src="public/sfx/crowd-roar.wav" data-start="18.75" data-media-start="0" data-duration="5.25" data-track-index="13" data-volume="0.62" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.6,"v":0.62},{"t":1.75,"v":0.62},{"t":2.25,"v":0.35},{"t":4.75,"v":0.35},{"t":5.25,"v":0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.35}'></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0.00" data-media-start="6.00" data-duration="24.00" data-track-index="11" data-volume="0.56" data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.4}'></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

@@ -43,7 +43,7 @@
     <script>
       (() => {
         // BEATS (relative): CHIP 0.60, HERO 1.20, RULE 1.45; push 1.0→1.05; push-in at 0; dip to black in the last 0.25s
-        const B = { CHIP: 0.60 + 0.28, HERO: 1.20 + 0.28, RULE: 1.45 + 0.28, END: 5.28 };
+        const B = { CHIP: 0.6 + 0.28, HERO: 1.2 + 0.28, RULE: 1.45 + 0.28, END: 5.28 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#s1b-valley-stage", { xPercent: 100, filter: "blur(12px)" }, { xPercent: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, 0);
         tl.fromTo("#s1b-valley-wrap", { scale: 1.0 }, { scale: 1.05, duration: B.END, ease: "none" }, 0);

@@ -43,7 +43,7 @@
     <script>
       (() => {
         // BEATS (relative): CHIP 0.60, HERO 1.20, RULE 1.45; push 1.0→1.05; push-out in the last 0.28s
-        const B = { CHIP: 0.60 + 0, HERO: 1.20 + 0, RULE: 1.45 + 0, END: 5.00 };
+        const B = { CHIP: 0.6 + 0, HERO: 1.2 + 0, RULE: 1.45 + 0, END: 5.00 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         
         tl.fromTo("#s1a-coast-wrap", { scale: 1.0 }, { scale: 1.05, duration: B.END, ease: "none" }, 0);
