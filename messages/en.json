@@ -2101,7 +2101,8 @@
     "directory": "Directory",
     "account": "Account",
     "thisWeek": "This Week",
-    "explore": "Explore"
+    "explore": "Explore",
+    "map": "Map"
   },
   "eventsSection": {
     "heading": "Upcoming events",

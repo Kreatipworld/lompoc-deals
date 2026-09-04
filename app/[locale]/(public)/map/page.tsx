@@ -30,17 +30,17 @@ export default async function MapPage() {
     <main>
       {/* Header — title, context, and quick jumps into the journey */}
       <section className="border-b bg-gradient-to-b from-accent/30 to-transparent">
-        <div className="mx-auto max-w-7xl px-4 py-8">
+        <div className="mx-auto max-w-7xl px-4 py-3 sm:py-8">
           <div className="mb-1 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary">
             <MapPin className="h-3.5 w-3.5" />
             Lompoc, California
           </div>
-          <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="font-display text-2xl font-bold tracking-tight sm:text-4xl">
             {t("title")}
           </h1>
-          <p className="mt-1 max-w-2xl text-muted-foreground">{t("subtitle")}</p>
+          <p className="mt-1 hidden max-w-2xl text-muted-foreground sm:block">{t("subtitle")}</p>
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 hidden flex-wrap gap-2 sm:flex">
             {[
               { href: "/businesses", label: t("linkBusinesses"), Icon: Store },
               { href: "/", label: t("linkDeals"), Icon: Tag },
@@ -60,7 +60,9 @@ export default async function MapPage() {
       </section>
 
       {/* The interactive map */}
-      <div className="h-[72vh] min-h-[460px] overflow-hidden">
+      {/* Phones: the map owns the screen between the site header (4rem), the page title (~4.5rem) and the bottom bar (4rem)
+          so all of Lompoc is visible without scrolling. Larger screens keep the 72vh stage. */}
+      <div className="h-[calc(100dvh-12.5rem)] min-h-[420px] overflow-hidden sm:h-[72vh] sm:min-h-[460px]">
         <LompocInteractiveMapLoader />
       </div>
 

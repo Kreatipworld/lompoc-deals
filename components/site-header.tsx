@@ -10,7 +10,8 @@ import { getTranslations } from "next-intl/server"
 import { hasEventToday } from "@/lib/nav-today"
 
 /**
- * Four tabs, one search, one button. Ordered by what engaged sessions actually
+ * Five tabs, one search, one button. The map is one of the best features (user, Sep 4)
+ * so it keeps its own tab. Ordered by what engaged sessions actually
  * do (business pages, deals, search) and by what drives our traffic (this week's
  * events). Map, Hotels, Neighborhood, Locals live inside Explore, the mobile
  * "More" group, and the footer — nothing was removed from the site.
@@ -42,6 +43,7 @@ export async function SiteHeader() {
           </NavLink>
           <NavLink href="/deals">{t("deals")}</NavLink>
           <NavLink href="/businesses">{t("explore")}</NavLink>
+          <NavLink href="/map">{t("map")}</NavLink>
           <NavLink href="/news">{t("news")}</NavLink>
         </nav>
 

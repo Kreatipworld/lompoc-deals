@@ -2101,7 +2101,8 @@
     "directory": "Directorio",
     "account": "Cuenta",
     "thisWeek": "Esta semana",
-    "explore": "Explorar"
+    "explore": "Explorar",
+    "map": "Mapa"
   },
   "eventsSection": {
     "heading": "Próximos eventos",

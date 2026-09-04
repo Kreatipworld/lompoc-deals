@@ -20,11 +20,11 @@ export function MobileMenu() {
     { href: "/this-week", icon: CalendarDays, label: t("thisWeek") },
     { href: "/deals", icon: Tag, label: t("deals") },
     { href: "/businesses", icon: LayoutGrid, label: t("explore") },
+    { href: "/map", icon: Map, label: t("map") },
     { href: "/news", icon: Newspaper, label: t("news") },
     { href: "/search", icon: Search, label: t("search") },
   ]
   const moreItems = [
-    { href: "/map", icon: Map, label: t("map") },
     { href: "/hotels", icon: BedDouble, label: t("hotels") },
     { href: "/feed", icon: ShoppingBag, label: t("neighborhood") },
     { href: "/things-to-do", icon: Compass, label: t("thingsToDo") },
