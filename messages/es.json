@@ -55,7 +55,7 @@
   },
   "footer": {
     "tagline": "Conectando a vecinos, negocios y visitantes en todo el Valle de Lompoc.",
-    "browse": "Explorar",
+    "browse": "Ver todo",
     "latestDeals": "Últimas ofertas",
     "businessDirectory": "Directorio de negocios",
     "mapView": "Ver en mapa",
@@ -84,7 +84,7 @@
   },
   "home": {
     "metaTitle": "Negocios, Ofertas y Qué Hacer en Lompoc",
-    "metaDescription": "Explora el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
+    "metaDescription": "Descubre el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
     "location": "Lompoc, California",
     "heroTitle": "Todo Lompoc",
     "heroHighlight": "en un solo lugar",
@@ -99,12 +99,12 @@
     "activitiesHeading": "Qué hacer en Lompoc",
     "activitiesSubheading": "Aventuras, historia y joyas escondidas — todo al alcance de la mano",
     "seeAllActivities": "Ver todas las actividades",
-    "exploreMap": "Explorar el mapa",
-    "headline": "Explora Lompoc,",
+    "exploreMap": "Ver el mapa",
+    "headline": "Descubre Lompoc,",
     "headlineHighlight": "a tu manera.",
     "subheadline": "Descubre negocios locales, ofertas y qué hacer — todo en un solo lugar.",
-    "directorySubheadline": "Explora Lompoc por categoría — restaurantes, tiendas, servicios y más.",
-    "exploreCategories": "Explorar por categoría",
+    "directorySubheadline": "Descubre Lompoc por categoría — restaurantes, tiendas, servicios y más.",
+    "exploreCategories": "Ver por categoría",
     "popularInLompoc": "Popular en Lompoc",
     "carouselPrev": "Desplazar atrás",
     "carouselNext": "Desplazar adelante",
@@ -160,7 +160,7 @@
     "howItWorks": {
       "title": "¿Cómo funciona?",
       "subtitle": "Conectando a los locales de Lompoc con sus negocios desde el primer día.",
-      "step1Title": "Explora las ofertas locales",
+      "step1Title": "Descubre las ofertas locales",
       "step1Body": "Encuentra cupones y especiales de restaurantes, tiendas, salones y más — todo en un solo lugar, todo en Lompoc.",
       "step2Title": "Reclama tu oferta",
       "step2Body": "Toca \"Reclamar\", muestra tu teléfono en la caja y ahorra. Sin impresiones ni aplicaciones adicionales.",
@@ -185,7 +185,7 @@
       "title": "¿Preguntas?",
       "subtitle": "Todo lo que necesitas saber sobre Lompoc Locals.",
       "q1": "¿Es gratis usar Lompoc Locals?",
-      "a1": "Sí, completamente. Explorar ofertas y canjearlas siempre es gratis para los residentes de Lompoc. No se necesita cuenta para explorar.",
+      "a1": "Sí, completamente. Ver ofertas y canjearlas siempre es gratis para los residentes de Lompoc. No se necesita cuenta para ver.",
       "q2": "¿Cómo reclamo una oferta?",
       "a2": "Haz clic en \"Reclamar oferta\" en cualquier promoción, luego muestra tu teléfono en el negocio.",
       "q3": "¿Cómo publican ofertas los negocios?",
@@ -220,11 +220,11 @@
   },
   "meta": {
     "homeTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer en Lompoc, CA",
-    "homeDescription": "Explora el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
+    "homeDescription": "Descubre el directorio de negocios locales de Lompoc, CA — restaurantes, tiendas, servicios y más. Navega por categoría, descubre ofertas y apoya lo local.",
     "homeOgTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer",
-    "homeOgDescription": "Descubre Lompoc, CA por categoría — restaurantes, boutiques, servicios, salud y belleza, y más. Todo local, todo gratis para explorar.",
+    "homeOgDescription": "Descubre Lompoc, CA por categoría — restaurantes, boutiques, servicios, salud y belleza, y más. Todo local, todo gratis para ver.",
     "categoryTitle": "Lompoc {category} — Negocios y Ofertas Locales",
-    "categoryDescription": "Explora negocios y ofertas de {category} en Lompoc, CA. Encuentra tiendas, servicios y cupones locales de {categoryLower} — actualizados diariamente.",
+    "categoryDescription": "Descubre negocios y ofertas de {category} en Lompoc, CA. Encuentra tiendas, servicios y cupones locales de {categoryLower} — actualizados diariamente.",
     "siteKeywords": "directorio local lompoc, negocios lompoc, qué hacer en lompoc, lompoc ca, ofertas lompoc, lompoc deals"
   },
   "auth": {
@@ -261,11 +261,11 @@
     },
     "signupLanding": {
       "metaTitle": "Registrarse",
-      "metaDescription": "Únete a Lompoc Locals — explora ofertas, guarda favoritos o publica tu negocio.",
+      "metaDescription": "Únete a Lompoc Locals — descubre ofertas, guarda favoritos o publica tu negocio.",
       "heading": "Únete a Lompoc Locals",
       "subheading": "Sin cargos por oferta. Sin cargos ocultos. Sin anuncios.",
       "localTitle": "Soy un residente",
-      "localBody": "Explora ofertas, guarda favoritos y sigue negocios locales. Siempre gratis.",
+      "localBody": "Descubre ofertas, guarda favoritos y sigue negocios locales. Siempre gratis.",
       "localCta": "Empieza gratis",
       "businessTitle": "Tengo un negocio",
       "businessBody": "Publica ofertas y anuncios, llega al correo del lunes, mira tus números. Membresía Growth, $39.99/mes.",
@@ -340,10 +340,10 @@
     "noDealsSubtitle": "Vuelve pronto para ver nuevas ofertas de negocios locales.",
     "page": {
       "metaTitle": "Ofertas y Cupones en Lompoc — Especiales Locales",
-      "metaDescription": "Explora ofertas y cupones actuales de negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Actualizadas a diario, gratis para canjear.",
+      "metaDescription": "Descubre ofertas y cupones actuales de negocios en Lompoc, CA — restaurantes, salones, servicios, tiendas y más. Actualizadas a diario, gratis para canjear.",
       "metaKeywords": "ofertas lompoc,cupones lompoc,especiales lompoc,descuentos lompoc,lompoc ca deals,lompoc deals",
       "ogTitle": "Ofertas y Cupones en Lompoc — Especiales Locales Actualizados a Diario",
-      "ogDescription": "Explora ofertas actuales de negocios en Lompoc, CA. Gratis para canjear — sin tarjeta de crédito.",
+      "ogDescription": "Descubre ofertas actuales de negocios en Lompoc, CA. Gratis para canjear — sin tarjeta de crédito.",
       "ogImageAlt": "Lompoc, California",
       "heading": "Ofertas y Cupones",
       "noDeals": "No se encontraron ofertas activas por ahora — ¡vuelve pronto!",
@@ -389,12 +389,12 @@
     "metaTitle": "Actividades y Atracciones en Lompoc",
     "metaDescription": "Descubre las mejores cosas que hacer en Lompoc, CA — misiones históricas, campos de flores, cata de vinos, playas, murales y aventuras al aire libre. Actualizado por locales.",
     "metaOgTitle": "Actividades y Atracciones en Lompoc",
-    "metaOgDescription": "Explora Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más.",
+    "metaOgDescription": "Descubre Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más.",
     "heading": "Qué hacer en Lompoc",
     "all": "Todo",
     "empty": "No encontramos actividades. ¡Vuelve pronto!",
     "featured": "Destacado",
-    "mapCtaTitle": "Explora el mapa",
+    "mapCtaTitle": "Descubre el mapa",
     "mapCtaSub": "Mira actividades y negocios marcados en el mapa de Lompoc.",
     "openMap": "Abrir mapa",
     "catOutdoors": "Aire libre",
@@ -489,7 +489,7 @@
     "milesToDowntown": "a {miles} mi del centro",
     "filterEmptyTitle": "Ningún hotel coincide con esos filtros.",
     "filterClear": "Quitar filtros",
-    "aboutWineCta": "Explora las vinícolas",
+    "aboutWineCta": "Descubre las vinícolas",
     "aboutExploreCta": "Ver qué hacer",
     "dealsHookTitle": "¿De visita esta semana?",
     "dealsHookBody": "Los restaurantes y tiendas de Lompoc publican ofertas toda la semana — mira qué hay mientras estás aquí.",
@@ -564,13 +564,13 @@
   },
   "map": {
     "title": "Negocios en el mapa",
-    "subtitle": "Explora negocios locales en Lompoc, CA",
+    "subtitle": "Descubre negocios locales en Lompoc, CA",
     "viewDeal": "Ver oferta",
-    "metaTitle": "Explora Lompoc — Mapa Interactivo",
+    "metaTitle": "Descubre Lompoc — Mapa Interactivo",
     "metaDescription": "Descubre Lompoc, California en un mapa 3D inmersivo. Hoteles, viñedos, sitios históricos, aventuras al aire libre y más — todo en un solo lugar.",
-    "exploreHeading": "Explora Lompoc de otra forma",
+    "exploreHeading": "Descubre Lompoc de otra forma",
     "exploreSub": "¿Prefieres navegar? Entra al directorio, las ofertas o los eventos.",
-    "browseByCategory": "Explorar por categoría",
+    "browseByCategory": "Ver por categoría",
     "linkBusinesses": "Todos los negocios",
     "linkDeals": "Últimas ofertas",
     "linkEvents": "Qué hacer"
@@ -680,7 +680,7 @@
       "h2Seconds": "30 segundos.",
       "subtitle": "Puedes estar en vivo en Lompoc Locals antes de que se enfríe tu café.",
       "ctaList": "Anuncia tu negocio",
-      "ctaBrowse": "o primero explora las ofertas →"
+      "ctaBrowse": "o primero descubre las ofertas →"
     }
   },
   "partners": {
@@ -692,7 +692,7 @@
       "kicker": "Para negocios de Lompoc y Vandenberg",
       "h1": "Que te encuentren los vecinos",
       "h1Italic": "que ya te están buscando.",
-      "subtitle": "Lompoc Locals es el centro local #1 de Lompoc y Vandenberg — miles de vecinos exploran negocios, eventos y ofertas cada mes. Aquí es donde te encuentran.",
+      "subtitle": "Lompoc Locals es el centro local #1 de Lompoc y Vandenberg — miles de vecinos descubren negocios, eventos y ofertas cada mes. Aquí es donde te encuentran.",
       "ctaClaim": "Reclama tu página",
       "ctaLive": "Ver el sitio en vivo",
       "trustLine": "Listo en 3 minutos · Cancela cuando quieras · Vecinos reales, números reales",
@@ -738,7 +738,7 @@
       "digestBody": "Un correo estilo periódico para cada suscriptor, cada semana — y los socios aparecen destacados ahí.",
       "mapTag": "El mapa local",
       "mapTitle": "Tu punto, donde buscan",
-      "mapBody": "Los vecinos exploran el mapa para encontrar lo que tienen cerca. Tu negocio, marcado y listo.",
+      "mapBody": "Los vecinos descubren el mapa para encontrar lo que tienen cerca. Tu negocio, marcado y listo.",
       "bilingualTag": "Inglés y español",
       "bilingualTitle": "Todo Lompoc",
       "bilingualBody": "Cada página funciona en ambos idiomas — llegas a todo el pueblo, no solo a la mitad.",
@@ -775,7 +775,7 @@
     },
     "guide": {
       "eyebrow": "Ve la historia completa",
-      "h2": "Explora la guía completa",
+      "h2": "Descubre la guía completa",
       "subtitle": "Toda la propuesta — alcance, el sistema de cupones, tu panel y precios — en una presentación interactiva. Desliza o usa las flechas.",
       "openFull": "Abrir en pantalla completa ↗"
     },
@@ -1129,7 +1129,7 @@
   },
   "feed": {
     "metaTitle": "Vecindario de Lompoc — Anuncios y ventas de garaje",
-    "metaDescription": "Explora el feed del vecindario de Lompoc: artículos en venta, ventas de patio, información del vecindario y próximos eventos de tus vecinos.",
+    "metaDescription": "Descubre el feed del vecindario de Lompoc: artículos en venta, ventas de patio, información del vecindario y próximos eventos de tus vecinos.",
     "heading": "Lo que está pasando en Lompoc",
     "postLink": "Publicar en el vecindario →",
     "filterAll": "Todo",
@@ -1249,7 +1249,7 @@
   "businesses": {
     "directory": {
       "metaTitle": "Directorio de Negocios de Lompoc — Negocios Locales",
-      "metaDescription": "Explora negocios en Lompoc, CA por categoría — restaurantes, salones, talleres, tiendas, servicios y más. Encuentra ofertas de los negocios locales que ya conoces.",
+      "metaDescription": "Descubre negocios en Lompoc, CA por categoría — restaurantes, salones, talleres, tiendas, servicios y más. Encuentra ofertas de los negocios locales que ya conoces.",
       "statBarBusinesses": "{count} negocios",
       "statBarActiveDeals": "{count} ofertas activas",
       "businessSingular": "negocio",
@@ -1262,7 +1262,7 @@
       "ctaHeading": "¿Tienes un negocio en Lompoc?",
       "ctaBody": "Aparece en el directorio como miembro Growth — agrega tu horario, fotos y ofertas, y deja que los locales te encuentren primero.",
       "ctaListFree": "Hazte miembro",
-      "ctaBrowseDeals": "Explorar ofertas activas",
+      "ctaBrowseDeals": "Ver ofertas activas",
       "heading": "Directorio de negocios",
       "headingGeo": "Directorio de Negocios de Lompoc"
     },
@@ -1270,7 +1270,7 @@
       "metaTitleSuffix": "Lompoc, CA",
       "metaNotFound": "Negocio no encontrado",
       "metaOgSuffix": "",
-      "metaFallbackDescription": "Explora las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
+      "metaFallbackDescription": "Descubre las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
       "metaOgFallback": "Ofertas actuales de {name} en Lompoc, CA. Gratis para canjear.",
       "breadcrumbHome": "Ofertas",
       "trustActiveItem": "{count} {label} vigentes",
@@ -1903,7 +1903,7 @@
     "tags": "Etiquetas",
     "backToBlog": "Regresar al blog",
     "lookingForDeals": "¿Buscas ofertas en Lompoc?",
-    "lookingForDealsBody": "Explora cupones, especiales y anuncios de negocios locales.",
+    "lookingForDealsBody": "Descubre cupones, especiales y anuncios de negocios locales.",
     "browseDeals": "Ver ofertas",
     "whatsHappening": "¿Quieres saber qué pasa en Lompoc?",
     "whatsHappeningBody": "Lanzamientos de cohetes, mercados, festivales y eventos comunitarios — el calendario completo de eventos de Lompoc, actualizado a diario.",
@@ -1953,7 +1953,7 @@
     "subtitle": "Tus ofertas guardadas, cupones y preferencias",
     "notifDisabledBanner": "Notificaciones de ofertas desactivadas. Puedes reactivarlas abajo.",
     "myFavorites": "Mis favoritos",
-    "browseDeals": "Explorar ofertas",
+    "browseDeals": "Ver ofertas",
     "manageDigest": "Gestionar digest",
     "subscribeToDigest": "Suscribirse al digest",
     "weeklyDigest": "Digest semanal",
@@ -1973,7 +1973,7 @@
     "viewAllFavorites": "Ver los {count} favoritos",
     "activeCoupons": "Cupones activos",
     "noCoupons": "Aún no tienes cupones activos.",
-    "browseToClaim": "Explora ofertas para reclamar una",
+    "browseToClaim": "Descubre ofertas para reclamar una",
     "redemptionHistory": "Historial de canjes",
     "noRedemptions": "Sin canjes aún. Canjea un cupón en un negocio local para verlo aquí.",
     "colDeal": "Oferta",
@@ -2134,7 +2134,7 @@
     "getDirections": "Cómo llegar",
     "backToAll": "Todas las ventas de garaje",
     "gotStuff": "¿También tienes cosas para vender?",
-    "postYourOwn": "Publica tu venta de garaje gratis — no se necesita cuenta para explorar, solo para publicar.",
+    "postYourOwn": "Publica tu venta de garaje gratis — no se necesita cuenta para ver, solo para publicar.",
     "postCta": "Publicar una venta de garaje"
   },
   "garageSaleForm": {
@@ -2280,7 +2280,7 @@
     },
     "description": {
       "title": "Descripción del Servicio",
-      "body": "Lompoc Locals es un directorio de negocios locales y plataforma de promociones al servicio de Lompoc, California y el Valle de Lompoc. El Sitio permite a los negocios locales publicar cupones, especiales y anuncios, y permite a los miembros de la comunidad explorar ofertas, ver un mapa de negocios y suscribirse a un resumen semanal por correo electrónico."
+      "body": "Lompoc Locals es un directorio de negocios locales y plataforma de promociones al servicio de Lompoc, California y el Valle de Lompoc. El Sitio permite a los negocios locales publicar cupones, especiales y anuncios, y permite a los miembros de la comunidad ver ofertas, ver un mapa de negocios y suscribirse a un resumen semanal por correo electrónico."
     },
     "registration": {
       "title": "Registro de Cuenta",
@@ -2525,7 +2525,7 @@
     "next": "Desplazar adelante",
     "allEvents": "Ver el calendario completo",
     "allDeals": "Ver todas las ofertas",
-    "allThings": "Explorar qué hacer",
+    "allThings": "Ver qué hacer",
     "emptyEdition": "La edición de esta semana aún se está armando. Vuelve pronto — publicamos eventos y ofertas toda la semana.",
     "subscribeTitle": "Recíbelo en tu correo",
     "subscribeBody": "Un correo cada lunes por la mañana con todo lo que pasa en Lompoc esa semana. Gratis, y cancelas con un clic.",
@@ -2580,7 +2580,7 @@
     "closeMenu": "Cerrar el menú de navegación",
     "mainNav": "Navegación principal",
     "notifications": "Notificaciones",
-    "browse": "Explorar",
+    "browse": "Ver todo",
     "mostActive": "Más activos",
     "mostActiveHeading": "Donde están las ofertas ahora mismo",
     "mostActiveSub": "Los negocios locales con más ofertas vigentes esta semana.",
@@ -2606,7 +2606,7 @@
     "sidebar": {
       "places": "{count, plural, =1 {1 lugar} other {# lugares}}",
       "sortedByProximity": "Ordenado por cercanía",
-      "clickMarker": "Toca un marcador para explorar",
+      "clickMarker": "Toca un marcador para ver",
       "selected": "Seleccionado",
       "noMatches": "Ningún lugar coincide con tus filtros"
     },
@@ -2648,7 +2648,7 @@
           "sublabel": "Paraíso escondido para surfear y acampar"
         },
         "explore": {
-          "label": "Explora Lompoc",
+          "label": "Descubre Lompoc",
           "sublabel": "Tu aventura empieza aquí"
         }
       }
@@ -2711,16 +2711,16 @@
     "description": "Las ofertas más recientes de los negocios de Lompoc, California: cupones, especiales y anuncios actualizados a diario.",
     "keywords": "Lompoc, Lompoc CA, ofertas en Lompoc, cupones en Lompoc, qué hacer en Lompoc, negocios locales, Vandenberg Valley",
     "ogTitle": "Lompoc Locals — Cupones locales y qué hacer en Lompoc",
-    "ogDescription": "Explora ofertas de negocios de Lompoc, California: restaurantes, salones, servicios y más. Actualizado a diario.",
+    "ogDescription": "Descubre ofertas de negocios de Lompoc, California: restaurantes, salones, servicios y más. Actualizado a diario.",
     "twitterDescription": "Ofertas de negocios de Lompoc, CA: cupones, especiales y anuncios, actualizados a diario.",
     "categoryTitle": "{category} en Lompoc — Negocios locales y ofertas",
-    "categoryDescription": "Explora negocios de {category} en Lompoc, CA: listados locales, ofertas activas y cupones. Actualizado a diario.",
+    "categoryDescription": "Descubre negocios de {category} en Lompoc, CA: listados locales, ofertas activas y cupones. Actualizado a diario.",
     "categoryNotFound": "Categoría",
     "notFoundTitle": "Página no encontrada",
     "notFoundHeading": "No encontrada",
     "notFoundBody": "Esa página no existe — puede que se haya eliminado o que la dirección esté mal escrita.",
     "notFoundHome": "Volver a Lompoc Locals",
-    "notFoundBrowse": "Explorar el directorio"
+    "notFoundBrowse": "Ver el directorio"
   },
   "bizRoad": {},
   "thingsToDo": {
@@ -2729,7 +2729,7 @@
     "heading": "Qué hacer en Lompoc",
     "subheading": "La guía local del Valle de las Flores, siempre al día por Lompoc Locals",
     "intro1": "Lompoc está en la Costa Central de California, entre ranchos y el Pacífico: una misión española totalmente restaurada, salas de cata con algunos de los mejores vinos de clima frío del estado y cohetes que iluminan el cielo desde Vandenberg. Esta guía reúne lo que de verdad vale la pena, y cada parada queda dentro del Valle de Lompoc.",
-    "intro2": "Salta a una sección aquí abajo, o explora el directorio completo de actividades para ver aún más lugares.",
+    "intro2": "Salta a una sección aquí abajo, o descubre el directorio completo de actividades para ver aún más lugares.",
     "introActivitiesLink": "Ver todas las actividades",
     "tocMission": "La Misión",
     "tocWine": "Cata de vinos",
@@ -2773,7 +2773,7 @@
     "eatLinkAll": "Directorio completo de comida y bebida",
     "weekendTitle": "Hazlo este fin de semana",
     "weekendBody": "Nuestro calendario de eventos sigue lo que pasa en todo el Valle de Lompoc — mercados, música en vivo, lanzamientos y eventos comunitarios — y Esta Semana reúne lo más destacado. ¿Te quedas a dormir? Tenemos una guía local de todos los hoteles del pueblo.",
-    "weekendLinkEvents": "Explorar eventos",
+    "weekendLinkEvents": "Ver eventos",
     "weekendLinkThisWeek": "Esta semana en Lompoc",
     "weekendLinkHotels": "Dónde hospedarse",
     "subscribeTitle": "Recibe el resumen semanal",
