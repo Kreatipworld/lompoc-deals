@@ -43,26 +43,44 @@ def wrap(cid, dur, bg, css, body, script, A, nomark=False):
 </template>
 """
 
-def s1(A):
-    cid="s1-huyck"; c=f'[data-composition-id="{cid}"]'
+def land_scene(cid, clip, color, chip, hero, A, push_in=False, dip_out=False, dur=5.00, media_start=0.0, rate=1.0):
+    c=f'[data-composition-id="{cid}"]'
     css=f"""
-      {c} .tint {{ position: absolute; inset: 0; z-index: 15; background: linear-gradient(to bottom, rgba(5,3,8,0.35), rgba(5,3,8,0.15) 50%, rgba(5,3,8,0.6)); }}
+      {c} .stagewrap {{ position: absolute; inset: 0; z-index: 34; will-change: transform, filter; }}
+      {c} .tint {{ position: absolute; inset: 0; z-index: 15; mix-blend-mode: soft-light; background: radial-gradient(ellipse 80% 70% at 50% 30%, {color} 0%, rgba(0,0,0,0) 70%); opacity: 0.5; }}
       {c} .chipwrap {{ position: absolute; left: 84px; top: {A['MT']+150}px; z-index: 36; opacity: 0; }}
-      {c} .mapcredit {{ position: absolute; left: 84px; right: 84px; bottom: {A['LB']-2}%; color: rgba(255,255,255,0.78); font-size: 20px; z-index: 36; }}
+      {c} .chip {{ border-top-color: {color}; }}
+      {c} .hero {{ font-size: {A['HERO']-10}px; }}
+      {c} .rule {{ background: {color}; }}
+      {c} .dip {{ position: absolute; inset: 0; z-index: 58; background: #050308; opacity: 0; }}
     """
-    body=f"""    <div class="vidwrap" id="s1-wrap" data-layout-allow-overflow><video id="s1-fly" class="clip" src="public/fly-dive.mp4" data-start="0" data-duration="4.50" data-media-start="3.0" data-track-index="0" muted playsinline></video></div>
-    <div class="tint"></div>
-    <div class="chipwrap" id="s1-chip"><span class="chip">Lompoc, California · Friday night</span></div>
-    <div class="mapcredit" id="s1-credit">Map © Mapbox © OpenStreetMap © Maxar</div>"""
-    script=f"""        // BEATS (relative): CHIP 0.60, hold; dive lands on Huyck at END
-        const S1 = {{ CHIP: 0.60, END: 4.50 }};
-        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
-        tl.fromTo("#s1-wrap", {{ scale: 1.0 }}, {{ scale: 1.03, duration: S1.END, ease: "none" }}, 0);
-        tl.fromTo("#s1-chip", {{ autoAlpha: 0, y: 16 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, S1.CHIP);
-        tl.fromTo("#s1-credit", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.4 }}, S1.CHIP + 0.2);"""
-    return cid, 4.50, wrap(cid, 4.50, "#050308", css, body, script, A)
+    body=f"""    <div class="stagewrap" id="{cid}-stage" data-layout-allow-overflow>
+      <div class="vidwrap" id="{cid}-wrap" data-layout-allow-overflow><video id="{cid}-vid" class="clip" src="public/{clip}" data-start="0" data-duration="{dur:.2f}" data-media-start="{media_start:.2f}"{f' data-playback-rate="{rate}"' if rate != 1.0 else ''} data-track-index="0" muted playsinline></video></div>
+      <div class="tint"></div>
+      <div class="scrim"></div>
+      <div class="chipwrap" id="{cid}-chip"><span class="chip">{chip}</span></div>
+      <div class="lower">
+        <div class="hero" id="{cid}-hero">{hero}</div>
+        <span class="rule" id="{cid}-rule"></span>
+      </div>
+    </div>
+    <div class="dip" id="{cid}-dip"></div>"""
+    push_in_js = f'tl.fromTo("#{cid}-stage", {{ xPercent: 100, filter: "blur(12px)" }}, {{ xPercent: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }}, 0);' if push_in else ''
+    push_out_js = '' if dip_out else f'tl.to("#{cid}-stage", {{ xPercent: -100, filter: "blur(12px)", duration: 0.28, ease: "power3.in" }}, B.END - 0.28);'
+    dip_js = f'tl.fromTo("#{cid}-dip", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.25, ease: "power2.in" }}, B.END - 0.25);' if dip_out else ''
+    script=f"""        // BEATS (relative): CHIP 0.60, HERO 1.20, RULE 1.45; push 1.0→1.05; {'push-in at 0' if push_in else 'push-out in the last 0.28s'}{'; dip to black in the last 0.25s' if dip_out else ''}
+        const B = {{ CHIP: 0.60 + {0.28 if push_in else 0}, HERO: 1.20 + {0.28 if push_in else 0}, RULE: 1.45 + {0.28 if push_in else 0}, END: {dur:.2f} }};
+        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power4.out", duration: 0.5 }} }});
+        {push_in_js}
+        tl.fromTo("#{cid}-wrap", {{ scale: 1.0 }}, {{ scale: 1.05, duration: B.END, ease: "none" }}, 0);
+        tl.fromTo("#{cid}-chip", {{ autoAlpha: 0, y: 16 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, B.CHIP);
+        tl.fromTo("#{cid}-hero", {{ autoAlpha: 0, scale: 1.12 }}, {{ autoAlpha: 1, scale: 1, duration: 0.42, ease: "expo.out" }}, B.HERO);
+        tl.fromTo("#{cid}-rule", {{ autoAlpha: 0, scaleX: 0 }}, {{ autoAlpha: 1, scaleX: 1, duration: 0.45, ease: "power3.out", transformOrigin: "left center" }}, B.RULE);
+        {push_out_js}
+        {dip_js}"""
+    return cid, dur, wrap(cid, dur, "#050308", css, body, script, A)
 
-def hero_scene(cid, clip, color, kicker, hero, A, mirror=False):
+def hero_scene(cid, clip, color, kicker, hero, A, mirror=False, frm=""):
     c=f'[data-composition-id="{cid}"]'
     css=f"""
       {c} .tint {{ position: absolute; inset: 0; z-index: 15; mix-blend-mode: soft-light; background: radial-gradient(ellipse 80% 70% at 50% 30%, {color} 0%, rgba(0,0,0,0) 70%); opacity: 0.55; }}
@@ -70,12 +88,13 @@ def hero_scene(cid, clip, color, kicker, hero, A, mirror=False):
       {c} .rule {{ background: {color}; }}
       {c} .hero {{ font-size: {A['HERO']-10}px; }}
       {c} .kickwrap {{ display: block; opacity: 0; }}
+      {c} .fromchip {{ display: inline-block; margin-bottom: 26px; background: {color}; color: #0a060c; font-weight: 800; font-size: 26px; letter-spacing: 3px; padding: 10px 18px; border-radius: 8px; text-transform: uppercase; }}
     """
     body=f"""    <div class="vidwrap" id="{cid}-wrap" data-layout-allow-overflow><video id="{cid}-vid" class="clip" src="public/{clip}" data-start="0" data-duration="5.00" data-track-index="0" muted playsinline{' style="transform: scaleX(-1)"' if mirror else ''}></video></div>
     <div class="tint"></div>
     <div class="scrim"></div>
     <div class="lower">
-      <span class="kickwrap" id="{cid}-kick" data-layout-allow-overlap><span class="kicker" data-layout-allow-overlap>{kicker}</span></span>
+      <span class="kickwrap" id="{cid}-kick" data-layout-allow-overlap><span class="kicker" data-layout-allow-overlap>{kicker}</span><span class="fromchip" id="{cid}-from">{frm}</span></span>
       <div class="hero" id="{cid}-hero">{hero}</div>
       <span class="rule" id="{cid}-rule"></span>
     </div>"""
@@ -210,8 +229,8 @@ def s6(A):
 
 def index(A, comp_dir, entries):
     H=A['H']
-    hosts="\n".join(f'      <div id="el-{cid}" data-composition-id="{cid}" data-composition-src="{comp_dir}/{cid}.html" data-start="{st:.2f}" data-duration="{d:.2f}" data-track-index="1"></div>' for cid,st,d in entries)
-    vo=[("vo-a",4.80,0.00,1.50),("vo-b",9.80,1.76,1.20),("vo-c",14.80,3.02,1.55),("vo-d",16.40,4.80,2.70),("vo-e",19.80,7.92,1.30),("vo-f",21.60,9.54,2.60),("vo-g",25.00,12.16,1.40)]
+    hosts="\n".join(f'      <div id="el-{cid}" data-composition-id="{cid}" data-composition-src="{comp_dir}/{cid}.html" data-start="{st:.2f}" data-duration="{d:.2f}" data-track-index="{2 if cid=="s1b-valley" else 1}"></div>' for cid,st,d in entries)
+    vo=[("vo-a",10.30,0.00,1.50),("vo-b",15.30,1.76,1.20),("vo-c",20.30,3.02,1.55),("vo-d",21.90,4.80,2.70),("vo-e",25.30,7.92,1.30),("vo-f",27.10,9.54,2.60),("vo-g",30.50,12.16,1.40)]
     vos="\n".join(f'      <audio id="{i}" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="{s:.2f}" data-media-start="{m:.2f}" data-duration="{d:.2f}" data-track-index="10" data-volume="1"></audio>' for i,s,m,d in vo)
     return f"""<!doctype html>
 <html lang="en">
@@ -229,13 +248,13 @@ def index(A, comp_dir, entries):
     </style>
   </head>
   <body>
-    <!-- TWO LEGENDS, ONE FIELD — Big Game trailer. Lompoc Braves vs Cabrillo Conquistadores, Fri Sep 4 2026 7:00 PM, HUYCK STADIUM (515 W College Ave). 30.0s -->
-    <div id="root" data-composition-id="main" data-start="0" data-duration="32.00" data-width="1080" data-height="{H}">
+    <!-- TWO LEGENDS, ONE FIELD — Big Game trailer. Opens on the two "land" clips (coast / valley), then the reveals. Lompoc Braves vs Cabrillo Conquistadores, Fri Sep 4 2026 7:00 PM, HUYCK STADIUM (515 W College Ave). 30.0s -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="37.50" data-width="1080" data-height="{H}">
 {hosts}
 
       <!-- VO: Arthur read split to the beats (file onsets: Two 0.00 · legends 1.76 · field 3.02 · Friday 4.80 · Big Game 7.92 · Seven 9.54 · This is 12.16). Bed: 30s trailer bed, final hit is the button. -->
 {vos}
-      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="30.00" data-track-index="11" data-volume="0.42" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.4}}'></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="5.50" data-media-start="0" data-duration="30.00" data-track-index="11" data-volume="0.42" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.4}}'></audio>
     </div>
     <script>
       window.__timelines["main"] = gsap.timeline({{ paused: true }});
@@ -245,8 +264,8 @@ def index(A, comp_dir, entries):
 """
 
 for name, A, comp_dir, idx in [("9x16", dict(H=1920,BAR=115,MT=150,HERO=120,SUB=44,LB=21), "compositions", "index.html"), ("4x5", dict(H=1350,BAR=80,MT=100,HERO=100,SUB=38,LB=19), "compositions-4x5", "index-4x5.tmpl")]:
-    scenes=[s1(A), hero_scene("s2-conq","clip-conq-reveal.mp4",GOLD,"Cabrillo","The Conquistador",A), hero_scene("s3-brave","clip-brave-reveal.mp4","#9fb6ff","Lompoc","The Brave",A), s4(A), s5(A), s6(A)]
-    starts=[0.00,4.50,9.50,14.50,19.50,24.00]; entries=[]
+    scenes=[land_scene("s1a-coast","land-cabrillo.mp4",GOLD,"Vandenberg Village","From the coast.",A), land_scene("s1b-valley","land-lompoc.mp4","#9fb6ff","Lompoc Valley","From the valley.",A,push_in=True,dip_out=True,dur=5.28), hero_scene("s2-conq","clip-conq-reveal.mp4",GOLD,"Cabrillo","The Conquistador",A,frm="From Vandenberg Village"), hero_scene("s3-brave","clip-brave-reveal.mp4","#9fb6ff","Lompoc","The Brave",A,frm="From downtown Lompoc"), s4(A), s5(A), s6(A)]
+    starts=[0.00,4.72,10.00,15.00,20.00,25.00,29.50]; entries=[]
     for (cid,dur,html),st in zip(scenes,starts):
         open(f"{P}/{comp_dir}/{cid}.html","w").write(html); entries.append((cid,st,dur))
     open(f"{P}/{idx}","w").write(index(A,comp_dir,entries))
