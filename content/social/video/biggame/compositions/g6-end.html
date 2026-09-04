@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="g6-end" data-width="1080" data-height="1920" data-duration="4.15" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+  <div data-composition-id="g6-end" data-width="1080" data-height="1920" data-duration="6.70" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
     <style>
       [data-composition-id="g6-end"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
       [data-composition-id="g6-end"] .cine-top { top: 0; } [data-composition-id="g6-end"] .cine-bot { bottom: 0; }
@@ -18,16 +18,17 @@
       [data-composition-id="g6-end"] .photo img { display: block; width: 100%; height: 100%; object-fit: cover; will-change: transform; filter: contrast(1.08) saturate(1.12); }
       [data-composition-id="g6-end"] video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
       [data-composition-id="g6-end"] .vig { background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(10,6,12,0) 40%, rgba(10,6,12,0.6) 100%); }
-      [data-composition-id="g6-end"] .line { color: #fff; font-weight: 800; font-size: 128px; line-height: 0.95; letter-spacing: -5px; text-transform: uppercase; will-change: transform; }
+      [data-composition-id="g6-end"] .line { color: #fff; font-weight: 800; font-size: 112px; line-height: 0.95; letter-spacing: -5px; text-transform: uppercase; will-change: transform; }
       [data-composition-id="g6-end"] .line em { font-style: normal; color: #efc618; }
       [data-composition-id="g6-end"] .pill { display: inline-block; background: #241629; color: #efc618; font-weight: 800; font-size: 50px; letter-spacing: 1px; padding: 26px 46px; border-radius: 16px; }
     </style>
     <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 130% 90% at 50% 42%, rgba(36,22,41,0) 30%, rgba(36,22,41,0.6) 100%)"></div>
     <div id="g6-bloom" data-layout-allow-overflow style="position: absolute; top: 22%; left: 140px; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, rgba(239,198,24,0.28), rgba(239,198,24,0) 62%)"></div>
-    <div style="position: absolute; left: 84px; right: 84px; top: 27%; z-index: 20">
+    <div style="position: absolute; left: 84px; right: 84px; top: 19%; z-index: 20">
+      <div class="line" id="g6-b" style="margin-bottom: 54px">This is <em>Lompoc</em> football.</div>
       <div class="line" id="g6-l1">Pick <em>your</em> side.</div>
       <div class="line" id="g6-l2" style="margin-top: 18px">Be there.</div>
-      <img id="g6-mark" src="public/mark-white.png" alt="" style="display: block; width: 150px; height: auto; margin-top: 70px" />
+      <img id="g6-mark" src="public/mark-white.png" alt="" style="display: block; width: 150px; height: auto; margin-top: 50px" />
       <div id="g6-pill" class="pill" style="margin-top: 44px">lompoclocals.com/events</div>
     </div>
     <div id="g6-credit" style="position: absolute; left: 84px; right: 84px; bottom: 18.5%; color: rgba(250,245,236,0.72); font-size: 22px; font-weight: 500; line-height: 1.4; z-index: 20"><div>Map: © Mapbox © OpenStreetMap © Maxar</div></div>
@@ -37,9 +38,10 @@
     <script>
       (() => {
         // BEATS (relative): L1 0 ("This is Lompoc"), L2 1.64 ("back your side"), PILL 2.40, CREDIT 2.80, hold to END
-        const G6 = { L1: 0.07, L2: 1.23, PILL: 2.20, CREDIT: 2.80, END: 4.15 };
+        const G6 = { BANNER: 0.04, L1: 2.24, L2: 3.84, PILL: 4.80, CREDIT: 5.40, END: 6.70 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
-        tl.fromTo("#g6-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out" }, G6.L1);
+        tl.fromTo("#g6-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out" }, G6.BANNER);
+        tl.fromTo("#g6-b", { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "expo.out" }, G6.BANNER);
         tl.fromTo("#g6-l1", { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "expo.out" }, G6.L1);
         tl.fromTo("#g6-l2", { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "expo.out" }, G6.L2);
         tl.fromTo("#g6-mark", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, G6.PILL - 0.2);

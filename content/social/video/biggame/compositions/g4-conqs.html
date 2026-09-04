@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="g4-conqs" data-width="1080" data-height="1920" data-duration="3.00" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="g4-conqs" data-width="1080" data-height="1920" data-duration="1.10" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
     <style>
       [data-composition-id="g4-conqs"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
       [data-composition-id="g4-conqs"] .cine-top { top: 0; } [data-composition-id="g4-conqs"] .cine-bot { bottom: 0; }
@@ -25,7 +25,7 @@
       <div class="lower">
         <span class="chipwrap" id="g4-chip"><span class="chip">Home opener · Their turf</span></span>
         <div class="hero" id="g4-hero">Cabrillo Conquistadores</div>
-        <span class="sub" id="g4-sub">4350 Constellation Rd</span>
+        <span class="sub" id="g4-sub">Cabrillo High · Vandenberg Village</span>
         <span class="rule" id="g4-rule"></span>
         <span class="credit" id="g4-credit">photo: Lompoc Locals</span>
       </div>
@@ -38,7 +38,7 @@
     <script>
       (() => {
         // BEATS (relative): HERO 0, BADGE 0.30, CHIP 1.56 (VO "turf"); music-only hold after 1.8 — push keeps going to END
-        const G4 = { HERO: 0.00, BADGE: 0.30, CHIP: 0.50, END: 3.00 };
+        const G4 = { HERO: 0.00, BADGE: 0.30, CHIP: 0.50, END: 1.10 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#g4-img", { scale: 1.10 }, { scale: 1.0, duration: G4.END, ease: "none" }, 0);
         tl.fromTo("#g4-hero", { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: "expo.out" }, G4.HERO);

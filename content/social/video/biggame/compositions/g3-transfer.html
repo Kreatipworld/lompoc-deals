@@ -17,22 +17,24 @@
       [data-composition-id="g3-transfer"] .photo { position: absolute; inset: 0; }
       [data-composition-id="g3-transfer"] .photo img { display: block; width: 100%; height: 100%; object-fit: cover; will-change: transform; filter: contrast(1.08) saturate(1.12); }
       [data-composition-id="g3-transfer"] video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-      [data-composition-id="g3-transfer"] .label { position: absolute; left: 84px; bottom: 23%; z-index: 35; opacity: 0; }
+      [data-composition-id="g3-transfer"] .label { position: absolute; left: 84px; bottom: 26%; z-index: 35; opacity: 0; }
       [data-composition-id="g3-transfer"] .label .chip { font-size: 38px; padding: 16px 30px; }
       [data-composition-id="g3-transfer"] .label .sub { color: #fff; text-shadow: 0 4px 18px rgba(10,6,12,0.7); }
     </style>
     <video id="g3-fly" class="clip" src="public/fly-transfer.mp4" data-start="0" data-duration="2.30" data-track-index="0" muted playsinline></video>
     <div class="label" id="g3-label"><span class="chip">Constellation Rd</span><span class="sub">Cabrillo High · Vandenberg Village</span></div>
+    <div class="label" id="g3-home" style="bottom: 18.5%"><span class="chip" style="background: #241629; color: #efc618; border: 3px solid #efc618">Home games: Huyck Stadium</span></div>
     <div class="vig"></div>
     <img class="mark" src="public/mark-white.png" alt="" />
     <div class="grain"></div>
     <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
     <script>
       (() => {
-        // BEATS (relative): LABEL 1.44 (VO "Constellation Road")
-        const G3 = { LABEL: 1.60, END: 2.30 };
+        // BEATS (relative): LABEL 1.60 (VO "Constellation Road"), HOME +0.6 (Cabrillo plays home games at Huyck)
+        const G3 = { LABEL: 1.60, HOME: 2.20, END: 2.30 };  // HOME = LABEL + 0.6
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.4 } });
         tl.fromTo("#g3-label", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0 }, G3.LABEL);
+        tl.fromTo("#g3-home", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.1 }, G3.HOME);
         window.__timelines["g3-transfer"] = tl;
       })();
     </script>
