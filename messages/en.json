@@ -453,7 +453,8 @@
     "emptyPrompt": "Type a keyword above to search across deals and businesses.",
     "sectionCategories": "Categories",
     "sectionBusinesses": "Businesses",
-    "sectionDeals": "Deals"
+    "sectionDeals": "Deals",
+    "curatedBanner": "We made a page for this:"
   },
   "hotels": {
     "metaTitle": "Lompoc Hotels & Accommodations — Where to Stay",
@@ -945,7 +946,16 @@
       "colPath": "Page",
       "colViews": "Views",
       "colSessions": "Sessions",
-      "kpiSiteViews": "{count} page views"
+      "kpiSiteViews": "{count} page views",
+      "searchWordsTitle": "Words people search",
+      "searchWordsSub": "Site search, junk filtered ({window}). Every word without a page is a page we could own.",
+      "colWord": "Word",
+      "colSearches": "Searches",
+      "colAvgResults": "Avg results",
+      "colPage": "Page",
+      "zeroResults": "0 results",
+      "noPageYet": "No page yet",
+      "searchWordsEmpty": "No searches recorded yet."
     },
     "events": {
       "metaTitle": "Admin — Events",
@@ -2783,5 +2793,18 @@
     "subscribeTitle": "Get the weekly digest",
     "subscribeBody": "One email a week with what's on around town, new deals, and local news — free for locals.",
     "subscribeCta": "Subscribe free"
+  },
+  "find": {
+    "eyebrow": "Lompoc, California",
+    "count": "{count, plural, =0 {No places yet} one {# place in Lompoc} other {# places in Lompoc}}",
+    "browseCategory": "Browse the whole category",
+    "memberBadge": "Member",
+    "noResults": "No business in Lompoc mentions this yet. Try the search below.",
+    "dealsHeading": "Deals from these places",
+    "searchElse": "Looking for something else?",
+    "moreHeading": "People also look for",
+    "thisWeekCta": "See this week",
+    "allEventsCta": "All events",
+    "noEvents": "Nothing on the calendar for the next seven days yet."
   }
 }

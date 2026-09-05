@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm"
 import { blogPosts } from "@/db/schema"
 import { HOTELS } from "@/lib/hotels-data"
 import { siteUrl, esUrl } from "@/lib/seo"
+import { FIND_TERMS } from "@/lib/find-terms"
 
 // Regenerate hourly: events cancel, businesses close, stories publish — a build-time
 // sitemap would advertise dead URLs until the next deploy.
@@ -124,6 +125,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: bilingual(`/category/${c.slug}`),
   }))
 
+  // Curated search-word pages (/find/pizza …) — the words people search, as indexable pages.
+  const findPages = FIND_TERMS.map((f) => ({
+    url: `${siteUrl}/find/${f.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+    alternates: bilingual(`/find/${f.slug}`),
+  }))
+
   const blogPages = posts.map((p) => ({
     url: `${siteUrl}/blog/${p.slug}`,
     lastModified: p.updatedAt ?? p.publishedAt ?? new Date(),
@@ -155,5 +165,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: bilingual(`/events/${e.id}`),
   }))
 
-  return [...staticPages, ...bizPages, ...catPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages]
+  return [...staticPages, ...bizPages, ...catPages,
+    ...findPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages]
 }

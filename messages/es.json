@@ -453,7 +453,8 @@
     "emptyPrompt": "Escribe una palabra clave arriba para buscar entre ofertas y negocios.",
     "sectionCategories": "Categorías",
     "sectionBusinesses": "Negocios",
-    "sectionDeals": "Ofertas"
+    "sectionDeals": "Ofertas",
+    "curatedBanner": "Hicimos una página para esto:"
   },
   "hotels": {
     "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse",
@@ -945,7 +946,16 @@
       "colPath": "Página",
       "colViews": "Vistas",
       "colSessions": "Sesiones",
-      "kpiSiteViews": "{count} vistas de página"
+      "kpiSiteViews": "{count} vistas de página",
+      "searchWordsTitle": "Palabras que busca la gente",
+      "searchWordsSub": "Búsqueda del sitio, sin basura ({window}). Cada palabra sin página es una página que podemos tener.",
+      "colWord": "Palabra",
+      "colSearches": "Búsquedas",
+      "colAvgResults": "Resultados prom.",
+      "colPage": "Página",
+      "zeroResults": "0 resultados",
+      "noPageYet": "Sin página aún",
+      "searchWordsEmpty": "Aún no hay búsquedas registradas."
     },
     "events": {
       "metaTitle": "Admin — Eventos",
@@ -2783,5 +2793,18 @@
     "subscribeTitle": "Recibe el resumen semanal",
     "subscribeBody": "Un correo por semana con lo que hay en el pueblo, nuevas ofertas y noticias locales — gratis para residentes.",
     "subscribeCta": "Suscríbete gratis"
+  },
+  "find": {
+    "eyebrow": "Lompoc, California",
+    "count": "{count, plural, =0 {Aún no hay lugares} one {# lugar en Lompoc} other {# lugares en Lompoc}}",
+    "browseCategory": "Ver toda la categoría",
+    "memberBadge": "Miembro",
+    "noResults": "Ningún negocio de Lompoc menciona esto todavía. Prueba la búsqueda de abajo.",
+    "dealsHeading": "Ofertas de estos lugares",
+    "searchElse": "¿Buscas otra cosa?",
+    "moreHeading": "La gente también busca",
+    "thisWeekCta": "Ver esta semana",
+    "allEventsCta": "Todos los eventos",
+    "noEvents": "Aún no hay nada en el calendario para los próximos siete días."
   }
 }

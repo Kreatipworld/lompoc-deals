@@ -251,3 +251,32 @@ export async function topPages(window: FunnelWindow, limit = 15): Promise<TopPag
   )
   return r.map((x) => ({ path: x.path, views: Number(x.views), sessions: Number(x.sessions) }))
 }
+
+export type SearchWordRow = { query: string; count: number; avgResults: number; zero: boolean }
+
+/**
+ * Words people type into site search in the window. Junk filtered in SQL:
+ * Google's sitelinks template "{search_term_string}", blanks, 1-char strings.
+ * Case/whitespace folded so "Pizza" and "pizza " are one word.
+ */
+export async function searchWords(window: FunnelWindow, limit = 15): Promise<SearchWordRow[]> {
+  const d = windowDays(window)
+  const r = rows<{ query: string; count: number; avg_results: number; zero: boolean }>(
+    await db.execute(sql`
+      SELECT q AS query, COUNT(*)::int AS count,
+             ROUND(AVG(results))::int AS avg_results,
+             BOOL_AND(results = 0) AS zero
+      FROM (
+        SELECT lower(regexp_replace(trim(props->>'query'), '\\s+', ' ', 'g')) AS q,
+               COALESCE((props->>'resultCount')::int, 0) AS results
+        FROM analytics_events
+        WHERE event_name = 'search_run' AND ${since(d)}
+      ) s
+      WHERE q IS NOT NULL AND length(q) >= 2 AND q NOT LIKE '{%'
+      GROUP BY q
+      ORDER BY count DESC, q
+      LIMIT ${limit}
+    `)
+  )
+  return r.map((x) => ({ query: x.query, count: Number(x.count), avgResults: Number(x.avg_results), zero: Boolean(x.zero) }))
+}

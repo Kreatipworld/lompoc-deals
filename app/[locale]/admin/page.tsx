@@ -49,6 +49,7 @@ import {
   platformActions,
   actionsByBusiness,
   topPages,
+  searchWords,
   windowDays,
   type PlatformKpis,
 } from "@/lib/analytics/platform-stats"
@@ -63,6 +64,7 @@ import {
 } from "@/lib/admin-analytics"
 import type { FunnelWindow } from "@/lib/funnel-queries"
 import { FunnelStep, Sparkline, BusinessLink } from "@/components/admin/analytics-bits"
+import { findTermForQuery } from "@/lib/find-terms"
 import { TrendChart } from "@/components/trend-chart"
 import { Button } from "@/components/ui/button"
 
@@ -275,6 +277,7 @@ export default async function AdminPage({
     actionsResult,
     byBizResult,
     topPagesResult,
+    searchWordsResult,
     localResult,
     bizFunnelResult,
     recentClaimsResult,
@@ -297,6 +300,7 @@ export default async function AdminPage({
     platformActions(window),
     actionsByBusiness(window),
     topPages(window),
+    searchWords(window),
     localFunnel(days),
     businessFunnel(days),
     recentClaims(),
@@ -320,6 +324,7 @@ export default async function AdminPage({
   const actions = settled(actionsResult, { total: 0, rows: [] })
   const byBiz = settled(byBizResult, [])
   const pages = settled(topPagesResult, [])
+  const words = settled(searchWordsResult, [])
   const local = settled(localResult, [])
   const bizFunnel = settled(bizFunnelResult, [])
   const claimRows = settled(recentClaimsResult, [])
@@ -709,6 +714,51 @@ export default async function AdminPage({
                 ))}
                 {pages.length === 0 && (
                   <tr><td colSpan={3} className="py-6 text-center text-muted-foreground">{t("topPagesEmpty")}</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Words people search — every word is a page we could own */}
+        <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+          <div className="border-b px-5 py-4">
+            <h3 className="font-display text-lg font-semibold">{t("searchWordsTitle")}</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground">{t("searchWordsSub", { window: windowLabel })}</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="px-5 py-2">{t("colWord")}</th>
+                  <th className="px-3 py-2 text-right">{t("colSearches")}</th>
+                  <th className="px-3 py-2 text-right">{t("colAvgResults")}</th>
+                  <th className="px-5 py-2 text-right">{t("colPage")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {words.map((w) => {
+                  const term = findTermForQuery(w.query)
+                  return (
+                    <tr key={w.query} className="border-t">
+                      <td className="max-w-[260px] truncate px-5 py-2 font-medium">
+                        {w.query}
+                        {w.zero && <span className="ml-2 rounded-full bg-destructive/10 px-2 py-0.5 text-[11px] font-semibold text-destructive">{t("zeroResults")}</span>}
+                      </td>
+                      <td className="px-3 py-2 text-right font-semibold tabular-nums">{w.count.toLocaleString()}</td>
+                      <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{w.avgResults}</td>
+                      <td className="px-5 py-2 text-right">
+                        {term ? (
+                          <Link href={`/find/${term.slug}`} className="text-xs font-semibold text-primary hover:underline">/find/{term.slug}</Link>
+                        ) : (
+                          <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[11px] font-semibold text-gold-foreground">{t("noPageYet")}</span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+                {words.length === 0 && (
+                  <tr><td colSpan={4} className="py-6 text-center text-muted-foreground">{t("searchWordsEmpty")}</td></tr>
                 )}
               </tbody>
             </table>

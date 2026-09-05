@@ -11,6 +11,7 @@ import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 import { SponsorRow } from "@/components/sponsor-row"
 import { categoryLabel } from "@/lib/category-label"
+import { findTermForQuery } from "@/lib/find-terms"
 
 export async function generateMetadata({
   params,
@@ -62,6 +63,7 @@ export default async function SearchPage({
     })
   }
   const word = count === 1 ? t("resultSingular") : t("resultPlural")
+  const curated = q ? findTermForQuery(q) : undefined
 
   return (
     <div className="space-y-0">
@@ -111,6 +113,18 @@ export default async function SearchPage({
       <section className="mx-auto max-w-7xl px-4 py-8">
         {q ? (
           <>
+            {curated && (
+              <Link
+                href={`/find/${curated.slug}`}
+                className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm transition-colors hover:bg-primary/10"
+              >
+                <span>
+                  <span className="font-semibold text-primary">{t("curatedBanner")}</span>{" "}
+                  <span className="font-medium">{curated.title[locale === "es" ? "es" : "en"]}</span>
+                </span>
+                <ArrowRight className="h-4 w-4 flex-shrink-0 text-primary" />
+              </Link>
+            )}
             <p className="mb-6 text-sm text-muted-foreground">
               {t("resultsFor", { count, word })}{" "}
               <span className="font-medium text-foreground">&ldquo;{q}&rdquo;</span>
