@@ -313,3 +313,29 @@ export async function searchAll(q: string, locale: Locale = "en"): Promise<Searc
     deals,
   }
 }
+
+/**
+ * Hand-picked businesses for a curated word page (lib/find-terms `include`):
+ * places we know offer the thing even though the words never appear in their
+ * listing. Same shape as a search hit so the page renders them alike.
+ */
+export async function businessesBySlugs(slugs: string[], locale: Locale = "en"): Promise<BizHit[]> {
+  if (slugs.length === 0) return []
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      logoUrl: businesses.logoUrl,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+      description: businesses.description,
+      descriptionEs: businesses.descriptionEs,
+    })
+    .from(businesses)
+    .leftJoin(categories, eq(businesses.categoryId, categories.id))
+    .where(and(eq(businesses.status, "approved"), inArray(businesses.slug, slugs)))
+  const order = new Map(slugs.map((x, i) => [x, i]))
+  rows.sort((a, b) => (order.get(a.slug) ?? 0) - (order.get(b.slug) ?? 0))
+  return rows.map((b) => localizeFields(locale, b as BizHit & Record<string, unknown>, ["description"]))
+}

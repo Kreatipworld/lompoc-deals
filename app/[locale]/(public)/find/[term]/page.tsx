@@ -7,7 +7,7 @@ import { and, eq, gte, lte } from "drizzle-orm"
 import { db } from "@/db/client"
 import { events } from "@/db/schema"
 import { FIND_TERMS, findTermBySlug } from "@/lib/find-terms"
-import { searchAll } from "@/lib/search"
+import { searchAll, businessesBySlugs } from "@/lib/search"
 import { memberTiers } from "@/lib/member-tier"
 import { getActiveDeals } from "@/lib/queries"
 import { getViewer } from "@/lib/viewer"
@@ -61,11 +61,18 @@ export default async function FindTermPage({ params }: { params: Promise<Params>
 
   if (t.kind === "events") {
     const now = new Date()
-    const week = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+    const week = new Date(now.getTime() + (t.eventWindowDays ?? 7) * 24 * 60 * 60 * 1000)
     const rows = await db
       .select({ id: events.id, title: events.title, titleEs: events.titleEs, location: events.location, startsAt: events.startsAt, category: events.category })
       .from(events)
-      .where(and(eq(events.status, "approved"), gte(events.startsAt, new Date(now.getTime() - 6 * 60 * 60 * 1000)), lte(events.startsAt, week)))
+      .where(
+        and(
+          eq(events.status, "approved"),
+          gte(events.startsAt, new Date(now.getTime() - 6 * 60 * 60 * 1000)),
+          lte(events.startsAt, week),
+          ...(t.eventSource ? [eq(events.source, t.eventSource)] : [])
+        )
+      )
       .orderBy(events.startsAt)
       .limit(24)
     const seen = new Set<string>()
@@ -103,9 +110,11 @@ export default async function FindTermPage({ params }: { params: Promise<Params>
     )
   }
 
-  const results = await searchAll(t.query, l)
-  const tiers = await memberTiers(results.businesses.map((b) => b.id))
-  const businesses = [...results.businesses].sort((a, b) => (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0))
+  const [results, picked] = await Promise.all([searchAll(t.query, l), businessesBySlugs(t.include ?? [], l)])
+  const excluded = new Set(t.exclude ?? [])
+  const merged = [...picked, ...results.businesses.filter((b) => !picked.some((p) => p.id === b.id))].filter((b) => !excluded.has(b.slug))
+  const tiers = await memberTiers(merged.map((b) => b.id))
+  const businesses = [...merged].sort((a, b) => (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0))
   const ids = new Set(businesses.map((b) => b.id))
   const deals = (await getActiveDeals(200, l)).filter((d) => ids.has(d.business.id)).slice(0, 6)
 

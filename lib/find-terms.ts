@@ -16,8 +16,16 @@ export type FindTerm = {
   query: string
   /** Other spellings people type; matched against lowercased search input. */
   aliases: string[]
-  /** "businesses" lists matching places; "events" lists this week's events instead. */
+  /** "businesses" lists matching places; "events" lists upcoming events instead. */
   kind: "businesses" | "events"
+  /** Business slugs the matcher pulls in but that don't belong (curated by hand). */
+  exclude?: string[]
+  /** Business slugs we know belong even if the words never appear in their listing. */
+  include?: string[]
+  /** events only: restrict to one feed (e.g. "launch-library" for rocket launches). */
+  eventSource?: string
+  /** events only: how far ahead to look (default 7 days). */
+  eventWindowDays?: number
   /** Optional category chip to offer under the results. */
   category?: string
   title: { en: string; es: string }
@@ -166,6 +174,58 @@ export const FIND_TERMS: FindTerm[] = [
     intro: {
       en: "Live music, a home game, a gallery opening, a rocket launch you can watch from the driveway: something is usually happening in Lompoc tonight. This page lists what is on this week, pulled from the same calendar as This Week, and it updates on its own.",
       es: "Música en vivo, un partido en casa, una inauguración en la galería, un lanzamiento de cohete que se ve desde la entrada de la casa: casi siempre hay algo en Lompoc esta noche. Esta página muestra lo que hay esta semana, del mismo calendario que Esta semana, y se actualiza sola.",
+    },
+  },
+  {
+    slug: "waxing",
+    query: "waxing",
+    aliases: ["wax", "brazilian wax", "eyebrow waxing", "body waxing", "depilación", "cera"],
+    kind: "businesses",
+    exclude: ["franks-mobile-detailing", "jeffrey-s-mobile-detailing", "lompoc-car-wash-detail"],
+    category: "health-beauty",
+    title: { en: "Waxing in Lompoc", es: "Depilación con cera en Lompoc" },
+    intro: {
+      en: "Brows, lips, legs, or a full body wax before a trip: Lompoc has estheticians and salons that book by appointment and take walk-ins when the chair is free. These are the local places that offer waxing, with hours and phone numbers so you can check availability before you drive over.",
+      es: "Cejas, labio, piernas o cuerpo completo antes de un viaje: en Lompoc hay esteticistas y salones que atienden con cita y reciben sin cita cuando hay espacio. Estos son los lugares locales que ofrecen depilación con cera, con horarios y teléfonos para confirmar antes de ir.",
+    },
+  },
+  {
+    slug: "window-replacement",
+    query: "windows glass",
+    aliases: ["window replacement", "window replacements", "windows", "glass", "window repair", "glass repair", "ventanas", "vidrios"],
+    kind: "businesses",
+    category: "services",
+    exclude: ["valley-autoglass", "kaizen-collision-center"],
+    title: { en: "Window Replacement in Lompoc", es: "Reemplazo de ventanas en Lompoc" },
+    intro: {
+      en: "Fog between the panes, a cracked slider, or single-pane windows that let the Lompoc wind straight in: replacing them is one of the few home projects that pays back on the utility bill. These are the local glass and window companies that measure, replace, and repair, with numbers to call for a quote.",
+      es: "Vaho entre los vidrios, una corredera rota o ventanas de un solo panel que dejan pasar el viento de Lompoc: cambiarlas es de los pocos proyectos de casa que se recuperan en la factura de luz. Estas son las empresas locales de vidrio y ventanas que miden, reemplazan y reparan, con teléfonos para pedir presupuesto.",
+    },
+  },
+  {
+    slug: "charcuterie",
+    query: "charcuterie cheese board",
+    aliases: ["charcuterie board", "charcuterie boards", "cheese board", "grazing board", "grazing table", "tabla de quesos", "tabla de embutidos"],
+    kind: "businesses",
+    category: "food-drink",
+    include: ["cat-s-market-deli", "spencers-fresh-market-lompoc", "vons-lompoc"],
+    title: { en: "Charcuterie Boards in Lompoc", es: "Tablas de quesos y embutidos en Lompoc" },
+    intro: {
+      en: "A wine night in the Wine Ghetto, a baby shower, a game-day spread: charcuterie has become the Lompoc way to feed a crowd without cooking. These are the local makers, markets, and shops where you can order a board or pick up the cheeses and cured meats to build your own.",
+      es: "Una noche de vino en el Wine Ghetto, un baby shower, una tarde de partido: la tabla de quesos y embutidos se volvió la forma lompocana de alimentar a un grupo sin cocinar. Estos son los negocios locales donde puedes encargar una tabla o comprar los quesos y embutidos para armar la tuya.",
+    },
+  },
+  {
+    slug: "rocket-launch",
+    query: "rocket launch",
+    aliases: ["rocket launch", "rocket launches", "launch", "launches", "vandenberg launch", "spacex", "falcon 9", "starlink", "lanzamiento", "lanzamiento de cohete", "cohete"],
+    kind: "events",
+    eventSource: "launch-library",
+    eventWindowDays: 60,
+    title: { en: "Rocket Launches from Vandenberg", es: "Lanzamientos de cohetes desde Vandenberg" },
+    intro: {
+      en: "Lompoc is the closest town to Vandenberg Space Force Base, which is why a rumble in the evening usually means a Falcon 9 heading to orbit. This page lists the upcoming launches on the calendar with their current windows. Times shift often, so check back the day of and step outside a few minutes early.",
+      es: "Lompoc es el pueblo más cercano a la Base de la Fuerza Espacial Vandenberg, por eso un retumbo en la tarde casi siempre es un Falcon 9 rumbo a órbita. Esta página muestra los próximos lanzamientos del calendario con sus ventanas actuales. Los horarios cambian seguido, así que revisa el mismo día y sal unos minutos antes.",
     },
   },
 ]
