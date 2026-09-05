@@ -1,0 +1,44 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1350" data-duration="28.50" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 112px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 900px; background: rgba(0,0,0,0.55); color: #fff; font-weight: 600; font-size: 38px; line-height: 1.25; padding: 16px 30px; border-radius: 22px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Friday night. Huyck Stadium.</span></div>
+      <div class="sub" id="sub-1"><span>Two schools. One town.</span></div>
+      <div class="sub" id="sub-2"><span>The Conquistadores came ready.</span></div>
+      <div class="sub" id="sub-3"><span>The Braves came home.</span></div>
+      <div class="sub" id="sub-4"><span>Final score: Lompoc 38, Cabrillo 2.</span></div>
+      <div class="sub" id="sub-5"><span>The Big Game goes to the Braves.</span></div>
+      <div class="sub" id="sub-6"><span>Two programs. One Lompoc.</span></div>
+      <div class="sub" id="sub-7"><span>Respect to both sides.</span></div>
+      <div class="sub" id="sub-8"><span>Full story on Lompoc Locals.</span></div>
+    </div>
+    <script>
+      (() => {
+        // SUBS = [[start, end, text], ...] absolute seconds — fill from the ASR word times. Text lives in the DOM above; times drive show/hide.
+        const SUBS = [
+          [0.60, 2.90, 'Friday night. Huyck Stadium.'],
+          [3.20, 5.10, 'Two schools. One town.'],
+          [6.20, 8.20, 'The Conquistadores came ready.'],
+          [11.20, 12.80, 'The Braves came home.'],
+          [15.40, 18.60, 'Final score: Lompoc 38, Cabrillo 2.'],
+          [18.90, 20.80, 'The Big Game goes to the Braves.'],
+          [21.60, 23.40, 'Two programs. One Lompoc.'],
+          [23.60, 25.40, 'Respect to both sides.'],
+          [25.40, 27.60, 'Full story on Lompoc Locals.']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 28.50);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>
