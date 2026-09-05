@@ -1264,7 +1264,10 @@
       "ctaListFree": "Hazte miembro",
       "ctaBrowseDeals": "Ver ofertas activas",
       "heading": "Directorio de negocios",
-      "headingGeo": "Directorio de Negocios de Lompoc"
+      "headingGeo": "Directorio de Negocios de Lompoc",
+      "tilesHeading": "Elige una categoría",
+      "surpriseMe": "Sorpréndeme",
+      "memberBadge": "Miembro"
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
@@ -2585,7 +2588,8 @@
     "mostActiveHeading": "Donde están las ofertas ahora mismo",
     "mostActiveSub": "Los negocios locales con más ofertas vigentes esta semana.",
     "withDealOne": "con una oferta",
-    "withDealMany": "con ofertas"
+    "withDealMany": "con ofertas",
+    "backToTop": "Arriba"
   },
   "mapUi": {
     "categories": {

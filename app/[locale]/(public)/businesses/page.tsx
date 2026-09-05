@@ -20,6 +20,8 @@ import { AnimeReveal } from "@/components/anime-reveal"
 import { BusinessAvatar } from "@/components/business-avatar"
 import { TiltCard } from "@/components/motion/tilt-card"
 import { PageHeader } from "@/components/page-header"
+import { DirectoryRail } from "@/components/directory/directory-rail"
+import { BackToTop } from "@/components/back-to-top"
 import { getTranslations } from "next-intl/server"
 import { categoryLabel } from "@/lib/category-label"
 import type { Metadata } from "next"
@@ -47,7 +49,13 @@ export async function generateMetadata({ params }: { params: { locale: string } 
  * category already links to /category/<slug>, which lists the whole set and is in the sitemap, so
  * the full dump bought nothing but weight — and it would only get worse as listings are added.
  */
-const PREVIEW_PER_CATEGORY = 12
+const PREVIEW_PER_CATEGORY = 6
+
+/** A face for every category tile. Slugs come from the categories table. */
+const CATEGORY_EMOJI: Record<string, string> = {
+  "food-drink": "🍽️", services: "🔧", retail: "🛍️", auto: "🚗", wineries: "🍷",
+  "health-beauty": "💇", "real-estate": "🏠", entertainment: "🎉", dispensaries: "🌿", other: "✨",
+}
 
 export default async function BusinessesPage({
   params,
@@ -97,6 +105,11 @@ export default async function BusinessesPage({
   // Sort category sections so the busiest neighborhoods lead, biggest first.
   populatedCategories.sort((a, b) => b.items.length - a.items.length)
 
+  // Members first inside every category (Growth/Plus), then the busiest, then A–Z.
+  for (const g of populatedCategories) {
+    g.items.sort((a, b) => b.tier - a.tier || b.activeDealCount - a.activeDealCount || a.name.localeCompare(b.name))
+  }
+
   // "Most active" highlight strip — the businesses with the most live deals.
   const mostActive = [...businesses]
     .filter((b) => b.activeDealCount > 0)
@@ -141,65 +154,95 @@ export default async function BusinessesPage({
       </PageHeader>
 
       {/* ═══════════════════════════════════════════════════
-          STICKY JUMP-NAV — anchor to each category with counts
+          CATEGORY TILES — the front door: pick a category, see faces
          ═══════════════════════════════════════════════════ */}
-      <nav className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-lg supports-[backdrop-filter]:bg-background/70">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-          <span className="hidden flex-shrink-0 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:flex">
-            <Store className="h-3.5 w-3.5 text-primary" />
-            {tu("browse")}
-          </span>
-          <div className="scrollbar-none -mx-1 flex flex-1 items-center gap-2 overflow-x-auto px-1">
-            {mostActive.length > 0 && (
-              <a
-                href="#most-active"
-                className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full bg-gold px-3.5 py-1.5 text-sm font-semibold text-gold-foreground shadow-sm transition-transform hover:-translate-y-0.5"
-              >
-                <Flame className="h-3.5 w-3.5" />
-                {tu("mostActive")}
-              </a>
-            )}
-            {populatedCategories.map((g) => (
-              <a
-                key={g.slug}
-                href={`#${g.slug}`}
-                className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border bg-card px-3.5 py-1.5 text-sm font-medium text-foreground/80 transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
-              >
-                {g.name}
-                <span className="text-xs text-muted-foreground">{g.items.length}</span>
-              </a>
-            ))}
+      <section className="mx-auto max-w-6xl px-4 pt-6 sm:pt-8">
+        <AnimeReveal direction="up" duration={520}>
+          <div className="mb-3 flex items-end justify-between gap-3">
+            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">{t("tilesHeading")}</h2>
+            <a href={`/api/surprise?locale=${params.locale}`} className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+              {t("surpriseMe")}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
           </div>
-          <Link
-            href={openNow ? "/businesses" : "/businesses?open=1"}
-            className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
-              openNow
-                ? "border-success bg-success/10 text-success"
-                : "bg-card text-muted-foreground hover:border-foreground/30"
-            }`}
-          >
-            <span className={`h-2 w-2 rounded-full ${openNow ? "bg-success" : "bg-muted-foreground/40"}`} />
-            {t("openNowFilter")}
-          </Link>
-          {/* Explore is the one tab for everything place-based: the header no
-              longer carries Map / Hotels / Neighborhood, so they live here. */}
+        </AnimeReveal>
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          {populatedCategories.map((g, gi) => {
+            const dealCount = g.items.reduce((n, b) => n + b.activeDealCount, 0)
+            const faces = g.items.slice(0, 3)
+            return (
+              <AnimeReveal key={g.slug} as="li" direction="up" delay={Math.min(gi, 9) * 40} duration={480}>
+                <a
+                  href={`#${g.slug}`}
+                  className="group flex h-full flex-col gap-3 rounded-2xl border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                >
+                  <div className="flex items-start justify-between">
+                    <span className="text-3xl leading-none transition-transform duration-200 group-hover:scale-110" aria-hidden>
+                      {CATEGORY_EMOJI[g.slug] ?? "📍"}
+                    </span>
+                    <span className="font-display text-lg font-bold text-primary/30">{g.items.length}</span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate font-display text-base font-bold leading-tight">{g.name}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      {dealCount > 0 ? (
+                        <span className="font-semibold text-success">{dealLabel(dealCount)}</span>
+                      ) : (
+                        `${g.items.length} ${g.items.length === 1 ? t("businessSingular") : t("businessPlural")}`
+                      )}
+                    </p>
+                  </div>
+                  <div className="mt-auto flex -space-x-2">
+                    {faces.map((b) => (
+                      <BusinessAvatar
+                        key={b.id}
+                        logoUrl={b.logoUrl}
+                        photoUrl={b.photoUrl}
+                        name={b.name}
+                        className="h-7 w-7 overflow-hidden rounded-full ring-2 ring-card"
+                        icon={<Store className="h-3 w-3 text-primary/70" />}
+                      />
+                    ))}
+                  </div>
+                </a>
+              </AnimeReveal>
+            )
+          })}
+        </ul>
+        <div className="mt-4 flex flex-wrap gap-2">
           {([["/map", tn("map")], ["/hotels", tn("hotels")], ["/feed", tn("neighborhood")]] as const).map(([href, label]) => (
             <Link
               key={href}
               href={href}
-              className="inline-flex flex-shrink-0 items-center rounded-full border bg-card px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-foreground/30"
+              className="inline-flex items-center rounded-full border bg-card px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-foreground/30"
             >
               {label}
             </Link>
           ))}
         </div>
-      </nav>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════
+          STICKY RAIL — follows the reader, one tap to any section
+         ═══════════════════════════════════════════════════ */}
+      <div className="mt-6 sm:mt-8">
+        <DirectoryRail
+          sections={populatedCategories.map((g) => ({ id: g.slug, label: g.name, count: g.items.length }))}
+          hasMostActive={mostActive.length > 0}
+          mostActiveLabel={tu("mostActive")}
+          openNow={openNow}
+          openNowLabel={t("openNowFilter")}
+          surpriseLabel={t("surpriseMe")}
+          surpriseHref={`/api/surprise?locale=${params.locale}`}
+        />
+      </div>
+      <BackToTop />
 
       {/* ═══════════════════════════════════════════════════
           MOST ACTIVE — featured strip of deal-heavy businesses
          ═══════════════════════════════════════════════════ */}
       {mostActive.length > 0 && (
-        <section id="most-active" className="scroll-mt-20 border-b bg-gradient-to-b from-gold/[0.06] to-transparent">
+        <section id="most-active" className="scroll-mt-32 border-b bg-gradient-to-b from-gold/[0.06] to-transparent">
           <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
             <AnimeReveal direction="up" duration={560}>
               <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
@@ -279,7 +322,7 @@ export default async function BusinessesPage({
         {populatedCategories.map((g) => {
           const dealCount = g.items.filter((b) => b.activeDealCount > 0).length
           return (
-            <section key={g.slug} id={g.slug} className="scroll-mt-20">
+            <section key={g.slug} id={g.slug} className="scroll-mt-32">
               <AnimeReveal direction="up" delay={0} duration={560}>
                 <div className="mb-6 flex items-end justify-between gap-4 border-b pb-3">
                   <div className="flex items-baseline gap-3">
@@ -343,11 +386,18 @@ export default async function BusinessesPage({
                             <h3 className="font-display text-lg font-bold leading-tight tracking-tight line-clamp-2">
                               {b.name}
                             </h3>
-                            {b.categoryName && (
-                              <span className="mt-1 inline-block rounded-full bg-accent px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                                {b.categoryName}
-                              </span>
-                            )}
+                            <div className="mt-1 flex flex-wrap items-center gap-1">
+                              {b.tier > 0 && (
+                                <span className="inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary">
+                                  {t("memberBadge")}
+                                </span>
+                              )}
+                              {b.categoryName && (
+                                <span className="inline-block rounded-full bg-accent px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                                  {b.categoryName}
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
 

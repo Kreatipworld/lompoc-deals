@@ -247,6 +247,8 @@ export type DirectoryBusiness = {
   categorySlug: string | null
   activeDealCount: number
   hoursJson: unknown
+  /** Effective plan rank: Plus 2, Growth 1, Free 0. Members are showcased first everywhere. */
+  tier: number
 }
 
 export async function getDirectoryBusinesses(locale: Locale = "en"): Promise<DirectoryBusiness[]> {
@@ -265,15 +267,19 @@ export async function getDirectoryBusinesses(locale: Locale = "en"): Promise<Dir
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
-      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
+      tier: sql<number>`coalesce(max(${tierRank}), 0)::int`,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(eq(businesses.status, "approved"))
     .groupBy(businesses.id, categories.id)
-    .orderBy(businesses.name)
+    // Growth/Plus members first (user, Sep 4: "always showcasing first than others"),
+    // then the busiest, then A–Z.
+    .orderBy(sql`coalesce(max(${tierRank}), 0) desc`, sql`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now()) desc`, businesses.name)
   return localizeBusinessRows(locale, rows)
 }
 
@@ -293,19 +299,21 @@ export async function getBusinessesByCategorySlug(categorySlug: string, locale: 
       categoryId: businesses.categoryId,
       categoryName: categories.name,
       categorySlug: categories.slug,
-      activeDealCount: sql<number>`count(${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
+      activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
+      tier: sql<number>`coalesce(max(${tierRank}), 0)::int`,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
     .leftJoin(deals, eq(deals.businessId, businesses.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
     .where(and(eq(businesses.status, "approved"), eq(categories.slug, categorySlug)))
     .groupBy(businesses.id, categories.id)
-    // Official Partners get priority in their category: the Category-Exclusive
-    // owner first, then Plus partners, then everyone else — alphabetical within.
+    // Category-Exclusive owner first, then Plus, then Growth members, then
+    // everyone else — alphabetical within.
     .orderBy(
       desc(businesses.sponsorExclusive),
-      desc(sql`coalesce(${businesses.planOverride} = 'premium', false)`),
+      sql`coalesce(max(${tierRank}), 0) desc`,
       businesses.name
     )
   return localizeBusinessRows(locale, rows)
@@ -335,6 +343,7 @@ export async function getFoodSpots(limit = 10, locale: Locale = "en"): Promise<D
       activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
       tierRank: sql<number>`0`,
+      tier: sql<number>`0`,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -375,6 +384,7 @@ export async function getFeaturedBusinesses(limit = 6, locale: Locale = "en"): P
       activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
       tierRank: sql<number>`max(${tierRank})::int`,
+      tier: sql<number>`coalesce(max(${tierRank}), 0)::int`,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))
@@ -421,6 +431,7 @@ export async function getPartnerBusinesses(locale: Locale = "en"): Promise<Direc
       activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
       tierRank: sql<number>`max(${tierRank})::int`,
+      tier: sql<number>`coalesce(max(${tierRank}), 0)::int`,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))

@@ -1264,7 +1264,10 @@
       "ctaListFree": "Become a member",
       "ctaBrowseDeals": "Browse active deals",
       "heading": "Business Directory",
-      "headingGeo": "Lompoc Business Directory"
+      "headingGeo": "Lompoc Business Directory",
+      "tilesHeading": "Pick a category",
+      "surpriseMe": "Surprise me",
+      "memberBadge": "Member"
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
@@ -2585,7 +2588,8 @@
     "mostActiveHeading": "Where the deals are right now",
     "mostActiveSub": "Local businesses with the most live offers this week.",
     "withDealOne": "with a deal",
-    "withDealMany": "with deals"
+    "withDealMany": "with deals",
+    "backToTop": "Top"
   },
   "mapUi": {
     "categories": {
