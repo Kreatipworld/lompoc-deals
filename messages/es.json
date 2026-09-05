@@ -454,7 +454,10 @@
     "sectionCategories": "Categorías",
     "sectionBusinesses": "Negocios",
     "sectionDeals": "Ofertas",
-    "curatedBanner": "Hicimos una página para esto:"
+    "curatedBanner": "Hicimos una página para esto:",
+    "nothingTry": "Nada para “{query}” todavía — prueba:",
+    "allCategories": "Ver una categoría",
+    "memberBadge": "Miembro"
   },
   "hotels": {
     "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse",
@@ -2105,7 +2108,15 @@
     "discover": "Descubre",
     "placesCount": "{count} lugares",
     "searching": "Buscando…",
-    "searchFor": "Buscar"
+    "searchFor": "Buscar",
+    "popular": "Lo más buscado",
+    "recent": "Recientes",
+    "pages": "Páginas",
+    "wordPage": "Guía",
+    "member": "Miembro",
+    "cancel": "Cancelar",
+    "clearRecent": "Borrar",
+    "noMatch": "Nada todavía — pulsa Enter para buscar en todo"
   },
   "bottomNav": {
     "home": "Inicio",

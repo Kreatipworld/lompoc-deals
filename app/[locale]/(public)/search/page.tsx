@@ -11,7 +11,11 @@ import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 import { SponsorRow } from "@/components/sponsor-row"
 import { categoryLabel } from "@/lib/category-label"
-import { findTermForQuery } from "@/lib/find-terms"
+import { findTermForQuery, FIND_TERMS } from "@/lib/find-terms"
+import { memberTiers } from "@/lib/member-tier"
+import { getAllCategories } from "@/lib/queries"
+import { fold, editDistance, instantSearch } from "@/lib/search/instant"
+import { getSearchIndex } from "@/lib/search/build-index"
 
 export async function generateMetadata({
   params,
@@ -49,6 +53,11 @@ export default async function SearchPage({
     q ? searchAll(q, locale) : Promise.resolve({ businesses: [], categories: [], deals: [] }),
     getViewer(),
   ])
+  // Growth/Plus members lead the business results; the matcher's order holds within a tier.
+  if (results.businesses.length > 1) {
+    const tiers = await memberTiers(results.businesses.map((b) => b.id))
+    results.businesses = [...results.businesses].sort((a, b) => (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0))
+  }
   const count = results.businesses.length + results.categories.length + results.deals.length
 
   if (q) {
@@ -64,6 +73,19 @@ export default async function SearchPage({
   }
   const word = count === 1 ? t("resultSingular") : t("resultPlural")
   const curated = q ? findTermForQuery(q) : undefined
+  // Nothing matched: offer the nearest word pages and the categories instead of a dead end.
+  const lang = locale === "es" ? "es" : "en"
+  const nothing = q && count === 0
+  const nearPages = nothing
+    ? FIND_TERMS.filter((term) => {
+        const fq = fold(q)
+        const hay = [term.slug.replace(/-/g, " "), term.title.en, term.title.es, ...term.aliases].map(fold)
+        return hay.some((h) => h.includes(fq) || fq.includes(h) || h.split(" ").some((w) => w.length >= 4 && editDistance(w, fq, 2) <= 2))
+      }).slice(0, 4)
+    : []
+  const allCats = nothing ? (await getAllCategories()).filter((c) => c.slug !== "other") : []
+  // Typo recovery: the same instant matcher the search box uses, run over the cached index.
+  const didYouMean = nothing ? instantSearch(await getSearchIndex(), q, 6).businesses : []
 
   return (
     <div className="space-y-0">
@@ -196,7 +218,45 @@ export default async function SearchPage({
             )}
 
             {count === 0 && (
-              <p className="text-sm text-muted-foreground">{t("noResults")}</p>
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">{t("nothingTry", { query: q })}</p>
+                {didYouMean.length > 0 && (
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {didYouMean.map((b) => (
+                      <Link key={b.i} href={`/biz/${b.s}`} className="group flex items-center gap-3 rounded-xl border bg-card p-3 transition-shadow hover:shadow-md">
+                        <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
+                          <SafeImage src={b.logoUrl ?? undefined} alt={b.n} className="h-full w-full object-cover" fallback={<div className="flex h-full w-full items-center justify-center"><Store className="h-5 w-5 text-muted-foreground/50" /></div>} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-semibold group-hover:text-primary">{b.n}</p>
+                          {b.t > 0 && <p className="text-[11px] font-bold text-primary">{t("memberBadge")}</p>}
+                        </div>
+                        <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground/50 group-hover:text-primary" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+                {nearPages.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {nearPages.map((term) => (
+                      <Link key={term.slug} href={`/find/${term.slug}`} className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10">
+                        {term.title[lang]}
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("allCategories")}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {allCats.map((c) => (
+                      <Link key={c.slug} href={`/category/${c.slug}`} className="inline-flex items-center rounded-full border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-primary hover:text-primary">
+                        {categoryLabel(tc, c.slug, c.name)}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             )}
           </>
         ) : (

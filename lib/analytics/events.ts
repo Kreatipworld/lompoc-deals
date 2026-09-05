@@ -1,6 +1,7 @@
 export type EventName =
   | "page_viewed"
   | "search_run"
+  | "search_pick"
   | "map_pin_clicked"
   | "business_page_viewed"
   | "local_signup"
@@ -39,6 +40,8 @@ export interface EventProps {
   /** Any public page that is NOT a business page (those fire business_page_viewed server-side). */
   page_viewed: { path: string; locale: "en" | "es"; referrer?: string }
   search_run: { query: string; resultCount: number; locale: "en" | "es" }
+  /** A suggestion chosen in the instant search box — what people type and where it takes them. */
+  search_pick: { query: string; kind: "business" | "category" | "wordPage" | "deal" | "query"; target: string }
   map_pin_clicked: { from: "map" | "list" }
   business_page_viewed: { locale: "en" | "es"; referrer?: string }
   local_signup: { via: "email" | "google" }

@@ -24,7 +24,7 @@ function withinLimit(sid: string): boolean {
 // Outbound clicks are accepted here as well as sent to Vercel Analytics. Vercel's dashboard is for
 // us; this table is for the business owner — "your page sent you 18 website opens last month" is a
 // sentence we can only say if the events live somewhere we can query per listing.
-const ALLOWED = new Set<EventName>(["search_run", "map_pin_clicked", ...OUTBOUND_EVENTS])
+const ALLOWED = new Set<EventName>(["search_run", "search_pick", "map_pin_clicked", ...OUTBOUND_EVENTS])
 
 interface Body {
   name?: string

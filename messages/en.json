@@ -454,7 +454,10 @@
     "sectionCategories": "Categories",
     "sectionBusinesses": "Businesses",
     "sectionDeals": "Deals",
-    "curatedBanner": "We made a page for this:"
+    "curatedBanner": "We made a page for this:",
+    "nothingTry": "Nothing for “{query}” yet — try:",
+    "allCategories": "Browse a category",
+    "memberBadge": "Member"
   },
   "hotels": {
     "metaTitle": "Lompoc Hotels & Accommodations — Where to Stay",
@@ -2105,7 +2108,15 @@
     "discover": "Discover",
     "placesCount": "{count} places",
     "searching": "Searching…",
-    "searchFor": "Search for"
+    "searchFor": "Search for",
+    "popular": "Popular right now",
+    "recent": "Recent",
+    "pages": "Pages",
+    "wordPage": "Guide",
+    "member": "Member",
+    "cancel": "Cancel",
+    "clearRecent": "Clear",
+    "noMatch": "Nothing yet — press Enter to search everything"
   },
   "bottomNav": {
     "home": "Home",
