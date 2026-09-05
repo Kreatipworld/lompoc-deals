@@ -1,0 +1,47 @@
+<template>
+  <div data-composition-id="s1-front" data-width="1080" data-height="1920" data-duration="8.00" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+    <style>
+      [data-composition-id="s1-front"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
+      [data-composition-id="s1-front"] .cine-top { top: 0; } [data-composition-id="s1-front"] .cine-bot { bottom: 0; }
+      [data-composition-id="s1-front"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="s1-front"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.38) 100%); }
+      [data-composition-id="s1-front"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s1-front"] .wrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s1-front"] .cover { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(1.1); }
+      [data-composition-id="s1-front"] .blur { position: absolute; inset: -6%; background-size: cover; background-position: 50% 50%; filter: blur(30px) brightness(0.5) saturate(1.2); }
+      [data-composition-id="s1-front"] .whole { display: block; position: absolute; left: 0; width: 1080px; height: auto; top: 50%; transform: translateY(-50%); box-shadow: 0 30px 80px rgba(0,0,0,0.55); filter: contrast(1.06) saturate(1.1); }
+      [data-composition-id="s1-front"] .scrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to top, rgba(20,10,23,0.88) 0%, rgba(20,10,23,0.55) 24%, rgba(20,10,23,0.0) 46%); }
+      [data-composition-id="s1-front"] .topscrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to bottom, rgba(20,10,23,0.80) 0%, rgba(20,10,23,0.35) 22%, rgba(20,10,23,0.0) 40%); }
+      [data-composition-id="s1-front"] .chips { position: absolute; left: 84px; right: 84px; bottom: 21%; z-index: 35; display: flex; flex-wrap: wrap; gap: 14px; }
+      [data-composition-id="s1-front"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 30px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="s1-front"] .head { position: absolute; left: 84px; right: 84px; top: 190px; z-index: 36; }
+      [data-composition-id="s1-front"] .pill { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 26px; letter-spacing: 4px; padding: 10px 22px; border-radius: 999px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s1-front"] .name { display: block; margin-top: 18px; color: #fff; text-shadow: 0 4px 24px rgba(10,6,12,0.7); font-weight: 800; font-size: 74px; line-height: 1.0; letter-spacing: -1px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s1-front"] .sub { display: block; margin-top: 14px; color: #efc618; font-weight: 700; font-size: 28px; letter-spacing: 2px; opacity: 0; will-change: transform, opacity; }
+    
+    </style>
+    <div class="stage" id="s1-front-stage">
+      <div class="wrap" id="s1-front-w0" data-layout-allow-overflow><div class="blur" style="background-image: url(public/p8.jpg)"></div><img class="whole" src="public/p8.jpg" alt="" style="transform: translateY(-50%)" /></div>
+      <div class="scrim"></div><div class="topscrim"></div>
+      <div class="head"><span class="pill" id="s1-front-pill">Official Partner</span><span class="name" id="s1-front-name">Hangar 7<br />Social House</span><span class="sub" id="s1-front-sub">wine bar · wood-fired pizza · Ocean Ave · Lompoc</span></div>
+      <div class="chips"></div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative to scene start). HEAD/CHIP move with the read; END = scene duration.
+        const B = { HEAD: 0.45, CHIP: 0.55, CUT: 0, END: 8.00 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s1-front-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s1-front-w0", { scale: 1.0 }, { scale: 1.08, duration: B.END, ease: "none" }, 0);
+        tl.fromTo("#s1-front-pill", { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.4 }, B.HEAD);
+        tl.fromTo("#s1-front-name", { autoAlpha: 0, y: 18, scale: 1.04 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, B.HEAD + 0.12);
+        tl.fromTo("#s1-front-sub", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B.HEAD + 0.30);
+        tl.set({}, {}, B.END);
+        window.__timelines["s1-front"] = tl;
+      })();
+    </script>
+  </div>
+</template>
