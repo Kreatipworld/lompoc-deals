@@ -1,0 +1,66 @@
+<template>
+  <div data-composition-id="s6-victory" data-width="1080" data-height="1350" data-duration="6.80" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
+    <style>
+      [data-composition-id="s6-victory"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #050308; z-index: 60; }
+      [data-composition-id="s6-victory"] .cine-top { top: 0; } [data-composition-id="s6-victory"] .cine-bot { bottom: 0; }
+      [data-composition-id="s6-victory"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(5,3,8,0) 42%, rgba(5,3,8,0.72) 100%); }
+      [data-composition-id="s6-victory"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.10; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s6-victory"] .mark { position: absolute; top: 100px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s6-victory"] .stage { position: absolute; inset: 0; will-change: opacity; }
+      [data-composition-id="s6-victory"] .vidwrap { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s6-victory"] video, [data-composition-id="s6-victory"] img.key { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(0.92) brightness(0.92); }
+      [data-composition-id="s6-victory"] .scrim { position: absolute; inset: 0; z-index: 20; background: linear-gradient(to top, rgba(5,3,8,0.94) 0%, rgba(5,3,8,0.62) 32%, rgba(5,3,8,0.0) 60%); }
+      [data-composition-id="s6-victory"] .lower { position: absolute; left: 84px; right: 84px; bottom: 19%; z-index: 35; }
+      [data-composition-id="s6-victory"] .divider { display: block; width: 100%; height: 6px; background: #efc618; border-radius: 3px; transform-origin: left center; will-change: transform, opacity; box-shadow: 0 0 18px rgba(239,198,24,0.55); }
+      [data-composition-id="s6-victory"] .card { display: flex; align-items: center; gap: 30px; margin-top: 30px; will-change: transform, opacity; }
+      [data-composition-id="s6-victory"] .card img { display: block; width: 124px; height: 124px; object-fit: contain; flex: 0 0 auto; filter: drop-shadow(0 8px 22px rgba(0,0,0,0.6)); }
+      [data-composition-id="s6-victory"] .kicker { display: block; color: #efc618; font-weight: 800; font-size: 34px; letter-spacing: 7px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
+      [data-composition-id="s6-victory"] .hero { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,0.7); font-weight: 800; font-size: 84px; line-height: 0.95; letter-spacing: -4px; text-transform: uppercase; }
+      [data-composition-id="s6-victory"] .wipe { position: absolute; top: 0; bottom: 0; left: -40px; width: 28px; background: #efc618; box-shadow: 0 0 40px rgba(239,198,24,0.8); z-index: 45; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s6-victory"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 4px; padding: 14px 28px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+
+      [data-composition-id="s6-victory"] video { filter: contrast(1.12) saturate(0.95) brightness(0.95); }
+      [data-composition-id="s6-victory"] .lower { bottom: 19%; }
+      [data-composition-id="s6-victory"] .score { display: flex; flex-direction: column; gap: 14px; }
+      [data-composition-id="s6-victory"] .srow { display: flex; align-items: center; gap: 22px; background: rgba(26,16,48,0.82); border: 2px solid rgba(239,198,24,0.28); border-radius: 22px; padding: 16px 26px; opacity: 0; will-change: transform, opacity; position: relative; overflow: hidden; }
+      [data-composition-id="s6-victory"] .srow img { display: block; width: 84px; height: 84px; object-fit: contain; flex: 0 0 auto; }
+      [data-composition-id="s6-victory"] .srow .name { flex: 1 1 auto; color: #fff; font-weight: 800; font-size: 44px; letter-spacing: 0; text-transform: uppercase; line-height: 1.0; text-align: left; }
+      [data-composition-id="s6-victory"] .srow .name small { display: block; font-size: 22px; letter-spacing: 4px; font-weight: 700; opacity: 0.75; margin-bottom: 4px; }
+      [data-composition-id="s6-victory"] .srow .num { flex: 0 0 auto; min-width: 150px; text-align: right; color: #fff; font-weight: 800; font-size: 104px; line-height: 0.9; letter-spacing: -5px; font-variant-numeric: tabular-nums; }
+      [data-composition-id="s6-victory"] .srow.win .num { color: #efc618; }
+      [data-composition-id="s6-victory"] .winrule { position: absolute; left: 26px; right: 26px; bottom: 6px; height: 8px; background: #efc618; border-radius: 4px; transform-origin: left center; opacity: 0; box-shadow: 0 0 16px rgba(239,198,24,0.6); }
+      [data-composition-id="s6-victory"] .flare { position: absolute; left: -20%; right: -20%; top: -10%; height: 60%; z-index: 23; background: radial-gradient(ellipse 45% 55% at 50% 30%, rgba(200,220,255,0.35), rgba(200,220,255,0) 70%); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
+
+    </style>
+    <div class="stage" id="s6-victory-stage">
+      <div class="vidwrap" id="s6-victory-w0" data-layout-allow-overflow><video id="s6-victory-vid" class="clip" src="public/b4-victory.mp4" data-start="0" data-media-start="0" data-duration="6.80" data-playback-rate="0.76" data-track-index="0" muted playsinline></video></div>
+      <div class="flare" id="s6-victory-flare"></div>
+      <div class="scrim"></div>
+      <div class="vig"></div>
+      <div class="lower">
+        <div class="score">
+          <div class="srow win" id="s6-victory-row-l"><img src="public/badge-braves.png" alt="" /><div class="name"><small>Lompoc High</small>Braves</div><div class="num" id="s6-victory-n-l">38</div><span class="winrule" id="s6-victory-winrule"></span></div>
+          <div class="srow" id="s6-victory-row-c"><img src="public/badge-conqs.png" alt="" /><div class="name"><small>Cabrillo High</small>Conquistadores</div><div class="num" id="s6-victory-n-c">2</div></div>
+        </div>
+      </div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative): SCORE_L "Lompoc 38" row, SCORE_C "Cabrillo 2" row, RAISE light flare as the staff goes up. END = scene duration.
+        const B = { SCORE_L: 1.22, SCORE_C: 4.44, RAISE: 3.3, END: 6.80 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s6-victory-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.18, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s6-victory-w0", { scale: 1.0 }, { scale: 1.08, duration: B.END, ease: "none" }, 0);
+        tl.fromTo("#s6-victory-row-l", { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "expo.out" }, B.SCORE_L);
+        tl.fromTo("#s6-victory-winrule", { autoAlpha: 0, scaleX: 0 }, { autoAlpha: 1, scaleX: 1, duration: 0.5 }, B.SCORE_L + 0.35);
+        tl.fromTo("#s6-victory-row-c", { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "expo.out" }, B.SCORE_C);
+        tl.fromTo("#s6-victory-flare", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2, ease: "power2.out" }, B.RAISE);
+        tl.set({}, {}, B.END);
+        window.__timelines["s6-victory"] = tl;
+      })();
+    </script>
+  </div>
+</template>

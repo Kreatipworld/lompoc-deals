@@ -1,0 +1,80 @@
+<template>
+  <div data-composition-id="s7-end" data-width="1080" data-height="1350" data-duration="4.45" style="position: absolute; inset: 0; overflow: hidden; background: #2a0533">
+    <style>
+      [data-composition-id="s7-end"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #050308; z-index: 60; }
+      [data-composition-id="s7-end"] .cine-top { top: 0; } [data-composition-id="s7-end"] .cine-bot { bottom: 0; }
+      [data-composition-id="s7-end"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(5,3,8,0) 42%, rgba(5,3,8,0.72) 100%); }
+      [data-composition-id="s7-end"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.10; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s7-end"] .mark { position: absolute; top: 100px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s7-end"] .stage { position: absolute; inset: 0; will-change: opacity; }
+      [data-composition-id="s7-end"] .vidwrap { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s7-end"] video, [data-composition-id="s7-end"] img.key { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(0.92) brightness(0.92); }
+      [data-composition-id="s7-end"] .scrim { position: absolute; inset: 0; z-index: 20; background: linear-gradient(to top, rgba(5,3,8,0.94) 0%, rgba(5,3,8,0.62) 32%, rgba(5,3,8,0.0) 60%); }
+      [data-composition-id="s7-end"] .lower { position: absolute; left: 84px; right: 84px; bottom: 19%; z-index: 35; }
+      [data-composition-id="s7-end"] .divider { display: block; width: 100%; height: 6px; background: #efc618; border-radius: 3px; transform-origin: left center; will-change: transform, opacity; box-shadow: 0 0 18px rgba(239,198,24,0.55); }
+      [data-composition-id="s7-end"] .card { display: flex; align-items: center; gap: 30px; margin-top: 30px; will-change: transform, opacity; }
+      [data-composition-id="s7-end"] .card img { display: block; width: 124px; height: 124px; object-fit: contain; flex: 0 0 auto; filter: drop-shadow(0 8px 22px rgba(0,0,0,0.6)); }
+      [data-composition-id="s7-end"] .kicker { display: block; color: #efc618; font-weight: 800; font-size: 34px; letter-spacing: 7px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
+      [data-composition-id="s7-end"] .hero { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,0.7); font-weight: 800; font-size: 84px; line-height: 0.95; letter-spacing: -4px; text-transform: uppercase; }
+      [data-composition-id="s7-end"] .wipe { position: absolute; top: 0; bottom: 0; left: -40px; width: 28px; background: #efc618; box-shadow: 0 0 40px rgba(239,198,24,0.8); z-index: 45; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s7-end"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 4px; padding: 14px 28px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+
+      [data-composition-id="s7-end"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 90% 70% at 50% 40%, #7a1690 0%, #650c75 45%, #2a0533 100%); }
+      [data-composition-id="s7-end"] .col { position: absolute; left: 70px; right: 70px; top: 200px; z-index: 35; text-align: center; }
+      [data-composition-id="s7-end"] .badges { display: flex; align-items: center; justify-content: center; gap: 60px; }
+      [data-composition-id="s7-end"] .badges .bw { position: relative; width: 194px; height: 194px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s7-end"] .badges img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 30px rgba(0,0,0,0.55)); position: relative; z-index: 2; }
+      [data-composition-id="s7-end"] .ring { position: absolute; inset: -22px; border-radius: 50%; border: 6px solid #efc618; box-shadow: 0 0 40px rgba(239,198,24,0.7), inset 0 0 30px rgba(239,198,24,0.35); opacity: 0; z-index: 1; }
+      [data-composition-id="s7-end"] .badges .x { color: #efc618; font-weight: 800; font-size: 44px; letter-spacing: 4px; opacity: 0; }
+      [data-composition-id="s7-end"] .l1 { display: block; margin-top: 58px; color: #fff; font-weight: 800; font-size: 58px; line-height: 1.0; letter-spacing: -3px; text-transform: uppercase; text-shadow: 0 8px 30px rgba(0,0,0,0.6); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s7-end"] .l1 em { font-style: normal; color: #efc618; }
+      [data-composition-id="s7-end"] .respect { display: block; margin-top: 18px; color: rgba(255,255,255,0.8); font-weight: 700; font-size: 30px; letter-spacing: 5px; text-transform: uppercase; opacity: 0; }
+      [data-composition-id="s7-end"] .find { display: block; margin-top: 50px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s7-end"] .find img { display: block; width: 110px; height: auto; margin: 0 auto; }
+      [data-composition-id="s7-end"] .pill { display: inline-block; margin-top: 22px; background: #241629; color: #efc618; font-weight: 800; font-size: 40px; letter-spacing: 1px; padding: 20px 40px; border-radius: 16px; }
+      [data-composition-id="s7-end"] .pill small { display: block; color: rgba(255,255,255,0.7); font-size: 24px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+      [data-composition-id="s7-end"] .src { position: absolute; left: 0; right: 0; bottom: 102px; text-align: center; color: rgba(255,255,255,0.5); font-size: 22px; font-weight: 600; letter-spacing: 2px; z-index: 36; opacity: 0; }
+      [data-composition-id="s7-end"] .bloom { position: absolute; top: 12%; left: 140px; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, rgba(239,198,24,0.20), rgba(239,198,24,0) 62%); }
+
+    </style>
+    <div class="stage" id="s7-end-stage">
+      <div class="field"></div>
+      <div class="bloom" id="s7-end-bloom" data-layout-allow-overflow></div>
+      <div class="vig"></div>
+      <div class="col">
+        <div class="badges">
+          <div class="bw" id="s7-end-b1"><span class="ring" id="s7-end-ring" data-layout-allow-overflow></span><img src="public/badge-braves.png" alt="" /></div>
+          <span class="x" id="s7-end-x">&amp;</span>
+          <div class="bw" id="s7-end-b2"><img src="public/badge-conqs.png" alt="" /></div>
+        </div>
+        <span class="l1" id="s7-end-l1">The Big Game<br />goes to the <em>Braves</em></span>
+        <span class="respect" id="s7-end-respect">Respect to both sides</span>
+        <div class="find" id="s7-end-find"><img src="public/mark-white.png" alt="" /><div class="pill"><small>Full story</small>lompoclocals.com/news</div></div>
+      </div>
+      <div class="src" id="s7-end-src">Score: Noozhawk · Week 2</div>
+    </div>
+    
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative): BADGES both crests (Braves gets the gold ring), LINE, RESPECT, FIND pill, SRC. END = scene duration.
+        const B = { BADGES: 0.35, LINE: 0.55, RESPECT: 1.95, FIND: 2.35, SRC: 3.0, END: 4.45 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s7-end-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s7-end-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.8 }, 0);
+        tl.fromTo("#s7-end-b1", { autoAlpha: 0, x: -40, scale: 0.8 }, { autoAlpha: 1, x: 0, scale: 1, duration: 0.55, ease: "back.out(1.4)" }, B.BADGES);
+        tl.fromTo("#s7-end-b2", { autoAlpha: 0, x: 40, scale: 0.8 }, { autoAlpha: 1, x: 0, scale: 1, duration: 0.55, ease: "back.out(1.4)" }, B.BADGES);
+        tl.fromTo("#s7-end-x", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, B.BADGES + 0.3);
+        tl.fromTo("#s7-end-ring", { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, B.BADGES + 0.25);
+        tl.to("#s7-end-ring", { scale: 1.04, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, B.BADGES + 0.9);
+        tl.fromTo("#s7-end-l1", { autoAlpha: 0, scale: 1.12 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "expo.out" }, B.LINE);
+        tl.fromTo("#s7-end-respect", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B.RESPECT);
+        tl.fromTo("#s7-end-find", { autoAlpha: 0, y: 28, scale: 0.92 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.3)" }, B.FIND);
+        tl.fromTo("#s7-end-src", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, B.SRC);
+        tl.set({}, {}, B.END);
+        window.__timelines["s7-end"] = tl;
+      })();
+    </script>
+  </div>
+</template>

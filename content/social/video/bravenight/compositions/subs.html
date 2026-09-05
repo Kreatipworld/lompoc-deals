@@ -1,0 +1,44 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="31.50" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 170px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 900px; background: rgba(0,0,0,0.55); color: #fff; font-weight: 600; font-size: 44px; line-height: 1.25; padding: 16px 30px; border-radius: 22px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>One town raised two legends.</span></div>
+      <div class="sub" id="sub-1"><span>On Friday night, only one could carry it home.</span></div>
+      <div class="sub" id="sub-2"><span>The Conquistador came down from the bluffs.</span></div>
+      <div class="sub" id="sub-3"><span>The Brave rose from the fields.</span></div>
+      <div class="sub" id="sub-4"><span>Under the lights at Huyck, they met.</span></div>
+      <div class="sub" id="sub-5"><span>And when the dust settled, the Brave stood.</span></div>
+      <div class="sub" id="sub-6"><span>Lompoc 38.</span></div>
+      <div class="sub" id="sub-7"><span>Cabrillo 2.</span></div>
+      <div class="sub" id="sub-8"><span>The Big Game goes to the Braves.</span></div>
+    </div>
+    <script>
+      (() => {
+        // SUBS = [[start, end, text], ...] absolute seconds — fill from the ASR word times. Text lives in the DOM above; times drive show/hide.
+        const SUBS = [
+          [0.60, 3.40, 'One town raised two legends.'],
+          [4.60, 7.90, 'On Friday night, only one could carry it home.'],
+          [8.90, 11.40, 'The Conquistador came down from the bluffs.'],
+          [12.30, 14.40, 'The Brave rose from the fields.'],
+          [15.60, 17.80, 'Under the lights at Huyck, they met.'],
+          [18.80, 21.30, 'And when the dust settled, the Brave stood.'],
+          [21.70, 23.70, 'Lompoc 38.'],
+          [24.90, 26.00, 'Cabrillo 2.'],
+          [26.80, 29.20, 'The Big Game goes to the Braves.']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 31.50);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>

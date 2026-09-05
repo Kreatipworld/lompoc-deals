@@ -1,0 +1,59 @@
+<template>
+  <div data-composition-id="s1-open" data-width="1080" data-height="1350" data-duration="5.10" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
+    <style>
+      [data-composition-id="s1-open"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #050308; z-index: 60; }
+      [data-composition-id="s1-open"] .cine-top { top: 0; } [data-composition-id="s1-open"] .cine-bot { bottom: 0; }
+      [data-composition-id="s1-open"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(5,3,8,0) 42%, rgba(5,3,8,0.72) 100%); }
+      [data-composition-id="s1-open"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.10; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s1-open"] .mark { position: absolute; top: 100px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s1-open"] .stage { position: absolute; inset: 0; will-change: opacity; }
+      [data-composition-id="s1-open"] .vidwrap { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s1-open"] video, [data-composition-id="s1-open"] img.key { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(0.92) brightness(0.92); }
+      [data-composition-id="s1-open"] .scrim { position: absolute; inset: 0; z-index: 20; background: linear-gradient(to top, rgba(5,3,8,0.94) 0%, rgba(5,3,8,0.62) 32%, rgba(5,3,8,0.0) 60%); }
+      [data-composition-id="s1-open"] .lower { position: absolute; left: 84px; right: 84px; bottom: 19%; z-index: 35; }
+      [data-composition-id="s1-open"] .divider { display: block; width: 100%; height: 6px; background: #efc618; border-radius: 3px; transform-origin: left center; will-change: transform, opacity; box-shadow: 0 0 18px rgba(239,198,24,0.55); }
+      [data-composition-id="s1-open"] .card { display: flex; align-items: center; gap: 30px; margin-top: 30px; will-change: transform, opacity; }
+      [data-composition-id="s1-open"] .card img { display: block; width: 124px; height: 124px; object-fit: contain; flex: 0 0 auto; filter: drop-shadow(0 8px 22px rgba(0,0,0,0.6)); }
+      [data-composition-id="s1-open"] .kicker { display: block; color: #efc618; font-weight: 800; font-size: 34px; letter-spacing: 7px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
+      [data-composition-id="s1-open"] .hero { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,0.7); font-weight: 800; font-size: 84px; line-height: 0.95; letter-spacing: -4px; text-transform: uppercase; }
+      [data-composition-id="s1-open"] .wipe { position: absolute; top: 0; bottom: 0; left: -40px; width: 28px; background: #efc618; box-shadow: 0 0 40px rgba(239,198,24,0.8); z-index: 45; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s1-open"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 4px; padding: 14px 28px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+
+      [data-composition-id="s1-open"] img.key { filter: brightness(0.5) contrast(1.1) saturate(0.85); }
+      [data-composition-id="s1-open"] .col { position: absolute; left: 60px; right: 60px; top: 220px; z-index: 35; text-align: center; }
+      [data-composition-id="s1-open"] .chip { font-size: 36px; padding: 16px 34px; opacity: 0; }
+      [data-composition-id="s1-open"] .title { display: block; margin-top: 34px; color: #fff; font-weight: 800; font-size: 106px; line-height: 0.92; letter-spacing: -5px; text-transform: uppercase; text-shadow: 0 10px 40px rgba(0,0,0,0.8); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s1-open"] .title em { font-style: normal; color: #efc618; }
+      [data-composition-id="s1-open"] .line { display: block; margin-top: 26px; color: rgba(255,255,255,0.82); font-weight: 700; font-size: 30px; letter-spacing: 6px; text-transform: uppercase; opacity: 0; }
+      [data-composition-id="s1-open"] .dark { position: absolute; inset: 0; z-index: 25; background: rgba(5,3,8,0.35); }
+
+    </style>
+    <div class="stage" id="s1-open-stage">
+      <div class="vidwrap" id="s1-open-wrap" data-layout-allow-overflow><img class="key" src="public/faceoff-key.png" alt="" /></div>
+      <div class="dark"></div>
+      <div class="vig"></div>
+      <div class="col">
+        <span class="chip" id="s1-open-chip">The Big Game</span>
+        <span class="title" id="s1-open-title">The <em>Brave's</em><br />Night</span>
+        <span class="line" id="s1-open-line">A Lompoc story</span>
+      </div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative): CHIP, TITLE, LINE. END = scene duration.
+        const B = { CHIP: 0.4, TITLE: 1.4, LINE: 2.2, END: 5.10 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s1-open-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s1-open-wrap", { scale: 1.0 }, { scale: 1.07, duration: B.END, ease: "none" }, 0);
+        tl.fromTo("#s1-open-chip", { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B.CHIP);
+        tl.fromTo("#s1-open-title", { autoAlpha: 0, scale: 1.22 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "expo.out" }, B.TITLE);
+        tl.fromTo("#s1-open-line", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B.LINE);
+        tl.set({}, {}, B.END);
+        window.__timelines["s1-open"] = tl;
+      })();
+    </script>
+  </div>
+</template>
