@@ -28,3 +28,6 @@ Saturday night in Lompoc = Hangar 7 🍕🍷 wood-fired pizza, local wine, craft
 **IG Story**
 Text "Live music tonight at 7 🎶🍷" · link sticker → https://www.lompoclocals.com/biz/hangar-7-social-house?utm_source=ig&utm_medium=story&utm_campaign=spotlight-hangar7 ("Their page")
 Reel/FB/TikTok links carry utm_campaign=spotlight-hangar7. thumbnailOffset 1500 ms. shareNow ×4, 5-min stagger.
+
+## POSTED Sat Sep 5 2026 ~10:42 AM PT (user: "post it everywhere now")
+IG Reel 6a9c54510ca93dff239f8ab0 (sent 10:44, https://www.instagram.com/reel/Dc6hgFJCDRG/) · FB Reel 6a9c545c85ccb3a22c0726dc (sent 10:42, https://facebook.com/1898952607093480_1362998699330938) · TikTok 6a9c5467f97391de04bb00dd (sent 10:42, https://tiktok.com/@lompoclocals/video/7682107818043804942) · IG Story 6a9c547285ccb3a22c072818 (sent 10:43, https://www.instagram.com/stories/lompoclocals_/3979640478512510720; link sticker → /biz/hangar-7-social-house, utm_campaign=spotlight-hangar7). All shareNow. Blob: social/video/hangar7-spotlight-{9x16,4x5}.mp4. Spend 1.85cr.
