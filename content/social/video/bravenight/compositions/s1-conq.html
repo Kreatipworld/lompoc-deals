@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="s1-conq" data-width="1080" data-height="1920" data-duration="4.60" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
+  <div data-composition-id="s1-conq" data-width="1080" data-height="1920" data-duration="6.20" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
     <style>
       [data-composition-id="s1-conq"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #050308; z-index: 60; }
       [data-composition-id="s1-conq"] .cine-top { top: 0; } [data-composition-id="s1-conq"] .cine-bot { bottom: 0; }
@@ -19,23 +19,40 @@
       [data-composition-id="s1-conq"] .wipe { position: absolute; top: 0; bottom: 0; left: -40px; width: 28px; background: #efc618; box-shadow: 0 0 40px rgba(239,198,24,0.8); z-index: 45; opacity: 0; will-change: transform, opacity; }
       [data-composition-id="s1-conq"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 4px; padding: 14px 28px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
 
-      [data-composition-id="s1-conq"] video { filter: brightness(0.62) contrast(1.15) saturate(0.85); }
+      [data-composition-id="s1-conq"] video { filter: brightness(0.66) contrast(1.15) saturate(0.85); }
       [data-composition-id="s1-conq"] .col { position: absolute; left: 60px; right: 60px; top: 310px; z-index: 35; text-align: center; }
-      [data-composition-id="s1-conq"] .chip { font-size: 36px; padding: 16px 34px; opacity: 0; }
+      [data-composition-id="s1-conq"] .col .chip { font-size: 36px; padding: 16px 34px; opacity: 0; }
       [data-composition-id="s1-conq"] .title { display: block; margin-top: 34px; color: #fff; font-weight: 800; font-size: 126px; line-height: 0.92; letter-spacing: -5px; text-transform: uppercase; text-shadow: 0 10px 40px rgba(0,0,0,0.8); opacity: 0; will-change: transform, opacity; }
       [data-composition-id="s1-conq"] .title em { font-style: normal; color: #efc618; }
       [data-composition-id="s1-conq"] .line { display: block; margin-top: 26px; color: rgba(255,255,255,0.82); font-weight: 700; font-size: 30px; letter-spacing: 6px; text-transform: uppercase; opacity: 0; }
-      [data-composition-id="s1-conq"] .top { position: absolute; left: 0; right: 0; top: 0; height: 58%; z-index: 21; background: linear-gradient(to bottom, rgba(5,3,8,0.78) 0%, rgba(5,3,8,0.45) 55%, rgba(5,3,8,0) 100%); }
+      [data-composition-id="s1-conq"] .top { position: absolute; left: 0; right: 0; top: 0; height: 58%; z-index: 21; background: linear-gradient(to bottom, rgba(5,3,8,0.78) 0%, rgba(5,3,8,0.45) 55%, rgba(5,3,8,0) 100%); opacity: 1; }
+      [data-composition-id="s1-conq"] .card > div { flex: 1 1 auto; min-width: 0; }
+      [data-composition-id="s1-conq"] .hero { font-size: 72px; letter-spacing: -3px; white-space: nowrap; }
+      [data-composition-id="s1-conq"] .lower .divider { opacity: 0; }
+      [data-composition-id="s1-conq"] .lower .chip { opacity: 0; }
+      [data-composition-id="s1-conq"] .card { opacity: 0; }
+      [data-composition-id="s1-conq"] .scrim { background: linear-gradient(to top, rgba(5,3,8,0.86) 0%, rgba(5,3,8,0.40) 28%, rgba(5,3,8,0.0) 50%); }
+      
 
     </style>
     <div class="stage" id="s1-conq-stage">
-      <div class="vidwrap" id="s1-conq-w0" data-layout-allow-overflow><video id="s1-conq-vid" class="clip" src="public/n1-conq-ready.mp4" data-start="0" data-media-start="0.00" data-duration="4.60" data-track-index="0"  muted playsinline></video></div>
+      <div class="wipe" id="s1-conq-wipe" data-layout-allow-overflow></div>
+      <div class="vidwrap" id="s1-conq-w0" data-layout-allow-overflow><video id="s1-conq-vid" class="clip" src="public/n1-conq-ready.mp4" data-start="0" data-media-start="0.00" data-duration="6.20" data-track-index="0" data-playback-rate="0.8" muted playsinline></video></div>
       <div class="top"></div>
+      <div class="scrim"></div>
       <div class="vig"></div>
-      <div class="col">
-        <span class="chip" id="s1-conq-chip">The Big Game</span>
+      <div class="col" id="s1-conq-col">
+        <span class="chip" id="s1-conq-tchip">The Big Game</span>
         <span class="title" id="s1-conq-title">The <em>Brave's</em><br />Night</span>
         <span class="line" id="s1-conq-line">A Lompoc story</span>
+      </div>
+      <div class="lower">
+        <span class="divider" id="s1-conq-div"></span>
+        
+        <div class="card" id="s1-conq-card">
+          <img src="public/badge-conqs.png" alt="" />
+          <div><span class="kicker">Cabrillo</span><div class="hero">Conquistadores</div></div>
+        </div>
       </div>
     </div>
     <img class="mark" src="public/mark-white.png" alt="" />
@@ -43,14 +60,18 @@
     <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
     <script>
       (() => {
-        // BEATS (relative): CHIP, TITLE, LINE. END = scene duration.
-        const B = { CHIP: 0.35, TITLE: 1.0, LINE: 1.7, END: 4.60 };
+        // BEATS (relative): CHIP, TITLE, LINE, TITLE_OUT, CARD. END = scene duration.
+        const B = { CHIP: 0.35, TITLE: 1.0, LINE: 1.7, TITLE_OUT: 3.55, CARD: 4.4, END: 6.20 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
         tl.fromTo("#s1-conq-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7, ease: "power1.inOut" }, 0);
-        tl.fromTo("#s1-conq-w0", { scale: 1.0 }, { scale: 1.06, duration: B.END, ease: "none" }, 0);
-        tl.fromTo("#s1-conq-chip", { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B.CHIP);
+        
+        tl.fromTo("#s1-conq-w0", { scale: 1.0, yPercent: 0 }, { scale: 1.07, yPercent: 0, duration: B.END, ease: "none" }, 0);
+        tl.fromTo("#s1-conq-tchip", { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B.CHIP);
         tl.fromTo("#s1-conq-title", { autoAlpha: 0, scale: 1.22 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "expo.out" }, B.TITLE);
         tl.fromTo("#s1-conq-line", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, B.LINE);
+        tl.to("#s1-conq-col", { autoAlpha: 0, y: -16, duration: 0.45, ease: "power2.in" }, B.TITLE_OUT);
+        tl.fromTo("#s1-conq-div", { autoAlpha: 0, scaleX: 0 }, { autoAlpha: 1, scaleX: 1, duration: 0.55, ease: "power3.out" }, B.CARD - 0.15);
+        tl.fromTo("#s1-conq-card", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out" }, B.CARD);
         tl.set({}, {}, B.END);
         window.__timelines["s1-conq"] = tl;
       })();

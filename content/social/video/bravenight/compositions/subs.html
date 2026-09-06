@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="34.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="32.50" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
     <style>
       [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 170px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
       [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
@@ -8,8 +8,8 @@
     </style>
     <div class="wrapz" data-layout-allow-overlap>
       <div class="sub" id="sub-0"><span>One town raised two legends.</span></div>
-      <div class="sub" id="sub-1"><span>On Friday night, they lined up under the lights at Huyck.</span></div>
-      <div class="sub" id="sub-2"><span>The Conquistadores, ready.</span></div>
+      <div class="sub" id="sub-1"><span>The Conquistadores, ready.</span></div>
+      <div class="sub" id="sub-2"><span>On Friday night, they lined up under the lights at Huyck.</span></div>
       <div class="sub" id="sub-3"><span>The Braves, ready.</span></div>
       <div class="sub" id="sub-4"><span>And then they went.</span></div>
       <div class="sub" id="sub-5"><span>When the dust settled, the Brave stood.</span></div>
@@ -22,21 +22,21 @@
         // SUBS = [[start, end, text], ...] absolute seconds — fill from the ASR word times. Text lives in the DOM above; times drive show/hide.
         const SUBS = [
           [0.60, 3.60, 'One town raised two legends.'],
-          [4.60, 8.30, 'On Friday night, they lined up under the lights at Huyck.'],
-          [8.75, 10.60, 'The Conquistadores, ready.'],
-          [11.00, 12.30, 'The Braves, ready.'],
-          [13.30, 14.90, 'And then they went.'],
-          [19.00, 21.60, 'When the dust settled, the Brave stood.'],
-          [23.40, 24.90, 'Lompoc 38.'],
-          [25.10, 26.30, 'Cabrillo 2.'],
-          [29.80, 32.30, 'The Big Game goes to the Braves.']
+          [4.50, 6.30, 'The Conquistadores, ready.'],
+          [6.60, 10.30, 'On Friday night, they lined up under the lights at Huyck.'],
+          [10.60, 11.90, 'The Braves, ready.'],
+          [12.20, 13.80, 'And then they went.'],
+          [20.30, 22.90, 'When the dust settled, the Brave stood.'],
+          [23.60, 25.10, 'Lompoc 38.'],
+          [25.30, 26.50, 'Cabrillo 2.'],
+          [28.30, 30.80, 'The Big Game goes to the Braves.']
         ];
         const tl = gsap.timeline({ paused: true });
         SUBS.forEach(([a, b], i) => {
           tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
           tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
         });
-        tl.set({}, {}, 34.00);
+        tl.set({}, {}, 32.50);
         window.__timelines["subs"] = tl;
       })();
     </script>
