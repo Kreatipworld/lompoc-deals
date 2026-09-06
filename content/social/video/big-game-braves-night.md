@@ -27,3 +27,6 @@ Gotcha (Sep 6): Higgsfield refresh token expired → every call returned empty/4
 ## v3 (Sep 6, user: "the 2 scenes at the beginning are too repetitive… same zoom in pictures"; "change the arm for a brave arm when they stamp each other — the brave has the same tool as the conquistador"; "I like it, just curate that")
 Each lineup clip once (n1 under the title + Cabrillo card, n2 with Friday-night chip + Lompoc card), then advance, then NEW clash: still clash-key (recraft e326b5b6, 1.25cr — Conquistador sword + red shield vs Brave feathered war lance + painted sun rawhide shield) → Kling i2v b5-clash2 (job 46de4e7f, 10cr; sparks/dust on impact; night-graded in the cut). Same read (v2 segments reordered so each line lands on its picture). Ending unchanged. v3 spend ≈ 11.25cr.
 - v3 RENDERED Sep 6: `bravenight/renders/bravenight-v3-{9x16,4x5}.mp4`, 32.5s, -15.3 LUFS → Downloads. `python3 gen.py` = v3 (2/1 rebuild older). Impact at 19.05. Balance after v3: 1119.96. Awaiting user watch. NOT posted. Cover ≈1,800 ms.
+
+## POSTED Sun Sep 6 2026 ~9:47 AM PT (user: "Post it now everywhere") — v3
+IG Reel 6a9d991baf83b6dedf969dcd · FB Reel 6a9d99269730c9bde5497028 · TikTok 6a9d99322066ff47cc401837 · IG Story 6a9d993d9730c9bde5497129 (link sticker → the 38-2 story, utm_campaign=braves-night). All shareNow. Blob: social/video/bravenight-v3-9x16.mp4. Cover 1,800 ms.
