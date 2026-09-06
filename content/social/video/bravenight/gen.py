@@ -459,7 +459,6 @@ def s7_end(A, dur, cid="s7-end"):
         <span class="respect" id="{cid}-respect">Respect to both sides</span>
         <div class="find" id="{cid}-find"><img src="public/mark-white.png" alt="" /><div class="pill"><small>Full story</small>lompoclocals.com/news</div></div>
       </div>
-      <div class="src" id="{cid}-src">Score: Noozhawk · Week 2</div>
     </div>"""
     script = f"""        // BEATS (relative): BADGES both crests (Braves gets the gold ring), LINE, RESPECT, FIND pill, SRC. END = scene duration.
         const B = {{ BADGES: {B['BADGES']}, LINE: {B['LINE']}, RESPECT: {B['RESPECT']}, FIND: {B['FIND']}, SRC: {B['SRC']}, END: {dur:.2f} }};
@@ -474,7 +473,6 @@ def s7_end(A, dur, cid="s7-end"):
         tl.fromTo("#{cid}-l1", {{ autoAlpha: 0, scale: 1.12 }}, {{ autoAlpha: 1, scale: 1, duration: 0.5, ease: "expo.out" }}, B.LINE);
         tl.fromTo("#{cid}-respect", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, B.RESPECT);
         tl.fromTo("#{cid}-find", {{ autoAlpha: 0, y: 28, scale: 0.92 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.3)" }}, B.FIND);
-        tl.fromTo("#{cid}-src", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.4 }}, B.SRC);
         tl.set({{}}, {{}}, B.END);"""
     return wrap(cid, dur, "transparent" if cid in ("s8-end", "s6-end") else "#2a0533", css, body, script, A, nomark=True)
 
