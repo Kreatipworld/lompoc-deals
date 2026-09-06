@@ -23,6 +23,12 @@ TOTAL = 31.50
 VO_START = 0.60
 VO_DUR = 28.70
 
+import sys
+# `python3 gen.py 1` rebuilds v1 (kept reproducible); default is v2 (Sep 6: new opening from the lineup clips).
+VERSION = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else int(os.environ.get("BRAVENIGHT_VERSION", "2"))
+VO_SRC = "public/vo-arthur.wav"
+VO_SEGS = None  # v2: list of (media_start, duration, placed_at) slices of VO_SRC
+
 # In-scene beats (relative to scene start), timed to the ASR word times (+0.60).
 BEATS = {
     "s1-open":    dict(CHIP=0.40, TITLE=1.40, LINE=2.20),
@@ -46,6 +52,53 @@ SUBS = [
     [24.90, 26.00, "Cabrillo 2."],
     [26.80, 29.20, "The Big Game goes to the Braves."],
 ]
+
+if VERSION == 2:
+    # ─── v2: no repeated openings. Lineups (n1/n2), advance (n3), clash (b3), victory (b4), end. ──
+    SCENES = [
+        ("s1-conq",        0.00,  4.60),   # n1 media 0: title over the Conquistador line
+        ("s2-brave",       4.35,  4.45),   # n2 media 0: FRIDAY NIGHT · HUYCK STADIUM
+        ("s3-conq-ready",  8.55,  2.45),   # n1 media 2.60: shields rise + Cabrillo card
+        ("s4-brave-ready", 10.75, 2.45),   # n2 media 2.60: staffs rise + Lompoc card
+        ("s5-advance",     12.95, 4.95),   # n3: both lines walk toward midfield
+        ("s6-clash",       17.65, 2.25),   # b3 media 2.80: burst, flash, hold
+        ("s7-victory",     19.65, 9.95),   # b4 at 0.50x: standing → staff rises under the score rows
+        ("s8-end",         29.35, 4.65),   # the v1 end card
+    ]
+    TOTAL = 34.00
+    VO_SRC = "public/vo-arthur-v2.wav"
+    VO_SEGS = [
+        (0.00, 3.30, 0.60),   # One town raised two legends.
+        (3.40, 3.85, 4.60),   # On Friday night, they lined up under the lights at Huyck.
+        (7.30, 2.00, 8.75),   # The Conquistadores, ready.
+        (9.70, 1.30, 11.00),  # The Braves, ready.
+        (11.70, 1.60, 13.30), # And then they went.
+        (13.95, 2.60, 19.00), # When the dust settled, the Brave stood.
+        (17.45, 2.80, 23.40), # Lompoc 38. Cabrillo 2.
+        (20.65, 2.44, 29.80), # The Big Game goes to the Braves.
+    ]
+    BEATS = {
+        "s1-conq":        dict(CHIP=0.35, TITLE=1.00, LINE=1.70),
+        "s2-brave":       dict(CHIP=0.45),
+        "s3-conq-ready":  dict(CARD=0.20),
+        "s4-brave-ready": dict(CARD=0.25),
+        "s5-advance":     dict(),
+        "s6-clash":       dict(HIT=0.27),                              # 17.92 abs: white flash + shake + shield-hit
+        "s7-victory":     dict(SCORE_L=4.05, SCORE_C=5.45, RAISE=4.95), # 23.70 · 25.10 · roar/flare 24.60
+        "s8-end":         dict(BADGES=0.35, LINE=0.55, RESPECT=1.95, FIND=2.35, SRC=3.00),
+    }
+    B4_RATE = 0.50  # b4-victory (5.04 s) at half speed fills the 9.95 s victory scene; staff fully up ≈ 28.65
+    SUBS = [
+        [0.60,  3.60,  "One town raised two legends."],
+        [4.60,  8.30,  "On Friday night, they lined up under the lights at Huyck."],
+        [8.75,  10.60, "The Conquistadores, ready."],
+        [11.00, 12.30, "The Braves, ready."],
+        [13.30, 14.90, "And then they went."],
+        [19.00, 21.60, "When the dust settled, the Brave stood."],
+        [23.40, 24.90, "Lompoc 38."],
+        [25.10, 26.30, "Cabrillo 2."],
+        [29.80, 32.30, "The Big Game goes to the Braves."],
+    ]
 
 GOLD = "#efc618"; INK = "#241629"; PURPLE = "#650c75"; GREEN = "#0b992f"; DARK = "#1a1030"; BG = "#050308"
 
@@ -326,8 +379,8 @@ def s6_victory(A, dur):
 
 
 # ─── s7 end ───────────────────────────────────────────────────────────────────────
-def s7_end(A, dur):
-    cid = "s7-end"; B = BEATS[cid]; s = f'[data-composition-id="{cid}"]'
+def s7_end(A, dur, cid="s7-end"):
+    B = BEATS[cid]; s = f'[data-composition-id="{cid}"]'
     top = A['COL_TOP'] + 10
     css = f"""
       {s} .field {{ position: absolute; inset: 0; background: radial-gradient(ellipse 90% 70% at 50% 40%, #7a1690 0%, {PURPLE} 45%, #2a0533 100%); }}
@@ -378,7 +431,7 @@ def s7_end(A, dur):
         tl.fromTo("#{cid}-find", {{ autoAlpha: 0, y: 28, scale: 0.92 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.3)" }}, B.FIND);
         tl.fromTo("#{cid}-src", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.4 }}, B.SRC);
         tl.set({{}}, {{}}, B.END);"""
-    return wrap(cid, dur, "#2a0533", css, body, script, A, nomark=True)
+    return wrap(cid, dur, "transparent" if cid == "s8-end" else "#2a0533", css, body, script, A, nomark=True)
 
 
 # ─── subtitles overlay ────────────────────────────────────────────────────────────
@@ -420,8 +473,245 @@ def subs(A):
     return html
 
 
+# ═══ v2 scene builders ═══════════════════════════════════════════════════════════
+def _vid(cid, src, ms, dur, extra=""):
+    return f'<div class="vidwrap" id="{cid}-w0" data-layout-allow-overflow><video id="{cid}-vid" class="clip" src="public/{src}" data-start="0" data-media-start="{ms:.2f}" data-duration="{dur:.2f}" data-track-index="0" {extra} muted playsinline></video></div>'
+
+
+def v2_open(A, dur):
+    """s1-conq: the Conquistador line under the title."""
+    cid = "s1-conq"; B = BEATS[cid]; s = f'[data-composition-id="{cid}"]'
+    css = f"""
+      {s} video {{ filter: brightness(0.62) contrast(1.15) saturate(0.85); }}
+      {s} .col {{ position: absolute; left: 60px; right: 60px; top: {A['COL_TOP'] + 10}px; z-index: 35; text-align: center; }}
+      {s} .chip {{ font-size: 36px; padding: 16px 34px; opacity: 0; }}
+      {s} .title {{ display: block; margin-top: 34px; color: #fff; font-weight: 800; font-size: {A['HERO'] + 22}px; line-height: 0.92; letter-spacing: -5px; text-transform: uppercase; text-shadow: 0 10px 40px rgba(0,0,0,0.8); opacity: 0; will-change: transform, opacity; }}
+      {s} .title em {{ font-style: normal; color: {GOLD}; }}
+      {s} .line {{ display: block; margin-top: 26px; color: rgba(255,255,255,0.82); font-weight: 700; font-size: 30px; letter-spacing: 6px; text-transform: uppercase; opacity: 0; }}
+      {s} .top {{ position: absolute; left: 0; right: 0; top: 0; height: 58%; z-index: 21; background: linear-gradient(to bottom, rgba(5,3,8,0.78) 0%, rgba(5,3,8,0.45) 55%, rgba(5,3,8,0) 100%); }}
+"""
+    body = f"""    <div class="stage" id="{cid}-stage">
+      {_vid(cid, "n1-conq-ready.mp4", 0.0, dur)}
+      <div class="top"></div>
+      <div class="vig"></div>
+      <div class="col">
+        <span class="chip" id="{cid}-chip">The Big Game</span>
+        <span class="title" id="{cid}-title">The <em>Brave's</em><br />Night</span>
+        <span class="line" id="{cid}-line">A Lompoc story</span>
+      </div>
+    </div>"""
+    script = f"""        // BEATS (relative): CHIP, TITLE, LINE. END = scene duration.
+        const B = {{ CHIP: {B['CHIP']}, TITLE: {B['TITLE']}, LINE: {B['LINE']}, END: {dur:.2f} }};
+        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
+        tl.fromTo("#{cid}-stage", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.7, ease: "power1.inOut" }}, 0);
+        tl.fromTo("#{cid}-w0", {{ scale: 1.0 }}, {{ scale: 1.06, duration: B.END, ease: "none" }}, 0);
+        tl.fromTo("#{cid}-chip", {{ autoAlpha: 0, y: 18 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, B.CHIP);
+        tl.fromTo("#{cid}-title", {{ autoAlpha: 0, scale: 1.22 }}, {{ autoAlpha: 1, scale: 1, duration: 0.6, ease: "expo.out" }}, B.TITLE);
+        tl.fromTo("#{cid}-line", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, B.LINE);
+        tl.set({{}}, {{}}, B.END);"""
+    return wrap(cid, dur, BG, css, body, script, A)
+
+
+def v2_chip_scene(A, dur, cid, src, ms, chip_text, lift=0):
+    """s2-brave: a lineup with a gold divider + chip."""
+    B = BEATS[cid]; s = f'[data-composition-id="{cid}"]'
+    css = f"""
+      {s} .lower .chip {{ opacity: 0; }}
+      {s} .lower .divider {{ opacity: 0; }}
+      {s} .scrim {{ background: linear-gradient(to top, rgba(5,3,8,0.80) 0%, rgba(5,3,8,0.30) 26%, rgba(5,3,8,0.0) 48%); }}
+"""
+    body = f"""    <div class="stage" id="{cid}-stage">
+      <div class="wipe" id="{cid}-wipe" data-layout-allow-overflow></div>
+      {_vid(cid, src, ms, dur)}
+      <div class="scrim"></div>
+      <div class="vig"></div>
+      <div class="lower">
+        <span class="divider" id="{cid}-div"></span>
+        <div style="margin-top: 26px"><span class="chip" id="{cid}-chip">{chip_text}</span></div>
+      </div>
+    </div>"""
+    script = f"""        // BEATS (relative): CHIP. END = scene duration.
+        const B = {{ CHIP: {B['CHIP']}, END: {dur:.2f} }};
+        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
+        tl.fromTo("#{cid}-stage", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: {X}, ease: "power1.inOut" }}, 0);
+        tl.fromTo("#{cid}-wipe", {{ autoAlpha: 1, x: 0 }}, {{ x: 1180, duration: {X + 0.05}, ease: "power2.inOut" }}, 0).set("#{cid}-wipe", {{ autoAlpha: 0 }}, {X + 0.06});
+        tl.fromTo("#{cid}-w0", {{ scale: {1.0 + (0.14 if lift else 0)}, yPercent: {-lift} }}, {{ scale: {1.06 + (0.14 if lift else 0)}, yPercent: {-lift}, duration: B.END, ease: "none" }}, 0);
+        tl.fromTo("#{cid}-div", {{ autoAlpha: 0, scaleX: 0 }}, {{ autoAlpha: 1, scaleX: 1, duration: 0.55, ease: "power3.out" }}, B.CHIP - 0.2);
+        tl.fromTo("#{cid}-chip", {{ autoAlpha: 0, y: 18 }}, {{ autoAlpha: 1, y: 0, duration: 0.45 }}, B.CHIP);
+        tl.set({{}}, {{}}, B.END);"""
+    return wrap(cid, dur, BG, css, body, script, A)
+
+
+def v2_card_scene(A, dur, cid, src, ms, badge, kicker, hero, hero_px, lift=0):
+    """s3/s4: lineup with the gold divider + chapter card (identical treatment both schools)."""
+    B = BEATS[cid]; s = f'[data-composition-id="{cid}"]'
+    css = f"""
+      {s} .card > div {{ flex: 1 1 auto; min-width: 0; }}
+      {s} .hero {{ font-size: {hero_px}px; letter-spacing: -3px; white-space: nowrap; }}
+      {s} .lower .divider {{ opacity: 0; }}
+      {s} .card {{ opacity: 0; }}
+      {s} .scrim {{ background: linear-gradient(to top, rgba(5,3,8,0.86) 0%, rgba(5,3,8,0.40) 28%, rgba(5,3,8,0.0) 50%); }}
+"""
+    body = f"""    <div class="stage" id="{cid}-stage">
+      <div class="wipe" id="{cid}-wipe" data-layout-allow-overflow></div>
+      {_vid(cid, src, ms, dur)}
+      <div class="scrim"></div>
+      <div class="vig"></div>
+      <div class="lower">
+        <span class="divider" id="{cid}-div"></span>
+        <div class="card" id="{cid}-card">
+          <img src="public/{badge}" alt="" />
+          <div><span class="kicker">{kicker}</span><div class="hero">{hero}</div></div>
+        </div>
+      </div>
+    </div>"""
+    script = f"""        // BEATS (relative): CARD chapter card. END = scene duration.
+        const B = {{ CARD: {B['CARD']}, END: {dur:.2f} }};
+        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
+        tl.fromTo("#{cid}-stage", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: {X}, ease: "power1.inOut" }}, 0);
+        tl.fromTo("#{cid}-wipe", {{ autoAlpha: 1, x: 0 }}, {{ x: 1180, duration: {X + 0.05}, ease: "power2.inOut" }}, 0).set("#{cid}-wipe", {{ autoAlpha: 0 }}, {X + 0.06});
+        tl.fromTo("#{cid}-w0", {{ scale: {1.04 + (0.14 if lift else 0)}, yPercent: {-lift} }}, {{ scale: {1.10 + (0.14 if lift else 0)}, yPercent: {-lift}, duration: B.END, ease: "none" }}, 0);
+        tl.fromTo("#{cid}-div", {{ autoAlpha: 0, scaleX: 0 }}, {{ autoAlpha: 1, scaleX: 1, duration: 0.55, ease: "power3.out" }}, B.CARD - 0.15);
+        tl.fromTo("#{cid}-card", {{ autoAlpha: 0, y: 22 }}, {{ autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out" }}, B.CARD);
+        tl.set({{}}, {{}}, B.END);"""
+    return wrap(cid, dur, BG, css, body, script, A)
+
+
+def v2_advance(A, dur):
+    """s5-advance: both lines walk toward midfield. No card — the drums carry it."""
+    cid = "s5-advance"; s = f'[data-composition-id="{cid}"]'
+    css = f"""
+      {s} video {{ filter: contrast(1.14) saturate(0.9) brightness(0.9); }}
+      {s} .scrim {{ background: linear-gradient(to top, rgba(5,3,8,0.7) 0%, rgba(5,3,8,0.25) 30%, rgba(5,3,8,0) 55%); }}
+"""
+    body = f"""    <div class="stage" id="{cid}-stage">
+      <div class="wipe" id="{cid}-wipe" data-layout-allow-overflow></div>
+      {_vid(cid, "n3-advance.mp4", 0.0, dur)}
+      <div class="scrim"></div>
+      <div class="vig"></div>
+    </div>"""
+    script = f"""        // No text beats; END = scene duration.
+        const B = {{ END: {dur:.2f} }};
+        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
+        tl.fromTo("#{cid}-stage", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: {X}, ease: "power1.inOut" }}, 0);
+        tl.fromTo("#{cid}-wipe", {{ autoAlpha: 1, x: 0 }}, {{ x: 1180, duration: {X + 0.05}, ease: "power2.inOut" }}, 0).set("#{cid}-wipe", {{ autoAlpha: 0 }}, {X + 0.06});
+        tl.fromTo("#{cid}-w0", {{ scale: 1.0 }}, {{ scale: 1.08, duration: B.END, ease: "power1.in" }}, 0);
+        tl.set({{}}, {{}}, B.END);"""
+    return wrap(cid, dur, BG, css, body, script, A)
+
+
+def v2_clash(A, dur):
+    """s6-clash: the burst frame of b3 (media 2.80) with flash + shake + hold."""
+    cid = "s6-clash"; B = BEATS[cid]; s = f'[data-composition-id="{cid}"]'
+    css = f"""
+      {s} video {{ filter: contrast(1.1) saturate(1.0) brightness(0.98); }}
+      {s} .fog {{ position: absolute; inset: -10%; z-index: 22; background: radial-gradient(ellipse 70% 40% at 50% 80%, rgba(180,200,255,0.18), rgba(180,200,255,0) 70%); pointer-events: none; }}
+      {s} .flash {{ position: absolute; inset: 0; z-index: 58; background: #fff; opacity: 0; pointer-events: none; }}
+      {s} .shake {{ position: absolute; inset: 0; will-change: transform; }}
+"""
+    body = f"""    <div class="stage" id="{cid}-stage">
+      <div class="shake" id="{cid}-shake" data-layout-allow-overflow>
+        {_vid(cid, "b3-clash.mp4", 2.80, min(dur, 5.04 - 2.80))}
+      </div>
+      <div class="fog"></div>
+      <div class="vig"></div>
+      <div class="flash" id="{cid}-flash"></div>
+    </div>"""
+    script = f"""        // BEATS (relative): HIT white flash + shake (shield-hit SFX at the same absolute time in index). END = scene duration.
+        const B = {{ HIT: {B['HIT']:.2f}, END: {dur:.2f} }};
+        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
+        tl.fromTo("#{cid}-stage", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.12, ease: "power1.inOut" }}, 0);
+        tl.fromTo("#{cid}-w0", {{ scale: 1.06 }}, {{ scale: 1.0, duration: B.END, ease: "none" }}, 0);
+        tl.fromTo("#{cid}-flash", {{ autoAlpha: 0 }}, {{ autoAlpha: 0.95, duration: 0.05, ease: "none" }}, B.HIT).to("#{cid}-flash", {{ autoAlpha: 0, duration: 0.22, ease: "power2.out" }}, B.HIT + 0.05);
+        tl.fromTo("#{cid}-shake", {{ x: 0, y: 0 }}, {{ x: -14, y: 9, duration: 0.05, ease: "none" }}, B.HIT).to("#{cid}-shake", {{ x: 11, y: -7, duration: 0.06 }}, B.HIT + 0.05).to("#{cid}-shake", {{ x: -6, y: 4, duration: 0.06 }}, B.HIT + 0.11).to("#{cid}-shake", {{ x: 0, y: 0, duration: 0.12 }}, B.HIT + 0.17);
+        tl.set({{}}, {{}}, B.END);"""
+    return wrap(cid, dur, BG, css, body, script, A)
+
+
+def v2_victory(A, dur):
+    """s7-victory: b4 at half speed — standing through 'the Brave stood', staff rises under the score rows."""
+    cid = "s7-victory"; B = BEATS[cid]; s = f'[data-composition-id="{cid}"]'
+    css = f"""
+      {s} video {{ filter: contrast(1.12) saturate(0.95) brightness(0.95); }}
+      {s} .lower {{ bottom: {A['LB']}; }}
+      {s} .score {{ display: flex; flex-direction: column; gap: 14px; }}
+      {s} .srow {{ display: flex; align-items: center; gap: 22px; background: rgba(26,16,48,0.82); border: 2px solid rgba(239,198,24,0.28); border-radius: 22px; padding: 16px 26px; opacity: 0; will-change: transform, opacity; position: relative; overflow: hidden; }}
+      {s} .srow img {{ display: block; width: {A['BADGE'] - 40}px; height: {A['BADGE'] - 40}px; object-fit: contain; flex: 0 0 auto; }}
+      {s} .srow .name {{ flex: 1 1 auto; color: #fff; font-weight: 800; font-size: 44px; letter-spacing: 0; text-transform: uppercase; line-height: 1.0; text-align: left; }}
+      {s} .srow .name small {{ display: block; font-size: 22px; letter-spacing: 4px; font-weight: 700; opacity: 0.75; margin-bottom: 4px; }}
+      {s} .srow .num {{ flex: 0 0 auto; min-width: 150px; text-align: right; color: #fff; font-weight: 800; font-size: 104px; line-height: 0.9; letter-spacing: -5px; font-variant-numeric: tabular-nums; }}
+      {s} .srow.win .num {{ color: {GOLD}; }}
+      {s} .winrule {{ position: absolute; left: 26px; right: 26px; bottom: 6px; height: 8px; background: {GOLD}; border-radius: 4px; transform-origin: left center; opacity: 0; box-shadow: 0 0 16px rgba(239,198,24,0.6); }}
+      {s} .flare {{ position: absolute; left: -20%; right: -20%; top: -10%; height: 60%; z-index: 23; background: radial-gradient(ellipse 45% 55% at 50% 30%, rgba(200,220,255,0.35), rgba(200,220,255,0) 70%); opacity: 0; pointer-events: none; mix-blend-mode: screen; }}
+"""
+    body = f"""    <div class="stage" id="{cid}-stage">
+      {_vid(cid, "b4-victory.mp4", 0.0, dur, f'data-playback-rate="{B4_RATE}"')}
+      <div class="flare" id="{cid}-flare"></div>
+      <div class="scrim"></div>
+      <div class="vig"></div>
+      <div class="lower">
+        <div class="score">
+          <div class="srow win" id="{cid}-row-l"><img src="public/badge-braves.png" alt="" /><div class="name"><small>Lompoc High</small>Braves</div><div class="num" id="{cid}-n-l">38</div><span class="winrule" id="{cid}-winrule"></span></div>
+          <div class="srow" id="{cid}-row-c"><img src="public/badge-conqs.png" alt="" /><div class="name"><small>Cabrillo High</small>Conquistadores</div><div class="num" id="{cid}-n-c">2</div></div>
+        </div>
+      </div>
+    </div>"""
+    script = f"""        // BEATS (relative): SCORE_L "Lompoc 38" row, SCORE_C "Cabrillo 2" row, RAISE light flare (crowd-roar at the same abs time). END = scene duration.
+        const B = {{ SCORE_L: {B['SCORE_L']}, SCORE_C: {B['SCORE_C']}, RAISE: {B['RAISE']}, END: {dur:.2f} }};
+        const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
+        tl.fromTo("#{cid}-stage", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: {X}, ease: "power1.inOut" }}, 0);
+        tl.fromTo("#{cid}-w0", {{ scale: 1.0 }}, {{ scale: 1.08, duration: B.END, ease: "none" }}, 0);
+        tl.fromTo("#{cid}-row-l", {{ autoAlpha: 0, x: -40 }}, {{ autoAlpha: 1, x: 0, duration: 0.5, ease: "expo.out" }}, B.SCORE_L);
+        tl.fromTo("#{cid}-winrule", {{ autoAlpha: 0, scaleX: 0 }}, {{ autoAlpha: 1, scaleX: 1, duration: 0.5 }}, B.SCORE_L + 0.35);
+        tl.fromTo("#{cid}-row-c", {{ autoAlpha: 0, x: -40 }}, {{ autoAlpha: 1, x: 0, duration: 0.5, ease: "expo.out" }}, B.SCORE_C);
+        tl.fromTo("#{cid}-flare", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 1.2, ease: "power2.out" }}, B.RAISE);
+        tl.set({{}}, {{}}, B.END);"""
+    return wrap(cid, dur, BG, css, body, script, A)
+
+
+def v2_scene_html(cid, dur, A):
+    if cid == "s1-conq": return v2_open(A, dur)
+    if cid == "s2-brave": return v2_chip_scene(A, dur, cid, "n2-brave-ready.mp4", 0.0, "Friday night · Huyck Stadium", lift=9)
+    if cid == "s3-conq-ready": return v2_card_scene(A, dur, cid, "n1-conq-ready.mp4", 2.60, "badge-conqs.png", "Cabrillo", "Conquistadores", A["HERO"] - 32)
+    if cid == "s4-brave-ready": return v2_card_scene(A, dur, cid, "n2-brave-ready.mp4", 2.60, "badge-braves.png", "Lompoc", "Braves", A["HERO"], lift=9)
+    if cid == "s5-advance": return v2_advance(A, dur)
+    if cid == "s6-clash": return v2_clash(A, dur)
+    if cid == "s7-victory": return v2_victory(A, dur)
+    if cid == "s8-end": return s7_end(A, dur, cid="s8-end")
+    raise ValueError(cid)
+
+
+def v2_sfx_rows():
+    import json
+    carve = 'data-fx-carve=\'{"enabled":true,"sources":["voiceover"],"strength":0.35}\''
+    def a(id_, src, start, dur, vol, pts, track, cv=True):
+        pts_json = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": t, "v": v} for t, v in pts]}]})
+        return f'      <audio id="{id_}" class="clip" data-audio-group="sfx" src="public/sfx/{src}" data-start="{start:.2f}" data-media-start="0" data-duration="{dur:.2f}" data-track-index="{track}" data-volume="{vol}" data-automation=\'{pts_json}\' {carve if cv else ""}></audio>'
+    ST = {cid: start for cid, start, _ in SCENES}
+    s2 = ST["s2-brave"]; s3 = ST["s3-conq-ready"]; s4 = ST["s4-brave-ready"]; s5 = ST["s5-advance"]; s6 = ST["s6-clash"]; s7 = ST["s7-victory"]; s8 = ST["s8-end"]
+    hit = s6 + BEATS["s6-clash"]["HIT"]
+    raise_ = s7 + BEATS["s7-victory"]["RAISE"]
+    rows = [
+        a("sfx-drone", "low-drone.wav", 0.00, 4.80, 0.45, [(0, 0), (0.5, 0.45), (4.2, 0.45), (4.8, 0)], 13),
+        a("sfx-murmur1", "stadium-murmur.wav", s2, 4.45, 0.45, [(0, 0), (0.5, 0.45), (4.0, 0.45), (4.45, 0)], 12),
+        a("sfx-whoosh1", "whoosh.wav", s3, 2.00, 0.55, [(0, 0.55), (1.2, 0.55), (2.0, 0)], 15, False),
+        a("sfx-murmur2", "stadium-murmur.wav", s3, 2.45, 0.4, [(0, 0), (0.3, 0.4), (2.1, 0.4), (2.45, 0)], 16),
+        a("sfx-whoosh2", "whoosh.wav", s4, 2.00, 0.55, [(0, 0.55), (1.2, 0.55), (2.0, 0)], 15, False),
+        a("sfx-murmur3", "stadium-murmur.wav", s4, 2.45, 0.4, [(0, 0), (0.3, 0.4), (2.1, 0.4), (2.45, 0)], 13),
+        a("sfx-whoosh3", "whoosh.wav", s5, 2.00, 0.5, [(0, 0.5), (1.2, 0.5), (2.0, 0)], 15, False),
+        a("sfx-murmur4", "stadium-murmur.wav", s5, 4.95, 0.5, [(0, 0), (0.4, 0.5), (4.5, 0.5), (4.95, 0)], 12),
+        a("sfx-hit", "shield-hit.wav", hit, 3.00, 0.7, [(0, 0.7), (2.5, 0.7), (3.0, 0)], 14, False),
+        a("sfx-murmur5", "stadium-murmur.wav", hit + 0.3, 4.00, 0.35, [(0, 0), (0.6, 0.35), (3.5, 0.35), (4.0, 0)], 16),
+        a("sfx-roar", "crowd-roar.wav", raise_, 6.00, 0.45, [(0, 0), (0.6, 0.45), (2.4, 0.45), (3.0, 0.25), (5.4, 0.25), (6.0, 0)], 14),
+        a("sfx-drone2", "low-drone.wav", s8, 4.65, 0.4, [(0, 0), (0.6, 0.4), (4.0, 0.4), (4.65, 0)], 13),
+    ]
+    return "\n".join(rows)
+
+
 
 def scene_html(cid, dur, A):
+    if VERSION == 2:
+        return v2_scene_html(cid, dur, A)
     return {"s1-open": s1_open, "s2-night": s2_night, "s3-conq": s3_conq, "s4-brave": s4_brave,
             "s5-clash": s5_clash, "s6-victory": s6_victory, "s7-end": s7_end}[cid](A, dur)
 
@@ -458,7 +748,10 @@ def index(A, folder, H):
     for i, (cid, start, dur) in enumerate(SCENES):
         rows.append(f'      <div id="el-{cid}" data-composition-id="{cid}" data-composition-src="{folder}/{cid}.html" data-start="{start:.2f}" data-duration="{dur:.2f}" data-track-index="{1 + (i % 2)}"></div>')
     rows.append(f'      <div id="el-subs" data-composition-id="subs" data-composition-src="{folder}/subs.html" data-start="0" data-duration="{TOTAL:.2f}" data-track-index="9"></div>')
-    vo = f'      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-arthur.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="10" data-volume="0.9" data-fade-in="0.05" data-fade-out="0.10"></audio>'
+    if VO_SEGS:
+        vo = "\n".join(f'      <audio id="vo{k}" class="clip" data-audio-group="voiceover" src="{VO_SRC}" data-start="{at:.2f}" data-media-start="{ms:.2f}" data-duration="{d:.2f}" data-track-index="10" data-volume="0.9" data-fade-in="0.05" data-fade-out="0.10"></audio>' for k, (ms, d, at) in enumerate(VO_SEGS))
+    else:
+        vo = f'      <audio id="vo" class="clip" data-audio-group="voiceover" src="{VO_SRC}" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="10" data-volume="0.9" data-fade-in="0.05" data-fade-out="0.10"></audio>'
     bed = f'      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="{min(TOTAL, 30.0):.2f}" data-track-index="11" data-volume="0.27" data-fade-in="0.8" data-fade-out="1.6" data-fx-carve=\'{{"enabled":true,"sources":["voiceover"],"strength":0.4}}\'></audio>'
     return f"""<!doctype html>
 <html lang="en">
@@ -476,13 +769,13 @@ def index(A, folder, H):
     </style>
   </head>
   <body>
-    <!-- THE BRAVE'S NIGHT — Big Game saga, a victory story. Lompoc 38, Cabrillo 2 (Noozhawk, Sep 4 2026). {TOTAL:.2f}s.
-         Open → night → the challenger → the Brave → clash → victory → end. Burned-in subtitles on track 9. Generated by gen.py — edit there. -->
+    <!-- THE BRAVE'S NIGHT v{VERSION} — Big Game saga, a victory story. Lompoc 38, Cabrillo 2 (Noozhawk, Sep 4 2026). {TOTAL:.2f}s.
+         v2: lineups → ready cards → advance → clash → victory → end (no repeated openings). Burned-in subtitles on track 9. Generated by gen.py — `python3 gen.py 1` for v1. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL:.2f}" data-width="1080" data-height="{H}">
 {chr(10).join(rows)}
 
 {vo}
-{sfx_rows()}
+{v2_sfx_rows() if VERSION == 2 else sfx_rows()}
 {bed}
     </div>
     <script>
@@ -508,4 +801,4 @@ for H, folder, idx in [(1920, "compositions", "index.html"), (1350, "composition
     write(f"{folder}/subs.html", subs(A))
     write(idx, index(A, folder, H))
 
-print("wrote", [s[0] for s in SCENES], "+ subs, index.html, index-4x5.tmpl")
+print(f"v{VERSION} wrote", [s[0] for s in SCENES], "+ subs, index.html, index-4x5.tmpl")

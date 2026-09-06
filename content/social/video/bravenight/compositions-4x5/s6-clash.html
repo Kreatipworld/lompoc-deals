@@ -1,0 +1,53 @@
+<template>
+  <div data-composition-id="s6-clash" data-width="1080" data-height="1350" data-duration="2.25" style="position: absolute; inset: 0; overflow: hidden; background: #050308">
+    <style>
+      [data-composition-id="s6-clash"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #050308; z-index: 60; }
+      [data-composition-id="s6-clash"] .cine-top { top: 0; } [data-composition-id="s6-clash"] .cine-bot { bottom: 0; }
+      [data-composition-id="s6-clash"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 95% 80% at 50% 45%, rgba(5,3,8,0) 42%, rgba(5,3,8,0.72) 100%); }
+      [data-composition-id="s6-clash"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.10; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s6-clash"] .mark { position: absolute; top: 100px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s6-clash"] .stage { position: absolute; inset: 0; will-change: opacity; }
+      [data-composition-id="s6-clash"] .vidwrap { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s6-clash"] video, [data-composition-id="s6-clash"] img.key { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(0.92) brightness(0.92); }
+      [data-composition-id="s6-clash"] .scrim { position: absolute; inset: 0; z-index: 20; background: linear-gradient(to top, rgba(5,3,8,0.94) 0%, rgba(5,3,8,0.62) 32%, rgba(5,3,8,0.0) 60%); }
+      [data-composition-id="s6-clash"] .lower { position: absolute; left: 84px; right: 84px; bottom: 19%; z-index: 35; }
+      [data-composition-id="s6-clash"] .divider { display: block; width: 100%; height: 6px; background: #efc618; border-radius: 3px; transform-origin: left center; will-change: transform, opacity; box-shadow: 0 0 18px rgba(239,198,24,0.55); }
+      [data-composition-id="s6-clash"] .card { display: flex; align-items: center; gap: 30px; margin-top: 30px; will-change: transform, opacity; }
+      [data-composition-id="s6-clash"] .card img { display: block; width: 124px; height: 124px; object-fit: contain; flex: 0 0 auto; filter: drop-shadow(0 8px 22px rgba(0,0,0,0.6)); }
+      [data-composition-id="s6-clash"] .kicker { display: block; color: #efc618; font-weight: 800; font-size: 34px; letter-spacing: 7px; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
+      [data-composition-id="s6-clash"] .hero { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,0.7); font-weight: 800; font-size: 84px; line-height: 0.95; letter-spacing: -4px; text-transform: uppercase; }
+      [data-composition-id="s6-clash"] .wipe { position: absolute; top: 0; bottom: 0; left: -40px; width: 28px; background: #efc618; box-shadow: 0 0 40px rgba(239,198,24,0.8); z-index: 45; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s6-clash"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 4px; padding: 14px 28px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; }
+
+      [data-composition-id="s6-clash"] video { filter: contrast(1.1) saturate(1.0) brightness(0.98); }
+      [data-composition-id="s6-clash"] .fog { position: absolute; inset: -10%; z-index: 22; background: radial-gradient(ellipse 70% 40% at 50% 80%, rgba(180,200,255,0.18), rgba(180,200,255,0) 70%); pointer-events: none; }
+      [data-composition-id="s6-clash"] .flash { position: absolute; inset: 0; z-index: 58; background: #fff; opacity: 0; pointer-events: none; }
+      [data-composition-id="s6-clash"] .shake { position: absolute; inset: 0; will-change: transform; }
+
+    </style>
+    <div class="stage" id="s6-clash-stage">
+      <div class="shake" id="s6-clash-shake" data-layout-allow-overflow>
+        <div class="vidwrap" id="s6-clash-w0" data-layout-allow-overflow><video id="s6-clash-vid" class="clip" src="public/b3-clash.mp4" data-start="0" data-media-start="2.80" data-duration="2.24" data-track-index="0"  muted playsinline></video></div>
+      </div>
+      <div class="fog"></div>
+      <div class="vig"></div>
+      <div class="flash" id="s6-clash-flash"></div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // BEATS (relative): HIT white flash + shake (shield-hit SFX at the same absolute time in index). END = scene duration.
+        const B = { HIT: 0.27, END: 2.25 };
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s6-clash-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s6-clash-w0", { scale: 1.06 }, { scale: 1.0, duration: B.END, ease: "none" }, 0);
+        tl.fromTo("#s6-clash-flash", { autoAlpha: 0 }, { autoAlpha: 0.95, duration: 0.05, ease: "none" }, B.HIT).to("#s6-clash-flash", { autoAlpha: 0, duration: 0.22, ease: "power2.out" }, B.HIT + 0.05);
+        tl.fromTo("#s6-clash-shake", { x: 0, y: 0 }, { x: -14, y: 9, duration: 0.05, ease: "none" }, B.HIT).to("#s6-clash-shake", { x: 11, y: -7, duration: 0.06 }, B.HIT + 0.05).to("#s6-clash-shake", { x: -6, y: 4, duration: 0.06 }, B.HIT + 0.11).to("#s6-clash-shake", { x: 0, y: 0, duration: 0.12 }, B.HIT + 0.17);
+        tl.set({}, {}, B.END);
+        window.__timelines["s6-clash"] = tl;
+      })();
+    </script>
+  </div>
+</template>
