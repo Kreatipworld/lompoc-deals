@@ -7,9 +7,9 @@ Rules this week: big pieces 6–8 PM PT only (morning slots = ~1/30th reach); Ti
 | Mon Sep 7 8:00 AM | Weekly learning report → hello@ | SENT (cron ok: 183 engaged, 751 views, 9 actions, 16 paying) |
 | Mon Sep 7 | Metrics pulled → memory; football page + Fri games on calendar | DONE |
 | Tue Sep 8 8:40 AM | Coastal Tint MEMBER SPOTLIGHT video (IG reel 6aa02c43 · FB reel 6aa02c4f · TikTok 6aa02c5b · IG story 6aa02c66) | POSTED (user: share it now); welcome card posts deleted |
-| Tue Sep 8 | Coastal Tint welcome email (photos + hours question) | AWAITING USER "send" |
+| Tue Sep 8 | Coastal Tint welcome email | DROPPED — user: members are in, the automatic Growth welcome is the only touch (for now) |
 | Wed Sep 9 6:00 PM | "This is Lompoc" master ad v6 (all 4 surfaces + story) | AWAITING USER watch/yes |
-| Wed Sep 9 | Paisano's spotlight | BLOCKED: no photos on profile → email awaiting user |
+| Wed Sep 9 | Paisano's spotlight | Build from existing assets only (logo + cover; check their public web/social gallery) — no email |
 | Wed Sep 9 AM | News desk story (cron) | AUTO |
 | Thu Sep 10 8:37 AM | Falcon 9 USSF-153 launch alert | SAME-DAY after verification (never pre-scheduled) |
 | Thu Sep 10 12:00 PM | Zine Making @ Cypress Gallery (IG 6a9f9187 · story 6a9f918b · FB 6a9f918e) | SCHEDULED |
