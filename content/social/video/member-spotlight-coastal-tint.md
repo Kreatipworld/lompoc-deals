@@ -11,3 +11,6 @@
 Order timed to the read: opener (shop/family-owned/name) → M4 side CERAMIC/BLOCKS HEAT & UV → Sierra→M4 dusk WRAPS·HEADLIGHT·DETAILING → tinted glass CARS·TRUCKS·HOMES·STOREFRONTS → M4 front NEW ON OCEAN AVENUE → Model Y FAMILY-OWNED → end card. 23.5s.
 Gotcha (Sep 8): scratchpad helpers (hf.py, asr.py, the asr venv packages) were wiped overnight — rebuilt; hf.py lives only in the scratchpad, so expect to recreate it.
 **Posting plan:** all four surfaces + IG story link sticker → /biz/coastal-tint (utm_campaign=spotlight-coastal-tint), 6:00 PM PT slot (Buffer: evening = 30× morning). Cover ≈1,500 ms.
+
+## POSTED Tue Sep 8 2026 8:40 AM PT (user: "Share it now")
+IG Reel 6aa02c43bf7753dc82a47e86 · FB Reel 6aa02c4f9cf55d2acd0313a5 · TikTok 6aa02c5b9cf55d2acd0315bc · IG Story 6aa02c6648794a7111561452 (link sticker → /biz/coastal-tint, utm_campaign=spotlight-coastal-tint). All shareNow. Blob: social/video/coastaltint-spotlight-9x16.mp4. Tonight's Coastal Tint welcome-card posts (6a9f917a/6a9f917e/6a9f9182) DELETED to avoid a same-day repeat — the card stays available for a later week.
