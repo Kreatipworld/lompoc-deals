@@ -26,6 +26,8 @@ export type FindTerm = {
   eventSource?: string
   /** events only: how far ahead to look (default 7 days). */
   eventWindowDays?: number
+  /** events only: restrict to one event category (e.g. "sports"). */
+  eventCategory?: string
   /** Optional category chip to offer under the results. */
   category?: string
   title: { en: string; es: string }
@@ -226,6 +228,19 @@ export const FIND_TERMS: FindTerm[] = [
     intro: {
       en: "Lompoc is the closest town to Vandenberg Space Force Base, which is why a rumble in the evening usually means a Falcon 9 heading to orbit. This page lists the upcoming launches on the calendar with their current windows. Times shift often, so check back the day of and step outside a few minutes early.",
       es: "Lompoc es el pueblo más cercano a la Base de la Fuerza Espacial Vandenberg, por eso un retumbo en la tarde casi siempre es un Falcon 9 rumbo a órbita. Esta página muestra los próximos lanzamientos del calendario con sus ventanas actuales. Los horarios cambian seguido, así que revisa el mismo día y sal unos minutos antes.",
+    },
+  },
+  {
+    slug: "football",
+    query: "football",
+    aliases: ["football", "high school football", "friday night lights", "braves", "lompoc braves", "conquistadores", "conqs", "cabrillo football", "lompoc football", "big game", "fútbol americano"],
+    kind: "events",
+    eventCategory: "sports",
+    eventWindowDays: 21,
+    title: { en: "Lompoc High School Football", es: "Fútbol americano de Lompoc" },
+    intro: {
+      en: "Friday nights in Lompoc belong to two programs: the Lompoc Braves at Huyck Stadium and the Cabrillo Conquistadores. This page keeps the next games on the calendar with kickoff times and where to be, and links the game stories from the Lompoc News desk as they land.",
+      es: "Los viernes por la noche en Lompoc son de dos programas: los Lompoc Braves en el Huyck Stadium y los Cabrillo Conquistadores. Esta página mantiene los próximos partidos en el calendario con hora de inicio y lugar, y enlaza las crónicas de cada partido del Lompoc News desk conforme salen.",
     },
   },
 ]

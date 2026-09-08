@@ -70,7 +70,8 @@ export default async function FindTermPage({ params }: { params: Promise<Params>
           eq(events.status, "approved"),
           gte(events.startsAt, new Date(now.getTime() - 6 * 60 * 60 * 1000)),
           lte(events.startsAt, week),
-          ...(t.eventSource ? [eq(events.source, t.eventSource)] : [])
+          ...(t.eventSource ? [eq(events.source, t.eventSource)] : []),
+          ...(t.eventCategory ? [eq(events.category, t.eventCategory as typeof events.category._.data)] : [])
         )
       )
       .orderBy(events.startsAt)
