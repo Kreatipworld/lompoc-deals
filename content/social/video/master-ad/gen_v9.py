@@ -6,6 +6,10 @@ Higgsfield only as transitions: fx-lightleak.mp4 / fx-particles.mp4 as screen-bl
 Writes index-v9.tmpl + index-v9-4x5.tmpl and w*/p*/s*/fx* compositions; v6/v7/v8 files untouched.
     python3 gen_v9.py
 """
+import os
+BED_OWN = os.environ.get("BED", "own") == "own"  # default: our generated bed (library music retired Sep 8 — see feedback_only_owned_media)
+BED_SRC = "public/bed-own-v9.wav" if BED_OWN else "public/bgm-bama-country.mp3"
+BED_VOL = "0.34" if BED_OWN else "0.5"
 import os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 def load(path, marker):
@@ -165,7 +169,7 @@ def w5(A, dur):  # 19.55–26.00: mark 19.90 · name 20.20 · line 21.40 · url 
     """
     body = f'''      <div class="field"></div>
       <div class="col"><img class="mk" id="{cid}-mk" src="public/mark-white.png" alt="" /><span class="nm" id="{cid}-nm">Lompoc Locals</span><span class="ln" id="{cid}-ln">One place for the whole town.</span><br/><span class="url" id="{cid}-url">lompoclocals.com</span></div>
-      <div class="credit" id="{cid}-cr">🎵 Bama Country — Kevin MacLeod (incompetech.com) · CC BY 4.0</div>'''
+      <div class="credit" id="{cid}-cr">{"" if BED_OWN else "🎵 Bama Country — Kevin MacLeod (incompetech.com) · CC BY 4.0"}</div>'''
     script = f'''        tl.fromTo("#{cid}-mk", {{ autoAlpha: 0, scale: 0.8 }}, {{ autoAlpha: 1, scale: 1, duration: 0.6, ease: "back.out(1.4)" }}, 0.35);
         tl.fromTo("#{cid}-nm", {{ autoAlpha: 0, y: 20 }}, {{ autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out" }}, 0.65);
         tl.fromTo("#{cid}-ln", {{ autoAlpha: 0, y: 16 }}, {{ autoAlpha: 1, y: 0, duration: 0.45 }}, 1.85);
@@ -242,7 +246,7 @@ def index(A, folder):
 {chr(10).join(rows)}
 
 {VO_ROWS}
-      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bgm-bama-country.mp3" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="0.5" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.3}}' data-automation='{{"version":1,"lanes":[{{"target":"volume","points":[{{"t":0,"v":0.5}},{{"t":34.40,"v":0.5}},{{"t":35.90,"v":0}}]}}]}}'></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="{BED_SRC}" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="{BED_VOL}" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.3}}' data-automation='{{"version":1,"lanes":[{{"target":"volume","points":[{{"t":0,"v":{BED_VOL}}},{{"t":34.40,"v":{BED_VOL}}},{{"t":35.90,"v":0}}]}}]}}'></audio>
       <audio id="sfx-drone" class="clip" data-audio-group="sfx" src="public/sfx/low-drone.wav" data-start="0" data-media-start="0" data-duration="6.50" data-track-index="12" data-volume="0.7" data-fade-in="0.3" data-fade-out="1.4"></audio>
     </div>
     <script>
