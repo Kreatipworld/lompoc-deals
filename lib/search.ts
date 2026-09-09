@@ -304,7 +304,10 @@ export async function searchAll(q: string, locale: Locale = "en"): Promise<Searc
       .where(and(eq(businesses.status, "approved"), inArray(categories.slug, synonymSlugList)))
       .limit(24)
     const have = new Set(ranked.map((b) => b.id))
-    ranked = [...ranked, ...byCategory.filter((b) => !have.has(b.id))].slice(0, 24)
+    // Inside the category, names that carry the word's root come first ("electrician" → "… Electric").
+    const stem = lower.replace(/(ians?|ers?|ing|s)$/i, "").slice(0, 6)
+    const byStem = [...byCategory].sort((a, b) => Number(!a.name.toLowerCase().includes(stem)) - Number(!b.name.toLowerCase().includes(stem)))
+    ranked = [...ranked, ...byStem.filter((b) => !have.has(b.id))].slice(0, 24)
   }
 
   // An empty result is the one outcome that sends a resident back to Google.
