@@ -109,7 +109,9 @@ export function chooseCover(opts: { topic: NewsTopic; title: string; text: strin
   const recent = new Set(opts.recentUrls ?? [])
   const matched = pool.filter((p) => p.match && p.match.test(hay) && !recent.has(p.url))
   if (matched.length) return { url: matched[0].url, credit: matched[0].credit }
-  const generic = pool.filter((p) => !p.match && !recent.has(p.url))
+  // Generic fallback = the topic's own Lompoc photos only; activity/place photos need a keyword match
+  // (Sep 9: two community stories got an Ocean Beach photo from the generic pool).
+  const generic = pool.filter((p) => !p.match && !recent.has(p.url) && !/\/activities\//.test(p.url))
   const candidates = generic.length ? generic : pool.filter((p) => !recent.has(p.url)).length ? pool.filter((p) => !recent.has(p.url)) : pool
   const i = Math.abs(opts.seed ?? opts.title.length) % candidates.length
   return { url: candidates[i].url, credit: candidates[i].credit }
