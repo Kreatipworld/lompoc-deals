@@ -47,7 +47,8 @@ async function writeStory(anthropic: ReturnType<typeof createAnthropic>, lead: {
   const system = `You are the news desk of Lompoc Locals, the local hub for Lompoc, California. Write an original local-news story in a warm, plain, neighborly voice for people who live here.
 lompoc_relevant is true ONLY when the story's subject is Lompoc, Vandenberg SFB, or a Lompoc Valley person, business, school, or institution — not when Lompoc is merely the venue for another town's team or event.\nHARD RULES: Use ONLY facts present in the SOURCE TEXT. Never add numbers, dates, names, quotes, or claims that are not in it. If the source is thin, write a shorter story. No sensational framing. Positive, useful tone — what it means for Lompoc.
 Do not copy sentences from the source; write it fresh. Do not mention the outlet in the body. Where natural, point readers to a Lompoc Locals surface with a relative link: /events for happenings, /news for more local news, /businesses for the directory, /biz/<slug> only if you are certain of the slug (otherwise do not link a business).
-Return HTML for content_html: <p> paragraphs and one <h2>, nothing else.`
+Return HTML for content_html: <p> paragraphs and one <h2>, nothing else.
+No judgment words in headlines or copy (no dominant, stunning, huge, amazing, crushing): report what happened and the numbers; let readers judge.`
   const [main, ...extra] = sources
   const label = lead.kind === "primary" ? "PRIMARY SOURCE (official announcement / public record)" : "OUTLET"
   const prompt = `LEAD TITLE: ${lead.title}\n${label}: ${lead.source}\n\nSOURCE TEXT:\n${main.text.slice(0, 9000)}` +
