@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="c1-hook" data-width="1080" data-height="1350" data-duration="6.40" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="c1-hook" data-width="1080" data-height="1350" data-duration="7.30" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
     <style>
       [data-composition-id="c1-hook"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="c1-hook"] .cine-top { top: 0; } [data-composition-id="c1-hook"] .cine-bot { bottom: 0; }
@@ -36,7 +36,7 @@
     <script>
       (() => {
         // BEATS (relative to scene start): S1 highway, S2 fog, S3 base, CUT photo
-        const B1 = { PRE: 0.35, S0: 0.70, S1: 2.55, S2: 3.40, S3: 4.50, CUT: 5.45, END: 6.40 };
+        const B1 = { PRE: 0.35, S0: 0.80, S1: 2.56, S2: 3.76, S3: 5.20, CUT: 6.12, END: 7.30 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#c1-pre", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.45 }, B1.PRE);
         tl.to("#c1-pre", { autoAlpha: 0, duration: 0.15, ease: "power2.in" }, B1.S1 - 0.15);

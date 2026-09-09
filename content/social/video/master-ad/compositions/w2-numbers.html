@@ -1,0 +1,58 @@
+<template>
+  <div data-composition-id="w2-numbers" data-width="1080" data-height="1920" data-duration="6.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
+    <style>
+      [data-composition-id="w2-numbers"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 0%, #7a1690 0%, #650c75 35%, #1a1030 78%, #140a17 100%); }
+      [data-composition-id="w2-numbers"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; display: block; }
+      [data-composition-id="w2-numbers"] .cine-top { top: 0; } [data-composition-id="w2-numbers"] .cine-bot { bottom: 0; }
+      [data-composition-id="w2-numbers"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="w2-numbers"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.32) 100%); }
+      [data-composition-id="w2-numbers"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="w2-numbers"] .title { position: absolute; left: 84px; right: 84px; top: 170px; z-index: 36; text-align: left; }
+      [data-composition-id="w2-numbers"] .t { display: block; color: #fff; font-weight: 800; font-size: 86px; line-height: 1.02; letter-spacing: -1.5px; text-transform: uppercase; text-shadow: 0 6px 30px rgba(10,6,12,0.55); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="w2-numbers"] .t em { font-style: normal; color: #efc618; }
+      [data-composition-id="w2-numbers"] .chips { position: absolute; left: 84px; top: 330px; z-index: 36; display: flex; gap: 14px; }
+      [data-composition-id="w2-numbers"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 28px; letter-spacing: 3px; padding: 12px 24px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="w2-numbers"] .phone { position: absolute; left: 280px; top: 430px; width: 556px; height: 1163px; border-radius: 67px; background: #0b0710; box-shadow: 0 40px 90px rgba(0,0,0,0.6), inset 0 0 0 3px #2a1f30; z-index: 20; will-change: transform, opacity; }
+      [data-composition-id="w2-numbers"] .screen { position: absolute; left: 18px; top: 18px; width: 520px; height: 1127px; border-radius: 52px; overflow: hidden; background: #fff; }
+      [data-composition-id="w2-numbers"] .shot { position: absolute; left: 0; top: 0; width: 520px; height: auto; will-change: transform; }
+      [data-composition-id="w2-numbers"] .notch { position: absolute; left: 50%; top: 18px; width: 166px; height: 28px; margin-left: -83px; background: #0b0710; border-radius: 0 0 16px 16px; z-index: 2; }
+    
+      [data-composition-id="w2-numbers"] .rows { position: absolute; left: 84px; right: 84px; top: 22%; z-index: 36; }
+      [data-composition-id="w2-numbers"] .row { display: flex; align-items: baseline; gap: 26px; margin-bottom: 54px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="w2-numbers"] .n { color: #efc618; font-weight: 800; font-size: 150px; line-height: 0.9; letter-spacing: -6px; font-variant-numeric: tabular-nums; min-width: 300px; }
+      [data-composition-id="w2-numbers"] .lab { color: #fff; font-weight: 800; font-size: 44px; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
+      [data-composition-id="w2-numbers"] .rule { display: block; height: 6px; width: 0; background: #efc618; border-radius: 3px; margin-top: 14px; }
+      [data-composition-id="w2-numbers"] .lchips { display: inline-flex; gap: 10px; margin-top: 12px; }
+      [data-composition-id="w2-numbers"] .lc { display: inline-block; background: #0b992f; color: #fff; font-weight: 800; font-size: 26px; letter-spacing: 3px; padding: 8px 18px; border-radius: 10px; }
+    
+    </style>
+    <div class="stage" id="w2-numbers-stage">
+      <div class="field"></div>
+      <div class="rows">
+        <div class="row" id="w2-numbers-r0"><span class="n" id="w2-numbers-n0">0</span><div><span class="lab">Local<br/>businesses</span><span class="rule" id="w2-numbers-u0"></span></div></div>
+        <div class="row" id="w2-numbers-r1"><span class="n" id="w2-numbers-n1">0</span><div><span class="lab">Events on<br/>the calendar</span><span class="rule" id="w2-numbers-u1"></span></div></div>
+        <div class="row" id="w2-numbers-r2"><span class="n" id="w2-numbers-n2">2</span><div><span class="lab">Languages</span><div class="lchips"><span class="lc">EN</span><span class="lc">ES</span></div><span class="rule" id="w2-numbers-u2"></span></div></div>
+      </div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#w2-numbers-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        const a = { v: 0 }, b = { v: 0 };
+        tl.fromTo("#w2-numbers-r0", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.92);
+        tl.to(a, { v: 454, duration: 0.9, ease: "power2.out", onUpdate: () => { document.getElementById("w2-numbers-n0").textContent = Math.round(a.v); } }, 0.92);
+        tl.to("#w2-numbers-u0", { width: 160, duration: 0.5, ease: "power3.out" }, 1.30);
+        tl.fromTo("#w2-numbers-r1", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 3.00);
+        tl.to(b, { v: 47, duration: 0.8, ease: "power2.out", onUpdate: () => { document.getElementById("w2-numbers-n1").textContent = Math.round(b.v); } }, 3.00);
+        tl.to("#w2-numbers-u1", { width: 160, duration: 0.5, ease: "power3.out" }, 3.35);
+        tl.fromTo("#w2-numbers-r2", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 4.90);
+        tl.to("#w2-numbers-u2", { width: 160, duration: 0.5, ease: "power3.out" }, 5.15);
+        tl.set({}, {}, 6.00);
+        window.__timelines["w2-numbers"] = tl;
+      })();
+    </script>
+  </div>
+</template>

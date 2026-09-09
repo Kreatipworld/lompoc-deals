@@ -1,0 +1,41 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1350" data-duration="26.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 168px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 900px; background: rgba(0,0,0,0.55); color: #fff; font-weight: 600; font-size: 32px; line-height: 1.25; padding: 14px 28px; border-radius: 20px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Last month, more than 20,000 people looked at Lompoc. Right here.</span></div>
+      <div class="sub" id="sub-1"><span>454 local businesses.</span></div>
+      <div class="sub" id="sub-2"><span>47 events on the calendar.</span></div>
+      <div class="sub" id="sub-3"><span>One town, in two languages.</span></div>
+      <div class="sub" id="sub-4"><span>Cupcakes on H Street. Pizza on I.</span></div>
+      <div class="sub" id="sub-5"><span>Wine in the Ghetto. A barbershop on V. A tint shop on Ocean.</span></div>
+      <div class="sub" id="sub-6"><span>They search. They open a page. They tap the number.</span></div>
+      <div class="sub" id="sub-7"><span>Lompoc Locals. One place for the whole town.</span></div>
+    </div>
+    <script>
+      (() => {
+        const SUBS = [
+          [0.60, 3.20, 'Last month, more than 20,000 people looked at Lompoc. Right here.'],
+          [4.60, 6.00, '454 local businesses.'],
+          [6.70, 7.90, '47 events on the calendar.'],
+          [8.55, 9.60, 'One town, in two languages.'],
+          [10.50, 12.30, 'Cupcakes on H Street. Pizza on I.'],
+          [13.05, 16.30, 'Wine in the Ghetto. A barbershop on V. A tint shop on Ocean.'],
+          [17.20, 19.50, 'They search. They open a page. They tap the number.'],
+          [20.15, 22.30, 'Lompoc Locals. One place for the whole town.']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 26.00);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="s2-search" data-width="1080" data-height="1920" data-duration="1.40" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="s2-search" data-width="1080" data-height="1920" data-duration="1.40" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
     <style>
       [data-composition-id="s2-search"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 0%, #7a1690 0%, #650c75 35%, #1a1030 78%, #140a17 100%); }
       [data-composition-id="s2-search"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; display: block; }
@@ -63,10 +63,11 @@
         tl.set("#s2-search-q", { textContent: 'piz' }, 0.26);
         tl.set("#s2-search-q", { textContent: 'pizz' }, 0.34);
         tl.set("#s2-search-q", { textContent: 'pizza' }, 0.42);
-        tl.fromTo("#s2-search-r0", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.28 }, 0.55);
-        tl.fromTo("#s2-search-r1", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.28 }, 0.72);
-        tl.fromTo("#s2-search-r2", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.28 }, 0.88);
+        tl.fromTo("#s2-search-r0", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.28 }, 0.65);
+        tl.fromTo("#s2-search-r1", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.28 }, 0.80);
+        tl.fromTo("#s2-search-r2", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.28 }, 0.95);
         tl.fromTo("#s2-search-c0", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 0.30);
+        tl.to("#s2-search-c0", { autoAlpha: 0, duration: 0.12 }, 1.10);
         tl.set({}, {}, 1.40);
         window.__timelines["s2-search"] = tl;
       })();

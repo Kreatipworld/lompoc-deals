@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="c6-tag" data-width="1080" data-height="1350" data-duration="4.35" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+  <div data-composition-id="c6-tag" data-width="1080" data-height="1350" data-duration="3.30" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
     <style>
       [data-composition-id="c6-tag"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="c6-tag"] .cine-top { top: 0; } [data-composition-id="c6-tag"] .cine-bot { bottom: 0; }
@@ -30,7 +30,7 @@
     <script>
       (() => {
         // BEATS (relative to scene start): ASK headline, TYPE the @, CTA card slam
-        const B4 = { ASK: 0.0, TYPE: 0.35, CTA: 2.45, END: 4.35 };
+        const B4 = { ASK: 0.0, TYPE: 0.15, CTA: 1.65, END: 3.30 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#c6-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out" }, B4.ASK);
         tl.fromTo("#c6-k", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out" }, B4.ASK + 0.05);

@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="s5-tap" data-width="1080" data-height="1350" data-duration="1.55" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="s5-tap" data-width="1080" data-height="1350" data-duration="1.10" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
     <style>
       [data-composition-id="s5-tap"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 0%, #7a1690 0%, #650c75 35%, #1a1030 78%, #140a17 100%); }
       [data-composition-id="s5-tap"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; display: block; }
@@ -36,11 +36,11 @@
       (() => {
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
         tl.fromTo("#s5-tap-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
-        tl.fromTo("#s5-tap-shot", { y: -1975 }, { y: -676, duration: 0.80, ease: "power2.inOut" }, 0);
+        tl.fromTo("#s5-tap-shot", { y: -276 }, { y: -676, duration: 0.80, ease: "power2.inOut" }, 0);
         tl.fromTo("#s5-tap-c0", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 0.15);
         tl.fromTo("#s5-tap-ring", { autoAlpha: 0.9, scale: 0.4 }, { autoAlpha: 0, scale: 2.4, duration: 0.6, ease: "power2.out" }, 0.55);
         tl.fromTo("#s5-tap-hl", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.18 }, 0.55);
-        tl.set({}, {}, 1.55);
+        tl.set({}, {}, 1.10);
         window.__timelines["s5-tap"] = tl;
       })();
     </script>

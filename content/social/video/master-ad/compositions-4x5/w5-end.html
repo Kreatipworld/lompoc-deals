@@ -1,0 +1,50 @@
+<template>
+  <div data-composition-id="w5-end" data-width="1080" data-height="1350" data-duration="6.45" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
+    <style>
+      [data-composition-id="w5-end"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 0%, #7a1690 0%, #650c75 35%, #1a1030 78%, #140a17 100%); }
+      [data-composition-id="w5-end"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; display: block; }
+      [data-composition-id="w5-end"] .cine-top { top: 0; } [data-composition-id="w5-end"] .cine-bot { bottom: 0; }
+      [data-composition-id="w5-end"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="w5-end"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.32) 100%); }
+      [data-composition-id="w5-end"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="w5-end"] .title { position: absolute; left: 70px; right: 70px; top: 100px; z-index: 36; text-align: left; }
+      [data-composition-id="w5-end"] .t { display: block; color: #fff; font-weight: 800; font-size: 54px; line-height: 1.02; letter-spacing: -1.5px; text-transform: uppercase; text-shadow: 0 6px 30px rgba(10,6,12,0.55); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="w5-end"] .t em { font-style: normal; color: #efc618; }
+      [data-composition-id="w5-end"] .chips { position: absolute; left: 70px; top: 1035px; z-index: 36; display: flex; gap: 14px; }
+      [data-composition-id="w5-end"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 24px; letter-spacing: 3px; padding: 12px 24px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="w5-end"] .phone { position: absolute; left: 360px; top: 215px; width: 396px; height: 816px; border-radius: 46px; background: #0b0710; box-shadow: 0 40px 90px rgba(0,0,0,0.6), inset 0 0 0 3px #2a1f30; z-index: 20; will-change: transform, opacity; }
+      [data-composition-id="w5-end"] .screen { position: absolute; left: 18px; top: 18px; width: 360px; height: 780px; border-radius: 36px; overflow: hidden; background: #fff; }
+      [data-composition-id="w5-end"] .shot { position: absolute; left: 0; top: 0; width: 360px; height: auto; will-change: transform; }
+      [data-composition-id="w5-end"] .notch { position: absolute; left: 50%; top: 18px; width: 115px; height: 19px; margin-left: -57px; background: #0b0710; border-radius: 0 0 16px 16px; z-index: 2; }
+    
+      [data-composition-id="w5-end"] .col { position: absolute; left: 0; right: 0; top: 20%; z-index: 36; text-align: center; }
+      [data-composition-id="w5-end"] .mk { display: block; margin: 0 auto; width: 150px; height: auto; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="w5-end"] .nm { display: block; margin-top: 16px; color: #fff; font-weight: 800; font-size: 66px; letter-spacing: -2px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="w5-end"] .ln { display: block; margin-top: 12px; color: #efc618; font-weight: 800; font-size: 30px; letter-spacing: 4px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="w5-end"] .url { display: inline-block; margin-top: 28px; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 1px; padding: 16px 40px; border-radius: 999px; opacity: 0; will-change: transform, opacity; box-shadow: 0 14px 34px rgba(239,198,24,0.3); }
+      [data-composition-id="w5-end"] .credit { position: absolute; left: 84px; right: 84px; bottom: 8%; text-align: center; color: rgba(250,245,236,0.7); font-size: 22px; font-weight: 500; z-index: 36; opacity: 0; }
+    
+    </style>
+    <div class="stage" id="w5-end-stage">
+      <div class="field"></div>
+      <div class="col"><img class="mk" id="w5-end-mk" src="public/mark-white.png" alt="" /><span class="nm" id="w5-end-nm">Lompoc Locals</span><span class="ln" id="w5-end-ln">One place for the whole town.</span><br/><span class="url" id="w5-end-url">lompoclocals.com</span></div>
+      <div class="credit" id="w5-end-cr">🎵 Bama Country — Kevin MacLeod (incompetech.com) · CC BY 4.0</div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#w5-end-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        tl.fromTo("#w5-end-mk", { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "back.out(1.4)" }, 0.35);
+        tl.fromTo("#w5-end-nm", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out" }, 0.65);
+        tl.fromTo("#w5-end-ln", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 1.85);
+        tl.fromTo("#w5-end-url", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, 2.75);
+        tl.fromTo("#w5-end-cr", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 3.20);
+        tl.set({}, {}, 6.45);
+        window.__timelines["w5-end"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,18 @@
+<template>
+  <div data-composition-id="fx-c" data-width="1080" data-height="1350" data-duration="0.70" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="fx-c"] .fxwrap { position: absolute; inset: 0; mix-blend-mode: screen; opacity: 0; will-change: opacity; }
+      [data-composition-id="fx-c"] video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    </style>
+    <div class="fxwrap" id="fx-c-w" data-layout-allow-overlap><video id="fx-c-v" class="clip" src="public/fx-lightleak.mp4" data-start="0" data-media-start="2.00" data-duration="0.70" data-track-index="0" muted playsinline></video></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo("#fx-c-w", { autoAlpha: 0 }, { autoAlpha: 0.8, duration: 0.18, ease: "power2.out" }, 0);
+        tl.to("#fx-c-w", { autoAlpha: 0, duration: 0.35, ease: "power2.in" }, 0.35);
+        tl.set({}, {}, 0.70);
+        window.__timelines["fx-c"] = tl;
+      })();
+    </script>
+  </div>
+</template>

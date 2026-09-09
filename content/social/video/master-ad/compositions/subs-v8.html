@@ -1,0 +1,47 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="42.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 265px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 900px; background: rgba(0,0,0,0.55); color: #fff; font-weight: 600; font-size: 42px; line-height: 1.25; padding: 14px 28px; border-radius: 20px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Say Lompoc, and folks picture the highway. The fog. The base. We picture this.</span></div>
+      <div class="sub" id="sub-1"><span>Cupcakes on H Street. Flowers next door. Pizza on I. A patio on Ocean Avenue.</span></div>
+      <div class="sub" id="sub-2"><span>Trophies, wine, glass, plumbing, builders.</span></div>
+      <div class="sub" id="sub-3"><span>Last month, Lompoc Locals reached more than twenty thousand people.</span></div>
+      <div class="sub" id="sub-4"><span>Locals looking for tonight. Visitors looking for where to eat.</span></div>
+      <div class="sub" id="sub-5"><span>Owners looking to be found.</span></div>
+      <div class="sub" id="sub-6"><span>They search. They open a page. They tap the number.</span></div>
+      <div class="sub" id="sub-7"><span>In English, and in Spanish.</span></div>
+      <div class="sub" id="sub-8"><span>One platform, connecting all of Lompoc.</span></div>
+      <div class="sub" id="sub-9"><span>Tag a business that belongs here, and we'll show them off.</span></div>
+      <div class="sub" id="sub-10"><span>Lompoc Locals. One place for the whole town.</span></div>
+    </div>
+    <script>
+      (() => {
+        const SUBS = [
+          [0.60, 6.25, 'Say Lompoc, and folks picture the highway. The fog. The base. We picture this.'],
+          [7.60, 13.30, 'Cupcakes on H Street. Flowers next door. Pizza on I. A patio on Ocean Avenue.'],
+          [14.20, 17.60, 'Trophies, wine, glass, plumbing, builders.'],
+          [18.50, 21.40, 'Last month, Lompoc Locals reached more than twenty thousand people.'],
+          [22.00, 24.60, 'Locals looking for tonight. Visitors looking for where to eat.'],
+          [25.20, 26.20, 'Owners looking to be found.'],
+          [26.90, 29.30, 'They search. They open a page. They tap the number.'],
+          [30.25, 31.30, 'In English, and in Spanish.'],
+          [32.10, 33.70, 'One platform, connecting all of Lompoc.'],
+          [34.30, 36.90, "Tag a business that belongs here, and we'll show them off."],
+          [37.55, 39.90, 'Lompoc Locals. One place for the whole town.']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 42.00);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>

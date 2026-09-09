@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="c2-pride" data-width="1080" data-height="1350" data-duration="9.05" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+  <div data-composition-id="c2-pride" data-width="1080" data-height="1350" data-duration="11.00" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
     <style>
       [data-composition-id="c2-pride"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="c2-pride"] .cine-top { top: 0; } [data-composition-id="c2-pride"] .cine-bot { bottom: 0; }
@@ -41,7 +41,7 @@
     <script>
       (() => {
         // BEATS (relative to scene start): one cut per place. Edit B2 to retime; END = scene duration.
-        const B2 = [0.00, 1.68, 2.98, 4.12, 5.86, 6.50, 7.02, 7.90, 8.44], END = 9.05;
+        const B2 = [0.00, 2.06, 3.60, 5.30, 6.98, 7.86, 8.56, 9.40, 10.06], END = 11.00;
         const FAST = 6; // cuts 7–10 are a fast tail: type appears instantly so it reads
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         B2.forEach((t, i) => {

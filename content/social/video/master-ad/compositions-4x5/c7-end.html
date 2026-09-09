@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="c7-end" data-width="1080" data-height="1350" data-duration="4.35" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+  <div data-composition-id="c7-end" data-width="1080" data-height="1350" data-duration="4.65" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
     <style>
       [data-composition-id="c7-end"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="c7-end"] .cine-top { top: 0; } [data-composition-id="c7-end"] .cine-bot { bottom: 0; }
@@ -24,7 +24,7 @@
     <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
     <script>
       (() => {
-        const B5 = { MARK: 0.25, URL: 0.95, END: 4.35 };
+        const B5 = { MARK: 0.25, URL: 0.95, END: 4.65 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
         tl.fromTo("#c7-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out" }, B5.MARK);
         tl.fromTo("#c7-mark", { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, B5.MARK + 0.05);

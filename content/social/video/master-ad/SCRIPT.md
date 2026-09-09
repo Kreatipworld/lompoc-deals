@@ -46,3 +46,25 @@ User: liked the v6 commercial more than the data ad ("Every Month"), "but also w
 Script (104 words, respell Lompoke), read job (elevenlabs Dylan) 33.12s = `public/vo-v7-dylan.wav`, ≈1.8cr: Say Lompoc, and folks picture the highway. The fog. The base. We picture this. Cupcakes on H Street. Flowers next door. Pizza on I. A patio on Ocean Avenue. Trophies, wine, glass, plumbing, builders. Every month, hundreds of locals open one site to find all of it. They search. They open a page. They check the hours, and they tap the number. In English, and in Spanish. Every business in town has a page here. So tag a Lompoc business that belongs on it. We'll build their page, and show them off. Lompoc Locals. One place for the whole town.
 Bed: Bama Country — Kevin MacLeod (incompetech.com), CC BY 4.0 — credit required in every caption. TOTAL 35.0s. 9:16 + 4:5. Project entry: index-v7.html / c*-compositions (v6 b*-scenes untouched).
 - v7 RENDERED Sep 8: `renders/this-is-lompoc-v7-{9x16,4x5}.mp4`, 35.0s, -14.7 LUFS → Downloads. Entry files `index-v7.tmpl` / `index-v7-4x5.tmpl` (index.html stays v6). Awaiting user watch. NOT posted. Caption credit required: "Bama Country — Kevin MacLeod (incompetech.com), CC BY 4.0".
+
+---
+
+# v8 MASTER COMMERCIAL — "mixed experiences" + Higgsfield scenes (2026-09-08)
+
+User: "Say more than 20,000 people in August, a platform that is helping Lompoc to connect with everybody, businesses, tourism and locals" → "A commercial for promoting the mix experiences of the platform" → "Use Higgsfield" → "And make a master commercial as the ones we did".
+**Number check (Sep 8):** August site sessions 14,411 raw / 606 engaged; social last 31 days (Buffer free plan can't isolate August): 170 posts, 2,958 reactions, 830 shares, 245 comments, 6.27% ER → implied reach ≈ 60k. Spoken line chosen as defensible: "Last month, Lompoc Locals reached more than twenty thousand people." (site + social combined; conservative).
+
+Script (Dylan, 39.76s read = `public/vo-v8-dylan.wav`, ≈1.8cr, respell Lompoke): Say Lompoc, and folks picture the highway. The fog. The base. We picture this. Cupcakes on H Street. Flowers next door. Pizza on I. A patio on Ocean Avenue. Trophies, wine, glass, plumbing, builders. Last month, Lompoc Locals reached more than twenty thousand people. Locals looking for tonight. Visitors looking for where to eat. Owners looking to be found. They search. They open a page. They tap the number. In English, and in Spanish. One platform, connecting all of Lompoc. Tag a business that belongs here, and we'll show them off. Lompoc Locals. One place for the whole town.
+
+Generated scenes (recraft_v4_1 stills 1.25cr each → Kling 3.0 i2v 5s 10cr each; people from behind, no faces): k1-locals (still cd5c689b → clip 582a1490) friends + phone toward marquee lights · k2-visitors (70b8c175 → afdbb1db) couple + suitcase at tasting-room door · k3-owner (9365d1bc → cd1163da) owner flips sign to OPEN · k4-town (6e5d0780 → 69ed02bc) aerial flower fields → town grid. ≈45cr + read 1.8 ≈ 47cr (balance after: 1065.59). Bed: Bama Country (CC BY 4.0, credit required).
+Structure: v7 with the new middle: "20,000+" title card → k1 → k2 → k3 → phone beats (search/page/tap) → EN/ES → k4 under "connecting all of Lompoc" → tag → end.
+
+---
+
+# v9 SPOTLIGHT-STYLE MASTER + NUMBERS + WOW CATCH (2026-09-08)
+
+User (after seeing the v8 generated people frames): "I don't like that" → "Just use Higgsfield for transitions and things like that" → "the commercials with the highlights like the one you made today but a combination of numbers. And a wow catch."
+v8 people/aerial scenes DROPPED (≈47cr spent, kept on disk). v9 = today's Member Spotlight look (real member photos, gold chips, progress line) + numbers (20,000+ people last month · 454 businesses · 47 events · 2 languages) + wow catch open + phone beats + end. Higgsfield only for FX: fx-lightleak (Kling t2v 110a3c56, 10cr) + fx-particles (576c404d, 10cr) as screen overlays.
+Read (Dylan, 22.32s, ≈1.8cr) = `public/vo-v9-dylan.wav`: Last month, more than twenty thousand people looked at Lompoc. Right here. Four hundred fifty-four local businesses. Forty-seven events on the calendar. One town, in two languages. Cupcakes on H Street. Pizza on I. Wine in the Ghetto. A barbershop on V. A tint shop on Ocean. They search. They open a page. They tap the number. Lompoc Locals. One place for the whole town.
+Facts: 20,000+ = site + social reach last 31 days (conservative); 454 approved businesses; 47 upcoming approved events; EN/ES. TOTAL 26.0s. Bed Bama Country (credit required).
+- v9 RENDERED Sep 8 (first pass): `renders/this-is-lompoc-v9-{9x16,4x5}.mp4`, 26.0s, -14.6 LUFS. Photos: Sweet Baking (cast -1, Christmas backdrop → being swapped), Eye on I oven, Flying Goat bottles, Paisano's cover (barber chairs), Coastal Tint cover. FX overlays at 1.5/9.4/16.2/19.55. gen_v9.py is the source; v8 renders left on disk (unused). Cupcake photo swapped to cast -2 (pastel backdrop); re-rendered Sep 8, -14.6 LUFS → Downloads. Awaiting user watch. NOT posted.
