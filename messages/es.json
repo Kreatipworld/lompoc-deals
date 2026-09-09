@@ -216,7 +216,10 @@
       }
     ],
     "hungryHeading": "¿Se te antoja algo?",
-    "hungrySubheading": "Cocinas locales que valen la salida — las ofertas primero."
+    "hungrySubheading": "Cocinas locales que valen la salida — las ofertas primero.",
+    "newsHeading": "Noticias de Lompoc",
+    "newsSubheading": "Lo que pasó en el pueblo, escrito con los hechos, actualizado a diario.",
+    "newsSeeAll": "Todas las noticias"
   },
   "meta": {
     "homeTitle": "Directorio Local de Lompoc — Negocios, Ofertas y Qué Hacer en Lompoc, CA",

@@ -2,7 +2,8 @@ import { Link } from "@/i18n/navigation"
 import {
   ArrowRight, MapPin, Mail, Sparkles, ChevronDown, Compass
 } from "lucide-react"
-import { getPartnerBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots } from "@/lib/queries"
+import { getPartnerBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots, getRecentBlogPosts } from "@/lib/queries"
+import { newsCoverUrl } from "@/lib/news-cover"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
@@ -102,7 +103,7 @@ const siteJsonLd = {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t, latestNews] = await Promise.all([
     getAllCategories(),
     getPartnerBusinesses(params.locale),
     getSiteStats(),
@@ -111,6 +112,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getCategoryCoverImages(),
     getFoodSpots(10, params.locale),
     getTranslations({ locale: params.locale, namespace: "home" }),
+    getRecentBlogPosts(3, params.locale),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
   const tc = await getTranslations({ locale: params.locale, namespace: "categoryLabels" })
@@ -291,6 +293,43 @@ export default async function HomePage({ params }: { params: { locale: string } 
           THIS WEEK'S DEALS — single deals section (purple flyer)
          ───────────────────────────────────────────────── */}
       <DealsDigest deals={activeDeals} />
+
+      {/* ─────────────────────────────────────────────────
+          LOMPOC NEWS — the three newest stories from the news desk
+         ───────────────────────────────────────────────── */}
+      {latestNews.length > 0 && (
+        <section className="border-t py-14">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <h2 className="font-display text-3xl font-bold tracking-tight">{t("newsHeading")}</h2>
+                <p className="mt-1 text-muted-foreground">{t("newsSubheading")}</p>
+              </div>
+              <Link href="/news" className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex">
+                {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-3">
+              {latestNews.map((post) => (
+                <Link key={post.slug} href={`/blog/${post.slug}`} className="group overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={newsCoverUrl({ ...post, title: post.titleEn })} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
+                  <div className="p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" }) : ""}
+                    </p>
+                    <h3 className="mt-1 font-display text-lg font-bold leading-snug group-hover:text-primary">{post.title}</h3>
+                    {post.excerpt && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Link href="/news" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
+              {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* ─────────────────────────────────────────────────
           FEATURED BUSINESSES — "Popular in Lompoc"

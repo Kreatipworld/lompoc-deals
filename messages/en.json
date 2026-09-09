@@ -216,7 +216,10 @@
       }
     ],
     "hungryHeading": "Hungry right now?",
-    "hungrySubheading": "Local kitchens worth leaving the house for — deals first."
+    "hungrySubheading": "Local kitchens worth leaving the house for — deals first.",
+    "newsHeading": "Lompoc News",
+    "newsSubheading": "What happened in town, written from the facts, updated daily.",
+    "newsSeeAll": "All the news"
   },
   "meta": {
     "homeTitle": "Lompoc Local Directory — Find Businesses, Deals & Things To Do in Lompoc, CA",
