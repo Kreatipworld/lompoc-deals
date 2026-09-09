@@ -42,11 +42,11 @@ export const CATEGORY_SYNONYMS: Record<string, string[]> = {
     "carro", "coche", "llantas", "mecánico", "taller",
   ],
   services: [
-    "service", "plumber", "plumbing", "electrician", "cleaning", "clean",
+    "service", "cleaning", "clean",
     "landscaping", "landscape", "landscaper", "gardener", "gardening", "yard",
-    "contractor", "insurance", "bank", "legal", "attorney",
+    "insurance", "bank", "legal", "attorney",
     "lawyer", "accountant", "notary", "printing", "photographer",
-    "servicio", "plomero", "electricista", "limpieza", "abogado", "seguro",
+    "servicio", "limpieza", "abogado", "seguro",
     "jardinero", "jardinería",
   ],
   entertainment: [
