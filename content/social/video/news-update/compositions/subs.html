@@ -1,0 +1,36 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="22.50" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 170px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 920px; background: rgba(0,0,0,0.58); color: #fff; font-weight: 600; font-size: 44px; line-height: 1.25; padding: 16px 30px; border-radius: 22px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>What's new in Lompoc.</span></div>
+      <div class="sub" id="sub-1"><span>Jim Mosby and Jeremy Ball are running for mayor in November.</span></div>
+      <div class="sub" id="sub-2"><span>The city held its first workshop on a $7 million plan to expand the soccer fields at Riverbend Park.</span></div>
+      <div class="sub" id="sub-3"><span>Sept. 19: True Vine Bible Fellowship on Avalon Street is giving away 1,000 pairs of shoes, with free haircuts and food.</span></div>
+      <div class="sub" id="sub-4"><span>Full stories on lompoclocals.com</span></div>
+    </div>
+    <script>
+      (() => {
+        // SUBS = [[start, end, text], ...] absolute seconds from the ASR word times. Text lives in the DOM above; times drive show/hide.
+        const SUBS = [
+          [0.60, 1.30, "What's new in Lompoc."],
+          [2.05, 4.50, 'Jim Mosby and Jeremy Ball are running for mayor in November.'],
+          [5.30, 10.35, 'The city held its first workshop on a $7 million plan to expand the soccer fields at Riverbend Park.'],
+          [11.20, 18.55, 'Sept. 19: True Vine Bible Fellowship on Avalon Street is giving away 1,000 pairs of shoes, with free haircuts and food.'],
+          [19.20, 21.10, 'Full stories on lompoclocals.com']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 22.50);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>

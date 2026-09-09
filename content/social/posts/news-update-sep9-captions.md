@@ -28,3 +28,21 @@ What's new in Lompoc 📰
 Full stories: https://www.lompoclocals.com/news?utm_source=fb&utm_medium=post&utm_campaign=news-update
 
 (TikTok: skip — static cards score 0 there.)
+
+---
+## VIDEO — Lompoc Locals News · edition #1 (Sept 9) · renders in content/social/video/news-update/renders
+
+**TikTok** (9:16)
+Lompoc Locals News · Sept 9 📰 Mayor race, Riverbend soccer fields, 1,000 pairs of shoes on Sept. 19. Full stories at lompoclocals.com/news #Lompoc #LompocNews #LompocLocals #805 #CentralCoast
+
+**IG Reel** (9:16)
+Lompoc Locals News · Sept 9 📰
+🗳 Mosby and Ball compete for mayor — incumbent Jim Mosby faces Councilman Jeremy Ball in November.
+⚽ Riverbend Park soccer fields — first community workshop on a roughly $7 million expansion.
+👟 1,000 pairs of shoes, Sept. 19 — True Vine Bible Fellowship, 533 Avalon St, 10 AM–2 PM. Free, with haircuts and food.
+Full stories: lompoclocals.com/news (link in bio)
+#Lompoc #LompocNews #LompocLocals #805 #CentralCoast
+
+**FB Reel** (9:16) — same as IG with link https://www.lompoclocals.com/news?utm_source=fb&utm_medium=reel&utm_campaign=lln-2026-09-09
+
+**IG Story** (9:16) — link sticker https://www.lompoclocals.com/news?utm_source=ig&utm_medium=story&utm_campaign=lln-2026-09-09 (label "Read the news")

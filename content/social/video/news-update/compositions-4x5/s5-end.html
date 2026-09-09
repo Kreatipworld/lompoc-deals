@@ -1,0 +1,63 @@
+<template>
+  <div data-composition-id="s5-end" data-width="1080" data-height="1350" data-duration="4.10" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+    <style>
+      [data-composition-id="s5-end"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
+      [data-composition-id="s5-end"] .cine-top { top: 0; } [data-composition-id="s5-end"] .cine-bot { bottom: 0; }
+      [data-composition-id="s5-end"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="s5-end"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.40) 100%); }
+      [data-composition-id="s5-end"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s5-end"] .wrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s5-end"] .cover { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(1.08); }
+      [data-composition-id="s5-end"] .blur { position: absolute; inset: -6%; background-size: cover; background-position: 50% 50%; filter: blur(34px) brightness(0.55) saturate(1.25); }
+      [data-composition-id="s5-end"] .whole { display: block; position: absolute; left: 0; width: 1080px; height: auto; top: 0px; box-shadow: 0 30px 80px rgba(0,0,0,0.55); filter: contrast(1.06) saturate(1.08); }
+      [data-composition-id="s5-end"] .scrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to top, rgba(20,10,23,0.90) 0%, rgba(20,10,23,0.62) 30%, rgba(20,10,23,0.0) 56%); }
+      [data-composition-id="s5-end"] .topscrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to bottom, rgba(20,10,23,0.70) 0%, rgba(20,10,23,0.25) 20%, rgba(20,10,23,0.0) 36%); }
+      [data-composition-id="s5-end"] .chip { position: absolute; left: 84px; top: 130px; z-index: 36; display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 28px; letter-spacing: 3px; padding: 12px 24px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="s5-end"] .brand { position: absolute; left: 84px; top: 208px; z-index: 36; color: rgba(255,255,255,0.86); font-weight: 800; font-size: 22px; letter-spacing: 4px; text-transform: uppercase; opacity: 0; will-change: opacity; text-shadow: 0 2px 10px rgba(10,6,12,0.6); }
+      [data-composition-id="s5-end"] .panel { position: absolute; left: 84px; right: 84px; bottom: 20.5%; z-index: 36; background: rgba(20,10,23,0.78); border-radius: 26px; padding: 30px 36px 32px; box-shadow: 0 24px 60px rgba(10,6,12,0.5); opacity: 0; will-change: transform, opacity; backdrop-filter: blur(6px); }
+      [data-composition-id="s5-end"] .rule { display: block; width: 110px; height: 6px; background: #efc618; border-radius: 3px; margin-bottom: 18px; transform-origin: 0% 50%; }
+      [data-composition-id="s5-end"] .hl { display: block; color: #fff; font-weight: 800; font-size: 52px; line-height: 1.06; letter-spacing: -1px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-end"] .hsub { display: block; margin-top: 14px; color: #efc618; font-weight: 700; font-size: 27px; line-height: 1.3; letter-spacing: 0.3px; opacity: 0; will-change: transform, opacity; }
+    
+      [data-composition-id="s5-end"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 90% 70% at 50% 40%, #7d1590 0%, #650c75 45%, #3a0743 100%); }
+      [data-composition-id="s5-end"] .bloom { position: absolute; left: 50%; top: 42%; width: 1100px; height: 1100px; margin-left: -550px; margin-top: -550px; border-radius: 50%; background: radial-gradient(circle, rgba(239,198,24,0.16), rgba(239,198,24,0) 60%); opacity: 0; }
+      [data-composition-id="s5-end"] .col { position: absolute; left: 60px; right: 60px; top: 22%; z-index: 20; text-align: center; }
+      [data-composition-id="s5-end"] .swm { display: block; color: rgba(255,255,255,0.92); font-weight: 800; font-size: 34px; letter-spacing: 6px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-end"] .swm b { color: #efc618; font-weight: 800; }
+      [data-composition-id="s5-end"] .srule { display: block; width: 110px; height: 6px; margin: 22px auto 0; background: #efc618; border-radius: 3px; opacity: 0; transform-origin: 50% 50%; }
+      [data-composition-id="s5-end"] .line1 { display: block; margin-top: 40px; color: #fff; font-weight: 800; font-size: 74px; line-height: 1.04; letter-spacing: -2px; opacity: 0; will-change: transform, opacity; text-shadow: 0 10px 40px rgba(10,6,12,0.45); }
+      [data-composition-id="s5-end"] .url { display: inline-block; margin-top: 44px; background: #efc618; color: #241629; font-weight: 800; font-size: 44px; letter-spacing: 0.5px; padding: 18px 40px; border-radius: 999px; opacity: 0; will-change: transform, opacity; box-shadow: 0 16px 40px rgba(10,6,12,0.4); }
+      [data-composition-id="s5-end"] .daily { display: block; margin-top: 30px; color: rgba(255,255,255,0.72); font-weight: 600; font-size: 30px; letter-spacing: 1px; opacity: 0; will-change: transform, opacity; }
+    
+    </style>
+    <div class="stage" id="s5-end-stage">
+      <div class="field"></div>
+      <div class="bloom" id="s5-end-bloom" data-layout-allow-overflow></div>
+      <div class="col">
+        <span class="swm" id="s5-end-swm">Lompoc Locals <b>News</b></span>
+        <span class="srule" id="s5-end-srule"></span>
+        <span class="line1" id="s5-end-l1">Informed Lompoc,<br />better Lompoc.</span>
+        <span class="url" id="s5-end-url">lompoclocals.com/news</span>
+        <span class="daily" id="s5-end-daily">The full stories, every day.</span>
+      </div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s5-end-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "power1.inOut" }, 0);
+        // BEATS (relative): WM 0.30, LINE1 0.60 (=19.0 abs), URL 1.00 (=19.4 abs), DAILY 1.60
+        tl.fromTo("#s5-end-bloom", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.9, ease: "power2.out" }, 0.20);
+        tl.fromTo("#s5-end-swm", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 0.30);
+        tl.fromTo("#s5-end-srule", { autoAlpha: 0, scaleX: 0 }, { autoAlpha: 1, scaleX: 1, duration: 0.4 }, 0.42);
+        tl.fromTo("#s5-end-l1", { autoAlpha: 0, y: 22, scale: 1.04 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "expo.out" }, 0.60);
+        tl.fromTo("#s5-end-url", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.5)" }, 1.00);
+        tl.fromTo("#s5-end-daily", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 1.60);
+        tl.set({}, {}, 4.10);
+        window.__timelines["s5-end"] = tl;
+      })();
+    </script>
+  </div>
+</template>

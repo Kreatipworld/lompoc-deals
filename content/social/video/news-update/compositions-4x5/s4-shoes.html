@@ -1,0 +1,54 @@
+<template>
+  <div data-composition-id="s4-shoes" data-width="1080" data-height="1350" data-duration="7.60" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+    <style>
+      [data-composition-id="s4-shoes"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
+      [data-composition-id="s4-shoes"] .cine-top { top: 0; } [data-composition-id="s4-shoes"] .cine-bot { bottom: 0; }
+      [data-composition-id="s4-shoes"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="s4-shoes"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.40) 100%); }
+      [data-composition-id="s4-shoes"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s4-shoes"] .wrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s4-shoes"] .cover { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(1.08); }
+      [data-composition-id="s4-shoes"] .blur { position: absolute; inset: -6%; background-size: cover; background-position: 50% 50%; filter: blur(34px) brightness(0.55) saturate(1.25); }
+      [data-composition-id="s4-shoes"] .whole { display: block; position: absolute; left: 0; width: 1080px; height: auto; top: 0px; box-shadow: 0 30px 80px rgba(0,0,0,0.55); filter: contrast(1.06) saturate(1.08); }
+      [data-composition-id="s4-shoes"] .scrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to top, rgba(20,10,23,0.90) 0%, rgba(20,10,23,0.62) 30%, rgba(20,10,23,0.0) 56%); }
+      [data-composition-id="s4-shoes"] .topscrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to bottom, rgba(20,10,23,0.70) 0%, rgba(20,10,23,0.25) 20%, rgba(20,10,23,0.0) 36%); }
+      [data-composition-id="s4-shoes"] .chip { position: absolute; left: 84px; top: 130px; z-index: 36; display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 28px; letter-spacing: 3px; padding: 12px 24px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="s4-shoes"] .brand { position: absolute; left: 84px; top: 208px; z-index: 36; color: rgba(255,255,255,0.86); font-weight: 800; font-size: 22px; letter-spacing: 4px; text-transform: uppercase; opacity: 0; will-change: opacity; text-shadow: 0 2px 10px rgba(10,6,12,0.6); }
+      [data-composition-id="s4-shoes"] .panel { position: absolute; left: 84px; right: 84px; bottom: 20.5%; z-index: 36; background: rgba(20,10,23,0.78); border-radius: 26px; padding: 30px 36px 32px; box-shadow: 0 24px 60px rgba(10,6,12,0.5); opacity: 0; will-change: transform, opacity; backdrop-filter: blur(6px); }
+      [data-composition-id="s4-shoes"] .rule { display: block; width: 110px; height: 6px; background: #efc618; border-radius: 3px; margin-bottom: 18px; transform-origin: 0% 50%; }
+      [data-composition-id="s4-shoes"] .hl { display: block; color: #fff; font-weight: 800; font-size: 52px; line-height: 1.06; letter-spacing: -1px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s4-shoes"] .hsub { display: block; margin-top: 14px; color: #efc618; font-weight: 700; font-size: 27px; line-height: 1.3; letter-spacing: 0.3px; opacity: 0; will-change: transform, opacity; }
+    
+    </style>
+    <div class="stage" id="s4-shoes-stage">
+      <div class="wrap" id="s4-shoes-w0" data-layout-allow-overflow><img class="cover" src="public/shoes.jpg" alt="" style="object-position: 50% 40%" /></div>
+      <div class="scrim"></div><div class="topscrim"></div>
+      <span class="chip" id="s4-shoes-chip">Community</span>
+      <span class="brand" id="s4-shoes-brand">Lompoc Locals News</span>
+      <div class="panel" id="s4-shoes-panel">
+        <span class="rule" id="s4-shoes-rule"></span>
+        <span class="hl" id="s4-shoes-hl">1,000 pairs of shoes · Sept. 19</span>
+        <span class="hsub" id="s4-shoes-sub">True Vine Bible Fellowship · 533 Avalon St · 10 AM–2 PM · free haircuts and food</span>
+      </div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s4-shoes-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "power1.inOut" }, 0);
+        // BEATS (relative): CHIP 0.15, HL 0.30, SUB 1.40
+        tl.fromTo("#s4-shoes-w0", { scale: 1.08 }, { scale: 1.0, duration: 7.60, ease: "none" }, 0);
+        tl.fromTo("#s4-shoes-chip", { autoAlpha: 0, y: 16, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 0.15);
+        tl.fromTo("#s4-shoes-brand", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 0.30);
+        tl.fromTo("#s4-shoes-panel", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.30);
+        tl.fromTo("#s4-shoes-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.4 }, 0.30 + 0.05);
+        tl.fromTo("#s4-shoes-hl", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.30 + 0.08);
+        tl.fromTo("#s4-shoes-sub", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 1.40);
+        tl.set({}, {}, 7.60);
+        window.__timelines["s4-shoes"] = tl;
+      })();
+    </script>
+  </div>
+</template>
