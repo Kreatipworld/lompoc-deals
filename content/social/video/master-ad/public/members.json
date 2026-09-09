@@ -1,0 +1,135 @@
+[
+ {
+  "slug": "eddies-grill",
+  "name": "Eddie's Grill",
+  "street": "1325 N H St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/eddies-grill/6a96629282.jpg",
+  "logo": "https://static.spotapps.co/website_images/ab_websites/582055_website_v1/logo.png"
+ },
+ {
+  "slug": "eye-on-i",
+  "name": "Eye on I",
+  "street": "131 N I St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/eye-on-i/e339ad4f5a.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/businesses/eye-on-i/logo-UjQ871eVkOkgfQm2juWwFu9gKnr70e.png"
+ },
+ {
+  "slug": "in-out-tires-lpc",
+  "name": "In&Out Tires Lpc",
+  "street": "503 N H St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/in-out-tires-lpc/aa05354561.jpg",
+  "logo": "https://cdn.webnamesandnumbers.com/wp-content/uploads/sites/1351/2024/10/18211731/In-Out-Tires-Logo.png"
+ },
+ {
+  "slug": "the-garden-shoppe",
+  "name": "The Garden Shoppe",
+  "street": "122 W Ocean Ave",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1776639924344-7xps9o.jpeg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/businesses/the-garden-shoppe/logo-AF1GrvTFz3VYybizwXvgpGgRa9nn44.png"
+ },
+ {
+  "slug": "hangar-7-social-house",
+  "name": "Hangar 7 Social House",
+  "street": "107 W Ocean Ave",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/hanger-7-social-house/5118ab64c3.jpg",
+  "logo": "https://popmenucloud.com/cdn-cgi/image/width=600,height=600,format=auto,fit=scale-down/avrldfmn/02469583-0cb0-4e79-bb08-7785871756a4.png"
+ },
+ {
+  "slug": "lompoc-valley-florist",
+  "name": "Lompoc Valley Florist",
+  "street": "322 N H St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/lompoc-valley-florist/3050599076.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/lompoc-valley-florist-real.png"
+ },
+ {
+  "slug": "wm-rieck-plumbing-co",
+  "name": "Wm Rieck Plumbing Co",
+  "street": "801 E Chestnut Ave",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/wm-rieck-plumbing-co/0ba840874e.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/wm-rieck-plumbing-hOYrgCgRcUCZSIHba8eeTJhl9KHBLO.jpeg"
+ },
+ {
+  "slug": "sweet-baking-co",
+  "name": "Sweet Baking Co.",
+  "street": "322 N H St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/sweet-baking-co/ecc07f29be.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/sweet-baking-co-real.png"
+ },
+ {
+  "slug": "valley-embroidery",
+  "name": "Valley Embroidery",
+  "street": "504 8th St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/valley-embroidery/0fb40c5810.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/1776293682809-e2yl4x.jpg"
+ },
+ {
+  "slug": "vargas-jewelers-trophies-awards",
+  "name": "Vargas Jewelers Trophies & Awards",
+  "street": "640 N H St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/vargas-jewelers-trophies-awards/368df82496.jpg",
+  "logo": "https://vargasjewelerslompoc.com/cdn/shop/files/VARGASjewelers_logo_1.jpg?v=1617924750&width=500"
+ },
+ {
+  "slug": "bowl-and-soul",
+  "name": "Bowl & Soul",
+  "street": "",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/businesses/bowl-and-soul/ahi-poke-bowl-XdvGcy7nNfxtWHYhdZAgFVAZWnZYsr.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/businesses/bowl-and-soul/logo.jpg"
+ },
+ {
+  "slug": "west-coast-industries",
+  "name": "West Coast Industries",
+  "street": "500 N 8th St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/west-coast-industries/2c4aff8678.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/west-coast-industries-9cHd4YNtQ9jjYA3i6X0NenGO6iVlIL.png"
+ },
+ {
+  "slug": "terrones-plumbing",
+  "name": "Terrones Plumbing",
+  "street": "",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/terrones-plumbing/cover.png",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/terrones-plumbing/logo.png"
+ },
+ {
+  "slug": "js-glass-co",
+  "name": "J's Glass Co",
+  "street": "1040 W Ocean Ave",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/js-glass-co/2233cd7c15.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/businesses/js-glass-co/logo-ynWESxKiuOCTPaScp2BWJPLJzoaIJO.jpg"
+ },
+ {
+  "slug": "the-waxed-honey",
+  "name": "The Waxed Honey",
+  "street": "415 E Ocean Ave",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/biz-photos/the-waxed-honey/wax-5m1g8BSQIneqf9C1AIA3x68XSkzr8j.jpg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/the-waxed-honey-nSZa60V2YxWwJo4ZyYiWlwOxiRCu5h.png"
+ },
+ {
+  "slug": "rey-s-liquor-store",
+  "name": "Rey's Liquor Store",
+  "street": "660 N H St",
+  "img": "https://lh3.googleusercontent.com/place-photos/AG9NLjAk-lXQQczLQwgjP5ghq2jjfqVzrq-25HWiavU3E5JpYWGPeJaJ6QidtY1abr_wQTEDvzxIgU91Q8coo3ZabFclsHDHPVRaJdKn5YPE4UH8yHlk09HVGllBrwuD7XrfFhDsRMlibQ43C2N7XqgzIIUQQg=s1600-w1600",
+  "logo": null
+ },
+ {
+  "slug": "clark-builders-inc",
+  "name": "Clark Builders, Inc.",
+  "street": "1501 E Chestnut Ct",
+  "img": "https://lh3.googleusercontent.com/place-photos/AG9NLjBQ9K5ED2LG7Yttn2IomQmhEwLjZum2lGsIqRQdvvbQT7zLq_kJquhvQQczUbf2nJHrzPgsnUZhOw1zst7QSQFZ_Ge70M74_Io5OhyjNMcLjyDkgQn4jP9TFjLIrUaQwgDimnAdlPpgcbdpTCQ=s1600-w1600",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/clark-builders-inc-logo.png"
+ },
+ {
+  "slug": "paisano-s-family-barbershop",
+  "name": "Paisano’s Family Barbershop",
+  "street": "109 V St",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1788237226186-24nhfx.jpeg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/1788237226073-7qpdss.jpeg"
+ },
+ {
+  "slug": "coastal-tint",
+  "name": "Coastal Tint",
+  "street": "123 W Ocean Ave",
+  "img": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/covers/1788714400550-2992be.jpeg",
+  "logo": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/logos/1788714400368-wunmzz.png"
+ }
+]

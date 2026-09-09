@@ -15,8 +15,11 @@ MV = load(os.path.join(HERE, "..", "master-visitors", "gen.py"), "\nfor key, A i
 H7 = load(os.path.join(HERE, "..", "hangar7", "gen.py"), "\nfor H, bar, folder, idx in")
 GOLD, INK, PURPLE, DARK, BG, X = MV["GOLD"], MV["INK"], MV["PURPLE"], MV["DARK"], MV["BG"], MV["X"]
 
-TOTAL = 26.00
+TOTAL = 31.25
 VO_FILE, VO_START, VO_DUR = "public/vo-v9-dylan.wav", 0.60, 22.32
+# v9.1: main read split around the extra members line
+VO_SLICES = [("public/vo-v9-dylan.wav", 0.00, 16.05, 0.60), ("public/vo-v9-extra.wav", 0.00, 3.84, 16.90), ("public/vo-v9-dylan.wav", 16.05, 6.27, 21.30)]
+from members_v91 import members as members_seq
 SUBS = [
     [0.60, 3.20, "Last month, more than 20,000 people looked at Lompoc. Right here."],
     [4.60, 6.00, "454 local businesses."],
@@ -24,8 +27,9 @@ SUBS = [
     [8.55, 9.60, "One town, in two languages."],
     [10.50, 12.30, "Cupcakes on H Street. Pizza on I."],
     [13.05, 16.30, "Wine in the Ghetto. A barbershop on V. A tint shop on Ocean."],
-    [17.20, 19.50, "They search. They open a page. They tap the number."],
-    [20.15, 22.30, "Lompoc Locals. One place for the whole town."],
+    [16.95, 20.60, "…and every member on Lompoc Locals, from the florist to the tire shop."],
+    [22.45, 24.75, "They search. They open a page. They tap the number."],
+    [25.40, 27.55, "Lompoc Locals. One place for the whole town."],
 ]
 MV["SUBS"] = SUBS; MV["TOTAL"] = TOTAL; H7["TOTAL"] = TOTAL
 
@@ -33,22 +37,41 @@ MV["SUBS"] = SUBS; MV["TOTAL"] = TOTAL; H7["TOTAL"] = TOTAL
 SCENES = [
     ("w1-catch",   0.00,  3.90),
     ("w2-numbers", 3.70,  6.00),
-    ("p1-sweet",   9.50,  2.60),
-    ("p2-eye",    11.95,  1.30),
-    ("p3-goat",   13.05,  1.40),
-    ("p4-paisanos",14.25, 1.45),
-    ("p5-coastal", 15.50, 1.15),
-    ("s2-search", 16.30,  1.40),
-    ("s3-page",   17.90,  1.00),
-    ("s5-tap",    18.75,  1.10),
-    ("w5-end",    19.55,  6.45),
+    ("m1-members", 9.50, 12.30),
+    ("s2-search", 21.55,  1.40),
+    ("s3-page",   23.15,  1.00),
+    ("s5-tap",    24.00,  1.10),
+    ("w5-end",    24.80,  6.45),
+]
+# member sequence: (absolute cut time, image, chip, credit, object-position, ken burns)
+MEMBERS = [
+    (9.50,  "cast/sweet-baking-co-2.jpg",                 "Sweet Baking Co. · H Street",        "Sweet Baking Co.",                  "50% 55%", ("scale", 1.0, 1.08)),
+    (11.30, "cast/members/lompoc-valley-florist.jpg",     "Lompoc Valley Florist · H Street",   "Lompoc Valley Florist",             "50% 50%", ("scale", 1.0, 1.07)),
+    (12.18, "cast/eye-on-i-0.jpg",                        "Eye on I · I Street",                "Eye on I",                          "50% 45%", ("scale", 1.0, 1.07)),
+    (13.08, "cast/flying-goat-cellars-2.jpg",             "Flying Goat Cellars · Wine Ghetto",  "Flying Goat Cellars",               "50% 50%", ("drift", -3, 3)),
+    (13.75, "cast/members/hangar-7-social-house.jpg",     "Hangar 7 · Ocean Ave",               "Hangar 7 Social House",             "50% 50%", ("scale", 1.0, 1.06)),
+    (14.32, "cast/paisanos-0.jpg",                        "Paisano's · V Street",               "Paisano's Family Barbershop",       "50% 45%", ("scale", 1.0, 1.07)),
+    (15.56, "cast/coastal-tint-0.jpg",                    "Coastal Tint · Ocean Ave",           "Coastal Tint",                      "50% 55%", ("scale", 1.0, 1.08)),
+    (16.95, "cast/members/eddies-grill.jpg",              "Eddie's Grill · H Street",           "Eddie's Grill",                     "50% 50%", ("scale", 1.0, 1.06)),
+    (17.30, "cast/members/the-garden-shoppe.jpg",         "The Garden Shoppe · Ocean Ave",      "The Garden Shoppe",                 "50% 50%", ("scale", 1.0, 1.06)),
+    (17.65, "cast/vargas-jewelers-trophies-awards-0.jpg", "Vargas Jewelers · H Street",         "Vargas Jewelers Trophies & Awards", "50% 50%", ("scale", 1.0, 1.06)),
+    (18.00, "cast/members/wm-rieck-plumbing-co.jpg",      "Wm Rieck Plumbing · Chestnut",       "Wm Rieck Plumbing Co",              "50% 50%", ("scale", 1.0, 1.06)),
+    (18.35, "cast/members/terrones-plumbing.jpg",         "Terrones Plumbing",                  "Terrones Plumbing",                 "50% 50%", ("scale", 1.0, 1.03)),
+    (18.70, "cast/members/js-glass-co.jpg",               "J's Glass Co · Ocean Ave",           "J's Glass Co",                      "50% 50%", ("scale", 1.0, 1.06)),
+    (19.05, "cast/members/the-waxed-honey.jpg",           "The Waxed Honey · Ocean Ave",        "The Waxed Honey",                   "50% 40%", ("scale", 1.0, 1.06)),
+    (19.40, "cast/members/rey-s-liquor-store.jpg",        "Rey's Liquor · H Street",            "Rey's Liquor Store",                "50% 45%", ("scale", 1.0, 1.06)),
+    (19.75, "cast/members/clark-builders-inc.jpg",        "Clark Builders · Chestnut Ct",       "Clark Builders, Inc.",              "50% 50%", ("scale", 1.0, 1.06)),
+    (20.05, "cast/members/west-coast-industries.jpg",     "West Coast Industries · 8th St",     "West Coast Industries",             "50% 60%", ("scale", 1.0, 1.06)),
+    (20.35, "cast/members/bowl-and-soul.jpg",             "Bowl & Soul",                        "Bowl & Soul",                       "50% 45%", ("scale", 1.0, 1.06)),
+    (20.65, "cast/members/valley-embroidery.jpg",         "Valley Embroidery · 8th St",         "Valley Embroidery",                 "50% 50%", ("scale", 1.0, 1.06)),
+    (20.95, "cast/members/in-out-tires-lpc.jpg",          "In&Out Tires · H Street",            "In&Out Tires Lpc",                  "50% 50%", ("scale", 1.0, 1.04)),
 ]
 # fx overlays: id, start, dur, clip, media_start, peak opacity
 FX = [
     ("fx-a", 1.50, 2.40, "fx-lightleak.mp4", 0.60, 1.0),
     ("fx-b", 9.40, 0.80, "fx-particles.mp4", 0.00, 0.9),
-    ("fx-c", 16.20, 0.70, "fx-lightleak.mp4", 2.00, 0.8),
-    ("fx-d", 19.55, 1.20, "fx-lightleak.mp4", 1.00, 0.5),
+    ("fx-c", 21.45, 0.70, "fx-lightleak.mp4", 2.00, 0.8),
+    ("fx-d", 24.80, 1.20, "fx-lightleak.mp4", 1.00, 0.5),
 ]
 PHOTOS = {  # cid: (file, chip, credit, ken burns, object-position, chip_at)
     "p1-sweet":    ("cast/sweet-baking-co-2.jpg", "Sweet Baking Co. · H Street", "Sweet Baking Co.", ("scale", 1.0, 1.08, "50% 55%"), 1.04),
@@ -173,7 +196,7 @@ def scene(cid, dur, A):
 
 def _scene(cid, dur, A):
     if cid == "w2-numbers": return w2(A, dur)
-    if cid in PHOTOS: return photo(cid, dur, A)
+    if cid == "m1-members": return members_seq(A, 9.50, dur, MEMBERS, H7, X)
     if cid == "s2-search":  # typing done ~16.72; results 16.95/17.10/17.25 → rel 0.65/0.80/0.95
         return fade_chip(MV["s2_search"](A, dur).replace(", 0.55);", ", 0.65);").replace(", 0.72);", ", 0.80);").replace(", 0.88);", ", 0.95);"), cid, dur)
     if cid == "s3-page": return fade_chip(MV["s_member"](cid, A, dur, "They open a page", 300, 900, chip_at=0.20), cid, dur)
@@ -182,6 +205,7 @@ def _scene(cid, dur, A):
     raise ValueError(cid)
 
 def index(A, folder):
+    VO_ROWS = chr(10).join(f'      <audio id="vo{i}" class="clip" data-audio-group="voiceover" src="{f}" data-start="{at:.2f}" data-media-start="{ms:.2f}" data-duration="{d:.2f}" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.08"></audio>' for i, (f, ms, d, at) in enumerate(VO_SLICES))
     rows = [f'      <div id="el-{cid}" data-composition-id="{cid}" data-composition-src="{folder}/{cid}.html" data-start="{st:.2f}" data-duration="{du:.2f}" data-track-index="{i+1}"></div>' for i, (cid, st, du) in enumerate(SCENES)]
     rows.append(f'      <div id="el-progress" data-composition-id="progress" data-composition-src="{folder}/progress-v9.html" data-start="0" data-duration="{TOTAL:.2f}" data-track-index="13"></div>')
     rows += [f'      <div id="el-{cid}" data-composition-id="{cid}" data-composition-src="{folder}/{cid}.html" data-start="{st:.2f}" data-duration="{du:.2f}" data-track-index="14"></div>' for cid, st, du, _, _, _ in FX]
@@ -202,12 +226,12 @@ def index(A, folder):
     </style>
   </head>
   <body>
-    <!-- THIS IS LOMPOC v9 — spotlight-style master commercial: wow catch, three numbers, real member photos, phone beats, end card. {TOTAL:.2f}s. Dylan v9 read at {VO_START}. fx clips = transitions only. Generated by gen_v9.py; v6 index.html untouched. -->
+    <!-- THIS IS LOMPOC v9 — spotlight-style master commercial v9.1: wow catch, three numbers, ALL Growth members (one mention + one picture each), phone beats, end card. {TOTAL:.2f}s. Dylan v9 read at {VO_START}. fx clips = transitions only. Generated by gen_v9.py; v6 index.html untouched. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL:.2f}" data-width="{A['W']}" data-height="{A['H']}">
 {chr(10).join(rows)}
 
-      <audio id="vo-v9" class="clip" data-audio-group="voiceover" src="{VO_FILE}" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="10" data-volume="1" data-fade-in="0.05" data-fade-out="0.10"></audio>
-      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bgm-bama-country.mp3" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="0.5" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.3}}' data-automation='{{"version":1,"lanes":[{{"target":"volume","points":[{{"t":0,"v":0.5}},{{"t":24.5,"v":0.5}},{{"t":26,"v":0}}]}}]}}'></audio>
+{VO_ROWS}
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bgm-bama-country.mp3" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="0.5" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.3}}' data-automation='{{"version":1,"lanes":[{{"target":"volume","points":[{{"t":0,"v":0.5}},{{"t":29.75,"v":0.5}},{{"t":31.25,"v":0}}]}}]}}'></audio>
       <audio id="sfx-drone" class="clip" data-audio-group="sfx" src="public/sfx/low-drone.wav" data-start="0" data-media-start="0" data-duration="4.20" data-track-index="12" data-volume="0.7" data-fade-in="0.3" data-fade-out="1.0"></audio>
     </div>
     <script>

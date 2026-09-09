@@ -1,0 +1,165 @@
+<template>
+  <div data-composition-id="m1-members" data-width="1080" data-height="1350" data-duration="12.30" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
+    <style>
+      [data-composition-id="m1-members"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
+      [data-composition-id="m1-members"] .cine-top { top: 0; } [data-composition-id="m1-members"] .cine-bot { bottom: 0; }
+      [data-composition-id="m1-members"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="m1-members"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.38) 100%); }
+      [data-composition-id="m1-members"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="m1-members"] .wrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="m1-members"] .cover { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(1.1); }
+      [data-composition-id="m1-members"] .blur { position: absolute; inset: -6%; background-size: cover; background-position: 50% 50%; filter: blur(30px) brightness(0.5) saturate(1.2); }
+      [data-composition-id="m1-members"] .whole { display: block; position: absolute; left: 0; width: 1080px; height: auto; top: 50%; transform: translateY(-50%); box-shadow: 0 30px 80px rgba(0,0,0,0.55); filter: contrast(1.06) saturate(1.1); }
+      [data-composition-id="m1-members"] .scrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to top, rgba(20,10,23,0.88) 0%, rgba(20,10,23,0.55) 24%, rgba(20,10,23,0.0) 46%); }
+      [data-composition-id="m1-members"] .topscrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to bottom, rgba(20,10,23,0.80) 0%, rgba(20,10,23,0.35) 22%, rgba(20,10,23,0.0) 40%); }
+      [data-composition-id="m1-members"] .chips { position: absolute; left: 84px; right: 84px; bottom: 19%; z-index: 35; display: flex; flex-wrap: wrap; gap: 14px; }
+      [data-composition-id="m1-members"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 30px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="m1-members"] .head { position: absolute; left: 84px; right: 84px; top: 90px; z-index: 36; }
+      [data-composition-id="m1-members"] .pill { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 26px; letter-spacing: 4px; padding: 10px 22px; border-radius: 999px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="m1-members"] .name { display: block; margin-top: 18px; color: #fff; text-shadow: 0 4px 24px rgba(10,6,12,0.7); font-weight: 800; font-size: 74px; line-height: 1.0; letter-spacing: -1px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="m1-members"] .sub { display: block; margin-top: 14px; color: #efc618; font-weight: 700; font-size: 28px; letter-spacing: 2px; opacity: 0; will-change: transform, opacity; }
+    
+      [data-composition-id="m1-members"] .hold { position: absolute; inset: 0; opacity: 0; }
+      [data-composition-id="m1-members"] .hold .wrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="m1-members"] .hold img { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(1.1); }
+      [data-composition-id="m1-members"] .hold .chips { position: absolute; left: 84px; right: 84px; bottom: 19%; z-index: 35; }
+      [data-composition-id="m1-members"] .hold .chip { opacity: 0; }
+      [data-composition-id="m1-members"] .pcredit { position: absolute; left: 84px; top: 200px; z-index: 36; color: #fff; font-size: 22px; font-weight: 600; letter-spacing: 1px; background: rgba(10,6,12,0.62); padding: 6px 14px; border-radius: 8px; opacity: 0; }
+    
+    </style>
+    <div class="stage" id="m1-members-stage">
+      <div class="hold" id="m1-members-h0"><div class="wrap" id="m1-members-w0" data-layout-allow-overflow><img src="public/cast/sweet-baking-co-2.jpg" alt="" style="object-position: 50% 55%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr0">photo: Sweet Baking Co.</div><div class="chips"><span class="chip" id="m1-members-c0">Sweet Baking Co. · H Street</span></div></div>
+      <div class="hold" id="m1-members-h1"><div class="wrap" id="m1-members-w1" data-layout-allow-overflow><img src="public/cast/members/lompoc-valley-florist.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr1">photo: Lompoc Valley Florist</div><div class="chips"><span class="chip" id="m1-members-c1">Lompoc Valley Florist · H Street</span></div></div>
+      <div class="hold" id="m1-members-h2"><div class="wrap" id="m1-members-w2" data-layout-allow-overflow><img src="public/cast/eye-on-i-0.jpg" alt="" style="object-position: 50% 45%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr2">photo: Eye on I</div><div class="chips"><span class="chip" id="m1-members-c2">Eye on I · I Street</span></div></div>
+      <div class="hold" id="m1-members-h3"><div class="wrap" id="m1-members-w3" data-layout-allow-overflow><img src="public/cast/flying-goat-cellars-2.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr3">photo: Flying Goat Cellars</div><div class="chips"><span class="chip" id="m1-members-c3">Flying Goat Cellars · Wine Ghetto</span></div></div>
+      <div class="hold" id="m1-members-h4"><div class="wrap" id="m1-members-w4" data-layout-allow-overflow><img src="public/cast/members/hangar-7-social-house.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr4">photo: Hangar 7 Social House</div><div class="chips"><span class="chip" id="m1-members-c4">Hangar 7 · Ocean Ave</span></div></div>
+      <div class="hold" id="m1-members-h5"><div class="wrap" id="m1-members-w5" data-layout-allow-overflow><img src="public/cast/paisanos-0.jpg" alt="" style="object-position: 50% 45%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr5">photo: Paisano's Family Barbershop</div><div class="chips"><span class="chip" id="m1-members-c5">Paisano's · V Street</span></div></div>
+      <div class="hold" id="m1-members-h6"><div class="wrap" id="m1-members-w6" data-layout-allow-overflow><img src="public/cast/coastal-tint-0.jpg" alt="" style="object-position: 50% 55%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr6">photo: Coastal Tint</div><div class="chips"><span class="chip" id="m1-members-c6">Coastal Tint · Ocean Ave</span></div></div>
+      <div class="hold" id="m1-members-h7"><div class="wrap" id="m1-members-w7" data-layout-allow-overflow><img src="public/cast/members/eddies-grill.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr7">photo: Eddie's Grill</div><div class="chips"><span class="chip" id="m1-members-c7">Eddie's Grill · H Street</span></div></div>
+      <div class="hold" id="m1-members-h8"><div class="wrap" id="m1-members-w8" data-layout-allow-overflow><img src="public/cast/members/the-garden-shoppe.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr8">photo: The Garden Shoppe</div><div class="chips"><span class="chip" id="m1-members-c8">The Garden Shoppe · Ocean Ave</span></div></div>
+      <div class="hold" id="m1-members-h9"><div class="wrap" id="m1-members-w9" data-layout-allow-overflow><img src="public/cast/vargas-jewelers-trophies-awards-0.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr9">photo: Vargas Jewelers Trophies & Awards</div><div class="chips"><span class="chip" id="m1-members-c9">Vargas Jewelers · H Street</span></div></div>
+      <div class="hold" id="m1-members-h10"><div class="wrap" id="m1-members-w10" data-layout-allow-overflow><img src="public/cast/members/wm-rieck-plumbing-co.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr10">photo: Wm Rieck Plumbing Co</div><div class="chips"><span class="chip" id="m1-members-c10">Wm Rieck Plumbing · Chestnut</span></div></div>
+      <div class="hold" id="m1-members-h11"><div class="wrap" id="m1-members-w11" data-layout-allow-overflow><img src="public/cast/members/terrones-plumbing.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr11">photo: Terrones Plumbing</div><div class="chips"><span class="chip" id="m1-members-c11">Terrones Plumbing</span></div></div>
+      <div class="hold" id="m1-members-h12"><div class="wrap" id="m1-members-w12" data-layout-allow-overflow><img src="public/cast/members/js-glass-co.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr12">photo: J's Glass Co</div><div class="chips"><span class="chip" id="m1-members-c12">J's Glass Co · Ocean Ave</span></div></div>
+      <div class="hold" id="m1-members-h13"><div class="wrap" id="m1-members-w13" data-layout-allow-overflow><img src="public/cast/members/the-waxed-honey.jpg" alt="" style="object-position: 50% 40%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr13">photo: The Waxed Honey</div><div class="chips"><span class="chip" id="m1-members-c13">The Waxed Honey · Ocean Ave</span></div></div>
+      <div class="hold" id="m1-members-h14"><div class="wrap" id="m1-members-w14" data-layout-allow-overflow><img src="public/cast/members/rey-s-liquor-store.jpg" alt="" style="object-position: 50% 45%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr14">photo: Rey's Liquor Store</div><div class="chips"><span class="chip" id="m1-members-c14">Rey's Liquor · H Street</span></div></div>
+      <div class="hold" id="m1-members-h15"><div class="wrap" id="m1-members-w15" data-layout-allow-overflow><img src="public/cast/members/clark-builders-inc.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr15">photo: Clark Builders, Inc.</div><div class="chips"><span class="chip" id="m1-members-c15">Clark Builders · Chestnut Ct</span></div></div>
+      <div class="hold" id="m1-members-h16"><div class="wrap" id="m1-members-w16" data-layout-allow-overflow><img src="public/cast/members/west-coast-industries.jpg" alt="" style="object-position: 50% 60%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr16">photo: West Coast Industries</div><div class="chips"><span class="chip" id="m1-members-c16">West Coast Industries · 8th St</span></div></div>
+      <div class="hold" id="m1-members-h17"><div class="wrap" id="m1-members-w17" data-layout-allow-overflow><img src="public/cast/members/bowl-and-soul.jpg" alt="" style="object-position: 50% 45%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr17">photo: Bowl & Soul</div><div class="chips"><span class="chip" id="m1-members-c17">Bowl & Soul</span></div></div>
+      <div class="hold" id="m1-members-h18"><div class="wrap" id="m1-members-w18" data-layout-allow-overflow><img src="public/cast/members/valley-embroidery.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr18">photo: Valley Embroidery</div><div class="chips"><span class="chip" id="m1-members-c18">Valley Embroidery · 8th St</span></div></div>
+      <div class="hold" id="m1-members-h19"><div class="wrap" id="m1-members-w19" data-layout-allow-overflow><img src="public/cast/members/in-out-tires-lpc.jpg" alt="" style="object-position: 50% 50%" /></div><div class="scrim"></div>
+        <div class="pcredit" id="m1-members-cr19">photo: In&Out Tires Lpc</div><div class="chips"><span class="chip" id="m1-members-c19">In&Out Tires · H Street</span></div></div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        // MEMBERS: hard cuts at gen_v9.py MEMBERS times (absolute - 9.50); first chip at +1.04 ("Cupcakes")
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#m1-members-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        tl.set("#m1-members-h0", { autoAlpha: 1 }, 0.00); tl.set("#m1-members-h0", { autoAlpha: 0 }, 1.80);
+        tl.fromTo("#m1-members-w0", { scale: 1.0 }, { scale: 1.08, duration: 1.80, ease: "none" }, 0.00);
+        tl.fromTo("#m1-members-c0", { autoAlpha: 0, y: 18, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 1.04);
+        tl.fromTo("#m1-members-cr0", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 1.34);
+        tl.set("#m1-members-h1", { autoAlpha: 1 }, 1.80); tl.set("#m1-members-h1", { autoAlpha: 0 }, 2.68);
+        tl.fromTo("#m1-members-w1", { scale: 1.0 }, { scale: 1.07, duration: 0.88, ease: "none" }, 1.80);
+        tl.fromTo("#m1-members-c1", { autoAlpha: 0, y: 18, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 1.80);
+        tl.fromTo("#m1-members-cr1", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 2.10);
+        tl.set("#m1-members-h2", { autoAlpha: 1 }, 2.68); tl.set("#m1-members-h2", { autoAlpha: 0 }, 3.58);
+        tl.fromTo("#m1-members-w2", { scale: 1.0 }, { scale: 1.07, duration: 0.90, ease: "none" }, 2.68);
+        tl.fromTo("#m1-members-c2", { autoAlpha: 0, y: 18, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 2.68);
+        tl.fromTo("#m1-members-cr2", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 2.98);
+        tl.set("#m1-members-h3", { autoAlpha: 1 }, 3.58); tl.set("#m1-members-h3", { autoAlpha: 0 }, 4.25);
+        tl.fromTo("#m1-members-w3", { scale: 1.10, xPercent: -3 }, { scale: 1.10, xPercent: 3, duration: 0.67, ease: "none" }, 3.58);
+        tl.fromTo("#m1-members-c3", { autoAlpha: 0, y: 18, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 3.58);
+        tl.fromTo("#m1-members-cr3", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 3.88);
+        tl.set("#m1-members-h4", { autoAlpha: 1 }, 4.25); tl.set("#m1-members-h4", { autoAlpha: 0 }, 4.82);
+        tl.fromTo("#m1-members-w4", { scale: 1.0 }, { scale: 1.06, duration: 0.57, ease: "none" }, 4.25);
+        tl.fromTo("#m1-members-c4", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 4.25);
+        tl.fromTo("#m1-members-cr4", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 4.25);
+        tl.set("#m1-members-h5", { autoAlpha: 1 }, 4.82); tl.set("#m1-members-h5", { autoAlpha: 0 }, 6.06);
+        tl.fromTo("#m1-members-w5", { scale: 1.0 }, { scale: 1.07, duration: 1.24, ease: "none" }, 4.82);
+        tl.fromTo("#m1-members-c5", { autoAlpha: 0, y: 18, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 4.82);
+        tl.fromTo("#m1-members-cr5", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 5.12);
+        tl.set("#m1-members-h6", { autoAlpha: 1 }, 6.06); tl.set("#m1-members-h6", { autoAlpha: 0 }, 7.45);
+        tl.fromTo("#m1-members-w6", { scale: 1.0 }, { scale: 1.08, duration: 1.39, ease: "none" }, 6.06);
+        tl.fromTo("#m1-members-c6", { autoAlpha: 0, y: 18, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 6.06);
+        tl.fromTo("#m1-members-cr6", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 6.36);
+        tl.set("#m1-members-h7", { autoAlpha: 1 }, 7.45); tl.set("#m1-members-h7", { autoAlpha: 0 }, 7.80);
+        tl.fromTo("#m1-members-w7", { scale: 1.0 }, { scale: 1.06, duration: 0.35, ease: "none" }, 7.45);
+        tl.fromTo("#m1-members-c7", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 7.45);
+        tl.fromTo("#m1-members-cr7", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 7.45);
+        tl.set("#m1-members-h8", { autoAlpha: 1 }, 7.80); tl.set("#m1-members-h8", { autoAlpha: 0 }, 8.15);
+        tl.fromTo("#m1-members-w8", { scale: 1.0 }, { scale: 1.06, duration: 0.35, ease: "none" }, 7.80);
+        tl.fromTo("#m1-members-c8", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 7.80);
+        tl.fromTo("#m1-members-cr8", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 7.80);
+        tl.set("#m1-members-h9", { autoAlpha: 1 }, 8.15); tl.set("#m1-members-h9", { autoAlpha: 0 }, 8.50);
+        tl.fromTo("#m1-members-w9", { scale: 1.0 }, { scale: 1.06, duration: 0.35, ease: "none" }, 8.15);
+        tl.fromTo("#m1-members-c9", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 8.15);
+        tl.fromTo("#m1-members-cr9", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 8.15);
+        tl.set("#m1-members-h10", { autoAlpha: 1 }, 8.50); tl.set("#m1-members-h10", { autoAlpha: 0 }, 8.85);
+        tl.fromTo("#m1-members-w10", { scale: 1.0 }, { scale: 1.06, duration: 0.35, ease: "none" }, 8.50);
+        tl.fromTo("#m1-members-c10", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 8.50);
+        tl.fromTo("#m1-members-cr10", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 8.50);
+        tl.set("#m1-members-h11", { autoAlpha: 1 }, 8.85); tl.set("#m1-members-h11", { autoAlpha: 0 }, 9.20);
+        tl.fromTo("#m1-members-w11", { scale: 1.0 }, { scale: 1.03, duration: 0.35, ease: "none" }, 8.85);
+        tl.fromTo("#m1-members-c11", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 8.85);
+        tl.fromTo("#m1-members-cr11", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 8.85);
+        tl.set("#m1-members-h12", { autoAlpha: 1 }, 9.20); tl.set("#m1-members-h12", { autoAlpha: 0 }, 9.55);
+        tl.fromTo("#m1-members-w12", { scale: 1.0 }, { scale: 1.06, duration: 0.35, ease: "none" }, 9.20);
+        tl.fromTo("#m1-members-c12", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 9.20);
+        tl.fromTo("#m1-members-cr12", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 9.20);
+        tl.set("#m1-members-h13", { autoAlpha: 1 }, 9.55); tl.set("#m1-members-h13", { autoAlpha: 0 }, 9.90);
+        tl.fromTo("#m1-members-w13", { scale: 1.0 }, { scale: 1.06, duration: 0.35, ease: "none" }, 9.55);
+        tl.fromTo("#m1-members-c13", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 9.55);
+        tl.fromTo("#m1-members-cr13", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 9.55);
+        tl.set("#m1-members-h14", { autoAlpha: 1 }, 9.90); tl.set("#m1-members-h14", { autoAlpha: 0 }, 10.25);
+        tl.fromTo("#m1-members-w14", { scale: 1.0 }, { scale: 1.06, duration: 0.35, ease: "none" }, 9.90);
+        tl.fromTo("#m1-members-c14", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 9.90);
+        tl.fromTo("#m1-members-cr14", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 9.90);
+        tl.set("#m1-members-h15", { autoAlpha: 1 }, 10.25); tl.set("#m1-members-h15", { autoAlpha: 0 }, 10.55);
+        tl.fromTo("#m1-members-w15", { scale: 1.0 }, { scale: 1.06, duration: 0.30, ease: "none" }, 10.25);
+        tl.fromTo("#m1-members-c15", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 10.25);
+        tl.fromTo("#m1-members-cr15", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 10.25);
+        tl.set("#m1-members-h16", { autoAlpha: 1 }, 10.55); tl.set("#m1-members-h16", { autoAlpha: 0 }, 10.85);
+        tl.fromTo("#m1-members-w16", { scale: 1.0 }, { scale: 1.06, duration: 0.30, ease: "none" }, 10.55);
+        tl.fromTo("#m1-members-c16", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 10.55);
+        tl.fromTo("#m1-members-cr16", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 10.55);
+        tl.set("#m1-members-h17", { autoAlpha: 1 }, 10.85); tl.set("#m1-members-h17", { autoAlpha: 0 }, 11.15);
+        tl.fromTo("#m1-members-w17", { scale: 1.0 }, { scale: 1.06, duration: 0.30, ease: "none" }, 10.85);
+        tl.fromTo("#m1-members-c17", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 10.85);
+        tl.fromTo("#m1-members-cr17", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 10.85);
+        tl.set("#m1-members-h18", { autoAlpha: 1 }, 11.15); tl.set("#m1-members-h18", { autoAlpha: 0 }, 11.45);
+        tl.fromTo("#m1-members-w18", { scale: 1.0 }, { scale: 1.06, duration: 0.30, ease: "none" }, 11.15);
+        tl.fromTo("#m1-members-c18", { autoAlpha: 0, y: 8, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.14, ease: "power2.out" }, 11.15);
+        tl.fromTo("#m1-members-cr18", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 11.15);
+        tl.set("#m1-members-h19", { autoAlpha: 1 }, 11.45);
+        tl.fromTo("#m1-members-w19", { scale: 1.0 }, { scale: 1.04, duration: 0.85, ease: "none" }, 11.45);
+        tl.fromTo("#m1-members-c19", { autoAlpha: 0, y: 18, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 11.45);
+        tl.fromTo("#m1-members-cr19", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 11.75);
+        tl.set({}, {}, 12.30);
+        window.__timelines["m1-members"] = tl;
+      })();
+    </script>
+  </div>
+</template>
