@@ -8,7 +8,7 @@ Rules this week: big pieces 6–8 PM PT only (morning slots = ~1/30th reach); Ti
 | Mon Sep 7 | Metrics pulled → memory; football page + Fri games on calendar | DONE |
 | Tue Sep 8 8:40 AM | Coastal Tint MEMBER SPOTLIGHT video (IG reel 6aa02c43 · FB reel 6aa02c4f · TikTok 6aa02c5b · IG story 6aa02c66) | POSTED (user: share it now); welcome card posts deleted |
 | Tue Sep 8 | Coastal Tint welcome email | DROPPED — user: members are in, the automatic Growth welcome is the only touch (for now) |
-| Wed Sep 9 6:00 PM | "This is Lompoc" master ad v6 (all 4 surfaces + story) | AWAITING USER watch/yes |
+| Tue Sep 8 9:07 PM | "This is Lompoc" v9.2 master (spotlight style, numbers, all 19 members, business CTA) — IG reel 6aa0db58 · FB reel 6aa0db64 · TikTok 6aa0db70 · IG story 6aa0db7d | POSTED (user: post it now everywhere). Wed 6 PM slot now open. |
 | Wed Sep 9 | Paisano's spotlight | Build from existing assets only (logo + cover; check their public web/social gallery) — no email |
 | Wed Sep 9 AM | News desk story (cron) | AUTO |
 | Thu Sep 10 8:37 AM | Falcon 9 USSF-153 launch alert | SAME-DAY after verification (never pre-scheduled) |
