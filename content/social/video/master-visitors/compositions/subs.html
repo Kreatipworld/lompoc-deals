@@ -1,0 +1,39 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="22.50" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 265px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 900px; background: rgba(0,0,0,0.55); color: #fff; font-weight: 600; font-size: 42px; line-height: 1.25; padding: 14px 28px; border-radius: 20px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Every month, hundreds of people in Lompoc open one site to find what's here.</span></div>
+      <div class="sub" id="sub-1"><span>They search. They open a page.</span></div>
+      <div class="sub" id="sub-2"><span>They check the hours, and they tap the number.</span></div>
+      <div class="sub" id="sub-3"><span>Your business belongs where the town is already looking.</span></div>
+      <div class="sub" id="sub-4"><span>Lompoc Locals. One place for the whole town.</span></div>
+      <div class="sub" id="sub-5"><span>$39.99 a month.</span></div>
+      <div class="sub" id="sub-6"><span>lompoclocals.com/grow</span></div>
+    </div>
+    <script>
+      (() => {
+        const SUBS = [
+          [0.60, 4.60, "Every month, hundreds of people in Lompoc open one site to find what's here."],
+          [5.15, 6.20, 'They search. They open a page.'],
+          [6.90, 8.70, 'They check the hours, and they tap the number.'],
+          [9.40, 11.60, 'Your business belongs where the town is already looking.'],
+          [12.30, 14.80, 'Lompoc Locals. One place for the whole town.'],
+          [15.45, 16.90, '$39.99 a month.'],
+          [17.60, 19.60, 'lompoclocals.com/grow']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 22.50);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>
