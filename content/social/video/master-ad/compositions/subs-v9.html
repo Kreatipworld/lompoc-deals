@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="31.25" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="35.90" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
     <style>
       [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 265px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
       [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
@@ -7,35 +7,37 @@
     
     </style>
     <div class="wrapz" data-layout-allow-overlap>
-      <div class="sub" id="sub-0"><span>Last month, more than 20,000 people looked at Lompoc. Right here.</span></div>
+      <div class="sub" id="sub-0"><span>Last month, the Lompoc Locals platform put Lompoc in front of more than 20,000 people. Right here.</span></div>
       <div class="sub" id="sub-1"><span>454 local businesses.</span></div>
       <div class="sub" id="sub-2"><span>47 events on the calendar.</span></div>
       <div class="sub" id="sub-3"><span>One town, in two languages.</span></div>
       <div class="sub" id="sub-4"><span>Cupcakes on H Street. Pizza on I.</span></div>
       <div class="sub" id="sub-5"><span>Wine in the Ghetto. A barbershop on V. A tint shop on Ocean.</span></div>
-      <div class="sub" id="sub-6"><span>…and every member on Lompoc Locals, from the florist to the tire shop.</span></div>
-      <div class="sub" id="sub-7"><span>They search. They open a page. They tap the number.</span></div>
-      <div class="sub" id="sub-8"><span>Lompoc Locals. One place for the whole town.</span></div>
+      <div class="sub" id="sub-6"><span>Clark Builders on Chestnut.</span></div>
+      <div class="sub" id="sub-7"><span>…and every member on Lompoc Locals, from the florist to the tire shop.</span></div>
+      <div class="sub" id="sub-8"><span>They search. They open a page. They tap the number.</span></div>
+      <div class="sub" id="sub-9"><span>Lompoc Locals. One place for the whole town.</span></div>
     </div>
     <script>
       (() => {
         const SUBS = [
-          [0.60, 3.20, 'Last month, more than 20,000 people looked at Lompoc. Right here.'],
-          [4.60, 6.00, '454 local businesses.'],
-          [6.70, 7.90, '47 events on the calendar.'],
-          [8.55, 9.60, 'One town, in two languages.'],
-          [10.50, 12.30, 'Cupcakes on H Street. Pizza on I.'],
-          [13.05, 16.30, 'Wine in the Ghetto. A barbershop on V. A tint shop on Ocean.'],
-          [16.95, 20.60, '…and every member on Lompoc Locals, from the florist to the tire shop.'],
-          [22.45, 24.75, 'They search. They open a page. They tap the number.'],
-          [25.40, 27.55, 'Lompoc Locals. One place for the whole town.']
+          [0.60, 5.80, 'Last month, the Lompoc Locals platform put Lompoc in front of more than 20,000 people. Right here.'],
+          [7.20, 8.60, '454 local businesses.'],
+          [9.30, 10.50, '47 events on the calendar.'],
+          [11.15, 12.20, 'One town, in two languages.'],
+          [13.10, 14.90, 'Cupcakes on H Street. Pizza on I.'],
+          [15.65, 18.90, 'Wine in the Ghetto. A barbershop on V. A tint shop on Ocean.'],
+          [19.60, 21.30, 'Clark Builders on Chestnut.'],
+          [21.60, 25.25, '…and every member on Lompoc Locals, from the florist to the tire shop.'],
+          [27.10, 29.40, 'They search. They open a page. They tap the number.'],
+          [30.05, 32.20, 'Lompoc Locals. One place for the whole town.']
         ];
         const tl = gsap.timeline({ paused: true });
         SUBS.forEach(([a, b], i) => {
           tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
           tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
         });
-        tl.set({}, {}, 31.25);
+        tl.set({}, {}, 35.90);
         window.__timelines["subs"] = tl;
       })();
     </script>

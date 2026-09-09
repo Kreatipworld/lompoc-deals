@@ -15,63 +15,64 @@ MV = load(os.path.join(HERE, "..", "master-visitors", "gen.py"), "\nfor key, A i
 H7 = load(os.path.join(HERE, "..", "hangar7", "gen.py"), "\nfor H, bar, folder, idx in")
 GOLD, INK, PURPLE, DARK, BG, X = MV["GOLD"], MV["INK"], MV["PURPLE"], MV["DARK"], MV["BG"], MV["X"]
 
-TOTAL = 31.25
+TOTAL = 35.90
 VO_FILE, VO_START, VO_DUR = "public/vo-v9-dylan.wav", 0.60, 22.32
 # v9.1: main read split around the extra members line
-VO_SLICES = [("public/vo-v9-dylan.wav", 0.00, 16.05, 0.60), ("public/vo-v9-extra.wav", 0.00, 3.84, 16.90), ("public/vo-v9-dylan.wav", 16.05, 6.27, 21.30)]
+VO_SLICES = [("public/vo-v9-open.wav", 0.00, 5.60, 0.60), ("public/vo-v9-dylan.wav", 3.60, 12.45, 6.80), ("public/vo-v9-clark.wav", 0.00, 1.76, 19.55), ("public/vo-v9-extra.wav", 0.00, 3.84, 21.55), ("public/vo-v9-dylan.wav", 16.05, 6.27, 25.95)]
 from members_v91 import members as members_seq
 SUBS = [
-    [0.60, 3.20, "Last month, more than 20,000 people looked at Lompoc. Right here."],
-    [4.60, 6.00, "454 local businesses."],
-    [6.70, 7.90, "47 events on the calendar."],
-    [8.55, 9.60, "One town, in two languages."],
-    [10.50, 12.30, "Cupcakes on H Street. Pizza on I."],
-    [13.05, 16.30, "Wine in the Ghetto. A barbershop on V. A tint shop on Ocean."],
-    [16.95, 20.60, "…and every member on Lompoc Locals, from the florist to the tire shop."],
-    [22.45, 24.75, "They search. They open a page. They tap the number."],
-    [25.40, 27.55, "Lompoc Locals. One place for the whole town."],
+    [0.60, 5.80, "Last month, the Lompoc Locals platform put Lompoc in front of more than 20,000 people. Right here."],
+    [7.20, 8.60, "454 local businesses."],
+    [9.30, 10.50, "47 events on the calendar."],
+    [11.15, 12.20, "One town, in two languages."],
+    [13.10, 14.90, "Cupcakes on H Street. Pizza on I."],
+    [15.65, 18.90, "Wine in the Ghetto. A barbershop on V. A tint shop on Ocean."],
+    [19.60, 21.30, "Clark Builders on Chestnut."],
+    [21.60, 25.25, "…and every member on Lompoc Locals, from the florist to the tire shop."],
+    [27.10, 29.40, "They search. They open a page. They tap the number."],
+    [30.05, 32.20, "Lompoc Locals. One place for the whole town."],
 ]
 MV["SUBS"] = SUBS; MV["TOTAL"] = TOTAL; H7["TOTAL"] = TOTAL
 
 # id, start, dur (absolute; VO at 0.60)
 SCENES = [
-    ("w1-catch",   0.00,  3.90),
-    ("w2-numbers", 3.70,  6.00),
-    ("m1-members", 9.50, 12.30),
-    ("s2-search", 21.55,  1.40),
-    ("s3-page",   23.15,  1.00),
-    ("s5-tap",    24.00,  1.10),
-    ("w5-end",    24.80,  6.45),
+    ("w1-catch",   0.00,  6.50),
+    ("w2-numbers", 6.30,  6.00),
+    ("m1-members", 12.10, 14.35),
+    ("s2-search", 26.20,  1.40),
+    ("s3-page",   27.80,  1.00),
+    ("s5-tap",    28.65,  1.10),
+    ("w5-end",    29.45,  6.45),
 ]
 # member sequence: (absolute cut time, image, chip, credit, object-position, ken burns)
 MEMBERS = [
-    (9.50,  "cast/sweet-baking-co-2.jpg",                 "Sweet Baking Co. · H Street",        "Sweet Baking Co.",                  "50% 55%", ("scale", 1.0, 1.08)),
-    (11.30, "cast/members/lompoc-valley-florist.jpg",     "Lompoc Valley Florist · H Street",   "Lompoc Valley Florist",             "50% 50%", ("scale", 1.0, 1.07)),
-    (12.18, "cast/eye-on-i-0.jpg",                        "Eye on I · I Street",                "Eye on I",                          "50% 45%", ("scale", 1.0, 1.07)),
-    (13.08, "cast/flying-goat-cellars-2.jpg",             "Flying Goat Cellars · Wine Ghetto",  "Flying Goat Cellars",               "50% 50%", ("drift", -3, 3)),
-    (13.75, "cast/members/hangar-7-social-house.jpg",     "Hangar 7 · Ocean Ave",               "Hangar 7 Social House",             "50% 50%", ("scale", 1.0, 1.06)),
-    (14.32, "cast/paisanos-0.jpg",                        "Paisano's · V Street",               "Paisano's Family Barbershop",       "50% 45%", ("scale", 1.0, 1.07)),
-    (15.56, "cast/coastal-tint-0.jpg",                    "Coastal Tint · Ocean Ave",           "Coastal Tint",                      "50% 55%", ("scale", 1.0, 1.08)),
-    (16.95, "cast/members/eddies-grill.jpg",              "Eddie's Grill · H Street",           "Eddie's Grill",                     "50% 50%", ("scale", 1.0, 1.06)),
-    (17.30, "cast/members/the-garden-shoppe.jpg",         "The Garden Shoppe · Ocean Ave",      "The Garden Shoppe",                 "50% 50%", ("scale", 1.0, 1.06)),
-    (17.65, "cast/vargas-jewelers-trophies-awards-0.jpg", "Vargas Jewelers · H Street",         "Vargas Jewelers Trophies & Awards", "50% 50%", ("scale", 1.0, 1.06)),
-    (18.00, "cast/members/wm-rieck-plumbing-co.jpg",      "Wm Rieck Plumbing · Chestnut",       "Wm Rieck Plumbing Co",              "50% 50%", ("scale", 1.0, 1.06)),
-    (18.35, "cast/members/terrones-plumbing.jpg",         "Terrones Plumbing",                  "Terrones Plumbing",                 "50% 50%", ("scale", 1.0, 1.03)),
-    (18.70, "cast/members/js-glass-co.jpg",               "J's Glass Co · Ocean Ave",           "J's Glass Co",                      "50% 50%", ("scale", 1.0, 1.06)),
-    (19.05, "cast/members/the-waxed-honey.jpg",           "The Waxed Honey · Ocean Ave",        "The Waxed Honey",                   "50% 40%", ("scale", 1.0, 1.06)),
-    (19.40, "cast/members/rey-s-liquor-store.jpg",        "Rey's Liquor · H Street",            "Rey's Liquor Store",                "50% 45%", ("scale", 1.0, 1.06)),
-    (19.75, "cast/members/clark-builders-inc.jpg",        "Clark Builders · Chestnut Ct",       "Clark Builders, Inc.",              "50% 50%", ("scale", 1.0, 1.06)),
-    (20.05, "cast/members/west-coast-industries.jpg",     "West Coast Industries · 8th St",     "West Coast Industries",             "50% 60%", ("scale", 1.0, 1.06)),
-    (20.35, "cast/members/bowl-and-soul.jpg",             "Bowl & Soul",                        "Bowl & Soul",                       "50% 45%", ("scale", 1.0, 1.06)),
-    (20.65, "cast/members/valley-embroidery.jpg",         "Valley Embroidery · 8th St",         "Valley Embroidery",                 "50% 50%", ("scale", 1.0, 1.06)),
-    (20.95, "cast/members/in-out-tires-lpc.jpg",          "In&Out Tires · H Street",            "In&Out Tires Lpc",                  "50% 50%", ("scale", 1.0, 1.04)),
+    (12.10, "cast/sweet-baking-co-2.jpg",                 "Sweet Baking Co. · H Street",        "Sweet Baking Co.",                  "50% 55%", ("scale", 1.0, 1.08)),
+    (13.90, "cast/members/lompoc-valley-florist.jpg",     "Lompoc Valley Florist · H Street",   "Lompoc Valley Florist",             "50% 50%", ("scale", 1.0, 1.07)),
+    (14.78, "cast/eye-on-i-0.jpg",                        "Eye on I · I Street",                "Eye on I",                          "50% 45%", ("scale", 1.0, 1.07)),
+    (15.68, "cast/flying-goat-cellars-2.jpg",             "Flying Goat Cellars · Wine Ghetto",  "Flying Goat Cellars",               "50% 50%", ("drift", -3, 3)),
+    (16.35, "cast/members/hangar-7-social-house.jpg",     "Hangar 7 · Ocean Ave",               "Hangar 7 Social House",             "50% 50%", ("scale", 1.0, 1.06)),
+    (16.92, "cast/paisanos-0.jpg",                        "Paisano's · V Street",               "Paisano's Family Barbershop",       "50% 45%", ("scale", 1.0, 1.07)),
+    (18.16, "cast/coastal-tint-0.jpg",                    "Coastal Tint · Ocean Ave",           "Coastal Tint",                      "50% 55%", ("scale", 1.0, 1.08)),
+    (19.55, "cast/members/clark-builders-inc.jpg",        "Clark Builders · Chestnut Ct",       "Clark Builders, Inc.",              "50% 50%", ("scale", 1.0, 1.07)),
+    (21.60, "cast/members/eddies-grill.jpg",              "Eddie's Grill · H Street",           "Eddie's Grill",                     "50% 50%", ("scale", 1.0, 1.06)),
+    (21.93, "cast/members/the-garden-shoppe.jpg",         "The Garden Shoppe · Ocean Ave",      "The Garden Shoppe",                 "50% 50%", ("scale", 1.0, 1.06)),
+    (22.26, "cast/vargas-jewelers-trophies-awards-0.jpg", "Vargas Jewelers · H Street",         "Vargas Jewelers Trophies & Awards", "50% 50%", ("scale", 1.0, 1.06)),
+    (22.59, "cast/members/wm-rieck-plumbing-co.jpg",      "Wm Rieck Plumbing · Chestnut",       "Wm Rieck Plumbing Co",              "50% 50%", ("scale", 1.0, 1.06)),
+    (22.92, "cast/members/terrones-plumbing.jpg",         "Terrones Plumbing",                  "Terrones Plumbing",                 "50% 50%", ("scale", 1.0, 1.03)),
+    (23.25, "cast/members/js-glass-co.jpg",               "J's Glass Co · Ocean Ave",           "J's Glass Co",                      "50% 50%", ("scale", 1.0, 1.06)),
+    (23.58, "cast/members/the-waxed-honey.jpg",           "The Waxed Honey · Ocean Ave",        "The Waxed Honey",                   "50% 40%", ("scale", 1.0, 1.06)),
+    (23.91, "cast/members/rey-s-liquor-store.jpg",        "Rey's Liquor · H Street",            "Rey's Liquor Store",                "50% 45%", ("scale", 1.0, 1.06)),
+    (24.24, "cast/members/west-coast-industries.jpg",     "West Coast Industries · 8th St",     "West Coast Industries",             "50% 60%", ("scale", 1.0, 1.06)),
+    (24.57, "cast/members/bowl-and-soul.jpg",             "Bowl & Soul",                        "Bowl & Soul",                       "50% 45%", ("scale", 1.0, 1.06)),
+    (24.90, "cast/members/valley-embroidery.jpg",         "Valley Embroidery · 8th St",         "Valley Embroidery",                 "50% 50%", ("scale", 1.0, 1.06)),
+    (25.23, "cast/members/in-out-tires-lpc.jpg",          "In&Out Tires · H Street",            "In&Out Tires Lpc",                  "50% 50%", ("scale", 1.0, 1.04)),
 ]
 # fx overlays: id, start, dur, clip, media_start, peak opacity
 FX = [
-    ("fx-a", 1.50, 2.40, "fx-lightleak.mp4", 0.60, 1.0),
-    ("fx-b", 9.40, 0.80, "fx-particles.mp4", 0.00, 0.9),
-    ("fx-c", 21.45, 0.70, "fx-lightleak.mp4", 2.00, 0.8),
-    ("fx-d", 24.80, 1.20, "fx-lightleak.mp4", 1.00, 0.5),
+    ("fx-a", 3.92, 2.40, "fx-lightleak.mp4", 0.60, 1.0),
+    ("fx-b", 12.00, 0.80, "fx-particles.mp4", 0.00, 0.9),
+    ("fx-c", 26.10, 0.70, "fx-lightleak.mp4", 2.00, 0.8),
+    ("fx-d", 29.45, 1.20, "fx-lightleak.mp4", 1.00, 0.5),
 ]
 PHOTOS = {  # cid: (file, chip, credit, ken burns, object-position, chip_at)
     "p1-sweet":    ("cast/sweet-baking-co-2.jpg", "Sweet Baking Co. · H Street", "Sweet Baking Co.", ("scale", 1.0, 1.08, "50% 55%"), 1.04),
@@ -94,24 +95,34 @@ def photo(cid, dur, A):
     s = s.replace('tl.set({}, {}, B.END);', f'tl.fromTo("#{cid}-cr", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.3 }}, 0.35);\n        tl.set({{}}, {{}}, B.END);', 1)
     return s
 
-def w1(A, dur):  # 0.00–3.90: 20,000+ slams at 1.66 · "PEOPLE LOOKED AT LOMPOC" 2.70 · "LAST MONTH" 3.05
+def w1(A, dur):  # 0.00–6.50: quiet lines 0.90 / 1.90 · slam on "twenty" 4.08 · PEOPLE 4.80 · platform line 5.15
     cid = "w1-catch"; s = f'[data-composition-id="{cid}"]'; big = A["H"] == 1920
     css = MV["base_css"](cid, A) + f"""
       {s} .black {{ position: absolute; inset: 0; background: radial-gradient(ellipse 90% 60% at 50% 45%, #1e0f24 0%, #07040a 75%); }}
+      {s} .bloom {{ position: absolute; left: 50%; top: 42%; width: 1100px; height: 1100px; margin: -550px 0 0 -550px; border-radius: 50%; background: radial-gradient(circle, rgba(122,22,144,0.55), rgba(101,12,117,0.18) 45%, rgba(7,4,10,0) 70%); opacity: 0; will-change: transform, opacity; }}
+      {s} .quiet {{ position: absolute; left: 60px; right: 60px; top: {'40%' if big else '36%'}; z-index: 36; text-align: center; }}
+      {s} .q {{ display: block; color: {GOLD}; font-weight: 800; font-size: {44 if big else 34}px; letter-spacing: 8px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; margin-bottom: {26 if big else 18}px; }}
       {s} .col {{ position: absolute; left: 60px; right: 60px; top: {'30%' if big else '24%'}; z-index: 36; text-align: center; }}
       {s} .num {{ display: block; color: {GOLD}; font-weight: 800; font-size: {236 if big else 168}px; line-height: 0.9; letter-spacing: -9px; text-shadow: 0 16px 60px rgba(239,198,24,0.35); opacity: 0; will-change: transform, opacity; }}
       {s} .l1 {{ display: block; margin-top: {64 if big else 44}px; color: #fff; font-weight: 800; font-size: {70 if big else 50}px; line-height: 1.0; letter-spacing: -1px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }}
-      {s} .l2 {{ display: block; margin-top: {22 if big else 14}px; color: rgba(255,255,255,0.75); font-weight: 700; font-size: {34 if big else 26}px; letter-spacing: 6px; text-transform: uppercase; opacity: 0; }}
+      {s} .l2 {{ display: block; margin-top: {22 if big else 14}px; color: rgba(255,255,255,0.78); font-weight: 700; font-size: {28 if big else 22}px; letter-spacing: 5px; text-transform: uppercase; opacity: 0; }}
       {s} .flash {{ position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 58; pointer-events: none; }}
     """
     body = f'''      <div class="black"></div>
-      <div class="col"><span class="num" id="{cid}-num">20,000+</span><span class="l1" id="{cid}-l1">People looked at Lompoc</span><span class="l2" id="{cid}-l2">Last month</span></div>
+      <div class="bloom" id="{cid}-bloom" data-layout-allow-overflow></div>
+      <div class="quiet"><span class="q" id="{cid}-q1">Last month</span><span class="q" id="{cid}-q2">The Lompoc Locals platform</span></div>
+      <div class="col"><span class="num" id="{cid}-num">20,000+</span><span class="l1" id="{cid}-l1">People looked at Lompoc</span><span class="l2" id="{cid}-l2">On the Lompoc Locals platform · Last month</span></div>
       <div class="flash" id="{cid}-flash"></div>'''
-    script = f'''        tl.fromTo("#{cid}-flash", {{ autoAlpha: 0.85 }}, {{ autoAlpha: 0, duration: 0.35, ease: "power2.out", immediateRender: false }}, 1.66);
-        tl.fromTo("#{cid}-num", {{ autoAlpha: 0, scale: 1.6 }}, {{ autoAlpha: 1, scale: 1.0, duration: 0.42, ease: "power4.out" }}, 1.66);
-        tl.to("#{cid}-num", {{ scale: 1.015, duration: 2.2, ease: "none" }}, 2.08);
-        tl.fromTo("#{cid}-l1", {{ autoAlpha: 0, y: 24 }}, {{ autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }}, 2.70);
-        tl.fromTo("#{cid}-l2", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, 3.05);'''
+    script = f'''        tl.fromTo("#{cid}-bloom", {{ autoAlpha: 0, scale: 0.6 }}, {{ autoAlpha: 1, scale: 1.15, duration: 3.9, ease: "sine.inOut" }}, 0.2);
+        tl.fromTo("#{cid}-q1", {{ autoAlpha: 0, y: 14 }}, {{ autoAlpha: 1, y: 0, duration: 0.5 }}, 0.90);
+        tl.fromTo("#{cid}-q2", {{ autoAlpha: 0, y: 14 }}, {{ autoAlpha: 1, y: 0, duration: 0.5 }}, 1.90);
+        tl.to("#{cid}-q1, #{cid}-q2", {{ autoAlpha: 0, duration: 0.25, ease: "power2.in" }}, 3.70);
+        tl.to("#{cid}-bloom", {{ autoAlpha: 0.35, duration: 0.4 }}, 3.90);
+        tl.fromTo("#{cid}-flash", {{ autoAlpha: 0.85 }}, {{ autoAlpha: 0, duration: 0.35, ease: "power2.out", immediateRender: false }}, 4.08);
+        tl.fromTo("#{cid}-num", {{ autoAlpha: 0, scale: 1.6 }}, {{ autoAlpha: 1, scale: 1.0, duration: 0.42, ease: "power4.out" }}, 4.08);
+        tl.to("#{cid}-num", {{ scale: 1.015, duration: 2.3, ease: "none" }}, 4.50);
+        tl.fromTo("#{cid}-l1", {{ autoAlpha: 0, y: 24 }}, {{ autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }}, 4.80);
+        tl.fromTo("#{cid}-l2", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, 5.15);'''
     return MV["shell"](cid, A, dur, css, body, script, bg="#07040a")
 
 def w2(A, dur):  # 3.70–9.70: 454 at 4.62 · 47 at 6.70 · 2 languages at 9.30
@@ -196,7 +207,7 @@ def scene(cid, dur, A):
 
 def _scene(cid, dur, A):
     if cid == "w2-numbers": return w2(A, dur)
-    if cid == "m1-members": return members_seq(A, 9.50, dur, MEMBERS, H7, X)
+    if cid == "m1-members": return members_seq(A, 12.10, dur, MEMBERS, H7, X)
     if cid == "s2-search":  # typing done ~16.72; results 16.95/17.10/17.25 → rel 0.65/0.80/0.95
         return fade_chip(MV["s2_search"](A, dur).replace(", 0.55);", ", 0.65);").replace(", 0.72);", ", 0.80);").replace(", 0.88);", ", 0.95);"), cid, dur)
     if cid == "s3-page": return fade_chip(MV["s_member"](cid, A, dur, "They open a page", 300, 900, chip_at=0.20), cid, dur)
@@ -226,13 +237,13 @@ def index(A, folder):
     </style>
   </head>
   <body>
-    <!-- THIS IS LOMPOC v9 — spotlight-style master commercial v9.1: wow catch, three numbers, ALL Growth members (one mention + one picture each), phone beats, end card. {TOTAL:.2f}s. Dylan v9 read at {VO_START}. fx clips = transitions only. Generated by gen_v9.py; v6 index.html untouched. -->
+    <!-- THIS IS LOMPOC v9 — spotlight-style master commercial v9.2: wow catch, three numbers, ALL Growth members (one mention + one picture each), phone beats, end card. {TOTAL:.2f}s. Dylan v9 read at {VO_START}. fx clips = transitions only. Generated by gen_v9.py; v6 index.html untouched. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL:.2f}" data-width="{A['W']}" data-height="{A['H']}">
 {chr(10).join(rows)}
 
 {VO_ROWS}
-      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bgm-bama-country.mp3" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="0.5" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.3}}' data-automation='{{"version":1,"lanes":[{{"target":"volume","points":[{{"t":0,"v":0.5}},{{"t":29.75,"v":0.5}},{{"t":31.25,"v":0}}]}}]}}'></audio>
-      <audio id="sfx-drone" class="clip" data-audio-group="sfx" src="public/sfx/low-drone.wav" data-start="0" data-media-start="0" data-duration="4.20" data-track-index="12" data-volume="0.7" data-fade-in="0.3" data-fade-out="1.0"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bgm-bama-country.mp3" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="0.5" data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.3}}' data-automation='{{"version":1,"lanes":[{{"target":"volume","points":[{{"t":0,"v":0.5}},{{"t":34.40,"v":0.5}},{{"t":35.90,"v":0}}]}}]}}'></audio>
+      <audio id="sfx-drone" class="clip" data-audio-group="sfx" src="public/sfx/low-drone.wav" data-start="0" data-media-start="0" data-duration="6.50" data-track-index="12" data-volume="0.7" data-fade-in="0.3" data-fade-out="1.4"></audio>
     </div>
     <script>
       window.__timelines["main"] = gsap.timeline({{ paused: true }});
