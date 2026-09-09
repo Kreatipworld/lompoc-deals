@@ -56,7 +56,11 @@ export default async function SearchPage({
   // Growth/Plus members lead the business results; the matcher's order holds within a tier.
   if (results.businesses.length > 1) {
     const tiers = await memberTiers(results.businesses.map((b) => b.id))
-    results.businesses = [...results.businesses].sort((a, b) => (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0))
+    // Members first, but never above a better match: direct word hits, then category fallback, then fuzzy.
+    const HIT_RANK = { direct: 0, category: 1, fuzzy: 2 } as const
+    results.businesses = [...results.businesses].sort(
+      (a, b) => HIT_RANK[a.hit ?? "direct"] - HIT_RANK[b.hit ?? "direct"] || (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0)
+    )
   }
   const count = results.businesses.length + results.categories.length + results.deals.length
 

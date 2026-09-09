@@ -76,7 +76,10 @@ export type BizHit = {
   categoryName: string | null
   categorySlug: string | null
   description: string | null
+  /** How the row was found: a direct word match, a category synonym fallback, or fuzzy recovery. */
+  hit?: "direct" | "category" | "fuzzy"
 }
+type BizHitRow = BizHit & { descriptionEs?: string | null }
 export type SearchResults = {
   businesses: BizHit[]
   categories: CategoryHit[]
@@ -278,7 +281,7 @@ export async function searchAll(q: string, locale: Locale = "en"): Promise<Searc
     searchDeals(q, 50, locale),
   ])
 
-  let ranked = rankBusinessHits(dropCompetitorMentions(bizRows, q), q, 24)
+  let ranked: BizHitRow[] = rankBusinessHits(dropCompetitorMentions(bizRows, q), q, 24).map((b) => ({ ...b, hit: "direct" as const }))
 
   /**
    * Only when a term finds almost nothing on its own do we fall back to its category.
@@ -307,11 +310,11 @@ export async function searchAll(q: string, locale: Locale = "en"): Promise<Searc
     // Inside the category, names that carry the word's root come first ("electrician" → "… Electric").
     const stem = lower.replace(/(ians?|ers?|ing|s)$/i, "").slice(0, 6)
     const byStem = [...byCategory].sort((a, b) => Number(!a.name.toLowerCase().includes(stem)) - Number(!b.name.toLowerCase().includes(stem)))
-    ranked = [...ranked, ...byStem.filter((b) => !have.has(b.id))].slice(0, 24)
+    ranked = [...ranked, ...byStem.filter((b) => !have.has(b.id)).map((b) => ({ ...b, hit: "category" as const }))].slice(0, 24)
   }
 
   // An empty result is the one outcome that sends a resident back to Google.
-  const businessesOut = ranked.length ? ranked : await fuzzyBusinessSearch(q, 6)
+  const businessesOut = ranked.length ? ranked : (await fuzzyBusinessSearch(q, 6)).map((b) => ({ ...b, hit: "fuzzy" as const }))
   // Ranking ran on the English words (that is what the query matched); the card shows the twin.
   return {
     businesses: businessesOut.map((b) => localizeFields(locale, b as BizHit & Record<string, unknown>, ["description"])),
