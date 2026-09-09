@@ -10,7 +10,9 @@ Rules this week: big pieces 6–8 PM PT only (morning slots = ~1/30th reach); Ti
 | Tue Sep 8 | Coastal Tint welcome email | DROPPED — user: members are in, the automatic Growth welcome is the only touch (for now) |
 | Tue Sep 8 9:07 PM | "This is Lompoc" v9.2 master (spotlight style, numbers, all 19 members, business CTA) — IG reel 6aa0db58 · FB reel 6aa0db64 · TikTok 6aa0db70 · IG story 6aa0db7d | POSTED (user: post it now everywhere). Wed 6 PM slot now open. |
 | Wed Sep 9 | Paisano's spotlight | Build from existing assets only (logo + cover; check their public web/social gallery) — no email |
-| Wed Sep 9 AM | News desk story (cron) | AUTO |
+| Wed Sep 9 8:00 AM | News desk (now DAILY): Mosby vs Ball mayor race · Riverbend Park soccer fields · True Vine 1,000 shoes (manual run after harvest) | PUBLISHED |
+| Wed Sep 9 8:12 AM | "Lompoc News Update" card → IG feed 6aa17735 · IG story 6aa17740 · FB 6aa1774a (→ /news, utm news-update) | POSTED |
+| Wed Sep 9 | Homepage "Lompoc News" section (three newest stories, en/es) | LIVE |
 | Thu Sep 10 8:37 AM | Falcon 9 USSF-153 launch alert | SAME-DAY after verification (never pre-scheduled) |
 | Thu Sep 10 12:00 PM | Zine Making @ Cypress Gallery (IG 6a9f9187 · story 6a9f918b · FB 6a9f918e) | SCHEDULED |
 | Fri Sep 11 11:00 AM | Week 3: Braves vs Pioneer Valley @ Huyck 7 PM · Conqs at Nipomo 7 PM (IG 6a9f9193 · FB 6a9f9197) | SCHEDULED — re-verify kickoffs Fri AM |
