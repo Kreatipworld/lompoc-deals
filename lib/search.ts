@@ -77,7 +77,7 @@ export type BizHit = {
   categorySlug: string | null
   description: string | null
   /** How the row was found: a direct word match, a category synonym fallback, or fuzzy recovery. */
-  hit?: "direct" | "category" | "fuzzy"
+  hit?: "direct" | "category" | "category-loose" | "fuzzy"
 }
 type BizHitRow = BizHit & { descriptionEs?: string | null }
 export type SearchResults = {
@@ -310,7 +310,7 @@ export async function searchAll(q: string, locale: Locale = "en"): Promise<Searc
     // Inside the category, names that carry the word's root come first ("electrician" → "… Electric").
     const stem = lower.replace(/(ians?|ers?|ing|s)$/i, "").slice(0, 6)
     const byStem = [...byCategory].sort((a, b) => Number(!a.name.toLowerCase().includes(stem)) - Number(!b.name.toLowerCase().includes(stem)))
-    ranked = [...ranked, ...byStem.filter((b) => !have.has(b.id)).map((b) => ({ ...b, hit: "category" as const }))].slice(0, 24)
+    ranked = [...ranked, ...byStem.filter((b) => !have.has(b.id)).map((b) => ({ ...b, hit: (b.name.toLowerCase().includes(stem) ? "category" : "category-loose") as "category" | "category-loose" }))].slice(0, 24)
   }
 
   // An empty result is the one outcome that sends a resident back to Google.

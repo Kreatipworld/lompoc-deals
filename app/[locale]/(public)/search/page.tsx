@@ -57,7 +57,7 @@ export default async function SearchPage({
   if (results.businesses.length > 1) {
     const tiers = await memberTiers(results.businesses.map((b) => b.id))
     // Members first, but never above a better match: direct word hits, then category fallback, then fuzzy.
-    const HIT_RANK = { direct: 0, category: 1, fuzzy: 2 } as const
+    const HIT_RANK = { direct: 0, category: 1, "category-loose": 2, fuzzy: 3 } as const
     results.businesses = [...results.businesses].sort(
       (a, b) => HIT_RANK[a.hit ?? "direct"] - HIT_RANK[b.hit ?? "direct"] || (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0)
     )
