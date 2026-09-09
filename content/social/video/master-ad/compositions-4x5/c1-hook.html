@@ -19,7 +19,8 @@
       [data-composition-id="c1-hook"] .lower { position: absolute; left: 84px; right: 84px; bottom: 22%; z-index: 35; }
     </style>
     <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 90% 60% at 50% 40%, #2b1531 0%, #140a17 70%)"></div>
-    <div id="c1-pre" style="position: absolute; left: 84px; top: 42%; z-index: 35; opacity: 0"><span class="chip">Lompoc, California</span><span class="rule" style="margin-top: 26px"></span></div>
+    <div id="c1-pre" style="position: absolute; left: 84px; top: 30%; z-index: 35; opacity: 0"><span class="chip">Lompoc, California</span><span class="rule" style="margin-top: 26px"></span></div>
+    <div class="stamp" id="c1-s0">Say Lompoc.</div>
     <div class="stamp" id="c1-s1">The highway.</div>
     <div class="stamp" id="c1-s2">The fog.</div>
     <div class="stamp" id="c1-s3">The base.</div>
@@ -35,11 +36,11 @@
     <script>
       (() => {
         // BEATS (relative to scene start): S1 highway, S2 fog, S3 base, CUT photo
-        const B1 = { PRE: 0.35, S1: 2.55, S2: 3.40, S3: 4.50, CUT: 5.45, END: 6.40 };
+        const B1 = { PRE: 0.35, S0: 0.70, S1: 2.55, S2: 3.40, S3: 4.50, CUT: 5.45, END: 6.40 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
         tl.fromTo("#c1-pre", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.45 }, B1.PRE);
         tl.to("#c1-pre", { autoAlpha: 0, duration: 0.15, ease: "power2.in" }, B1.S1 - 0.15);
-        [["#c1-s1", B1.S1, B1.S2], ["#c1-s2", B1.S2, B1.S3], ["#c1-s3", B1.S3, B1.CUT]].forEach(([sel, a, b]) => {
+        [["#c1-s0", B1.S0, B1.S1], ["#c1-s1", B1.S1, B1.S2], ["#c1-s2", B1.S2, B1.S3], ["#c1-s3", B1.S3, B1.CUT]].forEach(([sel, a, b]) => {
           tl.fromTo(sel, { autoAlpha: 0, scale: 1.18 }, { autoAlpha: 1, scale: 1.0, duration: 0.32, ease: "power4.out" }, a);
           tl.to(sel, { scale: 1.04, duration: b - a - 0.32, ease: "none" }, a + 0.32);
           tl.set(sel, { autoAlpha: 0 }, b);

@@ -18,7 +18,7 @@ exec(compile(src, MV, "exec"), ns)
 TOTAL = 35.00
 VO_START, VO_DUR = 0.60, 33.12
 SUBS = [
-    [0.60, 5.90, "Say Lompoc, and folks picture the highway. The fog. The base. We picture this."],
+    [0.60, 5.55, "Say Lompoc, and folks picture the highway. The fog. The base. We picture this."],
     [6.60, 11.50, "Cupcakes on H Street. Flowers next door. Pizza on I. A patio on Ocean Avenue."],
     [12.20, 15.00, "Trophies, wine, glass, plumbing, builders."],
     [15.40, 18.40, "Every month, hundreds of locals open one site to find all of it."],
@@ -61,8 +61,12 @@ def v6_copy(folder, src_id, dst_prefix, dst_id, dur, beats_old_re, beats_new):
     return s
 
 def c1(folder):
-    return v6_copy(folder, "b1-hook", "c1-", "c1-hook", 6.40,
-                   r"const B1 = \{[^}]*\};", "const B1 = { PRE: 0.35, S1: 2.55, S2: 3.40, S3: 4.50, CUT: 5.45, END: 6.40 };")
+    s = v6_copy(folder, "b1-hook", "c1-", "c1-hook", 6.40,
+                r"const B1 = \{[^}]*\};", "const B1 = { PRE: 0.35, S0: 0.70, S1: 2.55, S2: 3.40, S3: 4.50, CUT: 5.45, END: 6.40 };")
+    s = s.replace('<div class="stamp" id="c1-s1">', '<div class="stamp" id="c1-s0">Say Lompoc.</div>\n    <div class="stamp" id="c1-s1">', 1)
+    s = s.replace('[["#c1-s1", B1.S1, B1.S2],', '[["#c1-s0", B1.S0, B1.S1], ["#c1-s1", B1.S1, B1.S2],', 1)
+    s = s.replace('id="c1-pre" style="position: absolute; left: 84px; top: 42%;', 'id="c1-pre" style="position: absolute; left: 84px; top: 30%;', 1)
+    return s
 
 def c2(folder):
     s = v6_copy(folder, "b2-pride", "c2-", "c2-pride", 9.05,
@@ -76,13 +80,18 @@ def c2(folder):
     return s
 
 def c6(folder):
-    return v6_copy(folder, "b4-tag", "c6-", "c6-tag", 4.35,
-                   r"const B4 = \{[^}]*\};", "const B4 = { ASK: 0.0, TYPE: 0.35, CTA: 2.45, END: 4.35 };")
+    s = v6_copy(folder, "b4-tag", "c6-", "c6-tag", 4.35,
+                r"const B4 = \{[^}]*\};", "const B4 = { ASK: 0.0, TYPE: 0.35, CTA: 2.45, END: 4.35 };")
+    # lift the CTA card clear of the subtitle box
+    s = re.sub(r'(\.cta \{[^}]*?bottom: )[0-9.]+%', lambda m: m.group(1) + ("27%" if folder == "compositions" else "25%"), s, count=1)
+    return s
 
 def c7(folder):
     s = v6_copy(folder, "b5-end", "c7-", "c7-end", 4.35,
                 r"const B5 = \{[^}]*\};", "const B5 = { MARK: 0.25, URL: 0.95, END: 4.35 };")
     s = s.replace(">TAG A LOMPOC BUSINESS 👇</div>", ">ONE PLACE FOR THE WHOLE TOWN.</div>")
+    # music credit sits just above the cine bar, below the subtitle box
+    s = re.sub(r'(id="c7-credit" style="[^"]*?bottom: )[0-9.]+%', lambda m: m.group(1) + ("8.5%" if folder == "compositions" else "8%"), s, count=1)
     return s
 
 def lang(A, dur):
