@@ -10,7 +10,7 @@
  */
 export const CATEGORY_SLUGS = [
   "auto",
-  "dispensaries",
+  "construction",
   "entertainment",
   "food-drink",
   "health-beauty",

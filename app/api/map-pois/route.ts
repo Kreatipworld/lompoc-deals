@@ -19,7 +19,7 @@ const VALID_CATEGORY_IDS = new Set<CategoryId>([
   "entertainment",
   "services",
   "auto",
-  "dispensaries",
+  "construction",
   "real-estate",
   "other",
 ])

@@ -54,7 +54,7 @@ const PREVIEW_PER_CATEGORY = 6
 /** A face for every category tile. Slugs come from the categories table. */
 const CATEGORY_EMOJI: Record<string, string> = {
   "food-drink": "🍽️", services: "🔧", retail: "🛍️", auto: "🚗", wineries: "🍷",
-  "health-beauty": "💇", "real-estate": "🏠", entertainment: "🎉", dispensaries: "🌿", other: "✨",
+  "health-beauty": "💇", "real-estate": "🏠", entertainment: "🎉", construction: "🏗️", other: "✨",
 }
 
 export default async function BusinessesPage({

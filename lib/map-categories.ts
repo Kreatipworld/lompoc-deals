@@ -7,9 +7,7 @@ import {
   Wrench,
   Car,
   MapPin,
-  Leaf,
-  Home,
-} from "lucide-react"
+  Home, HardHat } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 export type CategoryId =
@@ -21,7 +19,7 @@ export type CategoryId =
   | "services"
   | "auto"
   | "other"
-  | "dispensaries"
+  | "construction"
   | "real-estate"
 
 export interface Category {
@@ -93,12 +91,12 @@ export const CATEGORIES: Category[] = [
     emoji: "🚗",
   },
   {
-    id: "dispensaries",
-    name: "Dispensaries",
-    labelKey: "categories.dispensaries",
-    color: "#16A34A",
-    icon: Leaf,
-    emoji: "🌿",
+    id: "construction",
+    name: "Construction",
+    labelKey: "categories.construction",
+    color: "#B45309",
+    icon: HardHat,
+    emoji: "🏗️",
   },
   {
     id: "real-estate",

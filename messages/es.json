@@ -2581,7 +2581,8 @@
     "real-estate": "Bienes raíces",
     "retail": "Tiendas",
     "services": "Servicios",
-    "wineries": "Viñedos"
+    "wineries": "Viñedos",
+    "construction": "Construcción"
   },
   "hoursUi": {
     "mon": "Lun",
@@ -2623,7 +2624,8 @@
       "auto": "Automotriz",
       "dispensaries": "Dispensarios",
       "real-estate": "Bienes raíces",
-      "other": "Otros"
+      "other": "Otros",
+      "construction": "Construcción"
     },
     "filter": {
       "all": "Todo"

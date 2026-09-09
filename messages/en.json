@@ -2581,7 +2581,8 @@
     "real-estate": "Real Estate",
     "retail": "Retail",
     "services": "Services",
-    "wineries": "Wineries"
+    "wineries": "Wineries",
+    "construction": "Construction"
   },
   "hoursUi": {
     "mon": "Mon",
@@ -2623,7 +2624,8 @@
       "auto": "Auto",
       "dispensaries": "Dispensaries",
       "real-estate": "Real Estate",
-      "other": "Other"
+      "other": "Other",
+      "construction": "Construction"
     },
     "filter": {
       "all": "All"

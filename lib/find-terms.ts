@@ -100,7 +100,7 @@ export const FIND_TERMS: FindTerm[] = [
     query: "plumbing",
     aliases: ["plumber", "plumbers", "plomero", "plomería", "water heater", "drain"],
     kind: "businesses",
-    category: "services",
+    category: "construction",
     title: { en: "Plumbers in Lompoc", es: "Plomeros en Lompoc" },
     intro: {
       en: "Hard water, old pipes, and a water heater that quits on a cold morning: Lompoc keeps its plumbers busy. These are local plumbing companies that serve Lompoc and Vandenberg Village, with phone numbers you can call today.",
@@ -196,7 +196,7 @@ export const FIND_TERMS: FindTerm[] = [
     query: "windows glass",
     aliases: ["window replacement", "window replacements", "windows", "glass", "window repair", "glass repair", "ventanas", "vidrios"],
     kind: "businesses",
-    category: "services",
+    category: "construction",
     exclude: ["valley-autoglass", "kaizen-collision-center"],
     title: { en: "Window Replacement in Lompoc", es: "Reemplazo de ventanas en Lompoc" },
     intro: {

@@ -39,7 +39,7 @@ const CATEGORY_TO_TYPE: Record<string, string> = {
   retail: "Store",
   "real-estate": "RealEstateAgent",
   entertainment: "EntertainmentBusiness",
-  dispensaries: "Store",
+  construction: "HomeAndConstructionBusiness",
 }
 
 // English labels intentionally mirror messages/en.json > businesses.amenities; this pure builder cannot use next-intl, and schema.org names should stay canonical English regardless of page locale.

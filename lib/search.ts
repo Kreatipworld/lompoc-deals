@@ -26,6 +26,7 @@ export const CATEGORY_SYNONYMS: Record<string, string[]> = {
     "viñedo", "cata",
   ],
   retail: [
+    "dispensary", "dispensaries", "cannabis", "weed", "marijuana", "cbd", "smoke", "vape",
     "shop", "store", "retail", "clothing", "clothes", "boutique", "gift",
     "jewelry", "furniture", "market", "thrift", "books", "flowers", "florist",
     "tienda", "ropa", "regalos", "flores",
@@ -53,9 +54,11 @@ export const CATEGORY_SYNONYMS: Record<string, string[]> = {
     "event", "games",
     "cine", "diversión", "música", "eventos",
   ],
-  dispensaries: [
-    "dispensary", "dispensaries", "cannabis", "weed", "marijuana", "cbd", "smoke", "vape",
-    "hierba",
+  construction: [
+    "construction", "contractor", "general contractor", "builder", "builders", "roofing", "roofer",
+    "concrete", "electrician", "electric", "plumber", "plumbing", "flooring", "floors", "remodel",
+    "drywall", "framing", "glass", "windows", "porta potty", "portable toilets",
+    "construcción", "contratista", "techos", "electricista", "plomero", "pisos",
   ],
   "real-estate": [
     "real estate", "realtor", "realty", "home", "house", "rent", "lease",

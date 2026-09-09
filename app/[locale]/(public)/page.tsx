@@ -51,7 +51,7 @@ const CATEGORY_IMAGES: Record<string, string> = {
   "real-estate":   "/categories/real-estate.jpg",
   "wineries":      "/categories/wineries.jpg",
   "cannabis":      "/categories/dispensaries.jpg",
-  "dispensaries":  "/categories/dispensaries.jpg",
+  "construction":  "/categories/construction.jpg",
   "other":         "/categories/other.jpg",
 }
 
