@@ -193,6 +193,10 @@ export default async function NewsIndexPage({
             ))}
           </Reveal>
 
+          <p className="mt-14 mx-auto max-w-2xl text-center text-xs leading-relaxed text-gray-500">
+            <span className="font-semibold text-gray-600">{tUi("deskNoteTitle")}</span> {tUi("deskNoteBody")}
+          </p>
+
           {totalPages > 1 && (
             <nav className="mt-12 flex items-center justify-center gap-2" aria-label={t("paginationLabel")}>
               {page > 1 && (

@@ -2699,7 +2699,9 @@
       "ogTitle": "Noticias de Lompoc — Lompoc Locals",
       "ogDescription": "Aperturas de negocios, novedades de la comunidad y lo que pasa en Lompoc, CA.",
       "ogImageAlt": "Lompoc, California",
-      "topicsLabel": "Temas de noticias"
+      "topicsLabel": "Temas de noticias",
+      "deskNoteTitle": "Cómo trabaja nuestra mesa de noticias.",
+      "deskNoteBody": "Cada nota la escribe Lompoc Locals a partir de registros públicos, anuncios oficiales y reportes de los medios locales acreditados al final de cada historia. Fotos propias, solo hechos, sin opinión. ¿Ves algo que no cuadra? Escríbenos a hello@lompoclocals.com."
     },
     "blog": {
       "metaTitle": "Blog — Noticias locales, consejos e historias de la comunidad",

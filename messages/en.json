@@ -2699,7 +2699,9 @@
       "ogTitle": "Lompoc News — Lompoc Locals",
       "ogDescription": "Business openings, community updates, and local happenings in Lompoc, CA.",
       "ogImageAlt": "Lompoc, California",
-      "topicsLabel": "News topics"
+      "topicsLabel": "News topics",
+      "deskNoteTitle": "How our news desk works.",
+      "deskNoteBody": "Every story here is written by Lompoc Locals from public records, official announcements, and reports by the local outlets credited at the end of each story. Our own photos, facts only, no opinion. Spot something off? Write to hello@lompoclocals.com."
     },
     "blog": {
       "metaTitle": "Blog — Local News, Tips & Community Stories",

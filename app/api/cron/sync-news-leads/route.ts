@@ -5,6 +5,7 @@ import { newsLeads } from "@/db/schema"
 import { deriveTopic } from "@/lib/news-topics"
 import { logCronRun } from "@/lib/cron-log"
 import { parseRssItems } from "@/lib/rss"
+import { harvestPrimarySources } from "@/lib/primary-sources"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 180
@@ -14,6 +15,9 @@ export const maxDuration = 180
  * per day — friendly to every rate limit on earth. Leads are raw material:
  * nothing here is ever published directly (we write originals from facts,
  * crediting sources by link), so this stays copyright-safe by design.
+ *
+ * Outlet feeds come first; then the primary sources (official announcements,
+ * public records — lib/primary-sources.ts), which the desk prefers.
  */
 
 const FEEDS: { source: string; url: string; needsKeyword: boolean }[] = [
@@ -84,6 +88,20 @@ export async function GET(request: Request) {
     } catch (err) {
       reports.push({ source: feed.source, found: 0, inserted: 0, error: err instanceof Error ? err.message : String(err) })
     }
+  }
+
+  for (const r of await harvestPrimarySources()) {
+    let inserted = 0
+    for (const lead of r.leads.slice(0, 25)) {
+      const topic = deriveTopic([], `${lead.title} ${lead.summary ?? ""}`)
+      const row = await db
+        .insert(newsLeads)
+        .values({ title: lead.title.slice(0, 490), url: lead.url.slice(0, 990), source: lead.source, summary: lead.summary, topicGuess: topic.slug, publishedAt: lead.publishedAt, kind: "primary" })
+        .onConflictDoNothing({ target: newsLeads.url })
+        .returning({ id: newsLeads.id })
+      if (row.length) inserted++
+    }
+    reports.push({ source: r.source, parsed: r.found, found: r.leads.length, inserted, ...(r.error ? { error: r.error } : {}) })
   }
 
   const summary = { reports, inserted: reports.reduce((n, r) => n + r.inserted, 0) }

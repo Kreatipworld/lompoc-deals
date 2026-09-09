@@ -482,6 +482,8 @@ export const blogPosts = pgTable(
     excerptEs: text("excerpt_es"),
     contentEs: text("content_es"),
     metaDescriptionEs: text("meta_description_es"),
+    // Where a news story's facts came from: [{ name, url, kind: "primary" | "outlet" }]
+    sources: jsonb("sources").$type<{ name: string; url: string; kind: "primary" | "outlet" }[]>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -692,6 +694,8 @@ export const newsLeads = pgTable(
     source: varchar("source", { length: 100 }).notNull(),
     summary: text("summary"),
     topicGuess: varchar("topic_guess", { length: 50 }),
+    // primary = official announcements / public records read directly; outlet = a news publisher's report
+    kind: varchar("kind", { length: 16 }).notNull().default("outlet"),
     status: varchar("status", { length: 20 }).notNull().default("new"), // new | used | dismissed
     publishedAt: timestamp("published_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

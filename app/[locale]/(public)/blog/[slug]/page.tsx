@@ -199,7 +199,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string;
 
           {/* Content */}
           <div
-            className="prose prose-gray prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline max-w-none"
+            className="prose prose-gray prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline max-w-none [&_.sources]:mt-10 [&_.sources]:border-t [&_.sources]:border-gray-100 [&_.sources]:pt-4 [&_.sources]:text-xs [&_.sources]:text-gray-500"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 

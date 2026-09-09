@@ -6,6 +6,8 @@
 import { NEWS_TOPICS, deriveTopic, type NewsTopic } from "@/lib/news-topics"
 
 export type Lead = { id: number; title: string; summary: string | null; url: string; source: string }
+/** Where a story's facts came from; stored on the post and rendered as its footer. */
+export type StorySource = { name: string; url: string; kind: "primary" | "outlet" }
 
 const LOCAL = /\b(lompoc|vandenberg|vsfb|lompoc valley|cabrillo high|lompoc high|allan hancock|la purisima|jalama|mission hills|vandenberg village|surf beach)\b/i
 const ELSEWHERE = /\b(santa maria|orcutt|santa ynez|solvang|buellton|los olivos|los alamos|goleta|carpinteria|isla vista|montecito|santa barbara(?! county)|dos pueblos|san marcos|pioneer valley|righetti|st\.? joseph|san luis obispo|paso robles|guadalupe|nipomo|arroyo grande)\b/i
@@ -37,7 +39,9 @@ export function extractArticleText(html: string): string {
     try { text = JSON.parse(`"${ld[1]}"`) } catch { text = ld[1] }
   }
   if (text.length < 400) {
-    const ps = Array.from(html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi), (m) => m[1])
+    // Paragraphs from the page's main region when it has one (keeps site navigation out), else the whole page.
+    const main = html.match(/<main[\s>][\s\S]*?<\/main>/i)?.[0] ?? html
+    const ps = Array.from(main.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi), (m) => m[1])
     text = ps.join(" ")
   }
   text = text
@@ -46,6 +50,7 @@ export function extractArticleText(html: string): string {
     .replace(/Please log in, or sign up[^.]*\./gi, "").replace(/Thank you for reading![^.]*\./gi, "").replace(/Please purchase a subscription[^.]*\./gi, "")
     .replace(/Your current subscription does not provide[^.]*\./gi, "").replace(/Sorry\s*,\s*(?:no promotional|an error)[^.]*\./gi, "").replace(/Promotional Rates were found[^.]*\./gi, "")
     .replace(/do not remove/gi, "")
+    .replace(/\(e\.g\. yourname@email\.com\)\s*Remember me\s*Forgot Password\?/gi, "").replace(/\.\.\. read more/gi, "")
     .replace(/\s+/g, " ").trim()
   return text
 }
