@@ -36,3 +36,13 @@ Dylan pace measured on the test line (job 590d53f7, 0.3cr): 17 words + 4 sentenc
 93 words, est. ~42s. Preflight: test 0.3cr (billed), full read 1.8cr. Bed: Bama Country — Kevin MacLeod CC BY 4.0 (credit in every caption).
 
 **Spend (Sep 2):** Dylan test line job 590d53f7 = 0.3cr · full read job c633b592 = 1.8cr (31.68s, `public/vo-v6-dylan.wav`) → 2.1cr preflight, balance after ≈ 1181. Word map from faster-whisper (scratchpad vo-words.json); ASR heard "peanut" at 12.42 for "Pinot" — user to confirm by ear; fallback = 0.3cr "Pee-noh on Chestnut." spliced at 12.36–13.48.
+
+---
+
+# v7 COMMERCIAL + EXPERIENCE — Dylan (2026-09-08)
+
+User: liked the v6 commercial more than the data ad ("Every Month"), "but also with info and user experience" → "Re do it". v7 = v6 story (hook, ten-photo pride, tag loop, end) with the product experience from master-visitors woven in (phone: home under HUNDREDS OF LOCALS · EVERY MONTH, search typing pizza with real results, member page → hours → tap the number, EN→ES flip, directory with Member badges) and one info line. Only number spoken: "hundreds". Subtitled.
+
+Script (104 words, respell Lompoke), read job (elevenlabs Dylan) 33.12s = `public/vo-v7-dylan.wav`, ≈1.8cr: Say Lompoc, and folks picture the highway. The fog. The base. We picture this. Cupcakes on H Street. Flowers next door. Pizza on I. A patio on Ocean Avenue. Trophies, wine, glass, plumbing, builders. Every month, hundreds of locals open one site to find all of it. They search. They open a page. They check the hours, and they tap the number. In English, and in Spanish. Every business in town has a page here. So tag a Lompoc business that belongs on it. We'll build their page, and show them off. Lompoc Locals. One place for the whole town.
+Bed: Bama Country — Kevin MacLeod (incompetech.com), CC BY 4.0 — credit required in every caption. TOTAL 35.0s. 9:16 + 4:5. Project entry: index-v7.html / c*-compositions (v6 b*-scenes untouched).
+- v7 RENDERED Sep 8: `renders/this-is-lompoc-v7-{9x16,4x5}.mp4`, 35.0s, -14.7 LUFS → Downloads. Entry files `index-v7.tmpl` / `index-v7-4x5.tmpl` (index.html stays v6). Awaiting user watch. NOT posted. Caption credit required: "Bama Country — Kevin MacLeod (incompetech.com), CC BY 4.0".

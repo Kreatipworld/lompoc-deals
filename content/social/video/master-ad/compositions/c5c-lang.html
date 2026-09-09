@@ -1,0 +1,53 @@
+<template>
+  <div data-composition-id="c5c-lang" data-width="1080" data-height="1920" data-duration="1.90" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+    <style>
+      [data-composition-id="c5c-lang"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 0%, #7a1690 0%, #650c75 35%, #1a1030 78%, #140a17 100%); }
+      [data-composition-id="c5c-lang"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; display: block; }
+      [data-composition-id="c5c-lang"] .cine-top { top: 0; } [data-composition-id="c5c-lang"] .cine-bot { bottom: 0; }
+      [data-composition-id="c5c-lang"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="c5c-lang"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.32) 100%); }
+      [data-composition-id="c5c-lang"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="c5c-lang"] .title { position: absolute; left: 84px; right: 84px; top: 170px; z-index: 36; text-align: left; }
+      [data-composition-id="c5c-lang"] .t { display: block; color: #fff; font-weight: 800; font-size: 86px; line-height: 1.02; letter-spacing: -1.5px; text-transform: uppercase; text-shadow: 0 6px 30px rgba(10,6,12,0.55); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="c5c-lang"] .t em { font-style: normal; color: #efc618; }
+      [data-composition-id="c5c-lang"] .chips { position: absolute; left: 84px; top: 330px; z-index: 36; display: flex; gap: 14px; }
+      [data-composition-id="c5c-lang"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 28px; letter-spacing: 3px; padding: 12px 24px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="c5c-lang"] .phone { position: absolute; left: 280px; top: 430px; width: 556px; height: 1163px; border-radius: 67px; background: #0b0710; box-shadow: 0 40px 90px rgba(0,0,0,0.6), inset 0 0 0 3px #2a1f30; z-index: 20; will-change: transform, opacity; }
+      [data-composition-id="c5c-lang"] .screen { position: absolute; left: 18px; top: 18px; width: 520px; height: 1127px; border-radius: 52px; overflow: hidden; background: #fff; }
+      [data-composition-id="c5c-lang"] .shot { position: absolute; left: 0; top: 0; width: 520px; height: auto; will-change: transform; }
+      [data-composition-id="c5c-lang"] .notch { position: absolute; left: 50%; top: 18px; width: 166px; height: 28px; margin-left: -83px; background: #0b0710; border-radius: 0 0 16px 16px; z-index: 2; }
+    
+      [data-composition-id="c5c-lang"] .shot2 { opacity: 0; }
+      [data-composition-id="c5c-lang"] .lchips { position: absolute; left: 84px; top: 330px; z-index: 36; display: flex; gap: 14px; }
+      [data-composition-id="c5c-lang"] .lchip { display: inline-block; background: rgba(255,255,255,0.14); color: #fff; font-weight: 800; font-size: 34px; letter-spacing: 3px; padding: 12px 26px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.35); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="c5c-lang"] .lchip.on { background: #0b992f; border-color: #0b992f; }
+    
+    </style>
+    <div class="stage" id="c5c-lang-stage">
+      <div class="field"></div>
+      <div class="phone" id="c5c-lang-phone" data-layout-allow-overflow>
+        <div class="screen" id="c5c-lang-screen"><img class="shot" id="c5c-lang-shot" src="public/shots/home.png" alt="" /><img class="shot shot2" id="c5c-lang-es" src="public/shots/home-es.png" alt="" /></div>
+        <div class="notch"></div>
+      </div>
+      <div class="lchips"><span class="lchip on" id="c5c-lang-en">EN</span><span class="lchip" id="c5c-lang-esc">ES</span></div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#c5c-lang-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        tl.fromTo("#c5c-lang-en", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.3 }, 0.10);
+        tl.fromTo("#c5c-lang-esc", { autoAlpha: 0, y: 14 }, { autoAlpha: 0.55, y: 0, duration: 0.3 }, 0.18);
+        tl.to("#c5c-lang-screen", { scaleX: 0.92, duration: 0.14, ease: "power2.in" }, 0.78);
+        tl.set("#c5c-lang-es", { autoAlpha: 1 }, 0.92);
+        tl.to("#c5c-lang-screen", { scaleX: 1, duration: 0.16, ease: "power2.out" }, 0.92);
+        tl.to("#c5c-lang-en", { autoAlpha: 0.55, backgroundColor: "rgba(255,255,255,0.14)", borderColor: "rgba(255,255,255,0.35)", duration: 0.2 }, 0.90);
+        tl.to("#c5c-lang-esc", { autoAlpha: 1, backgroundColor: "#0b992f", borderColor: "#0b992f", duration: 0.2 }, 0.90);
+        tl.set({}, {}, 1.90);
+        window.__timelines["c5c-lang"] = tl;
+      })();
+    </script>
+  </div>
+</template>

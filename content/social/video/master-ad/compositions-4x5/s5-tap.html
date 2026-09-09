@@ -1,0 +1,48 @@
+<template>
+  <div data-composition-id="s5-tap" data-width="1080" data-height="1350" data-duration="1.55" style="position: absolute; inset: 0; overflow: hidden; background: #140a17">
+    <style>
+      [data-composition-id="s5-tap"] .field { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 0%, #7a1690 0%, #650c75 35%, #1a1030 78%, #140a17 100%); }
+      [data-composition-id="s5-tap"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; display: block; }
+      [data-composition-id="s5-tap"] .cine-top { top: 0; } [data-composition-id="s5-tap"] .cine-bot { bottom: 0; }
+      [data-composition-id="s5-tap"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="s5-tap"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 66%, rgba(10,6,12,0.32) 100%); }
+      [data-composition-id="s5-tap"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s5-tap"] .title { position: absolute; left: 70px; right: 70px; top: 100px; z-index: 36; text-align: left; }
+      [data-composition-id="s5-tap"] .t { display: block; color: #fff; font-weight: 800; font-size: 54px; line-height: 1.02; letter-spacing: -1.5px; text-transform: uppercase; text-shadow: 0 6px 30px rgba(10,6,12,0.55); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-tap"] .t em { font-style: normal; color: #efc618; }
+      [data-composition-id="s5-tap"] .chips { position: absolute; left: 70px; top: 1035px; z-index: 36; display: flex; gap: 14px; }
+      [data-composition-id="s5-tap"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 24px; letter-spacing: 3px; padding: 12px 24px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="s5-tap"] .phone { position: absolute; left: 360px; top: 215px; width: 396px; height: 816px; border-radius: 46px; background: #0b0710; box-shadow: 0 40px 90px rgba(0,0,0,0.6), inset 0 0 0 3px #2a1f30; z-index: 20; will-change: transform, opacity; }
+      [data-composition-id="s5-tap"] .screen { position: absolute; left: 18px; top: 18px; width: 360px; height: 780px; border-radius: 36px; overflow: hidden; background: #fff; }
+      [data-composition-id="s5-tap"] .shot { position: absolute; left: 0; top: 0; width: 360px; height: auto; will-change: transform; }
+      [data-composition-id="s5-tap"] .notch { position: absolute; left: 50%; top: 18px; width: 115px; height: 19px; margin-left: -57px; background: #0b0710; border-radius: 0 0 16px 16px; z-index: 2; }
+    
+      [data-composition-id="s5-tap"] .ring { position: absolute; border-radius: 999px; border: 3px solid #efc618; box-shadow: 0 0 24px rgba(239,198,24,0.8); opacity: 0; z-index: 3; }
+      [data-composition-id="s5-tap"] .hl { position: absolute; border-radius: 12px; background: rgba(239,198,24,0.28); box-shadow: inset 0 0 0 3px #efc618; opacity: 0; z-index: 2; }
+    
+    </style>
+    <div class="stage" id="s5-tap-stage">
+      <div class="field"></div>
+      <div class="phone" id="s5-tap-phone" data-layout-allow-overflow>
+        <div class="screen" id="s5-tap-screen"><img class="shot" id="s5-tap-shot" src="public/shots/member-tall.png" alt="" /><div class="hl" id="s5-tap-hl" style="left:36px;top:140px;width:132px;height:30px"></div><div class="ring" id="s5-tap-ring" style="left:72px;top:125px;width:60px;height:60px"></div></div>
+        <div class="notch"></div>
+      </div>
+      <div class="chips"><span class="chip" id="s5-tap-c0">They tap the number</span></div>
+      <div class="vig"></div>
+    </div>
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
+        tl.fromTo("#s5-tap-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s5-tap-shot", { y: -1975 }, { y: -676, duration: 0.80, ease: "power2.inOut" }, 0);
+        tl.fromTo("#s5-tap-c0", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 0.15);
+        tl.fromTo("#s5-tap-ring", { autoAlpha: 0.9, scale: 0.4 }, { autoAlpha: 0, scale: 2.4, duration: 0.6, ease: "power2.out" }, 0.55);
+        tl.fromTo("#s5-tap-hl", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.18 }, 0.55);
+        tl.set({}, {}, 1.55);
+        window.__timelines["s5-tap"] = tl;
+      })();
+    </script>
+  </div>
+</template>
