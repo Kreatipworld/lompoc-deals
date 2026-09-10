@@ -15,3 +15,7 @@ Blob: https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/spotlights/
 Buffer (shareNow, user: "Share it and post it everywhere."):
 TikTok 6aa2d433b9da4f31686eda96 · IG Reel 6aa2d43fb9da4f31686ede16 · FB Reel 6aa2d44b178aa05a26db8414 ·
 IG Story 6aa2d456178aa05a26db8643 (link sticker → /biz/clark-builders-inc, utm_campaign=spotlight-clark-builders).
+
+Live (all "sent" by 9:02 AM PT): TikTok https://tiktok.com/@lompoclocals/video/7683937244683537678 ·
+IG Reel https://www.instagram.com/reel/DdHN4leAPH2/ · FB Reel https://www.facebook.com/reel/1086502507257738/ ·
+IG Story https://www.instagram.com/stories/lompoclocals_/3983213659074433605
