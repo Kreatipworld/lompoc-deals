@@ -36,12 +36,12 @@ BUSINESS · ROADS · WEATHER.
   Numbers, names, dates, addresses copied from the story, never from memory.
 - **Owned media only.** Our news covers, public-domain government photos, member
   photos (credited on-frame). Never an outlet's photo, never library music.
-  Bed = our generated newsroom bed (`public/bed.wav`); VO = Higgsfield Dylan/Arthur.
+  Bed = a NEW generated newsroom bed for every edition (never reuse a song); VO = Higgsfield Dylan/Arthur.
 - **Sources.** Primary-source stories carry no credit. Outlet-led stories get one small
   "Facts via <outlet>" line on the sign-off, nothing else.
 - **Pronunciation.** Every read says LOM-poke; respell in the TTS prompt.
-- **Never repeat.** A cover photo used in the last 14 days is not reused; the open line and
-  sign-off are the constants, everything in between changes.
+- **Never repeat.** A cover photo used in the last 14 days is not reused; every edition gets a
+  brand-new song; the open line and sign-off are the constants, everything in between changes.
 - **No opinion words.** Headlines describe, they don't judge.
 
 ## Distribution (every edition, all four surfaces)

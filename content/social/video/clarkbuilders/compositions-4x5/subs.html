@@ -1,0 +1,43 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1350" data-duration="26.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 118px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 920px; background: rgba(0,0,0,0.58); color: #fff; font-weight: 600; font-size: 38px; line-height: 1.25; padding: 16px 30px; border-radius: 22px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>In Lompoc, some of the best kitchens in town started with one phone call.</span></div>
+      <div class="sub" id="sub-1"><span>Clark Builders is a local, family-owned and operated company,</span></div>
+      <div class="sub" id="sub-2"><span>building right here since 2012.</span></div>
+      <div class="sub" id="sub-3"><span>Home remodels. Additions. ADUs. Garage conversions.</span></div>
+      <div class="sub" id="sub-4"><span>Quality work, committed to excellence,</span></div>
+      <div class="sub" id="sub-5"><span>from the first plan to the final finish.</span></div>
+      <div class="sub" id="sub-6"><span>Clark Builders, Inc., on East Chestnut Court.</span></div>
+      <div class="sub" id="sub-7"><span>A Lompoc Locals partner.</span></div>
+      <div class="sub" id="sub-8"><span>Find them at lompoclocals.com.</span></div>
+    </div>
+    <script>
+      (() => {
+        // SUBS = [[start, end, text], ...] absolute seconds from the ASR word times.
+        const SUBS = [
+          [0.76, 4.40, 'In Lompoc, some of the best kitchens in town started with one phone call.'],
+          [5.10, 8.45, 'Clark Builders is a local, family-owned and operated company,'],
+          [8.60, 9.90, 'building right here since 2012.'],
+          [10.85, 13.60, 'Home remodels. Additions. ADUs. Garage conversions.'],
+          [14.30, 15.90, 'Quality work, committed to excellence,'],
+          [15.92, 18.05, 'from the first plan to the final finish.'],
+          [18.70, 20.60, 'Clark Builders, Inc., on East Chestnut Court.'],
+          [21.25, 22.55, 'A Lompoc Locals partner.'],
+          [23.00, 24.90, 'Find them at lompoclocals.com.']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 26.00);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>
