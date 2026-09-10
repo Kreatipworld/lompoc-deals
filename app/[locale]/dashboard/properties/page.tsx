@@ -2,9 +2,9 @@ import { auth } from "@/auth"
 import { Link } from "@/i18n/navigation"
 import { TIERS } from "@/lib/stripe"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
-import { getMyBusiness, getMyProperties, deletePropertyAction } from "@/lib/biz-actions"
+import { getMyBusiness, getMyProperties, deletePropertyAction, renewPropertyAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { Building2, Plus, Lock, Zap, Bed, Bath, Maximize, MapPin, Pencil } from "lucide-react"
+import { Building2, Plus, Lock, Zap, Bed, Bath, Maximize, MapPin, Pencil, CalendarClock, RefreshCw } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
 export const metadata = { title: "Properties" }
@@ -91,6 +91,16 @@ export default async function PropertiesPage() {
                 >
                   {listing.type === "for-sale" ? t("forSale") : t("forRent")}
                 </span>
+                {listing.status !== "active" && (
+                  <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-800">
+                    {t(`status.${listing.status}` as "status.pending")}
+                  </span>
+                )}
+                {daysLeft(listing.expiresAt) !== null && daysLeft(listing.expiresAt)! <= 0 && (
+                  <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-destructive">
+                    {t("expired")}
+                  </span>
+                )}
               </div>
               <h3 className="font-display text-lg font-semibold leading-snug">{listing.title}</h3>
               <p className="mt-0.5 text-base font-semibold text-primary">
@@ -119,7 +129,27 @@ export default async function PropertiesPage() {
                   <span className="line-clamp-1">{listing.address}</span>
                 </div>
               )}
+              {listing.openHouseAt && (
+                <div className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
+                  <CalendarClock className="h-3 w-3 text-primary/60" />
+                  {t("openHouse")} {listing.openHouseAt.toLocaleString("en-US", { timeZone: "America/Los_Angeles", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                </div>
+              )}
+              {daysLeft(listing.expiresAt) !== null && (
+                <p className={`mt-1.5 text-xs ${daysLeft(listing.expiresAt)! <= 10 ? "font-medium text-amber-700" : "text-muted-foreground"}`}>
+                  {daysLeft(listing.expiresAt)! > 0 ? t("expiresIn", { days: daysLeft(listing.expiresAt)! }) : t("expiredHint")}
+                </p>
+              )}
               <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4">
+                {daysLeft(listing.expiresAt) !== null && daysLeft(listing.expiresAt)! <= 10 && (
+                  <form action={renewPropertyAction}>
+                    <input type="hidden" name="listingId" value={listing.id} />
+                    <Button size="sm" type="submit" className="rounded-full">
+                      <RefreshCw className="mr-1 h-3 w-3" />
+                      {t("renew")}
+                    </Button>
+                  </form>
+                )}
                 <Link
                   href={`/dashboard/properties/edit/${listing.id}`}
                   className={buttonVariants({ variant: "outline", size: "sm" })}
@@ -140,6 +170,11 @@ export default async function PropertiesPage() {
       )}
     </div>
   )
+}
+
+function daysLeft(expiresAt: Date | null): number | null {
+  if (!expiresAt) return null
+  return Math.ceil((expiresAt.getTime() - Date.now()) / 86_400_000)
 }
 
 function PropertiesUpgradeGate({ t }: { t: Awaited<ReturnType<typeof getTranslations<"dashboardProperties">>> }) {

@@ -251,6 +251,10 @@ export const propertyListings = pgTable("property_listings", {
   photosJson: jsonb("photos_json"),
   yearBuilt: integer("year_built"),
   lastSyncedAt: timestamp("last_synced_at", { withTimezone: true }),
+  // Realtor-input market (Sep 2026): open-house date shown on the listing, and an
+  // expiry so stale homes fall off /homes unless the agent renews them.
+  openHouseAt: timestamp("open_house_at", { withTimezone: true }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

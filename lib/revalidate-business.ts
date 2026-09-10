@@ -12,7 +12,7 @@ import { routing } from "@/i18n/routing"
  */
 export function revalidateBusinessSurfaces(opts: { slug: string; categorySlug?: string | null; previousSlug?: string | null }) {
   const prefixes = ["", ...routing.locales.map((l) => `/${l}`)]
-  const pages = ["", "/businesses", "/map", "/locals", "/partners", "/deals", "/this-week"]
+  const pages = ["", "/businesses", "/map", "/locals", "/partners", "/deals", "/this-week", "/homes"]
   for (const p of prefixes) {
     revalidatePath(`${p}/biz/${opts.slug}`)
     if (opts.previousSlug && opts.previousSlug !== opts.slug) revalidatePath(`${p}/biz/${opts.previousSlug}`)

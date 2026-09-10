@@ -2,8 +2,12 @@
 
 import { useFormState, useFormStatus } from "react-dom"
 import { upsertPropertyAction } from "@/lib/biz-actions"
-import { AlertCircle } from "lucide-react"
+import { AlertCircle, Images } from "lucide-react"
 import { useTranslations } from "next-intl"
+
+export const LISTING_STATUSES = ["active", "pending", "sold", "rented"] as const
+export type ListingStatus = (typeof LISTING_STATUSES)[number]
+export const MAX_LISTING_PHOTOS = 8
 
 interface PropertyFormProps {
   listing?: {
@@ -17,12 +21,35 @@ interface PropertyFormProps {
     sqft: number | null
     address: string | null
     imageUrl: string | null
+    photosJson: unknown
+    status: string
+    openHouseAt: Date | null
   }
+}
+
+/** Date → "YYYY-MM-DDTHH:mm" in Lompoc time, for a datetime-local input. */
+function toPacificLocal(d: Date | null | undefined): string {
+  if (!d) return ""
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false,
+  }).formatToParts(d)
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "00"
+  return `${get("year")}-${get("month")}-${get("day")}T${get("hour") === "24" ? "00" : get("hour")}:${get("minute")}`
 }
 
 export function PropertyForm({ listing }: PropertyFormProps) {
   const t = useTranslations("dashboardProperties")
   const [state, action] = useFormState(upsertPropertyAction, {})
+  const existingPhotos = listing
+    ? [listing.imageUrl, ...(((listing.photosJson as string[] | null) ?? []))].filter((u): u is string => !!u)
+    : []
+  const status: ListingStatus = LISTING_STATUSES.includes(listing?.status as ListingStatus)
+    ? (listing!.status as ListingStatus)
+    : "active"
+
+  const field =
+    "w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
 
   return (
     <form action={action} className="space-y-6">
@@ -62,15 +89,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
         <label htmlFor="title" className="text-sm font-medium">
           {t("titleLabel")} <span className="text-destructive">*</span>
         </label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          defaultValue={listing?.title}
-          placeholder={t("titlePlaceholder")}
-          required
-          className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
-        />
+        <input id="title" name="title" type="text" defaultValue={listing?.title} placeholder={t("titlePlaceholder")} required className={field} />
       </div>
 
       {/* Price */}
@@ -79,9 +98,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
           {t("priceLabel")} <span className="text-destructive">*</span>
         </label>
         <div className="relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-            $
-          </span>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
           <input
             id="priceCents"
             name="priceCents"
@@ -91,7 +108,7 @@ export function PropertyForm({ listing }: PropertyFormProps) {
             defaultValue={listing ? Math.round(listing.priceCents / 100) : ""}
             placeholder="450000"
             required
-            className="w-full rounded-xl border bg-background py-2.5 pl-8 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary/30"
+            className={`${field} pl-8`}
           />
         </div>
         <p className="text-xs text-muted-foreground">{t("priceHint")}</p>
@@ -99,103 +116,82 @@ export function PropertyForm({ listing }: PropertyFormProps) {
 
       {/* Address */}
       <div className="space-y-2">
-        <label htmlFor="address" className="text-sm font-medium">
-          {t("addressLabel")}
-        </label>
-        <input
-          id="address"
-          name="address"
-          type="text"
-          defaultValue={listing?.address ?? ""}
-          placeholder="123 Main St, Lompoc, CA 93436"
-          className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
-        />
+        <label htmlFor="address" className="text-sm font-medium">{t("addressLabel")}</label>
+        <input id="address" name="address" type="text" defaultValue={listing?.address ?? ""} placeholder="123 Main St, Lompoc, CA 93436" className={field} />
+        <p className="text-xs text-muted-foreground">{t("addressHint")}</p>
+      </div>
+
+      {/* Status + open house */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <label htmlFor="status" className="text-sm font-medium">{t("statusLabel")}</label>
+          <select id="status" name="status" defaultValue={status} className={field}>
+            {LISTING_STATUSES.map((s) => (
+              <option key={s} value={s}>{t(`status.${s}`)}</option>
+            ))}
+          </select>
+          <p className="text-xs text-muted-foreground">{t("statusHint")}</p>
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="openHouseAt" className="text-sm font-medium">{t("openHouseLabel")}</label>
+          <input id="openHouseAt" name="openHouseAt" type="datetime-local" defaultValue={toPacificLocal(listing?.openHouseAt)} className={field} />
+          <p className="text-xs text-muted-foreground">{t("openHouseHint")}</p>
+        </div>
       </div>
 
       {/* Specs row */}
       <div className="grid grid-cols-3 gap-4">
         <div className="space-y-2">
-          <label htmlFor="beds" className="text-sm font-medium">
-            {t("bedsLabel")}
-          </label>
-          <input
-            id="beds"
-            name="beds"
-            type="number"
-            min="0"
-            step="1"
-            defaultValue={listing?.beds ?? ""}
-            placeholder="3"
-            className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
-          />
+          <label htmlFor="beds" className="text-sm font-medium">{t("bedsLabel")}</label>
+          <input id="beds" name="beds" type="number" min="0" step="1" defaultValue={listing?.beds ?? ""} placeholder="3" className={field} />
         </div>
         <div className="space-y-2">
-          <label htmlFor="baths" className="text-sm font-medium">
-            {t("bathsLabel")}
-          </label>
-          <input
-            id="baths"
-            name="baths"
-            type="number"
-            min="0"
-            step="0.5"
-            defaultValue={listing?.baths ?? ""}
-            placeholder="2"
-            className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
-          />
+          <label htmlFor="baths" className="text-sm font-medium">{t("bathsLabel")}</label>
+          <input id="baths" name="baths" type="number" min="0" step="0.5" defaultValue={listing?.baths ?? ""} placeholder="2" className={field} />
         </div>
         <div className="space-y-2">
-          <label htmlFor="sqft" className="text-sm font-medium">
-            {t("sqftLabel")}
-          </label>
-          <input
-            id="sqft"
-            name="sqft"
-            type="number"
-            min="0"
-            step="1"
-            defaultValue={listing?.sqft ?? ""}
-            placeholder="1200"
-            className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
-          />
+          <label htmlFor="sqft" className="text-sm font-medium">{t("sqftLabel")}</label>
+          <input id="sqft" name="sqft" type="number" min="0" step="1" defaultValue={listing?.sqft ?? ""} placeholder="1200" className={field} />
         </div>
       </div>
 
       {/* Description */}
       <div className="space-y-2">
-        <label htmlFor="description" className="text-sm font-medium">
-          {t("descriptionLabel")}
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          defaultValue={listing?.description ?? ""}
-          placeholder={t("descriptionPlaceholder")}
-          rows={4}
-          className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
-        />
+        <label htmlFor="description" className="text-sm font-medium">{t("descriptionLabel")}</label>
+        <textarea id="description" name="description" defaultValue={listing?.description ?? ""} placeholder={t("descriptionPlaceholder")} rows={4} className={field} />
       </div>
 
-      {/* Image */}
+      {/* Photos */}
       <div className="space-y-2">
-        <label htmlFor="image" className="text-sm font-medium">
-          {listing?.imageUrl ? t("imageLabelEdit") : t("imageLabel")}
+        <label htmlFor="photos" className="text-sm font-medium">
+          {t("photosLabel", { max: MAX_LISTING_PHOTOS })}
         </label>
-        {listing?.imageUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={listing.imageUrl}
-            alt="Current photo"
-            className="h-32 w-full rounded-xl object-cover"
-          />
+        {existingPhotos.length > 0 && (
+          <div className="grid grid-cols-4 gap-2">
+            {existingPhotos.map((url, i) => (
+              <label key={url} className="group relative block cursor-pointer overflow-hidden rounded-xl border">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={url} alt="" className="aspect-[4/3] w-full object-cover" />
+                <span className="absolute left-1.5 top-1.5 flex items-center gap-1 rounded-md bg-background/90 px-1.5 py-0.5 text-[11px] font-medium">
+                  <input type="checkbox" name="keepPhoto" value={url} defaultChecked className="accent-primary" />
+                  {i === 0 ? t("coverPhoto") : t("keepPhoto")}
+                </span>
+              </label>
+            ))}
+          </div>
         )}
         <input
-          id="image"
-          name="image"
+          id="photos"
+          name="photos"
           type="file"
           accept="image/*"
+          multiple
           className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none"
         />
+        <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Images className="h-3.5 w-3.5" />
+          {t("photosHint")}
+        </p>
       </div>
 
       <SubmitButton isEdit={!!listing} labels={{ saving: t("savePending"), create: t("saveCreate"), edit: t("saveEdit") }} />

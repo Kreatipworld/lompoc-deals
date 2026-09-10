@@ -272,6 +272,35 @@ try {
   esAlt > 50 ? pass(`sitemap carries ${esAlt} es alternates`) : fail(`sitemap has only ${esAlt} es alternates`)
 } catch (e) { fail(`spanish: ${e.message}`) }
 
+// ── 9. the card is charged what the page says ────────────────────────────────
+// Plus became self-serve on Sep 10 2026. The display price lives in code, the
+// charged price in Stripe; the two drift silently. Needs CRON_SECRET in env.
+console.log("\n9. Stripe prices match the plans on the page")
+if (!process.env.CRON_SECRET) {
+  console.log("  – skipped (set CRON_SECRET to check the live Stripe prices)")
+} else {
+  try {
+    const res = await fetch(`${SITE}/api/admin/stripe-prices`, {
+      headers: { authorization: `Bearer ${process.env.CRON_SECRET}` },
+      cache: "no-store",
+    })
+    const prices = await res.json()
+    const expect = { standard: 3999, premium: 9999 }
+    for (const [tier, cents] of Object.entries(expect)) {
+      const p = prices[tier] ?? {}
+      const label = tier === "standard" ? "Growth" : "Plus"
+      if (p.error) fail(`${label}: ${p.error}`)
+      else if (p.unit_amount !== cents) fail(`${label} charges $${(p.unit_amount ?? 0) / 100} but the page says $${cents / 100}`)
+      else if (!p.active) fail(`${label} price ${p.id} is inactive in Stripe`)
+      else if (!p.livemode) fail(`${label} price ${p.id} is a TEST price`)
+      else if (p.interval !== "month") fail(`${label} price ${p.id} bills per ${p.interval}, not monthly`)
+      else pass(`${label} charges $${cents / 100}/month (live, ${p.id})`)
+    }
+  } catch (err) {
+    fail(`stripe price check failed: ${err.message}`)
+  }
+}
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

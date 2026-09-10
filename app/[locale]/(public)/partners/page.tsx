@@ -458,6 +458,12 @@ export default async function PartnersPage({
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
+        {/* The realtor road: Plus is the listings tier, sold on its own page. */}
+        <p className="mt-6 text-center text-sm">
+          <Link href="/for-businesses/real-estate" className="font-medium text-primary hover:underline">
+            {t("pricing.realEstateLink")}
+          </Link>
+        </p>
       </section>
 
       {/* ─────────────────────────────────────────────────

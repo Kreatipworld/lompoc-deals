@@ -33,14 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 })
   }
 
-  // Plus is a contact-led tier for listing businesses — not self-serve checkout.
-  // Route these to our team instead of creating a Stripe session.
-  if (tier === "premium") {
-    return NextResponse.json(
-      { error: "Plus is set up personally — email hello@lompoclocals.com and we'll get you started." },
-      { status: 403 }
-    )
-  }
+  // Growth and Plus are both self-serve: the same Checkout flow, different price.
 
   const userId = Number(session.user.id)
 

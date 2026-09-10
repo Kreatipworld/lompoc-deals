@@ -121,6 +121,7 @@ export default async function BusinessesPage({
   const dealLabel = (n: number) =>
     `${n} ${n === 1 ? t("dealSingular") : t("dealPlural")}`
 
+  const tHomes = await getTranslations("homes")
   return (
     <>
       <script
@@ -210,7 +211,7 @@ export default async function BusinessesPage({
           })}
         </ul>
         <div className="mt-4 flex flex-wrap gap-2">
-          {([["/map", tn("map")], ["/hotels", tn("hotels")], ["/feed", tn("neighborhood")]] as const).map(([href, label]) => (
+          {([["/map", tn("map")], ["/homes", tHomes("pill")], ["/hotels", tn("hotels")], ["/feed", tn("neighborhood")]] as const).map(([href, label]) => (
             <Link
               key={href}
               href={href}

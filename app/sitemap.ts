@@ -21,7 +21,7 @@ function bilingual(path: string) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [bizs, cats, posts, acts, upcomingEvents] = await Promise.all([
+  const [bizs, cats, posts, acts, upcomingEvents, homes] = await Promise.all([
     db.query.businesses
       .findMany({
         where: (b, { eq }) => eq(b.status, "approved"),
@@ -70,6 +70,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         console.error("sitemap events query failed:", err)
         return [] as { id: number; createdAt: Date; title: string; startsAt: Date }[]
       }),
+    // Live homes only — sold/expired listings would be dead URLs.
+    db.query.propertyListings
+      .findMany({
+        where: (l, { and, eq, or, isNull, gt }) => and(eq(l.status, "active"), or(isNull(l.expiresAt), gt(l.expiresAt, new Date()))),
+        columns: { id: true, createdAt: true },
+      })
+      .catch((err) => {
+        console.error("sitemap homes query failed:", err)
+        return [] as { id: number; createdAt: Date }[]
+      }),
   ])
 
   const staticPages = [
@@ -86,6 +96,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/this-week",
     "/events",
     "/hotels",
+    "/homes",
+    "/for-businesses/real-estate",
     "/activities",
     "/things-to-do",
     "/locals",
@@ -96,13 +108,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency:
-      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" ? ("daily" as const)
+      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" || path === "/homes" ? ("daily" as const)
       : path === "/contact" || path === "/privacy" || path === "/terms" ? ("monthly" as const)
       : ("weekly" as const),
     priority:
       path === "" ? 1
       : path === "/news" || path === "/events" ? 0.9
-      : path === "/feed" || path === "/garage-sales" || path === "/blog" || path === "/deals" || path === "/things-to-do" ? 0.8
+      : path === "/feed" || path === "/garage-sales" || path === "/blog" || path === "/deals" || path === "/things-to-do" || path === "/homes" ? 0.8
       : path === "/contact" ? 0.4
       : path === "/privacy" || path === "/terms" ? 0.3
       : 0.7,
@@ -165,6 +177,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: bilingual(`/events/${e.id}`),
   }))
 
+  const homePages = homes.map((h) => ({
+    url: `${siteUrl}/listings/${h.id}`,
+    lastModified: h.createdAt,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+    alternates: bilingual(`/listings/${h.id}`),
+  }))
+
   return [...staticPages, ...bizPages, ...catPages,
-    ...findPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages]
+    ...findPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages, ...homePages]
 }

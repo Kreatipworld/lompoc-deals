@@ -283,10 +283,10 @@ function Step2({
   defaultPlan: "free" | "standard" | "premium"
 }) {
   const t = useTranslations("signupBusiness")
-  // Plus is a contact-led, higher-touch tier — never self-serve here. Any inbound
-  // ?plan=premium falls back to Growth for selection.
-  const [selected, setSelected] = useState<"free" | "standard">(
-    defaultPlan === "premium" ? "standard" : defaultPlan
+  // Growth is the default; Plus is the self-serve listings tier (?plan=plus).
+  // "free" stays support-only and is never offered here.
+  const [selected, setSelected] = useState<"standard" | "premium">(
+    defaultPlan === "premium" ? "premium" : "standard"
   )
 
   // Reusable selected-state indicator: an empty circle that fills with a check.
@@ -357,24 +357,32 @@ function Step2({
           {featureList(TIERS.standard.features, false)}
         </button>
 
-        {/* Plus / Official Partner: contact-only, not a self-serve checkout. */}
-        <div className="relative flex h-full flex-col rounded-3xl border-2 border-border bg-muted/40 p-6 text-left shadow-sm">
-          <Crown className="absolute right-5 top-5 h-5 w-5 text-gold" />
+        {/* Plus — the listings tier (real estate, unlimited deals, featured placement). Self-serve. */}
+        <button
+          type="button"
+          onClick={() => setSelected("premium")}
+          aria-pressed={selected === "premium"}
+          className={`relative flex h-full flex-col rounded-3xl border-2 p-6 text-left transition-all duration-200 active:scale-[0.99] ${
+            selected === "premium"
+              ? "border-primary bg-gradient-to-b from-gold/[0.12] via-card to-card shadow-lg shadow-primary/15 ring-2 ring-primary/20"
+              : "border-border bg-card shadow-sm hover:border-primary/60"
+          }`}
+        >
+          <Crown className="absolute left-6 -top-3 h-6 w-6 rounded-full bg-card p-1 text-gold" />
+          {selectDot(selected === "premium")}
           <div className="font-display text-lg font-semibold">{TIERS.premium.name}</div>
           <div className="mt-1 flex items-baseline gap-1">
-            <span className="font-display text-2xl font-bold tracking-tight">
-              {t("step2.plusContact")}
+            <span className="font-display text-4xl font-bold tracking-tight">
+              ${TIERS.premium.price}
             </span>
+            <span className="text-sm text-muted-foreground">{t("step2.perMonth")}</span>
           </div>
-          {featureList(TIERS.premium.features, true)}
-          <div aria-hidden className="min-h-5 flex-1" />
-          <a
-            href="mailto:hello@lompoclocals.com?subject=Lompoc%20Locals%20Plus"
-            className="inline-flex h-10 w-full items-center justify-center rounded-full border border-primary/40 px-4 text-sm font-semibold text-primary transition hover:bg-primary/5"
-          >
-            {t("step2.plusContactCta")}
-          </a>
-        </div>
+          <p className="mt-1.5 text-xs font-semibold text-success">
+            {t("step2.trial", { price: TIERS.premium.price.toFixed(2) })}
+          </p>
+          <p className="mt-1 text-xs font-medium text-muted-foreground">{t("step2.plusTagline")}</p>
+          {featureList(TIERS.premium.features, false)}
+        </button>
       </div>
 
       <div className="mx-auto flex w-full max-w-md gap-3">
@@ -574,17 +582,20 @@ function SignupSuccessMoment({ checkoutUrl }: { checkoutUrl: string }) {
 export function BusinessSignupWizard({
   categories,
   initialStep,
+  initialPlan,
   showCanceled,
 }: {
   categories: Category[]
   initialStep: number
+  /** Plan named in the URL (?plan=plus). Undefined = Growth default, remembered selection allowed. */
+  initialPlan?: "standard" | "premium"
   showCanceled: boolean
 }) {
   const t = useTranslations("signupBusiness")
   const router = useRouter()
   const [step, setStep] = useState(initialStep)
   const [step1Data, setStep1Data] = useState<Record<string, string>>({})
-  const [plan, setPlan] = useState<"free" | "standard" | "premium">("standard")
+  const [plan, setPlan] = useState<"free" | "standard" | "premium">(initialPlan ?? "standard")
 
   const stepContainerRef = useRef<HTMLDivElement>(null)
   const prevStepRef = useRef(step)
@@ -624,8 +635,9 @@ export function BusinessSignupWizard({
       const saved = sessionStorage.getItem("bizSignupStep1")
       if (saved && Object.keys(step1Data).length === 0) setStep1Data(JSON.parse(saved))
       const savedPlan = sessionStorage.getItem("bizSignupPlan") as "free" | "standard" | "premium" | null
-      // Plus is contact-only; never restore a self-serve premium selection.
-      if (savedPlan) setPlan(savedPlan === "premium" ? "standard" : savedPlan)
+      // A plan named in the URL wins over a remembered selection (the realtor
+      // link must land on Plus even after an earlier Growth visit).
+      if (savedPlan && !initialPlan) setPlan(savedPlan)
     } catch {
       // ignore – sessionStorage unavailable (private mode, etc.)
     }

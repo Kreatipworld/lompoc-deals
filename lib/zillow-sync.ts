@@ -1,3 +1,5 @@
+// RETIRED (Sep 10 2026): the homes market is realtor-input now (/homes, dashboard → Properties).
+// Scraped listings were archived and the daily cron was removed from vercel.json. Kept for reference only.
 // Zillow listing sync via Apify's maxcopell/zillow-detail-scraper.
 // Used by both the manual import script and the daily cron route.
 //

@@ -455,96 +455,95 @@ export type PropertyListing = {
   sqft: number | null
   address: string | null
   imageUrl: string | null
-  business: { id: number; name: string; slug: string }
+  status: string
+  lat: number | null
+  lng: number | null
+  openHouseAt: Date | null
+  business: { id: number; name: string; slug: string; logoUrl: string | null }
+}
+
+// A home shows on the market while it is active and not past its expiry
+// (agents renew from the dashboard). Archived = retired scrape rows.
+const liveListing = () =>
+  and(
+    eq(propertyListings.status, "active"),
+    or(sql`${propertyListings.expiresAt} is null`, gt(propertyListings.expiresAt, sql`now()`))
+  )
+
+const listingColumns = {
+  id: propertyListings.id,
+  type: propertyListings.type,
+  title: propertyListings.title,
+  description: propertyListings.description,
+  priceCents: propertyListings.priceCents,
+  beds: propertyListings.beds,
+  baths: propertyListings.baths,
+  sqft: propertyListings.sqft,
+  address: propertyListings.address,
+  imageUrl: propertyListings.imageUrl,
+  status: propertyListings.status,
+  lat: propertyListings.lat,
+  lng: propertyListings.lng,
+  openHouseAt: propertyListings.openHouseAt,
+  bizId: businesses.id,
+  bizName: businesses.name,
+  bizSlug: businesses.slug,
+  bizLogo: businesses.logoUrl,
+}
+
+function toListing(r: {
+  id: number; type: "for-sale" | "for-rent"; title: string; description: string | null; priceCents: number
+  beds: number | null; baths: number | null; sqft: number | null; address: string | null; imageUrl: string | null
+  status: string; lat: number | null; lng: number | null; openHouseAt: Date | null
+  bizId: number; bizName: string; bizSlug: string; bizLogo: string | null
+}): PropertyListing {
+  return {
+    id: r.id,
+    type: r.type,
+    title: r.title,
+    description: r.description,
+    priceCents: r.priceCents,
+    beds: r.beds,
+    baths: r.baths,
+    sqft: r.sqft,
+    address: r.address,
+    imageUrl: r.imageUrl,
+    status: r.status,
+    lat: r.lat,
+    lng: r.lng,
+    openHouseAt: r.openHouseAt,
+    business: { id: r.bizId, name: r.bizName, slug: r.bizSlug, logoUrl: r.bizLogo },
+  }
 }
 
 export async function getListingsByBusinessId(
   businessId: number
 ): Promise<PropertyListing[]> {
   const rows = await db
-    .select({
-      id: propertyListings.id,
-      type: propertyListings.type,
-      title: propertyListings.title,
-      description: propertyListings.description,
-      priceCents: propertyListings.priceCents,
-      beds: propertyListings.beds,
-      baths: propertyListings.baths,
-      sqft: propertyListings.sqft,
-      address: propertyListings.address,
-      imageUrl: propertyListings.imageUrl,
-      bizId: businesses.id,
-      bizName: businesses.name,
-      bizSlug: businesses.slug,
-    })
+    .select(listingColumns)
     .from(propertyListings)
     .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
-    .where(
-      and(
-        eq(propertyListings.businessId, businessId),
-        eq(propertyListings.status, "active")
-      )
-    )
+    .where(and(eq(propertyListings.businessId, businessId), liveListing()))
     .orderBy(desc(propertyListings.createdAt))
-  return rows.map((r) => ({
-    id: r.id,
-    type: r.type,
-    title: r.title,
-    description: r.description,
-    priceCents: r.priceCents,
-    beds: r.beds,
-    baths: r.baths,
-    sqft: r.sqft,
-    address: r.address,
-    imageUrl: r.imageUrl,
-    business: { id: r.bizId, name: r.bizName, slug: r.bizSlug },
-  }))
+  return rows.map(toListing)
 }
 
+/** Every live home on the market (any approved business, newest first). */
 export async function getAllRealEstateListings(
-  type?: "for-sale" | "for-rent"
+  type?: "for-sale" | "for-rent",
+  limit?: number
 ): Promise<PropertyListing[]> {
-  const conditions = [
-    eq(propertyListings.status, "active"),
-    eq(categories.slug, "real-estate"),
-    eq(businesses.status, "approved"),
-  ]
+  const conditions = [liveListing(), eq(businesses.status, "approved")]
   if (type) conditions.push(eq(propertyListings.type, type))
 
-  const rows = await db
-    .select({
-      id: propertyListings.id,
-      type: propertyListings.type,
-      title: propertyListings.title,
-      description: propertyListings.description,
-      priceCents: propertyListings.priceCents,
-      beds: propertyListings.beds,
-      baths: propertyListings.baths,
-      sqft: propertyListings.sqft,
-      address: propertyListings.address,
-      imageUrl: propertyListings.imageUrl,
-      bizId: businesses.id,
-      bizName: businesses.name,
-      bizSlug: businesses.slug,
-    })
+  const q = db
+    .select(listingColumns)
     .from(propertyListings)
     .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
-    .innerJoin(categories, eq(businesses.categoryId, categories.id))
     .where(and(...conditions))
     .orderBy(desc(propertyListings.createdAt))
-  return rows.map((r) => ({
-    id: r.id,
-    type: r.type,
-    title: r.title,
-    description: r.description,
-    priceCents: r.priceCents,
-    beds: r.beds,
-    baths: r.baths,
-    sqft: r.sqft,
-    address: r.address,
-    imageUrl: r.imageUrl,
-    business: { id: r.bizId, name: r.bizName, slug: r.bizSlug },
-  }))
+  const rows = limit ? await q.limit(limit) : await q
+  return rows.map(toListing)
 }
 
 export async function getListingById(id: number) {
@@ -556,10 +555,12 @@ export async function getListingById(id: number) {
       bizSlug: businesses.slug,
       bizPhone: businesses.phone,
       bizWebsite: businesses.website,
+      bizEmail: businesses.email,
+      bizLogo: businesses.logoUrl,
     })
     .from(propertyListings)
     .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
-    .where(eq(propertyListings.id, id))
+    .where(and(eq(propertyListings.id, id), ne(propertyListings.status, "archived")))
     .limit(1)
   if (!rows.length) return null
   const r = rows[0]
@@ -571,6 +572,8 @@ export async function getListingById(id: number) {
       slug: r.bizSlug,
       phone: r.bizPhone,
       website: r.bizWebsite,
+      email: r.bizEmail,
+      logoUrl: r.bizLogo,
     },
   }
 }

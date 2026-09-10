@@ -298,7 +298,7 @@ export default async function BillingPage({
                     </>
                   )}
                 </div>
-                {key === "standard" && (
+                {(key === "standard" || key === "premium") && (
                   <p className="mt-1.5 text-xs font-semibold text-primary">
                     {t("trial", { price: tier.price.toFixed(2) })}
                   </p>
@@ -328,14 +328,6 @@ export default async function BillingPage({
                       {t("currentPlanLabel")}
                     </div>
                   )
-                ) : key === "premium" ? (
-                  // Plus is contact-led (listings tier), not self-serve checkout.
-                  <a
-                    href="mailto:hello@lompoclocals.com?subject=Lompoc%20Locals%20Plus"
-                    className="block w-full rounded-xl border py-2 text-center text-sm font-semibold text-primary transition hover:bg-accent"
-                  >
-                    {t("plusContact")}
-                  </a>
                 ) : key === "free" ? (
                   // Reached only when the effective tier is paid (the current-plan
                   // branch handles free). A downgrade must go through Stripe's
@@ -347,7 +339,13 @@ export default async function BillingPage({
                     hasSubscription={!!sub}
                     mode="subscribe"
                     tier={key}
-                    label={sub && sub.tier !== "free" ? t("switchTo", { name: tier.name }) : t("getStarted")}
+                    label={
+                      sub && sub.tier !== "free"
+                        ? t("switchTo", { name: tier.name })
+                        : key === "premium"
+                          ? t("getPlus")
+                          : t("getStarted")
+                    }
                   />
                 )}
               </div>

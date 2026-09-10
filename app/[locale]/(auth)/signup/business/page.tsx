@@ -18,7 +18,7 @@ export type Category = { id: number; name: string; slug: string }
 export default async function BusinessSignupPage({
   searchParams,
 }: {
-  searchParams: { step?: string; canceled?: string }
+  searchParams: { step?: string; canceled?: string; plan?: string }
 }) {
   const t = await getTranslations("signupBusiness")
 
@@ -31,6 +31,14 @@ export default async function BusinessSignupPage({
   const rawStep = parseInt(searchParams.step ?? "1", 10)
   const initialStep = Math.min(Math.max(rawStep - 1, 0), 2)
   const showCanceled = searchParams.canceled === "1"
+  // ?plan=plus (or premium) preselects Plus — the realtor road. Everything
+  // else lands on Growth, the default membership.
+  const initialPlan: "standard" | "premium" | undefined =
+    searchParams.plan === "plus" || searchParams.plan === "premium"
+      ? "premium"
+      : searchParams.plan === "growth" || searchParams.plan === "standard"
+        ? "standard"
+        : undefined
 
   return (
     <>
@@ -60,6 +68,7 @@ export default async function BusinessSignupPage({
         <BusinessSignupWizard
           categories={categories}
           initialStep={initialStep}
+          initialPlan={initialPlan}
           showCanceled={showCanceled}
         />
       </div>

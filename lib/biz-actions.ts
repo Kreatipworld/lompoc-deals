@@ -649,8 +649,15 @@ export async function getCategoriesList() {
 }
 
 // ============ property listings ============
+// Realtor-input homes market: agents on Plus add their own homes (up to 8
+// photos, status, open house). Listings expire after 60 days unless renewed
+// so /homes never shows a home that quietly sold.
 
 export type PropertyState = { error?: string }
+
+const LISTING_STATUSES = ["active", "pending", "sold", "rented"] as const
+const LISTING_DAYS = 60
+const MAX_LISTING_PHOTOS = 8
 
 const propertySchema = z.object({
   type: z.enum(["for-sale", "for-rent"]),
@@ -661,7 +668,13 @@ const propertySchema = z.object({
   baths: z.coerce.number().min(0).optional(),
   sqft: z.coerce.number().int().min(0).optional(),
   address: z.string().optional(),
+  status: z.enum(LISTING_STATUSES).default("active"),
+  openHouseAt: z.string().optional(),
 })
+
+function listingExpiry(from = new Date()) {
+  return new Date(from.getTime() + LISTING_DAYS * 24 * 60 * 60 * 1000)
+}
 
 export async function upsertPropertyAction(
   _prevState: PropertyState,
@@ -690,23 +703,36 @@ export async function upsertPropertyAction(
     baths: formData.get("baths") || undefined,
     sqft: formData.get("sqft") || undefined,
     address: formData.get("address") || undefined,
+    status: formData.get("status") || "active",
+    openHouseAt: formData.get("openHouseAt") || undefined,
   })
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? t("invalidInput") }
   }
   const data = parsed.data
+  // datetime-local has no zone; agents enter Lompoc time (Pacific).
+  const openHouseAt = data.openHouseAt ? parsePacificLocal(data.openHouseAt) : null
 
-  const imageFile = formData.get("image") as File | null
-  let imageUrl: string | undefined
-  if (imageFile && imageFile.size > 0) {
+  // Photos: the first upload becomes the cover, the rest go to the gallery.
+  // Existing photos the agent unchecked are dropped.
+  const keep = formData.getAll("keepPhoto").map(String).filter(Boolean)
+  const uploads = (formData.getAll("photos") as File[]).filter((f) => f && typeof f === "object" && f.size > 0)
+  if (keep.length + uploads.length > MAX_LISTING_PHOTOS) {
+    return { error: t("tooManyListingPhotos", { max: MAX_LISTING_PHOTOS }) }
+  }
+  const uploaded: string[] = []
+  for (const f of uploads) {
     try {
-      imageUrl = await uploadImage(imageFile, "listings")
+      uploaded.push(await uploadImage(f, "listings"))
     } catch (e) {
       return { error: e instanceof Error ? e.message : t("imageUploadFailed") }
     }
   }
 
   const listingId = formData.get("listingId")
+
+  let coords: { lat: number; lng: number } | null = null
+  const wantsGeocode = !!data.address
 
   if (listingId) {
     const id = parseInt(listingId.toString(), 10)
@@ -715,6 +741,14 @@ export async function upsertPropertyAction(
     })
     if (!existing || existing.businessId !== biz.id) {
       return { error: t("listingNotFound") }
+    }
+    const existingPhotos = [existing.imageUrl, ...(((existing.photosJson as string[] | null) ?? []))].filter(
+      (u): u is string => !!u
+    )
+    const kept = existingPhotos.filter((u) => keep.includes(u))
+    const photos = [...kept, ...uploaded]
+    if (wantsGeocode && (existing.address !== data.address || existing.lat == null)) {
+      coords = await geocodeAddress(data.address!)
     }
     await db
       .update(propertyListings)
@@ -727,10 +761,16 @@ export async function upsertPropertyAction(
         baths: data.baths ?? null,
         sqft: data.sqft ?? null,
         address: data.address ?? null,
-        ...(imageUrl ? { imageUrl } : {}),
+        status: data.status,
+        openHouseAt,
+        imageUrl: photos[0] ?? null,
+        photosJson: photos.slice(1),
+        ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
+        ...(existing.address !== data.address && !coords ? { lat: null, lng: null } : {}),
       })
       .where(eq(propertyListings.id, id))
   } else {
+    if (wantsGeocode) coords = await geocodeAddress(data.address!)
     await db.insert(propertyListings).values({
       businessId: biz.id,
       type: data.type,
@@ -741,14 +781,54 @@ export async function upsertPropertyAction(
       baths: data.baths ?? null,
       sqft: data.sqft ?? null,
       address: data.address ?? null,
-      imageUrl,
-      status: "active",
+      imageUrl: uploaded[0] ?? null,
+      photosJson: uploaded.slice(1),
+      status: data.status,
+      openHouseAt,
+      expiresAt: listingExpiry(),
+      lat: coords?.lat ?? null,
+      lng: coords?.lng ?? null,
     })
   }
 
   revalidatePath("/dashboard/properties")
   revalidateBusinessSurfaces({ slug: biz.slug })
+  revalidateListingPages()
   redirect("/dashboard/properties")
+}
+
+/** "2026-09-19T10:00" typed as Lompoc time → the right instant. */
+function parsePacificLocal(v: string): Date | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(v)
+  if (!m) return null
+  const [, y, mo, d, h, mi] = m.map(Number)
+  const guess = new Date(Date.UTC(y, mo - 1, d, h, mi))
+  // Offset between UTC and Pacific at that moment (handles DST).
+  const pacific = new Date(guess.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }))
+  const utc = new Date(guess.toLocaleString("en-US", { timeZone: "UTC" }))
+  return new Date(guess.getTime() + (utc.getTime() - pacific.getTime()))
+}
+
+function revalidateListingPages() {
+  for (const p of ["", "/es"]) revalidatePath(`${p}/homes`)
+  revalidatePath("/[locale]/homes", "page")
+  revalidatePath("/[locale]/listings/[id]", "page")
+}
+
+/** Push the expiry out another 60 days from today. */
+export async function renewPropertyAction(formData: FormData) {
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) return
+  const listingId = parseInt(formData.get("listingId")?.toString() ?? "0", 10)
+  if (!listingId) return
+  await db
+    .update(propertyListings)
+    .set({ expiresAt: listingExpiry() })
+    .where(and(eq(propertyListings.id, listingId), eq(propertyListings.businessId, biz.id)))
+  revalidatePath("/dashboard/properties")
+  revalidateBusinessSurfaces({ slug: biz.slug })
+  revalidateListingPages()
 }
 
 export async function deletePropertyAction(formData: FormData) {
@@ -766,6 +846,7 @@ export async function deletePropertyAction(formData: FormData) {
 
   revalidatePath("/dashboard/properties")
   revalidateBusinessSurfaces({ slug: biz.slug })
+  revalidateListingPages()
 }
 
 export async function getMyProperties() {
@@ -773,7 +854,7 @@ export async function getMyProperties() {
   const biz = await ownedBusiness(userId)
   if (!biz) return []
   return db.query.propertyListings.findMany({
-    where: (pl, { and: a, eq: e }) => a(e(pl.businessId, biz.id), e(pl.status, "active")),
+    where: (pl, { and: a, eq: e, notInArray: ni }) => a(e(pl.businessId, biz.id), ni(pl.status, ["inactive", "archived"])),
     orderBy: (pl, { desc }) => [desc(pl.createdAt)],
   })
 }

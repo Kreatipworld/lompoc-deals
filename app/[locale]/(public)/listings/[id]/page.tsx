@@ -9,7 +9,8 @@ import {
   Globe,
   ArrowLeft,
   Calendar,
-  ExternalLink,
+  CalendarClock,
+  Mail,
 } from "lucide-react"
 import { getListingById } from "@/lib/queries"
 import { BusinessMapLoader } from "@/components/business-map-loader"
@@ -51,6 +52,17 @@ export default async function ListingPage({
   if (!listing) notFound()
 
   const isForSale = listing.type === "for-sale"
+  const statusLabel =
+    listing.status === "pending" ? t("statusPending")
+    : listing.status === "sold" ? t("statusSold")
+    : listing.status === "rented" ? t("statusRented")
+    : null
+  const openHouse =
+    listing.openHouseAt && listing.openHouseAt.getTime() > Date.now()
+      ? listing.openHouseAt.toLocaleString(params.locale === "es" ? "es-US" : "en-US", {
+          timeZone: "America/Los_Angeles", weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+        })
+      : null
   const photos = (listing.photosJson as string[] | null) ?? []
   const allPhotos = listing.imageUrl && !photos.includes(listing.imageUrl)
     ? [listing.imageUrl, ...photos]
@@ -65,11 +77,11 @@ export default async function ListingPage({
       {/* Breadcrumb */}
       <div className="mx-auto max-w-6xl px-4 pt-6">
         <Link
-          href="/category/real-estate"
+          href="/homes"
           className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-3 w-3" />
-          {t("backToListings")}
+          {t("backToHomes")}
         </Link>
       </div>
 
@@ -114,6 +126,24 @@ export default async function ListingPage({
             {t("noPhotos")}
           </div>
         )}
+        {allPhotos.length > 1 && (
+          <div className="mt-2 flex gap-2 overflow-x-auto pb-1 md:hidden">
+            {allPhotos.slice(1).map((url, i) => (
+              <div key={i} className="h-24 w-32 shrink-0 overflow-hidden rounded-xl border">
+                <SafeImage src={url} alt={`${listing.title} photo ${i + 2}`} className="h-full w-full object-cover" />
+              </div>
+            ))}
+          </div>
+        )}
+        {allPhotos.length > 5 && (
+          <div className="mt-2 hidden gap-2 md:grid md:grid-cols-6">
+            {allPhotos.slice(5).map((url, i) => (
+              <div key={i} className="h-28 overflow-hidden rounded-xl border">
+                <SafeImage src={url} alt={`${listing.title} photo ${i + 6}`} className="h-full w-full object-cover" />
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Body — header + 2-col layout */}
@@ -132,6 +162,11 @@ export default async function ListingPage({
               >
                 {isForSale ? t("forSale") : t("forRent")}
               </span>
+              {statusLabel && (
+                <span className="ml-2 inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-800">
+                  {statusLabel}
+                </span>
+              )}
               <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
                 {listing.title}
               </h1>
@@ -165,6 +200,12 @@ export default async function ListingPage({
                   <span className="inline-flex items-center gap-1.5">
                     <Maximize className="h-4 w-4 text-primary" />
                     <strong>{listing.sqft.toLocaleString()}</strong> {t("sqft")}
+                  </span>
+                )}
+                {openHouse && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/20 px-3 py-1 font-semibold">
+                    <CalendarClock className="h-4 w-4 text-primary" />
+                    {t("openHouse")}: {openHouse}
                   </span>
                 )}
                 {listing.yearBuilt != null && (
@@ -211,11 +252,21 @@ export default async function ListingPage({
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-3xl border bg-card p-6 shadow-sm">
               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {t("listedBy")}
+                {t("contactAgent")}
               </div>
-              <h3 className="mt-2 font-display text-xl font-semibold leading-tight tracking-tight">
-                {listing.business.name}
-              </h3>
+              <div className="mt-3 flex items-center gap-3">
+                {listing.business.logoUrl && (
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border bg-background">
+                    <SafeImage src={listing.business.logoUrl} alt="" className="h-full w-full object-contain" />
+                  </div>
+                )}
+                <div>
+                  <div className="text-xs text-muted-foreground">{t("listedBy")}</div>
+                  <h3 className="font-display text-xl font-semibold leading-tight tracking-tight">
+                    {listing.business.name}
+                  </h3>
+                </div>
+              </div>
               <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                 {listing.business.phone && (
                   <li className="flex items-center gap-2">
@@ -225,6 +276,14 @@ export default async function ListingPage({
                       className="hover:text-foreground hover:underline"
                     >
                       {listing.business.phone}
+                    </a>
+                  </li>
+                )}
+                {listing.business.email && (
+                  <li className="flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-primary" />
+                    <a href={`mailto:${listing.business.email}?subject=${encodeURIComponent(listing.title)}`} className="truncate hover:text-foreground hover:underline">
+                      {listing.business.email}
                     </a>
                   </li>
                 )}
@@ -250,17 +309,6 @@ export default async function ListingPage({
               </Link>
             </div>
 
-            {listing.detailUrl && (
-              <a
-                href={listing.detailUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-3 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full border bg-background px-4 text-sm font-medium hover:bg-accent"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-                {t("viewOnZillow")}
-              </a>
-            )}
           </aside>
         </div>
       </section>

@@ -13,10 +13,6 @@
       "schedule": "0 16 * * 6"
     },
     {
-      "path": "/api/cron/sync-listings",
-      "schedule": "0 6 * * *"
-    },
-    {
       "path": "/api/cron/sync-events",
       "schedule": "0 13 * * *"
     },

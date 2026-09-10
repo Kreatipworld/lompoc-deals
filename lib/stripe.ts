@@ -95,7 +95,7 @@ export const TIERS = {
       "Priority in search results",
       "1 Featured Deal of the Week rotation / mo",
       "Sponsor Spotlight ad included",
-      "Real estate listings module",
+      "List homes for sale & rent on /homes",
       "Priority support",
     ],
   },

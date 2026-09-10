@@ -2,7 +2,8 @@ import { Link } from "@/i18n/navigation"
 import {
   ArrowRight, MapPin, Mail, Sparkles, ChevronDown, Compass
 } from "lucide-react"
-import { getPartnerBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots, getRecentBlogPosts } from "@/lib/queries"
+import { getPartnerBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots, getRecentBlogPosts, getAllRealEstateListings } from "@/lib/queries"
+import { PropertyListingCard } from "@/components/property-listing-card"
 import { newsCoverUrl } from "@/lib/news-cover"
 import { DealsDigest } from "@/components/deals-digest"
 import { EventsSection } from "@/components/events-section"
@@ -103,7 +104,7 @@ const siteJsonLd = {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t, latestNews] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t, latestNews, latestHomes, th] = await Promise.all([
     getAllCategories(),
     getPartnerBusinesses(params.locale),
     getSiteStats(),
@@ -113,6 +114,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getFoodSpots(10, params.locale),
     getTranslations({ locale: params.locale, namespace: "home" }),
     getRecentBlogPosts(3, params.locale),
+    getAllRealEstateListings(undefined, 3).catch(() => []),
+    getTranslations({ locale: params.locale, namespace: "homes" }),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
   const tc = await getTranslations({ locale: params.locale, namespace: "categoryLabels" })
@@ -326,6 +329,33 @@ export default async function HomePage({ params }: { params: { locale: string } 
             </div>
             <Link href="/news" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
               {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* ─────────────────────────────────────────────────
+          HOMES IN LOMPOC — newest homes listed by local agents (only when there are any)
+         ───────────────────────────────────────────────── */}
+      {latestHomes.length > 0 && (
+        <section className="border-t py-14">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <h2 className="font-display text-3xl font-bold tracking-tight">{th("homeHeading")}</h2>
+                <p className="mt-1 text-muted-foreground">{th("homeSubheading")}</p>
+              </div>
+              <Link href="/homes" className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex">
+                {th("homeSeeAll")} <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-3">
+              {latestHomes.map((l) => (
+                <PropertyListingCard key={l.id} listing={l} />
+              ))}
+            </div>
+            <Link href="/homes" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
+              {th("homeSeeAll")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </section>
