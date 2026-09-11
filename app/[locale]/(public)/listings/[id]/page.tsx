@@ -1,20 +1,18 @@
 import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
-import {
-  Bed,
-  Bath,
-  Maximize,
-  MapPin,
-  Phone,
-  Globe,
-  ArrowLeft,
-  Calendar,
-  CalendarClock,
-  Mail,
-} from "lucide-react"
-import { getListingById } from "@/lib/queries"
+import { ArrowLeft, ArrowRight, Store } from "lucide-react"
+import { getAllRealEstateListings, getListingById } from "@/lib/queries"
 import { BusinessMapLoader } from "@/components/business-map-loader"
 import { SafeImage } from "@/components/safe-image"
+import {
+  PhotoPlaceholder,
+  PropertyListingCard,
+  formatFacts,
+  formatListingPrice,
+  formatOpenHouse,
+  statusLabelFor,
+} from "@/components/property-listing-card"
+import { PAGE_CONTAINER } from "@/lib/layout-constants"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
@@ -29,15 +27,18 @@ export async function generateMetadata({
   const listing = await getListingById(id)
   if (!listing) return { title: t("metaNotFound"), robots: { index: false, follow: true } }
   return {
-    title: `${listing.title} ${t("metaTitleSuffix")}`,
+    title: `${listing.title} ${t("metaTitleSuffix")}`.trim(),
     description: listing.description ?? undefined,
   }
 }
 
-function formatPrice(cents: number, type: "for-sale" | "for-rent"): string {
-  const dollars = cents / 100
-  const formatted = dollars.toLocaleString("en-US", { maximumFractionDigits: 0 })
-  return type === "for-rent" ? `$${formatted}/mo` : `$${formatted}`
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-baseline justify-between gap-4 border-b border-border/70 py-3 text-sm last:border-0">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="text-right font-medium tabular-nums">{value}</dd>
+    </div>
+  )
 }
 
 export default async function ListingPage({
@@ -45,273 +46,289 @@ export default async function ListingPage({
 }: {
   params: { id: string; locale: string }
 }) {
-  const t = await getTranslations({ locale: params.locale, namespace: "listing" })
+  const [t, tc] = await Promise.all([
+    getTranslations({ locale: params.locale, namespace: "listing" }),
+    getTranslations({ locale: params.locale, namespace: "propertyCard" }),
+  ])
   const id = parseInt(params.id, 10)
   if (isNaN(id)) notFound()
   const listing = await getListingById(id)
   if (!listing) notFound()
 
+  const intl = params.locale === "es" ? "es-US" : "en-US"
+  const isLive = listing.status === "active"
   const isForSale = listing.type === "for-sale"
-  const statusLabel =
-    listing.status === "pending" ? t("statusPending")
-    : listing.status === "sold" ? t("statusSold")
-    : listing.status === "rented" ? t("statusRented")
-    : null
+  const statusLabel = statusLabelFor(listing, tc)
   const openHouse =
     listing.openHouseAt && listing.openHouseAt.getTime() > Date.now()
-      ? listing.openHouseAt.toLocaleString(params.locale === "es" ? "es-US" : "en-US", {
-          timeZone: "America/Los_Angeles", weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
-        })
+      ? formatOpenHouse(listing.openHouseAt, intl)
       : null
+  const facts = formatFacts(listing, tc, intl)
+  const price = formatListingPrice(listing.priceCents, listing.type, intl)
+
   const photos = (listing.photosJson as string[] | null) ?? []
-  const allPhotos = listing.imageUrl && !photos.includes(listing.imageUrl)
-    ? [listing.imageUrl, ...photos]
-    : photos.length
-      ? photos
-      : listing.imageUrl
-        ? [listing.imageUrl]
-        : []
+  const allPhotos =
+    listing.imageUrl && !photos.includes(listing.imageUrl)
+      ? [listing.imageUrl, ...photos]
+      : photos.length
+        ? photos
+        : listing.imageUrl
+          ? [listing.imageUrl]
+          : []
+
+  // More homes: the rest of the live market, newest first.
+  const moreHomes = (await getAllRealEstateListings(undefined, 4)).filter((l) => l.id !== listing.id).slice(0, 3)
+
+  // Agent card, same shape as the profile sidebar.
+  const [agentName, brokerage] = listing.business.name.split(" · ").map((s) => s.trim())
+  const avatar = listing.business.logoUrl ?? listing.business.coverUrl ?? null
+  const contactEmail =
+    listing.business.email && !listing.business.email.endsWith("lompocdeals.system") ? listing.business.email : null
+  const tel = listing.business.phone ? `tel:${listing.business.phone.replace(/[^\d+]/g, "")}` : null
+  const showingHref = contactEmail
+    ? `mailto:${contactEmail}?subject=${encodeURIComponent(t("showingSubject", { address: listing.address ?? listing.title }))}`
+    : tel
+  const contactHref = tel ?? showingHref
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: listing.title,
+    description: listing.description ?? undefined,
+    url: `https://www.lompoclocals.com/listings/${listing.id}`,
+    image: allPhotos.length ? allPhotos : undefined,
+    offers: {
+      "@type": "Offer",
+      price: (listing.priceCents / 100).toFixed(0),
+      priceCurrency: "USD",
+      availability: isLive ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
+    },
+    ...(listing.address
+      ? { address: { "@type": "PostalAddress", streetAddress: listing.address, addressLocality: "Lompoc", addressRegion: "CA" } }
+      : {}),
+    ...(listing.lat != null && listing.lng != null
+      ? { geo: { "@type": "GeoCoordinates", latitude: listing.lat, longitude: listing.lng } }
+      : {}),
+    seller: { "@type": "RealEstateAgent", name: listing.business.name, telephone: listing.business.phone ?? undefined },
+  }
+
+  const agentCard = (
+    <div className="overflow-hidden rounded-[20px] border border-border/80 bg-card">
+      <div className="flex items-center gap-3 border-b px-5 py-4">
+        {avatar ? (
+          <SafeImage
+            src={avatar}
+            alt={agentName}
+            className="h-14 w-14 flex-shrink-0 rounded-xl object-cover ring-1 ring-black/[0.06]"
+            fallback={<div className="h-14 w-14 flex-shrink-0 rounded-xl bg-primary/[0.08]" />}
+          />
+        ) : (
+          <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-primary/[0.08] text-primary">
+            <Store className="h-6 w-6" strokeWidth={1.5} />
+          </div>
+        )}
+        <div className="min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{t("listedByLabel")}</p>
+          <Link href={`/biz/${listing.business.slug}`} className="block truncate font-display text-base font-semibold leading-tight hover:underline">
+            {agentName}
+          </Link>
+          {brokerage && <p className="truncate text-xs text-muted-foreground">{brokerage}</p>}
+        </div>
+      </div>
+      <div className="space-y-2 px-5 py-4 text-sm">
+        {listing.business.phone && tel && (
+          <a href={tel} className="block font-medium hover:text-primary">
+            {listing.business.phone}
+          </a>
+        )}
+        {listing.business.instagramUrl && (
+          <a href={listing.business.instagramUrl} target="_blank" rel="noopener noreferrer" className="block text-muted-foreground hover:text-primary">
+            Instagram
+          </a>
+        )}
+        {listing.business.website && (
+          <a href={listing.business.website} target="_blank" rel="noreferrer" className="block truncate text-muted-foreground hover:text-primary">
+            {listing.business.website.replace(/^https?:\/\//, "")}
+          </a>
+        )}
+      </div>
+      <div className="flex flex-col gap-2 border-t px-5 py-4">
+        {showingHref && (
+          <a
+            href={showingHref}
+            className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+          >
+            {t("requestShowing")}
+          </a>
+        )}
+        <Link href={`/biz/${listing.business.slug}`} className="text-center text-sm text-muted-foreground underline-offset-4 hover:underline">
+          {t("viewBrokerage")}
+        </Link>
+      </div>
+    </div>
+  )
 
   return (
-    <>
+    <main className="pb-24">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+
       {/* Breadcrumb */}
-      <div className="mx-auto max-w-6xl px-4 pt-6">
-        <Link
-          href="/homes"
-          className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-3 w-3" />
+      <div className={`${PAGE_CONTAINER} pt-6`}>
+        <Link href="/homes" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-3.5 w-3.5" />
           {t("backToHomes")}
         </Link>
       </div>
 
-      {/* Photo gallery — main + grid */}
-      <section className="mx-auto max-w-6xl px-4 py-6">
-        {allPhotos.length > 0 ? (
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-            {/* Main photo */}
-            <div className="overflow-hidden rounded-2xl border md:row-span-2 md:h-[520px]">
-              <SafeImage
-                src={allPhotos[0]}
-                alt={listing.title}
-                className="h-full w-full object-cover"
-                fallback={
-                  <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
-                    {t("photoNotAvailable")}
-                  </div>
-                }
-              />
-            </div>
-            {/* Thumbnails */}
-            {allPhotos.slice(1, 5).map((url, i) => (
-              <div
-                key={i}
-                className="hidden h-[256px] overflow-hidden rounded-2xl border md:block"
-              >
+      {/* Gallery hero: main photo + thumbnails */}
+      <section className={`${PAGE_CONTAINER} pt-5`}>
+        <div className={`grid gap-3 ${allPhotos.length > 1 ? "md:grid-cols-[2fr_1fr]" : ""}`}>
+          <div className="overflow-hidden rounded-[20px] border border-border/80 bg-primary/[0.04]">
+            <div className="aspect-[16/10] w-full md:aspect-auto md:h-[460px]">
+              {allPhotos.length > 0 ? (
                 <SafeImage
-                  src={url}
-                  alt={`${listing.title} photo ${i + 2}`}
+                  src={allPhotos[0]}
+                  alt={listing.title}
                   className="h-full w-full object-cover"
-                  fallback={
-                    <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
-                      {t("photoNotAvailable")}
-                    </div>
-                  }
+                  fallback={<PhotoPlaceholder label={tc("photosComing")} />}
                 />
-              </div>
-            ))}
+              ) : (
+                <PhotoPlaceholder label={tc("photosComing")} />
+              )}
+            </div>
           </div>
-        ) : (
-          <div className="flex h-80 items-center justify-center rounded-2xl border bg-muted text-sm text-muted-foreground">
-            {t("noPhotos")}
-          </div>
-        )}
-        {allPhotos.length > 1 && (
-          <div className="mt-2 flex gap-2 overflow-x-auto pb-1 md:hidden">
-            {allPhotos.slice(1).map((url, i) => (
-              <div key={i} className="h-24 w-32 shrink-0 overflow-hidden rounded-xl border">
-                <SafeImage src={url} alt={`${listing.title} photo ${i + 2}`} className="h-full w-full object-cover" />
-              </div>
-            ))}
-          </div>
-        )}
-        {allPhotos.length > 5 && (
-          <div className="mt-2 hidden gap-2 md:grid md:grid-cols-6">
-            {allPhotos.slice(5).map((url, i) => (
-              <div key={i} className="h-28 overflow-hidden rounded-xl border">
-                <SafeImage src={url} alt={`${listing.title} photo ${i + 6}`} className="h-full w-full object-cover" />
+          {allPhotos.length > 1 && (
+            <div className="grid grid-cols-3 gap-3 md:grid-cols-1 md:grid-rows-2 md:h-[460px]">
+              {allPhotos.slice(1, 3).map((url, i) => (
+                <div key={i} className="aspect-[4/3] overflow-hidden rounded-[16px] border border-border/80 md:aspect-auto md:h-full">
+                  <SafeImage src={url} alt={`${listing.title} ${i + 2}`} className="h-full w-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        {allPhotos.length > 3 && (
+          <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
+            {allPhotos.slice(3).map((url, i) => (
+              <div key={i} className="aspect-[4/3] w-36 shrink-0 overflow-hidden rounded-xl border border-border/80 sm:w-44">
+                <SafeImage src={url} alt={`${listing.title} ${i + 4}`} className="h-full w-full object-cover" />
               </div>
             ))}
           </div>
         )}
       </section>
 
-      {/* Body — header + 2-col layout */}
-      <section className="mx-auto max-w-6xl px-4 pb-16">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_360px]">
+      {/* Body */}
+      <section className={`${PAGE_CONTAINER} pt-10`}>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
           {/* MAIN */}
-          <div className="space-y-8">
-            {/* Header */}
-            <header className="space-y-3">
-              <span
-                className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider ${
-                  isForSale
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-foreground text-background"
-                }`}
-              >
-                {isForSale ? t("forSale") : t("forRent")}
-              </span>
-              {statusLabel && (
-                <span className="ml-2 inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-800">
+          <article className="min-w-0">
+            {/* Header block: price · facts · address · status */}
+            <header>
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className={`rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-wide ${
+                    isLive ? "bg-primary/[0.08] text-primary" : "bg-foreground/85 text-background"
+                  }`}
+                >
                   {statusLabel}
                 </span>
-              )}
-              <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-                {listing.title}
-              </h1>
-              {listing.address && (
-                <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  {listing.address}
+                {openHouse && (
+                  <span className="rounded-full bg-gold px-2.5 py-1 text-[11px] font-semibold tracking-wide text-gold-foreground">
+                    {t("openHouse")} · {openHouse}
+                  </span>
+                )}
+              </div>
+              <h1 className="mt-4 font-display text-4xl font-bold leading-none tracking-tight tabular-nums sm:text-5xl">{price}</h1>
+              {facts && (
+                <p className="mt-3 text-base text-foreground/90 tabular-nums">
+                  {facts} <span className="text-muted-foreground">- {isForSale ? t("factTypeSale") : t("factTypeRent")}</span>
                 </p>
               )}
+              {listing.address && <p className="mt-1 text-base text-muted-foreground">{listing.address}</p>}
+
+              {/* Contact row */}
+              <div className="mt-6 flex flex-wrap gap-2">
+                {showingHref && (
+                  <a
+                    href={showingHref}
+                    className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                  >
+                    {t("requestShowing")}
+                  </a>
+                )}
+                {contactHref && (
+                  <a
+                    href={contactHref}
+                    className="inline-flex items-center justify-center rounded-full border border-border/80 bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition hover:border-foreground/30"
+                  >
+                    {t("contactAgentBtn")}
+                  </a>
+                )}
+              </div>
             </header>
 
-            {/* Price + specs row */}
-            <div className="rounded-3xl border bg-card p-6 shadow-sm">
-              <div className="font-display text-4xl font-semibold tracking-tight">
-                {formatPrice(listing.priceCents, listing.type)}
-              </div>
-              <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-                {listing.beds != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Bed className="h-4 w-4 text-primary" />
-                    <strong>{listing.beds}</strong> {t("beds")}
-                  </span>
-                )}
-                {listing.baths != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Bath className="h-4 w-4 text-primary" />
-                    <strong>{listing.baths}</strong> {t("baths")}
-                  </span>
-                )}
-                {listing.sqft != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Maximize className="h-4 w-4 text-primary" />
-                    <strong>{listing.sqft.toLocaleString()}</strong> {t("sqft")}
-                  </span>
-                )}
-                {openHouse && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/20 px-3 py-1 font-semibold">
-                    <CalendarClock className="h-4 w-4 text-primary" />
-                    {t("openHouse")}: {openHouse}
-                  </span>
-                )}
-                {listing.yearBuilt != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4 text-primary" />
-                    {t("builtYear", { year: listing.yearBuilt })}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Description */}
+            {/* What's special */}
             {listing.description && (
-              <div>
-                <h2 className="font-display text-xl font-semibold tracking-tight">
-                  {t("aboutProperty")}
-                </h2>
-                <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                  {listing.description}
-                </p>
+              <div className="mt-12 max-w-prose">
+                <h2 className="font-display text-xl font-semibold tracking-tight">{t("whatsSpecial")}</h2>
+                <p className="mt-3 whitespace-pre-line text-base leading-relaxed text-foreground/85">{listing.description}</p>
               </div>
             )}
 
-            {/* Map */}
-            {listing.lat != null && listing.lng != null && (
-              <div>
-                <h2 className="font-display text-xl font-semibold tracking-tight">
-                  {t("location")}
-                </h2>
-                <div className="mt-3 overflow-hidden rounded-2xl border shadow-sm">
-                  <div className="h-72">
-                    <BusinessMapLoader
-                      lat={listing.lat}
-                      lng={listing.lng}
-                      name={listing.address ?? listing.title}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* SIDEBAR — agent / brokerage card */}
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-3xl border bg-card p-6 shadow-sm">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {t("contactAgent")}
-              </div>
-              <div className="mt-3 flex items-center gap-3">
-                {listing.business.logoUrl && (
-                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border bg-background">
-                    <SafeImage src={listing.business.logoUrl} alt="" className="h-full w-full object-contain" />
-                  </div>
-                )}
-                <div>
-                  <div className="text-xs text-muted-foreground">{t("listedBy")}</div>
-                  <h3 className="font-display text-xl font-semibold leading-tight tracking-tight">
-                    {listing.business.name}
-                  </h3>
-                </div>
-              </div>
-              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                {listing.business.phone && (
-                  <li className="flex items-center gap-2">
-                    <Phone className="h-3.5 w-3.5 text-primary" />
-                    <a
-                      href={`tel:${listing.business.phone.replace(/[^0-9+]/g, "")}`}
-                      className="hover:text-foreground hover:underline"
-                    >
-                      {listing.business.phone}
-                    </a>
-                  </li>
-                )}
-                {listing.business.email && (
-                  <li className="flex items-center gap-2">
-                    <Mail className="h-3.5 w-3.5 text-primary" />
-                    <a href={`mailto:${listing.business.email}?subject=${encodeURIComponent(listing.title)}`} className="truncate hover:text-foreground hover:underline">
-                      {listing.business.email}
-                    </a>
-                  </li>
-                )}
-                {listing.business.website && (
-                  <li className="flex items-center gap-2">
-                    <Globe className="h-3.5 w-3.5 text-primary" />
-                    <a
-                      href={listing.business.website}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="truncate hover:text-foreground hover:underline"
-                    >
-                      {listing.business.website.replace(/^https?:\/\//, "")}
-                    </a>
-                  </li>
-                )}
-              </ul>
-              <Link
-                href={`/biz/${listing.business.slug}`}
-                className="mt-5 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-              >
-                {t("viewBrokerage")}
-              </Link>
+            {/* Facts & features */}
+            <div className="mt-12">
+              <h2 className="font-display text-xl font-semibold tracking-tight">{t("factsFeatures")}</h2>
+              <dl className="mt-3 max-w-md">
+                <Fact label={t("factType")} value={isForSale ? t("factTypeSale") : t("factTypeRent")} />
+                <Fact label={t("factStatus")} value={statusLabel} />
+                {listing.beds != null && <Fact label={t("factBeds")} value={String(listing.beds)} />}
+                {listing.baths != null && <Fact label={t("factBaths")} value={String(listing.baths)} />}
+                <Fact label={t("factSqft")} value={listing.sqft != null ? listing.sqft.toLocaleString(intl) : t("factNa")} />
+                <Fact label={t("factYearBuilt")} value={listing.yearBuilt != null ? String(listing.yearBuilt) : t("factNa")} />
+                <Fact label={t("factLot")} value={t("factNa")} />
+                {openHouse && <Fact label={t("factOpenHouse")} value={openHouse} />}
+              </dl>
             </div>
 
-          </aside>
+            {/* Neighborhood map */}
+            {listing.lat != null && listing.lng != null && (
+              <div className="mt-12">
+                <h2 className="font-display text-xl font-semibold tracking-tight">{t("neighborhood")}</h2>
+                {listing.address && <p className="mt-1 text-sm text-muted-foreground">{listing.address}</p>}
+                <div className="mt-3 overflow-hidden rounded-[20px] border border-border/80">
+                  <div className="h-72">
+                    <BusinessMapLoader lat={listing.lat} lng={listing.lng} name={listing.address ?? listing.title} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Listed by, inline on the phone (the sidebar carries it on desktop) */}
+            <div className="mt-12 lg:hidden">{agentCard}</div>
+          </article>
+
+          {/* SIDEBAR — agent card */}
+          <aside className="hidden lg:sticky lg:top-24 lg:block lg:self-start">{agentCard}</aside>
         </div>
       </section>
-    </>
+
+      {/* More homes in Lompoc */}
+      {moreHomes.length > 0 && (
+        <section className={`${PAGE_CONTAINER} mt-20`}>
+          <div className="flex items-end justify-between">
+            <h2 className="font-display text-2xl font-semibold tracking-tight">{t("moreHomes")}</h2>
+            <Link href="/homes" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+              {t("seeAllHomes").replace(" →", "")} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
+            {moreHomes.map((l) => (
+              <PropertyListingCard key={l.id} listing={l} />
+            ))}
+          </div>
+        </section>
+      )}
+    </main>
   )
 }

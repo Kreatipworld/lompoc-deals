@@ -1341,7 +1341,14 @@
       "hoursUnknownCall": "Hours not listed — call to confirm:",
       "ownerCta": "Own this business? Get your deals in front of Lompoc locals →",
       "placesNearby": "Places to go nearby",
-      "relatedDealCount": "{count, plural, one {# deal} other {# deals}}"
+      "relatedDealCount": "{count, plural, one {# deal} other {# deals}}",
+      "agentContact": "Contact",
+      "statActiveListings": "{count, plural, one {# active listing} other {# active listings}}",
+      "statLicensedSince": "Licensed since {year}",
+      "listingsHeading": "Listings",
+      "forSaleHeading": "For sale",
+      "forRentHeading": "For rent",
+      "agentPhoneLabel": "Call"
     },
     "amenities": {
       "wheelchair_accessible": "Wheelchair accessible",
@@ -1462,7 +1469,9 @@
     "pill": "Homes for sale & rent →",
     "homeHeading": "Homes in Lompoc",
     "homeSubheading": "The newest homes for sale and for rent, listed by local agents.",
-    "homeSeeAll": "See all homes"
+    "homeSeeAll": "See all homes",
+    "listAria": "Homes list",
+    "mapAria": "Map of homes"
   },
   "propertyCard": {
     "forSale": "For sale",
@@ -1476,7 +1485,13 @@
     "noListings": "No active listings right now. Check back soon.",
     "bed": "bed",
     "bath": "bath",
-    "sqft": "sqft"
+    "sqft": "sqft",
+    "bd": "bd",
+    "ba": "ba",
+    "openHouseShort": "Open house",
+    "typeSale": "House for sale",
+    "typeRent": "For rent",
+    "listingBy": "Listing by {name}"
   },
   "chat": {
     "title": "Lompoc Guide",
@@ -1879,7 +1894,12 @@
     "addressHint": "Full street address in Lompoc so the home gets a pin on the map.",
     "statusLabel": "Status",
     "statusHint": "Sold and rented homes leave the market but stay in your list.",
-    "status": { "active": "Active", "pending": "Pending", "sold": "Sold", "rented": "Rented" },
+    "status": {
+      "active": "Active",
+      "pending": "Pending",
+      "sold": "Sold",
+      "rented": "Rented"
+    },
     "openHouseLabel": "Open house (optional)",
     "openHouseHint": "Lompoc time. Shown on the listing until it passes.",
     "photosLabel": "Photos (up to {max})",
@@ -2138,7 +2158,27 @@
     "statusSold": "Sold",
     "statusRented": "Rented",
     "openHouse": "Open house",
-    "contactAgent": "Contact the agent"
+    "contactAgent": "Contact the agent",
+    "showingSubject": "Showing request: {address}",
+    "requestShowing": "Request a tour",
+    "contactAgentBtn": "Contact agent",
+    "seeAllHomes": "See all Lompoc homes →",
+    "whatsSpecial": "What's special",
+    "factsFeatures": "Facts & features",
+    "neighborhood": "Neighborhood",
+    "moreHomes": "More homes in Lompoc",
+    "factType": "Type",
+    "factTypeSale": "House for sale",
+    "factTypeRent": "For rent",
+    "factYearBuilt": "Year built",
+    "factSqft": "Square feet",
+    "factLot": "Lot",
+    "factNa": "Not provided",
+    "factBeds": "Bedrooms",
+    "factBaths": "Bathrooms",
+    "factStatus": "Status",
+    "factOpenHouse": "Open house",
+    "listedByLabel": "Listed by"
   },
   "hotelDetail": {
     "allHotels": "All hotels",

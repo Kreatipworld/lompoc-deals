@@ -557,6 +557,8 @@ export async function getListingById(id: number) {
       bizWebsite: businesses.website,
       bizEmail: businesses.email,
       bizLogo: businesses.logoUrl,
+      bizCover: businesses.coverUrl,
+      bizInstagram: businesses.instagramUrl,
     })
     .from(propertyListings)
     .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
@@ -574,6 +576,8 @@ export async function getListingById(id: number) {
       website: r.bizWebsite,
       email: r.bizEmail,
       logoUrl: r.bizLogo,
+      coverUrl: r.bizCover,
+      instagramUrl: r.bizInstagram,
     },
   }
 }

@@ -1341,7 +1341,14 @@
       "hoursUnknownCall": "Horario no disponible — llama para confirmar:",
       "ownerCta": "¿Es tu negocio? Pon tus ofertas frente a los vecinos de Lompoc →",
       "placesNearby": "Lugares que visitar cerca",
-      "relatedDealCount": "{count, plural, one {# oferta} other {# ofertas}}"
+      "relatedDealCount": "{count, plural, one {# oferta} other {# ofertas}}",
+      "agentContact": "Contactar",
+      "statActiveListings": "{count, plural, one {# propiedad activa} other {# propiedades activas}}",
+      "statLicensedSince": "Con licencia desde {year}",
+      "listingsHeading": "Propiedades",
+      "forSaleHeading": "En venta",
+      "forRentHeading": "En renta",
+      "agentPhoneLabel": "Llamar"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",
@@ -1462,7 +1469,9 @@
     "pill": "Casas en venta y renta →",
     "homeHeading": "Casas en Lompoc",
     "homeSubheading": "Las casas más recientes en venta y en renta, publicadas por agentes locales.",
-    "homeSeeAll": "Ver todas las casas"
+    "homeSeeAll": "Ver todas las casas",
+    "listAria": "Lista de casas",
+    "mapAria": "Mapa de casas"
   },
   "propertyCard": {
     "forSale": "En venta",
@@ -1476,7 +1485,13 @@
     "noListings": "No hay propiedades activas ahora. ¡Vuelve pronto!",
     "bed": "hab.",
     "bath": "baño",
-    "sqft": "pie²"
+    "sqft": "pie²",
+    "bd": "rec",
+    "ba": "baños",
+    "openHouseShort": "Casa abierta",
+    "typeSale": "Casa en venta",
+    "typeRent": "En renta",
+    "listingBy": "Publicado por {name}"
   },
   "chat": {
     "title": "Guía de Lompoc",
@@ -1879,7 +1894,12 @@
     "addressHint": "Dirección completa en Lompoc para que la casa tenga pin en el mapa.",
     "statusLabel": "Estado",
     "statusHint": "Las casas vendidas o rentadas salen del mercado pero siguen en tu lista.",
-    "status": { "active": "Activa", "pending": "En trámite", "sold": "Vendida", "rented": "Rentada" },
+    "status": {
+      "active": "Activa",
+      "pending": "En trámite",
+      "sold": "Vendida",
+      "rented": "Rentada"
+    },
     "openHouseLabel": "Open house (opcional)",
     "openHouseHint": "Hora de Lompoc. Se muestra en el listado hasta que pase.",
     "photosLabel": "Fotos (hasta {max})",
@@ -2138,7 +2158,27 @@
     "statusSold": "Vendida",
     "statusRented": "Rentada",
     "openHouse": "Open house",
-    "contactAgent": "Contacta al agente"
+    "contactAgent": "Contacta al agente",
+    "showingSubject": "Solicitud de visita: {address}",
+    "requestShowing": "Solicitar visita",
+    "contactAgentBtn": "Contactar agente",
+    "seeAllHomes": "Ver todas las casas en Lompoc →",
+    "whatsSpecial": "Lo especial",
+    "factsFeatures": "Datos y características",
+    "neighborhood": "Vecindario",
+    "moreHomes": "Más casas en Lompoc",
+    "factType": "Tipo",
+    "factTypeSale": "Casa en venta",
+    "factTypeRent": "En renta",
+    "factYearBuilt": "Año de construcción",
+    "factSqft": "Pies cuadrados",
+    "factLot": "Lote",
+    "factNa": "No indicado",
+    "factBeds": "Recámaras",
+    "factBaths": "Baños",
+    "factStatus": "Estado",
+    "factOpenHouse": "Casa abierta",
+    "listedByLabel": "Publicado por"
   },
   "hotelDetail": {
     "allHotels": "Todos los hoteles",

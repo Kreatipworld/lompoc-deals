@@ -247,6 +247,129 @@ export default async function BusinessPage({
             <ArrowLeft className="h-3 w-3 rotate-180" aria-hidden />
             <span className="font-medium text-foreground">{business.name}</span>
           </nav>
+          {isRealEstate ? (() => {
+            // Agent profile header, the structure buyers know from the big portals:
+            // large avatar · name · brokerage · phone · Contact, then a quiet stat row.
+            const [agentName, brokerage] = business.name.split(" · ").map((s) => s.trim())
+            const avatar = business.logoUrl ?? business.coverUrl ?? null
+            const licensedMatch = (business.about ?? "").match(/licensed since (\d{4})/i)
+            const contactEmail =
+              business.ownerEmail && !business.ownerEmail.endsWith("lompocdeals.system") ? business.ownerEmail : null
+            const contactHref = contactEmail
+              ? `mailto:${contactEmail}?subject=${encodeURIComponent(t("requestShowingSubject", { name: agentName }))}`
+              : business.phone
+                ? `tel:${business.phone.replace(/[^\d+]/g, "")}`
+                : null
+            return (
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+                <div className="flex-shrink-0">
+                  {avatar ? (
+                    <SafeImage
+                      src={avatar}
+                      alt={agentName}
+                      className="h-28 w-28 rounded-[20px] object-cover ring-1 ring-black/[0.06] sm:h-36 sm:w-36"
+                      fallback={<div className="h-28 w-28 rounded-[20px] bg-primary/[0.08] sm:h-36 sm:w-36" />}
+                    />
+                  ) : (
+                    <div className="flex h-28 w-28 items-center justify-center rounded-[20px] bg-primary/[0.08] text-primary sm:h-36 sm:w-36">
+                      <Store className="h-10 w-10" strokeWidth={1.5} />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  {business.effectiveTier !== "free" && (
+                    <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+                      <BadgeCheck className="h-3.5 w-3.5" />
+                      {tsp("officialPartnerGeneric")}
+                    </span>
+                  )}
+                  <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{agentName}</h1>
+                  <p className="mt-1 text-base text-muted-foreground">
+                    {brokerage ? <span>{brokerage}</span> : null}
+                    {brokerage && business.category ? <span className="text-foreground/30"> · </span> : null}
+                    {business.category && (
+                      <Link href={`/category/${business.category.slug}`} className="text-primary hover:underline">
+                        {categoryName}
+                      </Link>
+                    )}
+                  </p>
+
+                  {/* Contact row */}
+                  <div className="mt-5 flex flex-wrap items-center gap-2">
+                    {contactHref && (
+                      <a
+                        href={contactHref}
+                        className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                      >
+                        {t("agentContact")}
+                      </a>
+                    )}
+                    {business.phone && (
+                      <OutboundLink
+                        action="phone_click"
+                        slug={business.slug}
+                        businessId={business.id}
+                        category={business.category?.name}
+                        href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card px-4 py-2.5 text-sm font-medium transition hover:border-foreground/30"
+                      >
+                        <Phone className="h-3.5 w-3.5 text-primary" />
+                        {business.phone}
+                      </OutboundLink>
+                    )}
+                    {isUnclaimed && (
+                      <Link
+                        href={`/signup?claim=${encodeURIComponent(params.slug)}`}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-4 py-2.5 text-sm font-medium text-primary transition-colors duration-150 hover:bg-primary/15"
+                      >
+                        <Lock className="h-3.5 w-3.5" />
+                        {t("claimCta")}
+                      </Link>
+                    )}
+                  </div>
+
+                  {/* Stat row */}
+                  <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+                    <span className="tabular-nums">{t("statActiveListings", { count: listings.length })}</span>
+                    {licensedMatch && (
+                      <>
+                        <span className="text-foreground/30">·</span>
+                        <span>{t("statLicensedSince", { year: licensedMatch[1] })}</span>
+                      </>
+                    )}
+                    <span className="text-foreground/30">·</span>
+                    <span>{t("trustListed", { date: format(new Date(business.createdAt), "MMM yyyy", { locale: dateLocale }) })}</span>
+                    {viewer.isLocal && (
+                      <>
+                        <span className="text-foreground/30">·</span>
+                        <FollowBusinessButton
+                          businessId={business.id}
+                          slug={params.slug}
+                          isFollowing={viewer.followedBusinessIds.has(business.id)}
+                          labels={{ follow: t("follow"), following: t("following") }}
+                        />
+                      </>
+                    )}
+                  </div>
+
+                  <div className="mt-4">
+                    <BusinessSocialLinks
+                      links={{
+                        instagramUrl: business.instagramUrl,
+                        facebookUrl: business.facebookUrl,
+                        tiktokUrl: business.tiktokUrl,
+                        youtubeUrl: business.youtubeUrl,
+                        yelpUrl: business.yelpUrl,
+                        googleBusinessUrl: business.googleBusinessUrl,
+                      }}
+                      reviewUrl={reviewsUrl}
+                    />
+                  </div>
+                </div>
+              </div>
+            )
+          })() : (
+            <>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
               {/* Logo */}
               <div className="flex-shrink-0">
@@ -438,6 +561,8 @@ export default async function BusinessPage({
                 </OutboundLink>
               )}
             </div>
+            </>
+          )}
           </div>
         </div>
       </section>
@@ -458,22 +583,35 @@ export default async function BusinessPage({
           2-COLUMN BODY
          ───────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-10">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+        <div className={`grid grid-cols-1 gap-8 ${isRealEstate ? "" : "lg:grid-cols-[1fr_320px]"}`}>
           {/* MAIN — active deals OR listings depending on category */}
           <div>
             {(isRealEstate || deals.length > 0) && (
               <div className="mb-6 flex items-end justify-between">
                 <h2 className="font-display text-2xl font-semibold tracking-tight">
-                  {isRealEstate ? t("sectionActiveListings") : t("sectionActiveDeals")}
+                  {isRealEstate ? t("listingsHeading") : t("sectionActiveDeals")}
                 </h2>
-                <p className="text-sm text-muted-foreground">
-                  {t("sectionFrom", { name: business.name })}
+                <p className="text-sm text-muted-foreground tabular-nums">
+                  {isRealEstate ? t("statActiveListings", { count: listings.length }) : t("sectionFrom", { name: business.name })}
                 </p>
               </div>
             )}
             {isRealEstate ? (
               <>
-                <PropertyListingGrid listings={listings} />
+                {listings.some((l) => l.type === "for-sale") && listings.some((l) => l.type === "for-rent") ? (
+                  <div className="space-y-10">
+                    <div>
+                      <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{t("forSaleHeading")}</h3>
+                      <PropertyListingGrid listings={listings.filter((l) => l.type === "for-sale")} />
+                    </div>
+                    <div>
+                      <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{t("forRentHeading")}</h3>
+                      <PropertyListingGrid listings={listings.filter((l) => l.type === "for-rent")} />
+                    </div>
+                  </div>
+                ) : (
+                  <PropertyListingGrid listings={listings} />
+                )}
                 {/* Real-estate interest hook: the Monday digest already carries a Homes
                     section, so "new homes by email" is the existing subscribe page. */}
                 <p className="mt-4 text-sm text-muted-foreground">
@@ -544,8 +682,8 @@ export default async function BusinessPage({
             )}
           </div>
 
-          {/* SIDEBAR — map + hours (real estate: the agent card leads) */}
-          <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          {/* SIDEBAR — map + hours (real estate: contact lives in the header, no sidebar) */}
+          {!isRealEstate && <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
             {isRealEstate && (() => {
               // "Maressa Martinez, Realtor · Empire Real Estate Group" → agent + brokerage
               const [agentName, brokerage] = business.name.split(" · ").map((s) => s.trim())
@@ -632,7 +770,7 @@ export default async function BusinessPage({
               </div>
             )}
             {!isRealEstate && <BusinessHours hoursJson={business.hoursJson} phone={business.phone} />}
-          </aside>
+          </aside>}
         </div>
       </section>
 

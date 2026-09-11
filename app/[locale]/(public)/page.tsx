@@ -338,9 +338,9 @@ export default async function HomePage({ params }: { params: { locale: string } 
           HOMES IN LOMPOC — newest homes listed by local agents (only when there are any)
          ───────────────────────────────────────────────── */}
       {latestHomes.length > 0 && (
-        <section className="border-t py-14">
+        <section className="border-t py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <div className="mb-8 flex items-end justify-between">
+            <div className="mb-10 flex items-end justify-between">
               <div>
                 <h2 className="font-display text-3xl font-bold tracking-tight">{th("homeHeading")}</h2>
                 <p className="mt-1 text-muted-foreground">{th("homeSubheading")}</p>
@@ -349,12 +349,12 @@ export default async function HomePage({ params }: { params: { locale: string } 
                 {th("homeSeeAll")} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            <div className="grid gap-5 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
               {latestHomes.map((l) => (
                 <PropertyListingCard key={l.id} listing={l} />
               ))}
             </div>
-            <Link href="/homes" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
+            <Link href="/homes" className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
               {th("homeSeeAll")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
