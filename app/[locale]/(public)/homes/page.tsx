@@ -99,14 +99,14 @@ export default async function HomesPage({
             </Link>
           </div>
         ) : (
-          <div className={hasMap ? "grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,45%)_minmax(0,1fr)] lg:gap-10" : ""}>
+          <div className={hasMap ? "grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,45%)_minmax(0,1fr)] lg:gap-10" : ""}>
             {/* Map: above the list on the phone, a sticky left pane on desktop */}
             {hasMap && (
               <div className="h-[300px] lg:sticky lg:top-[7.5rem] lg:h-[calc(100vh-9rem)] lg:self-start">{map}</div>
             )}
             <div
               aria-label={t("listAria")}
-              className={`grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 ${hasMap ? "" : "lg:grid-cols-3 lg:gap-8"}`}
+              className={`grid grid-cols-1 content-start items-start gap-6 sm:grid-cols-2 sm:gap-7 ${hasMap ? "" : "lg:grid-cols-3 lg:gap-8"}`}
             >
               {listings.map((l) => (
                 <PropertyListingCard key={l.id} listing={l} />
