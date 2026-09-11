@@ -23,3 +23,8 @@ Rules this week: big pieces 6–8 PM PT only (morning slots = ~1/30th reach); Ti
 
 Cards: content/social/posts/{coastal-tint-welcome,zine-making,week3-football}-{ig,tt}.png, hangar7-music-tt.png · captions: content/social/posts/week-sep8-captions.md · Blob prefix social/posts/2026-09-08-.
 Open member work: Coastal Tint + Paisano's spotlights once photos arrive; ask both for one opening deal (11 deals live — weakest number).
+
+## Sep 11 update — video-first (user: "instead of putting images, just focus on videos and make it look amazing")
+- Week 3 football VIDEO (content/social/video/week3, Arthur announcer, Huyck flyover + Brave/Conq clips, new stadium bed): TikTok 6aa493a2997881a67934d8cf (shareNow 4:49 PM PT) · IG story 5:00 PM PT 6aa493ae2ac3c81fe889316c (video replaces image story 6a9f919b, deleted).
+- Hangar 7 live music VIDEO (content/social/video/hangar7-music, their photos, new bar-band bed, no VO): TikTok Sat 5:00 PM PT 6aa493af2ac3c81fe88931a1 · IG story Sat 5:00 PM PT 6aa493b1997881a67934dab8 (replaces image story 6a9f919e, deleted).
+- Rule from here: every post is a video (memory: video-first); static cards only as fallback.

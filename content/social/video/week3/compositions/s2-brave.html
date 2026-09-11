@@ -1,0 +1,47 @@
+<template>
+  <div data-composition-id="s2-brave" data-width="1080" data-height="1920" data-duration="3.20" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
+    <style>
+      [data-composition-id="s2-brave"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
+      [data-composition-id="s2-brave"] .cine-top { top: 0; } [data-composition-id="s2-brave"] .cine-bot { bottom: 0; }
+      [data-composition-id="s2-brave"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="s2-brave"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 68%, rgba(10,6,12,0.36) 100%); }
+      [data-composition-id="s2-brave"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.08; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s2-brave"] .mark { position: absolute; top: 150px; right: 84px; width: 96px; height: auto; z-index: 40; }
+      [data-composition-id="s2-brave"] video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      [data-composition-id="s2-brave"] .wrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s2-brave"] .cover { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.08) saturate(1.12); }
+      [data-composition-id="s2-brave"] .scrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to top, rgba(20,10,23,0.92) 0%, rgba(20,10,23,0.62) 30%, rgba(20,10,23,0.0) 56%); }
+      [data-composition-id="s2-brave"] .topscrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to bottom, rgba(20,10,23,0.72) 0%, rgba(20,10,23,0.25) 22%, rgba(20,10,23,0.0) 38%); }
+      [data-composition-id="s2-brave"] .lower { position: absolute; left: 84px; right: 84px; bottom: 21%; z-index: 35; }
+      [data-composition-id="s2-brave"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 34px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-brave"] .hero { display: block; color: #fff; text-shadow: 0 6px 30px rgba(10,6,12,0.7); font-weight: 800; font-size: 132px; line-height: 0.94; letter-spacing: -6px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-brave"] .team { display: block; color: #efc618; font-weight: 800; font-size: 40px; letter-spacing: 4px; text-transform: uppercase; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-brave"] .opp { display: block; margin-top: 10px; color: #fff; font-weight: 800; font-size: 104px; line-height: 0.95; letter-spacing: -4px; text-shadow: 0 6px 30px rgba(10,6,12,0.7); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-brave"] .when { display: inline-block; margin-top: 26px; background: #efc618; color: #241629; font-weight: 800; font-size: 40px; letter-spacing: 1px; padding: 16px 28px; border-radius: 12px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-brave"] .where { display: block; margin-top: 16px; color: #fff; font-weight: 700; font-size: 34px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 4px 18px rgba(10,6,12,0.7); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-brave"] .badge { position: absolute; top: 290px; left: 84px; width: 230px; height: auto; z-index: 36; filter: drop-shadow(0 8px 22px rgba(10,6,12,0.55)); opacity: 0; will-change: transform, opacity; }
+    
+    </style>
+    <div class="stage" id="s2-brave-stage">
+      <video id="s2-brave-v" class="clip" src="public/n2-brave-ready.mp4" data-start="0" data-media-start="0.30" data-duration="3.20" data-track-index="0" muted playsinline></video>
+      <div class="scrim"></div><div class="topscrim"></div>
+      <img class="badge" id="s2-brave-badge" src="public/badge-braves.png" alt="" />
+      <div class="lower" data-layout-allow-overlap><span class="hero" id="s2-brave-h1" data-layout-allow-overlap>Two games.</span><span class="hero" id="s2-brave-h2" data-layout-allow-overlap>One town.</span></div>
+      <div class="vig"></div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
+        tl.fromTo("#s2-brave-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s2-brave-badge", { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.45 }, 0.20);
+        tl.fromTo("#s2-brave-h1", { autoAlpha: 0, scale: 1.25, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.32, ease: "expo.out" }, 0.50);
+        tl.fromTo("#s2-brave-h2", { autoAlpha: 0, scale: 1.25, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.32, ease: "expo.out" }, 1.62);
+        tl.set({}, {}, 3.20);
+        window.__timelines["s2-brave"] = tl;
+      })();
+    </script>
+  </div>
+</template>
