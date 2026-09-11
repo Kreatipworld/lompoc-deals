@@ -11,3 +11,5 @@ Blob: https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/spotlights/
 
 Buffer (shareNow, user: "Post it everywhere"): TikTok 6aa428a2531781adf63416ea · IG Reel 6aa428af531781adf634184c ·
 FB Reel 6aa428ba616ad9a7807bebce · IG Story 6aa428c6616ad9a7807beda0 (link sticker → /biz/toro-loco, utm_campaign=spotlight-toro-loco).
+
+Live: IG Reel https://www.instagram.com/reel/DdJ0HVpCbAS/ · FB Reel https://www.facebook.com/reel/1037145419146975/ · IG Story https://www.instagram.com/stories/lompoclocals_/3983944733960481252 · TikTok https://tiktok.com/@lompoclocals/video/7684313288095599885 (sent 9:22 AM PT). All four confirmed.
