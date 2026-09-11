@@ -80,12 +80,25 @@ for (const l of CONFIG.listings) {
     console.log("listing exists", dup[0].id, l.address)
     continue
   }
-  const geo = await (
-    await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(l.address)}&key=${process.env.GOOGLE_MAPS_API_KEY}`
-    )
-  ).json()
-  const loc = geo.results?.[0]?.geometry?.location ?? null
+  // Google Geocoding is not enabled on the local key; Mapbox (public token) is.
+  let loc = null
+  try {
+    const geo = await (
+      await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(l.address)}&key=${process.env.GOOGLE_MAPS_API_KEY}`
+      )
+    ).json()
+    loc = geo.results?.[0]?.geometry?.location ?? null
+  } catch {}
+  if (!loc && process.env.NEXT_PUBLIC_MAPBOX_TOKEN) {
+    const mb = await (
+      await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(l.address)}.json?limit=1&country=us&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`
+      )
+    ).json()
+    const f = mb.features?.[0]
+    if (f && f.relevance > 0.8) loc = { lat: f.center[1], lng: f.center[0] }
+  }
   const r = await sql`
     insert into property_listings (business_id, type, title, description, price_cents, beds, baths, sqft, address, image_url, status, lat, lng, expires_at)
     values (${bizId}, ${l.type}, ${l.title}, ${l.description}, ${l.priceCents}, ${l.beds}, ${l.baths}, ${l.sqft}, ${l.address}, null, 'active', ${loc?.lat ?? null}, ${loc?.lng ?? null}, now() + interval '60 days')
