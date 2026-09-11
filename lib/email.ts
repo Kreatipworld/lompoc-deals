@@ -85,6 +85,67 @@ export async function notifyPlatform(subject: string, lines: string[]): Promise<
 // ── Welcome emails ──────────────────────────────────────────────────────────
 const BRAND_PURPLE = "#650C75"
 
+/**
+ * A buyer's tour/contact request for a real-estate member. Goes to the agent
+ * (business email) with reply-to set to the buyer, hello@ always in copy so a
+ * lead is never lost; when the agent has no email yet it lands in hello@ only.
+ * Returns the Resend id, or null when nothing was sent.
+ */
+export async function sendListingLeadEmail(opts: {
+  agentEmail: string | null
+  agentName: string
+  kind: "showing" | "contact"
+  lead: { name: string; email: string; phone?: string | null; message?: string | null; preferredTime?: string | null }
+  listing: { id: number; title: string; address: string | null } | null
+  profileSlug: string
+}): Promise<string | null> {
+  const resend = getResend()
+  if (!resend) return null
+  const hello = "hello@lompoclocals.com"
+  const to = opts.agentEmail && opts.agentEmail !== hello ? opts.agentEmail : hello
+  const bcc = to === hello ? undefined : hello
+  const listingUrl = opts.listing ? siteUrl(`/listings/${opts.listing.id}`) : siteUrl(`/biz/${opts.profileSlug}`)
+  const what = opts.listing ? `${opts.listing.title}${opts.listing.address ? ` — ${opts.listing.address}` : ""}` : "your profile"
+  const subject =
+    opts.kind === "showing"
+      ? `New showing request: ${opts.listing?.title ?? "your homes"}`
+      : "New contact from Lompoc Locals"
+  const rows: string[] = [
+    `<strong>Name:</strong> ${escapeHtml(opts.lead.name)}`,
+    `<strong>Email:</strong> <a href="mailto:${escapeHtml(opts.lead.email)}">${escapeHtml(opts.lead.email)}</a>`,
+  ]
+  if (opts.lead.phone) rows.push(`<strong>Phone:</strong> ${escapeHtml(opts.lead.phone)}`)
+  if (opts.lead.preferredTime) rows.push(`<strong>Preferred time:</strong> ${escapeHtml(opts.lead.preferredTime)}`)
+  if (opts.lead.message) rows.push(`<strong>Message:</strong> ${escapeHtml(opts.lead.message)}`)
+  const html = welcomeHtml({
+    heading: opts.kind === "showing" ? "Someone wants to see a home." : "Someone wants to talk.",
+    intro:
+      opts.kind === "showing"
+        ? `A buyer on Lompoc Locals asked to tour <strong>${escapeHtml(what)}</strong>.`
+        : `A visitor on Lompoc Locals sent you a message from ${opts.listing ? `<strong>${escapeHtml(what)}</strong>` : "your agent page"}.`,
+    bulletsTitle: "Their details",
+    bullets: rows,
+    ctaLabel: opts.listing ? "Open the listing" : "Open your page",
+    ctaUrl: listingUrl,
+    closing: "Reply to this email to answer them — your reply goes straight to the buyer.",
+    signoff: "— Lompoc Locals · leads are counted in your dashboard",
+  })
+  try {
+    const res = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to,
+      ...(bcc ? { bcc } : {}),
+      replyTo: opts.lead.email,
+      subject,
+      html,
+    })
+    return res.data?.id ?? null
+  } catch (err) {
+    console.error("[email] listing lead failed:", err)
+    return null
+  }
+}
+
 function welcomeHtml(opts: {
   heading: string
   intro: string

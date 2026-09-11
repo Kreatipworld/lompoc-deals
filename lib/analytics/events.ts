@@ -25,6 +25,8 @@ export type EventName =
   | "map_click"
   | "social_click"
   | "reviews_click"
+  // A buyer asked an agent for a tour or sent a message from a home page / agent profile.
+  | "lead_created"
 
 /** Every outbound action, so a listing's real-world referrals can be counted in one query. */
 export const OUTBOUND_EVENTS = [
@@ -63,6 +65,7 @@ export interface EventProps {
   map_click: { slug: string; category?: string }
   social_click: { slug: string; category?: string; detail?: string }
   reviews_click: { slug: string; category?: string }
+  lead_created: { slug: string; kind: "showing" | "contact"; listingId?: number }
 }
 
 export type EventPropsFor<N extends EventName> = EventProps[N]

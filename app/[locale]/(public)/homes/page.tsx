@@ -2,8 +2,9 @@ import type { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { ArrowRight, KeyRound } from "lucide-react"
-import { getAllRealEstateListings } from "@/lib/queries"
+import { getAllRealEstateListings, getFeaturedAgents } from "@/lib/queries"
 import { PropertyListingCard } from "@/components/property-listing-card"
+import { SafeImage } from "@/components/safe-image"
 import { HomesMap, type HomePin } from "@/components/homes-map"
 import { pageAlternates } from "@/lib/seo"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
@@ -30,9 +31,10 @@ export default async function HomesPage({
 }) {
   const activeTab = searchParams?.tab === "rent" || searchParams?.tab === "sale" ? searchParams.tab : undefined
   const tab = activeTab === "rent" ? "for-rent" : activeTab === "sale" ? "for-sale" : undefined
-  const [t, listings] = await Promise.all([
+  const [t, listings, featuredAgents] = await Promise.all([
     getTranslations({ locale: params.locale, namespace: "homes" }),
     getAllRealEstateListings(tab),
+    getFeaturedAgents(3),
   ])
   const pins: HomePin[] = listings
     .filter((l) => l.lat != null && l.lng != null)
@@ -51,6 +53,55 @@ export default async function HomesPage({
     <div className="h-full w-full overflow-hidden rounded-[20px] border border-border/80" aria-label={t("mapAria")}>
       <HomesMap homes={pins} labels={{ forSale: t("tabSale"), forRent: t("tabRent") }} />
     </div>
+  )
+
+  // Featured agents: included with Plus while we test. Hidden when none.
+  const rail = featuredAgents.length > 0 && (
+    <section className={`${PAGE_CONTAINER} pt-8`} data-featured="rail">
+      <div className="flex items-baseline justify-between">
+        <h2 className="font-display text-lg font-semibold tracking-tight">{t("featuredAgentsTitle")}</h2>
+        <p className="hidden text-sm text-muted-foreground sm:block">{t("featuredAgentsSub")}</p>
+      </div>
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {featuredAgents.map((a) => {
+          const [agentName, brokerage] = a.name.split(" · ").map((s) => s.trim())
+          const avatar = a.logoUrl ?? a.coverUrl
+          return (
+            <div key={a.id} className="flex items-center gap-4 rounded-[20px] border border-border/80 bg-card px-4 py-4">
+              {avatar ? (
+                <SafeImage
+                  src={avatar}
+                  alt={agentName}
+                  className="h-14 w-14 flex-shrink-0 rounded-xl object-cover ring-1 ring-black/[0.06]"
+                  fallback={<div className="h-14 w-14 flex-shrink-0 rounded-xl bg-primary/[0.08]" />}
+                />
+              ) : (
+                <div className="h-14 w-14 flex-shrink-0 rounded-xl bg-primary/[0.08]" />
+              )}
+              <div className="min-w-0 flex-1">
+                <Link href={`/biz/${a.slug}`} className="block truncate font-display text-base font-semibold leading-tight hover:underline">
+                  {agentName}
+                </Link>
+                <p className="truncate text-xs text-muted-foreground">
+                  {brokerage ? `${brokerage} · ` : ""}
+                  {a.homes === 1 ? t("featuredHomesOne", { count: 1 }) : t("featuredHomesMany", { count: a.homes })}
+                </p>
+                <div className="mt-1.5 flex items-center gap-3 text-xs">
+                  {a.phone && (
+                    <a href={`tel:${a.phone.replace(/[^\d+]/g, "")}`} className="font-medium hover:text-primary">
+                      {a.phone}
+                    </a>
+                  )}
+                  <Link href={`/biz/${a.slug}`} className="font-medium text-primary underline-offset-4 hover:underline">
+                    {t("featuredView")}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </section>
   )
 
   return (
@@ -83,6 +134,8 @@ export default async function HomesPage({
         </div>
       </div>
 
+      {rail}
+
       <section className={`${PAGE_CONTAINER} pt-8`}>
         {listings.length === 0 ? (
           <div className="rounded-[20px] border border-dashed px-6 py-16 text-center">
@@ -101,8 +154,9 @@ export default async function HomesPage({
         ) : (
           <div className={hasMap ? "grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,45%)_minmax(0,1fr)] lg:gap-10" : ""}>
             {/* Map: above the list on the phone, a sticky left pane on desktop */}
+            {/* Capped so one listing never renders a page-tall grey column; the list defines page height. */}
             {hasMap && (
-              <div className="h-[300px] lg:sticky lg:top-[7.5rem] lg:h-[calc(100vh-9rem)] lg:self-start">{map}</div>
+              <div className="h-[300px] lg:sticky lg:top-[7.5rem] lg:h-[min(calc(100vh-200px),640px)] lg:self-start">{map}</div>
             )}
             <div
               aria-label={t("listAria")}

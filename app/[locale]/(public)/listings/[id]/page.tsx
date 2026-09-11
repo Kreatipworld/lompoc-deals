@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { ArrowLeft, ArrowRight, Store } from "lucide-react"
-import { getAllRealEstateListings, getListingById } from "@/lib/queries"
+import { getAllRealEstateListings, getFeaturedAgents, getListingById, isFeaturedAgent } from "@/lib/queries"
 import { BusinessMapLoader } from "@/components/business-map-loader"
 import { SafeImage } from "@/components/safe-image"
+import { LeadForm } from "@/components/lead-form"
 import {
   PhotoPlaceholder,
   PropertyListingCard,
@@ -77,18 +78,20 @@ export default async function ListingPage({
           : []
 
   // More homes: the rest of the live market, newest first.
-  const moreHomes = (await getAllRealEstateListings(undefined, 4)).filter((l) => l.id !== listing.id).slice(0, 3)
+  const [moreHomesAll, agentFeatured, featuredAgents] = await Promise.all([
+    getAllRealEstateListings(undefined, 4),
+    isFeaturedAgent(listing.business.id),
+    getFeaturedAgents(3),
+  ])
+  const moreHomes = moreHomesAll.filter((l) => l.id !== listing.id).slice(0, 3)
+  // On another agent's home, one featured agent gets a quiet card (rotates by listing id).
+  const otherFeatured = featuredAgents.filter((a) => a.id !== listing.business.id)
+  const featuredPick = otherFeatured.length ? otherFeatured[listing.id % otherFeatured.length] : null
 
   // Agent card, same shape as the profile sidebar.
   const [agentName, brokerage] = listing.business.name.split(" · ").map((s) => s.trim())
   const avatar = listing.business.logoUrl ?? listing.business.coverUrl ?? null
-  const contactEmail =
-    listing.business.email && !listing.business.email.endsWith("lompocdeals.system") ? listing.business.email : null
   const tel = listing.business.phone ? `tel:${listing.business.phone.replace(/[^\d+]/g, "")}` : null
-  const showingHref = contactEmail
-    ? `mailto:${contactEmail}?subject=${encodeURIComponent(t("showingSubject", { address: listing.address ?? listing.title }))}`
-    : tel
-  const contactHref = tel ?? showingHref
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -128,7 +131,14 @@ export default async function ListingPage({
           </div>
         )}
         <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{t("listedByLabel")}</p>
+          <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+            {t("listedByLabel")}
+            {agentFeatured && (
+              <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold tracking-wide text-gold-foreground" data-featured="agent">
+                {t("featuredChip")}
+              </span>
+            )}
+          </p>
           <Link href={`/biz/${listing.business.slug}`} className="block truncate font-display text-base font-semibold leading-tight hover:underline">
             {agentName}
           </Link>
@@ -153,18 +163,50 @@ export default async function ListingPage({
         )}
       </div>
       <div className="flex flex-col gap-2 border-t px-5 py-4">
-        {showingHref && (
-          <a
-            href={showingHref}
-            className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-          >
-            {t("requestShowing")}
-          </a>
-        )}
+        <LeadForm
+          businessId={listing.business.id}
+          listingId={listing.id}
+          kind="showing"
+          label={t("requestShowing")}
+          agentName={agentName}
+          className="w-full"
+        />
         <Link href={`/biz/${listing.business.slug}`} className="text-center text-sm text-muted-foreground underline-offset-4 hover:underline">
           {t("viewBrokerage")}
         </Link>
       </div>
+    </div>
+  )
+
+  // Another Lompoc agent, featured (included with Plus), shown only on homes that are not theirs.
+  const featuredCard = featuredPick && (
+    <div className="mt-4 rounded-[20px] border border-border/80 bg-card px-5 py-4" data-featured="card">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{t("featuredAgentTitle")}</p>
+      <div className="mt-3 flex items-center gap-3">
+        {featuredPick.logoUrl || featuredPick.coverUrl ? (
+          <SafeImage
+            src={(featuredPick.logoUrl ?? featuredPick.coverUrl)!}
+            alt={featuredPick.name.split(" · ")[0]}
+            className="h-12 w-12 flex-shrink-0 rounded-xl object-cover ring-1 ring-black/[0.06]"
+            fallback={<div className="h-12 w-12 flex-shrink-0 rounded-xl bg-primary/[0.08]" />}
+          />
+        ) : (
+          <div className="h-12 w-12 flex-shrink-0 rounded-xl bg-primary/[0.08]" />
+        )}
+        <div className="min-w-0">
+          <Link href={`/biz/${featuredPick.slug}`} className="block truncate font-display text-sm font-semibold hover:underline">
+            {featuredPick.name.split(" · ")[0]}
+          </Link>
+          <p className="truncate text-xs text-muted-foreground">
+            {featuredPick.name.split(" · ")[1] ?? ""}
+            {featuredPick.name.includes(" · ") ? " · " : ""}
+            {featuredPick.homes === 1 ? t("featuredAgentHomesOne", { count: 1 }) : t("featuredAgentHomes", { count: featuredPick.homes })}
+          </p>
+        </div>
+      </div>
+      <Link href={`/biz/${featuredPick.slug}`} className="mt-3 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline">
+        {t("viewProfile")}
+      </Link>
     </div>
   )
 
@@ -247,24 +289,17 @@ export default async function ListingPage({
               )}
               {listing.address && <p className="mt-1 text-base text-muted-foreground">{listing.address}</p>}
 
-              {/* Contact row */}
+              {/* Contact row: the listing page owns the buyer — both go to the agent as counted leads */}
               <div className="mt-6 flex flex-wrap gap-2">
-                {showingHref && (
-                  <a
-                    href={showingHref}
-                    className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-                  >
-                    {t("requestShowing")}
-                  </a>
-                )}
-                {contactHref && (
-                  <a
-                    href={contactHref}
-                    className="inline-flex items-center justify-center rounded-full border border-border/80 bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition hover:border-foreground/30"
-                  >
-                    {t("contactAgentBtn")}
-                  </a>
-                )}
+                <LeadForm businessId={listing.business.id} listingId={listing.id} kind="showing" label={t("requestShowing")} agentName={agentName} />
+                <LeadForm
+                  businessId={listing.business.id}
+                  listingId={listing.id}
+                  kind="contact"
+                  label={t("contactAgentBtn")}
+                  agentName={agentName}
+                  variant="secondary"
+                />
               </div>
             </header>
 
@@ -305,11 +340,17 @@ export default async function ListingPage({
             )}
 
             {/* Listed by, inline on the phone (the sidebar carries it on desktop) */}
-            <div className="mt-12 lg:hidden">{agentCard}</div>
+            <div className="mt-12 lg:hidden">
+              {agentCard}
+              {featuredCard}
+            </div>
           </article>
 
-          {/* SIDEBAR — agent card */}
-          <aside className="hidden lg:sticky lg:top-24 lg:block lg:self-start">{agentCard}</aside>
+          {/* SIDEBAR — agent card (+ one featured agent when this home is not theirs) */}
+          <aside className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
+            {agentCard}
+            {featuredCard}
+          </aside>
         </div>
       </section>
 

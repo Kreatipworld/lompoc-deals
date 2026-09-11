@@ -900,6 +900,7 @@
       "kpiClaims": "Reclamos de ofertas",
       "kpiRedeems": "Canjeadas",
       "kpiSignups": "Registros nuevos",
+      "kpiLeads": "Contactos de casas",
       "trendTitle": "Tendencia diaria",
       "trendSub": "Visitas reales y vistas de ofertas ({window}).",
       "seriesVisits": "Visitas reales",
@@ -1302,6 +1303,7 @@
       "homesByEmail": "Recibe las nuevas casas de Lompoc por correo.",
       "homesByEmailCta": "Únete al resumen del lunes",
       "aboutAgent": "Acerca de {name}",
+      "featuredAgent": "Agente destacado",
       "metaFallbackDescription": "Descubre las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
       "metaOgFallback": "Ofertas actuales de {name} en Lompoc, CA. Gratis para canjear.",
       "breadcrumbHome": "Ofertas",
@@ -1471,7 +1473,12 @@
     "homeSubheading": "Las casas más recientes en venta y en renta, publicadas por agentes locales.",
     "homeSeeAll": "Ver todas las casas",
     "listAria": "Lista de casas",
-    "mapAria": "Mapa de casas"
+    "mapAria": "Mapa de casas",
+    "featuredAgentsTitle": "Agentes destacados",
+    "featuredAgentsSub": "Agentes de Lompoc con casas en el mercado ahora mismo.",
+    "featuredHomesOne": "{count} casa",
+    "featuredHomesMany": "{count} casas",
+    "featuredView": "Ver perfil"
   },
   "propertyCard": {
     "forSale": "En venta",
@@ -1856,6 +1863,14 @@
   },
   "dashboardProperties": {
     "title": "Propiedades",
+    "leadsTitle": "Contactos",
+    "leadsSub": "Compradores que pidieron una visita o te escribieron desde tus casas y tu página.",
+    "leadsLast30": "Últimos 30 días",
+    "leadsAllTime": "Total",
+    "leadsEmpty": "Aún no hay contactos. Cada solicitud de visita y mensaje desde tus casas llega aquí y a tu correo.",
+    "leadKindShowing": "Solicitud de visita",
+    "leadKindContact": "Mensaje",
+    "leadFromPage": "Desde tu página",
     "subtitle": "Administra tus listados de bienes raíces en Lompoc Locals.",
     "addListing": "Agregar listado",
     "noBusiness": "Necesitas crear un perfil de negocio antes de agregar propiedades.",
@@ -2136,6 +2151,23 @@
     "digestConfirmSentBanner": "Confirmación enviada — revisa tu correo para terminar de suscribirte.",
     "digestOffBanner": "Ya no recibirás el resumen semanal."
   },
+  "leadForm": {
+    "titleShowing": "Solicitar una visita",
+    "titleContact": "Contactar al agente",
+    "goesTo": "Le llega directo a {name}. Responde por correo.",
+    "close": "Cerrar",
+    "name": "Tu nombre",
+    "email": "Tu correo",
+    "phone": "Teléfono (opcional)",
+    "preferredTime": "Día y hora preferidos (opcional)",
+    "messageShowing": "¿Algo que el agente deba saber? (opcional)",
+    "messageContact": "Tu mensaje (opcional)",
+    "submitShowing": "Enviar solicitud de visita",
+    "submitContact": "Enviar mensaje",
+    "sending": "Enviando…",
+    "sent": "Enviado a {name}. Te responderá por correo.",
+    "privacy": "Tus datos solo llegan a este agente y a Lompoc Locals."
+  },
   "listing": {
     "metaTitleSuffix": "",
     "metaNotFound": "Listado no encontrado",
@@ -2178,7 +2210,12 @@
     "factBaths": "Baños",
     "factStatus": "Estado",
     "factOpenHouse": "Casa abierta",
-    "listedByLabel": "Publicado por"
+    "listedByLabel": "Publicado por",
+    "featuredChip": "Agente destacado",
+    "featuredAgentTitle": "Agente destacado en Lompoc",
+    "featuredAgentHomes": "{count} casas en el mercado",
+    "featuredAgentHomesOne": "{count} casa en el mercado",
+    "viewProfile": "Ver perfil"
   },
   "hotelDetail": {
     "allHotels": "Todos los hoteles",

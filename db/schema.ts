@@ -260,6 +260,27 @@ export const propertyListings = pgTable("property_listings", {
     .defaultNow(),
 })
 
+// ---------- listing leads (real estate) ----------
+// A buyer's tour or contact request from a home page or an agent profile. The
+// agent gets it by email (hello@ copied) and the dashboard counts it — leads are
+// the number a Plus real-estate member is buying.
+export const listingLeads = pgTable("listing_leads", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id")
+    .notNull()
+    .references(() => businesses.id, { onDelete: "cascade" }),
+  listingId: integer("listing_id").references(() => propertyListings.id, { onDelete: "set null" }),
+  kind: varchar("kind", { length: 16 }).notNull().default("contact"), // 'showing' | 'contact'
+  name: varchar("name", { length: 200 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  message: text("message"),
+  preferredTime: varchar("preferred_time", { length: 200 }),
+  sourcePath: varchar("source_path", { length: 300 }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  emailedAt: timestamp("emailed_at", { withTimezone: true }),
+})
+
 // ---------- business claims ----------
 export const businessClaims = pgTable("business_claims", {
   id: serial("id").primaryKey(),

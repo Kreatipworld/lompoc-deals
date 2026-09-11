@@ -116,6 +116,7 @@ const DEFAULT_KPIS: PlatformKpis = {
   claims: 0,
   redeems: 0,
   signups: 0,
+  leads: 0,
 }
 
 function settled<T>(r: PromiseSettledResult<T>, fallback: T): T {
@@ -611,6 +612,12 @@ export default async function AdminPage({
             icon={<UserPlus className="h-3.5 w-3.5" />}
             label={t("kpiSignups")}
             value={kpis.signups}
+            sub={windowLabel}
+          />
+          <StatTile
+            icon={<Mail className="h-3.5 w-3.5" />}
+            label={t("kpiLeads")}
+            value={kpis.leads}
             sub={windowLabel}
           />
         </div>

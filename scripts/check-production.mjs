@@ -301,6 +301,19 @@ if (!process.env.CRON_SECRET) {
   }
 }
 
+// ── 10. the listing page owns the buyer ──────────────────────────────────────
+// Sep 11 2026: tour/contact requests are counted leads (listing_leads) and Plus
+// real-estate members are featured. Listing 50 is the first realtor's home.
+console.log("\n10. Home page: lead form + featured agent")
+try {
+  const html = await fetch(`${SITE}/listings/50`, { cache: "no-store" }).then((r) => r.text())
+  html.includes('data-lead="showing"') ? pass("/listings/50 has the Request a tour lead button") : fail("/listings/50 is missing the tour lead button (data-lead=showing)")
+  html.includes('data-lead="contact"') ? pass("/listings/50 has the Contact agent lead button") : fail("/listings/50 is missing the contact lead button")
+  html.includes('data-featured="agent"') ? pass("/listings/50 shows the Featured agent chip") : fail("/listings/50 has no Featured agent chip (Plus real-estate member expected)")
+  const homes = await fetch(`${SITE}/homes`, { cache: "no-store" }).then((r) => r.text())
+  homes.includes('data-featured="rail"') ? pass("/homes shows the Featured agents rail") : fail("/homes has no Featured agents rail")
+} catch (e) { fail(`leads/featured: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

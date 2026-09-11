@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, gte, inArray, ne, or, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions } from "@/db/schema"
+import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions, listingLeads } from "@/db/schema"
 import { looseLike } from "@/lib/search-match"
 import { effectiveTier } from "@/lib/tier"
 import { weightedSlots } from "@/lib/featured-rotation"
@@ -580,6 +580,96 @@ export async function getListingById(id: number) {
       instagramUrl: r.bizInstagram,
     },
   }
+}
+
+// ---------- featured agents (real estate) ----------
+// Included with Plus while we test: an approved real-estate business whose
+// effective tier is Plus is a "featured agent". Newest Plus member first.
+export type FeaturedAgent = {
+  id: number
+  name: string
+  slug: string
+  phone: string | null
+  logoUrl: string | null
+  coverUrl: string | null
+  homes: number
+}
+
+export async function getFeaturedAgents(limit = 3): Promise<FeaturedAgent[]> {
+  const rows = await db
+    .select({
+      id: businesses.id,
+      name: businesses.name,
+      slug: businesses.slug,
+      phone: businesses.phone,
+      logoUrl: businesses.logoUrl,
+      coverUrl: businesses.coverUrl,
+      createdAt: businesses.createdAt,
+      rank: sql<number>`max(${tierRank})::int`,
+      homes: sql<number>`count(distinct ${propertyListings.id}) filter (where ${propertyListings.status} = 'active' and (${propertyListings.expiresAt} is null or ${propertyListings.expiresAt} > now()))::int`,
+    })
+    .from(businesses)
+    .innerJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
+    .leftJoin(propertyListings, eq(propertyListings.businessId, businesses.id))
+    .where(and(eq(businesses.status, "approved"), eq(categories.slug, "real-estate")))
+    .groupBy(businesses.id)
+    .having(sql`max(${tierRank}) >= 2`)
+    .orderBy(desc(businesses.createdAt))
+    .limit(limit)
+  return rows.map((r) => ({ id: r.id, name: r.name, slug: r.slug, phone: r.phone, logoUrl: r.logoUrl, coverUrl: r.coverUrl, homes: r.homes }))
+}
+
+export async function isFeaturedAgent(businessId: number): Promise<boolean> {
+  const rows = await db
+    .select({ rank: sql<number>`max(${tierRank})::int` })
+    .from(businesses)
+    .innerJoin(categories, eq(businesses.categoryId, categories.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, businesses.ownerUserId))
+    .where(and(eq(businesses.id, businessId), eq(businesses.status, "approved"), eq(categories.slug, "real-estate")))
+    .groupBy(businesses.id)
+  return (rows[0]?.rank ?? 0) >= 2
+}
+
+// ---------- listing leads (owner dashboard) ----------
+export type LeadRow = {
+  id: number
+  kind: string
+  name: string
+  email: string
+  phone: string | null
+  message: string | null
+  listingTitle: string | null
+  createdAt: Date
+}
+
+export async function getListingLeadStats(businessId: number): Promise<{ last30: number; allTime: number; recent: LeadRow[] }> {
+  const [counts, recent] = await Promise.all([
+    db
+      .select({
+        last30: sql<number>`count(*) filter (where ${listingLeads.createdAt} > now() - interval '30 days')::int`,
+        allTime: sql<number>`count(*)::int`,
+      })
+      .from(listingLeads)
+      .where(eq(listingLeads.businessId, businessId)),
+    db
+      .select({
+        id: listingLeads.id,
+        kind: listingLeads.kind,
+        name: listingLeads.name,
+        email: listingLeads.email,
+        phone: listingLeads.phone,
+        message: listingLeads.message,
+        listingTitle: propertyListings.title,
+        createdAt: listingLeads.createdAt,
+      })
+      .from(listingLeads)
+      .leftJoin(propertyListings, eq(listingLeads.listingId, propertyListings.id))
+      .where(eq(listingLeads.businessId, businessId))
+      .orderBy(desc(listingLeads.createdAt))
+      .limit(10),
+  ])
+  return { last30: counts[0]?.last30 ?? 0, allTime: counts[0]?.allTime ?? 0, recent }
 }
 
 export type MapBusiness = {

@@ -900,6 +900,7 @@
       "kpiClaims": "Deal claims",
       "kpiRedeems": "Redeemed",
       "kpiSignups": "New signups",
+      "kpiLeads": "Home leads",
       "trendTitle": "Daily trend",
       "trendSub": "Engaged visits and deal views ({window}).",
       "seriesVisits": "Engaged visits",
@@ -1302,6 +1303,7 @@
       "homesByEmail": "Get new Lompoc homes by email.",
       "homesByEmailCta": "Join the Monday digest",
       "aboutAgent": "About {name}",
+      "featuredAgent": "Featured agent",
       "metaFallbackDescription": "Browse current deals and coupons from {name}, a {catLabel} in Lompoc, CA. Updated directly by the business.",
       "metaOgFallback": "Current deals from {name} in Lompoc, CA.",
       "breadcrumbHome": "Deals",
@@ -1471,7 +1473,12 @@
     "homeSubheading": "The newest homes for sale and for rent, listed by local agents.",
     "homeSeeAll": "See all homes",
     "listAria": "Homes list",
-    "mapAria": "Map of homes"
+    "mapAria": "Map of homes",
+    "featuredAgentsTitle": "Featured agents",
+    "featuredAgentsSub": "Lompoc agents with homes on the market right now.",
+    "featuredHomesOne": "{count} home",
+    "featuredHomesMany": "{count} homes",
+    "featuredView": "View profile"
   },
   "propertyCard": {
     "forSale": "For sale",
@@ -1856,6 +1863,14 @@
   },
   "dashboardProperties": {
     "title": "Properties",
+    "leadsTitle": "Leads",
+    "leadsSub": "Buyers who asked for a tour or sent you a message from your homes and your page.",
+    "leadsLast30": "Last 30 days",
+    "leadsAllTime": "All time",
+    "leadsEmpty": "No leads yet. Every tour request and message from your listings lands here and in your inbox.",
+    "leadKindShowing": "Tour request",
+    "leadKindContact": "Message",
+    "leadFromPage": "From your page",
     "subtitle": "Manage your real estate listings on Lompoc Locals.",
     "addListing": "Add listing",
     "noBusiness": "You need to create a business profile before adding property listings.",
@@ -2136,6 +2151,23 @@
     "digestConfirmSentBanner": "Confirmation sent — check your inbox to finish subscribing.",
     "digestOffBanner": "You're off the weekly digest list."
   },
+  "leadForm": {
+    "titleShowing": "Request a tour",
+    "titleContact": "Contact the agent",
+    "goesTo": "Goes straight to {name}. They reply by email.",
+    "close": "Close",
+    "name": "Your name",
+    "email": "Your email",
+    "phone": "Phone (optional)",
+    "preferredTime": "Preferred day and time (optional)",
+    "messageShowing": "Anything the agent should know? (optional)",
+    "messageContact": "Your message (optional)",
+    "submitShowing": "Send tour request",
+    "submitContact": "Send message",
+    "sending": "Sending…",
+    "sent": "Sent to {name}. They'll reply by email.",
+    "privacy": "Your details go only to this agent and Lompoc Locals."
+  },
   "listing": {
     "metaTitleSuffix": "",
     "metaNotFound": "Listing not found",
@@ -2178,7 +2210,12 @@
     "factBaths": "Bathrooms",
     "factStatus": "Status",
     "factOpenHouse": "Open house",
-    "listedByLabel": "Listed by"
+    "listedByLabel": "Listed by",
+    "featuredChip": "Featured agent",
+    "featuredAgentTitle": "Featured agent in Lompoc",
+    "featuredAgentHomes": "{count} homes on the market",
+    "featuredAgentHomesOne": "{count} home on the market",
+    "viewProfile": "View profile"
   },
   "hotelDetail": {
     "allHotels": "All hotels",

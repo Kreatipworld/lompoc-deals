@@ -47,7 +47,8 @@ async function priorWeekKpis(): Promise<PlatformKpis> {
         (SELECT COUNT(*)::int FROM analytics_events, win WHERE event_name = ANY(${OUTBOUND_ARRAY}) AND created_at > win.a AND created_at <= win.b) AS actions,
         (SELECT COUNT(*)::int FROM analytics_events, win WHERE event_name = 'deal_claim' AND created_at > win.a AND created_at <= win.b) AS claims,
         (SELECT COUNT(*)::int FROM coupon_claims, win WHERE status = 'redeemed' AND redeemed_at > win.a AND redeemed_at <= win.b) AS redeems,
-        (SELECT COUNT(*)::int FROM users, win WHERE created_at > win.a AND created_at <= win.b) AS signups
+        (SELECT COUNT(*)::int FROM users, win WHERE created_at > win.a AND created_at <= win.b) AS signups,
+        (SELECT COUNT(*)::int FROM listing_leads, win WHERE created_at > win.a AND created_at <= win.b) AS leads
     `)
   )
   return {
@@ -58,6 +59,7 @@ async function priorWeekKpis(): Promise<PlatformKpis> {
     actions: Number(r?.actions ?? 0),
     claims: Number(r?.claims ?? 0),
     redeems: Number(r?.redeems ?? 0),
+    leads: Number(r?.leads ?? 0),
     signups: Number(r?.signups ?? 0),
   }
 }

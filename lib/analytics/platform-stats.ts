@@ -43,6 +43,8 @@ export interface PlatformKpis {
   claims: number
   redeems: number
   signups: number
+  /** Tour/contact requests sent to real-estate members (listing_leads). */
+  leads: number
 }
 
 export async function platformKpis(window: FunnelWindow): Promise<PlatformKpis> {
@@ -62,7 +64,8 @@ export async function platformKpis(window: FunnelWindow): Promise<PlatformKpis> 
         (SELECT COUNT(*)::int FROM analytics_events WHERE event_name = ANY(${sql.raw(`ARRAY[${OUTBOUND_EVENTS.map((e) => `'${e}'`).join(",")}]`)}) AND ${since(d)}) AS actions,
         (SELECT COUNT(*)::int FROM analytics_events WHERE event_name = 'deal_claim' AND ${since(d)}) AS claims,
         (SELECT COUNT(*)::int FROM coupon_claims WHERE status = 'redeemed' AND ${since(d, sql`redeemed_at`)}) AS redeems,
-        (SELECT COUNT(*)::int FROM users WHERE ${since(d)}) AS signups
+        (SELECT COUNT(*)::int FROM users WHERE ${since(d)}) AS signups,
+        (SELECT COUNT(*)::int FROM listing_leads WHERE ${since(d)}) AS leads
     `)
   )
   return {
@@ -74,6 +77,7 @@ export async function platformKpis(window: FunnelWindow): Promise<PlatformKpis> 
     claims: Number(r?.claims ?? 0),
     redeems: Number(r?.redeems ?? 0),
     signups: Number(r?.signups ?? 0),
+    leads: Number(r?.leads ?? 0),
   }
 }
 

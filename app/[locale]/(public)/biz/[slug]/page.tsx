@@ -40,6 +40,7 @@ import { BusinessPhotoGallery } from "@/components/business-photo-gallery"
 import { BusinessAbout } from "@/components/business-about"
 import { OutboundLink } from "@/components/outbound-link"
 import { SafeImage } from "@/components/safe-image"
+import { LeadForm } from "@/components/lead-form"
 import { Reveal } from "@/components/motion/reveal"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
@@ -253,13 +254,6 @@ export default async function BusinessPage({
             const [agentName, brokerage] = business.name.split(" · ").map((s) => s.trim())
             const avatar = business.logoUrl ?? business.coverUrl ?? null
             const licensedMatch = (business.about ?? "").match(/licensed since (\d{4})/i)
-            const contactEmail =
-              business.ownerEmail && !business.ownerEmail.endsWith("lompocdeals.system") ? business.ownerEmail : null
-            const contactHref = contactEmail
-              ? `mailto:${contactEmail}?subject=${encodeURIComponent(t("requestShowingSubject", { name: agentName }))}`
-              : business.phone
-                ? `tel:${business.phone.replace(/[^\d+]/g, "")}`
-                : null
             return (
               <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
                 <div className="flex-shrink-0">
@@ -278,9 +272,14 @@ export default async function BusinessPage({
                 </div>
                 <div className="min-w-0 flex-1">
                   {business.effectiveTier !== "free" && (
-                    <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+                    <span className="mb-3 mr-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
                       <BadgeCheck className="h-3.5 w-3.5" />
                       {tsp("officialPartnerGeneric")}
+                    </span>
+                  )}
+                  {business.effectiveTier === "premium" && (
+                    <span className="mb-3 inline-flex items-center rounded-full bg-gold px-3 py-1 text-xs font-bold uppercase tracking-wide text-gold-foreground" data-featured="agent">
+                      {t("featuredAgent")}
                     </span>
                   )}
                   <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{agentName}</h1>
@@ -296,14 +295,8 @@ export default async function BusinessPage({
 
                   {/* Contact row */}
                   <div className="mt-5 flex flex-wrap items-center gap-2">
-                    {contactHref && (
-                      <a
-                        href={contactHref}
-                        className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-                      >
-                        {t("agentContact")}
-                      </a>
-                    )}
+                    {/* Contact = a counted lead (emailed to the agent, hello@ copied), not a bare mailto. */}
+                    <LeadForm businessId={business.id} kind="contact" label={t("agentContact")} agentName={agentName} />
                     {business.phone && (
                       <OutboundLink
                         action="phone_click"

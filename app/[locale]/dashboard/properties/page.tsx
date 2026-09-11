@@ -4,8 +4,9 @@ import { TIERS } from "@/lib/stripe"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
 import { getMyBusiness, getMyProperties, deletePropertyAction, renewPropertyAction } from "@/lib/biz-actions"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { Building2, Plus, Lock, Zap, Bed, Bath, Maximize, MapPin, Pencil, CalendarClock, RefreshCw } from "lucide-react"
+import { Building2, Plus, Lock, Zap, Bed, Bath, Maximize, MapPin, Pencil, CalendarClock, RefreshCw, Mail } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import { getListingLeadStats } from "@/lib/queries"
 
 export const metadata = { title: "Properties" }
 
@@ -27,6 +28,7 @@ export default async function PropertiesPage() {
   }
 
   const [biz, listings] = await Promise.all([getMyBusiness(), getMyProperties()])
+  const leads = biz ? await getListingLeadStats(biz.id) : null
 
   return (
     <div className="space-y-6">
@@ -47,6 +49,51 @@ export default async function PropertiesPage() {
           </Link>
         )}
       </header>
+
+      {/* Leads — the number a real-estate member is buying: every tour request and message, counted. */}
+      {leads && (
+        <section className="rounded-3xl border bg-card p-6 shadow-sm">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="flex items-center gap-2 font-display text-xl font-semibold tracking-tight">
+                <Mail className="h-4 w-4 text-primary" />
+                {t("leadsTitle")}
+              </h2>
+              <p className="mt-1 max-w-xl text-xs text-muted-foreground">{t("leadsSub")}</p>
+            </div>
+            <div className="flex gap-6">
+              <div>
+                <div className="font-display text-3xl font-semibold tabular-nums">{leads.last30}</div>
+                <div className="text-xs text-muted-foreground">{t("leadsLast30")}</div>
+              </div>
+              <div>
+                <div className="font-display text-3xl font-semibold tabular-nums">{leads.allTime}</div>
+                <div className="text-xs text-muted-foreground">{t("leadsAllTime")}</div>
+              </div>
+            </div>
+          </div>
+          {leads.recent.length === 0 ? (
+            <p className="mt-4 text-sm text-muted-foreground">{t("leadsEmpty")}</p>
+          ) : (
+            <ul className="mt-4 divide-y">
+              {leads.recent.map((l) => (
+                <li key={l.id} className="flex flex-wrap items-baseline justify-between gap-2 py-2.5 text-sm">
+                  <div className="min-w-0">
+                    <span className="font-medium">{l.name}</span>
+                    <span className="text-muted-foreground"> · {l.kind === "showing" ? t("leadKindShowing") : t("leadKindContact")}</span>
+                    <span className="text-muted-foreground"> · {l.listingTitle ?? t("leadFromPage")}</span>
+                    {l.message && <p className="mt-0.5 truncate text-xs text-muted-foreground">{l.message}</p>}
+                  </div>
+                  <div className="flex items-center gap-3 text-xs">
+                    <a href={`mailto:${l.email}`} className="font-medium text-primary hover:underline">{l.email}</a>
+                    <span className="text-muted-foreground tabular-nums">{l.createdAt.toLocaleDateString()}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
 
       {!biz ? (
         <div className="rounded-3xl border border-dashed bg-muted/30 px-6 py-12 text-center">
