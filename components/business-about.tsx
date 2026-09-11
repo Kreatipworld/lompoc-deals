@@ -40,10 +40,13 @@ export async function BusinessAbout({
   about,
   amenities,
   source,
+  title,
 }: {
   about: string | null
   amenities: string[] | null
   source: { about: string | null; amenities: string | null }
+  /** Optional heading override (real-estate profiles say "About <agent>" instead of "About this place"). */
+  title?: string
 }) {
   const t = await getTranslations("businesses.profile")
   const tAmenity = await getTranslations("businesses.amenities")
@@ -65,7 +68,7 @@ export async function BusinessAbout({
         {hasAbout && (
           <div className="space-y-2">
             <h2 className="font-display text-xl font-semibold tracking-tight">
-              {t("aboutTitle")}
+              {title ?? t("aboutTitle")}
             </h2>
             <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground sm:text-base">
               {about}

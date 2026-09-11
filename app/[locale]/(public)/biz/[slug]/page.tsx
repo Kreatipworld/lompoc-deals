@@ -366,7 +366,7 @@ export default async function BusinessPage({
               {/* Mobile vendors, home-based and PO-box businesses have no public
                   address. Say so plainly rather than leaving a gap that reads as
                   an incomplete listing — and point at where they can be found. */}
-              {!business.address && (
+              {!business.address && !isRealEstate && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1.5 text-xs text-foreground">
                   <MapPin className="h-3.5 w-3.5 text-primary" />
                   {t("mobileBusiness")}
@@ -450,6 +450,7 @@ export default async function BusinessPage({
           about={business.about}
           amenities={business.amenitiesJson as string[] | null}
           source={{ about: business.aboutSource, amenities: business.amenitiesSource }}
+          title={isRealEstate ? t("aboutAgent", { name: business.name.split(" · ")[0].trim() }) : undefined}
         />
       </div>
 
@@ -471,7 +472,17 @@ export default async function BusinessPage({
               </div>
             )}
             {isRealEstate ? (
-              <PropertyListingGrid listings={listings} />
+              <>
+                <PropertyListingGrid listings={listings} />
+                {/* Real-estate interest hook: the Monday digest already carries a Homes
+                    section, so "new homes by email" is the existing subscribe page. */}
+                <p className="mt-4 text-sm text-muted-foreground">
+                  {t("homesByEmail")}{" "}
+                  <Link href="/subscribe" className="font-semibold text-primary underline-offset-4 hover:underline">
+                    {t("homesByEmailCta")}
+                  </Link>
+                </p>
+              </>
             ) : deals.length > 0 ? (
               <DealGrid
                 deals={deals}
@@ -533,8 +544,76 @@ export default async function BusinessPage({
             )}
           </div>
 
-          {/* SIDEBAR — map + hours */}
+          {/* SIDEBAR — map + hours (real estate: the agent card leads) */}
           <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+            {isRealEstate && (() => {
+              // "Maressa Martinez, Realtor · Empire Real Estate Group" → agent + brokerage
+              const [agentName, brokerage] = business.name.split(" · ").map((s) => s.trim())
+              const avatar = business.logoUrl ?? business.coverUrl ?? null
+              const contactEmail =
+                business.ownerEmail && !business.ownerEmail.endsWith("lompocdeals.system")
+                  ? business.ownerEmail
+                  : null
+              const showingHref = contactEmail
+                ? `mailto:${contactEmail}?subject=${encodeURIComponent(t("requestShowingSubject", { name: agentName }))}`
+                : business.phone
+                  ? `tel:${business.phone.replace(/[^\d+]/g, "")}`
+                  : null
+              return (
+                <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+                  <div className="flex items-center gap-3 border-b px-4 py-4">
+                    {avatar ? (
+                      <SafeImage
+                        src={avatar}
+                        alt={agentName}
+                        className="h-14 w-14 flex-shrink-0 rounded-xl object-cover ring-1 ring-black/[0.06]"
+                        fallback={<div className="h-14 w-14 flex-shrink-0 rounded-xl bg-gradient-to-br from-primary to-[#2c0736]" />}
+                      />
+                    ) : (
+                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-[#2c0736] text-primary-foreground">
+                        <Store className="h-6 w-6" />
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-primary">{t("agentCardLabel")}</p>
+                      <p className="truncate font-display text-base font-semibold leading-tight">{agentName}</p>
+                      {brokerage && <p className="truncate text-xs text-muted-foreground">{brokerage}</p>}
+                    </div>
+                  </div>
+                  <div className="space-y-2 px-4 py-3 text-sm">
+                    {business.phone && (
+                      <a href={`tel:${business.phone.replace(/[^\d+]/g, "")}`} className="block font-medium hover:text-primary">
+                        {business.phone}
+                      </a>
+                    )}
+                    {business.instagramUrl && (
+                      <a
+                        href={business.instagramUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-muted-foreground hover:text-primary"
+                      >
+                        Instagram
+                      </a>
+                    )}
+                    <p className="text-xs text-muted-foreground">{t("byAppointment")}</p>
+                  </div>
+                  <div className="flex flex-col gap-2 border-t px-4 py-4">
+                    {showingHref && (
+                      <a
+                        href={showingHref}
+                        className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                      >
+                        {t("requestShowing")}
+                      </a>
+                    )}
+                    <Link href="/homes" className="text-center text-sm font-semibold text-primary underline-offset-4 hover:underline">
+                      {t("seeAllHomes")}
+                    </Link>
+                  </div>
+                </div>
+              )
+            })()}
             {business.lat != null && business.lng != null && (
               <div className="overflow-hidden rounded-2xl border shadow-sm">
                 <div className="h-64">
@@ -552,7 +631,7 @@ export default async function BusinessPage({
                 )}
               </div>
             )}
-            <BusinessHours hoursJson={business.hoursJson} phone={business.phone} />
+            {!isRealEstate && <BusinessHours hoursJson={business.hoursJson} phone={business.phone} />}
           </aside>
         </div>
       </section>
