@@ -314,6 +314,18 @@ try {
   homes.includes('data-featured="rail"') ? pass("/homes shows the Featured agents rail") : fail("/homes has no Featured agents rail")
 } catch (e) { fail(`leads/featured: ${e.message}`) }
 
+// ── 11. Lompoc Football hub ───────────────────────────────────────────────────
+// Sep 11 2026: /football is the ESPN-style page for both programs, fed by the
+// MaxPreps sync (football_games). A missing game row means the cron broke.
+console.log("\n11. Lompoc Football hub")
+try {
+  const r = await fetch(`${SITE}/football`, { cache: "no-store" })
+  const html = await r.text()
+  r.status === 200 ? pass("/football answers 200") : fail(`/football answered ${r.status}`)
+  html.includes("Lompoc Braves") && html.includes("Cabrillo Conquistadores") ? pass("/football names both schools") : fail("/football is missing a school name")
+  html.includes('data-football="game"') ? pass("/football has at least one game row") : fail("/football has no game rows (sync-football cron?)")
+} catch (e) { fail(`football hub: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

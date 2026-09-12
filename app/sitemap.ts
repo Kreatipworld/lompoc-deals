@@ -97,6 +97,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/events",
     "/hotels",
     "/homes",
+    "/football",
     "/for-businesses/real-estate",
     "/activities",
     "/things-to-do",
@@ -108,7 +109,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency:
-      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" || path === "/homes" ? ("daily" as const)
+      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" || path === "/homes" || path === "/football" ? ("daily" as const)
       : path === "/contact" || path === "/privacy" || path === "/terms" ? ("monthly" as const)
       : ("weekly" as const),
     priority:

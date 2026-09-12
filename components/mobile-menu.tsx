@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag, Newspaper, CalendarDays, Compass, KeyRound } from "lucide-react"
+import { Menu, X, Home, Tag, Search, LayoutGrid, Map, Building2, User, LogIn, UserPlus, Heart, BedDouble, ShoppingBag, Newspaper, CalendarDays, Compass, KeyRound, Trophy } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import { LocaleSwitcher } from "@/components/locale-switcher"
@@ -26,6 +26,7 @@ export function MobileMenu() {
   ]
   const moreItems = [
     { href: "/homes", icon: KeyRound, label: t("homes") },
+    { href: "/football", icon: Trophy, label: t("football") },
     { href: "/hotels", icon: BedDouble, label: t("hotels") },
     { href: "/feed", icon: ShoppingBag, label: t("neighborhood") },
     { href: "/things-to-do", icon: Compass, label: t("thingsToDo") },

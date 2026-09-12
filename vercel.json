@@ -43,6 +43,14 @@
     {
       "path": "/api/cron/weekly-learning",
       "schedule": "0 15 * * 1"
+    },
+    {
+      "path": "/api/cron/sync-football",
+      "schedule": "30 14 * * *"
+    },
+    {
+      "path": "/api/cron/sync-football",
+      "schedule": "0 6 * * 6"
     }
   ]
 }

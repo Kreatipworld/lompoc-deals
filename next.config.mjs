@@ -32,6 +32,10 @@ const nextConfig = {
       { source: "/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/biz/heritage-home-plumbing-services", permanent: true },
       { source: "/en/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/en/biz/heritage-home-plumbing-services", permanent: true },
       { source: "/es/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/es/biz/heritage-home-plumbing-services", permanent: true },
+      // The football word page grew into the hub.
+      { source: "/find/football", destination: "/football", permanent: true },
+      { source: "/en/find/football", destination: "/football", permanent: true },
+      { source: "/es/find/football", destination: "/es/football", permanent: true },
       { source: "/grow", destination: "/signup/business", permanent: false },
       { source: "/en/grow", destination: "/signup/business", permanent: false },
       { source: "/es/grow", destination: "/es/signup/business", permanent: false },

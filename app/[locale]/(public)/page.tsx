@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation"
 import {
   ArrowRight, MapPin, Mail, Sparkles, ChevronDown, Compass
 } from "lucide-react"
+import { getNextFootballGames } from "@/lib/football"
 import { getPartnerBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots, getRecentBlogPosts, getAllRealEstateListings } from "@/lib/queries"
 import { PropertyListingCard } from "@/components/property-listing-card"
 import { newsCoverUrl } from "@/lib/news-cover"
@@ -104,7 +105,7 @@ const siteJsonLd = {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
-  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t, latestNews, latestHomes, th] = await Promise.all([
+  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t, latestNews, latestHomes, th, nextGames] = await Promise.all([
     getAllCategories(),
     getPartnerBusinesses(params.locale),
     getSiteStats(),
@@ -116,6 +117,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getRecentBlogPosts(3, params.locale),
     getAllRealEstateListings(undefined, 3).catch(() => []),
     getTranslations({ locale: params.locale, namespace: "homes" }),
+    getNextFootballGames(),
   ])
   const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
   const tc = await getTranslations({ locale: params.locale, namespace: "categoryLabels" })
@@ -329,6 +331,44 @@ export default async function HomePage({ params }: { params: { locale: string } 
             </div>
             <Link href="/news" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
               {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* ─────────────────────────────────────────────────
+          FRIDAY NIGHT FOOTBALL — in season only (Aug 15–Dec 15): the next game per school
+         ───────────────────────────────────────────────── */}
+      {nextGames.length > 0 && (
+        <section className="border-t py-10">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-5 flex items-end justify-between">
+              <div>
+                <h2 className="font-display text-2xl font-bold tracking-tight">{t("footballHeading")}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{t("footballSub")}</p>
+              </div>
+              <Link href="/football" className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex">
+                {t("footballSeeAll")} <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {nextGames.map(({ team, game }) => (
+                <Link key={team.school} href="/football" className="flex items-center gap-4 rounded-2xl border bg-card p-4 transition-shadow hover:shadow-md">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={team.school === "lompoc" ? "/football/badge-braves.png" : "/football/badge-conqs.png"} alt="" className="h-12 w-12 rounded-lg object-contain" />
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-primary">{team.name} · {t("footballRecord")} {team.wins}-{team.losses}</p>
+                    <p className="mt-0.5 font-display text-lg font-bold leading-tight">{game.homeAway === "away" ? `at ${game.opponent}` : `vs ${game.opponent}`}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(`${game.gameDate}T19:00:00-07:00`).toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "America/Los_Angeles" })}
+                      {game.kickoff ? ` · ${game.kickoff}` : ""}{game.venue ? ` · ${game.venue.split(",")[0]}` : ""}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Link href="/football" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
+              {t("footballSeeAll")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </section>
