@@ -103,7 +103,7 @@ export function latestResults(teams: TeamSeason[], limit = 4): (FootballGame & {
 /** Published news-desk stories about either program, newest first. */
 export async function getFootballNews(limit = 6, locale?: Locale | string): Promise<BlogPostCard[]> {
   const kw = (col: typeof blogPosts.title) =>
-    or(ilike(col, "%braves%"), ilike(col, "%cabrillo%"), ilike(col, "%football%"), ilike(col, "%conquistador%"), ilike(col, "%huyck%"))
+    or(ilike(col, "%braves%"), ilike(col, "%cabrillo%"), ilike(col, "%football%"), ilike(col, "%conquistador%"), ilike(col, "%huyck%")) // allow-ilike — fixed team keywords, never user input
   const rows = await db
     .select({
       id: blogPosts.id,
@@ -119,7 +119,7 @@ export async function getFootballNews(limit = 6, locale?: Locale | string): Prom
       publishedAt: blogPosts.publishedAt,
     })
     .from(blogPosts)
-    .where(and(eq(blogPosts.status, "published"), or(kw(blogPosts.title), ilike(blogPosts.slug, "%football%"))))
+    .where(and(eq(blogPosts.status, "published"), or(kw(blogPosts.title), ilike(blogPosts.slug, "%football%")))) // allow-ilike — fixed team keywords, never user input
     .orderBy(desc(blogPosts.publishedAt))
     .limit(limit)
   return rows.map((r) => {

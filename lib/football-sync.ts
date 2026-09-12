@@ -68,7 +68,10 @@ export function parseSchedule(html: string, school: School): { games: ParsedGame
       const away = oppMatch[1] === "@"
       const opponent = oppMatch[2].replace(/\*$/, "").trim()
       const leagueGame = /\*/.test(oppCell)
+      // MaxPreps prints the higher score first regardless of side ("L 38-2" = lost 2–38).
       const res = thirdCell.match(/^([WLT])\s+(\d+)\s*-\s*(\d+)/)
+      const hi = res ? Math.max(Number(res[2]), Number(res[3])) : null
+      const lo = res ? Math.min(Number(res[2]), Number(res[3])) : null
       const month = Number(link[2]), day = Number(link[3]), year = Number(link[4])
       const gameDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`
       // Both schools' home games are at Huyck; the crosstown game is at Huyck whichever side MaxPreps lists as home.
@@ -84,8 +87,8 @@ export function parseSchedule(html: string, school: School): { games: ParsedGame
         venue,
         leagueGame,
         result: res ? (res[1] as "W" | "L" | "T") : null,
-        scoreFor: res ? Number(res[2]) : null,
-        scoreAgainst: res ? Number(res[3]) : null,
+        scoreFor: res ? (res[1] === "L" ? lo : hi) : null,
+        scoreAgainst: res ? (res[1] === "L" ? hi : lo) : null,
         maxprepsUrl: href.split("?")[0],
       })
     }
@@ -122,7 +125,7 @@ export async function syncFootball(): Promise<SyncReport[]> {
             maxprepsUrl: g.maxprepsUrl,
           })
           .onConflictDoUpdate({
-            target: footballGames.maxprepsUrl,
+            target: [footballGames.school, footballGames.maxprepsUrl],
             set: {
               gameDate: g.gameDate,
               kickoff: g.kickoff,

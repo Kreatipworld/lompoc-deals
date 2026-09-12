@@ -13,7 +13,10 @@ CREATE TABLE IF NOT EXISTS "football_games" (
   "result" varchar(1),                      -- 'W' | 'L' | 'T'
   "score_for" integer,
   "score_against" integer,
-  "maxpreps_url" varchar(500) NOT NULL UNIQUE,
+  "maxpreps_url" varchar(500) NOT NULL,
   "updated_at" timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS "football_games_school_date_idx" ON "football_games" ("school", "game_date");
+-- The crosstown game shares one MaxPreps URL for both schools: the key is (school, url).
+ALTER TABLE "football_games" DROP CONSTRAINT IF EXISTS "football_games_maxpreps_url_key";
+CREATE UNIQUE INDEX IF NOT EXISTS "football_games_school_url_idx" ON "football_games" ("school", "maxpreps_url");

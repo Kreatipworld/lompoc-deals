@@ -747,10 +747,11 @@ export const footballGames = pgTable(
     result: varchar("result", { length: 1 }), // 'W' | 'L' | 'T'
     scoreFor: integer("score_for"),
     scoreAgainst: integer("score_against"),
-    maxprepsUrl: varchar("maxpreps_url", { length: 500 }).notNull().unique(),
+    maxprepsUrl: varchar("maxpreps_url", { length: 500 }).notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({
     schoolDateIdx: index("football_games_school_date_idx").on(t.school, t.gameDate),
+    schoolUrlIdx: uniqueIndex("football_games_school_url_idx").on(t.school, t.maxprepsUrl),
   })
 )
