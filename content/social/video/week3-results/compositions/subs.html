@@ -1,0 +1,36 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="22.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 170px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 920px; background: rgba(0,0,0,0.58); color: #fff; font-weight: 600; font-size: 42px; line-height: 1.25; padding: 14px 28px; border-radius: 20px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Week 3 is in the books.</span></div>
+      <div class="sub" id="sub-1"><span>At Huyck Stadium, the Lompoc Braves rolled past Pioneer Valley, 48 to 6.</span></div>
+      <div class="sub" id="sub-2"><span>3-0.</span></div>
+      <div class="sub" id="sub-3"><span>Down in Nipomo, the Conqs fell 49 to 14.</span></div>
+      <div class="sub" id="sub-4"><span>They come home Thursday against Righetti.</span></div>
+      <div class="sub" id="sub-5"><span>Every score, every week, at lompoclocals.com/football</span></div>
+    </div>
+    <script>
+      (() => {
+        const SUBS = [
+          [0.50, 2.20, 'Week 3 is in the books.'],
+          [2.78, 7.50, 'At Huyck Stadium, the Lompoc Braves rolled past Pioneer Valley, 48 to 6.'],
+          [8.10, 8.85, '3-0.'],
+          [8.90, 12.40, 'Down in Nipomo, the Conqs fell 49 to 14.'],
+          [13.00, 15.00, 'They come home Thursday against Righetti.'],
+          [15.50, 20.60, 'Every score, every week, at lompoclocals.com/football']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 22.00);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>
