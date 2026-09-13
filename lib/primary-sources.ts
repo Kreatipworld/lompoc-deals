@@ -11,6 +11,7 @@
  * (lompoc.com is a JS app), Lompoc Public Library (city site).
  */
 import { parseRssItems } from "@/lib/rss"
+import { getFootballSeason, type TeamSeason } from "@/lib/football"
 
 export type PrimaryLead = {
   title: string
@@ -84,19 +85,94 @@ const TEAMS = [
   { school: "Cabrillo", team: "Cabrillo Conquistadores", url: "https://www.maxpreps.com/ca/lompoc/cabrillo-conquistadores/football/schedule/" },
 ]
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+function fmtDate(iso: string, withDay = false): string {
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number)
+  const dt = new Date(Date.UTC(y, m - 1, d))
+  return `${withDay ? DAYS[dt.getUTCDay()] + ", " : ""}${MONTHS[m - 1]} ${d}`
+}
+
+/** Plural-safe "1 win, 3 losses, 1 tie". */
+export function recordWords(wins: number, losses: number, ties: number): string {
+  const parts = [`${wins} ${wins === 1 ? "win" : "wins"}`, `${losses} ${losses === 1 ? "loss" : "losses"}`]
+  if (ties) parts.push(`${ties} ${ties === 1 ? "tie" : "ties"}`)
+  return parts.join(", ")
+}
+
 /**
- * Varsity football, one fact sheet per school per new result: MaxPreps' own
- * result sentences (score, home/away, opponent) plus the record they add up to
- * and the next date on the schedule. The lead URL carries the latest result
- * date so a week without a game adds nothing.
+ * The football fact sheet, built from our synced `football_games` rows (the
+ * same data the /football hub shows). Pure so it can be tested: the record is
+ * spelled out in numbers AND words so the desk cannot invent one.
+ */
+export function footballFactSheet(team: TeamSeason, syncedOn: string): string {
+  const played = team.games.filter((g) => g.result)
+  const record = `${team.wins}-${team.losses}${team.ties ? `-${team.ties}` : ""}`
+  const gameLines = played.map((g) => {
+    const verb = g.result === "W" ? "won" : g.result === "L" ? "lost" : "tied"
+    const where = g.homeAway === "away" ? "away" : g.venue ? `home, ${g.venue}` : "home"
+    const score = g.scoreFor != null && g.scoreAgainst != null ? ` ${g.scoreFor}-${g.scoreAgainst}` : ""
+    return `${fmtDate(g.gameDate)} ${g.homeAway === "away" ? "at" : "vs"} ${g.opponent}, ${verb}${score} (${where}).`
+  })
+  const next = team.next
+  const nextLine = next
+    ? ` Next game: ${fmtDate(next.gameDate, true)} ${next.homeAway === "away" ? "at" : "vs"} ${next.opponent}${next.kickoff ? `, ${next.kickoff}` : ""}${next.venue ? `, ${next.venue}` : ""} (${next.homeAway}).`
+    : " No further games on the schedule."
+  const firstLeague = team.games.find((g) => g.leagueGame && !g.result)
+  const leagueLine = firstLeague ? ` League play begins ${fmtDate(firstLeague.gameDate)} ${firstLeague.homeAway === "away" ? "at" : "vs"} ${firstLeague.opponent}.` : ""
+  return (
+    `${FACT_SHEET} — ${team.name} varsity football (Lompoc, CA), ${team.games[0]?.season ?? ""} season, per MaxPreps schedule and results as synced ${syncedOn}. ` +
+    `Record: ${record} (${recordWords(team.wins, team.losses, team.ties)}) after ${played.length} ${played.length === 1 ? "game" : "games"}. ` +
+    `Games played: ${gameLines.join(" ") || "none yet."}${nextLine}${leagueLine}`
+  )
+}
+
+/**
+ * Varsity football, one fact sheet per school per new result, built from the
+ * `football_games` table (synced from MaxPreps by /api/cron/sync-football).
+ * The lead URL carries the latest result date so a week without a game adds
+ * nothing. Falls back to reading MaxPreps' result sentences off the page only
+ * when the table has no rows for the season.
  */
 async function varsityFootball(): Promise<PrimaryLead[]> {
+  let teams: TeamSeason[] = []
+  try {
+    teams = await getFootballSeason()
+  } catch (err) {
+    console.error("[primary-sources] football_games unavailable, falling back to page parse:", err instanceof Error ? err.message : err)
+  }
+  const leads: PrimaryLead[] = []
+  const syncedOn = new Date().toISOString().slice(0, 10)
+  for (const t of TEAMS) {
+    const team = teams.find((x) => x.name === t.team)
+    if (!team || !team.games.length) {
+      leads.push(...(await varsityFootballFromPage(t)))
+      continue
+    }
+    if (!team.last) continue
+    const through = team.last.gameDate.slice(0, 10)
+    const [y, m, d] = through.split("-").map(Number)
+    leads.push({
+      title: `${t.team} football: results through ${m}/${d}`,
+      url: `${t.url}?through=${through}`,
+      publishedAt: new Date(y, m - 1, d, 22),
+      summary: footballFactSheet(team, syncedOn),
+      source: "MaxPreps",
+      kind: "primary",
+    })
+  }
+  return leads
+}
+
+/** Legacy fallback: MaxPreps' own result sentences on the schedule page. */
+async function varsityFootballFromPage(t: (typeof TEAMS)[number]): Promise<PrimaryLead[]> {
   const year = new Date().getFullYear()
   const leads: PrimaryLead[] = []
-  for (const t of TEAMS) {
+  {
     const html = await getText(t.url)
     const sentences = Array.from(new Set(html.match(new RegExp(`On \\d{1,2}/\\d{1,2}, the ${t.school} varsity football team [^"<]{10,240}?\\.`, "g")) ?? []))
-    if (!sentences.length) continue
+    if (!sentences.length) return leads
     const last = sentences[sentences.length - 1].match(/On (\d{1,2})\/(\d{1,2})/)!
     const lastDate = new Date(year, Number(last[1]) - 1, Number(last[2]), 22)
     const wins = sentences.filter((s) => / won /.test(s)).length
