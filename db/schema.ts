@@ -256,6 +256,8 @@ export const propertyListings = pgTable("property_listings", {
   // expiry so stale homes fall off /homes unless the agent renews them.
   openHouseAt: timestamp("open_house_at", { withTimezone: true }),
   expiresAt: timestamp("expires_at", { withTimezone: true }),
+  // house | condo | townhome | manufactured | land | multi-family (Zillow-style form, Sep 2026)
+  homeType: varchar("home_type", { length: 24 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

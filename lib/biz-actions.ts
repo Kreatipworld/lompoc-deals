@@ -656,8 +656,9 @@ export async function getCategoriesList() {
 export type PropertyState = { error?: string }
 
 const LISTING_STATUSES = ["active", "pending", "sold", "rented"] as const
+const HOME_TYPES = ["house", "condo", "townhome", "manufactured", "land", "multi-family"] as const
 const LISTING_DAYS = 60
-const MAX_LISTING_PHOTOS = 8
+const MAX_LISTING_PHOTOS = 12
 
 const propertySchema = z.object({
   type: z.enum(["for-sale", "for-rent"]),
@@ -667,10 +668,31 @@ const propertySchema = z.object({
   beds: z.coerce.number().int().min(0).optional(),
   baths: z.coerce.number().min(0).optional(),
   sqft: z.coerce.number().int().min(0).optional(),
+  yearBuilt: z.coerce.number().int().min(1800).max(2100).optional(),
+  homeType: z.enum(HOME_TYPES).optional(),
   address: z.string().optional(),
   status: z.enum(LISTING_STATUSES).default("active"),
   openHouseAt: z.string().optional(),
 })
+
+// Zillow-style form: photos are uploaded straight to Blob from the browser and
+// arrive here as ordered URLs (first = cover). Only our own Blob host is accepted.
+function ownBlobUrl(u: string): boolean {
+  try {
+    const h = new URL(u).hostname
+    return h.endsWith(".public.blob.vercel-storage.com")
+  } catch {
+    return false
+  }
+}
+
+// "3 bd home on S J Street" — a title when the agent leaves it blank.
+function autoTitle(d: { beds?: number; homeType?: string; address?: string; type: "for-sale" | "for-rent" }): string {
+  const street = d.address ? d.address.split(",")[0].replace(/^\d+\s*/, "").trim() : "Lompoc"
+  const kind = d.homeType === "condo" ? "Condo" : d.homeType === "townhome" ? "Townhome" : d.homeType === "land" ? "Lot" : d.homeType === "multi-family" ? "Multi-family" : "Home"
+  const beds = d.beds ? `${d.beds}-bed ` : ""
+  return `${beds}${kind} ${d.type === "for-rent" ? "for rent" : ""} on ${street}`.replace(/\s+/g, " ").trim()
+}
 
 function listingExpiry(from = new Date()) {
   return new Date(from.getTime() + LISTING_DAYS * 24 * 60 * 60 * 1000)
@@ -694,14 +716,26 @@ export async function upsertPropertyAction(
     return { error: t("propertyListingsRequirePremium") }
   }
 
+  const priceRaw = String(formData.get("priceCents") ?? "").replace(/[^0-9.]/g, "")
+  const typeRaw = formData.get("type") === "for-rent" ? "for-rent" : "for-sale"
+  const preTitle = String(formData.get("title") ?? "").trim()
   const parsed = propertySchema.safeParse({
-    type: formData.get("type"),
-    title: formData.get("title"),
+    type: typeRaw,
+    title:
+      preTitle ||
+      autoTitle({
+        beds: Number(formData.get("beds")) || undefined,
+        homeType: String(formData.get("homeType") || ""),
+        address: String(formData.get("address") || ""),
+        type: typeRaw,
+      }),
     description: formData.get("description") || undefined,
-    priceDollars: formData.get("priceCents"),
+    priceDollars: priceRaw,
     beds: formData.get("beds") || undefined,
     baths: formData.get("baths") || undefined,
     sqft: formData.get("sqft") || undefined,
+    yearBuilt: formData.get("yearBuilt") || undefined,
+    homeType: formData.get("homeType") || undefined,
     address: formData.get("address") || undefined,
     status: formData.get("status") || "active",
     openHouseAt: formData.get("openHouseAt") || undefined,
@@ -713,14 +747,17 @@ export async function upsertPropertyAction(
   // datetime-local has no zone; agents enter Lompoc time (Pacific).
   const openHouseAt = data.openHouseAt ? parsePacificLocal(data.openHouseAt) : null
 
-  // Photos: the first upload becomes the cover, the rest go to the gallery.
-  // Existing photos the agent unchecked are dropped.
-  const keep = formData.getAll("keepPhoto").map(String).filter(Boolean)
+  if (formData.get("photosUploading")) {
+    return { error: t("photosStillUploading") }
+  }
+  // Ordered photo URLs from the uploader (first = cover). Legacy multi-file
+  // uploads still work for anything that posts raw files.
+  const ordered = Array.from(new Set(formData.getAll("photoUrls").map(String).filter((u) => u && ownBlobUrl(u))))
   const uploads = (formData.getAll("photos") as File[]).filter((f) => f && typeof f === "object" && f.size > 0)
-  if (keep.length + uploads.length > MAX_LISTING_PHOTOS) {
+  if (ordered.length + uploads.length > MAX_LISTING_PHOTOS) {
     return { error: t("tooManyListingPhotos", { max: MAX_LISTING_PHOTOS }) }
   }
-  const uploaded: string[] = []
+  const uploaded: string[] = [...ordered]
   for (const f of uploads) {
     try {
       uploaded.push(await uploadImage(f, "listings"))
@@ -733,6 +770,7 @@ export async function upsertPropertyAction(
 
   let coords: { lat: number; lng: number } | null = null
   const wantsGeocode = !!data.address
+  let savedId = 0
 
   if (listingId) {
     const id = parseInt(listingId.toString(), 10)
@@ -742,11 +780,9 @@ export async function upsertPropertyAction(
     if (!existing || existing.businessId !== biz.id) {
       return { error: t("listingNotFound") }
     }
-    const existingPhotos = [existing.imageUrl, ...(((existing.photosJson as string[] | null) ?? []))].filter(
-      (u): u is string => !!u
-    )
-    const kept = existingPhotos.filter((u) => keep.includes(u))
-    const photos = [...kept, ...uploaded]
+    // The uploader sends the full ordered set (kept + new); anything the agent
+    // removed is simply absent.
+    const photos = uploaded
     if (wantsGeocode && (existing.address !== data.address || existing.lat == null)) {
       coords = await geocodeAddress(data.address!)
     }
@@ -760,6 +796,8 @@ export async function upsertPropertyAction(
         beds: data.beds ?? null,
         baths: data.baths ?? null,
         sqft: data.sqft ?? null,
+        yearBuilt: data.yearBuilt ?? null,
+        homeType: data.homeType ?? null,
         address: data.address ?? null,
         status: data.status,
         openHouseAt,
@@ -769,32 +807,56 @@ export async function upsertPropertyAction(
         ...(existing.address !== data.address && !coords ? { lat: null, lng: null } : {}),
       })
       .where(eq(propertyListings.id, id))
+    savedId = id
   } else {
     if (wantsGeocode) coords = await geocodeAddress(data.address!)
-    await db.insert(propertyListings).values({
-      businessId: biz.id,
-      type: data.type,
-      title: data.title,
-      description: data.description ?? null,
-      priceCents: Math.round(data.priceDollars * 100),
-      beds: data.beds ?? null,
-      baths: data.baths ?? null,
-      sqft: data.sqft ?? null,
-      address: data.address ?? null,
-      imageUrl: uploaded[0] ?? null,
-      photosJson: uploaded.slice(1),
-      status: data.status,
-      openHouseAt,
-      expiresAt: listingExpiry(),
-      lat: coords?.lat ?? null,
-      lng: coords?.lng ?? null,
-    })
+    const inserted = await db
+      .insert(propertyListings)
+      .values({
+        businessId: biz.id,
+        type: data.type,
+        title: data.title,
+        description: data.description ?? null,
+        priceCents: Math.round(data.priceDollars * 100),
+        beds: data.beds ?? null,
+        baths: data.baths ?? null,
+        sqft: data.sqft ?? null,
+        yearBuilt: data.yearBuilt ?? null,
+        homeType: data.homeType ?? null,
+        address: data.address ?? null,
+        imageUrl: uploaded[0] ?? null,
+        photosJson: uploaded.slice(1),
+        status: data.status,
+        openHouseAt,
+        expiresAt: listingExpiry(),
+        lat: coords?.lat ?? null,
+        lng: coords?.lng ?? null,
+      })
+      .returning({ id: propertyListings.id })
+    savedId = inserted[0]?.id ?? 0
   }
 
   revalidatePath("/dashboard/properties")
   revalidateBusinessSurfaces({ slug: biz.slug })
   revalidateListingPages()
-  redirect("/dashboard/properties")
+  redirect(`/dashboard/properties?saved=${savedId}`)
+}
+
+/** One-click "Mark sold / rented" from the list. Leaves the market immediately. */
+export async function markListingStatusAction(formData: FormData) {
+  const { userId } = await requireBusinessUser()
+  const biz = await ownedBusiness(userId)
+  if (!biz) return
+  const listingId = parseInt(formData.get("listingId")?.toString() ?? "0", 10)
+  const status = String(formData.get("status") ?? "")
+  if (!listingId || !(LISTING_STATUSES as readonly string[]).includes(status)) return
+  await db
+    .update(propertyListings)
+    .set({ status })
+    .where(and(eq(propertyListings.id, listingId), eq(propertyListings.businessId, biz.id)))
+  revalidatePath("/dashboard/properties")
+  revalidateBusinessSurfaces({ slug: biz.slug })
+  revalidateListingPages()
 }
 
 /** "2026-09-19T10:00" typed as Lompoc time → the right instant. */

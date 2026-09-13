@@ -459,6 +459,7 @@ export type PropertyListing = {
   lat: number | null
   lng: number | null
   openHouseAt: Date | null
+  homeType: string | null
   business: { id: number; name: string; slug: string; logoUrl: string | null }
 }
 
@@ -485,6 +486,7 @@ const listingColumns = {
   lat: propertyListings.lat,
   lng: propertyListings.lng,
   openHouseAt: propertyListings.openHouseAt,
+  homeType: propertyListings.homeType,
   bizId: businesses.id,
   bizName: businesses.name,
   bizSlug: businesses.slug,
@@ -494,7 +496,7 @@ const listingColumns = {
 function toListing(r: {
   id: number; type: "for-sale" | "for-rent"; title: string; description: string | null; priceCents: number
   beds: number | null; baths: number | null; sqft: number | null; address: string | null; imageUrl: string | null
-  status: string; lat: number | null; lng: number | null; openHouseAt: Date | null
+  status: string; lat: number | null; lng: number | null; openHouseAt: Date | null; homeType: string | null
   bizId: number; bizName: string; bizSlug: string; bizLogo: string | null
 }): PropertyListing {
   return {
@@ -512,8 +514,21 @@ function toListing(r: {
     lat: r.lat,
     lng: r.lng,
     openHouseAt: r.openHouseAt,
+    homeType: r.homeType,
     business: { id: r.bizId, name: r.bizName, slug: r.bizSlug, logoUrl: r.bizLogo },
   }
+}
+
+/** Leads per listing for one business (dashboard list rows). */
+export async function getLeadCountsByListing(businessId: number): Promise<Record<number, number>> {
+  const rows = await db
+    .select({ listingId: listingLeads.listingId, n: sql<number>`count(*)::int` })
+    .from(listingLeads)
+    .where(eq(listingLeads.businessId, businessId))
+    .groupBy(listingLeads.listingId)
+  const out: Record<number, number> = {}
+  for (const r of rows) if (r.listingId != null) out[r.listingId] = r.n
+  return out
 }
 
 export async function getListingsByBusinessId(

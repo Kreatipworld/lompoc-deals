@@ -42,6 +42,20 @@ export function PhotoPlaceholder({ label, className = "" }: { label: string; cla
   )
 }
 
+export const HOME_TYPES = ["house", "condo", "townhome", "manufactured", "land", "multi-family"] as const
+export type HomeType = (typeof HOME_TYPES)[number]
+
+// "House for sale" / "Condo for rent" — the portal convention; defaults to House
+// when the agent has not picked a type.
+export function homeTypeLine(
+  l: { homeType: string | null; type: "for-sale" | "for-rent" },
+  t: (k: string, v?: Record<string, string>) => string
+): string {
+  const key = (HOME_TYPES as readonly string[]).includes(l.homeType ?? "") ? (l.homeType as HomeType) : "house"
+  const type = t(`homeType.${key}`)
+  return l.type === "for-sale" ? t("typeForSale", { type }) : t("typeForRent", { type })
+}
+
 export function statusLabelFor(
   listing: { status: string; type: "for-sale" | "for-rent" },
   t: (k: string) => string
@@ -106,7 +120,7 @@ export async function PropertyListingCard({ listing }: { listing: PropertyListin
         <div className="mt-1 text-sm text-foreground/85 tabular-nums">
           {facts && <span>{facts}</span>}
           {facts && <span className="text-muted-foreground"> - </span>}
-          <span className="text-muted-foreground">{listing.type === "for-sale" ? t("typeSale") : t("typeRent")}</span>
+          <span className="text-muted-foreground">{homeTypeLine(listing, t)}</span>
         </div>
         {listing.address && <div className="truncate text-sm text-muted-foreground">{listing.address}</div>}
         {openHouse && <div className="text-xs text-foreground/80">{t("openHouse", { when: openHouse })}</div>}

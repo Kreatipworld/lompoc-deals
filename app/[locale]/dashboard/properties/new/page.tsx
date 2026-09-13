@@ -3,20 +3,22 @@ import { redirect } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { TIERS } from "@/lib/stripe"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
+import { getMyBusiness } from "@/lib/biz-actions"
 import { ChevronLeft } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { PropertyForm } from "../property-form"
 
 export const metadata = { title: "Add listing" }
 
 export default async function NewPropertyPage() {
-  const session = await auth()
+  const [session, t] = await Promise.all([auth(), getTranslations("dashboardProperties")])
   const userId = Number(session?.user?.id)
 
   const currentTier = await getEffectiveTierForUser(userId)
+  if (!TIERS[currentTier].canListRealEstate) redirect("/dashboard/properties")
 
-  if (!TIERS[currentTier].canListRealEstate) {
-    redirect("/dashboard/properties")
-  }
+  const biz = await getMyBusiness()
+  if (!biz) redirect("/dashboard/properties")
 
   return (
     <div className="space-y-6">
@@ -26,17 +28,13 @@ export default async function NewPropertyPage() {
           className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
           <ChevronLeft className="h-4 w-4" />
-          Back to properties
+          {t("title")}
         </Link>
-        <h1 className="font-display text-3xl font-semibold tracking-tight">Add listing</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Add a new property to your business profile.
-        </p>
+        <h1 className="font-display text-3xl font-semibold tracking-tight">{t("propertyFormTitle")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("newSubtitle")}</p>
       </header>
 
-      <div className="rounded-3xl border bg-card p-6 shadow-sm">
-        <PropertyForm />
-      </div>
+      <PropertyForm businessId={biz.id} agentName={biz.name} />
     </div>
   )
 }

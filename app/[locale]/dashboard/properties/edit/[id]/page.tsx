@@ -3,8 +3,9 @@ import { redirect, notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { TIERS } from "@/lib/stripe"
 import { getEffectiveTierForUser } from "@/lib/entitlement"
-import { getMyPropertyById } from "@/lib/biz-actions"
+import { getMyBusiness, getMyPropertyById } from "@/lib/biz-actions"
 import { ChevronLeft } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { PropertyForm } from "../../property-form"
 
 export const metadata = { title: "Edit listing" }
@@ -15,16 +16,14 @@ export default async function EditPropertyPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const session = await auth()
+  const [session, t] = await Promise.all([auth(), getTranslations("dashboardProperties")])
   const userId = Number(session?.user?.id)
 
   const currentTier = await getEffectiveTierForUser(userId)
+  if (!TIERS[currentTier].canListRealEstate) redirect("/dashboard/properties")
 
-  if (!TIERS[currentTier].canListRealEstate) {
-    redirect("/dashboard/properties")
-  }
-
-  const listing = await getMyPropertyById(parseInt(id, 10))
+  const [biz, listing] = await Promise.all([getMyBusiness(), getMyPropertyById(parseInt(id, 10))])
+  if (!biz) redirect("/dashboard/properties")
   if (!listing) notFound()
 
   return (
@@ -35,15 +34,13 @@ export default async function EditPropertyPage({
           className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
           <ChevronLeft className="h-4 w-4" />
-          Back to properties
+          {t("title")}
         </Link>
-        <h1 className="font-display text-3xl font-semibold tracking-tight">Edit listing</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Update your property details.</p>
+        <h1 className="font-display text-3xl font-semibold tracking-tight">{t("propertyFormEdit")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("editSubtitle")}</p>
       </header>
 
-      <div className="rounded-3xl border bg-card p-6 shadow-sm">
-        <PropertyForm listing={listing} />
-      </div>
+      <PropertyForm businessId={biz.id} agentName={biz.name} listing={listing} />
     </div>
   )
 }

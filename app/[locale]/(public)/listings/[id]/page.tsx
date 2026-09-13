@@ -9,6 +9,7 @@ import {
   PhotoPlaceholder,
   PropertyListingCard,
   formatFacts,
+  homeTypeLine,
   formatListingPrice,
   formatOpenHouse,
   statusLabelFor,
@@ -58,7 +59,6 @@ export default async function ListingPage({
 
   const intl = params.locale === "es" ? "es-US" : "en-US"
   const isLive = listing.status === "active"
-  const isForSale = listing.type === "for-sale"
   const statusLabel = statusLabelFor(listing, tc)
   const openHouse =
     listing.openHouseAt && listing.openHouseAt.getTime() > Date.now()
@@ -284,7 +284,7 @@ export default async function ListingPage({
               <h1 className="mt-4 font-display text-4xl font-bold leading-none tracking-tight tabular-nums sm:text-5xl">{price}</h1>
               {facts && (
                 <p className="mt-3 text-base text-foreground/90 tabular-nums">
-                  {facts} <span className="text-muted-foreground">- {isForSale ? t("factTypeSale") : t("factTypeRent")}</span>
+                  {facts} <span className="text-muted-foreground">- {homeTypeLine(listing, tc)}</span>
                 </p>
               )}
               {listing.address && <p className="mt-1 text-base text-muted-foreground">{listing.address}</p>}
@@ -315,7 +315,7 @@ export default async function ListingPage({
             <div className="mt-12">
               <h2 className="font-display text-xl font-semibold tracking-tight">{t("factsFeatures")}</h2>
               <dl className="mt-3 max-w-md">
-                <Fact label={t("factType")} value={isForSale ? t("factTypeSale") : t("factTypeRent")} />
+                <Fact label={t("factType")} value={homeTypeLine(listing, tc)} />
                 <Fact label={t("factStatus")} value={statusLabel} />
                 {listing.beds != null && <Fact label={t("factBeds")} value={String(listing.beds)} />}
                 {listing.baths != null && <Fact label={t("factBaths")} value={String(listing.baths)} />}
