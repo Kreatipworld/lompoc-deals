@@ -3072,6 +3072,22 @@
     "sponsorLine": "Los negocios locales acompañan los viernes por la noche: los miembros aparecen dentro de nuestros videos e historias de los partidos.",
     "sponsorCta": "Patrocina los viernes →",
     "alertsHeading": "Recibe alertas de partidos",
-    "alertsSub": "Los partidos del viernes y los resultados del sábado, en el correo del lunes."
+    "alertsSub": "Los partidos del viernes y los resultados del sábado, en el correo del lunes.",
+    "connectHeading": "Mantente conectado",
+    "connectAlertsTitle": "Alertas de partidos por correo",
+    "connectAlertsBody": "Los partidos del viernes, los marcadores del sábado.",
+    "connectAlertsCta": "Recibir alertas",
+    "connectFollowTitle": "Síguenos",
+    "connectFollowBody": "Cada video de partido, primero en nuestros canales.",
+    "connectShareTitle": "Comparte esta página",
+    "connectShareBody": "Mándala al chat del grupo antes del viernes.",
+    "connectShareCta": "Compartir",
+    "connectShareCopied": "Enlace copiado",
+    "connectPhotosTitle": "Mándanos tus fotos desde las gradas",
+    "connectPhotosBody": "Etiqueta a @lompoclocals_ o escríbenos. Te damos el crédito.",
+    "connectPhotosCta": "Enviar fotos",
+    "thisWeekHeading": "Esta semana",
+    "addToCalendar": "Agregar al calendario",
+    "mistakeLine": "Los marcadores se actualizan solos después de cada partido. ¿Ves un error? Avísanos:"
   }
 }

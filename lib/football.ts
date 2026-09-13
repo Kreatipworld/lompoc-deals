@@ -92,6 +92,35 @@ export async function getNextFootballGames(): Promise<{ team: TeamSeason; game: 
   }
 }
 
+/** Kickoff as an ISO string with the Pacific offset (PDT through the first Sunday of November). */
+export function kickoffIso(g: Pick<FootballGame, "kickoff" | "gameDate">): string | null {
+  if (!g.kickoff) return null
+  const m = g.kickoff.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i)
+  if (!m) return null
+  let h = Number(m[1]) % 12
+  if (m[3].toUpperCase() === "PM") h += 12
+  const [y, mo, d] = g.gameDate.split("-").map(Number)
+  const offset = mo >= 11 && d > 7 ? "-08:00" : mo === 12 ? "-08:00" : "-07:00"
+  return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}T${String(h).padStart(2, "0")}:${m[2]}:00${offset}`
+}
+
+/** One game by id (for the .ics download). */
+export async function getFootballGame(id: number): Promise<FootballGame | null> {
+  const rows = (await db.select().from(footballGames).where(eq(footballGames.id, id)).limit(1)) as FootballGame[]
+  return rows[0] ?? null
+}
+
+/** Unplayed games for both schools inside the next `days` days, soonest first. */
+export function upcomingGames(teams: TeamSeason[], days = 7): (FootballGame & { teamName: string; teamShort: string })[] {
+  const today = todayPacific()
+  const end = new Date(Date.UTC(...(today.split("-").map(Number) as [number, number, number]).map((v, i) => (i === 1 ? v - 1 : v)) as [number, number, number]))
+  end.setUTCDate(end.getUTCDate() + days)
+  const limit = end.toISOString().slice(0, 10)
+  return teams
+    .flatMap((t) => t.games.filter((g) => !g.result && g.gameDate >= today && g.gameDate <= limit).map((g) => ({ ...g, teamName: t.name, teamShort: t.short })))
+    .sort((a, b) => (a.gameDate < b.gameDate ? -1 : a.gameDate > b.gameDate ? 1 : 0))
+}
+
 /** Latest results across both schools, newest first. */
 export function latestResults(teams: TeamSeason[], limit = 4): (FootballGame & { teamName: string; teamShort: string })[] {
   return teams

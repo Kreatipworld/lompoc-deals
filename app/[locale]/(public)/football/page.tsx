@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, CalendarDays, MapPin, Ticket, Trophy } from "lucide-react"
-import { getFootballSeason, getFootballNews, latestResults, type FootballGame, type TeamSeason } from "@/lib/football"
+import { ArrowRight, CalendarDays, CalendarPlus, MapPin, Ticket, Trophy } from "lucide-react"
+import { getFootballSeason, getFootballNews, kickoffIso, latestResults, upcomingGames, type FootballGame, type TeamSeason } from "@/lib/football"
 import { HUYCK } from "@/lib/football-sync"
 import { newsCoverUrl } from "@/lib/news-cover"
 import { SafeImage } from "@/components/safe-image"
@@ -10,6 +10,7 @@ import { SubscribeForm } from "@/components/subscribe-form"
 import { BusinessMapLoader } from "@/components/business-map-loader"
 import { FootballCountdown } from "@/components/football-countdown"
 import { FootballVideo } from "@/components/football-video"
+import { CalendarLink, FootballConnect } from "@/components/football-connect"
 import { pageAlternates } from "@/lib/seo"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
 
@@ -20,6 +21,12 @@ export const revalidate = 600
 const HUYCK_LAT = 34.6459
 const HUYCK_LNG = -120.4693
 const GOFAN = "https://gofan.co"
+const PAGE_URL = "https://www.lompoclocals.com/football"
+const SOCIAL = {
+  instagram: "https://www.instagram.com/lompoclocals_/",
+  tiktok: "https://www.tiktok.com/@lompoclocals",
+  facebook: "https://www.facebook.com/profile.php?id=1898952607093480",
+}
 
 // Our own videos (Blob), 9:16.
 const VIDEOS = [
@@ -39,19 +46,6 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   }
 }
 
-/** Kickoff as an ISO string in Pacific time (PDT in season). */
-function kickoffIso(g: FootballGame): string | null {
-  if (!g.kickoff) return null
-  const m = g.kickoff.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i)
-  if (!m) return null
-  let h = Number(m[1]) % 12
-  if (m[3].toUpperCase() === "PM") h += 12
-  // Pacific is PDT (-07:00) for the whole Aug–Nov season; PST only after the first Sunday of November.
-  const [y, mo, d] = g.gameDate.split("-").map(Number)
-  const offset = mo >= 11 && d > 7 ? "-08:00" : mo === 12 ? "-08:00" : "-07:00"
-  return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}T${String(h).padStart(2, "0")}:${m[2]}:00${offset}`
-}
-
 function fmtDate(date: string, locale: string, opts: Intl.DateTimeFormatOptions) {
   const [y, m, d] = date.split("-").map(Number)
   return new Intl.DateTimeFormat(locale === "es" ? "es-US" : "en-US", { timeZone: "America/Los_Angeles", ...opts }).format(new Date(Date.UTC(y, m - 1, d, 19)))
@@ -64,7 +58,24 @@ export default async function FootballPage({ params }: { params: { locale: strin
     getFootballNews(6, params.locale),
   ])
   const results = latestResults(teams, 4)
+  const thisWeek = upcomingGames(teams, 7)
   const hasGames = teams.some((x) => x.games.length > 0)
+  const connectLabels = {
+    heading: t("connectHeading"),
+    alertsTitle: t("connectAlertsTitle"),
+    alertsBody: t("connectAlertsBody"),
+    alertsCta: t("connectAlertsCta"),
+    followTitle: t("connectFollowTitle"),
+    followBody: t("connectFollowBody"),
+    shareTitle: t("connectShareTitle"),
+    shareBody: t("connectShareBody"),
+    shareCta: t("connectShareCta"),
+    shareCopied: t("connectShareCopied"),
+    shareText: t("metaTitle"),
+    photosTitle: t("connectPhotosTitle"),
+    photosBody: t("connectPhotosBody"),
+    photosCta: t("connectPhotosCta"),
+  }
 
   const countdownLabels = { days: t("cdDays"), hours: t("cdHours"), minutes: t("cdMinutes"), tonight: t("cdTonight"), live: t("cdLive"), final: t("cdFinal") }
   const record = (x: TeamSeason) => `${x.wins}-${x.losses}${x.ties ? `-${x.ties}` : ""}`
@@ -126,6 +137,29 @@ export default async function FootballPage({ params }: { params: { locale: strin
             <p className="mt-8 rounded-[20px] border border-white/15 bg-white/[0.06] p-5 text-white/80">{t("empty")}</p>
           )}
         </div>
+      </section>
+
+      {/* ── Stay connected + this week ─────────────────────────────── */}
+      <section className={PAGE_CONTAINER}>
+        <FootballConnect labels={connectLabels} pageUrl={PAGE_URL} social={SOCIAL} />
+        {thisWeek.length > 0 && (
+          <div className="mt-6 rounded-2xl border border-border/80 bg-card px-4 py-3 sm:px-5">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">{t("thisWeekHeading")}</p>
+            <ul className="mt-2 divide-y divide-border/60">
+              {thisWeek.map((g) => (
+                <li key={g.id} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2 text-sm">
+                  <span>
+                    <span className="font-semibold">{fmtDate(g.gameDate, params.locale, { weekday: "short", month: "numeric", day: "numeric" })}</span>
+                    <span className="text-muted-foreground"> · {g.teamName} {matchup(g)}{g.kickoff ? ` · ${g.kickoff}` : ""}{g.venue ? ` · ${g.venue.split(",")[0]}` : ""}</span>
+                  </span>
+                  <CalendarLink href={`/api/football/ics/${g.id}`} className="inline-flex items-center gap-1 text-xs font-semibold text-primary underline-offset-4 hover:underline">
+                    <CalendarPlus className="h-3.5 w-3.5" /> {t("addToCalendar")}
+                  </CalendarLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
 
       {/* ── Scores ─────────────────────────────────────────────────── */}
@@ -212,6 +246,10 @@ export default async function FootballPage({ params }: { params: { locale: strin
             ))}
           </div>
           <p className="mt-3 text-xs text-muted-foreground">{t("sourceNote")}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {t("mistakeLine")}{" "}
+            <a href="mailto:hello@lompoclocals.com?subject=Lompoc%20Football%20score%20correction" className="font-semibold text-primary underline-offset-4 hover:underline">hello@lompoclocals.com</a>
+          </p>
         </section>
       )}
 
@@ -284,7 +322,7 @@ export default async function FootballPage({ params }: { params: { locale: strin
       </section>
 
       {/* ── Alerts ─────────────────────────────────────────────────── */}
-      <section className={`${PAGE_CONTAINER} pt-12`}>
+      <section id="alerts" className={`${PAGE_CONTAINER} scroll-mt-24 pt-12`}>
         <div className="rounded-[20px] bg-primary px-6 py-8 text-white sm:px-10">
           <h2 className="font-display text-2xl font-bold tracking-tight">{t("alertsHeading")}</h2>
           <p className="mt-1 max-w-xl text-white/85">{t("alertsSub")}</p>

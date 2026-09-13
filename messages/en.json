@@ -3072,6 +3072,22 @@
     "sponsorLine": "Local businesses ride along with Friday night: members appear inside our game videos and stories.",
     "sponsorCta": "Sponsor Friday nights →",
     "alertsHeading": "Get game alerts",
-    "alertsSub": "Friday matchups and Saturday results, in the Monday email."
+    "alertsSub": "Friday matchups and Saturday results, in the Monday email.",
+    "connectHeading": "Stay connected",
+    "connectAlertsTitle": "Game alerts by email",
+    "connectAlertsBody": "Friday matchups, Saturday scores.",
+    "connectAlertsCta": "Get alerts",
+    "connectFollowTitle": "Follow",
+    "connectFollowBody": "Every game video, first on our channels.",
+    "connectShareTitle": "Share this page",
+    "connectShareBody": "Send it to the group chat before Friday.",
+    "connectShareCta": "Share",
+    "connectShareCopied": "Link copied",
+    "connectPhotosTitle": "Send us your photos from the stands",
+    "connectPhotosBody": "Tag @lompoclocals_ or email us. We credit you.",
+    "connectPhotosCta": "Email photos",
+    "thisWeekHeading": "This week",
+    "addToCalendar": "Add to calendar",
+    "mistakeLine": "Scores update automatically after every game. Spot a mistake? Tell us:"
   }
 }
