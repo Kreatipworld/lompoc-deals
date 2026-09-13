@@ -92,26 +92,23 @@ def wrap(cid, dur, H, bar, inner, js, first=False, bg=None):
 
 def scene_html(cid, dur, H, bar):
     if cid == "s1-count":
-        # abs: count 0.30→1.40 · gold landing 1.40 · sub 1.50
-        inner = f'''<div style="position:absolute; inset:0; background: radial-gradient(ellipse 90% 70% at 50% 40%, {PURPLE} 0%, #2c0736 70%, #1a0520 100%)"></div>
-      <video id="{cid}-fx" class="clip" src="public/fx-particles.mp4" data-start="0" data-media-start="0.20" data-duration="{dur:.2f}" data-track-index="0" muted playsinline style="mix-blend-mode: screen; opacity: 0.55; z-index: 5"></video>
-      <div style="position:absolute; left:0; right:0; top:22%; z-index:36; text-align:center">
-        <span class="pill" id="{cid}-pill">@lompoclocals · TikTok</span>
-      </div>
-      <div style="position:absolute; left:0; right:0; top:34%; z-index:36; text-align:center">
-        <span id="{cid}-num" style="display:block; color:#fff; font-weight:800; font-size:300px; line-height:0.9; letter-spacing:-14px; font-variant-numeric: tabular-nums; text-shadow: 0 10px 50px rgba(10,6,12,0.7); opacity:0; will-change: transform, opacity, color">1,000</span>
-        <span id="{cid}-sub" style="display:block; margin-top:80px; color:rgba(255,255,255,0.92); font-weight:700; font-size:44px; letter-spacing:1px; opacity:0; will-change: transform, opacity">followers · thank you, Lompoc</span>
+        # COVER (frame 0, held 0–0.80): 1,000 gold ~85% width · FOLLOWERS · TikTok pill · Thank you, Lompoc.
+        # Everything critical sits inside the center 1080×1080 (y 420–1500). Count-up resets at 0.80, spins to 1.90.
+        tiktok = '<svg width="34" height="34" viewBox="0 0 24 24" fill="#fff" style="vertical-align:-7px; margin-right:12px" aria-hidden="true"><path d="M16.5 2h-3.2v13.1a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9a6.1 6.1 0 1 0 5.2 6V8.3A7.6 7.6 0 0 0 21 9.6V6.4A4.5 4.5 0 0 1 16.5 2z"/></svg>'
+        inner = f'''<div style="position:absolute; inset:0; background: radial-gradient(ellipse 90% 70% at 50% 42%, {PURPLE} 0%, #2c0736 70%, #1a0520 100%)"></div>
+      <video id="{cid}-fx" class="clip" src="public/fx-particles.mp4" data-start="0" data-media-start="0.20" data-duration="{dur:.2f}" data-track-index="0" muted playsinline style="mix-blend-mode: screen; opacity: 0.5; z-index: 5; object-position: 50% 100%"></video>
+      <div style="position:absolute; left:0; right:0; top:50%; transform: translateY(-50%); z-index:36; text-align:center; padding: 0 40px" data-layout-allow-overlap>
+        <span id="{cid}-num" data-layout-allow-overlap style="display:block; color:{GOLD}; font-weight:800; font-size:360px; line-height:0.92; letter-spacing:-16px; font-variant-numeric: tabular-nums; text-shadow: 0 12px 60px rgba(10,6,12,0.75); will-change: transform, color">1,000</span>
+        <span id="{cid}-fol" data-layout-allow-overlap style="display:block; margin-top:30px; color:#fff; font-weight:800; font-size:144px; line-height:1; letter-spacing:-4px; text-transform:uppercase; text-shadow: 0 8px 36px rgba(10,6,12,0.7)">Followers</span>
+        <span id="{cid}-pill" style="display:inline-block; margin-top:30px; background:rgba(0,0,0,0.62); border:2px solid rgba(255,255,255,0.22); color:#fff; font-weight:700; font-size:38px; letter-spacing:0.5px; padding:16px 34px; border-radius:999px">{tiktok}on TikTok · @lompoclocals</span>
+        <span id="{cid}-ty" style="display:block; margin-top:30px; color:rgba(255,248,236,0.96); font-weight:700; font-size:54px; letter-spacing:-0.5px">Thank you, Lompoc.</span>
       </div>'''
-        # poster frame 0 = pill + gold "1,000" + sub (clean cover); at 0.30 the counter resets and spins 0 → 1,000
-        js = f'''tl.set("#{cid}-pill", {{ autoAlpha: 1 }}, 0);
-        tl.set("#{cid}-num", {{ autoAlpha: 1, color: "{GOLD}" }}, 0);
-        tl.set("#{cid}-sub", {{ autoAlpha: 1 }}, 0);
-        {{ const o = {{ v: 1000 }}; const el = document.querySelector("#{cid}-num");
-          tl.set(o, {{ v: 0 }}, 0.30);
-          tl.set("#{cid}-num", {{ color: "#ffffff" }}, 0.30);
-          tl.to(o, {{ v: 1000, duration: 1.10, ease: "power3.out", onUpdate: () => {{ el.textContent = Math.round(o.v).toLocaleString("en-US"); }} }}, 0.30); }}
-        tl.to("#{cid}-num", {{ color: "{GOLD}", scale: 1.04, duration: 0.18, ease: "power2.out" }}, 1.40);
-        tl.to("#{cid}-num", {{ scale: 1.0, duration: 0.35, ease: "back.out(2)" }}, 1.58);'''
+        js = f'''{{ const o = {{ v: 1000 }}; const el = document.querySelector("#{cid}-num");
+          tl.set(o, {{ v: 0 }}, 0.80);
+          tl.set("#{cid}-num", {{ color: "#ffffff" }}, 0.80);
+          tl.to(o, {{ v: 1000, duration: 1.10, ease: "power3.out", onUpdate: () => {{ el.textContent = Math.round(o.v).toLocaleString("en-US"); }} }}, 0.80); }}
+        tl.to("#{cid}-num", {{ color: "{GOLD}", scale: 1.02, duration: 0.18, ease: "power2.out" }}, 1.90);
+        tl.to("#{cid}-num", {{ scale: 1.0, duration: 0.35, ease: "back.out(2)" }}, 2.08);'''
         return wrap(cid, dur, H, bar, inner, js, first=True)
 
     if cid == "s2-stadium":
