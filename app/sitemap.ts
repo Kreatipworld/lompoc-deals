@@ -99,6 +99,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/homes",
     "/football",
     "/for-businesses/real-estate",
+    "/for-businesses/real-estate/guide",
     "/activities",
     "/things-to-do",
     "/locals",

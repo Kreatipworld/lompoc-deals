@@ -158,6 +158,12 @@ export default async function RealEstateLandingPage({
           >
             {t("priceSecondary")}
           </Link>
+          <Link
+            href="/for-businesses/real-estate/guide"
+            className="mt-2 block text-sm font-medium text-primary hover:underline"
+          >
+            {t("guideLink")}
+          </Link>
         </div>
 
         <p className="mx-auto mt-8 max-w-lg text-center text-xs leading-relaxed text-muted-foreground">
