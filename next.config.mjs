@@ -33,6 +33,9 @@ const nextConfig = {
       { source: "/en/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/en/biz/heritage-home-plumbing-services", permanent: true },
       { source: "/es/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/es/biz/heritage-home-plumbing-services", permanent: true },
       // The football word page grew into the hub.
+      // Sep 13 2026: first realtor renamed her listing after claiming; keep the shared links alive.
+      { source: "/biz/maressa-martinez-realtor", destination: "/biz/empire-real-estate-group-maressa-the-realtor", permanent: true },
+      { source: "/:locale(en|es)/biz/maressa-martinez-realtor", destination: "/:locale/biz/empire-real-estate-group-maressa-the-realtor", permanent: true },
       { source: "/find/football", destination: "/football", permanent: true },
       { source: "/en/find/football", destination: "/football", permanent: true },
       { source: "/es/find/football", destination: "/es/football", permanent: true },
