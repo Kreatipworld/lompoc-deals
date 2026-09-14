@@ -148,7 +148,7 @@ export default async function ListingOpengraphImage({ params }: { params: { id: 
           </div>
           <div style={{ fontSize: 26, marginTop: 8, color: "rgba(255,255,255,0.85)" }}>{address}</div>
           {agent ? (
-            <div style={{ fontSize: 22, marginTop: 14, color: "#EFC618", fontWeight: 700 }}>Listed by {agent}</div>
+            <div style={{ fontSize: 22, marginTop: 14, color: "#EFC618", fontWeight: 700 }}>{`Listed by ${agent}`}</div>
           ) : null}
         </div>
       </div>
