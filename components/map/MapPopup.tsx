@@ -19,6 +19,69 @@ export function MapPopup({ poi, category, distanceMiles, onClose }: MapPopupProp
   const Icon = category.icon
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
 
+  // Home pins: a Zillow-style card — photo, bold price, facts, address, agent, "View home".
+  if (poi.kind === "home" && poi.listingId != null) {
+    return (
+      <div
+        className="relative w-72 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5"
+        style={{ animation: "popupEnter 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards" }}
+      >
+        <div className="relative h-32 w-full bg-[#F1E6F4]">
+          {poi.imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={poi.imageUrl} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <Icon className="h-8 w-8 text-[#650C75]/60" />
+            </div>
+          )}
+          <span
+            className="absolute left-3 top-3 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-bold tracking-wide text-gray-900 shadow"
+            style={{ color: poi.listingType === "for-rent" ? "#0B992F" : "#650C75" }}
+          >
+            {poi.listingType === "for-rent" ? t("popup.rentTag") : t("popup.forSaleTag")}
+          </span>
+          <button
+            onClick={onClose}
+            className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-gray-600 shadow transition-colors hover:bg-white"
+            aria-label={t("popup.close")}
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="p-4">
+          <p className="text-xl font-extrabold tabular-nums leading-none text-gray-900">{poi.price}</p>
+          {poi.facts && <p className="mt-1.5 text-sm text-gray-600">{poi.facts}</p>}
+          {poi.address && <p className="mt-1 text-sm text-gray-500">{poi.address}</p>}
+          {poi.agent && (
+            <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-gray-400">
+              {t("popup.listedBy", { agent: poi.agent })}
+            </p>
+          )}
+          <div className="mt-4 flex gap-2">
+            <a
+              href={directionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2.5 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50"
+            >
+              <Navigation className="h-3.5 w-3.5" />
+              {t("popup.directions")}
+            </a>
+            <Link
+              href={`/listings/${poi.listingId}`}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "#650C75" }}
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              {t("popup.viewHome")}
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       className="relative w-72 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5"

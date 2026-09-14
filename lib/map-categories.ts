@@ -7,10 +7,11 @@ import {
   Wrench,
   Car,
   MapPin,
-  Home, HardHat } from "lucide-react"
+  Home, HardHat, Building2 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 export type CategoryId =
+  | "homes"
   | "wineries"
   | "food-drink"
   | "retail"
@@ -34,6 +35,16 @@ export interface Category {
 }
 
 export const CATEGORIES: Category[] = [
+  {
+    // Real-estate listings posted by agents (lib/football-style data: property_listings).
+    // Brand green for every home, sale or rent; the popup carries the RENT tag.
+    id: "homes",
+    name: "Homes",
+    labelKey: "categories.homes",
+    color: "#0B992F",
+    icon: Home,
+    emoji: "🏡",
+  },
   {
     id: "wineries",
     name: "Wine & Wineries",
@@ -103,7 +114,7 @@ export const CATEGORIES: Category[] = [
     name: "Real Estate",
     labelKey: "categories.real-estate",
     color: "#D97706",
-    icon: Home,
+    icon: Building2,
     emoji: "🏠",
   },
   {

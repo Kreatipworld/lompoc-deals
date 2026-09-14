@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
+import { unstable_noStore } from "next/cache"
 import { db } from "@/db/client"
-import { businesses, categories, subscriptions } from "@/db/schema"
-import { eq, and, isNotNull, sql } from "drizzle-orm"
+import { businesses, categories, subscriptions, propertyListings } from "@/db/schema"
+import { eq, and, isNotNull, sql, or, gt } from "drizzle-orm"
 import type { CategoryId } from "@/lib/map-categories"
+import type { POI } from "@/lib/map-pois"
 import { pick } from "@/lib/localize"
+import { hasStreetAddress, formatListingFacts, formatListingPriceShort } from "@/lib/listing-utils"
 
 // Without this, Next statically optimizes the GET at build time and the whole
 // map freezes at deploy — new businesses and partner-status changes only
@@ -32,8 +35,11 @@ function toMapCategory(slug: string | null): CategoryId {
 }
 
 export async function GET(req: NextRequest) {
+  // neon-http fetches get cached inside GET handlers otherwise (see project memory).
+  unstable_noStore()
   // `?locale=es` swaps in the Spanish description for the popup highlight (English fallback).
   const locale = req.nextUrl.searchParams.get("locale") === "es" ? "es" : "en"
+  const intl = locale === "es" ? "es-US" : "en-US"
   try {
     const rows = await db
       .select({
@@ -59,7 +65,7 @@ export async function GET(req: NextRequest) {
       .where(and(eq(businesses.status, "approved"), isNotNull(businesses.lat), isNotNull(businesses.lng)))
       .orderBy(businesses.name)
 
-    const pois = rows.map((row) => ({
+    const pois: POI[] = rows.map((row) => ({
       id: String(row.id),
       name: row.name,
       slug: row.slug,
@@ -68,7 +74,66 @@ export async function GET(req: NextRequest) {
       category: toMapCategory(row.categorySlug ?? null),
       highlight: pick(locale, row.description, row.descriptionEs)?.slice(0, 120) ?? row.name,
       partner: Boolean(row.isPartner),
+      kind: "business" as const,
     }))
+
+    // Homes: live listings from approved agents, with a real street address
+    // (city-only addresses geocode to the city center — no pin for those).
+    try {
+      const homes = await db
+        .select({
+          id: propertyListings.id,
+          title: propertyListings.title,
+          type: propertyListings.type,
+          priceCents: propertyListings.priceCents,
+          beds: propertyListings.beds,
+          baths: propertyListings.baths,
+          sqft: propertyListings.sqft,
+          address: propertyListings.address,
+          imageUrl: propertyListings.imageUrl,
+          lat: propertyListings.lat,
+          lng: propertyListings.lng,
+          agent: businesses.name,
+          agentSlug: businesses.slug,
+        })
+        .from(propertyListings)
+        .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
+        .where(
+          and(
+            eq(propertyListings.status, "active"),
+            or(sql`${propertyListings.expiresAt} is null`, gt(propertyListings.expiresAt, sql`now()`)),
+            eq(businesses.status, "approved"),
+            isNotNull(propertyListings.lat),
+            isNotNull(propertyListings.lng)
+          )
+        )
+        .orderBy(propertyListings.createdAt)
+
+      for (const h of homes) {
+        if (!hasStreetAddress(h.address)) continue
+        const price = formatListingPriceShort(h.priceCents, h.type, intl)
+        const facts = formatListingFacts(h.beds, h.baths, h.sqft)
+        pois.push({
+          id: `home-${h.id}`,
+          name: h.address ?? h.title,
+          slug: h.agentSlug,
+          lat: h.lat as number,
+          lng: h.lng as number,
+          category: "homes",
+          highlight: [price, facts].filter(Boolean).join(" · "),
+          price,
+          kind: "home",
+          listingId: h.id,
+          listingType: h.type,
+          imageUrl: h.imageUrl,
+          address: h.address,
+          facts,
+          agent: h.agent,
+        })
+      }
+    } catch (err) {
+      console.error("[map-pois] homes query failed:", err)
+    }
 
     return NextResponse.json(pois, {
       headers: {

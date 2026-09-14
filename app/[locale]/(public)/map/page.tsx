@@ -2,7 +2,7 @@ import { LompocInteractiveMapLoader } from "@/components/map/LompocInteractiveMa
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, Store, Tag, CalendarDays, MapPin } from "lucide-react"
+import { ArrowRight, Store, Tag, CalendarDays, MapPin, Home } from "lucide-react"
 import { getAllCategories } from "@/lib/queries"
 import { pageAlternates } from "@/lib/seo"
 
@@ -42,6 +42,7 @@ export default async function MapPage() {
 
           <div className="mt-4 hidden flex-wrap gap-2 sm:flex">
             {[
+              { href: "/homes", label: t("linkHomes"), Icon: Home },
               { href: "/businesses", label: t("linkBusinesses"), Icon: Store },
               { href: "/", label: t("linkDeals"), Icon: Tag },
               { href: "/events", label: t("linkEvents"), Icon: CalendarDays },

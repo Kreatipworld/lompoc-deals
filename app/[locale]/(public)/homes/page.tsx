@@ -6,6 +6,7 @@ import { getAllRealEstateListings, getFeaturedAgents } from "@/lib/queries"
 import { PropertyListingCard } from "@/components/property-listing-card"
 import { SafeImage } from "@/components/safe-image"
 import { HomesMap, type HomePin } from "@/components/homes-map"
+import { hasStreetAddress } from "@/lib/listing-utils"
 import { pageAlternates } from "@/lib/seo"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
 
@@ -37,7 +38,8 @@ export default async function HomesPage({
     getFeaturedAgents(3),
   ])
   const pins: HomePin[] = listings
-    .filter((l) => l.lat != null && l.lng != null)
+    // City-only addresses geocode to the city center — no pin until the agent adds the street.
+    .filter((l) => l.lat != null && l.lng != null && hasStreetAddress(l.address))
     .map((l) => ({ id: l.id, title: l.title, priceCents: l.priceCents, type: l.type, lat: l.lat!, lng: l.lng!, imageUrl: l.imageUrl }))
 
   const tabs = [

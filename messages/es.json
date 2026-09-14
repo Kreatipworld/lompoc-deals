@@ -584,7 +584,8 @@
     "browseByCategory": "Ver por categoría",
     "linkBusinesses": "Todos los negocios",
     "linkDeals": "Últimas ofertas",
-    "linkEvents": "Qué hacer"
+    "linkEvents": "Qué hacer",
+    "linkHomes": "Casas en venta y renta"
   },
   "forBusinesses": {
     "title": "Haz crecer tu negocio en Lompoc",
@@ -2322,6 +2323,7 @@
     "whatsSpecial": "Lo especial",
     "factsFeatures": "Datos y características",
     "neighborhood": "Vecindario",
+    "mapComing": "El mapa aparece cuando el agente agrega la dirección con número de calle.",
     "moreHomes": "Más casas en Lompoc",
     "factType": "Tipo",
     "factTypeSale": "Casa en venta",
@@ -2934,6 +2936,7 @@
   "mapUi": {
     "categories": {
       "wineries": "Vinos y viñedos",
+      "homes": "Casas",
       "food-drink": "Comida y bebida",
       "retail": "Tiendas y compras",
       "health-beauty": "Salud y belleza",
@@ -2962,7 +2965,11 @@
       "close": "Cerrar ventana",
       "fromCenter": "a {distance} del centro",
       "directions": "Cómo llegar",
-      "viewListing": "Ver perfil"
+      "viewListing": "Ver perfil",
+      "viewHome": "Ver casa",
+      "listedBy": "Publicada por {agent}",
+      "rentTag": "RENTA",
+      "forSaleTag": "EN VENTA"
     },
     "skeleton": {
       "loading": "Cargando Lompoc…"

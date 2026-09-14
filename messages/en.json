@@ -584,7 +584,8 @@
     "browseByCategory": "Browse by category",
     "linkBusinesses": "All businesses",
     "linkDeals": "Latest deals",
-    "linkEvents": "What's on"
+    "linkEvents": "What's on",
+    "linkHomes": "Homes for sale & rent"
   },
   "forBusinesses": {
     "title": "Grow your Lompoc business",
@@ -2322,6 +2323,7 @@
     "whatsSpecial": "What's special",
     "factsFeatures": "Facts & features",
     "neighborhood": "Neighborhood",
+    "mapComing": "Map coming when the agent adds the street address.",
     "moreHomes": "More homes in Lompoc",
     "factType": "Type",
     "factTypeSale": "House for sale",
@@ -2934,6 +2936,7 @@
   "mapUi": {
     "categories": {
       "wineries": "Wine & Wineries",
+      "homes": "Homes",
       "food-drink": "Food & Drink",
       "retail": "Shopping & Retail",
       "health-beauty": "Health & Beauty",
@@ -2962,7 +2965,11 @@
       "close": "Close popup",
       "fromCenter": "{distance} from center",
       "directions": "Directions",
-      "viewListing": "View Listing"
+      "viewListing": "View Listing",
+      "viewHome": "View home",
+      "listedBy": "Listed by {agent}",
+      "rentTag": "RENT",
+      "forSaleTag": "FOR SALE"
     },
     "skeleton": {
       "loading": "Loading Lompoc…"

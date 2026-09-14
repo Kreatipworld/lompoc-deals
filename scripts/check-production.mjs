@@ -346,6 +346,26 @@ try {
     : fail(`HEIC/HEIF photo URLs found — convert to JPEG: ${bad.join(" | ")}`)
 } catch (e) { fail(`listing photo scan: ${e.message}`) }
 
+// ── 13. Homes on the main map ─────────────────────────────────────────────────
+// Sep 14 2026: live listings with a street address ride /api/map-pois as
+// kind "home" so /map shows businesses and homes together.
+console.log("\n13. Homes for sale & rent on the main map")
+try {
+  const live = await sql`
+    select count(*)::int as n from property_listings l
+    join businesses b on b.id = l.business_id
+    where l.status = 'active' and (l.expires_at is null or l.expires_at > now())
+      and b.status = 'approved' and l.lat is not null and l.lng is not null
+      and l.address ~ '^\\s*[0-9]+[A-Za-z]?\\s+\\S'`
+  const n = live[0]?.n ?? 0
+  const res = await fetch(`${SITE}/api/map-pois`, { cache: "no-store" })
+  const pois = await res.json()
+  const homes = Array.isArray(pois) ? pois.filter((p) => p.kind === "home") : []
+  if (n === 0) pass("no live listing with a street address yet — nothing to pin")
+  else if (homes.length >= 1) pass(`${homes.length} home pin(s) on /api/map-pois (${n} live with a street address)`)
+  else fail(`/api/map-pois carries no kind:"home" pins but ${n} live listing(s) have a street address`)
+} catch (e) { fail(`homes on map: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`
