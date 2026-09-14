@@ -109,6 +109,7 @@ export function PropertyForm({ businessId, agentName, listing }: PropertyFormPro
                 remove: t("photoRemove"),
                 tooMany: t("photosTooMany", { max: MAX_LISTING_PHOTOS }),
                 badType: t("photosBadType"),
+                heic: t("photosHeic"),
                 uploadFailed: t("photosUploadFailed"),
                 count: t("photosCount"),
               }}

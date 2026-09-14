@@ -25,8 +25,13 @@ export async function POST(request: Request): Promise<NextResponse> {
         const biz = await db.query.businesses.findFirst({ where: (b, { eq }) => eq(b.ownerUserId, userId) })
         if (!biz) throw new Error("Create your business profile first")
         if (!pathname.startsWith(`listings/${biz.id}/`)) throw new Error("Bad upload path")
+        // Browsers can't display HEIC/HEIF; the uploader re-encodes to JPEG
+        // before asking for a token, so anything else here is a bypass.
+        if (/\.(heic|heif)$/i.test(pathname)) {
+          throw new Error("HEIC photos can't be shown in a browser — please share the photo as JPEG and try again")
+        }
         return {
-          allowedContentTypes: ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"],
+          allowedContentTypes: ["image/jpeg", "image/png", "image/webp"],
           maximumSizeInBytes: 12 * 1024 * 1024,
           addRandomSuffix: true,
           tokenPayload: JSON.stringify({ businessId: biz.id }),

@@ -1428,7 +1428,8 @@
       "uploadFailed": "Upload failed",
       "invalidInput": "Invalid input",
       "propertyListingsRequirePremium": "Property listings require the Plus plan",
-      "photosStillUploading": "Photos are still uploading — give it a second, then save again."
+      "photosStillUploading": "Photos are still uploading — give it a second, then save again.",
+      "photoHeic": "This photo is in HEIC format. On iPhone, open Settings → Camera → Formats → Most Compatible, or share the photo as JPEG, then try again."
     },
     "userSignup": {
       "emailAlreadyExists": "An account with that email already exists",
@@ -2021,7 +2022,8 @@
     "makeCover": "Make cover",
     "photoRemove": "Remove photo",
     "photosTooMany": "Up to {max} photos per listing.",
-    "photosBadType": "Only image files (JPG, PNG, HEIC).",
+    "photosBadType": "Only image files (JPG, PNG, WebP).",
+    "photosHeic": "This photo is in HEIC format. On iPhone, open Settings → Camera → Formats → Most Compatible, or share the photo as JPEG, then try again.",
     "photosUploadFailed": "Upload failed. Try that photo again.",
     "photosCount": "{n} of {max}",
     "priceHintSale": "Asking price in dollars. Formatted for you.",

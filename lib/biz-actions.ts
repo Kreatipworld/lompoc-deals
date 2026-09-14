@@ -754,6 +754,13 @@ export async function upsertPropertyAction(
   // uploads still work for anything that posts raw files.
   const ordered = Array.from(new Set(formData.getAll("photoUrls").map(String).filter((u) => u && ownBlobUrl(u))))
   const uploads = (formData.getAll("photos") as File[]).filter((f) => f && typeof f === "object" && f.size > 0)
+  // Never store a photo browsers can't render (HEIC/HEIF). The uploader
+  // re-encodes to JPEG; this is the last line of defense for any other path.
+  const isHeicUrl = (u: string) => /\.(heic|heif)(\?|#|$)/i.test(u)
+  const isHeicFile = (f: File) => /^image\/hei[cf]$/i.test(f.type) || /\.(heic|heif)$/i.test(f.name)
+  if (ordered.some(isHeicUrl) || uploads.some(isHeicFile)) {
+    return { error: t("photoHeic") }
+  }
   if (ordered.length + uploads.length > MAX_LISTING_PHOTOS) {
     return { error: t("tooManyListingPhotos", { max: MAX_LISTING_PHOTOS }) }
   }

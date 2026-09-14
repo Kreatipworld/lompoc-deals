@@ -1428,7 +1428,8 @@
       "uploadFailed": "Error al subir",
       "invalidInput": "Entrada no válida",
       "propertyListingsRequirePremium": "Los listados de propiedades requieren el plan Plus",
-      "photosStillUploading": "Las fotos aún se están subiendo — espera un momento y guarda de nuevo."
+      "photosStillUploading": "Las fotos aún se están subiendo — espera un momento y guarda de nuevo.",
+      "photoHeic": "Esta foto está en formato HEIC. En iPhone, abre Ajustes → Cámara → Formatos → Más compatible, o comparte la foto como JPEG, y vuelve a intentarlo."
     },
     "userSignup": {
       "emailAlreadyExists": "Ya existe una cuenta con ese correo",
@@ -2021,7 +2022,8 @@
     "makeCover": "Usar de portada",
     "photoRemove": "Quitar foto",
     "photosTooMany": "Hasta {max} fotos por propiedad.",
-    "photosBadType": "Solo imágenes (JPG, PNG, HEIC).",
+    "photosBadType": "Solo imágenes (JPG, PNG, WebP).",
+    "photosHeic": "Esta foto está en formato HEIC. En iPhone, abre Ajustes → Cámara → Formatos → Más compatible, o comparte la foto como JPEG, y vuelve a intentarlo.",
     "photosUploadFailed": "Falló la subida. Intenta esa foto de nuevo.",
     "photosCount": "{n} de {max}",
     "priceHintSale": "Precio en dólares. Lo formateamos por ti.",

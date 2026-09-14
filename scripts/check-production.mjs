@@ -326,6 +326,26 @@ try {
   html.includes('data-football="game"') ? pass("/football has at least one game row") : fail("/football has no game rows (sync-football cron?)")
 } catch (e) { fail(`football hub: ${e.message}`) }
 
+// ── 12. No HEIC/HEIF photos on any listing ────────────────────────────────────
+// Sep 13 2026: two iPhone HEIC uploads rendered as broken images on the first
+// realtor's listing. The uploader now re-encodes to JPEG and the action rejects
+// HEIC URLs; this catches anything that slips through another path.
+console.log("\n12. Listing photos are browser-displayable (no HEIC/HEIF)")
+try {
+  const rows = await sql`
+    select id, image_url, coalesce(photos_json, '[]'::jsonb) as photos
+    from property_listings
+    where status <> 'archived'`
+  const bad = []
+  for (const r of rows) {
+    const urls = [r.image_url, ...(Array.isArray(r.photos) ? r.photos : [])].filter(Boolean)
+    for (const u of urls) if (/\.(heic|heif)(\?|#|$)/i.test(String(u))) bad.push(`listing ${r.id}: ${u}`)
+  }
+  bad.length === 0
+    ? pass(`no HEIC/HEIF photo URLs across ${rows.length} listing(s)`)
+    : fail(`HEIC/HEIF photo URLs found — convert to JPEG: ${bad.join(" | ")}`)
+} catch (e) { fail(`listing photo scan: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

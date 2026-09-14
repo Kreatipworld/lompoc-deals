@@ -16,21 +16,29 @@ export type PhotoItem = {
   error?: string
 }
 
-// Downscale phone photos in the browser (max 2000 px, ~85% JPEG) so a 12-photo
-// listing uploads fast and never trips a body limit. HEIC that the browser can't
-// decode is passed through as-is.
-async function downscale(file: File): Promise<File> {
-  if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return file
+const HEIC_RE = /\.(heic|heif)$/i
+export function isHeicFile(file: File): boolean {
+  return /^image\/hei[cf]$/i.test(file.type) || HEIC_RE.test(file.name)
+}
+
+// Re-encode EVERY photo in the browser as a JPEG (max 2000 px, ~85%) so a
+// 12-photo listing uploads fast, never trips a body limit, and — above all —
+// never lands in Blob as a format browsers can't display. HEIC/HEIF that this
+// browser cannot decode returns null; the caller shows the iPhone hint instead
+// of uploading the original (Sep 13 2026: two HEIC uploads broke a listing).
+async function toJpeg(file: File): Promise<File | null> {
   const bitmap = await createImageBitmap(file).catch(() => null)
-  if (!bitmap) return file
+  if (!bitmap || !bitmap.width || !bitmap.height) return null
   const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height))
-  if (scale === 1 && file.size < 2.5 * 1024 * 1024) return file
   const canvas = document.createElement("canvas")
   canvas.width = Math.round(bitmap.width * scale)
   canvas.height = Math.round(bitmap.height * scale)
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+  const ctx = canvas.getContext("2d")
+  if (!ctx) return null
+  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+  bitmap.close?.()
   const blob: Blob | null = await new Promise((res) => canvas.toBlob(res, "image/jpeg", JPEG_QUALITY))
-  if (!blob) return file
+  if (!blob) return null
   return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" })
 }
 
@@ -53,6 +61,7 @@ export function PropertyPhotos({
     remove: string
     tooMany: string
     badType: string
+    heic: string
     uploadFailed: string
     count: string // "{n} of {max}"
   }
@@ -78,16 +87,22 @@ export function PropertyPhotos({
       if (list.length > room) setError(labels.tooMany)
       const accepted = list.slice(0, Math.max(0, room))
       for (const raw of accepted) {
-        if (!raw.type.startsWith("image/")) {
+        // HEIC often arrives with an empty MIME type — judge by name too.
+        if (!raw.type.startsWith("image/") && !isHeicFile(raw)) {
           setError(labels.badType)
           continue
         }
+        // Convert first: nothing that isn't a JPEG we made ourselves is uploaded.
+        const file = await toJpeg(raw)
+        if (!file) {
+          setError(isHeicFile(raw) ? labels.heic : labels.badType)
+          continue
+        }
         const key = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
-        const preview = URL.createObjectURL(raw)
+        const preview = URL.createObjectURL(file)
         setItems((cur) => [...cur, { key, url: null, preview, progress: 0 }])
         try {
-          const file = await downscale(raw)
-          const res = await upload(`listings/${businessId}/${key}.${file.type === "image/jpeg" ? "jpg" : file.name.split(".").pop() || "jpg"}`, file, {
+          const res = await upload(`listings/${businessId}/${key}.jpg`, file, {
             access: "public",
             handleUploadUrl: "/api/upload/listing-photo",
             onUploadProgress: ({ percentage }) => {
