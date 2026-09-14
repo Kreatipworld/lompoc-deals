@@ -25,7 +25,21 @@ export default async function ListingOpengraphImage({ params }: { params: { id: 
   const mark = `data:image/svg+xml;base64,${Buffer.from(MARK).toString("base64")}`
   const house = `data:image/svg+xml;base64,${Buffer.from(HOUSE).toString("base64")}`
 
-  const photo = listing?.imageUrl ?? null
+  // Embed the cover as a data URI: satori's own remote fetch is the usual reason a
+  // per-item OG route 500s (timeouts, HEIC/oversized sources, redirects).
+  let photo: string | null = null
+  if (listing?.imageUrl) {
+    try {
+      const res = await fetch(listing.imageUrl, { signal: AbortSignal.timeout(6000) })
+      const ct = res.headers.get("content-type") ?? ""
+      if (res.ok && /^image\/(jpeg|png|webp)/.test(ct)) {
+        const buf = Buffer.from(await res.arrayBuffer())
+        if (buf.length < 8_000_000) photo = `data:${ct.split(";")[0]};base64,${buf.toString("base64")}`
+      }
+    } catch {
+      photo = null
+    }
+  }
   const price = listing ? formatListingPriceShort(listing.priceCents, listing.type) : ""
   const facts = listing ? formatListingFacts(listing.beds, listing.baths, listing.sqft) : ""
   const typeLine = listing ? homeTypeLinePlain(listing.homeType, listing.type) : ""
@@ -52,13 +66,16 @@ export default async function ListingOpengraphImage({ params }: { params: { id: 
             alt=""
             width={1200}
             height={630}
-            style={{ position: "absolute", inset: 0, width: 1200, height: 630, objectFit: "cover" }}
+            style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }}
           />
         ) : (
           <div
             style={{
               position: "absolute",
-              inset: 0,
+              top: 0,
+              left: 0,
+              width: 1200,
+              height: 630,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -74,7 +91,10 @@ export default async function ListingOpengraphImage({ params }: { params: { id: 
         <div
           style={{
             position: "absolute",
-            inset: 0,
+            top: 0,
+            left: 0,
+            width: 1200,
+            height: 630,
             backgroundImage:
               "linear-gradient(to top, rgba(20,6,26,0.94) 0%, rgba(20,6,26,0.72) 32%, rgba(20,6,26,0.05) 62%, rgba(20,6,26,0.0) 100%)",
           }}
