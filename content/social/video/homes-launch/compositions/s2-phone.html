@@ -24,7 +24,7 @@
       [data-composition-id="s2-phone"] .card .addr { display: block; margin-top: 8px; color: #6b5c72; font-weight: 500; font-size: 30px; line-height: 1.2; }
       [data-composition-id="s2-phone"] .card .status { position: absolute; top: -22px; left: 34px; background: #fff; color: #241629; border: 2px solid rgba(101,12,117,0.18); font-weight: 800; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 18px; border-radius: 999px; }
       [data-composition-id="s2-phone"] .card .status.rent { background: #efc618; border-color: #efc618; }
-      [data-composition-id="s2-phone"] .phone { position: absolute; left: 50%; z-index: 34; transform: translateX(-50%); border-radius: 64px; overflow: hidden; background: #0d0a10; box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 14px #1a1420, 0 0 0 18px rgba(255,255,255,0.10); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s2-phone"] .phone { position: absolute; z-index: 34; border-radius: 64px; overflow: hidden; background: #0d0a10; box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 14px #1a1420, 0 0 0 18px rgba(255,255,255,0.10); opacity: 0; will-change: transform, opacity; }
       [data-composition-id="s2-phone"] .phone img { display: block; width: 100%; height: auto; will-change: transform; }
     
     </style>
@@ -34,8 +34,8 @@
       <div style="position:absolute; left:84px; right:84px; top:190px; z-index:36">
         <span class="hero" id="s2-phone-title" style="font-size:104px">Homes in Lompoc</span>
       </div>
-      <div class="phone" id="s2-phone-phone" style="top:470px; width:720px; height:1250px">
-        <img id="s2-phone-shot" src="public/ui-homes.png" alt="" />
+      <div class="phone" id="s2-phone-phone" style="top:470px; left:180px; width:720px; height:1250px">
+        <img id="s2-phone-shot" src="public/ui-homes-v2.png" alt="" />
       </div>
       <div style="position:absolute; left:84px; right:84px; top:330px; z-index:37; display:flex; gap:16px; flex-wrap:wrap">
         <span class="chip" id="s2-phone-c1">Real listings</span>
@@ -52,7 +52,7 @@
         tl.fromTo("#s2-phone-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: "power1.inOut" }, 0);
         tl.fromTo("#s2-phone-title", { autoAlpha: 0, y: 30, scale: 1.08 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, 0.50);
         tl.fromTo("#s2-phone-phone", { autoAlpha: 0, y: 120, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.8, ease: "expo.out" }, 0.55);
-        tl.fromTo("#s2-phone-shot", { y: 0 }, { y: -1873, duration: 5.00, ease: "power1.inOut" }, 1.10);
+        tl.fromTo("#s2-phone-shot", { y: 0 }, { y: -797, duration: 2.8, ease: "power2.inOut" }, 1.60);
         tl.fromTo("#s2-phone-c1", { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "expo.out" }, 3.70);
         tl.fromTo("#s2-phone-c2", { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "expo.out" }, 5.54);
         tl.set({}, {}, 6.20);

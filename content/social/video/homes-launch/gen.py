@@ -84,7 +84,7 @@ def common_css(cid, H, bar):
       [data-composition-id="{cid}"] .card .addr {{ display: block; margin-top: 8px; color: #6b5c72; font-weight: 500; font-size: 30px; line-height: 1.2; }}
       [data-composition-id="{cid}"] .card .status {{ position: absolute; top: -22px; left: 34px; background: #fff; color: {INK}; border: 2px solid rgba(101,12,117,0.18); font-weight: 800; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 18px; border-radius: 999px; }}
       [data-composition-id="{cid}"] .card .status.rent {{ background: {GOLD}; border-color: {GOLD}; }}
-      [data-composition-id="{cid}"] .phone {{ position: absolute; left: 50%; z-index: 34; transform: translateX(-50%); border-radius: 64px; overflow: hidden; background: #0d0a10; box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 14px #1a1420, 0 0 0 18px rgba(255,255,255,0.10); opacity: 0; will-change: transform, opacity; }}
+      [data-composition-id="{cid}"] .phone {{ position: absolute; z-index: 34; border-radius: 64px; overflow: hidden; background: #0d0a10; box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 14px #1a1420, 0 0 0 18px rgba(255,255,255,0.10); opacity: 0; will-change: transform, opacity; }}
       [data-composition-id="{cid}"] .phone img {{ display: block; width: 100%; height: auto; will-change: transform; }}
     """
 
@@ -132,14 +132,13 @@ def framed(cid, src, pos="50% 50%", top="44%"):
 
 
 def phone_geom(H):
-    # device inner width/height and capture scale (captures are 430×2300)
+    # device inner width/height and capture scale (captures are 430 px wide)
     if H == 1920:
         w, h = 720, 1250
     else:
         w, h = 540, 900
     scale = w / 430.0
-    img_h = 2300 * scale
-    return w, h, scale, img_h
+    return w, h, scale, (1080 - w) // 2
 
 
 def scene_html(cid, dur, H, bar):
@@ -164,16 +163,16 @@ def scene_html(cid, dur, H, bar):
 
     if cid == "s2-phone":
         # abs 3.40 · title 3.9→0.50 · REAL LISTINGS 7.1→3.70 · LOCAL AGENTS 8.94→5.54
-        w, h, scale, img_h = phone_geom(H)
+        w, h, scale, left = phone_geom(H)
         top = 470 if wide else 330
-        scroll = -(img_h - h) * 0.72
+        scroll = -(512 * scale - 60)
         inner = f'''<div style="position:absolute; inset:0; background: radial-gradient(ellipse 90% 70% at 50% 30%, {PURPLE} 0%, {DEEP} 65%, #1a0520 100%)"></div>
       {leak(cid, 0.0, 1.6, 0)}
       <div style="position:absolute; left:84px; right:84px; top:{190 if wide else 130}px; z-index:36">
         <span class="hero" id="{cid}-title" style="font-size:{104 if wide else 84}px">Homes in Lompoc</span>
       </div>
-      <div class="phone" id="{cid}-phone" style="top:{top}px; width:{w}px; height:{h}px">
-        <img id="{cid}-shot" src="public/ui-homes.png" alt="" />
+      <div class="phone" id="{cid}-phone" style="top:{top}px; left:{left}px; width:{w}px; height:{h}px">
+        <img id="{cid}-shot" src="public/ui-homes-v2.png" alt="" />
       </div>
       <div style="position:absolute; left:84px; right:84px; top:{330 if wide else 235}px; z-index:37; display:flex; gap:16px; flex-wrap:wrap">
         <span class="chip" id="{cid}-c1">Real listings</span>
@@ -181,7 +180,7 @@ def scene_html(cid, dur, H, bar):
       </div>'''
         js = f'''tl.fromTo("#{cid}-title", {{ autoAlpha: 0, y: 30, scale: 1.08 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }}, 0.50);
         tl.fromTo("#{cid}-phone", {{ autoAlpha: 0, y: 120, scale: 0.94 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.8, ease: "expo.out" }}, 0.55);
-        tl.fromTo("#{cid}-shot", {{ y: 0 }}, {{ y: {scroll:.0f}, duration: {dur - 1.2:.2f}, ease: "power1.inOut" }}, 1.10);
+        tl.fromTo("#{cid}-shot", {{ y: 0 }}, {{ y: {scroll:.0f}, duration: 2.8, ease: "power2.inOut" }}, 1.60);
         tl.fromTo("#{cid}-c1", {{ autoAlpha: 0, x: -24 }}, {{ autoAlpha: 1, x: 0, duration: 0.4, ease: "expo.out" }}, 3.70);
         tl.fromTo("#{cid}-c2", {{ autoAlpha: 0, x: -24 }}, {{ autoAlpha: 1, x: 0, duration: 0.4, ease: "expo.out" }}, 5.54);'''
         return wrap(cid, dur, H, bar, inner, js, mark=False)
@@ -257,13 +256,13 @@ def scene_html(cid, dur, H, bar):
 
     if cid == "s6-tour":
         # abs 27.10 · chip 29.6→2.50 ; phone scrolls to Request a tour (buttons ≈ y 770 of 2300 capture)
-        w, h, scale, img_h = phone_geom(H)
+        w, h, scale, left = phone_geom(H)
         top = 250 if wide else 170
-        target = -(770 * scale - h * 0.42)
+        target = -(770 * scale - h * 0.58)
         inner = f'''<div style="position:absolute; inset:0; background: radial-gradient(ellipse 90% 70% at 50% 30%, {PURPLE} 0%, {DEEP} 65%, #1a0520 100%)"></div>
       {leak(cid, 0.0, 1.4, 0)}
-      <div class="phone" id="{cid}-phone" style="top:{top}px; width:{w}px; height:{h}px">
-        <img id="{cid}-shot" src="public/ui-listing.png" alt="" />
+      <div class="phone" id="{cid}-phone" style="top:{top}px; left:{left}px; width:{w}px; height:{h}px">
+        <img id="{cid}-shot" src="public/ui-listing-v2.png" alt="" />
       </div>
       <div style="position:absolute; left:84px; right:84px; bottom:{'19.5%' if wide else '18%'}; z-index:37"><span class="chip" id="{cid}-c1">One tap from a tour</span></div>'''
         js = f'''tl.fromTo("#{cid}-phone", {{ autoAlpha: 0, y: 100, scale: 0.94 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: "expo.out" }}, 0.10);
@@ -279,7 +278,7 @@ def scene_html(cid, dur, H, bar):
       <div style="position:absolute; left:84px; right:84px; top:{22 if wide else 16}%; z-index:36">
         <span class="hero" id="{cid}-h1" style="font-size:{104 if wide else 82}px">Lompoc agents:<br />this is your market.</span>
         <span id="{cid}-h2" style="display:block; margin-top:44px; color:{GOLD}; font-weight:800; font-size:{56 if wide else 46}px; line-height:1.08; letter-spacing:-1px; opacity:0; will-change: transform, opacity">List your homes where locals already look.</span>
-        <span id="{cid}-h3" style="display:block; margin-top:40px; color:rgba(255,255,255,0.85); font-weight:600; font-size:30px; letter-spacing:0.5px; opacity:0">Plus · $99.99/mo · lompoclocals.com/for-businesses/real-estate</span>
+        <span id="{cid}-h3" style="display:block; margin-top:40px; color:rgba(255,255,255,0.85); font-weight:600; font-size:30px; letter-spacing:0.5px; opacity:0">lompoclocals.com/for-businesses/real-estate</span>
       </div>'''
         js = f'''tl.fromTo("#{cid}-h1", {{ autoAlpha: 0, y: 30, scale: 1.06 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "expo.out" }}, 0.90);
         tl.fromTo("#{cid}-h2", {{ autoAlpha: 0, y: 20 }}, {{ autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out" }}, 3.70);
