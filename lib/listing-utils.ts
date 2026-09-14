@@ -30,3 +30,17 @@ export function inLompocArea(lat: number | null | undefined, lng: number | null 
   if (lat == null || lng == null) return false
   return lat >= 34.45 && lat <= 34.8 && lng >= -120.65 && lng <= -120.25
 }
+
+// Plain-English "Townhome for sale" for places without next-intl (OG images, emails).
+export function homeTypeLinePlain(homeType: string | null | undefined, type: "for-sale" | "for-rent"): string {
+  const names: Record<string, string> = {
+    house: "House",
+    condo: "Condo",
+    townhome: "Townhome",
+    manufactured: "Manufactured home",
+    land: "Land",
+    "multi-family": "Multi-family",
+  }
+  const name = names[homeType ?? ""] ?? "House"
+  return type === "for-rent" ? `${name} for rent` : `${name} for sale`
+}

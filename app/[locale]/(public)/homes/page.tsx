@@ -7,7 +7,7 @@ import { PropertyListingCard } from "@/components/property-listing-card"
 import { SafeImage } from "@/components/safe-image"
 import { HomesMap, type HomePin } from "@/components/homes-map"
 import { hasStreetAddress, inLompocArea } from "@/lib/listing-utils"
-import { pageAlternates } from "@/lib/seo"
+import { pageAlternates, siteUrl } from "@/lib/seo"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
 
 // The market moves at the pace agents post; ten minutes keeps the page fresh
@@ -16,10 +16,19 @@ export const revalidate = 600
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "homes" })
+  const ogTitle = "Homes in Lompoc — for sale & for rent, by local agents"
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
     alternates: pageAlternates("/homes", params.locale),
+    openGraph: {
+      type: "website",
+      url: `${siteUrl}${params.locale === "es" ? "/es" : ""}/homes`,
+      siteName: "Lompoc Locals",
+      title: ogTitle,
+      description: t("metaDescription"),
+    },
+    twitter: { card: "summary_large_image", title: ogTitle, description: t("metaDescription") },
   }
 }
 

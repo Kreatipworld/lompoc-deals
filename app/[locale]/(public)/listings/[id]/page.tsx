@@ -3,7 +3,8 @@ import { Link } from "@/i18n/navigation"
 import { ArrowLeft, ArrowRight, Store } from "lucide-react"
 import { getAllRealEstateListings, getFeaturedAgents, getListingById, isFeaturedAgent } from "@/lib/queries"
 import { BusinessMapLoader } from "@/components/business-map-loader"
-import { hasStreetAddress, inLompocArea } from "@/lib/listing-utils"
+import { formatListingFacts, formatListingPriceShort, hasStreetAddress, homeTypeLinePlain, inLompocArea } from "@/lib/listing-utils"
+import { pageAlternates, siteUrl } from "@/lib/seo"
 import { SafeImage } from "@/components/safe-image"
 import { LeadForm } from "@/components/lead-form"
 import {
@@ -29,9 +30,32 @@ export async function generateMetadata({
   if (isNaN(id)) return { title: "Listing" }
   const listing = await getListingById(id)
   if (!listing) return { title: t("metaNotFound"), robots: { index: false, follow: true } }
+  // Portal-style title so a shared link previews the home, not the site:
+  // "$490,000 · 3 bd | 1.5 ba | 1,327 sqft · Townhome for sale · Lompoc"
+  const price = formatListingPriceShort(listing.priceCents, listing.type)
+  const facts = formatListingFacts(listing.beds, listing.baths, listing.sqft)
+  const typeLine = homeTypeLinePlain(listing.homeType, listing.type)
+  const title = [price, facts, typeLine, "Lompoc"].filter(Boolean).join(" · ")
+  const desc = listing.description?.trim()
+  const description = desc
+    ? desc.length > 160
+      ? desc.slice(0, 160).replace(/\s+\S*$/, "") + "…"
+      : desc
+    : `Listed by ${listing.business.name} on Lompoc Locals. Photos, open house, and the person to call.`
+  const path = `/listings/${listing.id}`
+  const url = `${siteUrl}${params.locale === "es" ? "/es" : ""}${path}`
   return {
-    title: `${listing.title} ${t("metaTitleSuffix")}`.trim(),
-    description: listing.description ?? undefined,
+    title: { absolute: title },
+    description,
+    alternates: pageAlternates(path, params.locale),
+    openGraph: {
+      type: "website",
+      url,
+      siteName: "Lompoc Locals",
+      title,
+      description,
+    },
+    twitter: { card: "summary_large_image", title, description },
   }
 }
 
