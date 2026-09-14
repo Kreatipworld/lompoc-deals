@@ -1,0 +1,52 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="40.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 170px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
+      [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
+      [data-composition-id="subs"] .sub span { display: inline-block; max-width: 920px; background: rgba(0,0,0,0.58); color: #fff; font-weight: 600; font-size: 42px; line-height: 1.25; padding: 14px 28px; border-radius: 20px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Lompoc has a new place to find a home.</span></div>
+      <div class="sub" id="sub-1"><span>Homes in Lompoc, on Lompoc Locals.</span></div>
+      <div class="sub" id="sub-2"><span>Real listings, posted by real local agents,</span></div>
+      <div class="sub" id="sub-3"><span>with photos, open houses, and the person to call.</span></div>
+      <div class="sub" id="sub-4"><span>Meet Maressa Martinez, Empire Real Estate Group,</span></div>
+      <div class="sub" id="sub-5"><span>the first agent on the market.</span></div>
+      <div class="sub" id="sub-6"><span>A three-bedroom on South J Street.</span></div>
+      <div class="sub" id="sub-7"><span>A townhome with no HOA.</span></div>
+      <div class="sub" id="sub-8"><span>A move-in-ready home on North V.</span></div>
+      <div class="sub" id="sub-9"><span>And a rental on Gaviota.</span></div>
+      <div class="sub" id="sub-10"><span>Every home on the map, one tap from a tour.</span></div>
+      <div class="sub" id="sub-11"><span>Lompoc agents, this is your market.</span></div>
+      <div class="sub" id="sub-12"><span>List your homes where locals already look.</span></div>
+      <div class="sub" id="sub-13"><span>lompoclocals.com/homes</span></div>
+    </div>
+    <script>
+      (() => {
+        const SUBS = [
+          [0.60, 3.30, 'Lompoc has a new place to find a home.'],
+          [3.98, 6.20, 'Homes in Lompoc, on Lompoc Locals.'],
+          [7.10, 9.30, 'Real listings, posted by real local agents,'],
+          [9.66, 12.40, 'with photos, open houses, and the person to call.'],
+          [13.26, 15.90, 'Meet Maressa Martinez, Empire Real Estate Group,'],
+          [16.42, 17.60, 'the first agent on the market.'],
+          [18.26, 20.10, 'A three-bedroom on South J Street.'],
+          [20.86, 22.50, 'A townhome with no HOA.'],
+          [23.40, 25.00, 'A move-in-ready home on North V.'],
+          [25.62, 27.00, 'And a rental on Gaviota.'],
+          [27.80, 30.40, 'Every home on the map, one tap from a tour.'],
+          [31.18, 33.40, 'Lompoc agents, this is your market.'],
+          [34.06, 36.10, 'List your homes where locals already look.'],
+          [37.14, 39.20, 'lompoclocals.com/homes']
+        ];
+        const tl = gsap.timeline({ paused: true });
+        SUBS.forEach(([a, b], i) => {
+          tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
+          tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
+        });
+        tl.set({}, {}, 40.00);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>

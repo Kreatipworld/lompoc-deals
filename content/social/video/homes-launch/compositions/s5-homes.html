@@ -1,0 +1,87 @@
+<template>
+  <div data-composition-id="s5-homes" data-width="1080" data-height="1920" data-duration="9.80" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
+    <style>
+      [data-composition-id="s5-homes"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
+      [data-composition-id="s5-homes"] .cine-top { top: 0; } [data-composition-id="s5-homes"] .cine-bot { bottom: 0; }
+      [data-composition-id="s5-homes"] .stage { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      [data-composition-id="s5-homes"] .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 68%, rgba(10,6,12,0.34) 100%); }
+      [data-composition-id="s5-homes"] .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s5-homes"] .mark { position: absolute; top: 150px; right: 84px; width: 92px; height: auto; z-index: 40; }
+      [data-composition-id="s5-homes"] video.bg { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      [data-composition-id="s5-homes"] video.leak { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: screen; opacity: 0.55; z-index: 45; pointer-events: none; }
+      [data-composition-id="s5-homes"] .wrap { position: absolute; inset: 0; overflow: hidden; will-change: transform; transform-origin: 50% 50%; }
+      [data-composition-id="s5-homes"] .cover { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.05) saturate(1.05); }
+      [data-composition-id="s5-homes"] .blur { position: absolute; inset: -6%; background-size: cover; background-position: 50% 50%; filter: blur(34px) brightness(0.45) saturate(1.15); }
+      [data-composition-id="s5-homes"] .whole { display: block; position: absolute; left: 0; width: 1080px; height: auto; top: 44%; transform: translateY(-50%); box-shadow: 0 30px 80px rgba(0,0,0,0.55); filter: contrast(1.05) saturate(1.05); }
+      [data-composition-id="s5-homes"] .scrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to top, rgba(20,10,23,0.92) 0%, rgba(20,10,23,0.6) 30%, rgba(20,10,23,0.0) 55%); }
+      [data-composition-id="s5-homes"] .topscrim { position: absolute; inset: 0; z-index: 31; pointer-events: none; background: linear-gradient(to bottom, rgba(20,10,23,0.72) 0%, rgba(20,10,23,0.25) 22%, rgba(20,10,23,0.0) 38%); }
+      [data-composition-id="s5-homes"] .chip { display: inline-block; background: #efc618; color: #241629; font-weight: 800; font-size: 32px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; box-shadow: 0 10px 26px rgba(10,6,12,0.45); }
+      [data-composition-id="s5-homes"] .pill { display: inline-block; background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.4); color: #fff; font-weight: 700; font-size: 28px; letter-spacing: 3px; text-transform: uppercase; padding: 12px 26px; border-radius: 999px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-homes"] .hero { display: block; color: #fff; text-shadow: 0 8px 36px rgba(10,6,12,0.75); font-weight: 800; font-size: 120px; line-height: 0.94; letter-spacing: -5px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-homes"] .card { position: absolute; left: 64px; right: 64px; z-index: 36; background: rgba(255,255,255,0.97); border-radius: 26px; padding: 30px 34px; box-shadow: 0 24px 60px rgba(10,6,12,0.45); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-homes"] .card .price { display: block; color: #241629; font-weight: 800; font-size: 78px; line-height: 1; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+      [data-composition-id="s5-homes"] .card .facts { display: block; margin-top: 10px; color: #3d2a44; font-weight: 600; font-size: 34px; line-height: 1.2; }
+      [data-composition-id="s5-homes"] .card .addr { display: block; margin-top: 8px; color: #6b5c72; font-weight: 500; font-size: 30px; line-height: 1.2; }
+      [data-composition-id="s5-homes"] .card .status { position: absolute; top: -22px; left: 34px; background: #fff; color: #241629; border: 2px solid rgba(101,12,117,0.18); font-weight: 800; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 18px; border-radius: 999px; }
+      [data-composition-id="s5-homes"] .card .status.rent { background: #efc618; border-color: #efc618; }
+      [data-composition-id="s5-homes"] .phone { position: absolute; left: 50%; z-index: 34; transform: translateX(-50%); border-radius: 64px; overflow: hidden; background: #0d0a10; box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 14px #1a1420, 0 0 0 18px rgba(255,255,255,0.10); opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-homes"] .phone img { display: block; width: 100%; height: auto; will-change: transform; }
+    
+    </style>
+    <div class="stage" id="s5-homes-stage">
+      <div class="wrap" id="s5-homes-s0" data-layout-allow-overflow style="opacity:0">
+        <div class="blur" style="background-image: url('public/l50-0c.jpg')"></div>
+        <img class="whole" src="public/l50-0c.jpg" alt="" style="top: 42%; object-position: 50% 50%" />
+      </div>
+      <div class="wrap" id="s5-homes-s1" data-layout-allow-overflow style="opacity:0">
+        <div class="blur" style="background-image: url('public/l53-0.jpg')"></div>
+        <img class="whole" src="public/l53-0.jpg" alt="" style="top: 42%; object-position: 50% 50%" />
+      </div>
+      <div class="wrap" id="s5-homes-s2" data-layout-allow-overflow style="opacity:0">
+        <div class="blur" style="background-image: url('public/l51-0.jpg')"></div>
+        <img class="whole" src="public/l51-0.jpg" alt="" style="top: 42%; object-position: 50% 50%" />
+      </div>
+      <div class="wrap" id="s5-homes-s3" data-layout-allow-overflow style="opacity:0">
+        <div class="blur" style="background-image: url('public/l52-0.jpg')"></div>
+        <img class="whole" src="public/l52-0.jpg" alt="" style="top: 42%; object-position: 50% 50%" />
+      </div>
+      <div class="scrim"></div><div class="topscrim"></div>
+      <div style="position:absolute; left:84px; top:200px; z-index:36"><span class="pill" id="s5-homes-pill">Her homes right now</span></div>
+      <div class="card" id="s5-homes-k0" style="bottom:23%"><span class="status sale">For sale</span><span class="price">$659,000</span><span class="facts">3 bd | 2 ba | 1,496 sqft</span><span class="addr">238 S J St, Lompoc</span></div>
+      <div class="card" id="s5-homes-k1" style="bottom:23%"><span class="status sale">For sale</span><span class="price">$490,000</span><span class="facts">3 bd | 1.5 ba | 1,327 sqft</span><span class="addr">Townhome · Lompoc · no HOA</span></div>
+      <div class="card" id="s5-homes-k2" style="bottom:23%"><span class="status sale">For sale</span><span class="price">$275,000</span><span class="facts">3 bd | 2 ba | 1,440 sqft</span><span class="addr">1317 N V St #97, Lompoc</span></div>
+      <div class="card" id="s5-homes-k3" style="bottom:23%"><span class="status rent">For rent</span><span class="price">$3,700/mo</span><span class="facts">3 bd | 2 ba | 1,840 sqft</span><span class="addr">2207 Gaviota, Lompoc</span></div>
+      <div class="vig"></div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.out", duration: 0.5 } });
+        tl.fromTo("#s5-homes-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: "power1.inOut" }, 0);
+        tl.fromTo("#s5-homes-s0", { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1.0, duration: 0.5, ease: "power2.out" }, 0.00);
+        tl.to("#s5-homes-s0", { scale: 1.05, duration: 3.50, ease: "none" }, 0.50);
+        tl.fromTo("#s5-homes-k0", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.80);
+        tl.to("#s5-homes-s0", { autoAlpha: 0, duration: 0.3 }, 3.25);
+        tl.to("#s5-homes-k0", { autoAlpha: 0, y: -20, duration: 0.25 }, 3.20);
+        tl.fromTo("#s5-homes-s1", { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1.0, duration: 0.5, ease: "power2.out" }, 3.25);
+        tl.to("#s5-homes-s1", { scale: 1.05, duration: 2.65, ease: "none" }, 3.75);
+        tl.fromTo("#s5-homes-k1", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 3.50);
+        tl.to("#s5-homes-s1", { autoAlpha: 0, duration: 0.3 }, 5.65);
+        tl.to("#s5-homes-k1", { autoAlpha: 0, y: -20, duration: 0.25 }, 5.60);
+        tl.fromTo("#s5-homes-s2", { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1.0, duration: 0.5, ease: "power2.out" }, 5.65);
+        tl.to("#s5-homes-s2", { scale: 1.05, duration: 2.85, ease: "none" }, 6.15);
+        tl.fromTo("#s5-homes-k2", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 5.90);
+        tl.to("#s5-homes-s2", { autoAlpha: 0, duration: 0.3 }, 8.25);
+        tl.to("#s5-homes-k2", { autoAlpha: 0, y: -20, duration: 0.25 }, 8.20);
+        tl.fromTo("#s5-homes-s3", { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1.0, duration: 0.5, ease: "power2.out" }, 8.25);
+        tl.to("#s5-homes-s3", { scale: 1.05, duration: 2.55, ease: "none" }, 8.75);
+        tl.fromTo("#s5-homes-k3", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "expo.out" }, 8.50);
+        tl.fromTo("#s5-homes-pill", { autoAlpha: 0, y: -12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 0.40);
+        tl.set({}, {}, 9.80);
+        window.__timelines["s5-homes"] = tl;
+      })();
+    </script>
+  </div>
+</template>
