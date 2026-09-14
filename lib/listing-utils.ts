@@ -20,3 +20,13 @@ export function formatListingFacts(beds: number | null, baths: number | null, sq
   if (sqft != null) parts.push(`${sqft.toLocaleString("en-US")} sqft`)
   return parts.join(" | ")
 }
+
+/**
+ * Lompoc + Vandenberg service area (the same box the main map is clamped to).
+ * A listing whose coordinates fall outside it was geocoded to the wrong place
+ * (a street name that also exists in another state) — no pin until it's fixed.
+ */
+export function inLompocArea(lat: number | null | undefined, lng: number | null | undefined): boolean {
+  if (lat == null || lng == null) return false
+  return lat >= 34.45 && lat <= 34.8 && lng >= -120.65 && lng <= -120.25
+}

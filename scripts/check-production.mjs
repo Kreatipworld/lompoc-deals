@@ -356,7 +356,8 @@ try {
     join businesses b on b.id = l.business_id
     where l.status = 'active' and (l.expires_at is null or l.expires_at > now())
       and b.status = 'approved' and l.lat is not null and l.lng is not null
-      and l.address ~ '^\\s*[0-9]+[A-Za-z]?\\s+\\S'`
+      and l.address ~ '^\\s*[0-9]+[A-Za-z]?\\s+\\S'
+      and l.lat between 34.45 and 34.8 and l.lng between -120.65 and -120.25`
   const n = live[0]?.n ?? 0
   const res = await fetch(`${SITE}/api/map-pois`, { cache: "no-store" })
   const pois = await res.json()

@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation"
 import { ArrowLeft, ArrowRight, Store } from "lucide-react"
 import { getAllRealEstateListings, getFeaturedAgents, getListingById, isFeaturedAgent } from "@/lib/queries"
 import { BusinessMapLoader } from "@/components/business-map-loader"
-import { hasStreetAddress } from "@/lib/listing-utils"
+import { hasStreetAddress, inLompocArea } from "@/lib/listing-utils"
 import { SafeImage } from "@/components/safe-image"
 import { LeadForm } from "@/components/lead-form"
 import {
@@ -332,7 +332,7 @@ export default async function ListingPage({
             <div className="mt-12">
               <h2 className="font-display text-xl font-semibold tracking-tight">{t("neighborhood")}</h2>
               {listing.address && <p className="mt-1 text-sm text-muted-foreground">{listing.address}</p>}
-              {listing.lat != null && listing.lng != null && hasStreetAddress(listing.address) ? (
+              {listing.lat != null && listing.lng != null && hasStreetAddress(listing.address) && inLompocArea(listing.lat, listing.lng) ? (
                 <div className="mt-3 overflow-hidden rounded-[20px] border border-border/80">
                   <div className="h-72">
                     <BusinessMapLoader lat={listing.lat} lng={listing.lng} name={listing.address ?? listing.title} />

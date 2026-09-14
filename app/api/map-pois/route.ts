@@ -6,7 +6,7 @@ import { eq, and, isNotNull, sql, or, gt } from "drizzle-orm"
 import type { CategoryId } from "@/lib/map-categories"
 import type { POI } from "@/lib/map-pois"
 import { pick } from "@/lib/localize"
-import { hasStreetAddress, formatListingFacts, formatListingPriceShort } from "@/lib/listing-utils"
+import { hasStreetAddress, inLompocArea, formatListingFacts, formatListingPriceShort } from "@/lib/listing-utils"
 
 // Without this, Next statically optimizes the GET at build time and the whole
 // map freezes at deploy — new businesses and partner-status changes only
@@ -110,7 +110,7 @@ export async function GET(req: NextRequest) {
         .orderBy(propertyListings.createdAt)
 
       for (const h of homes) {
-        if (!hasStreetAddress(h.address)) continue
+        if (!hasStreetAddress(h.address) || !inLompocArea(h.lat, h.lng)) continue
         const price = formatListingPriceShort(h.priceCents, h.type, intl)
         const facts = formatListingFacts(h.beds, h.baths, h.sqft)
         pois.push({
