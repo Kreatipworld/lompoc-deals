@@ -5,8 +5,13 @@
 #                                              checks → promote to production → checks
 #   ./scripts/ship.sh --preview "feat: ..."    stop after the preview passes (subagents:
 #                                              report the preview URL, the coordinator promotes)
+#   ./scripts/ship.sh --verify                 no commit: check the preview of what is on
+#                                              origin/main (agents: commit explicitly, push, verify)
 #   ./scripts/ship.sh --promote                promote what is already on origin/main
 #   ./scripts/ship.sh --no-tsc ...             skip the local type check (Vercel still runs it)
+#   ./scripts/ship.sh --all "..."              also commit UNTRACKED files (default: refuse — other
+#                                              sessions' work-in-progress lives in this tree)
+#   ./scripts/ship.sh --promote --recheck      re-run the preview checks even if verified already
 #
 # How the gate works (Sep 14 2026, after c5a36aa 500'd every /category/* page live):
 #   1. Vercel's production branch is `production`, not `main`. A push to main only
@@ -26,12 +31,17 @@ DASHBOARD="https://vercel.com/kreatipworlds-projects/lompoc-deals"
 
 MODE="full"
 RUN_TSC=1
+ADD_ALL=0
+RECHECK=0
 MSG=""
 for arg in "$@"; do
   case "$arg" in
     --preview) MODE="preview" ;;
     --promote) MODE="promote" ;;
+    --verify) MODE="verify" ;;
     --no-tsc) RUN_TSC=0 ;;
+    --all) ADD_ALL=1 ;;
+    --recheck) RECHECK=1 ;;
     --help|-h) sed -n 2,20p "$0"; exit 0 ;;
     *) MSG="$arg" ;;
   esac
@@ -54,12 +64,12 @@ if [[ "$VERCEL_PROD_BRANCH" != "$PROD_BRANCH" ]]; then
   red "  A push to main deploys STRAIGHT to production — the gate cannot protect residents."
   red "  Fix once: $DASHBOARD/settings/git → Production Branch → $PROD_BRANCH"
   red "  (or: node scripts/vercel-gate.mjs set-production-branch $PROD_BRANCH)"
-  if [[ "$MODE" == "promote" ]]; then abort "nothing to promote while main is the production branch"; fi
+  if [[ "$MODE" == "promote" || "$MODE" == "verify" ]]; then abort "nothing to $MODE while main is the production branch"; fi
   echo
 fi
 
 # ── 1. local checks, commit, push main ───────────────────────────────────────
-if [[ "$MODE" != "promote" ]]; then
+if [[ "$MODE" != "promote" && "$MODE" != "verify" ]]; then
   if [[ -z "$MSG" ]]; then
     echo 'Usage: ./scripts/ship.sh [--preview] [--no-tsc] "commit message"'
     exit 1
@@ -71,14 +81,21 @@ if [[ "$MODE" != "promote" ]]; then
       bold "▶ Type check (npx tsc --noEmit)..."
       npx tsc --noEmit || abort "type errors — fix them before shipping (or --no-tsc to let Vercel find them)"
     fi
+    UNTRACKED="$(git ls-files --others --exclude-standard)"
+    if [[ -n "$UNTRACKED" && "$ADD_ALL" != "1" ]]; then
+      red "Untracked files in the tree — refusing to sweep them into your commit:"
+      echo "$UNTRACKED" | sed 's/^/    /' | head -30
+      abort "commit your own files explicitly (git add <paths> && git commit) then run ./scripts/ship.sh --promote, or pass --all if they are all yours"
+    fi
     bold "▶ Committing: $MSG"
-    git add .
+    git add -A
     git commit -m "$MSG"
+    git show --stat --format= HEAD | tail -15
   fi
   bold "▶ Pushing main (pre-push hook runs lint + title + search checks)..."
   git push origin main
 else
-  bold "▶ Promote mode: using origin/main as-is"
+  bold "▶ $MODE: using origin/main as-is"
   git fetch origin main --quiet
   if [[ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]]; then
     abort "local main ($(git rev-parse --short HEAD)) differs from origin/main ($(git rev-parse --short origin/main)) — pull or push first"
@@ -100,8 +117,11 @@ if [[ "$VERCEL_PROD_BRANCH" == "$PROD_BRANCH" ]]; then
   fi
 
   # ── 3. the gate: every check against the preview ───────────────────────────
+  VERIFIED_MARK="$(git rev-parse --git-dir)/ship-verified-${SHA}"
   bold "▶ Running production checks against the preview..."
-  if ! node --env-file=.env.local scripts/check-production.mjs --base="$PREVIEW_URL"; then
+  if [[ -f "$VERIFIED_MARK" && "$RECHECK" != "1" && "$MODE" == "promote" ]]; then
+    green "  preview ${SHORT} already passed every check on this machine ($(cat "$VERIFIED_MARK")) — skipping (use --recheck to run again)"
+  elif ! node --env-file=.env.local scripts/check-production.mjs --base="$PREVIEW_URL"; then
     echo
     red "══════════════════════════════════════════════════════════════"
     red "  ✗ PREVIEW FAILED CHECKS — ${SHORT} will NOT be promoted."
@@ -111,10 +131,11 @@ if [[ "$VERCEL_PROD_BRANCH" == "$PROD_BRANCH" ]]; then
     exit 1
   fi
   green "  ✓ preview ${SHORT} passed every check"
+  date -u +"%Y-%m-%dT%H:%M:%SZ $PREVIEW_URL" > "$VERIFIED_MARK"
 
-  if [[ "$MODE" == "preview" ]]; then
+  if [[ "$MODE" == "preview" || "$MODE" == "verify" ]]; then
     echo
-    green "Preview verified and NOT promoted (as requested)."
+    green "Preview ${SHORT} verified and NOT promoted (as requested)."
     echo "  Preview URL: $PREVIEW_URL"
     echo "  Promote with: ./scripts/ship.sh --promote"
     exit 0

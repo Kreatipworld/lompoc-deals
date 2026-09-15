@@ -49,9 +49,14 @@ Vercel's production branch is **`production`**, not `main`. A push to `main` onl
 
 ```bash
 ./scripts/ship.sh "feat: describe what you changed"   # commit → push main → preview → checks → promote → checks
-./scripts/ship.sh --preview "feat: ..."               # stop after the preview passes (subagents)
-./scripts/ship.sh --promote                           # promote what is already on origin/main
+./scripts/ship.sh --preview "feat: ..."               # same, but stop after the preview passes
+./scripts/ship.sh --verify                            # no commit: check the preview of origin/main (agents)
+./scripts/ship.sh --promote                           # promote origin/main (skips re-checking a verified preview)
 ```
+
+Several sessions share this working tree, so `ship.sh "msg"` refuses to commit while untracked
+files exist (`--all` overrides). Agents: `git add <your files> && git commit`, `git push origin main`,
+then `./scripts/ship.sh --verify` and report the preview URL.
 
 What the gate does: waits for the preview build of your exact commit, runs
 `scripts/check-production.mjs --base=<preview-url>` against it (every section page must render,
@@ -60,8 +65,8 @@ search, tracking, photos, Stripe prices, Spanish, 404s…), and only if all gree
 
 Rules:
 - **Never `git push origin production` by hand** and never `vercel deploy --prod`. Both skip the gate.
-- Subagents push to `main` (or run `ship.sh --preview`) and **report the preview URL**; the
-  coordinator promotes with `./scripts/ship.sh --promote`.
+- Subagents commit their own files explicitly, push to `main`, run `ship.sh --verify` and **report
+  the preview URL**; the coordinator promotes with `./scripts/ship.sh --promote`.
 - Plain `git push` to `main` still works for previews — the pre-push hook runs lint + title + search checks.
 - If a check is red, fix forward and ship again; production keeps the last good deployment.
 - `/api/cron/health-check` watches 12 pages + the database every minute and emails hello@ on the
