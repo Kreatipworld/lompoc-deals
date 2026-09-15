@@ -367,13 +367,6 @@ try {
   else fail(`/api/map-pois carries no kind:"home" pins but ${n} live listing(s) have a street address`)
 } catch (e) { fail(`homes on map: ${e.message}`) }
 
-console.log(
-  failures === 0
-    ? `\n\x1b[32mAll checks passed.\x1b[0m\n`
-    : `\n\x1b[31m${failures} check(s) failed.\x1b[0m\n`
-)
-process.exit(failures ? 1 : 0)
-
 console.log("\n14. Directory wayfinding — every link works, tile counts match category pages (owner: 'make sure all the links work', 'the guidance has to be perfect')")
 try {
   const seen = new Map()
@@ -405,3 +398,10 @@ try {
 } catch (e) {
   fail(`directory wayfinding: ${e.message}`)
 }
+
+console.log(
+  failures === 0
+    ? `\n\x1b[32mAll checks passed.\x1b[0m\n`
+    : `\n\x1b[31m${failures} check(s) failed.\x1b[0m\n`
+)
+process.exit(failures ? 1 : 0)

@@ -35,9 +35,11 @@ export function CategoryList({
     sortMembers: string
     sortAz: string
     showMore: string
-    count: (n: number) => string
+    /** "{count} businesses" */
+    countLabel: string
     member: string
-    deal: (n: number) => string
+    dealSingular: string
+    dealPlural: string
     openNow: string
     noMatch: string
   }
@@ -95,7 +97,7 @@ export function CategoryList({
                 {labels.sortAz}
               </button>
             </div>
-            <span className="whitespace-nowrap text-xs text-muted-foreground">{labels.count(filtered.length)}</span>
+            <span className="whitespace-nowrap text-xs text-muted-foreground">{labels.countLabel.replace("{count}", String(filtered.length))}</span>
           </div>
         </div>
       </div>
@@ -132,7 +134,7 @@ export function CategoryList({
                     {b.activeDealCount > 0 && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-gold-foreground">
                         <Tag className="h-3 w-3" />
-                        {labels.deal(b.activeDealCount)}
+                        {b.activeDealCount} {b.activeDealCount === 1 ? labels.dealSingular : labels.dealPlural}
                       </span>
                     )}
                   </div>

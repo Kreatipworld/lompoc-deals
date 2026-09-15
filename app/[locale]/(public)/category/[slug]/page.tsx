@@ -247,9 +247,10 @@ export default async function CategoryPage({
                 sortMembers: t("sortMembers"),
                 sortAz: t("sortAz"),
                 showMore: t("showMore"),
-                count: (n) => t("countLabel", { count: n }),
+                countLabel: t("countLabel", { count: "{count}" }),
                 member: t("memberBadge"),
-                deal: (n) => `${n} ${n === 1 ? t("dealSingular") : t("dealPlural")}`,
+                dealSingular: t("dealSingular"),
+                dealPlural: t("dealPlural"),
                 openNow: t("openNow"),
                 noMatch: t("noMatch"),
               }}
