@@ -16,3 +16,4 @@ Owner: "menu changes every day" is not the best way to say it; spotlights must b
 ## v3 — POSTED Sep 15 2026, 11:16 AM PT (owner: positive line "something new in the case every day"; captions confirmed by the owner first)
 Blob: …/social/spotlights/sweet-baking-v3-9x16.mp4 · sweet-baking-v3-4x5.mp4. 30.0 s, −15.3 LUFS.
 Buffer (shareNow): TikTok 6aa98b4e47e2f481f80171f6 · IG Reel 6aa98b5cb98f37d11f7ffd17 · FB Reel 6aa98b6853aac81142566c81 · IG Story 6aa98b76b98f37d11f7ffe6c (utm_campaign=spotlight-sweet-baking-v3). v2 posts from 10:48 AM remain live unless the owner deletes them in-app (Buffer cannot delete sent posts).
+Delivered (all `sent` by 11:17 AM PT): TikTok https://tiktok.com/@lompoclocals/video/7685827390722952461 · IG Reel https://www.instagram.com/reel/DdUVTEGgnlP/ · FB Reel https://www.facebook.com/reel/1107497478402618/ · IG Story https://www.instagram.com/stories/lompoclocals_/3986905431113220486
