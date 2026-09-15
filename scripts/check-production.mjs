@@ -26,16 +26,25 @@ const sql = neon(process.env.DATABASE_URL)
 // Preview deployments are SSO-protected. With a "Protection Bypass for Automation"
 // secret in the env (scripts/vercel-gate.mjs bypass), every request to the target
 // carries the bypass header so the preview answers like production would.
+//
+// And a hard rule: a request to the target must be ANSWERED by the target. A
+// preview once proxied every English page to production through a redirect
+// (AUTH_URL on preview = the production alias), so the gate "passed" while
+// reading www. Any response that ends up on another origin is a failure.
 const BYPASS = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
-if (BYPASS) {
-  const origin = new URL(SITE).origin
+const ORIGIN = new URL(SITE).origin
+const IS_PROD = new URL(SITE).hostname === "www.lompoclocals.com"
+{
   const rawFetch = globalThis.fetch
-  globalThis.fetch = (input, init = {}) => {
+  globalThis.fetch = async (input, init = {}) => {
     const u = typeof input === "string" ? input : input.url
-    if (u.startsWith(origin)) {
-      init = { ...init, headers: { ...(init.headers || {}), "x-vercel-protection-bypass": BYPASS } }
+    if (!u.startsWith(ORIGIN)) return rawFetch(input, init)
+    if (BYPASS) init = { ...init, headers: { ...(init.headers || {}), "x-vercel-protection-bypass": BYPASS } }
+    const res = await rawFetch(input, init)
+    if (res.url && new URL(res.url).origin !== ORIGIN) {
+      throw new Error(`left ${ORIGIN} — answered by ${res.url} (the check would be reading another deployment)`)
     }
-    return rawFetch(input, init)
+    return res
   }
 }
 
@@ -332,7 +341,8 @@ if (!process.env.CRON_SECRET) {
     for (const [tier, cents] of Object.entries(expect)) {
       const p = prices[tier] ?? {}
       const label = tier === "standard" ? "Growth" : "Plus"
-      if (p.error) fail(`${label}: ${p.error}`)
+      if (p.error && !IS_PROD && /not configured/i.test(p.error)) console.log(`  – ${label}: skipped on preview (Stripe env is production-only; checked again after promotion)`)
+      else if (p.error) fail(`${label}: ${p.error}`)
       else if (p.unit_amount !== cents) fail(`${label} charges $${(p.unit_amount ?? 0) / 100} but the page says $${cents / 100}`)
       else if (!p.active) fail(`${label} price ${p.id} is inactive in Stripe`)
       else if (!p.livemode) fail(`${label} price ${p.id} is a TEST price`)

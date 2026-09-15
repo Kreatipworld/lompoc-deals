@@ -1,7 +1,7 @@
 import { auth } from "@/auth"
 import createMiddleware from "next-intl/middleware"
 import { routing } from "@/i18n/routing"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import {
   CAMPAIGN_COOKIE,
   CAMPAIGN_MAX_AGE,
@@ -10,6 +10,20 @@ import {
 } from "@/lib/analytics/campaign"
 
 const intlMiddleware = createMiddleware(routing)
+
+/**
+ * Auth.js rebuilds req.nextUrl from AUTH_URL. On a preview deployment AUTH_URL
+ * is the production alias, so next-intl's internal rewrite (/deals → /en/deals)
+ * became a cross-origin proxy to production and every English page on a
+ * preview quietly served www (Sep 14 2026 — the deploy gate was checking the
+ * wrong site). Hand next-intl a request on the host that was actually asked for.
+ */
+function onRequestHost(req: NextRequest): NextRequest {
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host")
+  if (!host || req.nextUrl.host === host) return req
+  const proto = req.headers.get("x-forwarded-proto") ?? "https"
+  return new NextRequest(new URL(req.nextUrl.pathname + req.nextUrl.search, `${proto}://${host}`), req)
+}
 
 const protectedPaths = ["/dashboard", "/admin"]
 
@@ -99,20 +113,21 @@ export default auth(function middleware(req) {
 
   const isProtected = protectedPaths.some((p) => pathnameWithoutLocale.startsWith(p))
 
-  const intlResponse = intlMiddleware(req)
+  const hostReq = onRequestHost(req)
+  const intlResponse = intlMiddleware(hostReq)
 
   if (isProtected) {
     const role = req.auth?.user?.role
 
     if (pathnameWithoutLocale.startsWith("/dashboard") && role !== "business") {
-      const url = req.nextUrl.clone()
+      const url = hostReq.nextUrl.clone()
       url.pathname = `${localePrefix}/login`
       url.searchParams.set("from", `${localePrefix}${pathnameWithoutLocale}`)
       return ensureSessionCookie(req, Response.redirect(url))
     }
 
     if (pathnameWithoutLocale.startsWith("/admin") && role !== "admin") {
-      const url = req.nextUrl.clone()
+      const url = hostReq.nextUrl.clone()
       url.pathname = `${localePrefix}/login`
       url.searchParams.set("from", `${localePrefix}${pathnameWithoutLocale}`)
       return ensureSessionCookie(req, Response.redirect(url))
