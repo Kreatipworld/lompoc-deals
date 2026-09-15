@@ -8,7 +8,7 @@ p0 shop counter with the pink Sweet Baking Co sign (opener/cover) · p1 whimsica
 
 ## Script — Arthur, warm natural narrator (~24 s, VO at 0.60)
 "On North H Street, Sweet Baking Co. bakes in small batches, so the menu changes almost every day.
-Cupcakes, sugar cookies, macarons, stuffed crepes, and drinks like cotton candy lemonade.
+Cupcakes, sugar cookies, stuffed crepes, and drinks like cotton candy lemonade. (Owner Sep 15: no macarons — removed from the read, chips, captions and the listing's about text.)
 Vegan and dairy-free, always.
 Custom cakes, cookies, and weddings, by order.
 Open Tuesday through Saturday.

@@ -13,17 +13,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # ─── timeline (absolute seconds) — timed to Arthur's read (VO at 0.60) ───────────
 X = 0.25  # crossfade overlap
 SCENES = [
-    # id,            start,  dur  — beats (absolute): word time + 0.60
-    ("s1-open",      0.00,   4.20),   # counter · cover held from frame 0 (pill + name + sub)
-    ("s2-batch",     4.00,   4.10),   # cupcakes · SMALL BATCH 4.0 · MENU CHANGES DAILY 5.6
-    ("s3-menu",      7.90,   6.50),   # marbled cookies → palm cookies (cut 11.2) · CUPCAKES 8.2 … LEMONADE 12.8
-    ("s4-vegan",     14.20,  3.10),   # cookie-dough cups · VEGAN & DAIRY-FREE 14.7
-    ("s5-custom",    17.10,  5.50),   # treats → cupcakes (cut 19.8) · CUSTOM 17.5 · WEDDINGS 19.0 · hours 20.6
-    ("s6-end",       22.40,  7.60),   # end card, cream
+    # id,            start,  dur  — beats (absolute): word time + 0.60 (read v2, no macarons)
+    ("s1-open",      0.00,   4.00),   # counter · cover held from frame 0 (pill + name + sub)
+    ("s2-batch",     3.80,   3.90),   # cupcakes · SMALL BATCH 3.9 · MENU CHANGES DAILY 5.5
+    ("s3-menu",      7.50,   5.40),   # marbled cookies → palm cookies (cut 10.4) · CUPCAKES 7.95 … LEMONADE 11.5
+    ("s4-vegan",     12.70,  3.10),   # cookie-dough cups · VEGAN & DAIRY-FREE 13.2
+    ("s5-custom",    15.60,  5.40),   # treats → cupcakes (cut 18.2) · CUSTOM 15.9 · WEDDINGS 17.4 · hours 19.0
+    ("s6-end",       20.80,  7.70),   # end card, cream
 ]
-TOTAL = 30.00
+TOTAL = 28.50
 VO_START = 0.60
-VO_DUR = 28.46
+VO_DUR = 26.93
 
 SUBTITLES = False  # spotlights: the letters are the show (owner, Sep 11)
 SUBS = []
@@ -250,18 +250,18 @@ def scene_html(cid, dur, H, bar):
                            whole_y="-36%" if wide else "-40%", head_top=(470 if wide else 150))
     if cid == "s2-batch":
         return photo_scene(cid, dur, H, bar, "p1.jpg", "cover", ("drift", 1.5, -1.5, "50% 45%"),
-                           ["Small batch", "Menu changes daily"], chip_times=[0.30, 1.60])
+                           ["Small batch", "Menu changes daily"], chip_times=[0.10, 1.70])
     if cid == "s3-menu":
         return photo_scene(cid, dur, H, bar, "p3.jpg", "cover", ("scale", 1.0, 1.08, "50% 50%"),
-                           ["Cupcakes", "Sugar cookies", "Macarons", "Stuffed crepes", "Cotton candy lemonade"],
-                           chip_times=[0.30, 1.20, 2.20, 3.40, 4.90], cut=("p4.jpg", 3.30, "cover", "50% 50%"))
+                           ["Cupcakes", "Sugar cookies", "Stuffed crepes", "Cotton candy lemonade"],
+                           chip_times=[0.45, 1.35, 2.30, 4.00], cut=("p4.jpg", 2.90, "cover", "50% 50%"))
     if cid == "s4-vegan":
         return photo_scene(cid, dur, H, bar, "p5.jpg", "cover", ("tilt", 1.5, -1.5, "50% 50%"),
                            ["Vegan &amp; dairy-free, always"], chip_times=[0.50])
     if cid == "s5-custom":
         return photo_scene(cid, dur, H, bar, "p6.jpg", "cover", ("scale", 1.0, 1.07, "50% 50%"),
-                           ["Custom cakes &amp; cookies", "Weddings by order"], chip_times=[0.40, 1.90],
-                           cut=("p2.jpg", 2.70, "cover", "50% 45%"), line=("Tue–Fri 9:30–4:30 · Sat 11–3", 3.50))
+                           ["Custom cakes &amp; cookies", "Weddings by order"], chip_times=[0.30, 1.80],
+                           cut=("p2.jpg", 2.60, "cover", "50% 45%"), line=("Tue–Fri 9:30–4:30 · Sat 11–3", 3.40))
     if cid == "s6-end":
         return end_scene(cid, dur, H, bar)
     raise ValueError(cid)
