@@ -98,11 +98,15 @@ else
   bold "▶ $MODE: using origin/main as-is"
   git fetch origin main --quiet
   if [[ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]]; then
-    abort "local main ($(git rev-parse --short HEAD)) differs from origin/main ($(git rev-parse --short origin/main)) — pull or push first"
+    red "  note: local main is $(git rev-parse --short HEAD), origin/main is $(git rev-parse --short origin/main) — ${MODE} acts on origin/main"
   fi
 fi
 
-SHA="$(git rev-parse HEAD)"
+if [[ "$MODE" == "promote" || "$MODE" == "verify" ]]; then
+  SHA="$(git rev-parse origin/main)"
+else
+  SHA="$(git rev-parse HEAD)"
+fi
 SHORT="${SHA:0:7}"
 
 # ── 2. wait for the preview build of this exact commit ───────────────────────
