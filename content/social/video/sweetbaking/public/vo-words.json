@@ -1,0 +1,292 @@
+[
+ {
+  "word": "On",
+  "start": 0.0,
+  "end": 0.48
+ },
+ {
+  "word": "North",
+  "start": 0.48,
+  "end": 0.78
+ },
+ {
+  "word": "H",
+  "start": 0.78,
+  "end": 1.16
+ },
+ {
+  "word": "Street,",
+  "start": 1.16,
+  "end": 1.48
+ },
+ {
+  "word": "Sweet",
+  "start": 1.84,
+  "end": 2.1
+ },
+ {
+  "word": "Baking",
+  "start": 2.1,
+  "end": 2.5
+ },
+ {
+  "word": "Co.",
+  "start": 2.5,
+  "end": 2.74
+ },
+ {
+  "word": "bakes",
+  "start": 2.98,
+  "end": 3.18
+ },
+ {
+  "word": "in",
+  "start": 3.18,
+  "end": 3.4
+ },
+ {
+  "word": "small",
+  "start": 3.4,
+  "end": 3.82
+ },
+ {
+  "word": "batches,",
+  "start": 3.82,
+  "end": 4.46
+ },
+ {
+  "word": "so",
+  "start": 4.68,
+  "end": 4.9
+ },
+ {
+  "word": "the",
+  "start": 4.9,
+  "end": 5.02
+ },
+ {
+  "word": "menu",
+  "start": 5.02,
+  "end": 5.26
+ },
+ {
+  "word": "changes",
+  "start": 5.26,
+  "end": 5.6
+ },
+ {
+  "word": "almost",
+  "start": 5.6,
+  "end": 6.02
+ },
+ {
+  "word": "every",
+  "start": 6.02,
+  "end": 6.58
+ },
+ {
+  "word": "day.",
+  "start": 6.58,
+  "end": 6.94
+ },
+ {
+  "word": "Cupcakes,",
+  "start": 7.56,
+  "end": 8.1
+ },
+ {
+  "word": "sugar",
+  "start": 8.46,
+  "end": 8.64
+ },
+ {
+  "word": "cookies,",
+  "start": 8.64,
+  "end": 8.98
+ },
+ {
+  "word": "macarons,",
+  "start": 9.48,
+  "end": 10.08
+ },
+ {
+  "word": "stuffed",
+  "start": 10.46,
+  "end": 10.72
+ },
+ {
+  "word": "crepes,",
+  "start": 10.72,
+  "end": 11.26
+ },
+ {
+  "word": "and",
+  "start": 11.58,
+  "end": 11.74
+ },
+ {
+  "word": "drinks",
+  "start": 11.74,
+  "end": 11.96
+ },
+ {
+  "word": "like",
+  "start": 11.96,
+  "end": 12.22
+ },
+ {
+  "word": "cotton",
+  "start": 12.22,
+  "end": 12.62
+ },
+ {
+  "word": "candy",
+  "start": 12.62,
+  "end": 13.0
+ },
+ {
+  "word": "lemonade.",
+  "start": 13.0,
+  "end": 13.48
+ },
+ {
+  "word": "Vegan",
+  "start": 14.1,
+  "end": 14.44
+ },
+ {
+  "word": "and",
+  "start": 14.44,
+  "end": 14.8
+ },
+ {
+  "word": "dairy",
+  "start": 14.8,
+  "end": 15.02
+ },
+ {
+  "word": "-free,",
+  "start": 15.02,
+  "end": 15.36
+ },
+ {
+  "word": "always.",
+  "start": 15.72,
+  "end": 16.08
+ },
+ {
+  "word": "Custom",
+  "start": 16.92,
+  "end": 17.16
+ },
+ {
+  "word": "cakes,",
+  "start": 17.16,
+  "end": 17.54
+ },
+ {
+  "word": "cookies,",
+  "start": 17.82,
+  "end": 18.02
+ },
+ {
+  "word": "and",
+  "start": 18.3,
+  "end": 18.4
+ },
+ {
+  "word": "weddings",
+  "start": 18.4,
+  "end": 18.68
+ },
+ {
+  "word": "by",
+  "start": 18.68,
+  "end": 19.26
+ },
+ {
+  "word": "order.",
+  "start": 19.26,
+  "end": 19.58
+ },
+ {
+  "word": "Open",
+  "start": 20.02,
+  "end": 20.38
+ },
+ {
+  "word": "Tuesday",
+  "start": 20.38,
+  "end": 20.82
+ },
+ {
+  "word": "through",
+  "start": 20.82,
+  "end": 21.18
+ },
+ {
+  "word": "Saturday.",
+  "start": 21.18,
+  "end": 21.46
+ },
+ {
+  "word": "Sweet",
+  "start": 22.32,
+  "end": 22.8
+ },
+ {
+  "word": "Baking",
+  "start": 22.8,
+  "end": 23.28
+ },
+ {
+  "word": "Co.,",
+  "start": 23.28,
+  "end": 23.98
+ },
+ {
+  "word": "a",
+  "start": 23.98,
+  "end": 24.2
+ },
+ {
+  "word": "Lompoc",
+  "start": 24.2,
+  "end": 24.6
+ },
+ {
+  "word": "Locals",
+  "start": 24.6,
+  "end": 25.02
+ },
+ {
+  "word": "partner.",
+  "start": 25.02,
+  "end": 25.38
+ },
+ {
+  "word": "Find",
+  "start": 26.04,
+  "end": 26.16
+ },
+ {
+  "word": "them",
+  "start": 26.16,
+  "end": 26.38
+ },
+ {
+  "word": "at",
+  "start": 26.38,
+  "end": 26.58
+ },
+ {
+  "word": "LompocLocals",
+  "start": 26.58,
+  "end": 27.56
+ },
+ {
+  "word": ".com.",
+  "start": 27.56,
+  "end": 28.04
+ }
+]
