@@ -1,0 +1,1 @@
+https://mcp.higgsfield.ai/oauth2/authorize?response_type=code&client_id=JQgD1mt9Z0kg2m5n&code_challenge=u0EdOz5kWqs6N424cZPGekuWdVKru-NKLcK_--LXwtE&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A3987%2Fcallback&state=byw_1eJpv4ivSqEKHOMKFAGkIJAHfeC7&scope=openid+email+offline_access&resource=https%3A%2F%2Fmcp.higgsfield.ai%2Fmcp
