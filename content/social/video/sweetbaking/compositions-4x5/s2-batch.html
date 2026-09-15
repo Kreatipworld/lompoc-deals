@@ -27,7 +27,7 @@
     <div class="stage" id="s2-batch-stage">
       <div class="wrap" id="s2-batch-w0" data-layout-allow-overflow><img class="cover" src="public/p1.jpg" alt="" style="object-position: 50% 45%" /></div>
       <div class="scrim"></div><div class="topscrim"></div>
-      <div class="head"><span class="name" id="s2-batch-name">Sweet Baking Co.</span><span class="sub" id="s2-batch-sub">322 N H St · Lompoc</span></div>
+      
       <div class="logocard"><img src="public/logo.png" alt="" /></div>
       <div class="chips"><span class="chip" id="s2-batch-c0">Small batch</span><span class="chip" id="s2-batch-c1">Menu changes daily</span></div>
       <div class="vig"></div>
@@ -41,8 +41,6 @@
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
         tl.fromTo("#s2-batch-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
         tl.fromTo("#s2-batch-w0", { scale: 1.10, xPercent: 1.5 }, { scale: 1.10, xPercent: -1.5, duration: B.END, ease: "none" }, 0);
-        tl.set("#s2-batch-name", { autoAlpha: 1 }, 0);
-        tl.set("#s2-batch-sub", { autoAlpha: 1 }, 0);
         tl.fromTo("#s2-batch-c0", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 0.30);
         tl.fromTo("#s2-batch-c1", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 1.60);
         tl.set({}, {}, B.END);

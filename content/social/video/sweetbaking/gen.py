@@ -250,8 +250,7 @@ def scene_html(cid, dur, H, bar):
                            whole_y="-36%" if wide else "-40%", head_top=(470 if wide else 150))
     if cid == "s2-batch":
         return photo_scene(cid, dur, H, bar, "p1.jpg", "cover", ("drift", 1.5, -1.5, "50% 45%"),
-                           ["Small batch", "Menu changes daily"], chip_times=[0.30, 1.60],
-                           header=(None, "Sweet Baking Co.", "322 N H St · Lompoc"))
+                           ["Small batch", "Menu changes daily"], chip_times=[0.30, 1.60])
     if cid == "s3-menu":
         return photo_scene(cid, dur, H, bar, "p3.jpg", "cover", ("scale", 1.0, 1.08, "50% 50%"),
                            ["Cupcakes", "Sugar cookies", "Macarons", "Stuffed crepes", "Cotton candy lemonade"],
