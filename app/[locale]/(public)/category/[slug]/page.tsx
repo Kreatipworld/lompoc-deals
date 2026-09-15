@@ -1,21 +1,17 @@
 import { Link } from "@/i18n/navigation"
 import { notFound } from "next/navigation"
 export const dynamic = "force-dynamic"
-import {
-  Store,
-  MapPin,
-  Phone,
-  Globe,
-  ArrowRight,
-  Tag,
-} from "lucide-react"
+import { ArrowRight, Home } from "lucide-react"
 import { db } from "@/db/client"
 import {
   getDealsByCategorySlug,
   getAllRealEstateListings,
   getBusinessesByCategorySlug,
 } from "@/lib/queries"
-import { filterOpenNow } from "@/lib/hours"
+import { filterOpenNow, isOpenNow, parseHours, DAY_KEYS } from "@/lib/hours"
+import { FIND_TERMS } from "@/lib/find-terms"
+import { searchAll, businessesBySlugs } from "@/lib/search"
+import { CategoryList } from "@/components/directory/category-list"
 import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
@@ -23,8 +19,6 @@ import { DealGrid } from "@/components/deal-card"
 import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
-import { BusinessAvatar } from "@/components/business-avatar"
-import { TiltCard } from "@/components/motion/tilt-card"
 import { PageHeader } from "@/components/page-header"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
@@ -84,6 +78,21 @@ export default async function CategoryPage({
     getViewer(),
   ])
   const categoryBusinesses = openNow ? filterOpenNow(allCategoryBusinesses) : allCategoryBusinesses
+  const localeKey = params.locale === "es" ? "es" : "en"
+  // Quick picks: only the find pages that actually return businesses (owner: "the
+  // guidance has to be perfect" — never a chip that lands on an empty page).
+  const quickCandidates = FIND_TERMS.filter((f) => f.category === params.slug && f.kind === "businesses")
+  const quickCounts = await Promise.all(
+    quickCandidates.map(async (f) => {
+      const [r, picked] = await Promise.all([searchAll(f.query, localeKey), businessesBySlugs(f.include ?? [], localeKey)])
+      const excluded = new Set(f.exclude ?? [])
+      const n = [...picked, ...r.businesses.filter((b) => !picked.some((x) => x.id === b.id))].filter((b) => !excluded.has(b.slug)).length
+      return n
+    })
+  )
+  const quick = quickCandidates.filter((_, i) => quickCounts[i] > 0)
+  const tLabels = await getTranslations({ locale: params.locale, namespace: "categoryLabels" })
+  const catName = categoryLabel(tLabels, cat.slug, cat.name)
 
   // Preserve other existing searchParams (e.g. ?tab=) when toggling ?open=1
   const toggledParams = new URLSearchParams()
@@ -117,7 +126,7 @@ export default async function CategoryPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd).replace(/</g, "\\u003c") }}
       />
       <PageHeader
-        title={t("headingGeo", { name: cat.name })}
+        title={t("headingGeo", { name: catName })}
         backHref="/businesses"
         backLabel={t("allBusinesses")}
         meta={
@@ -154,6 +163,14 @@ export default async function CategoryPage({
       {/* REAL ESTATE: tabs + property grid */}
       {isRealEstate && (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+          <Link
+            href="/homes"
+            className="mb-5 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+          >
+            <Home className="h-4 w-4" />
+            {t("quickHomes")}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
           <div className="mb-6 flex items-center gap-2 border-b">
             <Link
               href={`/category/${params.slug}`}
@@ -193,79 +210,50 @@ export default async function CategoryPage({
       {/* NON-REAL-ESTATE: business listings (primary) */}
       {!isRealEstate && (
         <>
-          <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
-            {categoryBusinesses.length === 0 ? (
-              <p className="py-16 text-center text-sm text-muted-foreground">
-                {t("noBusinesses")}
-              </p>
-            ) : (
-              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {categoryBusinesses.map((b) => (
-                  <TiltCard as="li" key={b.id} className="h-full rounded-2xl">
-                    <Link
-                      href={`/biz/${b.slug}`}
-                      className="group flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
-                    >
-                      <div className="flex items-start gap-3">
-                        <BusinessAvatar
-                          logoUrl={b.logoUrl}
-                          photoUrl={b.photoUrl}
-                          name={b.name}
-                          className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl"
-                          icon={<Store className="h-5 w-5 text-primary/70" />}
-                        />
-                        <div className="flex-1 overflow-hidden">
-                          <h3 className="font-display text-lg font-semibold leading-tight tracking-tight line-clamp-2">
-                            {b.name}
-                          </h3>
-                          {b.activeDealCount > 0 && (
-                            <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
-                              <Tag className="h-3 w-3" />
-                              {b.activeDealCount}{" "}
-                              {b.activeDealCount === 1 ? t("dealSingular") : t("dealPlural")}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {b.description && (
-                        <p className="line-clamp-2 text-sm text-muted-foreground">
-                          {b.description}
-                        </p>
-                      )}
-
-                      <div className="mt-auto space-y-1 text-xs text-muted-foreground">
-                        {b.address && (
-                          <div className="flex items-start gap-1.5">
-                            <MapPin className="mt-0.5 h-3 w-3 flex-shrink-0 text-primary/60" />
-                            <span className="truncate">{b.address}</span>
-                          </div>
-                        )}
-                        {b.phone && (
-                          <div className="flex items-center gap-1.5">
-                            <Phone className="h-3 w-3 flex-shrink-0 text-primary/60" />
-                            {b.phone}
-                          </div>
-                        )}
-                        {b.website && (
-                          <div className="flex items-center gap-1.5">
-                            <Globe className="h-3 w-3 flex-shrink-0 text-primary/60" />
-                            <span className="truncate">
-                              {b.website.replace(/^https?:\/\//, "")}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex items-center justify-end pt-1 text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">
-                        {t("viewProfile")}
-                        <ArrowRight className="ml-1 h-3 w-3" />
-                      </div>
-                    </Link>
-                  </TiltCard>
+          <section className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
+            {quick.length > 0 && (
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{t("quickHeading")}</span>
+                {quick.map((f) => (
+                  <Link
+                    key={f.slug}
+                    href={`/find/${f.slug}`}
+                    className="inline-flex items-center rounded-full border bg-card px-3 py-1 text-xs font-semibold transition-colors hover:border-primary/40 hover:bg-accent"
+                  >
+                    {f.title[localeKey]}
+                  </Link>
                 ))}
-              </ul>
+              </div>
             )}
+            <CategoryList
+              items={categoryBusinesses.map((b) => {
+                const hours = parseHours(b.hoursJson)
+                const known = DAY_KEYS.some((k) => hours[k] !== null)
+                return {
+                  id: b.id,
+                  name: b.name,
+                  slug: b.slug,
+                  description: b.description,
+                  address: b.address,
+                  logoUrl: b.logoUrl,
+                  photoUrl: b.photoUrl,
+                  activeDealCount: b.activeDealCount,
+                  tier: b.tier,
+                  openNow: known ? isOpenNow(hours) : null,
+                }
+              })}
+              labels={{
+                searchWithin: t("searchWithin", { name: catName }),
+                sortMembers: t("sortMembers"),
+                sortAz: t("sortAz"),
+                showMore: t("showMore"),
+                count: (n) => t("countLabel", { count: n }),
+                member: t("memberBadge"),
+                deal: (n) => `${n} ${n === 1 ? t("dealSingular") : t("dealPlural")}`,
+                openNow: t("openNow"),
+                noMatch: t("noMatch"),
+              }}
+            />
           </section>
 
           {/* PREMIUM FEATURED ROW — scoped to this category; renders null when no premium deals */}
@@ -276,7 +264,7 @@ export default async function CategoryPage({
             <section className="mx-auto max-w-6xl px-4 pb-8 sm:pb-10">
               <div className="mb-6 border-t pt-8 sm:pt-10">
                 <h2 className="font-display text-2xl font-semibold tracking-tight">
-                  {t("activeDealsIn", { name: cat.name })}
+                  {t("activeDealsIn", { name: catName })}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {t("dealsAvailable", { count: deals.length, label: deals.length === 1 ? t("dealSingular") : t("dealPlural") })}

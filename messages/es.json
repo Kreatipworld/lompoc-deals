@@ -1293,7 +1293,16 @@
       "headingGeo": "Directorio de Negocios de Lompoc",
       "tilesHeading": "Elige una categoría",
       "surpriseMe": "Sorpréndeme",
-      "memberBadge": "Miembro"
+      "memberBadge": "Miembro",
+      "hubHeading": "Encuentra cualquier negocio en Lompoc",
+      "hubSub": "{businesses} negocios · {deals} ofertas activas · busca por nombre, comida u oficio",
+      "membersHeading": "Miembros",
+      "membersSub": "Los negocios que apoyan a Lompoc Locals — los más nuevos primero.",
+      "popularHeading": "Búsquedas populares",
+      "popularSub": "Lo que más busca la gente, cada uno con su propia página.",
+      "openNowHeading": "Abiertos ahora",
+      "openNowSub": "Negocios cuyos horarios dicen que están abiertos en este momento.",
+      "openNowEmpty": "Ningún negocio con horarios publicados está abierto ahora."
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
@@ -1312,7 +1321,7 @@
       "featuredAgent": "Agente destacado",
       "metaFallbackDescription": "Descubre las ofertas y cupones actuales de {name}, un negocio de {catLabel} en Lompoc, CA. Gratis para canjear — actualizado directamente por el negocio.",
       "metaOgFallback": "Ofertas actuales de {name} en Lompoc, CA. Gratis para canjear.",
-      "breadcrumbHome": "Ofertas",
+      "breadcrumbHome": "Directorio",
       "trustActiveItem": "{count} {label} vigentes",
       "trustListed": "Registrado desde {date}",
       "sectionActiveListings": "Listados activos",
@@ -2178,7 +2187,17 @@
     "tabForRent": "En renta",
     "activeDealsIn": "Ofertas activas en {name}",
     "dealsAvailable": "{count} {label} disponibles ahora",
-    "headingGeo": "{name} en Lompoc"
+    "headingGeo": "{name} en Lompoc",
+    "searchWithin": "Buscar en {name}…",
+    "sortMembers": "Miembros primero",
+    "sortAz": "A–Z",
+    "showMore": "Ver más",
+    "countLabel": "{count} negocios",
+    "noMatch": "Ningún negocio coincide. Prueba otra palabra.",
+    "memberBadge": "Miembro",
+    "openNow": "Abierto ahora",
+    "quickHomes": "Casas en venta y renta",
+    "quickHeading": "Atajos"
   },
   "blog": {
     "eyebrow": "Blog de Lompoc Locals",

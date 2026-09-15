@@ -1293,7 +1293,16 @@
       "headingGeo": "Lompoc Business Directory",
       "tilesHeading": "Pick a category",
       "surpriseMe": "Surprise me",
-      "memberBadge": "Member"
+      "memberBadge": "Member",
+      "hubHeading": "Find any business in Lompoc",
+      "hubSub": "{businesses} businesses · {deals} active deals · search by name, food, or trade",
+      "membersHeading": "Members",
+      "membersSub": "The businesses that support Lompoc Locals — newest first.",
+      "popularHeading": "Popular searches",
+      "popularSub": "What people look for most, each with its own page.",
+      "openNowHeading": "Open right now",
+      "openNowSub": "Businesses whose hours say they are open at this moment.",
+      "openNowEmpty": "Nothing with posted hours is open right now."
     },
     "profile": {
       "metaTitleSuffix": "Lompoc, CA",
@@ -1312,7 +1321,7 @@
       "featuredAgent": "Featured agent",
       "metaFallbackDescription": "Browse current deals and coupons from {name}, a {catLabel} in Lompoc, CA. Updated directly by the business.",
       "metaOgFallback": "Current deals from {name} in Lompoc, CA.",
-      "breadcrumbHome": "Deals",
+      "breadcrumbHome": "Directory",
       "trustActiveItem": "{count} active {label}",
       "trustListed": "Listed since {date}",
       "sectionActiveListings": "Active listings",
@@ -2178,7 +2187,17 @@
     "tabForRent": "For rent",
     "activeDealsIn": "Active deals in {name}",
     "dealsAvailable": "{count} {label} available right now",
-    "headingGeo": "Lompoc {name}"
+    "headingGeo": "Lompoc {name}",
+    "searchWithin": "Search within {name}…",
+    "sortMembers": "Members first",
+    "sortAz": "A–Z",
+    "showMore": "Show more",
+    "countLabel": "{count} businesses",
+    "noMatch": "No businesses match that. Try another word.",
+    "memberBadge": "Member",
+    "openNow": "Open now",
+    "quickHomes": "Homes for sale & rent",
+    "quickHeading": "Quick picks"
   },
   "blog": {
     "eyebrow": "Lompoc Locals Blog",

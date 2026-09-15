@@ -231,7 +231,7 @@ export default async function BusinessPage({
           <div className="rounded-3xl border bg-card p-6 shadow-lg sm:p-8 mt-4">
           {/* Breadcrumb — inside the card to prevent overlap with cover */}
           <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-            <Link href="/" className="transition-colors duration-150 hover:text-foreground">
+            <Link href="/businesses" className="transition-colors duration-150 hover:text-foreground">
               {t("breadcrumbHome")}
             </Link>
             {business.category && (

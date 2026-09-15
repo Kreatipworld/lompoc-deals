@@ -373,3 +373,35 @@ console.log(
     : `\n\x1b[31m${failures} check(s) failed.\x1b[0m\n`
 )
 process.exit(failures ? 1 : 0)
+
+console.log("\n14. Directory wayfinding — every link works, tile counts match category pages (owner: 'make sure all the links work', 'the guidance has to be perfect')")
+try {
+  const seen = new Map()
+  const extract = (html) => Array.from(html.matchAll(/href="(\/[^"#?]*)(?:[?#][^"]*)?"/g)).map((m) => m[1]).filter((h) => !h.startsWith("/api/") && !h.startsWith("/_next") && !/\.(png|jpg|jpeg|svg|ico|xml|txt|webmanifest)$/.test(h))
+  const pages = ["/businesses", "/es/businesses"]
+  const cats = await sql`select c.slug, count(b.id)::int as n from categories c join businesses b on b.category_id = c.id and b.status = 'approved' group by c.slug having count(b.id) > 0`
+  for (const c of cats) pages.push(`/category/${c.slug}`, `/es/category/${c.slug}`)
+  const hrefs = new Set()
+  for (const p of pages) {
+    const html = await fetch(`${SITE}${p}`, { cache: "no-store" }).then((r) => r.text())
+    for (const h of extract(html)) hrefs.add(h)
+    if (p.startsWith("/category/")) {
+      const slug = p.split("/").pop()
+      const row = cats.find((c) => c.slug === slug)
+      const m = html.match(/(\d+) businesses? in Lompoc/)
+      if (!m) fail(`${p}: no business count in the header`)
+      else if (Number(m[1]) !== row.n) fail(`${p}: header says ${m[1]} businesses, directory tile/DB says ${row.n}`)
+      else pass(`${p}: ${row.n} businesses — matches the directory tile`)
+    }
+  }
+  let bad = 0, checked = 0
+  for (const h of hrefs) {
+    if (seen.has(h)) continue
+    const res = await fetch(`${SITE}${h}`, { method: "GET", redirect: "follow", cache: "no-store", headers: { "user-agent": "lompoc-locals-healthcheck" } })
+    seen.set(h, res.status); checked++
+    if (res.status !== 200) { bad++; fail(`${h} → ${res.status}`) }
+  }
+  bad === 0 ? pass(`directory links: ${checked} unique internal links on ${pages.length} pages all return 200`) : fail(`directory links: ${bad} of ${checked} broken`)
+} catch (e) {
+  fail(`directory wayfinding: ${e.message}`)
+}
