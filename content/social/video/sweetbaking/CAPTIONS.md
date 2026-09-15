@@ -1,21 +1,43 @@
-# Sweet Baking Co. — Member Spotlight captions (post only after the user watches the file)
+# Sweet Baking Co. — Member Spotlight captions (v3, positive line) — CONFIRM WITH THE USER BEFORE POSTING
 
-**IG Reel** (9:16, share to feed)
-Member Spotlight · Sweet Baking Co. 🧁
-Small-batch cupcakes on North H Street, so the menu changes almost every day: cupcakes, sugar cookies, stuffed crepes, and drinks like cotton candy lemonade. Vegan and dairy-free options, always. Custom cakes, cookies, and weddings by order.
-📍 322 N H St, Suite C · Tue–Fri 9:30–4:30 · Sat 11–3
-Find them on Lompoc Locals — link in bio.
-#Lompoc #LompocLocals #SweetBakingCo #Cupcakes #LompocEats #805 #CentralCoast
+**Instagram Reel** (share to feed; tag @sweetbaking_co)
+```
+Member Spotlight: Sweet Baking Co. 🧁
 
-**TikTok** (9:16)
-Member Spotlight: Sweet Baking Co. 🧁 Small-batch cupcakes, cookies and crepes on N H St, menu changes daily, vegan and dairy-free always. Find them at lompoclocals.com #Lompoc #LompocEats #Cupcakes #805
+Everything is baked in small batches, so there's something new in the case every day.
+Cupcakes, sugar cookies, stuffed crepes, and cotton candy lemonade.
+Vegan and dairy-free options, always.
+Custom cakes, cookies, and weddings by order.
 
-**Facebook Reel** (9:16)
-Member Spotlight · Sweet Baking Co. 🧁
-Small-batch cupcakes on North H Street, so the menu changes almost every day: cupcakes, sugar cookies, stuffed crepes, and drinks like cotton candy lemonade. Vegan and dairy-free options, always. Custom cakes, cookies, and weddings by order.
-📍 322 N H St, Suite C · Tue–Fri 9:30–4:30 · Sat 11–3
-https://www.lompoclocals.com/biz/sweet-baking-co?utm_source=fb&utm_medium=reel&utm_campaign=spotlight-sweet-baking
+322 N H St, Suite C
+Tue to Fri 9:30 to 4:30, Sat 11 to 3
 
-**IG Story** (9:16) · link sticker https://www.lompoclocals.com/biz/sweet-baking-co?utm_source=ig&utm_medium=story&utm_campaign=spotlight-sweet-baking (label "See the menu") · text "Member Spotlight · Sweet Baking Co. 🧁"
+Find them on Lompoc Locals, link in bio.
+@sweetbaking_co
 
-Slot: 6–8 PM PT. Tag @sweetbaking_co on IG.
+#Lompoc #LompocLocals #SweetBakingCo #Cupcakes #LompocEats #805
+```
+
+**TikTok**
+```
+Sweet Baking Co. 🧁 Something new in the case every day. Cupcakes, sugar cookies, stuffed crepes. Vegan + dairy-free, always.
+
+#Lompoc #LompocEats
+```
+
+**Facebook Reel** (no hashtags, one link)
+```
+Member Spotlight: Sweet Baking Co. 🧁
+
+Everything is baked in small batches, so there's something new in the case every day.
+Cupcakes, sugar cookies, stuffed crepes, and cotton candy lemonade.
+Vegan and dairy-free options, always.
+Custom cakes, cookies, and weddings by order.
+
+322 N H St, Suite C
+Tue to Fri 9:30 to 4:30, Sat 11 to 3
+
+https://www.lompoclocals.com/biz/sweet-baking-co?utm_source=fb&utm_medium=reel&utm_campaign=spotlight-sweet-baking-v3
+```
+
+**Instagram Story** · link sticker https://www.lompoclocals.com/biz/sweet-baking-co?utm_source=ig&utm_medium=story&utm_campaign=spotlight-sweet-baking-v3 (label "See the menu") · text: `Member Spotlight: Sweet Baking Co. 🧁`

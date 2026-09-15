@@ -13,17 +13,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # ─── timeline (absolute seconds) — timed to Arthur's read (VO at 0.60) ───────────
 X = 0.25  # crossfade overlap
 SCENES = [
-    # id,            start,  dur  — beats (absolute): word time + 0.60 (read v2, no macarons)
-    ("s1-open",      0.00,   4.00),   # counter · cover held from frame 0 (pill + name + sub)
-    ("s2-batch",     3.80,   3.90),   # cupcakes · SMALL BATCH 3.9 · MENU CHANGES DAILY 5.5
-    ("s3-menu",      7.50,   5.40),   # marbled cookies → palm cookies (cut 10.4) · CUPCAKES 7.95 … LEMONADE 11.5
-    ("s4-vegan",     12.70,  3.10),   # cookie-dough cups · VEGAN & DAIRY-FREE 13.2
-    ("s5-custom",    15.60,  5.40),   # treats → cupcakes (cut 18.2) · CUSTOM 15.9 · WEDDINGS 17.4 · hours 19.0
-    ("s6-end",       20.80,  7.70),   # end card, cream
+    # id,            start,  dur  — beats (absolute): word time + 0.60 (read v3, positive line, no macarons)
+    ("s1-open",      0.00,   4.60),   # counter · cover held from frame 0 (pill + name + sub)
+    ("s2-batch",     4.40,   4.20),   # cupcakes · SMALL BATCH 4.6 · SOMETHING NEW EVERY DAY 6.3
+    ("s3-menu",      8.40,   5.00),   # marbled cookies → palm cookies (cut 11.0) · CUPCAKES 8.8 · SUGAR COOKIES 9.7 · CREPES 10.7 · LEMONADE 12.0
+    ("s4-vegan",     13.20,  3.30),   # cookie-dough cups · VEGAN & DAIRY-FREE 13.8
+    ("s5-custom",    16.30,  5.60),   # treats → cupcakes (cut 19.0) · CUSTOM 16.6 · WEDDINGS 18.2 · hours 19.9
+    ("s6-end",       21.70,  8.30),   # end card, cream
 ]
-TOTAL = 28.50
+TOTAL = 30.00
 VO_START = 0.60
-VO_DUR = 26.93
+VO_DUR = 28.37
 
 SUBTITLES = False  # spotlights: the letters are the show (owner, Sep 11)
 SUBS = []
@@ -190,8 +190,8 @@ def end_scene(cid, dur, H, bar):
     <div class="cine-bar cine-top"></div><div class="cine-bar cine-bot"></div>
     <script>
       (() => {{
-        // BEATS (relative to scene start 22.40): LOGO 22.6, NAME 22.9, ADDR 23.6, MENU 24.1, PILL 24.8, URL 26.6
-        const B = {{ LOGO: 0.20, NAME: 0.50, ADDR: 1.20, MENU: 1.70, PILL: 2.40, URL: 4.20, END: {dur:.2f} }};
+        // BEATS (relative to scene start 21.70): LOGO 21.9, NAME 22.2, ADDR 22.9, MENU 23.4, PILL 24.1, URL 26.3
+        const B = {{ LOGO: 0.20, NAME: 0.50, ADDR: 1.20, MENU: 1.70, PILL: 2.40, URL: 4.60, END: {dur:.2f} }};
         const tl = gsap.timeline({{ paused: true, defaults: {{ ease: "power3.out", duration: 0.5 }} }});
         tl.fromTo("#{cid}-stage", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: {X}, ease: "power1.inOut" }}, 0);
         tl.fromTo("#{cid}-bloom", {{ autoAlpha: 0, scale: 0.6 }}, {{ autoAlpha: 1, scale: 1, duration: 0.8, ease: "power2.out" }}, B.LOGO);
@@ -250,18 +250,18 @@ def scene_html(cid, dur, H, bar):
                            whole_y="-36%" if wide else "-40%", head_top=(470 if wide else 150))
     if cid == "s2-batch":
         return photo_scene(cid, dur, H, bar, "p1.jpg", "cover", ("drift", 1.5, -1.5, "50% 45%"),
-                           ["Small batch", "Menu changes daily"], chip_times=[0.10, 1.70])
+                           ["Small batch", "Something new every day"], chip_times=[0.20, 1.90])
     if cid == "s3-menu":
         return photo_scene(cid, dur, H, bar, "p3.jpg", "cover", ("scale", 1.0, 1.08, "50% 50%"),
                            ["Cupcakes", "Sugar cookies", "Stuffed crepes", "Cotton candy lemonade"],
-                           chip_times=[0.45, 1.35, 2.30, 4.00], cut=("p4.jpg", 2.90, "cover", "50% 50%"))
+                           chip_times=[0.40, 1.30, 2.30, 3.60], cut=("p4.jpg", 2.60, "cover", "50% 50%"))
     if cid == "s4-vegan":
         return photo_scene(cid, dur, H, bar, "p5.jpg", "cover", ("tilt", 1.5, -1.5, "50% 50%"),
-                           ["Vegan &amp; dairy-free, always"], chip_times=[0.50])
+                           ["Vegan &amp; dairy-free, always"], chip_times=[0.60])
     if cid == "s5-custom":
         return photo_scene(cid, dur, H, bar, "p6.jpg", "cover", ("scale", 1.0, 1.07, "50% 50%"),
-                           ["Custom cakes &amp; cookies", "Weddings by order"], chip_times=[0.30, 1.80],
-                           cut=("p2.jpg", 2.60, "cover", "50% 45%"), line=("Tue–Fri 9:30–4:30 · Sat 11–3", 3.40))
+                           ["Custom cakes &amp; cookies", "Weddings by order"], chip_times=[0.30, 1.90],
+                           cut=("p2.jpg", 2.70, "cover", "50% 45%"), line=("Tue–Fri 9:30–4:30 · Sat 11–3", 3.60))
     if cid == "s6-end":
         return end_scene(cid, dur, H, bar)
     raise ValueError(cid)

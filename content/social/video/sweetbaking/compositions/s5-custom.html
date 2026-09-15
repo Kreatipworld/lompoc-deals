@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="s5-custom" data-width="1080" data-height="1920" data-duration="5.40" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
+  <div data-composition-id="s5-custom" data-width="1080" data-height="1920" data-duration="5.60" style="position: absolute; inset: 0; overflow: hidden; background: transparent">
     <style>
       [data-composition-id="s5-custom"] .cine-bar { position: absolute; left: 0; right: 0; height: 115px; background: #0a060c; z-index: 60; }
       [data-composition-id="s5-custom"] .cine-top { top: 0; } [data-composition-id="s5-custom"] .cine-bot { bottom: 0; }
@@ -37,15 +37,15 @@
     <script>
       (() => {
         // BEATS (relative to scene start). PILL/HEAD/SUB move with the read; END = scene duration.
-        const B = { PILL: 0.45, HEAD: 0.45, SUB: 0.90, CUT: 2.60, END: 5.40 };
+        const B = { PILL: 0.45, HEAD: 0.45, SUB: 0.90, CUT: 2.70, END: 5.60 };
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.5 } });
         tl.fromTo("#s5-custom-stage", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.inOut" }, 0);
         gsap.set("#s5-custom-w0", { transformOrigin: "50% 50%" }); tl.fromTo("#s5-custom-w0", { scale: 1.0 }, { scale: 1.07, duration: B.END, ease: "none" }, 0);
         tl.set("#s5-custom-w0", { autoAlpha: 0 }, B.CUT); tl.set("#s5-custom-w1", { autoAlpha: 1 }, B.CUT);
         tl.fromTo("#s5-custom-w1", { scale: 1.0, xPercent: 1.5 }, { scale: 1.08, xPercent: -1.5, duration: B.END - B.CUT, ease: "none" }, B.CUT);
         tl.fromTo("#s5-custom-c0", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 0.30);
-        tl.fromTo("#s5-custom-c1", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 1.80);
-        tl.fromTo("#s5-custom-line", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 3.40);
+        tl.fromTo("#s5-custom-c1", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 1.90);
+        tl.fromTo("#s5-custom-line", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 3.60);
         tl.set({}, {}, B.END);
         window.__timelines["s5-custom"] = tl;
       })();

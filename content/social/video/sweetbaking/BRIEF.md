@@ -7,7 +7,7 @@ Facts from their listing/website: small-batch custom cupcake shop; menu changes 
 p0 shop counter with the pink Sweet Baking Co sign (opener/cover) · p1 whimsical cupcakes on a painted backdrop · p2 cookie-topped cupcakes (USED in master ad v9.2 → not as opener/cover; brief mid-video only) · p3 marbled sugar cookies · p4 California-shaped palm-tree cookies · p5 cookie-dough cups · p6 rice-krispie treats with purple sprinkles · logo (black script + teal cupcake on white → use on a white/cream card, not over dark).
 
 ## Script — Arthur, warm natural narrator (~24 s, VO at 0.60)
-"On North H Street, Sweet Baking Co. bakes in small batches, so the menu changes almost every day.
+"On North H Street, Sweet Baking Co. bakes everything in small batches, so there is something new in the case every day. (v3 read, 28.37 s, TOTAL 30.0)
 Cupcakes, sugar cookies, stuffed crepes, and drinks like cotton candy lemonade. (Owner Sep 15: no macarons — removed from the read, chips, captions and the listing's about text.)
 Vegan and dairy-free, always.
 Custom cakes, cookies, and weddings, by order.
@@ -18,8 +18,8 @@ Sweet Baking Co. A Lompoke Locals partner. Find them at Lompoke Locals dot com."
 | # | Photo | Text |
 |---|---|---|
 | 1 | p0 counter, slow push | pill MEMBER SPOTLIGHT · name SWEET BAKING CO. · sub "322 N H St · Lompoc" |
-| 2 | p1 cupcakes | chips SMALL BATCH · MENU CHANGES DAILY |
-| 3 | p3 marbled cookies → p4 palm cookies (cut) | chips CUPCAKES · SUGAR COOKIES · MACARONS · CREPES |
+| 2 | p1 cupcakes | chips SMALL BATCH · SOMETHING NEW EVERY DAY (v3, Sep 15: owner asked for a positive, accurate line instead of "menu changes daily") |
+| 3 | p3 marbled cookies → p4 palm cookies (cut) | chips CUPCAKES · SUGAR COOKIES · STUFFED CREPES · COTTON CANDY LEMONADE |
 | 4 | p5 cookie-dough cups | chips VEGAN & DAIRY-FREE, ALWAYS |
 | 5 | p6 treats → p2 cupcakes (brief) | chips CUSTOM CAKES · WEDDINGS · sub "Tue–Fri 9:30–4:30 · Sat 11–3" |
 | 6 | end card cream/white with the logo big | Sweet Baking Co. · 322 N H St Suite C · (805) 865-6013 · sweetbakingcompany.com · LOMPOC LOCALS PARTNER · lompoclocals.com |

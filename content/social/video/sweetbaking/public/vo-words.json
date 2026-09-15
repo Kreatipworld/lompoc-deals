@@ -2,286 +2,296 @@
  {
   "word": "On",
   "start": 0.0,
-  "end": 0.46
+  "end": 0.48
  },
  {
   "word": "North",
-  "start": 0.46,
-  "end": 0.74
+  "start": 0.48,
+  "end": 0.78
  },
  {
   "word": "H",
-  "start": 0.74,
-  "end": 1.1
+  "start": 0.78,
+  "end": 1.18
  },
  {
   "word": "Street,",
-  "start": 1.1,
-  "end": 1.46
+  "start": 1.18,
+  "end": 1.5
  },
  {
   "word": "Sweet",
   "start": 1.9,
-  "end": 2.14
+  "end": 2.16
  },
  {
   "word": "Baking",
-  "start": 2.14,
-  "end": 2.54
+  "start": 2.16,
+  "end": 2.58
  },
  {
   "word": "Co.",
-  "start": 2.54,
-  "end": 2.78
+  "start": 2.58,
+  "end": 2.82
  },
  {
   "word": "bakes",
-  "start": 2.92,
-  "end": 3.12
+  "start": 2.96,
+  "end": 3.18
  },
  {
-  "word": "in",
-  "start": 3.12,
-  "end": 3.32
- },
- {
-  "word": "small",
-  "start": 3.32,
+  "word": "everything",
+  "start": 3.18,
   "end": 3.74
  },
  {
-  "word": "batches,",
+  "word": "in",
   "start": 3.74,
-  "end": 4.4
+  "end": 4.04
  },
  {
-  "word": "so",
-  "start": 4.52,
-  "end": 4.7
+  "word": "small",
+  "start": 4.04,
+  "end": 4.42
  },
  {
-  "word": "the",
-  "start": 4.7,
-  "end": 4.82
- },
- {
-  "word": "menu",
-  "start": 4.82,
+  "word": "batches,",
+  "start": 4.42,
   "end": 5.06
  },
  {
-  "word": "changes",
-  "start": 5.06,
-  "end": 5.46
+  "word": "so",
+  "start": 5.22,
+  "end": 5.48
  },
  {
-  "word": "almost",
-  "start": 5.46,
-  "end": 5.94
+  "word": "there",
+  "start": 5.48,
+  "end": 5.62
+ },
+ {
+  "word": "is",
+  "start": 5.62,
+  "end": 5.74
+ },
+ {
+  "word": "something",
+  "start": 5.74,
+  "end": 6.0
+ },
+ {
+  "word": "new",
+  "start": 6.0,
+  "end": 6.34
+ },
+ {
+  "word": "in",
+  "start": 6.34,
+  "end": 6.5
+ },
+ {
+  "word": "the",
+  "start": 6.5,
+  "end": 6.6
+ },
+ {
+  "word": "case",
+  "start": 6.6,
+  "end": 6.84
  },
  {
   "word": "every",
-  "start": 5.94,
-  "end": 6.48
+  "start": 6.84,
+  "end": 7.22
  },
  {
   "word": "day.",
-  "start": 6.48,
-  "end": 6.82
+  "start": 7.22,
+  "end": 7.52
  },
  {
   "word": "Cupcakes,",
-  "start": 7.34,
-  "end": 7.86
+  "start": 8.2,
+  "end": 8.72
  },
  {
   "word": "sugar",
-  "start": 8.22,
-  "end": 8.42
+  "start": 9.08,
+  "end": 9.28
  },
  {
   "word": "cookies,",
-  "start": 8.42,
-  "end": 8.76
+  "start": 9.28,
+  "end": 9.66
  },
  {
   "word": "stuffed",
-  "start": 9.18,
-  "end": 9.4
+  "start": 10.12,
+  "end": 10.36
  },
  {
   "word": "crepes,",
-  "start": 9.4,
-  "end": 9.94
+  "start": 10.36,
+  "end": 10.96
  },
  {
   "word": "and",
-  "start": 10.22,
-  "end": 10.4
- },
- {
-  "word": "drinks",
-  "start": 10.4,
-  "end": 10.64
- },
- {
-  "word": "like",
-  "start": 10.64,
-  "end": 10.94
+  "start": 11.28,
+  "end": 11.42
  },
  {
   "word": "cotton",
-  "start": 10.94,
-  "end": 11.28
+  "start": 11.42,
+  "end": 11.76
  },
  {
   "word": "candy",
-  "start": 11.28,
-  "end": 11.64
+  "start": 11.76,
+  "end": 12.1
  },
  {
-  "word": "lemonade,",
-  "start": 11.64,
-  "end": 12.12
+  "word": "lemonade.",
+  "start": 12.1,
+  "end": 12.62
  },
  {
-  "word": "vegan",
-  "start": 12.7,
-  "end": 13.1
+  "word": "Vegan",
+  "start": 13.22,
+  "end": 13.58
  },
  {
   "word": "and",
-  "start": 13.1,
-  "end": 13.42
+  "start": 13.58,
+  "end": 13.94
  },
  {
   "word": "dairy",
-  "start": 13.42,
-  "end": 13.66
+  "start": 13.94,
+  "end": 14.2
  },
  {
   "word": "-free,",
-  "start": 13.66,
-  "end": 13.96
+  "start": 14.2,
+  "end": 14.52
  },
  {
   "word": "always.",
-  "start": 14.3,
-  "end": 14.62
+  "start": 14.84,
+  "end": 15.16
  },
  {
   "word": "Custom",
-  "start": 15.36,
-  "end": 15.66
+  "start": 16.04,
+  "end": 16.28
  },
  {
   "word": "cakes,",
-  "start": 15.66,
-  "end": 16.06
+  "start": 16.28,
+  "end": 16.68
  },
  {
   "word": "cookies,",
-  "start": 16.32,
-  "end": 16.5
+  "start": 17.0,
+  "end": 17.2
  },
  {
   "word": "and",
-  "start": 16.8,
-  "end": 16.88
+  "start": 17.52,
+  "end": 17.62
  },
  {
   "word": "weddings,",
-  "start": 16.88,
-  "end": 17.14
+  "start": 17.62,
+  "end": 17.88
  },
  {
   "word": "by",
-  "start": 17.6,
-  "end": 17.72
+  "start": 18.42,
+  "end": 18.5
  },
  {
   "word": "order.",
-  "start": 17.72,
-  "end": 18.0
+  "start": 18.5,
+  "end": 18.84
  },
  {
   "word": "Open",
-  "start": 18.48,
-  "end": 18.74
+  "start": 19.38,
+  "end": 19.72
  },
  {
   "word": "Tuesday",
-  "start": 18.74,
-  "end": 19.2
+  "start": 19.72,
+  "end": 20.2
  },
  {
   "word": "through",
-  "start": 19.2,
-  "end": 19.52
+  "start": 20.2,
+  "end": 20.54
  },
  {
   "word": "Saturday.",
-  "start": 19.52,
-  "end": 19.88
+  "start": 20.54,
+  "end": 20.86
  },
  {
   "word": "Sweet",
-  "start": 20.66,
-  "end": 21.12
+  "start": 21.7,
+  "end": 22.16
  },
  {
   "word": "Baking",
-  "start": 21.12,
-  "end": 21.62
+  "start": 22.16,
+  "end": 22.66
  },
  {
   "word": "Co.,",
-  "start": 21.62,
-  "end": 22.24
+  "start": 22.66,
+  "end": 23.42
  },
  {
   "word": "a",
-  "start": 22.24,
-  "end": 22.42
+  "start": 23.42,
+  "end": 23.62
  },
  {
   "word": "Lompoc",
-  "start": 22.42,
-  "end": 22.82
+  "start": 23.62,
+  "end": 24.0
  },
  {
   "word": "Locals",
-  "start": 22.82,
-  "end": 23.22
- },
- {
-  "word": "partner.",
-  "start": 23.22,
-  "end": 23.58
- },
- {
-  "word": "Find",
-  "start": 24.28,
+  "start": 24.0,
   "end": 24.42
  },
  {
-  "word": "them",
+  "word": "partner.",
   "start": 24.42,
-  "end": 24.64
+  "end": 24.82
+ },
+ {
+  "word": "Find",
+  "start": 25.58,
+  "end": 25.7
+ },
+ {
+  "word": "them",
+  "start": 25.7,
+  "end": 25.94
  },
  {
   "word": "at",
-  "start": 24.64,
-  "end": 24.88
+  "start": 25.94,
+  "end": 26.22
  },
  {
   "word": "LompocLocals",
-  "start": 24.88,
-  "end": 25.9
+  "start": 26.22,
+  "end": 27.3
  },
  {
   "word": ".com.",
-  "start": 25.9,
-  "end": 26.42
+  "start": 27.3,
+  "end": 27.86
  }
 ]
