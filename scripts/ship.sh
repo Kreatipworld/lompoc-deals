@@ -12,7 +12,7 @@
 #   1. Vercel's production branch is `production`, not `main`. A push to main only
 #      builds a PREVIEW deployment. Nothing you push can reach residents by itself.
 #   2. This script waits for that preview, then runs scripts/check-production.mjs
-#      against it (every section page, search, tracking, photos, Stripe prices…).
+#      against it (every section page, search, tracking, photos, Stripe prices...).
 #   3. Only if every check is green does it fast-forward `production` to the same
 #      commit, which is what Vercel deploys to www.lompoclocals.com.
 #   4. Then it checks production itself; if that is red it rolls back on the spot.
@@ -68,14 +68,14 @@ if [[ "$MODE" != "promote" ]]; then
     echo "Nothing to commit — shipping the current commit."
   else
     if [[ "$RUN_TSC" == "1" ]]; then
-      bold "▶ Type check (npx tsc --noEmit)…"
+      bold "▶ Type check (npx tsc --noEmit)..."
       npx tsc --noEmit || abort "type errors — fix them before shipping (or --no-tsc to let Vercel find them)"
     fi
     bold "▶ Committing: $MSG"
     git add .
     git commit -m "$MSG"
   fi
-  bold "▶ Pushing main (pre-push hook runs lint + title + search checks)…"
+  bold "▶ Pushing main (pre-push hook runs lint + title + search checks)..."
   git push origin main
 else
   bold "▶ Promote mode: using origin/main as-is"
@@ -90,8 +90,8 @@ SHORT="${SHA:0:7}"
 
 # ── 2. wait for the preview build of this exact commit ───────────────────────
 if [[ "$VERCEL_PROD_BRANCH" == "$PROD_BRANCH" ]]; then
-  bold "▶ Waiting for the PREVIEW deployment of $SHORT…"
-  PREVIEW_URL="$(node scripts/vercel-gate.mjs wait "$SHA" --target=preview)" || abort "preview build of $SHORT failed — see $DASHBOARD"
+  bold "▶ Waiting for the PREVIEW deployment of ${SHORT}..."
+  PREVIEW_URL="$(node scripts/vercel-gate.mjs wait "$SHA" --target=preview)" || abort "preview build of ${SHORT} failed — see $DASHBOARD"
   green "  preview ready: $PREVIEW_URL"
 
   # Previews are SSO-protected; the check script sends the automation bypass header.
@@ -100,17 +100,17 @@ if [[ "$VERCEL_PROD_BRANCH" == "$PROD_BRANCH" ]]; then
   fi
 
   # ── 3. the gate: every check against the preview ───────────────────────────
-  bold "▶ Running production checks against the preview…"
+  bold "▶ Running production checks against the preview..."
   if ! node --env-file=.env.local scripts/check-production.mjs --base="$PREVIEW_URL"; then
     echo
     red "══════════════════════════════════════════════════════════════"
-    red "  ✗ PREVIEW FAILED CHECKS — $SHORT will NOT be promoted."
+    red "  ✗ PREVIEW FAILED CHECKS — ${SHORT} will NOT be promoted."
     red "    Preview: $PREVIEW_URL"
     red "    Production stays at: $(node scripts/vercel-gate.mjs current-production)"
     red "══════════════════════════════════════════════════════════════"
     exit 1
   fi
-  green "  ✓ preview $SHORT passed every check"
+  green "  ✓ preview ${SHORT} passed every check"
 
   if [[ "$MODE" == "preview" ]]; then
     echo
@@ -121,7 +121,7 @@ if [[ "$VERCEL_PROD_BRANCH" == "$PROD_BRANCH" ]]; then
   fi
 
   # ── 4. promote: fast-forward the production branch ─────────────────────────
-  bold "▶ Promoting $SHORT → $PROD_BRANCH (fast-forward only)…"
+  bold "▶ Promoting ${SHORT} → $PROD_BRANCH (fast-forward only)..."
   git push origin "$SHA:refs/heads/$PROD_BRANCH" || abort "could not fast-forward $PROD_BRANCH — someone pushed it by hand? Inspect with: git log origin/$PROD_BRANCH"
 else
   # Gate not in place yet: the push above already deployed to production.
@@ -129,18 +129,18 @@ else
 fi
 
 # ── 5. wait for production, then check it for real ───────────────────────────
-bold "▶ Waiting for the PRODUCTION deployment of $SHORT…"
-PROD_DEPLOY_URL="$(node scripts/vercel-gate.mjs wait "$SHA" --target=production)" || abort "production build of $SHORT failed — the previous deployment is still live"
+bold "▶ Waiting for the PRODUCTION deployment of ${SHORT}..."
+PROD_DEPLOY_URL="$(node scripts/vercel-gate.mjs wait "$SHA" --target=production)" || abort "production build of ${SHORT} failed — the previous deployment is still live"
 green "  production deployment ready: $PROD_DEPLOY_URL"
 
-bold "▶ Running production checks against $PROD_URL…"
+bold "▶ Running production checks against $PROD_URL..."
 if ! node --env-file=.env.local scripts/check-production.mjs --base="$PROD_URL"; then
   echo
   red "══════════════════════════════════════════════════════════════"
-  red "  ✗ PRODUCTION IS RED after promoting $SHORT — rolling back now."
+  red "  ✗ PRODUCTION IS RED after promoting ${SHORT} — rolling back now."
   red "══════════════════════════════════════════════════════════════"
   if vercel rollback --yes; then
-    red "  Rolled back to the previous production deployment. $PROD_BRANCH still points at $SHORT;"
+    red "  Rolled back to the previous production deployment. $PROD_BRANCH still points at ${SHORT};"
     red "  fix forward and ship again (the next promote fast-forwards past it)."
   else
     red "  AUTOMATIC ROLLBACK FAILED — run: vercel rollback   (dashboard: $DASHBOARD)"
@@ -150,7 +150,7 @@ fi
 
 echo
 green "══════════════════════════════════════════════════════════════"
-green "  ✓ SHIPPED $SHORT"
+green "  ✓ SHIPPED ${SHORT}"
 echo  "    preview:    $PREVIEW_URL"
 echo  "    production: $PROD_DEPLOY_URL"
 echo  "    live:       $PROD_URL/en"
