@@ -23,7 +23,7 @@ Claude Code sessions do **not** sync between machines or accounts — that's exp
 2. Recreate `.env.local` (gitignored — share it securely, never commit). Needs:
    `DATABASE_URL`, `AUTH_SECRET`, `AUTH_URL`, `RESEND_API_KEY`, `BLOB_READ_WRITE_TOKEN`,
    `REVALIDATE_SECRET`, `CRON_SECRET`, plus Stripe keys.
-3. `npm install`, then you can run the scripts below and deploy with `vercel deploy --prod --yes`.
+3. `npm install`, then you can run the scripts below. Ship with `./scripts/ship.sh "msg"` — the only path to production (see CLAUDE.md → Shipping). Never `vercel deploy --prod` or push `production` by hand.
 
 ---
 

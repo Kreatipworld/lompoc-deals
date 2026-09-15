@@ -11,14 +11,45 @@
  * So this runs against production, over HTTP, the way a resident does.
  *
  *   node --env-file=.env.local scripts/check-production.mjs
- *   SITE=https://lompoc-deals-xxx.vercel.app node --env-file=.env.local scripts/check-production.mjs
+ *   node --env-file=.env.local scripts/check-production.mjs --base=https://lompoc-deals-xxx.vercel.app
  *
- * Exits non-zero on any failure, so it can gate a deploy or run from cron.
+ * Exits non-zero on any failure. scripts/ship.sh runs it against the preview
+ * deployment before production is touched, then again against production.
  */
 import { neon } from "@neondatabase/serverless"
 
-const SITE = process.env.SITE || "https://www.lompoclocals.com"
+// --base=https://lompoc-deals-xxx.vercel.app  → check a preview before it is promoted (scripts/ship.sh)
+const baseArg = process.argv.find((a) => a.startsWith("--base="))
+const SITE = (baseArg ? baseArg.slice(7) : process.env.SITE || "https://www.lompoclocals.com").replace(/\/$/, "")
 const sql = neon(process.env.DATABASE_URL)
+
+// Preview deployments are SSO-protected. With a "Protection Bypass for Automation"
+// secret in the env (scripts/vercel-gate.mjs bypass), every request to the target
+// carries the bypass header so the preview answers like production would.
+const BYPASS = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+if (BYPASS) {
+  const origin = new URL(SITE).origin
+  const rawFetch = globalThis.fetch
+  globalThis.fetch = (input, init = {}) => {
+    const u = typeof input === "string" ? input : input.url
+    if (u.startsWith(origin)) {
+      init = { ...init, headers: { ...(init.headers || {}), "x-vercel-protection-bypass": BYPASS } }
+    }
+    return rawFetch(input, init)
+  }
+}
+
+// The error boundary answers 200. Its text is useless as a signal (it sits in
+// every English payload as a translation string); its DOM attribute is not.
+// Mirrors lib/uptime.ts — keep the two in step.
+const ERROR_BOUNDARY_MARKER = 'data-error-boundary="root"'
+const BENIGN_DIGESTS = /^(BAILOUT_TO_CLIENT_SIDE_RENDERING|NEXT_NOT_FOUND|NEXT_REDIRECT|DYNAMIC_SERVER_USAGE)/
+const errorDigests = (html) => {
+  const out = new Set()
+  for (const m of html.matchAll(/data-dgst="([^"]*)"/g)) if (!BENIGN_DIGESTS.test(m[1])) out.add(m[1])
+  for (const m of html.matchAll(/E\{\\"digest\\":\\"([^"\\]*)\\"/g)) if (!BENIGN_DIGESTS.test(m[1])) out.add(m[1])
+  return [...out]
+}
 
 let failures = 0
 const pass = (m) => console.log(`  \x1b[32m✓\x1b[0m ${m}`)
@@ -74,14 +105,23 @@ console.log("Pages")
 // The boundary's fallback text is inlined in EVERY page's payload as a dormant
 // template, so "does the error string appear" is useless. The reliable signal
 // is positive: each page's own h1/content marker must be present in the HTML.
+// Sep 14 2026: commit c5a36aa 500'd every /category/* page and nothing here
+// covered a category page. One representative page per section, always.
 const PAGES = [
   { p: "/en", marker: "All of Lompoc" },
   { p: "/es", marker: "Todo Lompoc" },
   { p: "/en/businesses", marker: "Lompoc Business Directory" },
+  { p: "/category/food-drink", marker: "Lompoc Food &amp; Drink" },
+  { p: "/es/category/food-drink", marker: "Comida y bebida en Lompoc" },
   { p: "/en/events", marker: "Events in Lompoc" },
+  { p: "/this-week", marker: "This Week in Lompoc" },
   { p: "/en/map", marker: "Businesses on the map" },
   { p: "/en/partners", marker: "Get found by the locals" },
   { p: "/en/deals", marker: "Deals &amp; Coupons" },
+  { p: "/homes", marker: "Homes in Lompoc" },
+  { p: "/listings/50", marker: 'data-lead="showing"' },
+  { p: "/football", marker: "Lompoc Football" },
+  { p: "/biz/empire-real-estate-group-maressa-the-realtor", marker: "Empire Real Estate Group" },
   { p: "/en/search?q=tacos", marker: "Taco" },
   { p: "/en/signup/business", marker: "claim your existing page" },
   { p: "/en/news", marker: "Lompoc News" },
@@ -89,11 +129,14 @@ const PAGES = [
 ]
 for (const { p, marker } of PAGES) {
   try {
-    const res = await fetch(`${SITE}${p}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "follow" })
-    if (!res.ok) { fail(`${p} → ${res.status}`); continue }
+    const res = await fetch(`${SITE}${p}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "follow", cache: "no-store" })
     const body = await res.text()
-    if (!body.includes(marker)) {
-      fail(`${p} → 200 but missing "${marker}" — likely the error boundary; the page is down for residents`)
+    if (!res.ok) { fail(`${p} → ${res.status}: "${body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 120)}"`); continue }
+    if (body.includes(ERROR_BOUNDARY_MARKER)) {
+      fail(`${p} → 200 but the error boundary is showing — "Something went wrong" for residents`)
+    } else if (!body.includes(marker)) {
+      const digests = errorDigests(body)
+      fail(`${p} → 200 but missing "${marker}"${digests.length ? ` (server error digest ${digests.join(", ")})` : ""} — the page is down for residents`)
     } else {
       pass(`${p} → ${res.status}, renders`)
     }

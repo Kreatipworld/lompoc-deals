@@ -15,7 +15,9 @@ export default function GlobalError({
   }, [error])
 
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center px-4 py-20 text-center">
+    // data-error-boundary is the health check's marker: the text below also
+    // lives in messages/en.json, so only this attribute proves the boundary rendered.
+    <div data-error-boundary="root" className="mx-auto flex max-w-md flex-col items-center px-4 py-20 text-center">
       <h1 className="text-3xl font-bold tracking-tight">Something went wrong</h1>
       <p className="mt-2 text-sm text-muted-foreground">
         We&apos;ve been notified. Please try again or head back home.

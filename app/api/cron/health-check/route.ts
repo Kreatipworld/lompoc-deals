@@ -4,7 +4,9 @@ import { Resend } from "resend"
 import { list, put } from "@vercel/blob"
 import {
   decideAction,
+  evaluatePage,
   formatDowntime,
+  HEALTH_PAGES,
   isQuotaError,
   type CheckFailure,
   type HealthState,
@@ -15,10 +17,15 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
 /**
- * Every 10 minutes: is the site actually alive for a neighbor right now?
- * Checks the database and the two most important pages. On failure, emails
- * the founder inbox (throttled to once an hour); on recovery, says so once.
- * State lives in Vercel Blob so this works precisely when Postgres doesn't.
+ * Every minute: is the site actually alive for a neighbor right now?
+ * Checks the database and a representative page from every section — each
+ * must answer 200 AND render its own content (the error boundary answers 200
+ * too). On failure, emails the founder inbox (repeats at most hourly); on
+ * recovery, says so once. State lives in Vercel Blob so this works precisely
+ * when Postgres doesn't.
+ *
+ * Why every minute: on Sep 14 2026 a bad build 500'd every /category/* page
+ * for ~6 minutes and the 10-minute check of "/" and "/deals" never saw it.
  */
 
 const STATE_PATH = "health/state.json"
@@ -40,20 +47,20 @@ async function checkDatabase(): Promise<CheckFailure | null> {
   }
 }
 
-async function checkPage(path: string): Promise<CheckFailure | null> {
-  const url = `${SITE}${path}`
+async function checkPage(page: { path: string; marker: string }): Promise<CheckFailure | null> {
+  const url = `${SITE}${page.path}`
   try {
     const res = await fetch(url, {
       redirect: "follow",
       cache: "no-store",
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(20_000),
       headers: { "user-agent": "LompocLocals-HealthCheck/1.0" },
     })
-    if (!res.ok) return { target: path || "/", error: `HTTP ${res.status}`, quota: false }
-    return null
+    const html = await res.text()
+    return evaluatePage(page, res.status, html)
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    return { target: path || "/", error: msg.slice(0, 300), quota: false }
+    return { target: page.path, error: msg.slice(0, 300), quota: false }
   }
 }
 
@@ -79,6 +86,10 @@ async function writeState(state: HealthState): Promise<void> {
   })
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+}
+
 function shell(inner: string): string {
   return `<div style="background:#f4f1f5;padding:24px 12px;font-family:system-ui,-apple-system,sans-serif;">
   <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e0e8;">
@@ -88,7 +99,7 @@ function shell(inner: string): string {
     </div>
     <div style="padding:24px;">${inner}</div>
     <div style="padding:12px 24px;border-top:1px solid #eee;color:#8a7f90;font-size:12px;">
-      Automated check runs every 10 minutes from lompoclocals.com.
+      Automated check runs every minute from lompoclocals.com across ${HEALTH_PAGES.length} pages + the database.
     </div>
   </div>
 </div>`
@@ -98,8 +109,13 @@ function alertHtml(failures: CheckFailure[], since: string, test = false): strin
   const rows = failures
     .map(
       (f) => `<tr>
-        <td style="padding:8px 12px;border:1px solid #eee;font-weight:600;white-space:nowrap;">${f.target}</td>
-        <td style="padding:8px 12px;border:1px solid #eee;font-family:monospace;font-size:12px;color:#b91c1c;">${f.error}</td>
+        <td style="padding:8px 12px;border:1px solid #eee;font-weight:600;white-space:nowrap;vertical-align:top;">
+          ${f.target.startsWith("/") ? `<a href="${SITE}${f.target}" style="color:#650C75;">${escapeHtml(f.target)}</a>` : escapeHtml(f.target)}
+        </td>
+        <td style="padding:8px 12px;border:1px solid #eee;font-family:monospace;font-size:12px;color:#b91c1c;">
+          ${escapeHtml(f.error)}
+          ${f.excerpt ? `<div style="margin-top:6px;color:#555;font-family:system-ui,sans-serif;font-size:12px;">What the page showed: &ldquo;${escapeHtml(f.excerpt)}&rdquo;</div>` : ""}
+        </td>
       </tr>`
     )
     .join("")
@@ -108,11 +124,13 @@ function alertHtml(failures: CheckFailure[], since: string, test = false): strin
          <strong>Likely fix:</strong> this is a Neon <em>compute quota</em> error (like Aug 23).
          Check the <a href="${NEON_BILLING}" style="color:#650C75;">Kreatip org billing page</a> — make sure the org says <strong>Kreatip</strong>, not the Vercel one.
        </div>`
-    : ""
+    : `<div style="background:#f4f1f5;border-radius:8px;padding:12px 16px;margin:16px 0 0;font-size:13px;color:#555;">
+         If this followed a deploy: <code>vercel rollback</code> restores the previous build instantly.
+       </div>`
   return shell(`
     ${test ? `<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:13px;"><strong>TEST</strong> — this is a sample alert; the site is fine.</div>` : ""}
     <h1 style="margin:0 0 4px;font-size:20px;color:#b91c1c;">&#128308; lompoclocals.com is DOWN</h1>
-    <p style="margin:0 0 16px;color:#555;font-size:14px;">Failing since ${since} (Pacific shown in your mail client's local time).</p>
+    <p style="margin:0 0 16px;color:#555;font-size:14px;">${failures.length} of ${HEALTH_PAGES.length + 1} checks failing since ${since} (Pacific shown in your mail client's local time).</p>
     <table style="border-collapse:collapse;width:100%;font-size:14px;">${rows}</table>
     ${quotaHint}
     <p style="margin:16px 0 0;font-size:14px;color:#555;">You'll get at most one of these per hour until it recovers, then a green all-clear.</p>`)
@@ -121,7 +139,7 @@ function alertHtml(failures: CheckFailure[], since: string, test = false): strin
 function recoveryHtml(downtimeMs: number): string {
   return shell(`
     <h1 style="margin:0 0 4px;font-size:20px;color:#0B992F;">&#128994; lompoclocals.com is back</h1>
-    <p style="margin:0;color:#555;font-size:14px;">Everything checks out again — database and pages responding. Total downtime: <strong>${formatDowntime(downtimeMs)}</strong>.</p>`)
+    <p style="margin:0;color:#555;font-size:14px;">Everything checks out again — database and all ${HEALTH_PAGES.length} pages rendering. Total downtime: <strong>${formatDowntime(downtimeMs)}</strong>.</p>`)
 }
 
 async function sendAlertEmail(subject: string, html: string): Promise<string | null> {
@@ -151,7 +169,10 @@ export async function GET(request: Request) {
     const id = await sendAlertEmail(
       "[TEST] Lompoc Locals monitor — sample DOWN alert",
       alertHtml(
-        [{ target: "database", error: "HTTP 402: exceeded the compute time quota (sample)", quota: true }],
+        [
+          { target: "database", error: "HTTP 402: exceeded the compute time quota (sample)", quota: true },
+          { target: "/category/food-drink", error: "HTTP 500 (sample)", quota: false, excerpt: "Something went wrong. We've been notified. Please try again or head back home." },
+        ],
         new Date().toISOString(),
         true
       )
@@ -159,7 +180,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ test: true, emailId: id })
   }
 
-  const results = await Promise.all([checkDatabase(), checkPage("/"), checkPage("/deals")])
+  const results = await Promise.all([checkDatabase(), ...HEALTH_PAGES.map((p) => checkPage(p))])
   const failures = results.filter((f): f is CheckFailure => f !== null)
 
   const prev = await readState()
@@ -186,7 +207,12 @@ export async function GET(request: Request) {
     }
   }
 
-  const summary = { ok: failures.length === 0, action: action.kind, failures, emailId }
-  await logCronRun("health-check", summary, summary.ok)
+  const summary = { ok: failures.length === 0, action: action.kind, checked: HEALTH_PAGES.length + 1, failures, emailId }
+  // Runs every minute; a healthy row per minute is 43k rows/month of nothing.
+  // Log every failure, alert and recovery, and one healthy heartbeat per 10 min.
+  const heartbeat = new Date().getMinutes() % 10 === 0
+  if (!summary.ok || action.kind !== "none" || heartbeat) {
+    await logCronRun("health-check", summary, summary.ok)
+  }
   return NextResponse.json(summary)
 }

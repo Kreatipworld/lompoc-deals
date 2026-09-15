@@ -42,23 +42,30 @@ This app uses `next-intl` for i18n. **All page files live under `app/[locale]/`*
 
 Visiting `/` auto-redirects to `/en` (or `/es` based on browser language) via middleware.
 
-## Deployment — how to ship changes to https://www.lompoclocals.com
+## Shipping — how changes reach https://www.lompoclocals.com
 
-**Flow:** local edit → commit → `git push` → Vercel auto-builds and deploys (takes ~1–2 min).
+Vercel's production branch is **`production`**, not `main`. A push to `main` only builds a
+**preview**; residents never see it. `scripts/ship.sh` is the ONLY path to production:
 
-Quick deploy helper:
 ```bash
-./scripts/ship.sh "feat: describe what you changed"
+./scripts/ship.sh "feat: describe what you changed"   # commit → push main → preview → checks → promote → checks
+./scripts/ship.sh --preview "feat: ..."               # stop after the preview passes (subagents)
+./scripts/ship.sh --promote                           # promote what is already on origin/main
 ```
 
-Or manually:
-```bash
-git add .
-git commit -m "your message"
-git push
-```
+What the gate does: waits for the preview build of your exact commit, runs
+`scripts/check-production.mjs --base=<preview-url>` against it (every section page must render,
+search, tracking, photos, Stripe prices, Spanish, 404s…), and only if all green fast-forwards
+`production` to that commit. Then it re-checks the live site and rolls back if that is red.
 
-Vercel picks up every push to `main` automatically. If the live site looks stale, check the Vercel dashboard for a failed build — a failed build keeps the previous deployment live.
+Rules:
+- **Never `git push origin production` by hand** and never `vercel deploy --prod`. Both skip the gate.
+- Subagents push to `main` (or run `ship.sh --preview`) and **report the preview URL**; the
+  coordinator promotes with `./scripts/ship.sh --promote`.
+- Plain `git push` to `main` still works for previews — the pre-push hook runs lint + title + search checks.
+- If a check is red, fix forward and ship again; production keeps the last good deployment.
+- `/api/cron/health-check` watches 12 pages + the database every minute and emails hello@ on the
+  first failure (and once on recovery). A red email after a ship means: `vercel rollback`.
 
 ## Env vars (see .env.example)
 DATABASE_URL, AUTH_SECRET, AUTH_URL, RESEND_API_KEY, BLOB_READ_WRITE_TOKEN, CRON_SECRET
