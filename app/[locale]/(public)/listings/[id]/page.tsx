@@ -35,7 +35,8 @@ export async function generateMetadata({
   const price = formatListingPriceShort(listing.priceCents, listing.type)
   const facts = formatListingFacts(listing.beds, listing.baths, listing.sqft)
   const typeLine = homeTypeLinePlain(listing.homeType, listing.type)
-  const title = [price, facts, typeLine, "Lompoc"].filter(Boolean).join(" · ")
+  let title = [price, facts, typeLine, "Lompoc"].filter(Boolean).join(" · ")
+  if (title.length > 65) title = [price, formatListingFacts(listing.beds, listing.baths, null), typeLine, "Lompoc"].filter(Boolean).join(" · ")
   const desc = listing.description?.trim()
   const description = desc
     ? desc.length > 160

@@ -140,7 +140,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Curated search-word pages (/find/pizza …) — the words people search, as indexable pages.
-  const findPages = FIND_TERMS.map((f) => ({
+  // /find/football redirects to /football — sitemaps list final URLs only.
+  const findPages = FIND_TERMS.filter((f) => f.slug !== "football").map((f) => ({
     url: `${siteUrl}/find/${f.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
