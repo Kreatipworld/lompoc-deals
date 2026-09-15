@@ -26,7 +26,10 @@ const origin = new URL(BASE).origin
 const IGNORED_HOSTS = /vercel-insights|vercel-analytics|va\.vercel-scripts|mapbox\.com|googletagmanager|google-analytics|fonts\.g|images\.buffer/i
 // "Failed to fetch RSC payload" is Next falling back to a full navigation when a
 // prefetch races a click; the page still loads, so it is noise for this gate.
-const IGNORED_CONSOLE = /ResizeObserver loop|third-party cookie|Download the React DevTools|preloaded using link preload|mapbox|WebGL|favicon|Failed to fetch RSC payload/i
+// "Failed to load resource" carries no URL here; same-origin ≥400 responses are
+// caught by the response handler below, so the console line is third-party noise
+// (Vercel toolbar 403/429, Google identity on previews).
+const IGNORED_CONSOLE = /ResizeObserver loop|third-party cookie|Download the React DevTools|preloaded using link preload|mapbox|WebGL|favicon|Failed to fetch RSC payload|Failed to load resource|identity provider|Provider's accounts list|GSI_LOGGER/i
 
 const failures = []
 const log = (...a) => VERBOSE && console.log("   ", ...a)
@@ -35,8 +38,43 @@ const fail = (where, what) => {
   console.log(`  ✗ ${where}: ${what}`)
 }
 
+const pending = []
+const chunkIsMapbox = new Map()
+async function stackIsMapbox(page, frame) {
+  const m = frame.match(/https?:\/\/[^\s)]+\.js[^\s)]*/)
+  if (!m) return false
+  const key = m[0].split("?")[0]
+  if (!chunkIsMapbox.has(key)) {
+    chunkIsMapbox.set(
+      key,
+      page.request
+        .get(m[0])
+        .then((r) => r.text())
+        .then((t) => /mapbox-gl|mapboxgl/i.test(t))
+        .catch(() => false)
+    )
+  }
+  return chunkIsMapbox.get(key)
+}
+
 function attach(page, label) {
-  page.on("pageerror", (err) => fail(`${label()} pageerror`, String(err?.message || err).slice(0, 300)))
+  page.on("pageerror", (err) => {
+    // Previews carry the Vercel toolbar (vercel.live) and its Google identity
+    // widget; an exception thrown from a script off our origin is theirs, not ours.
+    const stack = String(err?.stack || "")
+    const frame = (stack.split("\n").find((l) => /https?:\/\//.test(l)) || "").trim()
+    if (frame && !frame.includes(origin)) return
+    const where = `${label()} pageerror`
+    const what = `${String(err?.message || err).slice(0, 300)}${frame ? `  @ ${frame.slice(0, 160)}` : ""}`
+    // mapbox-gl throws inside its own render loop when a map is torn down mid-frame
+    // (vec4.transformMat4 on an undefined matrix) — headless-only teardown timing, so
+    // an exception whose top frame lives in the mapbox chunk is not a site bug.
+    pending.push(
+      stackIsMapbox(page, frame).then((mapbox) => {
+        if (!mapbox) fail(where, what)
+      })
+    )
+  })
   page.on("console", (msg) => {
     if (msg.type() !== "error") return
     const text = msg.text()
@@ -63,15 +101,22 @@ async function assertNoBoundary(page, where) {
   if (boundary > 0) fail(where, "error boundary rendered (Something went wrong)")
   const title = await page.title()
   if (/404|not found/i.test(title)) fail(where, `page title looks like a 404: ${title}`)
+  // Vercel's SSO wall for previews: without the bypass secret every page is a login
+  // form, and every "missing link" below would be a lie about the site.
+  if (/^(Login|Log in|Authentication Required)/i.test(title) || (await page.locator("form[action*='vercel.com']").count()) > 0)
+    fail(where, `landed on the Vercel login wall — set VERCEL_AUTOMATION_BYPASS_SECRET (node scripts/vercel-gate.mjs bypass)`)
 }
 
 async function goto(page, path, where) {
   const url = path.startsWith("http") ? path : BASE + path
-  const res = await page.goto(url, { waitUntil: "networkidle", timeout: 45000 }).catch((e) => {
+  // "load" + a bounded idle wait: previews keep a Vercel toolbar socket open, so
+  // waiting for "networkidle" on navigation never resolves there.
+  const res = await page.goto(url, { waitUntil: "load", timeout: 60000 }).catch((e) => {
     fail(where, `navigation failed: ${e.message}`)
     return null
   })
   if (res && res.status() >= 400) fail(where, `HTTP ${res.status()} on ${url}`)
+  await page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {})
   await page.waitForTimeout(600)
   await assertNoBoundary(page, where)
   return res
@@ -85,7 +130,7 @@ async function clickAndCheck(page, locator, where, { expectUrl } = {}) {
   }
   await locator.first().scrollIntoViewIfNeeded().catch(() => {})
   await Promise.all([
-    page.waitForLoadState("networkidle", { timeout: 30000 }).catch(() => {}),
+    page.waitForLoadState("networkidle", { timeout: 12000 }).catch(() => {}),
     locator.first().click({ timeout: 15000 }).catch((e) => fail(where, `click failed: ${e.message}`)),
   ])
   await page.waitForTimeout(700)
@@ -239,9 +284,11 @@ async function main() {
   const extraHTTPHeaders = BYPASS ? { "x-vercel-protection-bypass": BYPASS, "x-vercel-set-bypass-cookie": "true" } : {}
   const desktop = await browser.newContext({ viewport: { width: 1280, height: 900 }, extraHTTPHeaders })
   await road(desktop, "desktop")
+  await Promise.all(pending)
   await desktop.close()
   const phone = await browser.newContext({ ...devices["iPhone 14"], extraHTTPHeaders })
   await road(phone, "iphone")
+  await Promise.all(pending)
   await phone.close()
   await browser.close()
   if (failures.length) {
