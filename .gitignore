@@ -81,3 +81,7 @@ hf-mcp-session.txt
 **/.flycache/
 content/social/video/*/renders/
 content/social/video/*/node_modules/
+
+# Higgsfield local auth artifacts
+scripts/higgsfield-mcp/hf-auth-url.txt
+scripts/higgsfield-mcp/hf-token.json
