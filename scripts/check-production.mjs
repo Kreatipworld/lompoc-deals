@@ -381,10 +381,15 @@ try {
     if (p.startsWith("/category/")) {
       const slug = p.split("/").pop()
       const row = cats.find((c) => c.slug === slug)
-      const m = html.match(/(\d+) businesses? in Lompoc/)
-      if (!m) fail(`${p}: no business count in the header`)
-      else if (Number(m[1]) !== row.n) fail(`${p}: header says ${m[1]} businesses, directory tile/DB says ${row.n}`)
-      else pass(`${p}: ${row.n} businesses — matches the directory tile`)
+      const flat = html.replace(/<!-- -->/g, "")
+      if (slug === "real-estate") {
+        /\d+ listings? in Lompoc/.test(flat) ? pass(`${p}: shows the live listing count`) : fail(`${p}: no listing count in the header`)
+      } else {
+        const m = flat.match(/(\d+) businesses? in Lompoc/)
+        if (!m) fail(`${p}: no business count in the header`)
+        else if (Number(m[1]) !== row.n) fail(`${p}: header says ${m[1]} businesses, directory tile/DB says ${row.n}`)
+        else pass(`${p}: ${row.n} businesses — matches the directory tile`)
+      }
     }
   }
   let bad = 0, checked = 0
