@@ -9,3 +9,4 @@
 | Sat Sep 19 AM | verify both scores synced on /football → results video 7 PM | TODO |
 | Sat Sep 19 | True Vine shoe giveaway (10 AM–2 PM, 533 Avalon) reminder video Fri PM | TODO |
 Rules in force: video-first; new bed every video; designed cover frame (grid-safe); curated centered UI captures; Higgsfield only for transitions; all-owned media.
+| Tue Sep 15 10:48 AM | Sweet Baking Co. member spotlight (content/social/video/sweetbaking; Arthur; no macarons per owner): TikTok 6aa984c0 · IG reel 6aa984cb · FB reel 6aa984d7 · IG story 6aa984e3 | SENT (links in member-spotlight-sweet-baking.md) |
