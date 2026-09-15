@@ -147,7 +147,10 @@ if [[ "$VERCEL_PROD_BRANCH" == "$PROD_BRANCH" ]]; then
   fi
 
   # ── 4. promote: fast-forward the production branch ─────────────────────────
-  bold "▶ Promoting ${SHORT} → $PROD_BRANCH (fast-forward only)..."
+  # Remember what is live right now: `vercel rollback` needs an explicit target
+  # (bare `vercel rollback --yes` only prints the rollback status and changes nothing).
+  PREV_PROD_URL="$(node scripts/vercel-gate.mjs current-production | awk '{print $2}')"
+  bold "▶ Promoting ${SHORT} → $PROD_BRANCH (fast-forward only; live now: ${PREV_PROD_URL:-unknown})..."
   git push origin "$SHA:refs/heads/$PROD_BRANCH" || abort "could not fast-forward $PROD_BRANCH — someone pushed it by hand? Inspect with: git log origin/$PROD_BRANCH"
 else
   # Gate not in place yet: the push above already deployed to production.
@@ -168,11 +171,19 @@ if ! node --env-file=.env.local scripts/check-production.mjs --base="$PROD_URL" 
   red "══════════════════════════════════════════════════════════════"
   red "  ✗ PRODUCTION IS RED after promoting ${SHORT} — rolling back now."
   red "══════════════════════════════════════════════════════════════"
-  if vercel rollback --yes; then
-    red "  Rolled back to the previous production deployment. $PROD_BRANCH still points at ${SHORT};"
-    red "  fix forward and ship again (the next promote fast-forwards past it)."
+  if [[ -n "${PREV_PROD_URL:-}" ]] && vercel rollback "$PREV_PROD_URL" --yes; then
+    red "  Rolled back to $PREV_PROD_URL (now live: $(node scripts/vercel-gate.mjs current-production))."
+    red "  $PROD_BRANCH still points at ${SHORT}; fix forward and ship again (the next promote fast-forwards past it)."
+    bold "▶ Re-checking $PROD_URL after the rollback..."
+    if node --env-file=.env.local scripts/check-production.mjs --base="$PROD_URL"; then
+      green "  ✓ production is green again on the previous deployment"
+    else
+      red "══════════════════════════════════════════════════════════════"
+      red "  ✗✗ PRODUCTION IS STILL RED AFTER THE ROLLBACK — fix by hand NOW: $DASHBOARD"
+      red "══════════════════════════════════════════════════════════════"
+    fi
   else
-    red "  AUTOMATIC ROLLBACK FAILED — run: vercel rollback   (dashboard: $DASHBOARD)"
+    red "  AUTOMATIC ROLLBACK FAILED — run: vercel rollback <previous-deployment-url> --yes   (dashboard: $DASHBOARD)"
   fi
   exit 1
 fi

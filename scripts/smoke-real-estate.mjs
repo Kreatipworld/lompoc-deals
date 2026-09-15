@@ -33,9 +33,23 @@ const IGNORED_CONSOLE = /ResizeObserver loop|third-party cookie|Download the Rea
 
 const failures = []
 const log = (...a) => VERBOSE && console.log("   ", ...a)
+// Identical failures (the same console line firing per map tile, say) count once
+// in the log so the real list stays readable; the exit code is unchanged.
+const seenWarnings = new Set()
+const warn = (where, what) => {
+  const key = `${where}: ${what}`
+  if (seenWarnings.has(key)) return
+  seenWarnings.add(key)
+  console.log(`  · warning (not counted) ${key}`)
+}
+const seenFailures = new Map()
 const fail = (where, what) => {
   failures.push({ where, what })
-  console.log(`  ✗ ${where}: ${what}`)
+  const key = `${where}: ${what}`
+  const n = (seenFailures.get(key) ?? 0) + 1
+  seenFailures.set(key, n)
+  if (n === 1) console.log(`  ✗ ${key}`)
+  else if (n === 2) console.log(`    (repeats — further identical lines not shown)`)
 }
 
 const pending = []
@@ -79,7 +93,25 @@ function attach(page, label) {
     if (msg.type() !== "error") return
     const text = msg.text()
     if (IGNORED_CONSOLE.test(text)) return
-    fail(`${label()} console.error`, text.slice(0, 300))
+    const loc = msg.location?.() ?? {}
+    const at = loc.url ? `  @ ${loc.url.replace(origin, "").slice(0, 120)}:${loc.lineNumber ?? 0}` : ""
+    const where = `${label()} console.error`
+    const what = `${text.slice(0, 300)}${at}`
+    // A console.error counts only when it is ours: logged from a script on our
+    // origin, outside the mapbox-gl chunk (mapbox logs every failed tile/style
+    // fetch as console.error(err) — 176 of them after one promotion), and with a
+    // real message (a bare "Error"/"TypeError" is an Error object with no text).
+    const bare = /^(Error|TypeError|RangeError|\[object Object\])?$/.test(text.trim())
+    if (!loc.url || !loc.url.startsWith(origin) || bare) {
+      warn(where, what)
+      return
+    }
+    pending.push(
+      stackIsMapbox(page, loc.url).then((mapbox) => {
+        if (mapbox) warn(where, what)
+        else fail(where, what)
+      })
+    )
   })
   page.on("response", (res) => {
     const url = res.url()
