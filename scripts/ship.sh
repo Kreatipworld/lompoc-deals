@@ -125,7 +125,8 @@ if [[ "$VERCEL_PROD_BRANCH" == "$PROD_BRANCH" ]]; then
   bold "▶ Running production checks against the preview..."
   if [[ -f "$VERIFIED_MARK" && "$RECHECK" != "1" && "$MODE" == "promote" ]]; then
     green "  preview ${SHORT} already passed every check on this machine ($(cat "$VERIFIED_MARK")) — skipping (use --recheck to run again)"
-  elif ! node --env-file=.env.local scripts/check-production.mjs --base="$PREVIEW_URL"; then
+  elif ! node --env-file=.env.local scripts/check-production.mjs --base="$PREVIEW_URL" \
+       || ! node --env-file=.env.local scripts/smoke-real-estate.mjs --base="$PREVIEW_URL"; then
     echo
     red "══════════════════════════════════════════════════════════════"
     red "  ✗ PREVIEW FAILED CHECKS — ${SHORT} will NOT be promoted."
@@ -159,7 +160,10 @@ PROD_DEPLOY_URL="$(node scripts/vercel-gate.mjs wait "$SHA" --target=production)
 green "  production deployment ready: $PROD_DEPLOY_URL"
 
 bold "▶ Running production checks against $PROD_URL..."
-if ! node --env-file=.env.local scripts/check-production.mjs --base="$PROD_URL"; then
+# check-production = server-side (200s, content, prices); smoke-real-estate = a real
+# browser on the realtor road (hydration/client errors never show up in curl).
+if ! node --env-file=.env.local scripts/check-production.mjs --base="$PROD_URL" \
+   || ! node --env-file=.env.local scripts/smoke-real-estate.mjs --base="$PROD_URL"; then
   echo
   red "══════════════════════════════════════════════════════════════"
   red "  ✗ PRODUCTION IS RED after promoting ${SHORT} — rolling back now."

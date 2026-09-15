@@ -53,6 +53,16 @@ export default async function BusinessSignupPage({
           <p className="text-sm text-muted-foreground">
             {t("pageSubtitle")}
           </p>
+          {/* The realtor road (?plan=plus): say what they are signing up for before
+              step 1 asks for an account, so the ad click never lands on a blank form. */}
+          {initialPlan === "premium" && (
+            <p
+              data-plan="plus"
+              className="mx-auto mt-2 max-w-md rounded-2xl border border-gold/50 bg-gold/[0.12] px-4 py-2.5 text-xs font-medium leading-relaxed text-foreground"
+            >
+              {t("plusRoadNote")}
+            </p>
+          )}
           {/* Duplicate guard: most Lompoc businesses are already listed — an
               owner who signs up fresh here would create a second page. */}
           <p className="text-xs text-muted-foreground">

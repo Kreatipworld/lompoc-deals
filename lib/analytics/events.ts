@@ -29,6 +29,7 @@ export type EventName =
   | "lead_created"
   // Someone used a "stay connected" action on the Lompoc Football page (alerts, follow, share, photos, calendar).
   | "football_connect"
+  | "client_error"
 
 /** Every outbound action, so a listing's real-world referrals can be counted in one query. */
 export const OUTBOUND_EVENTS = [
@@ -69,6 +70,7 @@ export interface EventProps {
   reviews_click: { slug: string; category?: string }
   lead_created: { slug: string; kind: "showing" | "contact"; listingId?: number }
   football_connect: { action: "alerts" | "follow" | "share" | "photos" | "calendar"; detail?: string }
+  client_error: { route: string; message: string; digest?: string | null }
 }
 
 export type EventPropsFor<N extends EventName> = EventProps[N]

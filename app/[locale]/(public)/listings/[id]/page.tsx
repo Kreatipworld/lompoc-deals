@@ -114,7 +114,12 @@ export default async function ListingPage({
   const otherFeatured = featuredAgents.filter((a) => a.id !== listing.business.id)
   const featuredPick = otherFeatured.length ? otherFeatured[listing.id % otherFeatured.length] : null
 
-  // Agent card, same shape as the profile sidebar.
+  // Agent card, same shape as the profile sidebar. It renders twice (inline on
+  // the phone, sticky sidebar on desktop) so it MUST be a component, not a
+  // shared element: a Server Component that places the same element object in
+  // two spots has it deduped over the RSC wire, the second copy arrives with
+  // null props, and the browser hydration crashes ("Cannot read properties of
+  // null (reading 'itemProp')") straight into the "Something went wrong" boundary.
   const [agentName, brokerage] = listing.business.name.split(" · ").map((s) => s.trim())
   const avatar = listing.business.logoUrl ?? listing.business.coverUrl ?? null
   const tel = listing.business.phone ? `tel:${listing.business.phone.replace(/[^\d+]/g, "")}` : null
@@ -141,8 +146,8 @@ export default async function ListingPage({
     seller: { "@type": "RealEstateAgent", name: listing.business.name, telephone: listing.business.phone ?? undefined },
   }
 
-  const agentCard = (
-    <div className="overflow-hidden rounded-[20px] border border-border/80 bg-card">
+  const AgentCard = () => (
+    <div className="overflow-hidden rounded-[20px] border border-border/80 bg-card" data-agent-card>
       <div className="flex items-center gap-3 border-b px-5 py-4">
         {avatar ? (
           <SafeImage
@@ -205,7 +210,8 @@ export default async function ListingPage({
   )
 
   // Another Lompoc agent, featured (included with Plus), shown only on homes that are not theirs.
-  const featuredCard = featuredPick && (
+  const FeaturedCard = () =>
+    featuredPick && (
     <div className="mt-4 rounded-[20px] border border-border/80 bg-card px-5 py-4" data-featured="card">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{t("featuredAgentTitle")}</p>
       <div className="mt-3 flex items-center gap-3">
@@ -372,15 +378,15 @@ export default async function ListingPage({
 
             {/* Listed by, inline on the phone (the sidebar carries it on desktop) */}
             <div className="mt-12 lg:hidden">
-              {agentCard}
-              {featuredCard}
+              <AgentCard />
+              <FeaturedCard />
             </div>
           </article>
 
           {/* SIDEBAR — agent card (+ one featured agent when this home is not theirs) */}
           <aside className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
-            {agentCard}
-            {featuredCard}
+            <AgentCard />
+            <FeaturedCard />
           </aside>
         </div>
       </section>
