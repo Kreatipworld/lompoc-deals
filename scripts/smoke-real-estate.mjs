@@ -107,6 +107,21 @@ async function assertNoBoundary(page, where) {
     fail(where, `landed on the Vercel login wall — set VERCEL_AUTOMATION_BYPASS_SECRET (node scripts/vercel-gate.mjs bypass)`)
 }
 
+// Click and wait for something to appear. React may not have hydrated the button
+// when the first click lands (seen twice on production: "form did not open"), so
+// poll for the target and click once more before calling it a failure.
+async function clickUntil(page, button, target, where, { timeoutMs = 5000 } = {}) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    await button.click({ timeout: 10000 }).catch((e) => fail(where, `click failed: ${e.message.split("\n")[0]}`))
+    const deadline = Date.now() + timeoutMs / 2
+    while (Date.now() < deadline) {
+      if ((await target.count()) > 0) return true
+      await page.waitForTimeout(150)
+    }
+  }
+  return (await target.count()) > 0
+}
+
 async function goto(page, path, where) {
   const url = path.startsWith("http") ? path : BASE + path
   // "load" + a bounded idle wait: previews keep a Vercel toolbar socket open, so
@@ -167,11 +182,10 @@ async function road(context, deviceLabel) {
     // Request a tour → modal
     const tour = page.locator('[data-lead="showing"]').first()
     if (await tour.count()) {
-      await tour.click().catch((e) => fail(label(), `Request a tour click: ${e.message}`))
-      await page.waitForTimeout(500)
-      await assertNoBoundary(page, `${label()} tour modal`)
       const form = page.locator("[data-lead-form]")
-      if ((await form.count()) === 0) fail(`${label()} tour modal`, "form did not open")
+      const opened = await clickUntil(page, tour, form, `${label()} Request a tour`)
+      await assertNoBoundary(page, `${label()} tour modal`)
+      if (!opened) fail(`${label()} tour modal`, "form did not open")
       else if (SUBMIT_LEAD && path === cardHrefs[0].replace(origin, "")) {
         await form.locator('input[name="name"]').fill("Lompoc Locals QA")
         await form.locator('input[name="email"]').fill("hello@lompoclocals.com")
