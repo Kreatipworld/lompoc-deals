@@ -1345,6 +1345,70 @@ export async function countPublishedBlogPosts(category?: string, topicTag?: stri
   return Number(rows[0]?.count ?? 0)
 }
 
+/** Live homes created in the last `days` days (newest first) — the This Week briefing. */
+export async function getNewListingsSince(days = 7, limit = 3): Promise<PropertyListing[]> {
+  const rows = await db
+    .select(listingColumns)
+    .from(propertyListings)
+    .innerJoin(businesses, eq(propertyListings.businessId, businesses.id))
+    .where(
+      and(
+        liveListing(),
+        eq(businesses.status, "approved"),
+        gt(propertyListings.createdAt, sql`now() - (${days} || ' days')::interval`)
+      )
+    )
+    .orderBy(desc(propertyListings.createdAt))
+    .limit(limit)
+  return rows.map(toListing)
+}
+
+export type DealEndingSoon = {
+  id: number
+  title: string
+  discountText: string | null
+  imageUrl: string | null
+  expiresAt: Date
+  business: { name: string; slug: string; coverUrl: string | null }
+}
+
+/** Active, unpaused deals whose expiry falls inside the next `days` days — "ending this week". */
+export async function getDealsEndingWithin(days = 7, limit = 4, locale: Locale = "en"): Promise<DealEndingSoon[]> {
+  const rows = await db
+    .select({
+      id: deals.id,
+      title: deals.title,
+      titleEs: deals.titleEs,
+      discountText: deals.discountText,
+      discountTextEs: deals.discountTextEs,
+      imageUrl: deals.imageUrl,
+      expiresAt: deals.expiresAt,
+      bizName: businesses.name,
+      bizSlug: businesses.slug,
+      bizCover: businesses.coverUrl,
+    })
+    .from(deals)
+    .innerJoin(businesses, eq(deals.businessId, businesses.id))
+    .where(
+      and(
+        eq(businesses.status, "approved"),
+        eq(deals.paused, false),
+        gt(deals.expiresAt, sql`now()`),
+        sql`${deals.expiresAt} <= now() + (${days} || ' days')::interval`
+      )
+    )
+    .orderBy(deals.expiresAt)
+    .limit(limit)
+  return rows.map((r) => ({
+    id: r.id,
+    title: locale === "es" && r.titleEs ? r.titleEs : r.title,
+    discountText: locale === "es" && r.discountTextEs ? r.discountTextEs : r.discountText,
+    imageUrl: r.imageUrl,
+    expiresAt: r.expiresAt,
+    business: { name: r.bizName, slug: r.bizSlug, coverUrl: r.bizCover },
+  }))
+}
+
 export async function getRecentBlogPosts(limit = 3, locale?: string): Promise<BlogPostCard[]> {
   return getPublishedBlogPosts(limit, 0, undefined, undefined, locale)
 }

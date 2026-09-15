@@ -9,6 +9,11 @@ import { EditionGallery } from "@/components/edition-gallery"
 import { pageAlternates } from "@/lib/seo"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
 import { launchTitle } from "@/lib/launch-display"
+import { getWeekForecast } from "@/lib/weather"
+import { WeatherWeek } from "@/components/weather-week"
+import { getFootballSeason, upcomingGames, isFootballSeason } from "@/lib/football"
+import { getRecentBlogPosts, getNewListingsSince, getDealsEndingWithin, getDirectoryBusinesses } from "@/lib/queries"
+import { GamesBlock, NewsBlock, HomesBlock, EndingBlock, OpenLateBlock, openLateTonight } from "./briefing"
 
 // The edition tracks live content (events expire, deals rotate), so render fresh
 // rather than serving a stale week from the build.
@@ -46,7 +51,8 @@ function img(u: string | null | undefined): string | null {
 
 export default async function ThisWeekPage({ params }: { params: { locale: string } }) {
   const locale = params.locale === "es" ? "es" : "en"
-  const [content, t, tc, tcEn, ta, tLaunch] = await Promise.all([
+  const safe = <T,>(p: Promise<T>, fallback: T): Promise<T> => p.catch(() => fallback)
+  const [content, t, tc, tcEn, ta, tLaunch, tw, forecast, seasons, news, newHomes, ending, directory] = await Promise.all([
     // Events / things / outdoors / news come back in the page locale (DB twins, English fallback).
     getMasterDigestContent(locale),
     getTranslations({ locale: params.locale, namespace: "thisWeek" }),
@@ -54,7 +60,34 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
     getTranslations({ locale: "en", namespace: "categoryLabels" }),
     getTranslations({ locale: params.locale, namespace: "activityCategory" }),
     getTranslations({ locale: params.locale, namespace: "newsUi.events" }),
+    getTranslations({ locale: params.locale, namespace: "weather" }),
+    // Every briefing block degrades to "nothing" rather than breaking the edition.
+    getWeekForecast(),
+    isFootballSeason() ? safe(getFootballSeason(), []) : Promise.resolve([]),
+    safe(getRecentBlogPosts(3, locale), []),
+    safe(getNewListingsSince(7, 3), []),
+    safe(getDealsEndingWithin(7, 4, locale), []),
+    safe(getDirectoryBusinesses(locale), []),
   ])
+  const games = upcomingGames(seasons, 7)
+  const openLate = openLateTonight(directory, 6)
+  const weatherLabels = {
+    heading: tw("heading"),
+    source: tw("source"),
+    updating: tw("updating"),
+    today: tw("today"),
+    days: { mon: tw("mon"), tue: tw("tue"), wed: tw("wed"), thu: tw("thu"), fri: tw("fri"), sat: tw("sat"), sun: tw("sun") },
+    conditions: {
+      sun: tw("c_sun"),
+      "cloud-sun": tw("c_cloud-sun"),
+      cloud: tw("c_cloud"),
+      fog: tw("c_fog"),
+      rain: tw("c_rain"),
+      drizzle: tw("c_drizzle"),
+      storm: tw("c_storm"),
+      wind: tw("c_wind"),
+    },
+  }
   // Launch rows with no title_es twin still get their parsed Spanish shape on /es. The query
   // already substituted a twin when one exists, so a translated title no longer matches the
   // launch regex and passes through untouched.
@@ -97,6 +130,9 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
 
   return (
     <div className="min-h-screen bg-[#f7f3ec] text-[#1a1712]">
+      {/* ── Weather: always the first thing on the page, never hidden ── */}
+      <WeatherWeek days={forecast} labels={weatherLabels} />
+
       {/* ── Masthead: the same nameplate readers just saw in their inbox ── */}
       <header className="border-b-4 border-[#650C75] bg-[#650C75] text-center">
         <div className={`${PAGE_CONTAINER} py-8 sm:py-10`}>
@@ -114,7 +150,10 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
       </header>
 
       <main className={`${PAGE_CONTAINER} pb-8 sm:pb-10`}>
-        {isEmpty ? (
+        {/* ── This week's games (in season only) ── */}
+        <GamesBlock games={games} intl={intl} t={t} />
+
+        {isEmpty && games.length === 0 && news.length === 0 ? (
           <p className="font-edition mx-auto max-w-xl py-24 text-center text-xl leading-relaxed text-[#7a6f60]">
             {t("emptyEdition")}
           </p>
@@ -195,7 +234,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
               <section className="py-8 sm:py-10">
                 <SectionHead icon={<CalendarDays className="h-5 w-5" />} title={t("calendarTitle")} />
                 <ul className="mt-5 divide-y divide-[#d8cfc0] border-t border-[#d8cfc0]">
-                  {events.map((e) => (
+                  {events.slice(0, 8).map((e) => (
                     <li key={e.id}>
                       <Link
                         href={`/events/${e.id}`}
@@ -220,6 +259,18 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                 <FooterLink href="/events" label={t("allEvents")} />
               </section>
             )}
+
+            {/* ── New on the news desk ── */}
+            <NewsBlock posts={news} intl={intl} t={t} />
+
+            {/* ── New homes this week ── */}
+            <HomesBlock homes={newHomes} intl={intl} t={t} />
+
+            {/* ── Deals ending this week ── */}
+            <EndingBlock deals={ending} intl={intl} t={t} />
+
+            {/* ── Open late tonight ── */}
+            <OpenLateBlock items={openLate} t={t} />
 
             {/* ── Deals ── */}
             {deals.length > 0 && (
