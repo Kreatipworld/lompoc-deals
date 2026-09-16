@@ -127,10 +127,15 @@ if [[ -z "$DEPLOY_URL" ]]; then
   bold "▶ Building ${SHORT} on Vercel (production target, domain NOT attached)..."
   git worktree add --detach "$WT" "$SHA" >/dev/null
   mkdir -p "$WT/.vercel" && cp .vercel/project.json "$WT/.vercel/project.json"
-  DEPLOY_URL="$( (cd "$WT" && vercel deploy --prod --skip-domain --yes 2>"$WT/deploy.log") | tail -1 )"
-  if [[ "$DEPLOY_URL" != https://* ]]; then
-    tail -30 "$WT/deploy.log" || true
-    abort "build of ${SHORT} failed — see $DASHBOARD"
+  DEPLOY_LOG="$ROOT/.git/ship-deploy-${SHORT}.log"
+  (cd "$WT" && vercel deploy --prod --skip-domain --yes >"$DEPLOY_LOG.out" 2>"$DEPLOY_LOG") || true
+  # The CLI prints the deployment URL on stdout; the build log (with a "▲ Production <url>"
+  # line) goes to stderr. Take the URL from either — never trust "last line".
+  DEPLOY_URL="$(grep -oE 'https://lompoc-deals-[a-z0-9]+-kreatipworlds-projects\.vercel\.app' "$DEPLOY_LOG.out" | head -1 || true)"
+  [[ -n "$DEPLOY_URL" ]] || DEPLOY_URL="$(grep -E 'Production +https://' "$DEPLOY_LOG" | grep -oE 'https://[a-z0-9.-]+\.vercel\.app' | head -1 || true)"
+  if [[ -z "$DEPLOY_URL" ]] || grep -qiE 'Error!|Build Failed|Command "npm run build" exited' "$DEPLOY_LOG"; then
+    tail -30 "$DEPLOY_LOG" || true
+    abort "build of ${SHORT} failed — see $DASHBOARD (log: $DEPLOY_LOG)"
   fi
   green "  build ready: $DEPLOY_URL"
 

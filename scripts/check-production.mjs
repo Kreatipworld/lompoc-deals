@@ -483,7 +483,9 @@ try {
 } catch (e) { fail(`wineries map: ${e.message}`) }
 
 console.log("\n17. CDN cache — public pages are ISR, not a function render per visit (owner: 'my bill is going up')")
-try {
+if (!/lompoclocals\.com/.test(SITE)) {
+  console.log("  – skipped on a staged build (deployment URLs answer through protection bypass; checked again on www after promotion)")
+} else try {
   const pages = ["/news", "/football", "/this-week", "/", "/homes"]
   let bad = 0
   for (const p of pages) {
