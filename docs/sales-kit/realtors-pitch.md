@@ -53,3 +53,10 @@ Todo está aquí, cinco minutos para verlo:
 lompoclocals.com/realtors
 
 Cualquier pregunta, aquí estamos 🙂
+
+## Email invites — how to run a batch
+1. Add leads to `scripts/data/realtor-leads.csv` (one per line: `email,First name`).
+2. Proof of the first unsent lead to hello@: `node --env-file=.env.local scripts/send-realtor-invite.mjs --list scripts/data/realtor-leads.csv --proof`
+3. Send to every unsent lead (max 20 per run, 3 s apart, never twice): same command without `--proof`.
+4. Three days later, the follow-up: add `--followup` (only goes to leads invited ≥3 days ago, once).
+Log: `scripts/data/realtor-invites-log.json` (Resend ids). First send: Sep 16 2026 → Benquicksalerealestate@gmail.com (delivered).
