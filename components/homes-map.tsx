@@ -67,7 +67,7 @@ export function HomesMap({ homes, labels }: { homes: HomePin[]; labels: { forSal
           <Link href={`/listings/${selected.id}`} className="block">
             {selected.imageUrl && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={selected.imageUrl} alt="" className="mb-2 aspect-[4/3] w-full rounded-lg object-cover" />
+              <img src={selected.imageUrl} alt="" className="mb-2 h-28 w-full rounded-lg object-cover sm:h-auto sm:aspect-[4/3]" />
             )}
             <div className="text-[11px] font-semibold uppercase tracking-wide text-primary">
               {selected.type === "for-sale" ? labels.forSale : labels.forRent}
