@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useRef } from "react"
 import Map, { Marker, Popup, NavigationControl, Source, type MapRef } from "react-map-gl/mapbox"
+import { usePhone } from "@/lib/use-phone"
+import { PinSheet } from "@/components/map/pin-sheet"
 import { Star, MapPin, Navigation, BedDouble } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { useLocale } from "next-intl"
@@ -67,66 +69,11 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
   // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
   // Ease the pin toward the middle so the popup never clips at the container edge (phones).
   const mapRef = useRef<MapRef | null>(null)
-  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+  const isPhone = usePhone()
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: isPhone ? [0, -110] : [0, 120], duration: 450 })
 
-  return (
-    <Map
-      mapboxAccessToken={MAPBOX_TOKEN}
-      ref={mapRef}
-      initialViewState={{
-        ...LOMPOC_CENTER,
-        zoom: 13.2,
-        pitch: 30,
-        bearing: -5,
-      }}
-      style={{ width: "100%", height: "100%" }}
-      mapStyle="mapbox://styles/mapbox/outdoors-v12"
-      onClick={handleMapClick}
-      attributionControl={false}
-    >
-      <NavigationControl position="top-right" />
-
-      {/* 3D terrain DEM source */}
-      <Source
-        id="mapbox-dem"
-        type="raster-dem"
-        url="mapbox://mapbox.mapbox-terrain-dem-v1"
-        tileSize={512}
-        maxzoom={14}
-      />
-
-      {hotels.map((hotel) => (
-        <Marker
-          key={hotel.slug}
-          longitude={hotel.lng}
-          latitude={hotel.lat}
-          anchor="bottom"
-        >
-          <div
-            className="cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation()
-              setSelected(hotel)
-              focus(hotel.lng, hotel.lat)
-            }}
-            title={hotel.name}
-          >
-            <HotelPin priceRange={hotel.priceRange} selected={selected?.slug === hotel.slug} />
-          </div>
-        </Marker>
-      ))}
-
-      {selected && (
-        <Popup
-          longitude={selected.lng}
-          latitude={selected.lat}
-          anchor="bottom"
-          offset={54}
-          onClose={() => setSelected(null)}
-          closeButton={true}
-          closeOnClick={false}
-          maxWidth="260px"
-        >
+  const card0 = selected && (
+    <>
           <div className="lompoc-popup-content" style={{ minWidth: 220 }}>
             {/* Category + price badge */}
             <div className="lompoc-popup-eyebrow flex items-center gap-1.5">
@@ -196,8 +143,73 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
               </a>
             </div>
           </div>
+    </>
+  )
+
+  return (
+    <div className="relative h-full w-full">
+    <Map
+      mapboxAccessToken={MAPBOX_TOKEN}
+      ref={mapRef}
+      initialViewState={{
+        ...LOMPOC_CENTER,
+        zoom: 13.2,
+        pitch: 30,
+        bearing: -5,
+      }}
+      style={{ width: "100%", height: "100%" }}
+      mapStyle="mapbox://styles/mapbox/outdoors-v12"
+      onClick={handleMapClick}
+      attributionControl={false}
+    >
+      <NavigationControl position="top-right" />
+
+      {/* 3D terrain DEM source */}
+      <Source
+        id="mapbox-dem"
+        type="raster-dem"
+        url="mapbox://mapbox.mapbox-terrain-dem-v1"
+        tileSize={512}
+        maxzoom={14}
+      />
+
+      {hotels.map((hotel) => (
+        <Marker
+          key={hotel.slug}
+          longitude={hotel.lng}
+          latitude={hotel.lat}
+          anchor="bottom"
+        >
+          <div
+            className="cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation()
+              setSelected(hotel)
+              focus(hotel.lng, hotel.lat)
+            }}
+            title={hotel.name}
+          >
+            <HotelPin priceRange={hotel.priceRange} selected={selected?.slug === hotel.slug} />
+          </div>
+        </Marker>
+      ))}
+
+      {selected && !isPhone && (
+        <Popup
+          longitude={selected.lng}
+          latitude={selected.lat}
+          anchor="bottom"
+          offset={54}
+          onClose={() => setSelected(null)}
+          closeButton={true}
+          closeOnClick={false}
+          maxWidth="260px"
+        >
+          {card0}
         </Popup>
       )}
     </Map>
+      {isPhone && selected && <PinSheet onClose={() => setSelected(null)}>{card0}</PinSheet>}
+    </div>
   )
 }

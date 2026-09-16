@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useRef } from "react"
 import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
+import { usePhone } from "@/lib/use-phone"
+import { PinSheet } from "@/components/map/pin-sheet"
 import { Link } from "@/i18n/navigation"
 import type { MapBusiness, MapActivity } from "@/lib/queries"
 
@@ -81,9 +83,48 @@ export function LompocMap({
   // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
   // Ease the pin toward the middle so the popup never clips at the container edge (phones).
   const mapRef = useRef<MapRef | null>(null)
-  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+  const isPhone = usePhone()
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: isPhone ? [0, -110] : [0, 120], duration: 450 })
+
+  const card0 = selectedBusiness && (
+    <>
+          <div className="lompoc-popup-content" style={{ minWidth: 180 }}>
+            {selectedBusiness.categoryName && (
+              <div className="lompoc-popup-eyebrow">{selectedBusiness.categoryName}</div>
+            )}
+            <div className="lompoc-popup-name">{selectedBusiness.name}</div>
+            {selectedBusiness.address && (
+              <div className="lompoc-popup-meta">{selectedBusiness.address}</div>
+            )}
+            <div className="lompoc-popup-footer">
+              <span className="lompoc-popup-deals">
+                {selectedBusiness.activeDealCount}{" "}
+                {selectedBusiness.activeDealCount === 1 ? "active deal" : "active deals"}
+              </span>
+              <Link href={`/biz/${selectedBusiness.slug}`} className="lompoc-popup-link">
+                View profile →
+              </Link>
+            </div>
+          </div>
+    </>
+  )
+
+  const card1 = selectedActivity && (
+    <>
+          <div className="lompoc-popup-content" style={{ minWidth: 160 }}>
+            <div className="lompoc-popup-eyebrow">Things to Do</div>
+            <div className="lompoc-popup-name">{selectedActivity.title}</div>
+            <div className="lompoc-popup-footer">
+              <Link href={`/activities/${selectedActivity.slug}`} className="lompoc-popup-link">
+                Learn more →
+              </Link>
+            </div>
+          </div>
+    </>
+  )
 
   return (
+    <div className="relative h-full w-full">
     <Map
       mapboxAccessToken={MAPBOX_TOKEN}
       ref={mapRef}
@@ -141,7 +182,7 @@ export function LompocMap({
         </Marker>
       ))}
 
-      {selectedBusiness && (
+      {selectedBusiness && !isPhone && (
         <Popup
           longitude={selectedBusiness.lng}
           latitude={selectedBusiness.lat}
@@ -151,28 +192,11 @@ export function LompocMap({
           closeButton={true}
           closeOnClick={false}
         >
-          <div className="lompoc-popup-content" style={{ minWidth: 180 }}>
-            {selectedBusiness.categoryName && (
-              <div className="lompoc-popup-eyebrow">{selectedBusiness.categoryName}</div>
-            )}
-            <div className="lompoc-popup-name">{selectedBusiness.name}</div>
-            {selectedBusiness.address && (
-              <div className="lompoc-popup-meta">{selectedBusiness.address}</div>
-            )}
-            <div className="lompoc-popup-footer">
-              <span className="lompoc-popup-deals">
-                {selectedBusiness.activeDealCount}{" "}
-                {selectedBusiness.activeDealCount === 1 ? "active deal" : "active deals"}
-              </span>
-              <Link href={`/biz/${selectedBusiness.slug}`} className="lompoc-popup-link">
-                View profile →
-              </Link>
-            </div>
-          </div>
+          {card0}
         </Popup>
       )}
 
-      {selectedActivity && (
+      {selectedActivity && !isPhone && (
         <Popup
           longitude={selectedActivity.lng}
           latitude={selectedActivity.lat}
@@ -182,17 +206,12 @@ export function LompocMap({
           closeButton={true}
           closeOnClick={false}
         >
-          <div className="lompoc-popup-content" style={{ minWidth: 160 }}>
-            <div className="lompoc-popup-eyebrow">Things to Do</div>
-            <div className="lompoc-popup-name">{selectedActivity.title}</div>
-            <div className="lompoc-popup-footer">
-              <Link href={`/activities/${selectedActivity.slug}`} className="lompoc-popup-link">
-                Learn more →
-              </Link>
-            </div>
-          </div>
+          {card1}
         </Popup>
       )}
     </Map>
+      {isPhone && selectedBusiness && <PinSheet onClose={() => setSelectedBusiness(null)}>{card0}</PinSheet>}
+      {isPhone && selectedActivity && <PinSheet onClose={() => setSelectedActivity(null)}>{card1}</PinSheet>}
+    </div>
   )
 }

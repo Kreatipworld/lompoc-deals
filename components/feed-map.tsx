@@ -2,6 +2,8 @@
 
 import { useCallback, useState, useRef } from "react"
 import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
+import { usePhone } from "@/lib/use-phone"
+import { PinSheet } from "@/components/map/pin-sheet"
 import { Link } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
@@ -53,7 +55,8 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
   // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
   // Ease the pin toward the middle so the popup never clips at the container edge (phones).
   const mapRef = useRef<MapRef | null>(null)
-  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+  const isPhone = usePhone()
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: isPhone ? [0, -110] : [0, 120], duration: 450 })
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -63,9 +66,23 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
     )
   }
 
+  const card0 = selected && (
+    <>
+              <Link href={selected.href} className="block p-1">
+                <p className="text-sm font-semibold leading-snug">{selected.title}</p>
+                {selected.badgeText && (
+                  <p className="mt-0.5 text-xs font-bold text-primary">{selected.badgeText}</p>
+                )}
+                {selected.address && (
+                  <p className="mt-0.5 text-xs text-muted-foreground">{selected.address}</p>
+                )}
+              </Link>
+    </>
+  )
+
   return (
     <div className="space-y-2">
-      <div className="h-[520px] overflow-hidden rounded-2xl border">
+      <div className="relative h-[520px] overflow-hidden rounded-2xl border">
         <Map
           mapboxAccessToken={MAPBOX_TOKEN}
           ref={mapRef}
@@ -95,7 +112,7 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
               </div>
             </Marker>
           ))}
-          {selected && (
+          {selected && !isPhone && (
             <Popup
               longitude={selected.lng!}
               latitude={selected.lat!}
@@ -106,18 +123,11 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
               closeOnClick={false}
               maxWidth="280px"
             >
-              <Link href={selected.href} className="block p-1">
-                <p className="text-sm font-semibold leading-snug">{selected.title}</p>
-                {selected.badgeText && (
-                  <p className="mt-0.5 text-xs font-bold text-primary">{selected.badgeText}</p>
-                )}
-                {selected.address && (
-                  <p className="mt-0.5 text-xs text-muted-foreground">{selected.address}</p>
-                )}
-              </Link>
+              {card0}
             </Popup>
           )}
         </Map>
+        {isPhone && selected && <PinSheet onClose={() => setSelectedId(null)}>{card0}</PinSheet>}
       </div>
       {hiddenCount > 0 && (
         <p className="text-center text-xs text-muted-foreground">

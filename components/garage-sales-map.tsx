@@ -3,6 +3,8 @@
 import { useState, useCallback, useRef } from "react"
 import { useLocale } from "next-intl"
 import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
+import { usePhone } from "@/lib/use-phone"
+import { PinSheet } from "@/components/map/pin-sheet"
 import { Link } from "@/i18n/navigation"
 import { MapPin, Clock } from "lucide-react"
 import { pick } from "@/lib/localize"
@@ -78,11 +80,51 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
   // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
   // Ease the pin toward the middle so the popup never clips at the container edge (phones).
   const mapRef = useRef<MapRef | null>(null)
-  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+  const isPhone = usePhone()
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: isPhone ? [0, -110] : [0, 120], duration: 450 })
 
   const mappable = sales.filter((s) => s.lat != null && s.lng != null)
 
+  const card0 = selected && selected.lat != null && selected.lng != null && (
+    <>
+          <div style={{ minWidth: 190, maxWidth: 240 }} className="text-sm">
+            <div className="flex items-start gap-1 mb-1">
+              <MapPin className="h-3.5 w-3.5 shrink-0 mt-0.5 text-primary" />
+              <span className="font-semibold leading-tight line-clamp-2">{selected.address}</span>
+            </div>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
+              <Clock className="h-3 w-3 shrink-0" />
+              <span>{formatDateRange(selected.startDate, selected.endDate, intl)}</span>
+              {selected.startTime && (
+                <span>· {selected.startTime}{selected.endTime ? `–${selected.endTime}` : ""}</span>
+              )}
+            </div>
+            {selected.description && (
+              <p className="mb-1 line-clamp-2 text-xs text-muted-foreground">
+                {pick(locale, selected.description, selected.descriptionEs)}
+              </p>
+            )}
+            {selected.itemCategories && selected.itemCategories.length > 0 && (
+              <div className="flex flex-wrap gap-1 mb-2">
+                {selected.itemCategories.slice(0, 3).map((cat) => (
+                  <span key={cat} className="rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[11px] capitalize text-primary">
+                    {cat}
+                  </span>
+                ))}
+              </div>
+            )}
+            <Link
+              href={`/garage-sales/${selected.id}`}
+              className="text-xs font-medium text-primary hover:underline"
+            >
+              {locale === "es" ? "Ver detalles →" : "View details →"}
+            </Link>
+          </div>
+    </>
+  )
+
   return (
+    <div className="relative h-full w-full">
     <Map
       mapboxAccessToken={MAPBOX_TOKEN}
       ref={mapRef}
@@ -117,7 +159,7 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
         </Marker>
       ))}
 
-      {selected && selected.lat != null && selected.lng != null && (
+      {selected && selected.lat != null && selected.lng != null && !isPhone && (
         <Popup
           longitude={selected.lng}
           latitude={selected.lat}
@@ -127,42 +169,12 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
           closeButton={true}
           closeOnClick={false}
         >
-          <div style={{ minWidth: 190, maxWidth: 240 }} className="text-sm">
-            <div className="flex items-start gap-1 mb-1">
-              <MapPin className="h-3.5 w-3.5 shrink-0 mt-0.5 text-primary" />
-              <span className="font-semibold leading-tight line-clamp-2">{selected.address}</span>
-            </div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
-              <Clock className="h-3 w-3 shrink-0" />
-              <span>{formatDateRange(selected.startDate, selected.endDate, intl)}</span>
-              {selected.startTime && (
-                <span>· {selected.startTime}{selected.endTime ? `–${selected.endTime}` : ""}</span>
-              )}
-            </div>
-            {selected.description && (
-              <p className="mb-1 line-clamp-2 text-xs text-muted-foreground">
-                {pick(locale, selected.description, selected.descriptionEs)}
-              </p>
-            )}
-            {selected.itemCategories && selected.itemCategories.length > 0 && (
-              <div className="flex flex-wrap gap-1 mb-2">
-                {selected.itemCategories.slice(0, 3).map((cat) => (
-                  <span key={cat} className="rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[11px] capitalize text-primary">
-                    {cat}
-                  </span>
-                ))}
-              </div>
-            )}
-            <Link
-              href={`/garage-sales/${selected.id}`}
-              className="text-xs font-medium text-primary hover:underline"
-            >
-              {locale === "es" ? "Ver detalles →" : "View details →"}
-            </Link>
-          </div>
+          {card0}
         </Popup>
       )}
     </Map>
+      {isPhone && selected && selected.lat != null && selected.lng != null && <PinSheet onClose={() => setSelected(null)}>{card0}</PinSheet>}
+    </div>
   )
 }
 

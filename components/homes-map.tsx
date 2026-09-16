@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useMemo, useRef } from "react"
 import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
+import { usePhone } from "@/lib/use-phone"
+import { PinSheet } from "@/components/map/pin-sheet"
 import { Link } from "@/i18n/navigation"
 import { useLocale } from "next-intl"
 
@@ -57,9 +59,27 @@ export function HomesMap({ homes, labels }: { homes: HomePin[]; labels: { forSal
   // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
   // Ease the pin toward the middle so the popup never clips at the container edge (phones).
   const mapRef = useRef<MapRef | null>(null)
-  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+  const isPhone = usePhone()
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: isPhone ? [0, -110] : [0, 120], duration: 450 })
+
+  const card0 = selected && (
+    <>
+          <Link href={`/listings/${selected.id}`} className="block">
+            {selected.imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={selected.imageUrl} alt="" className="mb-2 aspect-[4/3] w-full rounded-lg object-cover" />
+            )}
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-primary">
+              {selected.type === "for-sale" ? labels.forSale : labels.forRent}
+            </div>
+            <div className="font-display text-base font-bold leading-tight">{price(selected.priceCents, selected.type, intl)}</div>
+            <div className="text-xs text-muted-foreground">{selected.title}</div>
+          </Link>
+    </>
+  )
 
   return (
+    <div className="relative h-full w-full">
     <Map
       mapboxAccessToken={MAPBOX_TOKEN}
       ref={mapRef}
@@ -85,7 +105,7 @@ export function HomesMap({ homes, labels }: { homes: HomePin[]; labels: { forSal
           </div>
         </Marker>
       ))}
-      {selected && (
+      {selected && !isPhone && (
         <Popup
           longitude={selected.lng}
           latitude={selected.lat}
@@ -96,19 +116,11 @@ export function HomesMap({ homes, labels }: { homes: HomePin[]; labels: { forSal
           closeOnClick={false}
           maxWidth="260px"
         >
-          <Link href={`/listings/${selected.id}`} className="block">
-            {selected.imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={selected.imageUrl} alt="" className="mb-2 aspect-[4/3] w-full rounded-lg object-cover" />
-            )}
-            <div className="text-[11px] font-semibold uppercase tracking-wide text-primary">
-              {selected.type === "for-sale" ? labels.forSale : labels.forRent}
-            </div>
-            <div className="font-display text-base font-bold leading-tight">{price(selected.priceCents, selected.type, intl)}</div>
-            <div className="text-xs text-muted-foreground">{selected.title}</div>
-          </Link>
+          {card0}
         </Popup>
       )}
     </Map>
+      {isPhone && selected && <PinSheet onClose={() => setSelected(null)}>{card0}</PinSheet>}
+    </div>
   )
 }
