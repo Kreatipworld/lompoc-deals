@@ -34,27 +34,28 @@ hello@lompoclocals.com
 ## Spanish DM
 Hola {nombre} — te escribimos de Lompoc Locals. Abrimos la sección de casas propia de Lompoc: cada propiedad que subes sale en el mapa junto a más de 450 negocios de Lompoc, con un botón de "Pedir visita" que te manda el interesado directo a tu correo. Los compradores ya están en la página. La membresía Plus cuesta $99.99 al mes, cancelas cuando quieras: lompoclocals.com/realtors
 
-## Instagram DM (Sep 16 2026 — send the link as a second message so it is tappable)
+## Instagram DM — THE outreach text for realtor leads (owner-approved Sep 16 2026; send the link as a second message so it is tappable)
 Hi {first name} 👋 this is Lompoc Locals.
 
-We just opened Lompoc's own homes market. Your listings go on the same map neighbors use to find dinner, a plumber or a deal, with a "Request a tour" button that sends the lead straight to your inbox.
+There's a new way to promote your listings in town, and we thought of you first. Lompoc now has its own homes map: the same map neighbors open to find dinner, a plumber or a weekend plan, with your homes on it as green pins.
 
-1,700 engaged visits last month, 1,000+ followers on TikTok, and your homes go into the videos and the Monday digest.
+Every listing gets a "Request a tour" button that sends the lead straight to your inbox, and your homes go into our videos and the Monday digest. Last month 1,700 neighbors used the site, and we have 1,000+ followers on TikTok.
 
-Plus is $99.99/mo, cancel anytime, and you can be live tonight:
+Plus is $99.99/mo, cancel anytime. Five minutes and you're live tonight.
+
 lompoclocals.com/realtors
 
-Happy to answer anything here 🙂
-
-### Short first touch
-Hi {first name}, this is Lompoc Locals. Lompoc's homes market just opened on our map, the one 1,700 neighbors used last month. Your listings, your leads in your inbox, $99.99/mo, cancel anytime. Five minutes to be live: lompoclocals.com/realtors
+Curious? Ask us anything right here 🙂
 
 ### Instagram DM (ES)
 Hola {nombre} 👋 te escribimos de Lompoc Locals.
 
-Acabamos de abrir el mercado de casas propio de Lompoc. Tus propiedades van en el mismo mapa que los vecinos usan para buscar dónde cenar, un plomero o una oferta, con un botón de "Pedir visita" que manda al interesado directo a tu correo.
+Hay una forma nueva de promover tus propiedades en el pueblo, y pensamos en ti primero. Lompoc ya tiene su propio mapa de casas: el mismo mapa que los vecinos abren para buscar dónde cenar, un plomero o un plan de fin de semana, con tus casas como pines verdes.
 
-1,700 visitas activas el mes pasado, más de 1,000 seguidores en TikTok, y tus casas salen en los videos y en el resumen del lunes.
+Cada propiedad tiene un botón de "Pedir visita" que manda al interesado directo a tu correo, y tus casas salen en nuestros videos y en el resumen del lunes. El mes pasado 1,700 vecinos usaron el sitio, y tenemos más de 1,000 seguidores en TikTok.
 
-Plus cuesta $99.99 al mes, cancelas cuando quieras, y puedes estar en vivo hoy:
+Plus cuesta $99.99 al mes, cancelas cuando quieras. Cinco minutos y estás en vivo hoy.
+
 lompoclocals.com/realtors
+
+¿Te interesa? Pregúntanos lo que quieras por aquí 🙂
