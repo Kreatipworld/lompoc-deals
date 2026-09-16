@@ -466,6 +466,9 @@ try {
   }
   const home = await fetch(`${SITE}/`, { cache: "no-store" }).then((r) => r.text())
   home.includes('data-report-bug="footer"') ? pass("footer carries Report a bug") : fail("footer: Report a bug link missing")
+  const rl = await fetch(`${SITE}/realtors`, { redirect: "manual", cache: "no-store" })
+  const loc = rl.headers.get("location") || ""
+  rl.status >= 300 && rl.status < 400 && /for-businesses\/real-estate\?utm_source=outreach/.test(loc) ? pass("/realtors → realtor landing page (tracked)") : fail(`/realtors → ${rl.status} ${loc}`)
   // Too-short description → 400 proves the API is deployed without writing a row.
   const api = await fetch(`${SITE}/api/bug-report`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ description: "x", source: "footer" }), cache: "no-store" })
   const body = await api.json().catch(() => ({}))
