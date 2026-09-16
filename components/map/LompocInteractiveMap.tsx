@@ -40,6 +40,18 @@ export function LompocInteractiveMap() {
   const [markersVisible, setMarkersVisible] = useState(false)
   const [popupPos, setPopupPos] = useState<{ lng: number; lat: number } | null>(null)
   const [pois, setPois] = useState<POI[]>([])
+  // Phones get the info card as a sheet at the bottom of the map instead of a
+  // floating popup: a popup above a pin collides with the category chips and the
+  // search box and gets clipped at the top edge. Owner (Sep 15 2026): "in all the
+  // maps, when we click the pin we can see the information."
+  const [isPhone, setIsPhone] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)")
+    const apply = () => setIsPhone(mq.matches)
+    apply()
+    mq.addEventListener("change", apply)
+    return () => mq.removeEventListener("change", apply)
+  }, [])
 
   // Fetch real business POIs from the database
   useEffect(() => {
@@ -87,12 +99,15 @@ export function LompocInteractiveMap() {
       pitch: 55,
       duration: 1200,
       essential: true,
+      // Phone: the pin rides above the bottom sheet. Desktop: the pin sits low
+      // enough that the card above it stays clear of the chip bar.
+      offset: isPhone ? [0, -130] : [0, 150],
     })
     // Scroll sidebar
     setTimeout(() => {
       document.getElementById(`poi-${poi.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" })
     }, 400)
-  }, [])
+  }, [isPhone])
 
   const handleSidebarSelect = useCallback((poi: POI) => {
     handleMarkerClick(poi)
@@ -310,8 +325,8 @@ export function LompocInteractiveMap() {
             </Marker>
           )}
 
-          {/* Popup */}
-          {selectedPoi && popupPos && (
+          {/* Popup (desktop) */}
+          {selectedPoi && popupPos && !isPhone && (
             <Popup
               longitude={popupPos.lng}
               latitude={popupPos.lat}
@@ -337,6 +352,23 @@ export function LompocInteractiveMap() {
             </Popup>
           )}
         </MapGL>
+
+        {/* Info sheet (phones): the same card, anchored to the bottom of the map so it is always fully visible */}
+        {selectedPoi && isPhone && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-3 z-40 flex justify-center px-2" data-map-sheet>
+            <div className="pointer-events-auto">
+              <MapPopup
+                poi={selectedPoi}
+                category={CATEGORY_MAP[selectedPoi.category]}
+                distanceMiles={distanceMap.get(selectedPoi.id)}
+                onClose={() => {
+                  setSelectedPoi(null)
+                  setPopupPos(null)
+                }}
+              />
+            </div>
+          </div>
+        )}
 
         {/* ── Floating controls ── */}
 
