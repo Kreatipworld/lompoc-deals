@@ -504,6 +504,22 @@ if (!/lompoclocals\.com/.test(SITE)) {
   if (bad === 0) pass(`${pages.length} key pages served from the CDN cache`)
 } catch (e) { fail(`cdn cache: ${e.message}`) }
 
+console.log("\n18. Link covers — every key page has its own share image (owner: 'all the links have the same cover')")
+try {
+  const routes = ["/realtors", "/football", "/this-week", "/news", "/map", "/businesses", "/deals", "/events", "/things-to-do", "/homes", "/category/wineries", "/category/food-drink"]
+  const sizes = new Map()
+  for (const r of routes) {
+    const res = await fetch(`${SITE}${r}/opengraph-image`, { cache: "no-store" })
+    const ct = res.headers.get("content-type") || ""
+    const buf = res.ok ? Buffer.from(await res.arrayBuffer()) : Buffer.alloc(0)
+    if (!res.ok || !/image\/png/.test(ct) || buf.length < 20_000) { fail(`${r}/opengraph-image → ${res.status} ${ct} ${buf.length}b`); continue }
+    sizes.set(r, buf.length)
+  }
+  const distinct = new Set(sizes.values()).size
+  if (sizes.size === routes.length && distinct === routes.length) pass(`${routes.length} pages, ${distinct} distinct covers`)
+  else if (sizes.size === routes.length) fail(`covers rendered but only ${distinct} of ${routes.length} are distinct — some pages share an image`)
+} catch (e) { fail(`link covers: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

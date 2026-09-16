@@ -34,7 +34,6 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     openGraph: {
       title: t("ogTitle"),
       description: t("ogDescription"),
-      images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: t("ogImageAlt") }],
     },
   }
 }

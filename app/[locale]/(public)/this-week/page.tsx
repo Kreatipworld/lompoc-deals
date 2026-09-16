@@ -39,7 +39,6 @@ export async function generateMetadata({
     openGraph: {
       title: t("metaTitle"),
       description: t("metaDescription"),
-      images: [{ url: "/lompoc-hero.jpg", width: 1200, height: 630, alt: "Lompoc, California" }],
     },
     alternates: pageAlternates("/this-week", params.locale),
   }

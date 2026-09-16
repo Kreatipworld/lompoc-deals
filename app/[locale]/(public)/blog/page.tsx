@@ -27,7 +27,6 @@ export async function generateMetadata({
       description: t("ogDescription"),
       url: `${siteUrl}${es ? "/es" : ""}/blog`,
       locale: es ? "es_US" : "en_US",
-      images: [{ url: `${siteUrl}/lompoc-hero.jpg`, alt: "Lompoc, California" }],
     },
     alternates: pageAlternates("/blog", params.locale),
   }
