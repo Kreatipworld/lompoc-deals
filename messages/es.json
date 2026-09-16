@@ -2205,7 +2205,9 @@
     "quickHeading": "Atajos",
     "mapHeading": "Mapa de {name}",
     "mapSub": "{count} lugares con dirección · toca un pin",
-    "mapDirections": "Cómo llegar"
+    "mapDirections": "Cómo llegar",
+    "mapAll": "Todas las bodegas",
+    "mapDowntown": "Salas de cata del centro"
   },
   "blog": {
     "eyebrow": "Blog de Lompoc Locals",

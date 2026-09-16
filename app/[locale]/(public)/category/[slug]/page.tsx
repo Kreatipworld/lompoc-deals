@@ -172,7 +172,7 @@ export default async function CategoryPage({
             <p className="text-sm text-muted-foreground">{t("mapSub", { count: mapPins.length })}</p>
           </div>
           <div className="relative h-[52vh] min-h-[380px] overflow-hidden rounded-[22px] border border-border/70 shadow-sm">
-            <CategoryMap pins={mapPins} labels={{ viewProfile: t("viewProfile"), directions: t("mapDirections"), member: t("memberBadge") }} />
+            <CategoryMap pins={mapPins} labels={{ viewProfile: t("viewProfile"), directions: t("mapDirections"), member: t("memberBadge"), all: t("mapAll"), downtown: t("mapDowntown") }} />
           </div>
         </section>
       )}

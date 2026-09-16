@@ -2205,7 +2205,9 @@
     "quickHeading": "Quick picks",
     "mapHeading": "{name} map",
     "mapSub": "{count} spots with a street address · tap a pin",
-    "mapDirections": "Directions"
+    "mapDirections": "Directions",
+    "mapAll": "All wineries",
+    "mapDowntown": "Downtown tasting rooms"
   },
   "blog": {
     "eyebrow": "Lompoc Locals Blog",

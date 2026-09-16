@@ -1,7 +1,7 @@
 "use client"
 
-import { useMemo, useState, useCallback } from "react"
-import MapGL, { Marker, Popup, NavigationControl, AttributionControl } from "react-map-gl/mapbox"
+import { useMemo, useState, useCallback, useRef } from "react"
+import MapGL, { Marker, Popup, NavigationControl, AttributionControl, type MapRef } from "react-map-gl/mapbox"
 import { MapPin, Wine } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { useLocale } from "next-intl"
@@ -65,10 +65,26 @@ function fanOut(pins: CategoryPin[]): CategoryPin[] {
   return out
 }
 
-export function CategoryMap({ pins, labels }: { pins: CategoryPin[]; labels: { viewProfile: string; directions: string; member: string } }) {
+export function CategoryMap({ pins, labels }: { pins: CategoryPin[]; labels: { viewProfile: string; directions: string; member: string; all: string; downtown: string } }) {
   const locale = useLocale()
+  const mapRef = useRef<MapRef | null>(null)
   const [selected, setSelected] = useState<CategoryPin | null>(null)
+  const [view, setView] = useState<"all" | "downtown">("all")
   const spread = useMemo(() => fanOut(pins), [pins])
+  // The densest 1 km neighbourhood (downtown tasting rooms / the Wine Ghetto).
+  const downtown = useMemo(() => {
+    let best: { lat: number; lng: number; n: number } | null = null
+    for (const a of pins) {
+      const n = pins.filter((b) => Math.hypot((a.lat - b.lat) * 111, (a.lng - b.lng) * 91) < 1).length
+      if (!best || n > best.n) best = { lat: a.lat, lng: a.lng, n }
+    }
+    return best && best.n >= 3 ? best : null
+  }, [pins])
+  const select = useCallback((p: CategoryPin) => {
+    setSelected(p)
+    // Bring the pin down into the middle so the popup never clips at the container edge.
+    mapRef.current?.easeTo({ center: [p.lng, p.lat], offset: [0, 120], duration: 450 })
+  }, [])
   const bounds = useMemo(() => {
     if (spread.length === 0) return null
     let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180
@@ -76,10 +92,28 @@ export function CategoryMap({ pins, labels }: { pins: CategoryPin[]; labels: { v
     return [[minLng, minLat], [maxLng, maxLat]] as [[number, number], [number, number]]
   }, [spread])
   const onMapClick = useCallback(() => setSelected(null), [])
+  const showAll = useCallback(() => {
+    setView("all"); setSelected(null)
+    if (bounds) mapRef.current?.fitBounds(bounds, { padding: { top: 70, bottom: 40, left: 40, right: 40 }, maxZoom: 14, duration: 600 })
+  }, [bounds])
+  const showDowntown = useCallback(() => {
+    if (!downtown) return
+    setView("downtown"); setSelected(null)
+    mapRef.current?.easeTo({ center: [downtown.lng, downtown.lat], zoom: 15.2, duration: 600 })
+  }, [downtown])
 
   if (!bounds) return null
+  const chip = (active: boolean) => `pointer-events-auto rounded-full px-3 py-1 text-xs font-semibold shadow backdrop-blur-sm transition ${active ? "bg-primary text-primary-foreground" : "bg-white/90 text-gray-800 hover:bg-white"}`
   return (
+    <>
+    {downtown && (
+      <div className="pointer-events-none absolute left-3 top-3 z-10 flex gap-2">
+        <button type="button" onClick={showAll} className={chip(view === "all")}>{labels.all}</button>
+        <button type="button" onClick={showDowntown} className={chip(view === "downtown")} data-map-downtown>{labels.downtown} · {downtown.n}</button>
+      </div>
+    )}
     <MapGL
+      ref={mapRef}
       mapboxAccessToken={MAPBOX_TOKEN}
       initialViewState={{ bounds, fitBoundsOptions: { padding: { top: 70, bottom: 40, left: 40, right: 40 }, maxZoom: 14 } }}
       style={{ width: "100%", height: "100%" }}
@@ -92,13 +126,13 @@ export function CategoryMap({ pins, labels }: { pins: CategoryPin[]; labels: { v
       <AttributionControl compact position="bottom-right" />
       {spread.map((p) => (
         <Marker key={p.id} longitude={p.lng} latitude={p.lat} anchor="bottom">
-          <div className="cursor-pointer" data-category-pin={p.slug} onClick={(e) => { e.stopPropagation(); setSelected(p) }} title={p.name}>
+          <div className="cursor-pointer" data-category-pin={p.slug} onClick={(e) => { e.stopPropagation(); select(p) }} title={p.name}>
             <Pin member={p.tier > 0} selected={selected?.id === p.id} />
           </div>
         </Marker>
       ))}
       {selected && (
-        <Popup longitude={selected.lng} latitude={selected.lat} anchor="bottom" offset={50} onClose={() => setSelected(null)} closeButton closeOnClick={false} maxWidth="280px">
+        <Popup longitude={selected.lng} latitude={selected.lat} anchor="bottom" offset={50} onClose={() => setSelected(null)} closeButton closeOnClick={false} maxWidth="250px">
           <div className="lompoc-popup-content" style={{ minWidth: 220 }}>
             {(selected.photoUrl || selected.logoUrl) && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -127,5 +161,6 @@ export function CategoryMap({ pins, labels }: { pins: CategoryPin[]; labels: { v
         </Popup>
       )}
     </MapGL>
+    </>
   )
 }
