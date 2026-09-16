@@ -466,9 +466,9 @@ try {
   }
   const home = await fetch(`${SITE}/`, { cache: "no-store" }).then((r) => r.text())
   home.includes('data-report-bug="footer"') ? pass("footer carries Report a bug") : fail("footer: Report a bug link missing")
-  const rl = await fetch(`${SITE}/realtors`, { redirect: "manual", cache: "no-store" })
-  const loc = rl.headers.get("location") || ""
-  rl.status >= 300 && rl.status < 400 && /for-businesses\/real-estate\?utm_source=outreach/.test(loc) ? pass("/realtors → realtor landing page (tracked)") : fail(`/realtors → ${rl.status} ${loc}`)
+  const rl = await fetch(`${SITE}/realtors`, { cache: "no-store" })
+  const rlHtml = await rl.text()
+  rl.status === 200 && rlHtml.includes("data-realtors-cta") && rlHtml.includes("plan=plus") ? pass("/realtors: invitation page with the Plus button") : fail(`/realtors → ${rl.status}, CTA ${rlHtml.includes("data-realtors-cta") ? "present" : "MISSING"}`)
   // Too-short description → 400 proves the API is deployed without writing a row.
   const api = await fetch(`${SITE}/api/bug-report`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ description: "x", source: "footer" }), cache: "no-store" })
   const body = await api.json().catch(() => ({}))
@@ -489,7 +489,9 @@ console.log("\n17. CDN cache — public pages are ISR, not a function render per
 if (!/lompoclocals\.com/.test(SITE)) {
   console.log("  – skipped on a staged build (deployment URLs answer through protection bypass; checked again on www after promotion)")
 } else try {
-  const pages = ["/news", "/football", "/this-week", "/", "/homes"]
+  // Pages that read searchParams (/news, /homes, /deals) or the viewer (/biz, /category) are
+  // dynamic by design; these five have no per-request input and must come from the edge.
+  const pages = ["/", "/football", "/this-week", "/businesses", "/map"]
   let bad = 0
   for (const p of pages) {
     // Two fetches: the first may MISS (fills the cache); the second must be served from the edge.

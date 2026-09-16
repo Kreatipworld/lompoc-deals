@@ -35,11 +35,6 @@ const nextConfig = {
       { source: "/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/biz/heritage-home-plumbing-services", permanent: true },
       { source: "/en/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/en/biz/heritage-home-plumbing-services", permanent: true },
       { source: "/es/biz/heritage-home-plumbing-services-formally-ron-s-plumbing-heating-a-c", destination: "/es/biz/heritage-home-plumbing-services", permanent: true },
-      // Sep 16 2026: the realtor outreach link — short, speakable, tracked. Every
-      // realtor gets lompoclocals.com/realtors; the landing page sells Plus.
-      { source: "/realtors", destination: "/for-businesses/real-estate?utm_source=outreach&utm_medium=link&utm_campaign=realtors", permanent: false },
-      { source: "/en/realtors", destination: "/for-businesses/real-estate?utm_source=outreach&utm_medium=link&utm_campaign=realtors", permanent: false },
-      { source: "/es/realtors", destination: "/es/for-businesses/real-estate?utm_source=outreach&utm_medium=link&utm_campaign=realtors", permanent: false },
       // The football word page grew into the hub.
       // Sep 13 2026: first realtor renamed her listing after claiming; keep the shared links alive.
       { source: "/biz/maressa-martinez-realtor", destination: "/biz/empire-real-estate-group-maressa-the-realtor", permanent: true },
