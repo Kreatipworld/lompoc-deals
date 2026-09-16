@@ -20,7 +20,7 @@ const MARK =
 export const MARK_URI = `data:image/svg+xml;base64,${Buffer.from(MARK).toString("base64")}`
 
 /** Fetch a JPEG/PNG/WebP and inline it; null on anything odd so the card still renders. */
-export async function photoDataUri(url: string | null | undefined, maxBytes = 8_000_000): Promise<string | null> {
+export async function photoDataUri(url: string | null | undefined, maxBytes = 3_000_000): Promise<string | null> {
   if (!url) return null
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) })
