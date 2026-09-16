@@ -25,7 +25,7 @@ function withinLimit(sid: string): boolean {
 // us; this table is for the business owner — "your page sent you 18 website opens last month" is a
 // sentence we can only say if the events live somewhere we can query per listing.
 // client_error comes from app/[locale]/error.tsx: the route + message of every "Something went wrong".
-const ALLOWED = new Set<EventName>(["search_run", "search_pick", "map_pin_clicked", "football_connect", "client_error", ...OUTBOUND_EVENTS])
+const ALLOWED = new Set<EventName>(["search_run", "search_pick", "map_pin_clicked", "football_connect", "client_error", "bug_report", ...OUTBOUND_EVENTS])
 
 interface Body {
   name?: string

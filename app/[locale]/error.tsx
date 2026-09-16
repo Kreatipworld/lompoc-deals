@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import { ReportBug } from "@/components/report-bug"
 
 /**
  * Route error boundary. Calm and short: one card, one Reload button (a fresh
@@ -54,6 +55,11 @@ export default function GlobalError({
         <a href="/" className="mt-4 block text-sm text-muted-foreground underline-offset-4 hover:underline">
           Back to Lompoc Locals
         </a>
+        {/* Owner: "if things go wrong, show a button that says Report a bug — that makes
+            our platform smarter." The route + message travel with the report. */}
+        <div className="mt-6 border-t border-border/60 pt-5">
+          <ReportBug source="error" errorMessage={String(error?.message ?? error).slice(0, 2000)} digest={error?.digest ?? null} />
+        </div>
       </div>
     </div>
   )

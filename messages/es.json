@@ -80,7 +80,8 @@
     "termsOfService": "Términos del Servicio",
     "contact": "Contacto",
     "events": "Eventos",
-    "thingsToDo": "Qué hacer"
+    "thingsToDo": "Qué hacer",
+    "reportBug": "Reportar un error"
   },
   "home": {
     "metaTitle": "Negocios, Ofertas y Qué Hacer en Lompoc",
@@ -968,7 +969,9 @@
       "colPage": "Página",
       "zeroResults": "0 resultados",
       "noPageYet": "Sin página aún",
-      "searchWordsEmpty": "Aún no hay búsquedas registradas."
+      "searchWordsEmpty": "Aún no hay búsquedas registradas.",
+      "kpiBugs": "Errores abiertos",
+      "kpiBugsSub": "reportes del botón Reportar un error"
     },
     "events": {
       "metaTitle": "Admin — Eventos",
@@ -997,7 +1000,8 @@
       "pendingBadge": "Pendiente",
       "approve": "Aprobar",
       "reject": "Rechazar"
-    }
+    },
+    "bugReports": "Reportes de errores"
   },
   "common": {
     "loading": "Cargando…",

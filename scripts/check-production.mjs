@@ -457,6 +457,19 @@ try {
   fail(`directory wayfinding: ${e.message}`)
 }
 
+console.log("\n15. Report a bug — the button is there when things go wrong (owner: 'that makes our platform smarter')")
+try {
+  const nf = await fetch(`${SITE}/this-page-does-not-exist-${Date.now()}`, { cache: "no-store" })
+  const nfHtml = await nf.text()
+  nf.status === 404 && nfHtml.includes('data-report-bug="not_found"') ? pass("404 page shows Report a bug") : fail(`404 page: status ${nf.status}, Report a bug ${nfHtml.includes('data-report-bug="not_found"') ? "present" : "MISSING"}`)
+  const home = await fetch(`${SITE}/`, { cache: "no-store" }).then((r) => r.text())
+  home.includes('data-report-bug="footer"') ? pass("footer carries Report a bug") : fail("footer: Report a bug link missing")
+  // Too-short description → 400 proves the API is deployed without writing a row.
+  const api = await fetch(`${SITE}/api/bug-report`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ description: "x", source: "footer" }), cache: "no-store" })
+  const body = await api.json().catch(() => ({}))
+  api.status === 400 && body.error === "description_too_short" ? pass("/api/bug-report validates input") : fail(`/api/bug-report → ${api.status} ${JSON.stringify(body).slice(0, 120)}`)
+} catch (e) { fail(`report a bug: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

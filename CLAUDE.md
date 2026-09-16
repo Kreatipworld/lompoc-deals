@@ -72,6 +72,17 @@ Rules:
 - `/api/cron/health-check` watches 12 pages + the database every minute and emails hello@ on the
   first failure (and once on recovery). A red email after a ship means: `vercel rollback`.
 
+## Health, bugs, backups
+- `/api/cron/health-check` runs every minute (13 pages + DB; one heartbeat row per 10 min in `cron_runs`,
+  every failure logged, email to hello@ on the first failure and on recovery).
+- "Report a bug" (`components/report-bug.tsx`) sits on the error page, the 404 page, and the footer.
+  Reports land in `bug_reports` (admin → Bugs, tile on the overview) and email hello@; the route + error
+  message travel with the report. Mark them fixed when they ship — the tile is the open backlog.
+- Backups: Neon takes a daily snapshot of the production branch (30-day retention). `scripts/backup.mjs`
+  keeps an off-cloud copy on this Mac (`~/Backups/lompoc-locals`: every table as ndjson.gz, last 14 days;
+  every Blob object mirrored; git unpushed-commit check) and runs daily at 3:30 AM via launchd
+  (`~/Library/LaunchAgents/com.lompoclocals.backup.plist`). Run by hand: `node --env-file=.env.local scripts/backup.mjs`.
+
 ## Env vars (see .env.example)
 DATABASE_URL, AUTH_SECRET, AUTH_URL, RESEND_API_KEY, BLOB_READ_WRITE_TOKEN, CRON_SECRET
 

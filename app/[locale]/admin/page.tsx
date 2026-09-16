@@ -26,6 +26,7 @@ import {
   Compass,
   ShoppingBag,
   CheckCircle2,
+  Bug,
 } from "lucide-react"
 import {
   getAdminStats,
@@ -63,6 +64,7 @@ import {
   dailyMetrics,
 } from "@/lib/admin-analytics"
 import type { FunnelWindow } from "@/lib/funnel-queries"
+import { countNewBugReports } from "@/lib/bug-report-actions"
 import { FunnelStep, Sparkline, BusinessLink } from "@/components/admin/analytics-bits"
 import { findTermForQuery } from "@/lib/find-terms"
 import { TrendChart } from "@/components/trend-chart"
@@ -286,6 +288,7 @@ export default async function AdminPage({
     searchesResult,
     topBizResult,
     dailyMetricsResult,
+    bugsResult,
   ] = await Promise.allSettled([
     getAdminStats(),
     getPendingBusinesses(),
@@ -309,6 +312,7 @@ export default async function AdminPage({
     topZeroResultSearches(days),
     topBusinessesByInterest(days),
     dailyMetrics(days),
+    countNewBugReports(),
   ])
 
   const stats = settled(statsResult, DEFAULT_STATS)
@@ -320,6 +324,7 @@ export default async function AdminPage({
   const people = settled(peopleResult, [])
   const growth = settled(growthResult, [])
   const kpis = settled(kpisResult, DEFAULT_KPIS)
+  const openBugs = settled(bugsResult, 0)
   const daily = settled(dailyResult, [])
   const sources = settled(sourcesResult, [])
   const actions = settled(actionsResult, { total: 0, rows: [] })
@@ -578,6 +583,9 @@ export default async function AdminPage({
 
         {/* KPIs */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <Link href="/admin/bugs" className="contents">
+            <StatTile icon={<Bug className="h-3.5 w-3.5" />} label={t("kpiBugs")} value={openBugs} sub={t("kpiBugsSub")} />
+          </Link>
           <StatTile
             icon={<Eye className="h-3.5 w-3.5" />}
             label={t("kpiVisits")}

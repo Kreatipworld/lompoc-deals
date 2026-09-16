@@ -30,6 +30,8 @@ export type EventName =
   // Someone used a "stay connected" action on the Lompoc Football page (alerts, follow, share, photos, calendar).
   | "football_connect"
   | "client_error"
+  // A visitor filed a "Report a bug" (error page, 404, or footer).
+  | "bug_report"
 
 /** Every outbound action, so a listing's real-world referrals can be counted in one query. */
 export const OUTBOUND_EVENTS = [
@@ -71,6 +73,7 @@ export interface EventProps {
   lead_created: { slug: string; kind: "showing" | "contact"; listingId?: number }
   football_connect: { action: "alerts" | "follow" | "share" | "photos" | "calendar"; detail?: string }
   client_error: { route: string; message: string; digest?: string | null }
+  bug_report: { route: string; source: "error" | "not_found" | "footer"; reportId: number }
 }
 
 export type EventPropsFor<N extends EventName> = EventProps[N]

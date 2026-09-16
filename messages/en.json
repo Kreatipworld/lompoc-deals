@@ -80,7 +80,8 @@
     "termsOfService": "Terms of Service",
     "contact": "Contact",
     "events": "Events",
-    "thingsToDo": "Things to do"
+    "thingsToDo": "Things to do",
+    "reportBug": "Report a bug"
   },
   "home": {
     "metaTitle": "Lompoc Businesses, Deals & Things To Do",
@@ -968,7 +969,9 @@
       "colPage": "Page",
       "zeroResults": "0 results",
       "noPageYet": "No page yet",
-      "searchWordsEmpty": "No searches recorded yet."
+      "searchWordsEmpty": "No searches recorded yet.",
+      "kpiBugs": "Open bugs",
+      "kpiBugsSub": "reports from the Report-a-bug button"
     },
     "events": {
       "metaTitle": "Admin — Events",
@@ -997,7 +1000,8 @@
       "pendingBadge": "Pending",
       "approve": "Approve",
       "reject": "Reject"
-    }
+    },
+    "bugReports": "Bug reports"
   },
   "common": {
     "loading": "Loading…",

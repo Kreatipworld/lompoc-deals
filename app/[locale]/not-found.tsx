@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation"
 import { getLocale, getTranslations } from "next-intl/server"
 import { MapPin, Search } from "lucide-react"
+import { ReportBug } from "@/components/report-bug"
 
 /**
  * The not-found boundary for every localised route.
@@ -42,6 +43,9 @@ export default async function LocaleNotFound() {
           <Search className="h-4 w-4" />
           {t("notFoundBrowse")}
         </Link>
+      </div>
+      <div className="mt-6 w-full">
+        <ReportBug source="not_found" />
       </div>
     </div>
   )

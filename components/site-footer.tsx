@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation"
 import { BrandLogo } from "@/components/brand-logo"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { SubscribeForm } from "@/components/subscribe-form"
+import { ReportBug } from "@/components/report-bug"
 import { getTranslations } from "next-intl/server"
 
 export async function SiteFooter() {
@@ -143,6 +144,9 @@ export async function SiteFooter() {
                 <Link href="/contact" className="hover:text-foreground">
                   {t("contact")}
                 </Link>
+              </li>
+              <li>
+                <ReportBug source="footer" variant="link" />
               </li>
             </ul>
           </div>

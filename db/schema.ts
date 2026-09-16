@@ -757,3 +757,24 @@ export const footballGames = pgTable(
     schoolUrlIdx: uniqueIndex("football_games_school_url_idx").on(t.school, t.maxprepsUrl),
   })
 )
+
+// ---------- bug reports ----------
+// "Report a bug" from the error page, the 404 page, or the footer. Anyone can file one
+// (no account needed); the route + error message are captured automatically so a
+// report is reproducible. Every report is a signal that makes the platform smarter.
+export const bugReports = pgTable("bug_reports", {
+  id: serial("id").primaryKey(),
+  route: varchar("route", { length: 500 }),
+  errorMessage: text("error_message"),
+  digest: varchar("digest", { length: 100 }),
+  description: text("description").notNull(),
+  email: varchar("email", { length: 320 }),
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
+  userAgent: varchar("user_agent", { length: 400 }),
+  locale: varchar("locale", { length: 5 }),
+  source: varchar("source", { length: 16 }).notNull().default("error"), // 'error' | 'not_found' | 'footer'
+  status: varchar("status", { length: 16 }).notNull().default("new"), // 'new' | 'fixed' | 'ignored'
+  adminNote: text("admin_note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+})
