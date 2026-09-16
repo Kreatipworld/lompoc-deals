@@ -35,7 +35,6 @@ export async function generateMetadata({
     openGraph: {
       title: t("metaTitle"),
       description: t("metaDescription"),
-      images: [{ url: "/activities/la-purisima-mission.jpg", width: 1200, height: 630, alt: t("heading") }],
     },
     alternates: pageAlternates("/things-to-do", locale),
   }
