@@ -5,6 +5,9 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts")
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    // Every optimized variant is cached for 30 days; the default (60 s) re-transformed
+    // the same member photos over and over, and transformations are billed.
+    minimumCacheTTL: 2592000,
     remotePatterns: [
       { protocol: "https", hostname: "img.evbuc.com" },
       { protocol: "https", hostname: "**.evbdn.com" },

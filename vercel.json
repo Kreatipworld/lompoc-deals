@@ -26,7 +26,7 @@
     },
     {
       "path": "/api/cron/health-check",
-      "schedule": "* * * * *"
+      "schedule": "*/2 * * * *"
     },
     {
       "path": "/api/cron/sync-news-leads",
@@ -52,5 +52,6 @@
       "path": "/api/cron/sync-football",
       "schedule": "0 6 * * 6"
     }
-  ]
+  ],
+  "ignoreCommand": "bash scripts/vercel-ignore.sh"
 }

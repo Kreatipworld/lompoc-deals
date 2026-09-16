@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
 /**
- * Every minute: is the site actually alive for a neighbor right now?
+ * Every 2 minutes: is the site actually alive for a neighbor right now?
  * Checks the database and a representative page from every section — each
  * must answer 200 AND render its own content (the error boundary answers 200
  * too). On failure, emails the founder inbox (repeats at most hourly); on
@@ -99,7 +99,7 @@ function shell(inner: string): string {
     </div>
     <div style="padding:24px;">${inner}</div>
     <div style="padding:12px 24px;border-top:1px solid #eee;color:#8a7f90;font-size:12px;">
-      Automated check runs every minute from lompoclocals.com across ${HEALTH_PAGES.length} pages + the database.
+      Automated check runs every 2 minutes from lompoclocals.com — home page + database every run, the other ${HEALTH_PAGES.length - 1} pages in rotation.
     </div>
   </div>
 </div>`
@@ -180,7 +180,16 @@ export async function GET(request: Request) {
     return NextResponse.json({ test: true, emailId: id })
   }
 
-  const results = await Promise.all([checkDatabase(), ...HEALTH_PAGES.map((p) => checkPage(p))])
+  // Cost control (Sep 16 2026): every page here renders on a function (no CDN cache
+  // yet), so 13 renders a minute was ~19k invocations a day of nothing. Each run
+  // checks the home page + the database + 3 pages from the rotation; the whole
+  // list is covered every ~8 minutes at the 2-minute cadence, and a dead site
+  // still shows within 2 minutes because "/" is in every run.
+  const slot = Math.floor(Date.now() / 120_000)
+  const rotation = HEALTH_PAGES.slice(1)
+  const pick = [0, 1, 2].map((i) => rotation[(slot * 3 + i) % rotation.length])
+  const pagesThisRun = [HEALTH_PAGES[0], ...pick.filter((p, i, arr) => arr.indexOf(p) === i)]
+  const results = await Promise.all([checkDatabase(), ...pagesThisRun.map((p) => checkPage(p))])
   const failures = results.filter((f): f is CheckFailure => f !== null)
 
   const prev = await readState()
@@ -207,8 +216,8 @@ export async function GET(request: Request) {
     }
   }
 
-  const summary = { ok: failures.length === 0, action: action.kind, checked: HEALTH_PAGES.length + 1, failures, emailId }
-  // Runs every minute; a healthy row per minute is 43k rows/month of nothing.
+  const summary = { ok: failures.length === 0, action: action.kind, checked: pagesThisRun.length + 1, rotation: pagesThisRun.map((p) => p.path), failures, emailId }
+  // Runs every 2 minutes; a healthy row per run is 21k rows/month of nothing.
   // Log every failure, alert and recovery, and one healthy heartbeat per 10 min.
   const heartbeat = new Date().getMinutes() % 10 === 0
   if (!summary.ok || action.kind !== "none" || heartbeat) {
