@@ -1,0 +1,457 @@
+[
+ {
+  "word": "What's",
+  "start": 0.0,
+  "end": 0.64
+ },
+ {
+  "word": "new",
+  "start": 0.64,
+  "end": 0.84
+ },
+ {
+  "word": "in",
+  "start": 0.84,
+  "end": 1.04
+ },
+ {
+  "word": "Lompocke?",
+  "start": 1.04,
+  "end": 2.16
+ },
+ {
+  "word": "Thursday",
+  "start": 2.16,
+  "end": 2.5
+ },
+ {
+  "word": "evening,",
+  "start": 2.5,
+  "end": 2.96
+ },
+ {
+  "word": "Lompocke",
+  "start": 3.36,
+  "end": 3.86
+ },
+ {
+  "word": "fire",
+  "start": 3.86,
+  "end": 4.06
+ },
+ {
+  "word": "knocked",
+  "start": 4.06,
+  "end": 4.4
+ },
+ {
+  "word": "down",
+  "start": 4.4,
+  "end": 4.68
+ },
+ {
+  "word": "a",
+  "start": 4.68,
+  "end": 4.8
+ },
+ {
+  "word": "house",
+  "start": 4.8,
+  "end": 5.06
+ },
+ {
+  "word": "fire",
+  "start": 5.06,
+  "end": 5.32
+ },
+ {
+  "word": "on",
+  "start": 5.32,
+  "end": 5.52
+ },
+ {
+  "word": "Palm",
+  "start": 5.52,
+  "end": 5.76
+ },
+ {
+  "word": "Drive.",
+  "start": 5.76,
+  "end": 6.16
+ },
+ {
+  "word": "Crews",
+  "start": 6.7,
+  "end": 7.12
+ },
+ {
+  "word": "searched",
+  "start": 7.12,
+  "end": 7.3
+ },
+ {
+  "word": "the",
+  "start": 7.3,
+  "end": 7.52
+ },
+ {
+  "word": "home.",
+  "start": 7.52,
+  "end": 7.74
+ },
+ {
+  "word": "No",
+  "start": 8.26,
+  "end": 8.52
+ },
+ {
+  "word": "one",
+  "start": 8.52,
+  "end": 8.64
+ },
+ {
+  "word": "was",
+  "start": 8.64,
+  "end": 8.8
+ },
+ {
+  "word": "inside.",
+  "start": 8.8,
+  "end": 9.18
+ },
+ {
+  "word": "Vandenberg",
+  "start": 10.0,
+  "end": 10.46
+ },
+ {
+  "word": "reopened",
+  "start": 10.46,
+  "end": 11.08
+ },
+ {
+  "word": "surf,",
+  "start": 11.08,
+  "end": 11.4
+ },
+ {
+  "word": "wall,",
+  "start": 11.78,
+  "end": 12.02
+ },
+ {
+  "word": "and",
+  "start": 12.22,
+  "end": 12.32
+ },
+ {
+  "word": "Minuteman",
+  "start": 12.32,
+  "end": 12.7
+ },
+ {
+  "word": "beaches",
+  "start": 12.7,
+  "end": 13.08
+ },
+ {
+  "word": "early.",
+  "start": 13.08,
+  "end": 13.46
+ },
+ {
+  "word": "The",
+  "start": 14.16,
+  "end": 14.26
+ },
+ {
+  "word": "plover",
+  "start": 14.26,
+  "end": 14.52
+ },
+ {
+  "word": "chicks",
+  "start": 14.52,
+  "end": 14.8
+ },
+ {
+  "word": "have",
+  "start": 14.8,
+  "end": 15.04
+ },
+ {
+  "word": "fledged.",
+  "start": 15.04,
+  "end": 15.48
+ },
+ {
+  "word": "Dogs",
+  "start": 16.04,
+  "end": 16.24
+ },
+ {
+  "word": "on",
+  "start": 16.24,
+  "end": 16.5
+ },
+ {
+  "word": "leash.",
+  "start": 16.5,
+  "end": 16.68
+ },
+ {
+  "word": "A",
+  "start": 17.5,
+  "end": 17.64
+ },
+ {
+  "word": "new",
+  "start": 17.64,
+  "end": 17.84
+ },
+ {
+  "word": "$525",
+  "start": 17.84,
+  "end": 18.94
+ },
+ {
+  "word": ",000",
+  "start": 18.94,
+  "end": 19.74
+ },
+ {
+  "word": "space",
+  "start": 19.74,
+  "end": 20.02
+ },
+ {
+  "word": "Vandenberg",
+  "start": 20.02,
+  "end": 20.68
+ },
+ {
+  "word": "fund",
+  "start": 20.68,
+  "end": 20.98
+ },
+ {
+  "word": "is",
+  "start": 20.98,
+  "end": 21.26
+ },
+ {
+  "word": "open",
+  "start": 21.26,
+  "end": 21.52
+ },
+ {
+  "word": "to",
+  "start": 21.52,
+  "end": 21.68
+ },
+ {
+  "word": "aerospace",
+  "start": 21.68,
+  "end": 22.06
+ },
+ {
+  "word": "startups.",
+  "start": 22.06,
+  "end": 22.58
+ },
+ {
+  "word": "Letters",
+  "start": 23.38,
+  "end": 23.82
+ },
+ {
+  "word": "of",
+  "start": 23.82,
+  "end": 23.96
+ },
+ {
+  "word": "intent",
+  "start": 23.96,
+  "end": 24.32
+ },
+ {
+  "word": "are",
+  "start": 24.32,
+  "end": 24.72
+ },
+ {
+  "word": "due",
+  "start": 24.72,
+  "end": 24.92
+ },
+ {
+  "word": "October",
+  "start": 24.92,
+  "end": 25.42
+ },
+ {
+  "word": "2nd.",
+  "start": 25.42,
+  "end": 26.36
+ },
+ {
+  "word": "Football",
+  "start": 26.58,
+  "end": 26.96
+ },
+ {
+  "word": "week",
+  "start": 26.96,
+  "end": 27.32
+ },
+ {
+  "word": "at",
+  "start": 27.32,
+  "end": 27.52
+ },
+ {
+  "word": "Hike",
+  "start": 27.52,
+  "end": 27.72
+ },
+ {
+  "word": "Stadium.",
+  "start": 27.72,
+  "end": 28.16
+ },
+ {
+  "word": "Cabrillo",
+  "start": 28.76,
+  "end": 29.26
+ },
+ {
+  "word": "hosts",
+  "start": 29.26,
+  "end": 29.58
+ },
+ {
+  "word": "Rigetti",
+  "start": 29.58,
+  "end": 30.2
+ },
+ {
+  "word": "Thursday",
+  "start": 30.2,
+  "end": 30.6
+ },
+ {
+  "word": "and",
+  "start": 30.6,
+  "end": 31.4
+ },
+ {
+  "word": "the",
+  "start": 31.4,
+  "end": 31.54
+ },
+ {
+  "word": "3",
+  "start": 31.54,
+  "end": 31.78
+ },
+ {
+  "word": "and",
+  "start": 31.78,
+  "end": 31.9
+ },
+ {
+  "word": "0",
+  "start": 31.9,
+  "end": 32.02
+ },
+ {
+  "word": "Braves",
+  "start": 32.02,
+  "end": 32.52
+ },
+ {
+  "word": "host",
+  "start": 32.52,
+  "end": 32.74
+ },
+ {
+  "word": "Dublin",
+  "start": 32.74,
+  "end": 33.18
+ },
+ {
+  "word": "Friday,",
+  "start": 33.18,
+  "end": 33.62
+ },
+ {
+  "word": "both",
+  "start": 34.32,
+  "end": 34.66
+ },
+ {
+  "word": "at",
+  "start": 34.66,
+  "end": 34.94
+ },
+ {
+  "word": "7.",
+  "start": 34.94,
+  "end": 35.24
+ },
+ {
+  "word": "The",
+  "start": 35.98,
+  "end": 36.16
+ },
+ {
+  "word": "full",
+  "start": 36.16,
+  "end": 36.36
+ },
+ {
+  "word": "stories",
+  "start": 36.36,
+  "end": 36.72
+ },
+ {
+  "word": "are",
+  "start": 36.72,
+  "end": 37.0
+ },
+ {
+  "word": "on",
+  "start": 37.0,
+  "end": 37.16
+ },
+ {
+  "word": "LompockeLocals",
+  "start": 37.16,
+  "end": 38.14
+ },
+ {
+  "word": ".com.",
+  "start": 38.14,
+  "end": 38.68
+ },
+ {
+  "word": "Informed",
+  "start": 39.32,
+  "end": 39.86
+ },
+ {
+  "word": "Lompocke,",
+  "start": 39.86,
+  "end": 40.62
+ },
+ {
+  "word": "better",
+  "start": 40.78,
+  "end": 41.02
+ },
+ {
+  "word": "Lompocke.",
+  "start": 41.02,
+  "end": 41.66
+ }
+]

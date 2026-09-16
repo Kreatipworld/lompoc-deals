@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="subs" data-width="1080" data-height="1350" data-duration="22.50" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+  <div data-composition-id="subs" data-width="1080" data-height="1350" data-duration="44.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
     <style>
       [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 112px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
       [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
@@ -8,27 +8,41 @@
     </style>
     <div class="wrapz" data-layout-allow-overlap>
       <div class="sub" id="sub-0"><span>What's new in Lompoc.</span></div>
-      <div class="sub" id="sub-1"><span>Jim Mosby and Jeremy Ball are running for mayor in November.</span></div>
-      <div class="sub" id="sub-2"><span>The city held its first workshop on a $7 million plan to expand the soccer fields at Riverbend Park.</span></div>
-      <div class="sub" id="sub-3"><span>Sept. 19: True Vine Bible Fellowship on Avalon Street is giving away 1,000 pairs of shoes, with free haircuts and food.</span></div>
-      <div class="sub" id="sub-4"><span>Full stories on lompoclocals.com</span></div>
+      <div class="sub" id="sub-1"><span>Thursday evening, Lompoc Fire knocked down a house fire on Palm Drive.</span></div>
+      <div class="sub" id="sub-2"><span>Crews searched the home. No one was inside.</span></div>
+      <div class="sub" id="sub-3"><span>Vandenberg reopened Surf, Wall and Minuteman beaches early.</span></div>
+      <div class="sub" id="sub-4"><span>The plover chicks have fledged. Dogs on leash.</span></div>
+      <div class="sub" id="sub-5"><span>A new $525,000 Space Vandenberg fund is open to aerospace startups.</span></div>
+      <div class="sub" id="sub-6"><span>Letters of intent are due October 2.</span></div>
+      <div class="sub" id="sub-7"><span>Football week at Huyck Stadium:</span></div>
+      <div class="sub" id="sub-8"><span>Cabrillo hosts Righetti Thursday, and the 3-0 Braves host Dublin Friday.</span></div>
+      <div class="sub" id="sub-9"><span>Both at 7 PM.</span></div>
+      <div class="sub" id="sub-10"><span>The full stories are on lompoclocals.com/news</span></div>
+      <div class="sub" id="sub-11"><span>Informed Lompoc, better Lompoc.</span></div>
     </div>
     <script>
       (() => {
         // SUBS = [[start, end, text], ...] absolute seconds from the ASR word times. Text lives in the DOM above; times drive show/hide.
         const SUBS = [
-          [0.60, 1.30, "What's new in Lompoc."],
-          [2.05, 4.50, 'Jim Mosby and Jeremy Ball are running for mayor in November.'],
-          [5.30, 10.35, 'The city held its first workshop on a $7 million plan to expand the soccer fields at Riverbend Park.'],
-          [11.20, 18.55, 'Sept. 19: True Vine Bible Fellowship on Avalon Street is giving away 1,000 pairs of shoes, with free haircuts and food.'],
-          [19.20, 21.10, 'Full stories on lompoclocals.com']
+          [0.60, 2.30, "What's new in Lompoc."],
+          [2.76, 6.90, 'Thursday evening, Lompoc Fire knocked down a house fire on Palm Drive.'],
+          [7.30, 9.95, 'Crews searched the home. No one was inside.'],
+          [10.60, 14.30, 'Vandenberg reopened Surf, Wall and Minuteman beaches early.'],
+          [14.76, 17.45, 'The plover chicks have fledged. Dogs on leash.'],
+          [18.10, 23.35, 'A new $525,000 Space Vandenberg fund is open to aerospace startups.'],
+          [23.98, 27.00, 'Letters of intent are due October 2.'],
+          [27.18, 29.10, 'Football week at Huyck Stadium:'],
+          [29.36, 34.40, 'Cabrillo hosts Righetti Thursday, and the 3-0 Braves host Dublin Friday.'],
+          [34.92, 36.20, 'Both at 7 PM.'],
+          [36.58, 39.45, 'The full stories are on lompoclocals.com/news'],
+          [39.92, 42.40, 'Informed Lompoc, better Lompoc.']
         ];
         const tl = gsap.timeline({ paused: true });
         SUBS.forEach(([a, b], i) => {
           tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
           tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
         });
-        tl.set({}, {}, 22.50);
+        tl.set({}, {}, 44.00);
         window.__timelines["subs"] = tl;
       })();
     </script>

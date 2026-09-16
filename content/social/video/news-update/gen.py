@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-LOMPOC LOCALS NEWS — edition #1 (Sept 9, 2026). 22.50s news update for TikTok / IG / FB.
+LOMPOC LOCALS NEWS — edition #2 (Sept 15, 2026). 44.00s news update for TikTok / IG / FB.
 Generates index.html (9:16), index-4x5.tmpl (4:5) and both compositions folders from one source.
-Photos are ours (public/civic.jpg, riverbend.jpg, shoes.jpg). VO = Dylan read (public/vo-dylan.wav),
-bed = our own generated newsroom bed (public/bed.wav, no credit).
+Photos are ours (public/fire.jpg, beach.jpg, spaceport.jpg, lusd.jpg). VO = Arthur read (public/vo-arthur-e2.wav),
+bed = our own generated newsroom bed, NEW for this edition (public/bed-44.wav, no credit). Edition #1 lives in git history.
 
   python3 gen.py
 """
@@ -14,25 +14,33 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # ─── timeline (absolute seconds) ──────────────────────────────────────────────
 X = 0.20  # crossfade
 SCENES = [
-    # id,          start,  dur
-    ("s1-open",    0.00,  2.00),
-    ("s2-mayor",   1.80,  3.50),
-    ("s3-river",   5.10,  6.10),
-    ("s4-shoes",  11.00,  7.60),
-    ("s5-end",    18.40,  4.10),
+    # id,            start,  dur   (segment starts 0.25 s before the first word of its sentence)
+    ("s1-open",      0.00,  2.70),
+    ("s2-fire",      2.50,  8.05),
+    ("s3-beach",    10.35,  7.70),
+    ("s4-fund",     17.85,  9.28),
+    ("s5-football", 26.93,  9.57),
+    ("s5-end",      36.30,  7.70),
 ]
-TOTAL = 22.50
+TOTAL = 44.00
 VO_START = 0.60
-VO_DUR = 21.12
-EDITION = "SEPT 9 · 2026"
+VO_DUR = 41.98
+EDITION = "SEPT 15 · 2026"
 
 # Burned-in subtitles: [start, end, text] absolute seconds (ASR word times + 0.60).
 SUBS = [
-    [0.60, 1.30, "What's new in Lompoc."],
-    [2.05, 4.50, "Jim Mosby and Jeremy Ball are running for mayor in November."],
-    [5.30, 10.35, "The city held its first workshop on a $7 million plan to expand the soccer fields at Riverbend Park."],
-    [11.20, 18.55, "Sept. 19: True Vine Bible Fellowship on Avalon Street is giving away 1,000 pairs of shoes, with free haircuts and food."],
-    [19.20, 21.10, "Full stories on lompoclocals.com"],
+    [0.60, 2.30, "What's new in Lompoc."],
+    [2.76, 6.90, "Thursday evening, Lompoc Fire knocked down a house fire on Palm Drive."],
+    [7.30, 9.95, "Crews searched the home. No one was inside."],
+    [10.60, 14.30, "Vandenberg reopened Surf, Wall and Minuteman beaches early."],
+    [14.76, 17.45, "The plover chicks have fledged. Dogs on leash."],
+    [18.10, 23.35, "A new $525,000 Space Vandenberg fund is open to aerospace startups."],
+    [23.98, 27.00, "Letters of intent are due October 2."],
+    [27.18, 29.10, "Football week at Huyck Stadium:"],
+    [29.36, 34.40, "Cabrillo hosts Righetti Thursday, and the 3-0 Braves host Dublin Friday."],
+    [34.92, 36.20, "Both at 7 PM."],
+    [36.58, 39.45, "The full stories are on lompoclocals.com/news"],
+    [39.92, 42.40, "Informed Lompoc, better Lompoc."],
 ]
 
 GOLD = "#efc618"; INK = "#241629"; PURPLE = "#650c75"; BG = "#140a17"; DEEP = "#3a0743"
@@ -167,6 +175,7 @@ def s5_end(cid, dur, A):
       {s} .line1 {{ display: block; margin-top: 40px; color: #fff; font-weight: 800; font-size: {A['WM'] - 10}px; line-height: 1.04; letter-spacing: -2px; opacity: 0; will-change: transform, opacity; text-shadow: 0 10px 40px rgba(10,6,12,0.45); }}
       {s} .url {{ display: inline-block; margin-top: 44px; background: {GOLD}; color: {INK}; font-weight: 800; font-size: 44px; letter-spacing: 0.5px; padding: 18px 40px; border-radius: 999px; opacity: 0; will-change: transform, opacity; box-shadow: 0 16px 40px rgba(10,6,12,0.4); }}
       {s} .daily {{ display: block; margin-top: 30px; color: rgba(255,255,255,0.72); font-weight: 600; font-size: 30px; letter-spacing: 1px; opacity: 0; will-change: transform, opacity; }}
+      {s} .credit {{ display: block; margin-top: 46px; color: rgba(255,255,255,0.74); font-weight: 600; font-size: 22px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0; }}
     """
     body = f'''      <div class="field"></div>
       <div class="bloom" id="{cid}-bloom" data-layout-allow-overflow></div>
@@ -176,6 +185,7 @@ def s5_end(cid, dur, A):
         <span class="line1" id="{cid}-l1">Informed Lompoc,<br />better Lompoc.</span>
         <span class="url" id="{cid}-url">lompoclocals.com/news</span>
         <span class="daily" id="{cid}-daily">The full stories, every day.</span>
+        <span class="credit" id="{cid}-credit">Facts via KSBY · Noozhawk · MaxPreps</span>
       </div>'''
     # absolute 19.0 → 0.60 rel; 19.4 → 1.00 rel
     script = f'''        // BEATS (relative): WM 0.30, LINE1 0.60 (=19.0 abs), URL 1.00 (=19.4 abs), DAILY 1.60
@@ -184,7 +194,8 @@ def s5_end(cid, dur, A):
         tl.fromTo("#{cid}-srule", {{ autoAlpha: 0, scaleX: 0 }}, {{ autoAlpha: 1, scaleX: 1, duration: 0.4 }}, 0.42);
         tl.fromTo("#{cid}-l1", {{ autoAlpha: 0, y: 22, scale: 1.04 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "expo.out" }}, 0.60);
         tl.fromTo("#{cid}-url", {{ autoAlpha: 0, y: 18, scale: 0.94 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.5)" }}, 1.00);
-        tl.fromTo("#{cid}-daily", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, 1.60);'''
+        tl.fromTo("#{cid}-daily", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, 1.60);
+        tl.fromTo("#{cid}-credit", {{ autoAlpha: 0 }}, {{ autoAlpha: 1, duration: 0.4 }}, 2.00);'''
     return frame(cid, dur, PURPLE, css, body, script, A)
 
 
@@ -249,15 +260,18 @@ def subs(A):
 def scene_html(cid, start, dur, A):
     if cid == "s1-open":
         return s1_open(cid, dur, A)
-    if cid == "s2-mayor":   # HL abs 2.1 → rel 0.30 · SUB abs 2.7 → rel 0.90
-        return story(cid, dur, A, "civic.jpg", "50% 45%", ("scale", 1.0, 1.08), "City Hall",
-                     "Mosby and Ball compete for mayor", "Incumbent Jim Mosby vs. Councilman Jeremy Ball · November", 0.30, 0.90)
-    if cid == "s3-river":   # HL abs 5.4 → rel 0.30 · SUB abs 6.2 → rel 1.10
-        return story(cid, dur, A, "riverbend.jpg", "50% 50%", ("drift", -3, 3), "Parks",
-                     "Riverbend Park soccer field expansion", "First community workshop · roughly $7 million · turf fields, parking, walking path", 0.30, 1.10)
-    if cid == "s4-shoes":   # HL abs 11.3 → rel 0.30 · SUB abs 12.4 → rel 1.40
-        return story(cid, dur, A, "shoes.jpg", "50% 40%", ("scale", 1.08, 1.0), "Community",
-                     "1,000 pairs of shoes · Sept. 19", "True Vine Bible Fellowship · 533 Avalon St · 10 AM–2 PM · free haircuts and food", 0.30, 1.40)
+    if cid == "s2-fire":
+        return story(cid, dur, A, "fire.jpg", "50% 50%", ("scale", 1.0, 1.08), "Community",
+                     "Palm Drive house fire knocked down", "Lompoc Fire · Thu Sept 10, after 5 PM · crews searched the home, no one inside", 0.30, 1.20)
+    if cid == "s3-beach":
+        return story(cid, dur, A, "beach.jpg", "50% 55%", ("drift", -3, 3), "Vandenberg",
+                     "Surf, Wall &amp; Minuteman beaches open early", "Plover chicks have fledged · dogs on leash · no camping, no fireworks", 0.30, 1.20)
+    if cid == "s4-fund":
+        return story(cid, dur, A, "spaceport.jpg", "50% 45%", ("scale", 1.08, 1.0), "Business",
+                     "$525K Space Vandenberg Innovation Fund", "Aerospace startups &amp; researchers · letters of intent due Oct 2 · awards up to $100K", 0.30, 1.20)
+    if cid == "s5-football":
+        return story(cid, dur, A, "lusd.jpg", "50% 50%", ("drift", 2, -2), "Sports",
+                     "Football week at Huyck Stadium", "Cabrillo vs Righetti · Thu 7 PM  ·  Braves (3-0) vs Dublin · Fri 7 PM  ·  515 W College Ave", 0.30, 1.20)
     if cid == "s5-end":
         return s5_end(cid, dur, A)
     raise ValueError(cid)
@@ -270,7 +284,7 @@ def index_html(A, folder):
         rows.append(f'      <div id="el-{cid}" data-composition-id="{cid}" data-composition-src="{folder}/{cid}.html" data-start="{start:.2f}" data-duration="{dur:.2f}" data-track-index="{i+1}"></div>')
     rows.append(f'      <div id="el-progress" data-composition-id="progress" data-composition-src="{folder}/progress.html" data-start="0" data-duration="{TOTAL:.2f}" data-track-index="8"></div>')
     rows.append(f'      <div id="el-subs" data-composition-id="subs" data-composition-src="{folder}/subs.html" data-start="0" data-duration="{TOTAL:.2f}" data-track-index="9"></div>')
-    bed_auto = '{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.6, "v": 0.26}, {"t": 21.3, "v": 0.26}, {"t": 22.5, "v": 0}]}]}'
+    bed_auto = '{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.6, "v": 0.26}, {"t": 42.4, "v": 0.26}, {"t": 44.0, "v": 0}]}]}'
     return f'''<!doctype html>
 <html lang="en">
   <head>
@@ -287,13 +301,13 @@ def index_html(A, folder):
     </style>
   </head>
   <body>
-    <!-- LOMPOC LOCALS NEWS — edition #1 ({EDITION}). {TOTAL:.2f}s. Our own photos, headline panels, burned-in subtitles (track 9), progress line + mark (track 8).
+    <!-- LOMPOC LOCALS NEWS — edition #2 ({EDITION}). {TOTAL:.2f}s. Our own photos, headline panels, burned-in subtitles (track 9), progress line + mark (track 8).
          Scenes on rising tracks so each new scene fades in on top ({X}s). Generated by gen.py — edit there. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL:.2f}" data-width="1080" data-height="{H}">
 {chr(10).join(rows)}
 
-      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-dylan.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="10" data-volume="0.86" data-fade-in="0.05" data-fade-out="0.10"></audio>
-      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="0.26" data-fade-in="0.6" data-fade-out="1.2" data-automation='{bed_auto}' data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.55}}'></audio>
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-arthur-e2.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="10" data-volume="0.86" data-fade-in="0.05" data-fade-out="0.10"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed-44.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="11" data-volume="0.26" data-fade-in="0.6" data-fade-out="1.2" data-automation='{bed_auto}' data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.55}}'></audio>
     </div>
     <script>
       window.__timelines["main"] = gsap.timeline({{ paused: true }});

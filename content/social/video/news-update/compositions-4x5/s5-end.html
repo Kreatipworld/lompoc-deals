@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="s5-end" data-width="1080" data-height="1350" data-duration="4.10" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
+  <div data-composition-id="s5-end" data-width="1080" data-height="1350" data-duration="7.70" style="position: absolute; inset: 0; overflow: hidden; background: #650c75">
     <style>
       [data-composition-id="s5-end"] .cine-bar { position: absolute; left: 0; right: 0; height: 80px; background: #0a060c; z-index: 60; }
       [data-composition-id="s5-end"] .cine-top { top: 0; } [data-composition-id="s5-end"] .cine-bot { bottom: 0; }
@@ -28,6 +28,7 @@
       [data-composition-id="s5-end"] .line1 { display: block; margin-top: 40px; color: #fff; font-weight: 800; font-size: 74px; line-height: 1.04; letter-spacing: -2px; opacity: 0; will-change: transform, opacity; text-shadow: 0 10px 40px rgba(10,6,12,0.45); }
       [data-composition-id="s5-end"] .url { display: inline-block; margin-top: 44px; background: #efc618; color: #241629; font-weight: 800; font-size: 44px; letter-spacing: 0.5px; padding: 18px 40px; border-radius: 999px; opacity: 0; will-change: transform, opacity; box-shadow: 0 16px 40px rgba(10,6,12,0.4); }
       [data-composition-id="s5-end"] .daily { display: block; margin-top: 30px; color: rgba(255,255,255,0.72); font-weight: 600; font-size: 30px; letter-spacing: 1px; opacity: 0; will-change: transform, opacity; }
+      [data-composition-id="s5-end"] .credit { display: block; margin-top: 46px; color: rgba(255,255,255,0.74); font-weight: 600; font-size: 22px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0; }
     
     </style>
     <div class="stage" id="s5-end-stage">
@@ -39,6 +40,7 @@
         <span class="line1" id="s5-end-l1">Informed Lompoc,<br />better Lompoc.</span>
         <span class="url" id="s5-end-url">lompoclocals.com/news</span>
         <span class="daily" id="s5-end-daily">The full stories, every day.</span>
+        <span class="credit" id="s5-end-credit">Facts via KSBY · Noozhawk · MaxPreps</span>
       </div>
       <div class="vig"></div>
     </div>
@@ -55,7 +57,8 @@
         tl.fromTo("#s5-end-l1", { autoAlpha: 0, y: 22, scale: 1.04 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "expo.out" }, 0.60);
         tl.fromTo("#s5-end-url", { autoAlpha: 0, y: 18, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.5)" }, 1.00);
         tl.fromTo("#s5-end-daily", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 1.60);
-        tl.set({}, {}, 4.10);
+        tl.fromTo("#s5-end-credit", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 2.00);
+        tl.set({}, {}, 7.70);
         window.__timelines["s5-end"] = tl;
       })();
     </script>
