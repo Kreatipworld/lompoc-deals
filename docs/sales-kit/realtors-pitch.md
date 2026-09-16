@@ -11,7 +11,7 @@ Subject: One agent is on Lompoc's homes page. Room for a few more.
 
 {First name},
 
-Lompoc Locals is the town's own directory, map, deals and news — 450+ local businesses, 1,000+ followers on TikTok, and since this week, a homes section. Right now one Lompoc agent is on it. That is the opportunity: the neighbors who open our map to find a restaurant or a plumber see the homes for sale on the same map, and today they see one agent's listings.
+Lompoc never had a homes market of its own — on the national sites it is a dot on the map and your listing competes with the whole county. We are opening that market: Lompoc Locals is the town's own directory, map, deals and news (450+ local businesses, 1,000+ TikTok followers, 1,600+ engaged visits a month), and since this week it has a homes section. Right now one Lompoc agent is on it. That is the opportunity: the neighbors who open our map to find a restaurant or a plumber see the homes for sale on the same map, and today they see one agent's listings.
 
 What your listings get with Plus ($99.99/month, cancel anytime):
 - A place on the main Lompoc map (green home pins) and on the homes page, next to the businesses people already browse.
@@ -19,6 +19,7 @@ What your listings get with Plus ($99.99/month, cancel anytime):
 - Unlimited listings, up to 12 photos each, live the moment you save. Mark sold or rented in one click.
 - A Featured Agent spot on the homes page while you are a member.
 - Your homes in our videos: our Homes launch went out to every channel this week, and a Home of the Week is coming.
+- Your leads stay yours: no lead pools, no referral fees, ever.
 
 Early agents get the most visibility for the least money: the page is new, the spots are few, and every listing you add today is in front of the whole town tomorrow. It takes five minutes: lompoclocals.com/realtors → Start with Plus → add your first home.
 
