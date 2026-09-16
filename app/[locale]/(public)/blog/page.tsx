@@ -5,7 +5,7 @@ import { es as dateEs } from "date-fns/locale"
 import { CalendarDays, Tag, ChevronLeft, ChevronRight, User, ArrowRight } from "lucide-react"
 import { getPublishedBlogPosts, getBlogCategories, countPublishedBlogPosts } from "@/lib/queries"
 import { SafeImage } from "@/components/safe-image"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
@@ -16,6 +16,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "newsUi.blog" })
   const es = params.locale === "es"
   return {
@@ -39,6 +40,7 @@ export default async function BlogIndexPage({
   params: { locale: string }
   searchParams: { category?: string; page?: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "blog" })
   const tCat = await getTranslations({ locale: params.locale, namespace: "newsUi.blogCategories" })
   const es = params.locale === "es"

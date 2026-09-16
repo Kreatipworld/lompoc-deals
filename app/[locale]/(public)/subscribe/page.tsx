@@ -1,7 +1,7 @@
 import { Mail, Sparkles, Clock, ShieldCheck, Users } from "lucide-react"
 import { CategoryPatternBg } from "@/components/category-pattern-bg"
 import { SubscribeForm } from "@/components/subscribe-form"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
 
@@ -10,6 +10,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "subscribePage" })
   return {
     title: t("metaTitle"),
@@ -31,6 +32,7 @@ export default async function SubscribePage({
 }: {
   params: { locale: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "subscribePage" })
   const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.subscribe" })
 

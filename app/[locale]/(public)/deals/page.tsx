@@ -13,7 +13,7 @@ import { AnimatedCounter } from "@/components/animated-counter"
 import { CouponDemo } from "@/components/coupon-demo"
 import { SubscribeForm } from "@/components/subscribe-form"
 import { PageHeader } from "@/components/page-header"
-import { getLocale, getTranslations } from "next-intl/server"
+import { getLocale, getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import type { DealCardData } from "@/lib/queries"
 import { pageAlternates } from "@/lib/seo"
@@ -24,6 +24,7 @@ import { pageAlternates } from "@/lib/seo"
 export const revalidate = 600
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations("deals.page")
   return {
     title: t("metaTitle"),
@@ -40,7 +41,8 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 
 const ENDS_SOON_DAYS = 7
 
-export default async function DealsPage() {
+export default async function DealsPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const locale = await getLocale()
   const [allDeals, featured, viewer, stats, t, tl] = await Promise.all([
     getActiveDeals(60, locale),

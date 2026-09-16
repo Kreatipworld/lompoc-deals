@@ -21,7 +21,7 @@ import { PropertyListingGrid } from "@/components/property-listing-card"
 import { CategoryChips } from "@/components/category-chips"
 import { SearchBar } from "@/components/search-bar"
 import { PageHeader } from "@/components/page-header"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 import { categoryLabel } from "@/lib/category-label"
 
@@ -30,6 +30,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string; locale: string }
 }) {
+  setRequestLocale(params.locale)
   const [cat, tMeta, tLabels] = await Promise.all([
     db.query.categories.findFirst({
       where: (c, { eq }) => eq(c.slug, params.slug),
@@ -56,6 +57,7 @@ export default async function CategoryPage({
   params: { slug: string; locale: string }
   searchParams?: { tab?: string; open?: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "category" })
 
   const cat = await db.query.categories.findFirst({

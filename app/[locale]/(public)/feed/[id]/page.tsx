@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { ArrowLeft, Calendar, MapPin, Tag } from "lucide-react"
 import { getFeedPostById } from "@/lib/feed-queries"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 
 function formatPrice(cents: number | null, freeLabel: string, freeOboLabel: string, intl: string): string {
@@ -19,6 +19,7 @@ export async function generateMetadata({
 }: {
   params: { id: string; locale: string }
 }) {
+  setRequestLocale(params.locale)
   const id = parseInt(params.id, 10)
   if (Number.isNaN(id)) return {}
   const post = await getFeedPostById(id)
@@ -35,6 +36,7 @@ export default async function FeedPostDetailPage({
 }: {
   params: { id: string; locale: string }
 }) {
+  setRequestLocale(params.locale)
   const intl = params.locale === "es" ? "es-US" : "en-US"
   const t = await getTranslations("feed")
   const tCard = await getTranslations("feedCard")

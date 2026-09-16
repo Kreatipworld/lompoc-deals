@@ -12,7 +12,7 @@ import {
   Sparkles,
   Store,
 } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { and, eq, gt, sql } from "drizzle-orm"
@@ -39,6 +39,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "partners" })
   return {
     // metaTitle embeds the brand ("Partner With Lompoc Locals…") — bypass the layout's
@@ -88,6 +89,7 @@ export default async function PartnersPage({
 }: {
   params: { locale: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "partners" })
 
   const [stats, upcomingEvents, visitors30d, digestPartners] = await Promise.all([

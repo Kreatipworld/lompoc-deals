@@ -42,7 +42,7 @@ import { OutboundLink } from "@/components/outbound-link"
 import { SafeImage } from "@/components/safe-image"
 import { LeadForm } from "@/components/lead-form"
 import { Reveal } from "@/components/motion/reveal"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
 import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
@@ -57,6 +57,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string; locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const [data, t, tc, th] = await Promise.all([
     getBusinessBySlug(params.slug, params.locale),
     getTranslations("businesses.profile"),
@@ -107,6 +108,7 @@ export default async function BusinessPage({
 }: {
   params: { slug: string; locale: string }
 }) {
+  setRequestLocale(params.locale)
   const [data, viewer, t, tsp, td, tc] = await Promise.all([
     getBusinessBySlug(params.slug, params.locale),
     getViewer(),

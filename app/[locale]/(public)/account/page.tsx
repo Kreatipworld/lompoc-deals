@@ -12,10 +12,11 @@ import { Tag, CheckCircle2, Clock, Heart, Mail, Bell, BellOff, LifeBuoy } from "
 import { SupportForm } from "@/app/[locale]/dashboard/support/support-form"
 import { updateNotificationPrefsAction } from "@/lib/business-follow-actions"
 import { accountSubscribeAction, accountUnsubscribeAction } from "@/lib/subscribe-actions"
-import { getLocale, getTranslations } from "next-intl/server"
+import { getLocale, getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "account" })
   return { title: t("metaTitle"), robots: { index: false, follow: true } }
 }
@@ -27,6 +28,7 @@ export default async function AccountPage({
   params: { locale: string }
   searchParams: { notif?: string; digest?: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "account" })
   const dateLocale = params.locale === "es" ? es : undefined
   const viewer = await getViewer()

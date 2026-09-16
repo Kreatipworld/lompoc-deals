@@ -27,7 +27,7 @@ import {
   ExternalLink,
   Navigation,
 } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
 
 export function generateStaticParams() {
@@ -39,6 +39,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string; locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const hotel = getHotelBySlug(params.slug)
   if (!hotel) return { title: "Hotel" }
   const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.hotels" })
@@ -97,6 +98,7 @@ function StarRating({ rating, ariaLabel, outOf5 }: { rating: number; ariaLabel: 
 }
 
 export default async function HotelPage({ params }: { params: { slug: string; locale: string } }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "hotelDetail" })
   const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.hotels" })
 

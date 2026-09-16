@@ -1,9 +1,10 @@
 import { SubmitEventForm } from "./submit-form"
 import { CalendarDays } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "submitEvent" })
   return {
     title: t("metaTitle"),
@@ -13,6 +14,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 }
 
 export default async function SubmitEventPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "submitEvent" })
 
   return (

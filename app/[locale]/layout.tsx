@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl"
-import { getMessages, getTranslations } from "next-intl/server"
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import { Toaster } from "@/components/ui/sonner"
 import { SiteHeader } from "@/components/site-header"
@@ -29,6 +29,7 @@ export function generateStaticParams() {
  */
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: "siteMeta" })
   const isEs = locale === "es"
   return {
@@ -58,6 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params
+  setRequestLocale(locale)
 
   if (!routing.locales.includes(locale as "en" | "es")) {
     notFound()

@@ -17,7 +17,7 @@ import {
   statusLabelFor,
 } from "@/components/property-listing-card"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 
 export async function generateMetadata({
@@ -25,6 +25,7 @@ export async function generateMetadata({
 }: {
   params: { id: string; locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "listing" })
   const id = parseInt(params.id, 10)
   if (isNaN(id)) return { title: "Listing" }
@@ -74,6 +75,7 @@ export default async function ListingPage({
 }: {
   params: { id: string; locale: string }
 }) {
+  setRequestLocale(params.locale)
   const [t, tc] = await Promise.all([
     getTranslations({ locale: params.locale, namespace: "listing" }),
     getTranslations({ locale: params.locale, namespace: "propertyCard" }),

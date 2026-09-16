@@ -7,7 +7,7 @@ import {
   Megaphone,
   Store,
 } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { TIERS } from "@/lib/stripe"
@@ -25,6 +25,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "realEstateLanding" })
   return {
     title: { absolute: t("metaTitle") },
@@ -52,6 +53,7 @@ export default async function RealEstateLandingPage({
 }: {
   params: { locale: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "realEstateLanding" })
   const price = TIERS.premium.price
 

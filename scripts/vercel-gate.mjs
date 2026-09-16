@@ -143,11 +143,17 @@ async function setProductionBranch() {
 }
 
 async function currentProduction() {
+  // What www.lompoclocals.com actually points at — resolved through the alias,
+  // NOT "latest production-target deployment": a staged `vercel deploy --prod
+  // --skip-domain` build is a production-target deployment too, and on Sep 16
+  // 2026 that made the gate "roll back" to the very build it had just promoted.
   const { projectId } = project()
-  const { deployments = [] } = await api(`/v6/deployments?projectId=${projectId}&target=production&state=READY&limit=1`)
-  const d = deployments[0]
-  if (!d) die("no production deployment found")
-  console.log(`${d.meta?.githubCommitSha || "?"} https://${d.url}`)
+  const { aliases = [] } = await api(`/v4/aliases?projectId=${projectId}&limit=100`)
+  const live = aliases.find((a) => a.alias === "www.lompoclocals.com") || aliases.find((a) => a.alias === "lompoclocals.com")
+  if (!live?.deploymentId && !live?.deployment?.id) die("no alias for www.lompoclocals.com found")
+  const id = live.deploymentId || live.deployment.id
+  const d = await api(`/v13/deployments/${id}`)
+  console.log(`${d.meta?.githubCommitSha || d.gitSource?.sha || "?"} https://${d.url}`)
 }
 
 const commands = {

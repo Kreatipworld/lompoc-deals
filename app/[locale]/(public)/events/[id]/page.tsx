@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { FeaturedDeals } from "@/components/featured-deals"
 import { eq } from "drizzle-orm"
 import { ArrowLeft, Calendar, MapPin } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
 import { businesses, events } from "@/db/schema"
@@ -40,6 +40,7 @@ export async function generateMetadata({
 }: {
   params: { id: string; locale: string }
 }) {
+  setRequestLocale(params.locale)
   const [ev, t, tLaunch] = await Promise.all([
     getApprovedEvent(parseInt(params.id, 10)),
     getTranslations({ locale: params.locale, namespace: "eventDetail" }),
@@ -94,6 +95,7 @@ export default async function EventDetailPage({
 }: {
   params: { id: string; locale: string }
 }) {
+  setRequestLocale(params.locale)
   const ev = await getApprovedEvent(parseInt(params.id, 10))
   if (!ev) notFound()
   const t = await getTranslations("eventDetail")

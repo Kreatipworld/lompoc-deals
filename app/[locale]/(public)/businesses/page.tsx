@@ -11,7 +11,7 @@ import { FIND_TERMS } from "@/lib/find-terms"
 import { SearchBar } from "@/components/search-bar"
 import { AnimeReveal } from "@/components/anime-reveal"
 import { BusinessAvatar } from "@/components/business-avatar"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { categoryLabel } from "@/lib/category-label"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
@@ -21,6 +21,7 @@ import { pageAlternates } from "@/lib/seo"
 export const revalidate = 600
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations("businesses.directory")
   return {
     title: t("metaTitle"),
@@ -49,6 +50,7 @@ const POPULAR_SLUGS = [
  * screens, no anchors, no long scroll. The listings live on /category/<slug>.
  */
 export default async function BusinessesPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const [allBusinesses, cats, stats, members, t, tc, tn, tHomes] = await Promise.all([
     getDirectoryBusinesses(params.locale),
     getAllCategories(),

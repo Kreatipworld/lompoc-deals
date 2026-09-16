@@ -5,7 +5,7 @@ import { db } from "@/db/client"
 import { garageSales } from "@/db/schema"
 import { eq, and } from "drizzle-orm"
 import { MapPin, Clock, Tag, Navigation, ArrowLeft, ShoppingBag } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 import { pick } from "@/lib/localize"
 
@@ -23,6 +23,7 @@ async function getSale(id: number) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const id = parseInt(params.id, 10)
   if (isNaN(id)) return {}
   const sale = await getSale(id)
@@ -46,6 +47,7 @@ function formatDateRange(startDate: Date, endDate: Date, intl = "en-US") {
 }
 
 export default async function GarageSaleDetailPage({ params }: Props) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "garageSaleDetail" })
 
   const id = parseInt(params.id, 10)

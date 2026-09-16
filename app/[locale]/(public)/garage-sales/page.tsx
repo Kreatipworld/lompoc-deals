@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { FeaturedDeals } from "@/components/featured-deals"
 import { ArrowRight, MapPin } from "lucide-react"
 import { Link } from "@/i18n/navigation"
@@ -10,6 +10,7 @@ import { GarageSalesMapSection } from "@/components/garage-sales-map-section"
 import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations("garageSalesPage")
   return {
     // metaTitle already carries the "| Lompoc Locals" suffix — bypass the layout template
@@ -24,6 +25,7 @@ export default async function GarageSalesPage({
 }: {
   params: { locale: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations("garageSalesPage")
   const all = await getFeedItems()
   const sales = all.filter((i) => i.type === "garage_sale")

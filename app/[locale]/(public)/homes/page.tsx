@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { ArrowRight, KeyRound } from "lucide-react"
 import { getAllRealEstateListings, getFeaturedAgents } from "@/lib/queries"
@@ -15,6 +15,7 @@ import { PAGE_CONTAINER } from "@/lib/layout-constants"
 export const revalidate = 600
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "homes" })
   const ogTitle = "Homes in Lompoc — for sale & for rent, by local agents"
   return {
@@ -39,6 +40,7 @@ export default async function HomesPage({
   params: { locale: string }
   searchParams?: { tab?: string }
 }) {
+  setRequestLocale(params.locale)
   const activeTab = searchParams?.tab === "rent" || searchParams?.tab === "sale" ? searchParams.tab : undefined
   const tab = activeTab === "rent" ? "for-rent" : activeTab === "sale" ? "for-sale" : undefined
   const [t, listings, featuredAgents] = await Promise.all([

@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import { ArrowRight, BookOpen, Lightbulb } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { pageAlternates } from "@/lib/seo"
@@ -19,6 +19,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "realEstateGuide" })
   return {
     title: { absolute: t("metaTitle") },
@@ -35,6 +36,7 @@ export default async function RealEstateGuidePage({
 }: {
   params: { locale: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "realEstateGuide" })
 
   return (

@@ -8,7 +8,7 @@ import { newsCoverUrl } from "@/lib/news-cover"
 import { SafeImage } from "@/components/safe-image"
 import { Reveal } from "@/components/motion/reveal"
 import { TiltCard } from "@/components/motion/tilt-card"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 import { NEWS_TOPICS, topicBySlug, topicTag, deriveTopic } from "@/lib/news-topics"
 
@@ -26,6 +26,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "newsUi.news" })
   const es = params.locale === "es"
   return {
@@ -49,6 +50,7 @@ export default async function NewsIndexPage({
   params: { locale: string }
   searchParams: { page?: string; topic?: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "news" })
   const tUi = await getTranslations({ locale: params.locale, namespace: "newsUi.news" })
 

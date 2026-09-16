@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import { ArrowRight, MapPin, Clock } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { categoryLabel, CATEGORY_SLUGS } from "@/lib/category-label"
 import type { Metadata } from "next"
 import { getMasterDigestContent, selectLead } from "@/lib/digest"
@@ -24,6 +24,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "thisWeek" })
   return {
     title: t("metaTitle"),
@@ -50,6 +51,7 @@ function img(u: string | null | undefined): string | null {
 }
 
 export default async function ThisWeekPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const locale = params.locale === "es" ? "es" : "en"
   const safe = <T,>(p: Promise<T>, fallback: T): Promise<T> => p.catch(() => fallback)
   const [content, t, tc, tcEn, ta, tLaunch, tw, tf, forecast, seasons, news, newHomes, ending, directory] = await Promise.all([

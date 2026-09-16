@@ -1,7 +1,7 @@
 import { and, eq, gte } from "drizzle-orm"
 import { FeaturedDeals } from "@/components/featured-deals"
 import { Calendar, MapPin, Rocket } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
 import { events } from "@/db/schema"
@@ -16,6 +16,7 @@ export const revalidate = 300
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations("eventsPage")
   return {
     // metaTitle carries the brand suffix — bypass the layout template
@@ -82,6 +83,7 @@ export default async function EventsPage({
 }: {
   params: { locale: string }
 }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations("eventsPage")
   const tLaunch = await getTranslations({ locale: params.locale, namespace: "newsUi.events" })
   const es = params.locale === "es"

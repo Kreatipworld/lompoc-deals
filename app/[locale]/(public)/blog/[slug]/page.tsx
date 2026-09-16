@@ -11,7 +11,7 @@ import { SafeImage } from "@/components/safe-image"
 import { newsCoverUrl } from "@/lib/news-cover"
 import { BlogRelatedLinks } from "@/components/blog-related-links"
 import { BlogBusinessSpotlight } from "@/components/blog-business-spotlight"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates, seoTitle } from "@/lib/seo"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
@@ -21,6 +21,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string; locale: string }
 }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const [post, tUi] = await Promise.all([
     getBlogPostBySlug(params.slug, params.locale),
     getTranslations({ locale: params.locale, namespace: "newsUi.blog" }),
@@ -59,6 +60,7 @@ export async function generateMetadata({
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string; locale: string } }) {
+  setRequestLocale(params.locale)
   const [t, tUi, tCat] = await Promise.all([
     getTranslations({ locale: params.locale, namespace: "blog" }),
     getTranslations({ locale: params.locale, namespace: "newsUi.blog" }),

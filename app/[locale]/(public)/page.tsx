@@ -18,12 +18,13 @@ import { HeroIntro } from "@/components/motion/hero-intro"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
 import { CouponDemo } from "@/components/coupon-demo"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { categoryLabel } from "@/lib/category-label"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "home" })
   return {
     title: t("metaTitle"),
@@ -108,6 +109,7 @@ const siteJsonLd = {
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t, latestNews, latestHomes, th, nextGames] = await Promise.all([
     getAllCategories(),
     getPartnerBusinesses(params.locale),

@@ -3,15 +3,17 @@ import { Link } from "@/i18n/navigation"
 import { getViewer } from "@/lib/viewer"
 import { getFavoritedDeals } from "@/lib/queries"
 import { DealGrid } from "@/components/deal-card"
-import { getLocale, getTranslations } from "next-intl/server"
+import { getLocale, getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "favorites" })
   return { title: t("metaTitle"), robots: { index: false, follow: true } }
 }
 
-export default async function FavoritesPage() {
+export default async function FavoritesPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const t = await getTranslations("favorites")
   const tFeed = await getTranslations("feed.detail")
   const viewer = await getViewer()

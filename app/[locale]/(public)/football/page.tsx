@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { ArrowRight, CalendarDays, CalendarPlus, MapPin, Ticket, Trophy } from "lucide-react"
 import { getFootballSeason, getFootballNews, kickoffIso, latestResults, upcomingGames, type FootballGame, type TeamSeason } from "@/lib/football"
@@ -38,6 +38,7 @@ const VIDEOS = [
 const BADGE: Record<string, string> = { lompoc: "/football/badge-braves.png", cabrillo: "/football/badge-conqs.png" }
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "football" })
   return {
     title: t("metaTitle"),
@@ -52,6 +53,7 @@ function fmtDate(date: string, locale: string, opts: Intl.DateTimeFormatOptions)
 }
 
 export default async function FootballPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale)
   const [t, teams, news] = await Promise.all([
     getTranslations({ locale: params.locale, namespace: "football" }),
     getFootballSeason(),
