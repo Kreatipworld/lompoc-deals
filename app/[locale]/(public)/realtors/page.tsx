@@ -86,7 +86,7 @@ export default async function RealtorsInvitePage({ params }: { params: { locale:
               {t("eyebrow")}
             </div>
             <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight sm:text-6xl" style={{ textWrap: "balance" }}>
-              {s.agents <= 1 ? t("h1One") : t("h1Few", { count: s.agents })}
+              {t("h1")}
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-primary-foreground/90 sm:text-lg">
               {t("lead", { businesses: businessesRounded.toLocaleString() })}
@@ -102,7 +102,7 @@ export default async function RealtorsInvitePage({ params }: { params: { locale:
             {[
               { n: `${businessesRounded.toLocaleString()}+`, l: t("statBusinesses") },
               { n: "1,000+", l: t("statFollowers") },
-              { n: String(s.agents), l: t("statAgents") },
+              { n: String(s.deals), l: t("statDeals") },
               { n: String(s.homes), l: t("statHomes") },
             ].map((x) => (
               <div key={x.l} className="rounded-2xl border border-primary-foreground/15 bg-primary-foreground/10 px-4 py-4 text-center backdrop-blur-sm">
