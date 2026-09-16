@@ -509,10 +509,16 @@ try {
   const routes = ["/realtors", "/football", "/this-week", "/news", "/map", "/businesses", "/deals", "/events", "/things-to-do", "/homes", "/category/wineries", "/category/food-drink"]
   const sizes = new Map()
   for (const r of routes) {
-    const res = await fetch(`${SITE}${r}/opengraph-image`, { cache: "no-store" })
+    // Next names generated covers /path/opengraph-image-<hash> and prints them absolute to
+    // www; read the real URL from the page's og:image tag and fetch it on the base under test.
+    const html = await fetch(`${SITE}${r}`, { cache: "no-store" }).then((x) => x.text())
+    const m = html.match(/<meta property="og:image" content="([^"]+)"/)
+    if (!m) { fail(`${r}: no og:image tag`); continue }
+    const url = m[1].replace(/^https?:\/\/(www\.)?lompoclocals\.com/, SITE)
+    const res = await fetch(url, { cache: "no-store", redirect: "follow" })
     const ct = res.headers.get("content-type") || ""
     const buf = res.ok ? Buffer.from(await res.arrayBuffer()) : Buffer.alloc(0)
-    if (!res.ok || !/image\/png/.test(ct) || buf.length < 20_000) { fail(`${r}/opengraph-image → ${res.status} ${ct} ${buf.length}b`); continue }
+    if (!res.ok || !/image\/png/.test(ct) || buf.length < 20_000) { fail(`${r} cover ${url.replace(SITE, "")} → ${res.status} ${ct} ${buf.length}b`); continue }
     sizes.set(r, buf.length)
   }
   const distinct = new Set(sizes.values()).size
