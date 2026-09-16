@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import Map, { Marker, Popup, NavigationControl, Source } from "react-map-gl/mapbox"
+import { useState, useCallback, useRef } from "react"
+import Map, { Marker, Popup, NavigationControl, Source, type MapRef } from "react-map-gl/mapbox"
 import { Star, MapPin, Navigation, BedDouble } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { useLocale } from "next-intl"
@@ -64,9 +64,15 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
     setSelected(null)
   }, [])
 
+  // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
+  // Ease the pin toward the middle so the popup never clips at the container edge (phones).
+  const mapRef = useRef<MapRef | null>(null)
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+
   return (
     <Map
       mapboxAccessToken={MAPBOX_TOKEN}
+      ref={mapRef}
       initialViewState={{
         ...LOMPOC_CENTER,
         zoom: 13.2,
@@ -101,6 +107,7 @@ export function HotelsMap({ hotels }: { hotels: Hotel[] }) {
             onClick={(e) => {
               e.stopPropagation()
               setSelected(hotel)
+              focus(hotel.lng, hotel.lat)
             }}
             title={hotel.name}
           >

@@ -1,7 +1,7 @@
 "use client"
 
-import { useCallback, useState } from "react"
-import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
+import { useCallback, useState, useRef } from "react"
+import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
 import { Link } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
 import type { FeedDisplayItem } from "@/lib/feed-queries"
@@ -50,6 +50,11 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
     setSelectedId(null)
   }, [])
 
+  // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
+  // Ease the pin toward the middle so the popup never clips at the container edge (phones).
+  const mapRef = useRef<MapRef | null>(null)
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+
   if (!MAPBOX_TOKEN) {
     return (
       <p className="py-12 text-center text-muted-foreground">
@@ -63,6 +68,7 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
       <div className="h-[520px] overflow-hidden rounded-2xl border">
         <Map
           mapboxAccessToken={MAPBOX_TOKEN}
+          ref={mapRef}
           initialViewState={{ ...LOMPOC_CENTER, zoom: 12.5 }}
           style={{ width: "100%", height: "100%" }}
           mapStyle="mapbox://styles/mapbox/streets-v12"
@@ -82,6 +88,7 @@ export function FeedMap({ items }: { items: FeedDisplayItem[] }) {
                 onClick={(e) => {
                   e.stopPropagation()
                   setSelectedId(item.id)
+                  focus(item.lng!, item.lat!)
                 }}
               >
                 <Pin color={PIN_COLORS[item.type] ?? "#0B992F"} selected={item.id === selectedId} />

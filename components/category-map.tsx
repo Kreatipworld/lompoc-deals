@@ -35,7 +35,7 @@ function Pin({ member, selected }: { member: boolean; selected: boolean }) {
   const ink = member ? "#3a0743" : "#ffffff"
   return (
     <div className={`relative transition-transform duration-200 ${selected ? "scale-125" : "hover:scale-110"}`}>
-      <svg viewBox="0 0 36 50" width="34" height="47" xmlns="http://www.w3.org/2000/svg" style={{ filter: `drop-shadow(0 3px 6px rgba(0,0,0,${selected ? "0.45" : "0.30"}))` }}>
+      <svg viewBox="0 0 36 50" className="h-[40px] w-[29px] sm:h-[47px] sm:w-[34px]" xmlns="http://www.w3.org/2000/svg" style={{ filter: `drop-shadow(0 3px 6px rgba(0,0,0,${selected ? "0.45" : "0.30"}))` }}>
         <path d="M18 0 C8 0 0 8 0 18 C0 31 18 50 18 50 C18 50 36 31 36 18 C36 8 28 0 18 0 Z" fill={color} />
         <circle cx="18" cy="18" r="11" fill={ink} fillOpacity={member ? 0.14 : 0.92} />
         {/* wine glass */}

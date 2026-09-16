@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
+import { useState, useCallback, useRef } from "react"
+import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
 import { Link } from "@/i18n/navigation"
 import type { MapBusiness, MapActivity } from "@/lib/queries"
 
@@ -78,9 +78,15 @@ export function LompocMap({
     setSelectedActivity(null)
   }, [])
 
+  // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
+  // Ease the pin toward the middle so the popup never clips at the container edge (phones).
+  const mapRef = useRef<MapRef | null>(null)
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+
   return (
     <Map
       mapboxAccessToken={MAPBOX_TOKEN}
+      ref={mapRef}
       initialViewState={{
         ...LOMPOC_CENTER,
         zoom: 14,
@@ -106,6 +112,7 @@ export function LompocMap({
               void trackPinClick(b.id)
               setSelectedActivity(null)
               setSelectedBusiness(b)
+              focus(b.lng, b.lat)
             }}
           >
             <BusinessPin hasDeals={b.activeDealCount > 0} />
@@ -126,6 +133,7 @@ export function LompocMap({
               e.stopPropagation()
               setSelectedBusiness(null)
               setSelectedActivity(a)
+              focus(a.lng, a.lat)
             }}
           >
             <ActivityPin />

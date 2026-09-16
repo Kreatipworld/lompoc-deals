@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
-import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
+import { useState, useCallback, useMemo, useRef } from "react"
+import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
 import { Link } from "@/i18n/navigation"
 import { useLocale } from "next-intl"
 
@@ -54,9 +54,15 @@ export function HomesMap({ homes, labels }: { homes: HomePin[]; labels: { forSal
   }, [homes])
   const onMapClick = useCallback(() => setSelected(null), [])
 
+  // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
+  // Ease the pin toward the middle so the popup never clips at the container edge (phones).
+  const mapRef = useRef<MapRef | null>(null)
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+
   return (
     <Map
       mapboxAccessToken={MAPBOX_TOKEN}
+      ref={mapRef}
       initialViewState={{ ...center, zoom: homes.length > 1 ? 12.6 : 13.4 }}
       style={{ width: "100%", height: "100%" }}
       mapStyle="mapbox://styles/mapbox/streets-v12"
@@ -72,6 +78,7 @@ export function HomesMap({ homes, labels }: { homes: HomePin[]; labels: { forSal
             onClick={(e) => {
               e.stopPropagation()
               setSelected(h)
+              focus(h.lng, h.lat)
             }}
           >
             <Pin type={h.type} selected={selected?.id === h.id} />

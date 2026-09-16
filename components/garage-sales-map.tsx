@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
 import { useLocale } from "next-intl"
-import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox"
+import Map, { Marker, Popup, NavigationControl, type MapRef } from "react-map-gl/mapbox"
 import { Link } from "@/i18n/navigation"
 import { MapPin, Clock } from "lucide-react"
 import { pick } from "@/lib/localize"
@@ -75,11 +75,17 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
     setSelected(null)
   }, [])
 
+  // Owner (Sep 15 2026): "in all the maps, when we click the pin we can see the information."
+  // Ease the pin toward the middle so the popup never clips at the container edge (phones).
+  const mapRef = useRef<MapRef | null>(null)
+  const focus = (lng: number, lat: number) => mapRef.current?.easeTo({ center: [lng, lat], offset: [0, 120], duration: 450 })
+
   const mappable = sales.filter((s) => s.lat != null && s.lng != null)
 
   return (
     <Map
       mapboxAccessToken={MAPBOX_TOKEN}
+      ref={mapRef}
       initialViewState={{
         ...LOMPOC_CENTER,
         zoom: 13,
@@ -103,6 +109,7 @@ export function GarageSalesMap({ sales }: { sales: GarageSaleLite[] }) {
             onClick={(e) => {
               e.stopPropagation()
               setSelected(sale)
+              focus(sale.lng!, sale.lat!)
             }}
           >
             <GaragePin selected={selected?.id === sale.id} />

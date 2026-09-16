@@ -2204,7 +2204,7 @@
     "quickHomes": "Casas en venta y renta",
     "quickHeading": "Atajos",
     "mapHeading": "Mapa de {name}",
-    "mapSub": "{count} lugares con dirección · toca un pin",
+    "mapSub": "{count} bodegas y salas de cata · toca un pin para ver detalles",
     "mapDirections": "Cómo llegar",
     "mapAll": "Todas las bodegas",
     "mapDowntown": "Salas de cata del centro"
