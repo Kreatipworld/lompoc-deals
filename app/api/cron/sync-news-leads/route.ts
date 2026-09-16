@@ -105,6 +105,8 @@ export async function GET(request: Request) {
   }
 
   const summary = { reports, inserted: reports.reduce((n, r) => n + r.inserted, 0) }
-  await logCronRun("sync-news-leads", summary, reports.every((r) => !r.error))
+  // One feed rate-limiting us (Santa Maria Times answered 429 on Sep 16) is not a failed run;
+  // the run failed only if no source could be read at all. Per-source errors stay in the summary.
+  await logCronRun("sync-news-leads", summary, reports.some((r) => !r.error))
   return NextResponse.json(summary)
 }
