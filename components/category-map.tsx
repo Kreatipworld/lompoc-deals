@@ -54,9 +54,9 @@ function fanOut(pins: CategoryPin[]): CategoryPin[] {
     groups.set(k, [...(groups.get(k) ?? []), p])
   }
   const out: CategoryPin[] = []
-  for (const g of groups.values()) {
+  for (const g of Array.from(groups.values())) {
     if (g.length === 1) { out.push(g[0]); continue }
-    g.forEach((p, i) => {
+    g.forEach((p: CategoryPin, i: number) => {
       const a = (i / g.length) * Math.PI * 2
       const r = 0.00022 // ≈ 24 m
       out.push({ ...p, lat: p.lat + Math.sin(a) * r, lng: p.lng + Math.cos(a) * r * 1.2 })
