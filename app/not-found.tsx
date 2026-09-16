@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { MapPin } from "lucide-react"
+import { ReportBug } from "@/components/report-bug"
 
 export default function NotFound() {
   return (
@@ -15,6 +16,9 @@ export default function NotFound() {
       >
         Back to feed
       </Link>
+      <div className="mt-6 w-full">
+        <ReportBug source="not_found" />
+      </div>
     </div>
   )
 }

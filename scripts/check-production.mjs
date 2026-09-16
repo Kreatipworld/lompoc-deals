@@ -459,9 +459,11 @@ try {
 
 console.log("\n15. Report a bug — the button is there when things go wrong (owner: 'that makes our platform smarter')")
 try {
-  const nf = await fetch(`${SITE}/this-page-does-not-exist-${Date.now()}`, { cache: "no-store" })
-  const nfHtml = await nf.text()
-  nf.status === 404 && nfHtml.includes('data-report-bug="not_found"') ? pass("404 page shows Report a bug") : fail(`404 page: status ${nf.status}, Report a bug ${nfHtml.includes('data-report-bug="not_found"') ? "present" : "MISSING"}`)
+  for (const p of [`/this-page-does-not-exist-${Date.now()}`, `/es/esta-pagina-no-existe-${Date.now()}`]) {
+    const nf = await fetch(`${SITE}${p}`, { cache: "no-store" })
+    const nfHtml = await nf.text()
+    nf.status === 404 && nfHtml.includes('data-report-bug="not_found"') ? pass(`404 page ${p.startsWith("/es") ? "(es)" : "(en)"} shows Report a bug`) : fail(`404 page ${p}: status ${nf.status}, Report a bug ${nfHtml.includes('data-report-bug="not_found"') ? "present" : "MISSING"}`)
+  }
   const home = await fetch(`${SITE}/`, { cache: "no-store" }).then((r) => r.text())
   home.includes('data-report-bug="footer"') ? pass("footer carries Report a bug") : fail("footer: Report a bug link missing")
   // Too-short description → 400 proves the API is deployed without writing a row.
