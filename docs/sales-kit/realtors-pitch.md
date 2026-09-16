@@ -1,10 +1,10 @@
 # Realtor outreach — the link and the pitch (Sep 16 2026)
 
 Link: **https://www.lompoclocals.com/realtors** (redirects to the Plus landing page, tracked as utm_campaign=realtors).
-Rules: email/DM only, one CTA, Plus is $99.99/mo cancel anytime, never "free", every number verified (456 approved businesses, 1,000+ TikTok followers, first agent live Sep 13 with 4 homes).
+Rules: never the owner's name — sign as "Lompoc Locals" / "the Lompoc Locals team"; email/DM only, one CTA, Plus is $99.99/mo cancel anytime, never "free", every number verified (456 approved businesses, 1,000+ TikTok followers, first agent live Sep 13 with 4 homes).
 
 ## Short DM / text (Instagram, Facebook, SMS)
-Hi {first name} — Andres from Lompoc Locals. We just opened a homes section: every listing on the map next to 450+ Lompoc businesses, plus a "Request a tour" button that emails you the lead directly. The first Lompoc agent put 4 homes on it in one afternoon. Plus membership is $99.99/mo, cancel anytime, and you can be live tonight: lompoclocals.com/realtors
+Hi {first name} — this is Lompoc Locals. We just opened a homes section: every listing on the map next to 450+ Lompoc businesses, plus a "Request a tour" button that emails you the lead directly. The first Lompoc agent put 4 homes on it in one afternoon. Plus membership is $99.99/mo, cancel anytime, and you can be live tonight: lompoclocals.com/realtors
 
 ## Email
 Subject: Your listings in front of Lompoc, tonight
@@ -22,13 +22,13 @@ What you get with Plus ($99.99/month, cancel anytime):
 
 It takes five minutes: lompoclocals.com/realtors → Start with Plus → add your first home.
 
-The first Lompoc agent joined Sept 13 and had four homes live the same afternoon. Reply to this email with any question — I answer myself.
+The first Lompoc agent joined Sept 13 and had four homes live the same afternoon. Reply to this email with any question — a real person on the team answers.
 
-Andres
-Lompoc Locals · hello@lompoclocals.com
+The Lompoc Locals team
+hello@lompoclocals.com
 
 ## Follow-up (3 days later, if no reply)
 {First name}, quick one — homes on Lompoc Locals now show on the main map as green pins, so every neighbor browsing for a taco place sees your listing too. Five minutes to be on it: lompoclocals.com/realtors
 
 ## Spanish DM
-Hola {nombre} — soy Andres de Lompoc Locals. Abrimos una sección de casas: cada propiedad en el mapa junto a más de 450 negocios de Lompoc, con un botón de "Pedir visita" que te manda el interesado directo a tu correo. La membresía Plus cuesta $99.99 al mes, cancelas cuando quieras: lompoclocals.com/realtors
+Hola {nombre} — te escribimos de Lompoc Locals. Abrimos una sección de casas: cada propiedad en el mapa junto a más de 450 negocios de Lompoc, con un botón de "Pedir visita" que te manda el interesado directo a tu correo. La membresía Plus cuesta $99.99 al mes, cancelas cuando quieras: lompoclocals.com/realtors
