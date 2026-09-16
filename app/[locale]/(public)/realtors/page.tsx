@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation"
-import { ArrowRight, Check, Home, Inbox, MapPin, Star, Video } from "lucide-react"
+import { ArrowRight, Check, Home, Inbox, MapPin, Star, Video, Users, Plane, Compass } from "lucide-react"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import { sql } from "drizzle-orm"
@@ -7,6 +7,9 @@ import { db } from "@/db/client"
 import { TIERS } from "@/lib/stripe"
 import { pageAlternates } from "@/lib/seo"
 import { getFeaturedAgents, getAllRealEstateListings } from "@/lib/queries"
+import { sessionCounts } from "@/lib/analytics/engaged"
+import { SOCIAL_PROOF } from "@/lib/social-proof"
+import { HOTELS } from "@/lib/hotels-data"
 import { PropertyListingGrid } from "@/components/property-listing-card"
 import { Reveal } from "@/components/reveal"
 import { HeroIntro } from "@/components/motion/hero-intro"
@@ -34,20 +37,25 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 }
 
 async function stats() {
-  const [biz, homes, agents] = await Promise.all([
+  const [biz, homes, agents, subs, events, wineries, deals, visits] = await Promise.all([
     db.execute(sql`select count(*)::int as n from businesses where status = 'approved'`),
     db.execute(sql`select count(*)::int as n from property_listings l join businesses b on b.id = l.business_id where l.status = 'active' and b.status = 'approved' and (l.expires_at is null or l.expires_at > now())`),
     db.execute(sql`select count(distinct l.business_id)::int as n from property_listings l join businesses b on b.id = l.business_id where l.status = 'active' and b.status = 'approved'`),
+    db.execute(sql`select count(confirmed_at)::int as n from subscribers`),
+    db.execute(sql`select count(*)::int as n from events where status = 'approved' and starts_at between now() and now() + interval '30 days'`),
+    db.execute(sql`select count(*)::int as n from businesses b join categories c on c.id = b.category_id where c.slug = 'wineries' and b.status = 'approved'`),
+    db.execute(sql`select count(*)::int as n from deals where not paused and (expires_at is null or expires_at > now())`),
+    sessionCounts(30).catch(() => ({ total: 0, engaged: 0 })),
   ])
   const n = (r: { rows: Record<string, unknown>[] }) => Number(r.rows[0]?.n ?? 0)
-  return { businesses: n(biz), homes: n(homes), agents: n(agents) }
+  return { businesses: n(biz), homes: n(homes), agents: n(agents), subscribers: n(subs), events: n(events), wineries: n(wineries), deals: n(deals), visits: visits.engaged }
 }
 
 export default async function RealtorsInvitePage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale)
   const [t, s, agents, listings] = await Promise.all([
     getTranslations({ locale: params.locale, namespace: "realtorsInvite" }),
-    stats().catch(() => ({ businesses: 450, homes: 0, agents: 1 })),
+    stats().catch(() => ({ businesses: 450, homes: 0, agents: 1, subscribers: 0, events: 0, wineries: 38, deals: 0, visits: 0 })),
     getFeaturedAgents(3).catch(() => []),
     getAllRealEstateListings(undefined, 3).catch(() => []),
   ])
@@ -126,6 +134,59 @@ export default async function RealtorsInvitePage({ params }: { params: { locale:
             </div>
           ))}
         </Reveal>
+      </section>
+
+      {/* WHO SEES IT — real people, real numbers (owner: "showcase the people that visit and how we market
+          new people in Lompoc, locals and tourists") */}
+      <section className="border-y bg-primary text-primary-foreground">
+        <div className={`${PAGE_CONTAINER} py-16 sm:py-20`}>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">{t("audEyebrow")}</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl" style={{ textWrap: "balance" }}>{t("audH2")}</h2>
+            <p className="mt-4 text-base leading-relaxed text-primary-foreground/85">{t("audBody")}</p>
+          </div>
+          <Reveal preset="stagger" className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4">
+            {[
+              { n: s.visits.toLocaleString(), l: t("audVisits") },
+              { n: SOCIAL_PROOF.reactions.toLocaleString(), l: t("audReactions") },
+              { n: SOCIAL_PROOF.shares.toLocaleString(), l: t("audShares") },
+              { n: s.subscribers.toLocaleString(), l: t("audSubscribers") },
+            ].map((x) => (
+              <div key={x.l} className="rounded-2xl border border-primary-foreground/15 bg-primary-foreground/10 px-4 py-4 text-center">
+                <div className="font-display text-3xl font-bold tabular-nums text-gold">{x.n}</div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground/80">{x.l}</div>
+              </div>
+            ))}
+          </Reveal>
+          <p className="mt-3 text-center text-xs text-primary-foreground/60">{t("audNote", { days: SOCIAL_PROOF.windowDays })}</p>
+
+          <Reveal preset="stagger" className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+            {[
+              { icon: <Users className="h-5 w-5" />, title: t("a1Title"), body: t("a1Body", { deals: s.deals, subscribers: s.subscribers }) },
+              { icon: <Plane className="h-5 w-5" />, title: t("a2Title"), body: t("a2Body") },
+              { icon: <Compass className="h-5 w-5" />, title: t("a3Title"), body: t("a3Body", { hotels: HOTELS.length, wineries: s.wineries, events: s.events }) },
+            ].map((g) => (
+              <div key={g.title} className="rounded-3xl border border-primary-foreground/15 bg-primary-foreground/10 p-6">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gold text-gold-foreground">{g.icon}</div>
+                <h3 className="mt-4 font-display text-xl font-semibold">{g.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-primary-foreground/85">{g.body}</p>
+              </div>
+            ))}
+          </Reveal>
+
+          <div className="mx-auto mt-12 max-w-3xl rounded-3xl border border-gold/50 bg-primary-foreground/5 p-6 sm:p-8">
+            <h3 className="font-display text-xl font-semibold text-gold">{t("mktH3")}</h3>
+            <ul className="mt-4 grid gap-2.5 text-sm sm:grid-cols-2">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <li key={n} className="flex items-start gap-2.5">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                  <span>{t(`mkt${n}`)}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-sm font-semibold">{t("mktClose")}</p>
+          </div>
+        </div>
       </section>
 
       {/* PROOF — what is live right now */}
