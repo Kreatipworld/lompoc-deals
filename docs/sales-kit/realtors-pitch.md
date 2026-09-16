@@ -1,7 +1,7 @@
 # Realtor outreach — the link and the pitch (Sep 16 2026)
 
 Link: **https://www.lompoclocals.com/realtors** (redirects to the Plus landing page, tracked as utm_campaign=realtors).
-Rules: never the owner's name — sign as "Lompoc Locals" / "the Lompoc Locals team"; email/DM only, one CTA, Plus is $99.99/mo cancel anytime, never "free", every number verified (456 approved businesses, 1,000+ TikTok followers, first agent live Sep 13 with 4 homes).
+Rules: never compare prospects to members or count who is in (sell the opportunity); never the owner's name — sign as "Lompoc Locals" / "the Lompoc Locals team"; email/DM only, one CTA, Plus is $99.99/mo cancel anytime, never "free", every number verified (456 approved businesses, 1,000+ TikTok followers, first listings live Sep 13).
 
 ## Short DM / text (Instagram, Facebook, SMS)
 Hi {first name} — this is Lompoc Locals. We just opened Lompoc's own homes section. Every listing you add goes on the map next to 450+ Lompoc businesses, gets a "Request a tour" button that emails you the lead, and goes into the videos we post to 1,000+ followers. Buyers are already on the page; your listings belong next to them. Plus is $99.99/mo, cancel anytime, live tonight: lompoclocals.com/realtors
