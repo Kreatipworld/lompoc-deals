@@ -482,6 +482,21 @@ try {
   else pass(`/category/wineries: map with ${n} winery pins (matches DB)`)
 } catch (e) { fail(`wineries map: ${e.message}`) }
 
+console.log("\n17. CDN cache — public pages are ISR, not a function render per visit (owner: 'my bill is going up')")
+try {
+  const pages = ["/news", "/football", "/this-week", "/", "/homes"]
+  let bad = 0
+  for (const p of pages) {
+    // Two fetches: the first may MISS (fills the cache); the second must be served from the edge.
+    await fetch(`${SITE}${p}`, { cache: "no-store" })
+    const res = await fetch(`${SITE}${p}`, { cache: "no-store" })
+    const cc = res.headers.get("cache-control") || ""
+    const xv = res.headers.get("x-vercel-cache") || "(none)"
+    if (/no-store/.test(cc) || !/HIT|STALE|PRERENDER/.test(xv)) { bad++; fail(`${p}: cache-control "${cc}" · x-vercel-cache ${xv} — rendered on a function`) }
+  }
+  if (bad === 0) pass(`${pages.length} key pages served from the CDN cache`)
+} catch (e) { fail(`cdn cache: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

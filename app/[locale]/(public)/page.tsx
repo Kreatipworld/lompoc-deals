@@ -66,7 +66,10 @@ function getCategoryImage(slug: string): string | null {
 // sponsors) reshuffle on every visit and every business gets an equal turn at the
 // top slot. Under static prerendering the shuffle would freeze at build time and
 // the same few businesses would own the homepage forever.
-export const dynamic = "force-dynamic"
+// ISR: the home page is the most-visited page; a 5-minute cache means the CDN
+// answers most visits without a function render. Owner saves call
+// revalidateBusinessSurfaces so member edits still show within seconds.
+export const revalidate = 300
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 

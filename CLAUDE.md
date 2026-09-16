@@ -44,33 +44,32 @@ Visiting `/` auto-redirects to `/en` (or `/es` based on browser language) via mi
 
 ## Shipping — how changes reach https://www.lompoclocals.com
 
-Vercel's production branch is **`production`**, not `main`. A push to `main` only builds a
-**preview**; residents never see it. `scripts/ship.sh` is the ONLY path to production:
+Git pushes build NOTHING on Vercel (`vercel.json` → `ignoreCommand` → `scripts/vercel-ignore.sh`).
+`scripts/ship.sh` is the ONLY path to production, and it costs exactly one build per ship:
 
 ```bash
-./scripts/ship.sh "feat: describe what you changed"   # commit → push main → preview → checks → promote → checks
-./scripts/ship.sh --preview "feat: ..."               # same, but stop after the preview passes
-./scripts/ship.sh --verify                            # no commit: check the preview of origin/main (agents)
-./scripts/ship.sh --promote                           # promote origin/main (skips re-checking a verified preview)
+./scripts/ship.sh "feat: describe what you changed"   # commit → push main → ONE staged production build → checks → promote → checks on www
+./scripts/ship.sh --verify                            # no commit: build + check origin/main, do not promote (agents)
+./scripts/ship.sh --promote                           # promote origin/main (reuses a verified build, no rebuild)
+./scripts/ship.sh --promote --recheck                 # rebuild + recheck even if verified
 ```
 
-Several sessions share this working tree, so `ship.sh "msg"` refuses to commit while untracked
-files exist (`--all` overrides). Agents: `git add <your files> && git commit`, `git push origin main`,
-then `./scripts/ship.sh --verify` and report the preview URL.
-
-What the gate does: waits for the preview build of your exact commit, runs
-`scripts/check-production.mjs --base=<preview-url>` against it (every section page must render,
-search, tracking, photos, Stripe prices, Spanish, 404s…), and only if all green fast-forwards
-`production` to that commit. Then it re-checks the live site and rolls back if that is red.
+What the gate does: checks the exact commit out into a clean worktree, runs
+`vercel deploy --prod --skip-domain` (a real production build with production env, not on the domain),
+runs `scripts/check-production.mjs` + `scripts/smoke-real-estate.mjs` (Playwright, desktop + iPhone)
+against it, and only if all green runs `vercel promote`. Then it re-checks www and rolls back to the
+previous deployment if that is red. Commits that touch only `content/`, `docs/`, memory or `*.md`
+never build at all (the `production` branch is just a record of what was promoted).
 
 Rules:
-- **Never `git push origin production` by hand** and never `vercel deploy --prod`. Both skip the gate.
-- Subagents commit their own files explicitly, push to `main`, run `ship.sh --verify` and **report
-  the preview URL**; the coordinator promotes with `./scripts/ship.sh --promote`.
-- Plain `git push` to `main` still works for previews — the pre-push hook runs lint + title + search checks.
+- **Never `vercel deploy --prod` without `--skip-domain`, never `vercel promote` or `git push origin production` by hand.**
+- Subagents commit their own files explicitly, push to `main`, run `ship.sh --verify` and report the
+  build URL; the coordinator promotes with `./scripts/ship.sh --promote`.
+- Batch social logs / docs with code commits or ship them together — every extra ship is a build minute.
+- Cost rules (Sep 16 2026, "my bill is going up"): public pages must be ISR (`export const revalidate`),
+  never read cookies/session in shared server components (the header's user menu is client-side via
+  `/api/me`); health check runs every 2 min with page rotation; image variants cache 30 days.
 - If a check is red, fix forward and ship again; production keeps the last good deployment.
-- `/api/cron/health-check` watches 12 pages + the database every minute and emails hello@ on the
-  first failure (and once on recovery). A red email after a ship means: `vercel rollback`.
 
 ## Health, bugs, backups
 - `/api/cron/health-check` runs every minute (13 pages + DB; one heartbeat row per 10 min in `cron_runs`,
