@@ -114,6 +114,27 @@ export default async function RealtorsInvitePage({ params }: { params: { locale:
         </div>
       </section>
 
+      {/* THE MARKET WE ARE OPENING (owner: "talk about the market we are opening for realtors") */}
+      <section className="border-b bg-secondary/30">
+        <div className={`${PAGE_CONTAINER} py-16 sm:py-20`}>
+          <div className="grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-center">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">{t("mktOpenEyebrow")}</p>
+              <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl" style={{ textWrap: "balance" }}>{t("mktOpenH2")}</h2>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{t("mktOpenBody")}</p>
+            </div>
+            <ul className="space-y-3">
+              {[1, 2, 3, 4].map((n) => (
+                <li key={n} className="flex items-start gap-3 rounded-2xl border bg-card p-4 shadow-sm">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary font-display text-xs font-bold text-primary-foreground">{n}</span>
+                  <span className="text-sm leading-relaxed"><strong className="font-semibold">{t(`mo${n}Title`)}</strong> {t(`mo${n}Body`)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* WHY NOW */}
       <section className={`${PAGE_CONTAINER} py-16 sm:py-20`}>
         <div className="mx-auto max-w-3xl text-center">
