@@ -2202,7 +2202,10 @@
     "memberBadge": "Member",
     "openNow": "Open now",
     "quickHomes": "Homes for sale & rent",
-    "quickHeading": "Quick picks"
+    "quickHeading": "Quick picks",
+    "mapHeading": "{name} map",
+    "mapSub": "{count} spots with a street address · tap a pin",
+    "mapDirections": "Directions"
   },
   "blog": {
     "eyebrow": "Lompoc Locals Blog",

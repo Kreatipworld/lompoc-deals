@@ -2202,7 +2202,10 @@
     "memberBadge": "Miembro",
     "openNow": "Abierto ahora",
     "quickHomes": "Casas en venta y renta",
-    "quickHeading": "Atajos"
+    "quickHeading": "Atajos",
+    "mapHeading": "Mapa de {name}",
+    "mapSub": "{count} lugares con dirección · toca un pin",
+    "mapDirections": "Cómo llegar"
   },
   "blog": {
     "eyebrow": "Blog de Lompoc Locals",

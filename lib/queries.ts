@@ -249,6 +249,9 @@ export type DirectoryBusiness = {
   hoursJson: unknown
   /** Effective plan rank: Plus 2, Growth 1, Free 0. Members are showcased first everywhere. */
   tier: number
+  /** Coordinates when the business has a street address; category maps pin these. */
+  lat?: number | null
+  lng?: number | null
 }
 
 export async function getDirectoryBusinesses(locale: Locale = "en"): Promise<DirectoryBusiness[]> {
@@ -302,6 +305,8 @@ export async function getBusinessesByCategorySlug(categorySlug: string, locale: 
       activeDealCount: sql<number>`count(distinct ${deals.id}) filter (where ${deals.expiresAt} > now())::int`,
       hoursJson: businesses.hoursJson,
       tier: sql<number>`coalesce(max(${tierRank}), 0)::int`,
+      lat: businesses.lat,
+      lng: businesses.lng,
     })
     .from(businesses)
     .leftJoin(categories, eq(businesses.categoryId, categories.id))

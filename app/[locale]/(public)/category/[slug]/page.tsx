@@ -12,6 +12,7 @@ import { filterOpenNow, isOpenNow, parseHours, DAY_KEYS } from "@/lib/hours"
 import { FIND_TERMS } from "@/lib/find-terms"
 import { searchAll, businessesBySlugs } from "@/lib/search"
 import { CategoryList } from "@/components/directory/category-list"
+import { CategoryMap } from "@/components/category-map"
 import { getViewer } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
@@ -78,6 +79,11 @@ export default async function CategoryPage({
     getViewer(),
   ])
   const categoryBusinesses = openNow ? filterOpenNow(allCategoryBusinesses) : allCategoryBusinesses
+  // The map shows the whole category regardless of the open-now filter.
+  const mapPins = allCategoryBusinesses
+    .filter((b) => typeof b.lat === "number" && typeof b.lng === "number" && Number.isFinite(b.lat) && Number.isFinite(b.lng))
+    .map((b) => ({ id: b.id, name: b.name, slug: b.slug, lat: b.lat as number, lng: b.lng as number, address: b.address, logoUrl: b.logoUrl, photoUrl: b.photoUrl, tier: b.tier }))
+
   const localeKey = params.locale === "es" ? "es" : "en"
   // Quick picks: only the find pages that actually return businesses (owner: "the
   // guidance has to be perfect" — never a chip that lands on an empty page).
@@ -156,6 +162,20 @@ export default async function CategoryPage({
           />
         </div>
       </section>
+
+      {/* WINERIES: the category's own map — every winery and tasting room with a
+          street address, nothing else (owner, Sep 15 2026). Members get gold pins. */}
+      {params.slug === "wineries" && mapPins.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 pt-6 sm:pt-8" data-category-map={mapPins.length}>
+          <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="font-display text-xl font-semibold tracking-tight sm:text-2xl">{t("mapHeading", { name: catName })}</h2>
+            <p className="text-sm text-muted-foreground">{t("mapSub", { count: mapPins.length })}</p>
+          </div>
+          <div className="relative h-[52vh] min-h-[380px] overflow-hidden rounded-[22px] border border-border/70 shadow-sm">
+            <CategoryMap pins={mapPins} labels={{ viewProfile: t("viewProfile"), directions: t("mapDirections"), member: t("memberBadge") }} />
+          </div>
+        </section>
+      )}
 
       {/* FEATURED MEMBERS — category member slide (like the landing page) */}
       <SponsorShowcase categorySlug={params.slug} />

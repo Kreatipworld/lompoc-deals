@@ -472,6 +472,16 @@ try {
   api.status === 400 && body.error === "description_too_short" ? pass("/api/bug-report validates input") : fail(`/api/bug-report → ${api.status} ${JSON.stringify(body).slice(0, 120)}`)
 } catch (e) { fail(`report a bug: ${e.message}`) }
 
+console.log("\n16. Wineries map — every winery with a street address is a pin (owner: 'all the pins of only wineries')")
+try {
+  const [{ n }] = await sql`select count(*)::int as n from businesses b join categories c on c.id = b.category_id where c.slug = 'wineries' and b.status = 'approved' and b.lat is not null and b.lng is not null`
+  const html = await fetch(`${SITE}/category/wineries`, { cache: "no-store" }).then((r) => r.text())
+  const m = html.match(/data-category-map="(\d+)"/)
+  if (!m) fail("/category/wineries: map section missing")
+  else if (Number(m[1]) !== n) fail(`/category/wineries: map has ${m[1]} pins, DB has ${n} wineries with coordinates`)
+  else pass(`/category/wineries: map with ${n} winery pins (matches DB)`)
+} catch (e) { fail(`wineries map: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`
