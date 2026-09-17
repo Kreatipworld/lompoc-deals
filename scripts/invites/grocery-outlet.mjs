@@ -62,6 +62,7 @@ const html = `
 </div>`
 
 if (/\bfree\b/i.test(html)) { console.error("✗ 'free' found in the email — fix the copy"); process.exit(1) }
+if (process.env.DUMP) { const fs = await import("node:fs"); fs.writeFileSync(process.env.DUMP, html); console.log("dumped", process.env.DUMP) }
 const subject = `Grocery Outlet Lompoc is on Lompoc Locals — your page and the claim link`
 const to = PREVIEW ? "hello@lompoclocals.com" : TO
 if (!SEND) { console.log(`DRY RUN → ${to || "(no TO yet)"}\n${subject}\n${claimUrl}`); process.exit(0) }
