@@ -3,7 +3,7 @@
 Listing curated and live: https://www.lompoclocals.com/biz/grocery-outlet-lompoc
 - 316 E Ocean Ave (fixed today; the old row said 324 W Ocean) · (805) 740-2800 · Google hours (7 AM–10 PM daily)
 - Website now points at the Lompoc store page (groceryoutlet.com storeid 17), not the corporate homepage
-- Official Grocery Outlet logo (from groceryoutlet.com, padded to a square card) as the profile picture; 8 photos from Google, cover = the produce wall; the lit sign at dusk and two exteriors close the set
+- Official round Grocery Outlet badge as the profile picture; 8 photos from Google, cover = the produce wall; the lit sign at dusk and two exteriors close the set
 - About text: facts only (discount brand-name groceries, produce, frozen, household; independent operators; 4.4 stars on ~1,000 Google reviews)
 - No store email or store social page exists publicly. Ask for the store's email in the meeting; we add it to the listing so their signup auto-approves.
 
