@@ -2,7 +2,7 @@
 """
 FOOTBALL HUB — "Lompoc football. One page." (Wed Sep 16 2026). Sells lompoclocals.com/football:
 phone dead-center showing CURATED captures of the live page (own asset), Arthur announcer read,
-brand-new bed, own SFX, own Big Game clip inside the Watch tile. 16.5 s, 9:16 (v2: purple, faster, VO re-cut from the Sep 16 takes — no new credits). Frame 0 = poster cover.
+brand-new bed, own SFX, own Big Game clip inside the Watch tile. 22.0 s, 9:16 (v3: purple, all page features, VO re-cut from the Sep 16 takes — no new credits). Frame 0 = poster cover.
   python3 gen.py
 """
 import os
@@ -12,18 +12,23 @@ SCENES = [
     ("s1-open",    0.00, 3.30),
     ("s2-week",    3.10, 2.70),
     ("s3-scores",  5.60, 2.90),
-    ("s6-connect", 8.30, 1.65),
-    ("s7-end",     9.75, 6.75),
+    ("s4-sched",   8.30, 2.45),
+    ("s5-news",   10.55, 1.20),
+    ("s5b-watch", 11.55, 2.60),
+    ("s6-connect",13.95, 1.70),
+    ("s7-end",    15.45, 6.55),
 ]
-TOTAL = 16.50
-VO_START = 0.50; VO_DUR = 15.48
+TOTAL = 22.00
+VO_START = 0.50; VO_DUR = 21.06
 SUBS = [
     (0.50, 3.10, "Lompoc. Kickoff is Thursday."),
     (3.32, 5.42, "Two home games at Huyck Stadium this week."),
     (5.64, 8.09, "Every final score. Both schools."),
-    (8.37, 9.47, "Send it to the group chat."),
-    (9.87, 12.65, "Lompoc football. One page."),
-    (12.93, 15.98, "lompoclocals.com/football"),
+    (8.31, 10.36, "The whole season, next game marked."),
+    (10.58, 13.73, "Game stories, our videos, and where to be on Friday night."),
+    (13.95, 15.05, "Send it to the group chat."),
+    (15.45, 18.23, "Lompoc football. One page."),
+    (18.51, 21.56, "lompoclocals.com/football"),
 ]
 GOLD = "#efc618"; INK = "#241629"; PURPLE = "#650c75"; GREEN = "#0b992f"; BG = "#140a17"
 K = 3 * 800 / 1179  # css px on the phone -> canvas px (capture @3x, screen 800 wide)
@@ -128,7 +133,7 @@ def scene_html(cid, dur):
         return phone_scene(cid, dur, "strip-scores.png", 0, lead_css=110, extras=ex, extra_js=js, chip="Updated after every game")
     if cid == "s4-sched":
         ex = ring(cid, 1, 17*K, (2471-2080)*K, 361*K, 53*K, pad=8)
-        return phone_scene(cid, dur, "strip-sched.png", 0, lead_css=110, extras=ex, extra_js=ring_js(cid, 1, 0.95), chip="Full season · both schools")
+        return phone_scene(cid, dur, "strip-sched.png", 0, lead_css=110, extras=ex, extra_js=ring_js(cid, 1, 0.55), chip="Full season · both schools")
     if cid == "s5-news":
         return phone_scene(cid, dur, "strip-news.png", 0, lead_css=110, chip="From the news desk")
     if cid == "s5b-watch":
@@ -148,7 +153,7 @@ def scene_html(cid, dur):
       </div>'''
         js = f'''tl.fromTo("#{cid}-badges", {{ autoAlpha: 0, y: 20 }}, {{ autoAlpha: 1, y: 0, duration: 0.45 }}, 0.20);
         tl.fromTo("#{cid}-t1", {{ autoAlpha: 0, y: 20, scale: 1.05 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }}, 0.35);
-        tl.fromTo("#{cid}-pill", {{ autoAlpha: 0, y: 16, scale: 0.94 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)" }}, 3.18);
+        tl.fromTo("#{cid}-pill", {{ autoAlpha: 0, y: 16, scale: 0.94 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)" }}, 3.06);
         tl.fromTo("#{cid}-t2", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, 4.10);'''
         return wrap(cid, dur, inner, js)
     raise ValueError(cid)
@@ -232,11 +237,11 @@ def index_html():
 {chr(10).join(rows)}
 
       <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-cut.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="{a0}" data-volume="0.72" data-fade-in="0.05" data-fade-out="0.10"></audio>
-      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed17.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0+1}" data-volume="0.26" data-fade-in="0.5" data-fade-out="1.2" data-automation='{bed_auto}' data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.55}}'></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed22.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0+1}" data-volume="0.26" data-fade-in="0.5" data-fade-out="1.2" data-automation='{bed_auto}' data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.55}}'></audio>
       <audio id="sfx-1" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="0.50" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.28" data-fade-out="0.3"></audio>
       <audio id="sfx-2" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="5.60" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
-      <audio id="sfx-3" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="8.30" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
-      <audio id="sfx-4" class="clip" data-audio-group="sfx" src="public/shield-hit.wav" data-start="9.75" data-media-start="0" data-duration="1.40" data-track-index="{a0+2}" data-volume="0.30" data-fade-out="0.4"></audio>
+      <audio id="sfx-3" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="10.55" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
+      <audio id="sfx-4" class="clip" data-audio-group="sfx" src="public/shield-hit.wav" data-start="15.45" data-media-start="0" data-duration="1.40" data-track-index="{a0+2}" data-volume="0.30" data-fade-out="0.4"></audio>
     </div>
     <script>
       window.__timelines["main"] = gsap.timeline({{ paused: true }});
