@@ -1,0 +1,42 @@
+[
+ {
+  "word": "Lompoc",
+  "start": 0.0,
+  "end": 0.88
+ },
+ {
+  "word": "Football,",
+  "start": 0.88,
+  "end": 1.26
+ },
+ {
+  "word": "one",
+  "start": 1.76,
+  "end": 2.14
+ },
+ {
+  "word": "page.",
+  "start": 2.14,
+  "end": 2.52
+ },
+ {
+  "word": "LompocLocals",
+  "start": 3.18,
+  "end": 4.16
+ },
+ {
+  "word": ".com",
+  "start": 4.16,
+  "end": 4.78
+ },
+ {
+  "word": "slash",
+  "start": 4.78,
+  "end": 5.24
+ },
+ {
+  "word": "football.",
+  "start": 5.24,
+  "end": 5.9
+ }
+]

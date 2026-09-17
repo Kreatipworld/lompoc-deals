@@ -6,7 +6,16 @@
   python3 hf.py status <jobId>
   python3 hf.py raw <tool> '{"params":{...}}'
 """
-import json, os, subprocess, sys
+import json, os, re, subprocess, sys
+
+# The submit text prints the job id on its OWN line ("\n- <uuid>  \"prompt…\""), never " - <uuid>".
+# Use this everywhere; a regex that requires a leading space misses it and resubmits (8 jobs billed, Sep 16 2026).
+JOB_ID_RE = re.compile(r"(?m)^\s*-\s*([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})")
+
+
+def job_id(text):
+    m = JOB_ID_RE.search(text or "")
+    return m.group(1) if m else None
 
 CLI = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hf-mcp.py")
 V = "b847bc29-f184-583a-8ad9-d1f1e16d1a60"  # Dylan
