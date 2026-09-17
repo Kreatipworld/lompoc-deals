@@ -19,10 +19,12 @@ Get game alerts in the Monday email, and send this to the group chat. Braves or 
 
 **IG Story** — video + link sticker → https://www.lompoclocals.com/en/football?utm_source=instagram&utm_medium=story&utm_campaign=week4-hub · sticker text "Every score, one page"
 
-## Scheduled Sep 17 2026 (Buffer, all automatic)
-- TikTok 6:00 PM PT · post 6aac3f9a1cb5c51f705bbd9a
-- IG Reel 6:10 PM PT · post 6aac3f9fc81dfc7975090903
-- FB Reel 6:20 PM PT · post 6aac3fa4ee0c9580f76e3ea7
-- IG Story 6:30 PM PT (link sticker → /football, utm week4-hub) · post 6aac3fa75de9b79c96eed5ac
+## Posted Sep 17 2026 ~12:45 PM PT (user: "post it" — moved from the 6 PM schedule to shareNow)
+- TikTok · SENT 12:44 PM · https://tiktok.com/@lompoclocals/video/7686592357612981518 · post 6aac3f9a1cb5c51f705bbd9a
+- IG Reel · sending 12:46 PM · post 6aac3f9fc81dfc7975090903
+- FB Reel · SENT 12:45 PM · https://www.facebook.com/reel/4599523033708645/ · post 6aac3fa4ee0c9580f76e3ea7
+- IG Story (link sticker → /football, utm week4-hub) · sending 12:45 PM · post 6aac3fa75de9b79c96eed5ac
 Video: https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/social/posts/2026-09-17-football-hub/lompoc-football-one-page-9x16-83LecOVHhfN9xu8aqHck9r8zUcF4SZ.mp4
 Next: Sat morning verify both scores synced on /football, then log these four posts' metrics with scripts/buffer-metrics-log.py.
+
+Buffer edit_post lesson: `mode: shareNow` on a scheduled video post must carry text + assets + metadata explicitly (omitting assets fails 'Post must have either text or media'); the API 504s/502s often — always get_post before retrying a write.
