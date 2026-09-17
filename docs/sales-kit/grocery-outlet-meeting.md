@@ -95,3 +95,8 @@ https://www.lompoclocals.com/signup?claim=grocery-outlet-lompoc&plan=standard
 - "Gratis", "prueba gratis". Es una membresía de $39.99 al mes, cancela cuando quieras.
 - Nombres de operadores, licencias u horarios más allá de Google.
 - El nombre del dueño. Somos "el equipo de Lompoc Locals".
+
+## Sent Sep 17 2026
+- Store email lompoc@groceryoutlet.com added to the listing (email + emails_json), so a signup with it auto-approves the claim.
+- Invite sent to lompoc@groceryoutlet.com · Resend 01a0b10f-8c1e-73cf-9f62-b74778df012e · claim link pre-filled with the email.
+- Next: watch for the claim (business_claims / admin), then week-one spotlight + first deal in the Monday digest.
