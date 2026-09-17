@@ -2,37 +2,28 @@
 """
 FOOTBALL HUB — "Lompoc football. One page." (Wed Sep 16 2026). Sells lompoclocals.com/football:
 phone dead-center showing CURATED captures of the live page (own asset), Arthur announcer read,
-brand-new bed, own SFX, own Big Game clip inside the Watch tile. 28.0 s, 9:16. Frame 0 = poster cover.
+brand-new bed, own SFX, own Big Game clip inside the Watch tile. 16.5 s, 9:16 (v2: purple, faster, VO re-cut from the Sep 16 takes — no new credits). Frame 0 = poster cover.
   python3 gen.py
 """
 import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 X = 0.25
 SCENES = [
-    ("s1-open",    0.00, 3.50),
-    ("s2-week",    3.30, 5.30),
-    ("s3-scores",  8.40, 4.40),
-    ("s4-sched",  12.60, 2.80),
-    ("s5-news",   15.20, 1.30),
-    ("s5b-watch", 16.30, 2.60),
-    ("s6-connect",18.70, 2.80),
-    ("s7-end",    21.30, 6.70),
+    ("s1-open",    0.00, 3.30),
+    ("s2-week",    3.10, 2.70),
+    ("s3-scores",  5.60, 2.90),
+    ("s6-connect", 8.30, 1.65),
+    ("s7-end",     9.75, 6.75),
 ]
-TOTAL = 28.00
-VO_START = 0.60; VO_DUR = 20.62
-CLOSER_START = 21.40; CLOSER_DUR = 6.46
+TOTAL = 16.50
+VO_START = 0.50; VO_DUR = 15.48
 SUBS = [
-    (0.60, 3.20, "Lompoc. Kickoff is Thursday."),
-    (3.50, 5.55, "Two home games at Huyck Stadium this week."),
-    (5.98, 8.20, "Conqs Thursday. Braves Friday."),
-    (8.68, 11.10, "Every final score. Both schools."),
-    (11.44, 12.35, "The morning after."),
-    (12.78, 14.80, "The whole season, next game marked."),
-    (15.32, 18.45, "Game stories, our videos, and where to be on Friday night."),
-    (18.88, 19.55, "Get alerts."),
-    (19.82, 21.00, "Send it to the group chat."),
-    (21.40, 24.20, "Lompoc football. One page."),
-    (24.58, 27.70, "lompoclocals.com/football"),
+    (0.50, 3.10, "Lompoc. Kickoff is Thursday."),
+    (3.32, 5.42, "Two home games at Huyck Stadium this week."),
+    (5.64, 8.09, "Every final score. Both schools."),
+    (8.37, 9.47, "Send it to the group chat."),
+    (9.87, 12.65, "Lompoc football. One page."),
+    (12.93, 15.98, "lompoclocals.com/football"),
 ]
 GOLD = "#efc618"; INK = "#241629"; PURPLE = "#650c75"; GREEN = "#0b992f"; BG = "#140a17"
 K = 3 * 800 / 1179  # css px on the phone -> canvas px (capture @3x, screen 800 wide)
@@ -41,9 +32,9 @@ PH_LEFT, PH_TOP = 140, 250  # phone screen, dead-center (computed left)
 def css(cid):
     return f"""
       [data-composition-id="{cid}"] .stage {{ position: absolute; inset: 0; opacity: 0; will-change: opacity; }}
-      [data-composition-id="{cid}"] .field {{ position: absolute; inset: 0; background: radial-gradient(ellipse 120% 70% at 50% 28%, #16c247 0%, {GREEN} 32%, #0a5a20 70%, #052e12 100%); }}
-      [data-composition-id="{cid}"] .yards {{ position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.11) 0 5px, transparent 5px 150px); mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25)); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25)); }}
-      [data-composition-id="{cid}"] .vig {{ position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(5,20,10,0) 62%, rgba(5,20,10,0.45) 100%); }}
+      [data-composition-id="{cid}"] .field {{ position: absolute; inset: 0; background: radial-gradient(ellipse 120% 70% at 50% 24%, #8a1ca3 0%, {PURPLE} 30%, #2a0533 68%, {BG} 100%); }}
+      [data-composition-id="{cid}"] .yards {{ position: absolute; inset: 0; background: radial-gradient(ellipse 60% 30% at 50% 10%, rgba(239,198,24,0.16) 0%, rgba(239,198,24,0) 100%); }}
+      [data-composition-id="{cid}"] .vig {{ position: absolute; inset: 0; z-index: 30; pointer-events: none; background: radial-gradient(ellipse 100% 85% at 50% 45%, rgba(20,10,23,0) 62%, rgba(20,10,23,0.5) 100%); }}
       [data-composition-id="{cid}"] .grain {{ position: absolute; inset: 0; pointer-events: none; opacity: 0.07; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }}
       [data-composition-id="{cid}"] .mark {{ position: absolute; top: 150px; right: 84px; width: 96px; height: auto; z-index: 40; }}
       [data-composition-id="{cid}"] .chip {{ position: absolute; left: 84px; top: 156px; z-index: 40; display: inline-block; background: {GOLD}; color: {INK}; font-weight: 800; font-size: 32px; letter-spacing: 3px; padding: 14px 26px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; opacity: 0; will-change: transform, opacity; }}
@@ -53,7 +44,7 @@ def css(cid):
       [data-composition-id="{cid}"] .strip img {{ display: block; width: 800px; height: auto; }}
       [data-composition-id="{cid}"] .ring {{ position: absolute; border: 6px solid {GOLD}; border-radius: 22px; box-shadow: 0 0 0 8px rgba(239,198,24,0.28), 0 0 40px rgba(239,198,24,0.45); opacity: 0; will-change: transform, opacity; }}
       [data-composition-id="{cid}"] .badge {{ position: absolute; width: 190px; height: auto; z-index: 36; filter: drop-shadow(0 10px 24px rgba(0,0,0,0.5)); opacity: 0; will-change: transform, opacity; }}
-      [data-composition-id="{cid}"] .scrim {{ position: absolute; left: 0; right: 0; bottom: 0; height: 720px; z-index: 25; pointer-events: none; background: linear-gradient(to top, rgba(5,20,10,0.96) 0%, rgba(5,20,10,0.80) 35%, rgba(5,20,10,0) 100%); }}
+      [data-composition-id="{cid}"] .scrim {{ position: absolute; left: 0; right: 0; bottom: 0; height: 720px; z-index: 25; pointer-events: none; background: linear-gradient(to top, rgba(20,10,23,0.97) 0%, rgba(20,10,23,0.82) 35%, rgba(20,10,23,0) 100%); }}
     """
 
 def wrap(cid, dur, inner, js, first=False, root_bg=None, chip=None):
@@ -118,22 +109,22 @@ def scene_html(cid, dur):
       </div>
       <div class="scrim"></div>'''
         js = f'''tl.set("#{cid}-strip", {{ y: 0 }}, 0);
-        tl.to("#{cid}-lock", {{ autoAlpha: 0, y: -60, duration: 0.45, ease: "power3.in" }}, 0.62);
-        tl.to("#{cid}-phone", {{ y: {rise}, duration: 0.9, ease: "expo.inOut" }}, 0.70);
-        tl.to("#{cid}-strip", {{ y: {-60*K:.1f}, duration: 1.6, ease: "power2.inOut" }}, 1.60);'''
+        tl.to("#{cid}-lock", {{ autoAlpha: 0, y: -60, duration: 0.35, ease: "power3.in" }}, 0.45);
+        tl.to("#{cid}-phone", {{ y: {rise}, duration: 0.7, ease: "expo.inOut" }}, 0.50);
+        tl.to("#{cid}-strip", {{ y: {-60*K:.1f}, duration: 1.4, ease: "power2.inOut" }}, 1.30);'''
         return wrap(cid, dur, inner, js, first=True, root_bg=BG)
     if cid == "s2-week":
         # hold scroll 120: both cards whole. Conqs pill (y743) rings at "Conqs Thursday" (5.98 abs -> 2.68 rel); Braves pill (y487) at 7.20 abs -> 3.90 rel
         ex = ring(cid, 1, 37*K, 743*K, 162*K, 24*K) + ring(cid, 2, 37*K, 487*K, 162*K, 24*K)
         bad = f'<img class="badge" id="{cid}-b1" src="public/badge-conqs.png" alt="" style="left:-20px; top:{PH_TOP + (548-190)*K + 40:.0f}px" /><img class="badge" id="{cid}-b2" src="public/badge-braves.png" alt="" style="right:-20px; top:{PH_TOP + (292-190)*K + 40:.0f}px" />'
-        js = ring_js(cid, 1, 2.68) + ring_js(cid, 2, 3.90) + \
-             f'tl.fromTo("#{cid}-b1", {{ autoAlpha: 0, x: -60, rotation: -8 }}, {{ autoAlpha: 1, x: 0, rotation: -8, duration: 0.45, ease: "back.out(1.6)" }}, 2.68);' + \
-             f'tl.fromTo("#{cid}-b2", {{ autoAlpha: 0, x: 60, rotation: 8 }}, {{ autoAlpha: 1, x: 0, rotation: 8, duration: 0.45, ease: "back.out(1.6)" }}, 3.90);'
+        js = ring_js(cid, 2, 0.55) + ring_js(cid, 1, 1.25) + \
+             f'tl.fromTo("#{cid}-b1", {{ autoAlpha: 0, x: -60, rotation: -8 }}, {{ autoAlpha: 1, x: 0, rotation: -8, duration: 0.45, ease: "back.out(1.6)" }}, 1.25);' + \
+             f'tl.fromTo("#{cid}-b2", {{ autoAlpha: 0, x: 60, rotation: 8 }}, {{ autoAlpha: 1, x: 0, rotation: 8, duration: 0.45, ease: "back.out(1.6)" }}, 0.55);'
         html = phone_scene(cid, dur, "strip-hero.png", 190, lead_css=70, extras=ex, extra_js=js, chip="Thu 9/17 · Fri 9/18")
         return html.replace('<div class="scrim"></div>', bad + '<div class="scrim"></div>')
     if cid == "s3-scores":
         ex = "".join(ring(cid, i+1, 16*K, (y-1440)*K, 361*K, 111*K, pad=6) for i, y in enumerate([1589, 1712]))
-        js = ring_js(cid, 1, 0.55) + ring_js(cid, 2, 2.15)
+        js = ring_js(cid, 1, 0.45) + ring_js(cid, 2, 1.55)
         return phone_scene(cid, dur, "strip-scores.png", 0, lead_css=110, extras=ex, extra_js=js, chip="Updated after every game")
     if cid == "s4-sched":
         ex = ring(cid, 1, 17*K, (2471-2080)*K, 361*K, 53*K, pad=8)
@@ -146,7 +137,7 @@ def scene_html(cid, dur):
         return phone_scene(cid, dur, "strip-watch.png", 70, lead_css=90, extras=ex, chip="Big Game · Week 3 · more")
     if cid == "s6-connect":
         ex = ring(cid, 1, 16*K, (1062-840)*K, 175*K, 176*K, pad=6)
-        return phone_scene(cid, dur, "strip-connect.png", 0, lead_css=110, extras=ex, extra_js=ring_js(cid, 1, 1.15), chip="No app needed")
+        return phone_scene(cid, dur, "strip-connect.png", 0, lead_css=110, extras=ex, extra_js=ring_js(cid, 1, 0.30), chip="No app needed")
     if cid == "s7-end":
         inner = f'''<div style="position:absolute; inset:0; background: linear-gradient(180deg, {PURPLE} 0%, #2a0533 100%)"></div>
       <div style="position:absolute; left:0; right:0; top:22%; z-index:20; text-align:center">
@@ -157,8 +148,8 @@ def scene_html(cid, dur):
       </div>'''
         js = f'''tl.fromTo("#{cid}-badges", {{ autoAlpha: 0, y: 20 }}, {{ autoAlpha: 1, y: 0, duration: 0.45 }}, 0.20);
         tl.fromTo("#{cid}-t1", {{ autoAlpha: 0, y: 20, scale: 1.05 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }}, 0.35);
-        tl.fromTo("#{cid}-pill", {{ autoAlpha: 0, y: 16, scale: 0.94 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)" }}, 3.25);
-        tl.fromTo("#{cid}-t2", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, 4.40);'''
+        tl.fromTo("#{cid}-pill", {{ autoAlpha: 0, y: 16, scale: 0.94 }}, {{ autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)" }}, 3.18);
+        tl.fromTo("#{cid}-t2", {{ autoAlpha: 0, y: 12 }}, {{ autoAlpha: 1, y: 0, duration: 0.4 }}, 4.10);'''
         return wrap(cid, dur, inner, js)
     raise ValueError(cid)
 
@@ -219,7 +210,7 @@ def index_html():
     rows.append(f'      <div id="el-subs" data-composition-id="subs" data-composition-src="compositions/subs.html" data-start="0" data-duration="{TOTAL:.2f}" data-track-index="{len(SCENES)+1}"></div>')
     rows.append(f'      <div id="el-progress" data-composition-id="progress" data-composition-src="compositions/progress.html" data-start="0" data-duration="{TOTAL:.2f}" data-track-index="{len(SCENES)+2}"></div>')
     a0 = len(SCENES) + 3
-    bed_auto = '{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.5, "v": 0.26}, {"t": %.2f, "v": 0.26}, {"t": %.2f, "v": 0}]}]}' % (TOTAL - 1.4, TOTAL)
+    bed_auto = '{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.5, "v": 0.26}, {"t": %.2f, "v": 0.26}, {"t": %.2f, "v": 0}]}]}' % (TOTAL - 1.2, TOTAL)
     return f'''<!doctype html>
 <html lang="en">
   <head>
@@ -240,13 +231,12 @@ def index_html():
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL:.2f}" data-width="1080" data-height="1920">
 {chr(10).join(rows)}
 
-      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-body.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="{a0}" data-volume="0.72" data-fade-in="0.05" data-fade-out="0.10"></audio>
-      <audio id="vo2" class="clip" data-audio-group="voiceover" src="public/vo-closer.wav" data-start="{CLOSER_START:.2f}" data-media-start="0" data-duration="{CLOSER_DUR:.2f}" data-track-index="{a0}" data-volume="0.72" data-fade-in="0.05" data-fade-out="0.10"></audio>
-      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed28.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0+1}" data-volume="0.26" data-fade-in="0.5" data-fade-out="1.4" data-automation='{bed_auto}' data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.55}}'></audio>
-      <audio id="sfx-1" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="0.66" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.28" data-fade-out="0.3"></audio>
-      <audio id="sfx-2" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="8.40" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
-      <audio id="sfx-3" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="15.20" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
-      <audio id="sfx-4" class="clip" data-audio-group="sfx" src="public/shield-hit.wav" data-start="21.30" data-media-start="0" data-duration="1.40" data-track-index="{a0+2}" data-volume="0.30" data-fade-out="0.4"></audio>
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-cut.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="{a0}" data-volume="0.72" data-fade-in="0.05" data-fade-out="0.10"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed17.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0+1}" data-volume="0.26" data-fade-in="0.5" data-fade-out="1.2" data-automation='{bed_auto}' data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.55}}'></audio>
+      <audio id="sfx-1" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="0.50" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.28" data-fade-out="0.3"></audio>
+      <audio id="sfx-2" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="5.60" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
+      <audio id="sfx-3" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="8.30" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
+      <audio id="sfx-4" class="clip" data-audio-group="sfx" src="public/shield-hit.wav" data-start="9.75" data-media-start="0" data-duration="1.40" data-track-index="{a0+2}" data-volume="0.30" data-fade-out="0.4"></audio>
     </div>
     <script>
       window.__timelines["main"] = gsap.timeline({{ paused: true }});

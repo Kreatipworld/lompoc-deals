@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="28.00" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="16.50" style="position: absolute; inset: 0; overflow: hidden; background: transparent; pointer-events: none">
     <style>
       [data-composition-id="subs"] .wrapz { position: absolute; left: 60px; right: 60px; bottom: 310px; z-index: 70; display: flex; justify-content: center; pointer-events: none; }
       [data-composition-id="subs"] .sub { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; opacity: 0; will-change: opacity, transform; }
@@ -8,37 +8,27 @@
     <div class="wrapz" data-layout-allow-overlap>
       <div class="sub" id="sub-0"><span>Lompoc. Kickoff is Thursday.</span></div>
       <div class="sub" id="sub-1"><span>Two home games at Huyck Stadium this week.</span></div>
-      <div class="sub" id="sub-2"><span>Conqs Thursday. Braves Friday.</span></div>
-      <div class="sub" id="sub-3"><span>Every final score. Both schools.</span></div>
-      <div class="sub" id="sub-4"><span>The morning after.</span></div>
-      <div class="sub" id="sub-5"><span>The whole season, next game marked.</span></div>
-      <div class="sub" id="sub-6"><span>Game stories, our videos, and where to be on Friday night.</span></div>
-      <div class="sub" id="sub-7"><span>Get alerts.</span></div>
-      <div class="sub" id="sub-8"><span>Send it to the group chat.</span></div>
-      <div class="sub" id="sub-9"><span>Lompoc football. One page.</span></div>
-      <div class="sub" id="sub-10"><span>lompoclocals.com/football</span></div>
+      <div class="sub" id="sub-2"><span>Every final score. Both schools.</span></div>
+      <div class="sub" id="sub-3"><span>Send it to the group chat.</span></div>
+      <div class="sub" id="sub-4"><span>Lompoc football. One page.</span></div>
+      <div class="sub" id="sub-5"><span>lompoclocals.com/football</span></div>
     </div>
     <script>
       (() => {
         const SUBS = [
-          [0.60, 3.20, 'Lompoc. Kickoff is Thursday.'],
-          [3.50, 5.55, 'Two home games at Huyck Stadium this week.'],
-          [5.98, 8.20, 'Conqs Thursday. Braves Friday.'],
-          [8.68, 11.10, 'Every final score. Both schools.'],
-          [11.44, 12.35, 'The morning after.'],
-          [12.78, 14.80, 'The whole season, next game marked.'],
-          [15.32, 18.45, 'Game stories, our videos, and where to be on Friday night.'],
-          [18.88, 19.55, 'Get alerts.'],
-          [19.82, 21.00, 'Send it to the group chat.'],
-          [21.40, 24.20, 'Lompoc football. One page.'],
-          [24.58, 27.70, 'lompoclocals.com/football']
+          [0.50, 3.10, 'Lompoc. Kickoff is Thursday.'],
+          [3.32, 5.42, 'Two home games at Huyck Stadium this week.'],
+          [5.64, 8.09, 'Every final score. Both schools.'],
+          [8.37, 9.47, 'Send it to the group chat.'],
+          [9.87, 12.65, 'Lompoc football. One page.'],
+          [12.93, 15.98, 'lompoclocals.com/football']
         ];
         const tl = gsap.timeline({ paused: true });
         SUBS.forEach(([a, b], i) => {
           tl.fromTo("#sub-" + i, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a);
           tl.to("#sub-" + i, { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, b - 0.12);
         });
-        tl.set({}, {}, 28.00);
+        tl.set({}, {}, 16.50);
         window.__timelines["subs"] = tl;
       })();
     </script>
