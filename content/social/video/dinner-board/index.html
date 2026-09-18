@@ -25,6 +25,10 @@
       <div id="el-subs" data-composition-id="subs" data-composition-src="compositions/subs.html" data-start="0" data-duration="20.50" data-track-index="5"></div>
       <div id="el-progress" data-composition-id="progress" data-composition-src="compositions/progress.html" data-start="0" data-duration="20.50" data-track-index="6"></div>
 
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo.wav" data-start="0.00" data-media-start="0" data-duration="20.00" data-track-index="7" data-volume="0.74" data-fade-in="0.05" data-fade-out="0.10"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="20.50" data-track-index="8" data-volume="0.24" data-fade-in="0.5" data-fade-out="1.3" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.5, "v": 0.24}, {"t": 19.20, "v": 0.24}, {"t": 20.50, "v": 0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.55}'></audio>
+      <audio id="sfx-1" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="10.50" data-media-start="0" data-duration="1.20" data-track-index="9" data-volume="0.22" data-fade-out="0.3"></audio>
+      <audio id="sfx-2" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="15.50" data-media-start="0" data-duration="1.20" data-track-index="9" data-volume="0.26" data-fade-out="0.3"></audio>
     </div>
     <script>
       window.__timelines["main"] = gsap.timeline({ paused: true });

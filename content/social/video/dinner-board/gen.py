@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-THE LOMPOC LUNCH BOARD — Fri Sep 18 2026. A split-flap departures board: rows are Lompoc
-kitchens, "departure" time is when each one opens. Members flip in first (gold dot + their own
-photo + real Friday hours), then a cascade of every other local kitchen open through midday.
+THE LOMPOC DINNER BOARD — Fri Sep 18 2026. A split-flap departures board: rows are Lompoc
+kitchens, the "departure" time is when each one stops serving. Members flip in first (gold dot +
+their own photo + real Friday closing times), then every other local kitchen still open tonight.
 20.5 s, 9:16. Frame 0 = the board mid-flip (cover). Generated from this file:
 
   python3 gen.py
@@ -18,36 +18,33 @@ SCENES = [
     ("s4-end",    15.50, 5.00),
 ]
 TOTAL = 20.50
-VO_START = 0.50
-VO_DUR = 14.60   # replaced by the real cut length when the read lands
+VO_START = 0.00
+VO_DUR = 20.00   # vo.wav has the per-line offsets baked in (silence-mapped to the captions)
 
 SUBS = [
-    (0.50, 2.85, "Almost noon. You still haven't decided."),
-    (3.05, 5.40, "Every kitchen in Lompoc open right now."),
-    (5.70, 6.75, "Members first."),
-    (10.70, 12.90, "Then fifty more, all over town."),
-    (15.70, 20.10, "Lunch in Lompoc. Pick one at lompoclocals.com/find/lunch"),
+    (0.50, 3.96, "It's Friday night. You still haven't decided."),
+    (4.15, 6.71, "Every kitchen in Lompoc still serving."),
+    (7.00, 7.95, "Members first."),
+    (10.75, 13.32, "Then fifty more, all over town."),
+    (15.20, 19.90, "Dinner in Lompoc. Pick one at lompoclocals.com/find/dinner"),
 ]
 
 # members: photo, name, opens — real Friday hours from the listings
 MEMBERS = [
-    ("m1-toro.png",   "TORO LOCO",        "8:00"),
-    ("m2-sweet.png",  "SWEET BAKING CO.", "9:30"),
-    ("m3-eddies.png", "EDDIE'S GRILL",    "10:00"),
-    ("m4-jaspers.png","JASPER'S SALOON",  "10:00"),
-    ("m5-culichi.png","EL CULICHI",       "11:00"),
-    ("m6-eyeoni.png", "EYE ON I",         "12:00"),
+    ("m4-jaspers.png","JASPER'S SALOON",  "2:00"),
+    ("m-hangar.png",  "HANGAR 7",         "12:00"),
+    ("m1-toro.png",   "TORO LOCO",        "9:00"),
+    ("m3-eddies.png", "EDDIE'S GRILL",    "9:00"),
+    ("m5-culichi.png","EL CULICHI",       "8:30"),
+    ("m6-eyeoni.png", "EYE ON I",         "8:00"),
 ]
 # the rest of the local kitchens open through the midday hour
 MORE = [
-    ("ALFIE'S FISH & CHIPS", "11:00"), ("ANGELA'S RESTAURANT", "11:00"),
-    ("OLD TOWN KITCHEN", "11:00"),     ("CHOW-YA", "11:00"),
-    ("BURRITOS LALO", "10:00"),        ("MR. TACO", "11:00"),
-    ("THAI CUISINE", "11:00"),         ("SUPER GRILL", "11:00"),
-    ("PJ'S DELI", "10:00"),            ("DOGFATHER'S", "11:00"),
-    ("MARISCOS EL PALMAR", "9:00"),    ("PINK PIG BBQ", "12:00"),
-    ("SAKE SUSHI", "11:00"),           ("WILD WEST PIZZA", "11:00"),
-    ("CAPULIN EATS", "7:00"),          ("SUSI'S KITCHEN", "10:00"),
+    ("WICKED SHAMROCK", "2:00"),       ("PCH STREET", "12:00"),
+    ("JOHNNY'S BAR & GRILL", "12:00"), ("CINCO DE MAYO", "11:30"),
+    ("NOBLE GRUB", "11:00"),           ("FATTE'S PIZZA", "11:00"),
+    ("OLD TOWN KITCHEN", "10:00"),     ("HOPTIONS TAPROOM", "10:00"),
+    ("VALLE EATERY & BAR", "10:00"),   ("GLAZE'S SMOKEHOUSE", "9:00"),
 ]
 
 GOLD = "#efc618"; INK = "#0d0b10"; PURPLE = "#650c75"; BOARD = "#17141c"; FLAP = "#221d2a"; CREAM = "#f2ead9"
@@ -127,9 +124,9 @@ def scene_html(cid, dur):
         chips = "".join(
             f'<img src="public/{img}" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" />'
             for img, _, _ in MEMBERS)
-        inner = f'''<div class="hdr" id="{cid}-hdr" style="top:300px"><span class="ttl" style="font-size:112px; letter-spacing:-5px">LOMPOC<br />LUNCH</span><span class="sub" id="{cid}-sub">FRI 9/18 &nbsp;·&nbsp; <span id="{cid}-clock">11:47</span></span></div>
+        inner = f'''<div class="hdr" id="{cid}-hdr" style="top:300px"><span class="ttl" style="font-size:112px; letter-spacing:-5px">LOMPOC<br />DINNER</span><span class="sub" id="{cid}-sub">FRI 9/18 &nbsp;·&nbsp; <span id="{cid}-clock">6:07</span></span></div>
       <div id="{cid}-chips" style="position:absolute; left:84px; right:84px; top:700px; z-index:42; display:flex; gap:16px; justify-content:space-between">{chips}</div>
-      <div class="row" id="{cid}-r0" style="top:940px; perspective:900px; opacity:1"><span class="dot"></span><span class="nm">OPEN RIGHT NOW</span><span class="tm" id="{cid}-cnt">56</span></div>
+      <div class="row" id="{cid}-r0" style="top:940px; perspective:900px; opacity:1"><span class="dot"></span><span class="nm">STILL SERVING</span><span class="tm" id="{cid}-cnt">56</span></div>
       <div id="{cid}-tag" style="position:absolute; left:84px; right:84px; top:1102px; z-index:42; color:rgba(242,234,217,0.55); font-weight:700; font-size:30px; letter-spacing:5px">MEMBERS FIRST &nbsp;·&nbsp; THEN THE WHOLE TOWN</div>'''
         js = (f'tl.set("#{cid}-hdr", {{ autoAlpha:1 }}, 0);'
               f'tl.set("#{cid}-chips", {{ autoAlpha:1 }}, 0);'
@@ -137,13 +134,13 @@ def scene_html(cid, dur):
               f'tl.set("#{cid}-tag", {{ autoAlpha:1 }}, 0);'
               f'tl.fromTo("#{cid}-chips img", {{ y:10 }}, {{ y:0, duration:0.5, ease:"power2.out", stagger:0.05 }}, 0.05);'
               f'tl.to("#{cid}-r0", {{ rotationX:5, duration:0.09, ease:"sine.inOut", yoyo:true, repeat:1 }}, 1.45);'
-              + f'{{ const o={{v:47}}; const el=document.querySelector("#{cid}-clock");'
-                f' tl.to(o, {{ v:52, duration:1.30, ease:"none", onUpdate:()=>{{ el.textContent = "11:" + String(Math.round(o.v)).padStart(2,"0"); }} }}, 0.60); }}')
+              + f'{{ const o={{v:7}}; const el=document.querySelector("#{cid}-clock");'
+                f' tl.to(o, {{ v:12, duration:1.30, ease:"none", onUpdate:()=>{{ el.textContent = "6:" + String(Math.round(o.v)).padStart(2,"0"); }} }}, 0.60); }}')
         return wrap(cid, dur, inner, js, first=True)
 
     if cid == "s2-members":
         top = 0.175
-        rows = [f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>MEMBERS</span><em>OPENS</em></div>']
+        rows = [f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>MEMBERS</span><em>OPEN TILL</em></div>']
         js = [f'tl.fromTo("#{cid}-bar", {{ autoAlpha:0, y:-10 }}, {{ autoAlpha:1, y:0, duration:0.3 }}, 0.05)']
         for i, (img, nm, tm) in enumerate(MEMBERS):
             y = int(1920 * top) + 58 + i * 138
@@ -152,22 +149,25 @@ def scene_html(cid, dur):
         return wrap(cid, dur, "\n      ".join(rows), "\n        ".join(js))
 
     if cid == "s3-more":
-        rows = [f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>+50 MORE OPEN NOW</span><em>OPENS</em></div>']
+        head = f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>+50 MORE STILL OPEN</span><em>OPEN TILL</em></div>'
         js = [f'tl.fromTo("#{cid}-bar", {{ autoAlpha:0, y:-10 }}, {{ autoAlpha:1, y:0, duration:0.3 }}, 0.05)']
+        rows = []
         for i, (nm, tm) in enumerate(MORE):
             y = int(1920 * 0.175) + 58 + i * 108
             rows.append(f'<div class="row plain" id="{cid}-r{i}" style="top:{y}px; perspective:900px"><span class="nm">{nm}</span><span class="tm">{tm}</span></div>')
-            js.append(flap_in(cid, f"#{cid}-r{i}", 0.30 + i * 0.145, 0.22))
-        # the whole stack drifts up so the later names keep arriving on screen
-        js.append(f'tl.fromTo("#{cid}-stage", {{ y:0 }}, {{ y:-620, duration:{dur-0.6:.2f}, ease:"none" }}, 0.45)')
-        return wrap(cid, dur, "\n      ".join(rows), "\n        ".join(js))
+            js.append(flap_in(cid, f"#{cid}-r{i}", 0.30 + i * 0.38, 0.22))
+        # no drift: ten rows sit inside the safe band between the header and the captions
+        scrim = ('<div style="position:absolute; left:0; right:0; bottom:0; height:560px; z-index:43; pointer-events:none; '
+                 'background:linear-gradient(to top, #0c0a10 0%, rgba(12,10,16,0.96) 42%, rgba(12,10,16,0) 100%)"></div>')
+        inner = head + f'\n      <div id="{cid}-scroll" style="position:absolute; inset:0; z-index:41">' + "\n        ".join(rows) + "</div>\n      " + scrim
+        return wrap(cid, dur, inner, "\n        ".join(js))
 
     if cid == "s4-end":
         inner = f'''<div style="position:absolute; inset:0; z-index:44; background:linear-gradient(180deg, {PURPLE} 0%, #2a0533 100%)"></div>
       <div style="position:absolute; left:0; right:0; top:30%; z-index:46; text-align:center">
         <span id="{cid}-t1" style="display:block; color:#fff; font-weight:800; font-size:112px; line-height:0.98; letter-spacing:-4px; opacity:0">Pick one.</span>
-        <span id="{cid}-pill" style="display:inline-block; margin-top:52px; background:{GOLD}; color:{INK}; font-weight:800; font-size:42px; padding:20px 38px; border-radius:999px; opacity:0">lompoclocals.com/find/lunch</span>
-        <span id="{cid}-t2" style="display:block; margin-top:34px; color:rgba(255,255,255,0.85); font-weight:600; font-size:31px; letter-spacing:1px; opacity:0">Every local kitchen · hours · phone · today's deals</span>
+        <span id="{cid}-pill" style="display:inline-block; margin-top:52px; background:{GOLD}; color:{INK}; font-weight:800; font-size:42px; padding:20px 38px; border-radius:999px; opacity:0">lompoclocals.com/find/dinner</span>
+        <span id="{cid}-t2" style="display:block; margin-top:34px; color:rgba(255,255,255,0.85); font-weight:600; font-size:31px; letter-spacing:1px; opacity:0">Every local kitchen · hours · phone · tonight's deals</span>
       </div>'''
         js = (f'tl.fromTo("#{cid}-t1", {{ autoAlpha:0, y:22, scale:1.06 }}, {{ autoAlpha:1, y:0, scale:1, duration:0.5, ease:"expo.out" }}, 0.22);'
               f'tl.fromTo("#{cid}-pill", {{ autoAlpha:0, y:16, scale:0.94 }}, {{ autoAlpha:1, y:0, scale:1, duration:0.5, ease:"back.out(1.4)" }}, 1.55);'
@@ -237,7 +237,7 @@ def index_html(with_audio=True):
     if with_audio:
         bed_auto = '{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.5, "v": 0.24}, {"t": %.2f, "v": 0.24}, {"t": %.2f, "v": 0}]}]}' % (TOTAL - 1.3, TOTAL)
         audio = f'''
-      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo-cut.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="{a0}" data-volume="0.74" data-fade-in="0.05" data-fade-out="0.10"></audio>
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo.wav" data-start="{VO_START:.2f}" data-media-start="0" data-duration="{VO_DUR:.2f}" data-track-index="{a0}" data-volume="0.74" data-fade-in="0.05" data-fade-out="0.10"></audio>
       <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0+1}" data-volume="0.24" data-fade-in="0.5" data-fade-out="1.3" data-automation='{bed_auto}' data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.55}}'></audio>
       <audio id="sfx-1" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="10.50" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.22" data-fade-out="0.3"></audio>
       <audio id="sfx-2" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="15.50" data-media-start="0" data-duration="1.20" data-track-index="{a0+2}" data-volume="0.26" data-fade-out="0.3"></audio>'''
