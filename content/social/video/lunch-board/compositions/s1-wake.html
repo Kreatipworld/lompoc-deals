@@ -1,0 +1,59 @@
+<template>
+  <div data-composition-id="s1-wake" data-width="1080" data-height="1920" data-duration="3.05" style="position:absolute; inset:0; overflow:hidden; background:#0d0b10">
+    <style>
+      [data-composition-id="s1-wake"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s1-wake"] .bg { position:absolute; inset:0; background:
+          radial-gradient(ellipse 90% 45% at 50% 16%, rgba(239,198,24,0.13) 0%, rgba(239,198,24,0) 62%),
+          linear-gradient(180deg, #120f16 0%, #17141c 34%, #0c0a10 100%); }
+      [data-composition-id="s1-wake"] .rails { position:absolute; left:0; right:0; top:0; bottom:0;
+          background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.032) 0 1px, transparent 1px 8px); }
+      [data-composition-id="s1-wake"] .vig { position:absolute; inset:0; z-index:40; pointer-events:none;
+          background: radial-gradient(ellipse 100% 78% at 50% 46%, rgba(8,6,10,0) 58%, rgba(8,6,10,0.62) 100%); }
+      [data-composition-id="s1-wake"] .grain { position:absolute; inset:0; pointer-events:none; opacity:0.07; z-index:52;
+          background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s1-wake"] .mark { position:absolute; top:150px; right:84px; width:92px; height:auto; z-index:44; opacity:0.92; }
+      /* board furniture */
+      [data-composition-id="s1-wake"] .hdr { position:absolute; left:84px; top:150px; z-index:42; }
+      [data-composition-id="s1-wake"] .hdr .ttl { display:block; color:#f2ead9; font-weight:800; font-size:76px; letter-spacing:-2px; line-height:0.96; }
+      [data-composition-id="s1-wake"] .hdr .sub { display:inline-block; margin-top:16px; color:#efc618; font-weight:800; font-size:27px; letter-spacing:6px; }
+      [data-composition-id="s1-wake"] .secbar { position:absolute; left:84px; right:84px; z-index:41; display:flex; align-items:center; justify-content:space-between;
+          border-bottom:2px solid rgba(239,198,24,0.42); padding-bottom:14px; }
+      [data-composition-id="s1-wake"] .secbar span { color:#efc618; font-weight:800; font-size:30px; letter-spacing:6px; }
+      [data-composition-id="s1-wake"] .secbar em { color:rgba(242,234,217,0.5); font-style:normal; font-weight:700; font-size:24px; letter-spacing:4px; }
+      /* flap row */
+      [data-composition-id="s1-wake"] .row { position:absolute; left:84px; right:84px; height:118px; z-index:41;
+          background:linear-gradient(180deg, #221d2a 0%, #1b1622 49%, #15111b 51%, #120e18 100%);
+          border-radius:12px; box-shadow:0 10px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+          display:flex; align-items:center; gap:24px; padding:0 26px; overflow:hidden;
+          transform-origin:50% 0%; will-change:transform, opacity; opacity:0; }
+      [data-composition-id="s1-wake"] .row::after { content:""; position:absolute; left:0; right:0; top:50%; height:2px; background:rgba(0,0,0,0.55); }
+      [data-composition-id="s1-wake"] .row .dot { width:16px; height:16px; border-radius:50%; background:#efc618; box-shadow:0 0 16px rgba(239,198,24,0.75); flex:none; }
+      [data-composition-id="s1-wake"] .row img { width:84px; height:84px; border-radius:10px; object-fit:cover; flex:none; }
+      [data-composition-id="s1-wake"] .row .nm { color:#f2ead9; font-weight:800; font-size:44px; letter-spacing:-0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; }
+      [data-composition-id="s1-wake"] .row .tm { color:#efc618; font-weight:800; font-size:44px; letter-spacing:1px; font-variant-numeric:tabular-nums; flex:none; }
+      [data-composition-id="s1-wake"] .row.plain .nm { font-size:40px; color:rgba(242,234,217,0.94); }
+      [data-composition-id="s1-wake"] .row.plain { height:96px; }
+      [data-composition-id="s1-wake"] .row.plain .tm { font-size:38px; color:rgba(239,198,24,0.85); }
+    
+    </style>
+    <div class="stage" id="s1-wake-stage" style="opacity:1">
+      <div class="bg"></div><div class="rails"></div>
+      <div class="hdr" id="s1-wake-hdr" style="top:300px"><span class="ttl" style="font-size:112px; letter-spacing:-5px">LOMPOC<br />LUNCH</span><span class="sub" id="s1-wake-sub">FRI 9/18 &nbsp;·&nbsp; <span id="s1-wake-clock">11:47</span></span></div>
+      <div id="s1-wake-chips" style="position:absolute; left:84px; right:84px; top:700px; z-index:42; display:flex; gap:16px; justify-content:space-between"><img src="public/m1-toro.png" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" /><img src="public/m2-sweet.png" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" /><img src="public/m3-eddies.png" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" /><img src="public/m4-jaspers.png" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" /><img src="public/m5-culichi.png" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" /><img src="public/m6-eyeoni.png" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" /></div>
+      <div class="row" id="s1-wake-r0" style="top:940px; perspective:900px; opacity:1"><span class="dot"></span><span class="nm">OPEN RIGHT NOW</span><span class="tm" id="s1-wake-cnt">56</span></div>
+      <div id="s1-wake-tag" style="position:absolute; left:84px; right:84px; top:1102px; z-index:42; color:rgba(242,234,217,0.55); font-weight:700; font-size:30px; letter-spacing:5px">MEMBERS FIRST &nbsp;·&nbsp; THEN THE WHOLE TOWN</div>
+      <div class="vig"></div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.4 } });
+        tl.set("#s1-wake-stage", { autoAlpha: 1 }, 0);
+        tl.set("#s1-wake-hdr", { autoAlpha:1 }, 0);tl.set("#s1-wake-chips", { autoAlpha:1 }, 0);tl.set("#s1-wake-r0", { autoAlpha:1, rotationX:0 }, 0);tl.set("#s1-wake-tag", { autoAlpha:1 }, 0);tl.fromTo("#s1-wake-chips img", { y:10 }, { y:0, duration:0.5, ease:"power2.out", stagger:0.05 }, 0.05);tl.to("#s1-wake-r0", { rotationX:5, duration:0.09, ease:"sine.inOut", yoyo:true, repeat:1 }, 1.45);{ const o={v:47}; const el=document.querySelector("#s1-wake-clock"); tl.to(o, { v:52, duration:1.30, ease:"none", onUpdate:()=>{ el.textContent = "11:" + String(Math.round(o.v)).padStart(2,"0"); } }, 0.60); }
+        tl.set({}, {}, 3.05);
+        window.__timelines["s1-wake"] = tl;
+      })();
+    </script>
+  </div>
+</template>
