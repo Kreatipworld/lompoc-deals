@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 THE LOMPOC DINNER BOARD — Fri Sep 18 2026. A split-flap departures board: rows are Lompoc
-kitchens, the "departure" time is when each one stops serving. Members flip in first (gold dot +
+kitchens, the "departure" time is when each one stops serving. Our picks flip in first (gold dot +
 their own photo + real Friday closing times), then every other local kitchen still open tonight.
 20.5 s, 9:16. Frame 0 = the board mid-flip (cover). Generated from this file:
 
@@ -24,13 +24,13 @@ VO_DUR = 20.00   # vo.wav has the per-line offsets baked in (silence-mapped to t
 SUBS = [
     (0.50, 3.96, "It's Friday night. You still haven't decided."),
     (4.15, 6.71, "Every kitchen in Lompoc still serving."),
-    (7.00, 7.95, "Members first."),
+    (7.00, 8.16, "Start with these."),
     (10.75, 13.32, "Then fifty more, all over town."),
     (15.20, 19.90, "Dinner in Lompoc. Pick one at lompoclocals.com/find/dinner"),
 ]
 
-# members: photo, name, opens — real Friday hours from the listings
-MEMBERS = [
+# our picks, shown first — real Friday closing times from the listings
+PICKS = [
     ("m4-jaspers.png","JASPER'S SALOON",  "2:00"),
     ("m-hangar.png",  "HANGAR 7",         "12:00"),
     ("m1-toro.png",   "TORO LOCO",        "9:00"),
@@ -123,11 +123,11 @@ def scene_html(cid, dur):
     if cid == "s1-wake":
         chips = "".join(
             f'<img src="public/{img}" alt="" style="width:132px; height:132px; border-radius:14px; object-fit:cover; box-shadow:0 10px 26px rgba(0,0,0,0.55)" />'
-            for img, _, _ in MEMBERS)
+            for img, _, _ in PICKS)
         inner = f'''<div class="hdr" id="{cid}-hdr" style="top:300px"><span class="ttl" style="font-size:112px; letter-spacing:-5px">LOMPOC<br />DINNER</span><span class="sub" id="{cid}-sub">FRI 9/18 &nbsp;·&nbsp; <span id="{cid}-clock">6:07</span></span></div>
       <div id="{cid}-chips" style="position:absolute; left:84px; right:84px; top:700px; z-index:42; display:flex; gap:16px; justify-content:space-between">{chips}</div>
       <div class="row" id="{cid}-r0" style="top:940px; perspective:900px; opacity:1"><span class="dot"></span><span class="nm">STILL SERVING</span><span class="tm" id="{cid}-cnt">56</span></div>
-      <div id="{cid}-tag" style="position:absolute; left:84px; right:84px; top:1102px; z-index:42; color:rgba(242,234,217,0.55); font-weight:700; font-size:30px; letter-spacing:5px">MEMBERS FIRST &nbsp;·&nbsp; THEN THE WHOLE TOWN</div>'''
+      <div id="{cid}-tag" style="position:absolute; left:84px; right:84px; top:1102px; z-index:42; color:rgba(242,234,217,0.55); font-weight:700; font-size:30px; letter-spacing:5px">OUR PICKS &nbsp;·&nbsp; THEN THE WHOLE TOWN</div>'''
         js = (f'tl.set("#{cid}-hdr", {{ autoAlpha:1 }}, 0);'
               f'tl.set("#{cid}-chips", {{ autoAlpha:1 }}, 0);'
               f'tl.set("#{cid}-r0", {{ autoAlpha:1, rotationX:0 }}, 0);'
@@ -140,9 +140,9 @@ def scene_html(cid, dur):
 
     if cid == "s2-members":
         top = 0.175
-        rows = [f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>MEMBERS</span><em>OPEN TILL</em></div>']
+        rows = [f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>RECOMMENDED</span><em>OPEN TILL</em></div>']
         js = [f'tl.fromTo("#{cid}-bar", {{ autoAlpha:0, y:-10 }}, {{ autoAlpha:1, y:0, duration:0.3 }}, 0.05)']
-        for i, (img, nm, tm) in enumerate(MEMBERS):
+        for i, (img, nm, tm) in enumerate(PICKS):
             y = int(1920 * top) + 58 + i * 138
             rows.append(f'<div class="row" id="{cid}-r{i}" style="top:{y}px; perspective:900px"><span class="dot"></span><img src="public/{img}" alt="" /><span class="nm">{nm}</span><span class="tm">{tm}</span></div>')
             js.append(flap_in(cid, f"#{cid}-r{i}", 0.42 + i * 0.62))

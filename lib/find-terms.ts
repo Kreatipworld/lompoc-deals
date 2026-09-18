@@ -240,8 +240,8 @@ export const FIND_TERMS: FindTerm[] = [
     ],
     title: { en: "Lunch in Lompoc", es: "Almuerzo en Lompoc" },
     intro: {
-      en: "You have about an hour and you have had the same thing three days running. This is every local kitchen in Lompoc serving the midday hour, from taquerías on H Street to the deli counter, the fish fry, and the trailer with a line at noon. Members are first, then the rest of the town. Hours and phone numbers are on every page, so check before you drive.",
-      es: "Tienes como una hora y llevas tres días comiendo lo mismo. Estas son las cocinas locales de Lompoc que sirven al mediodía, desde las taquerías de la calle H hasta el mostrador de la delicatessen, el pescado frito y la troca con fila a las doce. Primero los miembros, luego el resto del pueblo. Cada página trae horarios y teléfono, así que revisa antes de manejar.",
+      en: "You have about an hour and you have had the same thing three days running. This is every local kitchen in Lompoc serving the midday hour, from taquerías on H Street to the deli counter, the fish fry, and the trailer with a line at noon. Our picks are first, then the rest of the town. Hours and phone numbers are on every page, so check before you drive.",
+      es: "Tienes como una hora y llevas tres días comiendo lo mismo. Estas son las cocinas locales de Lompoc que sirven al mediodía, desde las taquerías de la calle H hasta el mostrador de la delicatessen, el pescado frito y la troca con fila a las doce. Primero nuestras recomendaciones, luego el resto del pueblo. Cada página trae horarios y teléfono, así que revisa antes de manejar.",
     },
   },
   {
@@ -267,8 +267,8 @@ export const FIND_TERMS: FindTerm[] = [
     ],
     title: { en: "Dinner in Lompoc", es: "Cena en Lompoc" },
     intro: {
-      en: "Friday night, and the question is the same one it always is. These are the local kitchens still serving dinner in Lompoc, from the taquerías and the sushi counters to Old Town, the smokehouse, and the places that keep the kitchen open late. Members are first, then the rest of the town. Every page has hours and a phone number, so call ahead on a busy night.",
-      es: "Viernes por la noche y la pregunta es la de siempre. Estas son las cocinas locales que siguen sirviendo cena en Lompoc, desde las taquerías y las barras de sushi hasta Old Town, el ahumadero y los lugares que cierran tarde. Primero los miembros, luego el resto del pueblo. Cada página trae horario y teléfono, así que llama antes en una noche ocupada.",
+      en: "Friday night, and the question is the same one it always is. These are the local kitchens still serving dinner in Lompoc, from the taquerías and the sushi counters to Old Town, the smokehouse, and the places that keep the kitchen open late. Our picks are first, then the rest of the town. Every page has hours and a phone number, so call ahead on a busy night.",
+      es: "Viernes por la noche y la pregunta es la de siempre. Estas son las cocinas locales que siguen sirviendo cena en Lompoc, desde las taquerías y las barras de sushi hasta Old Town, el ahumadero y los lugares que cierran tarde. Primero nuestras recomendaciones, luego el resto del pueblo. Cada página trae horario y teléfono, así que llama antes en una noche ocupada.",
     },
   },
   {
