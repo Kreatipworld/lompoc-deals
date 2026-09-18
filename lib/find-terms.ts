@@ -245,6 +245,33 @@ export const FIND_TERMS: FindTerm[] = [
     },
   },
   {
+    slug: "dinner",
+    query: "dinner",
+    aliases: ["dinner", "dinner near me", "where to eat dinner", "dinner tonight", "cena", "restaurantes abiertos", "late night food", "open late"],
+    kind: "businesses",
+    category: "food-drink",
+    include: [
+      // Members first (the page sorts members to the top anyway)
+      "jasper-s", "hangar-7-social-house", "toro-loco", "eddies-grill", "tacos-y-mariscos-el-culichi", "eye-on-i",
+      // Every other local kitchen still serving through the dinner hour (chains left off on purpose)
+      "old-town-kitchen-bar", "la-botte-italian-restaurant", "glazes-smokehouse-bbq", "hoptions-taproom",
+      "noble-grub", "pch-street", "cinco-de-mayo", "valle-eatery-bar", "wicked-shamrock", "pour-decisions-cocktail-bar",
+      "johnny-s-bar-grill", "alfie-s-fish-chips", "angela-s-restaurant", "chow-ya", "sake-sushi-lompoc",
+      "dong-hae-sushi", "thai-cuisine", "wild-west-pizza-grill", "fatte-s-pizza-of-lompoc", "bravo-pizza",
+      "pizza-garden", "mi-amore-pizza-and-pasta", "flare-lompoc", "burritos-lalo", "mr-taco-lompoc",
+      "mariscos-el-palmar", "tacos-el-tizon-1", "taqueria-don-tacho", "taqueria-la-mision",
+      "tacos-y-mariscos-la-michoacana", "tacos-y-mariscos-el-culichi-2", "florianos-mexican-food", "la-reyna",
+      "el-toro-bronco", "grill-chill-senor-taco", "super-grill", "suvans-kitchen", "susi-s-kitchen",
+      "izzie-s-foodies-place", "happy-mediterranean", "dave-s-place", "eddie-s-grill-village", "tom-s",
+      "south-side-coffee-co", "carbaugh-s-corner-market-deli", "the-budget-cafe",
+    ],
+    title: { en: "Dinner in Lompoc", es: "Cena en Lompoc" },
+    intro: {
+      en: "Friday night, and the question is the same one it always is. These are the local kitchens still serving dinner in Lompoc, from the taquerías and the sushi counters to Old Town, the smokehouse, and the places that keep the kitchen open late. Members are first, then the rest of the town. Every page has hours and a phone number, so call ahead on a busy night.",
+      es: "Viernes por la noche y la pregunta es la de siempre. Estas son las cocinas locales que siguen sirviendo cena en Lompoc, desde las taquerías y las barras de sushi hasta Old Town, el ahumadero y los lugares que cierran tarde. Primero los miembros, luego el resto del pueblo. Cada página trae horario y teléfono, así que llama antes en una noche ocupada.",
+    },
+  },
+  {
     slug: "rocket-launch",
     query: "rocket launch",
     aliases: ["rocket launch", "rocket launches", "launch", "launches", "vandenberg launch", "spacex", "falcon 9", "starlink", "lanzamiento", "lanzamiento de cohete", "cohete"],
