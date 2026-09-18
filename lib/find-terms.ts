@@ -218,6 +218,33 @@ export const FIND_TERMS: FindTerm[] = [
     },
   },
   {
+    slug: "lunch",
+    query: "lunch",
+    aliases: ["lunch", "lunch near me", "lunch specials", "where to eat lunch", "almuerzo", "lonche", "comida", "quick lunch", "lunch spots"],
+    kind: "businesses",
+    category: "food-drink",
+    include: [
+      // Members first (the page sorts members to the top anyway)
+      "eddies-grill", "tacos-y-mariscos-el-culichi", "toro-loco", "sweet-baking-co", "jasper-s", "eye-on-i", "bowl-and-soul",
+      // Every other local kitchen open through the midday window (chains left off on purpose)
+      "alfie-s-fish-chips", "angela-s-restaurant", "old-town-kitchen-bar", "chow-ya", "burritos-lalo", "mr-taco-lompoc",
+      "thai-cuisine", "super-grill", "pj-s-deli", "dogfather-s-hot-dogs", "mariscos-el-palmar", "florianos-mexican-food",
+      "sake-sushi-lompoc", "wild-west-pizza-grill", "capulin-eats", "izzie-s-foodies-place", "susi-s-kitchen",
+      "taqueria-don-tacho", "cajun-kitchen-cafe", "american-host-restaurant-catering", "rice-bowl", "happy-mediterranean",
+      "grill-chill-senor-taco", "la-reyna", "suvans-kitchen", "dong-hae-sushi", "mi-amore-pizza-and-pasta",
+      "tacos-y-mariscos-la-michoacana", "taqueria-la-mision", "tacos-el-tizon-1", "bravo-pizza", "fatte-s-pizza-of-lompoc",
+      "pizza-garden", "flare-lompoc", "tom-s", "el-toro-bronco", "dave-s-place", "johnny-s-bar-grill",
+      "south-side-coffee-co", "mama-s-caff", "carbaugh-s-corner-market-deli", "the-santi-s-bakery-deli",
+      "savory-sweet-eats", "the-budget-cafe", "eddie-s-grill-village", "tacos-y-mariscos-el-culichi-2",
+      "the-hook-and-slice", "ocean-s-seven-caf", "pink-pig-bbq", "valle-eatery-bar", "wicked-shamrock",
+    ],
+    title: { en: "Lunch in Lompoc", es: "Almuerzo en Lompoc" },
+    intro: {
+      en: "You have about an hour and you have had the same thing three days running. This is every local kitchen in Lompoc serving the midday hour, from taquerías on H Street to the deli counter, the fish fry, and the trailer with a line at noon. Members are first, then the rest of the town. Hours and phone numbers are on every page, so check before you drive.",
+      es: "Tienes como una hora y llevas tres días comiendo lo mismo. Estas son las cocinas locales de Lompoc que sirven al mediodía, desde las taquerías de la calle H hasta el mostrador de la delicatessen, el pescado frito y la troca con fila a las doce. Primero los miembros, luego el resto del pueblo. Cada página trae horarios y teléfono, así que revisa antes de manejar.",
+    },
+  },
+  {
     slug: "rocket-launch",
     query: "rocket launch",
     aliases: ["rocket launch", "rocket launches", "launch", "launches", "vandenberg launch", "spacex", "falcon 9", "starlink", "lanzamiento", "lanzamiento de cohete", "cohete"],
