@@ -1,0 +1,54 @@
+<template>
+  <div data-composition-id="s2-dates" data-width="1080" data-height="1920" data-duration="4.40" style="position:absolute; inset:0; overflow:hidden; background:transparent">
+    <style>
+      [data-composition-id="s2-dates"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s2-dates"] .wrap { position:absolute; inset:0; overflow:hidden; will-change:transform; transform-origin:50% 50%; }
+      [data-composition-id="s2-dates"] .cover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+      [data-composition-id="s2-dates"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none; background:radial-gradient(ellipse 100% 82% at 50% 45%, rgba(20,10,23,0) 58%, rgba(20,10,23,0.55) 100%); }
+      [data-composition-id="s2-dates"] .scrim { position:absolute; inset:0; z-index:31; pointer-events:none; background:linear-gradient(to top, rgba(20,10,23,0.93) 0%, rgba(20,10,23,0.55) 34%, rgba(20,10,23,0.05) 66%); }
+      [data-composition-id="s2-dates"] .topscrim { position:absolute; inset:0; z-index:31; pointer-events:none; background:linear-gradient(to bottom, rgba(20,10,23,0.72) 0%, rgba(20,10,23,0.18) 24%, rgba(20,10,23,0) 40%); }
+      [data-composition-id="s2-dates"] .grain { position:absolute; inset:0; pointer-events:none; opacity:0.06; z-index:50; background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      /* client logo bug, our mark as the presenter */
+      [data-composition-id="s2-dates"] .bug { position:absolute; top:142px; left:84px; height:104px; width:auto; z-index:45; filter:drop-shadow(0 6px 18px rgba(0,0,0,0.55)); }
+      [data-composition-id="s2-dates"] .mark { position:absolute; top:152px; right:84px; width:80px; height:auto; z-index:45; opacity:0.85; }
+      /* broadcast lower third */
+      [data-composition-id="s2-dates"] .lt { position:absolute; left:84px; right:84px; bottom:430px; z-index:40; }
+      [data-composition-id="s2-dates"] .lt .bar { display:inline-block; background:#efc618; color:#241629; font-weight:800; font-size:28px; letter-spacing:5px; text-transform:uppercase; padding:11px 22px; border-radius:6px; }
+      [data-composition-id="s2-dates"] .lt .big { display:block; margin-top:18px; color:#fff; font-weight:800; font-size:92px; line-height:0.98; letter-spacing:-3px; text-shadow:0 8px 32px rgba(20,10,23,0.8); }
+      [data-composition-id="s2-dates"] .lt .sm { display:block; margin-top:14px; color:rgba(253,250,244,0.9); font-weight:600; font-size:36px; }
+      /* date rows */
+      [data-composition-id="s2-dates"] .drow { display:flex; align-items:center; gap:28px; opacity:0; will-change:transform,opacity; }
+      [data-composition-id="s2-dates"] .drow img { width:150px; height:auto; filter:drop-shadow(0 8px 20px rgba(0,0,0,0.55)); }
+      [data-composition-id="s2-dates"] .drow .school { color:rgba(253,250,244,0.72); font-weight:800; font-size:30px; letter-spacing:5px; text-transform:uppercase; }
+      [data-composition-id="s2-dates"] .drow .date { display:block; margin-top:6px; color:#fff; font-weight:800; font-size:70px; letter-spacing:-2px; line-height:1 }
+    
+    </style>
+    <div class="stage" id="s2-dates-stage">
+      <div style="position:absolute; inset:0; background:linear-gradient(160deg,#650c75 0%, #34063f 55%, #140a17 100%)"></div>
+      <div style="position:absolute; left:84px; right:84px; top:31%; z-index:40">
+        <span class="bar" id="s2-dates-bar" style="display:inline-block; background:#efc618; color:#241629; font-weight:800; font-size:28px; letter-spacing:5px; text-transform:uppercase; padding:11px 22px; border-radius:6px; opacity:0">Mark your calendar</span>
+        <div class="drow" id="s2-dates-d1" style="margin-top:56px">
+          <img src="public/badge-conqs.png" alt="Cabrillo" />
+          <div><span class="school">Cabrillo Homecoming</span><span class="date">Sat · Oct 3</span></div>
+        </div>
+        <div class="drow" id="s2-dates-d2" style="margin-top:52px">
+          <img src="public/badge-braves.png" alt="Lompoc" />
+          <div><span class="school">Lompoc Homecoming</span><span class="date">Sat · Oct 24</span></div>
+        </div>
+      </div>
+      <div class="vig"></div>
+    </div>
+    <img class="bug" src="public/logo-florist.png" alt="Lompoc Valley Florist" />
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out", duration:0.5 } });
+        tl.fromTo("#s2-dates-stage", { autoAlpha:0 }, { autoAlpha:1, duration:0.3, ease:"power1.inOut" }, 0);
+        tl.fromTo("#s2-dates-bar", { autoAlpha:0, y:-10 }, { autoAlpha:1, y:0, duration:0.35 }, 0.05);tl.fromTo("#s2-dates-d1", { autoAlpha:0, x:-34 }, { autoAlpha:1, x:0, duration:0.5, ease:"expo.out" }, 0.30);tl.fromTo("#s2-dates-d2", { autoAlpha:0, x:-34 }, { autoAlpha:1, x:0, duration:0.5, ease:"expo.out" }, 2.20);
+        tl.set({}, {}, 4.40);
+        window.__timelines["s2-dates"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      @font-face { font-family:"Plus Jakarta Sans"; src:url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight:200 800; font-style:normal; }
+      html, body { margin:0; width:1080px; height:1920px; overflow:hidden; background:#140a17; }
+      body { font-family:"Plus Jakarta Sans", sans-serif; }
+      #root { position:relative; width:1080px; height:1920px; overflow:hidden; }
+      #root > div[data-composition-src] { position:absolute; inset:0; }
+    </style>
+  </head>
+  <body>
+    <!-- LOMPOC VALLEY FLORIST — Homecoming corsages. Client's own photos (their IG carousel, cropped
+         off their baked-in text). Dates as they announced: Cabrillo Sat Oct 3, Lompoc Sat Oct 24. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="17.00" data-width="1080" data-height="1920">
+      <div id="el-s1-open" data-composition-id="s1-open" data-composition-src="compositions/s1-open.html" data-start="0.00" data-duration="2.60" data-track-index="1"></div>
+      <div id="el-s2-dates" data-composition-id="s2-dates" data-composition-src="compositions/s2-dates.html" data-start="2.40" data-duration="4.40" data-track-index="2"></div>
+      <div id="el-s3-craft" data-composition-id="s3-craft" data-composition-src="compositions/s3-craft.html" data-start="6.60" data-duration="5.60" data-track-index="3"></div>
+      <div id="el-s4-cta" data-composition-id="s4-cta" data-composition-src="compositions/s4-cta.html" data-start="12.00" data-duration="5.00" data-track-index="4"></div>
+      <div id="el-subs" data-composition-id="subs" data-composition-src="compositions/subs.html" data-start="0" data-duration="17.00" data-track-index="5"></div>
+
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo.wav" data-start="0.60" data-media-start="0" data-duration="14.80" data-track-index="6" data-volume="0.78" data-fade-in="0.05" data-fade-out="0.12"></audio>
+      <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="17.00" data-track-index="7" data-volume="0.25" data-fade-in="0.5" data-fade-out="1.4" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.5, "v": 0.25}, {"t": 15.60, "v": 0.25}, {"t": 17.00, "v": 0}]}]}' data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.55}'></audio>
+      <audio id="sfx-1" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="2.40" data-media-start="0" data-duration="1.10" data-track-index="8" data-volume="0.16" data-fade-out="0.3"></audio>
+      <audio id="sfx-2" class="clip" data-audio-group="sfx" src="public/whoosh.wav" data-start="12.00" data-media-start="0" data-duration="1.10" data-track-index="8" data-volume="0.18" data-fade-out="0.3"></audio>
+    </div>
+    <script>window.__timelines["main"] = gsap.timeline({ paused:true });</script>
+  </body>
+</html>
