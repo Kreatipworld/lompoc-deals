@@ -3,13 +3,15 @@
 // Signed "The Lompoc Locals team" (no owner name), no "free" framing, one CTA.
 //   node scripts/invites/armorcoat-painting.mjs                     # dry run
 //   SEND=1 PREVIEW=1 node scripts/invites/armorcoat-painting.mjs    # proof → hello@
-//   TO=owner@example.com SEND=1 node scripts/invites/armorcoat-painting.mjs   # real send (only on explicit "send")
+//   TO=owner@example.com SEND=1 node scripts/invites/armorcoat-painting.mjs                      # send now
+//   TO=owner@example.com AT="2026-09-21T21:00:00.000Z" SEND=1 node scripts/invites/armorcoat-painting.mjs  # scheduled (Resend holds it)
 import { readFileSync, appendFileSync } from "node:fs"
 import crypto from "node:crypto"
 const env = readFileSync("/Users/kreatip/Projects/lompoc-deals/.env.local", "utf8")
 const pick = (k) => (env.match(new RegExp(`^${k}\\s*=\\s*"?([^"\\n]+)"?`, "m")) || [])[1]
 const key = pick("RESEND_API_KEY"), secret = pick("AUTH_SECRET")
 const SEND = process.env.SEND === "1", PREVIEW = process.env.PREVIEW === "1"
+const AT = process.env.AT || ""   // ISO 8601; Resend schedules the send server-side
 const P = "#650C75", G = "#0B992F", Y = "#EFC618"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
 const GUIDE = "https://www.lompoclocals.com/partner-guide.html"
@@ -70,8 +72,9 @@ if (!to) { console.error("✗ set TO=<store email> for a real send"); process.ex
 const res = await fetch("https://api.resend.com/emails", {
   method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
   body: JSON.stringify({ from: "Lompoc Locals <hello@lompoclocals.com>", to, reply_to: "hello@lompoclocals.com", subject: PREVIEW ? `[PROOF] ${subject}` : subject, html,
+    ...(AT ? { scheduled_at: AT } : {}),
     headers: { "List-Unsubscribe": `<${unsubUrl(to)}>, <mailto:hello@lompoclocals.com?subject=unsubscribe>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" } }),
 })
 const body = await res.json().catch(() => ({}))
-console.log(res.ok ? `✓ sent → ${to} (${body.id})` : `✗ FAILED ${JSON.stringify(body)}`)
+console.log(res.ok ? `✓ ${AT ? `scheduled for ${AT}` : "sent"} → ${to} (${body.id})` : `✗ FAILED ${JSON.stringify(body)}`)
 if (res.ok && !PREVIEW) appendFileSync("/Users/kreatip/Projects/lompoc-deals/scripts/data/campaign-sent.log", to + "\n")
