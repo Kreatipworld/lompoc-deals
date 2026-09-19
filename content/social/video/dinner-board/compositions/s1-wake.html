@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="s1-wake" data-width="1080" data-height="1920" data-duration="3.05" style="position:absolute; inset:0; overflow:hidden; background:#0d0b10">
+  <div data-composition-id="s1-wake" data-width="1080" data-height="1920" data-duration="3.30" style="position:absolute; inset:0; overflow:hidden; background:#0d0b10">
     <style>
       [data-composition-id="s1-wake"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
       [data-composition-id="s1-wake"] .bg { position:absolute; inset:0; background:
@@ -51,7 +51,7 @@
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.4 } });
         tl.set("#s1-wake-stage", { autoAlpha: 1 }, 0);
         tl.set("#s1-wake-hdr", { autoAlpha:1 }, 0);tl.set("#s1-wake-chips", { autoAlpha:1 }, 0);tl.set("#s1-wake-r0", { autoAlpha:1, rotationX:0 }, 0);tl.set("#s1-wake-tag", { autoAlpha:1 }, 0);tl.fromTo("#s1-wake-chips img", { y:10 }, { y:0, duration:0.5, ease:"power2.out", stagger:0.05 }, 0.05);tl.to("#s1-wake-r0", { rotationX:5, duration:0.09, ease:"sine.inOut", yoyo:true, repeat:1 }, 1.45);{ const o={v:7}; const el=document.querySelector("#s1-wake-clock"); tl.to(o, { v:12, duration:1.30, ease:"none", onUpdate:()=>{ el.textContent = "6:" + String(Math.round(o.v)).padStart(2,"0"); } }, 0.60); }
-        tl.set({}, {}, 3.05);
+        tl.set({}, {}, 3.30);
         window.__timelines["s1-wake"] = tl;
       })();
     </script>

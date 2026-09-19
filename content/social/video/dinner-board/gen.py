@@ -12,21 +12,21 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 X = 0.25
 SCENES = [
-    ("s1-wake",   0.00, 3.05),
-    ("s2-members", 2.85, 7.85),
-    ("s3-more",   10.50, 5.20),
-    ("s4-end",    15.50, 5.00),
+    ("s1-wake",  0.00, 3.30),
+    ("s2-picks", 3.10, 4.10),
+    ("s3-route", 7.00, 8.50),
+    ("s4-end",  15.30, 5.70),
 ]
-TOTAL = 20.50
+TOTAL = 21.00
 VO_START = 0.00
-VO_DUR = 20.00   # vo.wav has the per-line offsets baked in (silence-mapped to the captions)
+VO_DUR = 21.00   # vo.wav carries the per-line offsets (silence-mapped to the captions)
 
 SUBS = [
     (0.50, 3.96, "It's Friday night. You still haven't decided."),
-    (4.15, 6.71, "Every kitchen in Lompoc still serving."),
-    (7.00, 8.16, "Start with these."),
-    (10.75, 13.32, "Then fifty more, all over town."),
-    (15.20, 19.90, "Dinner in Lompoc. Pick one at lompoclocals.com/find/dinner"),
+    (4.20, 5.36, "Start with these."),
+    (5.80, 8.36, "Every kitchen in Lompoc still serving."),
+    (8.80, 11.37, "Then fifty more, all over town."),
+    (15.80, 20.60, "Dinner in Lompoc. Pick one at lompoclocals.com/find/dinner"),
 ]
 
 # our picks, shown first — real Friday closing times from the listings
@@ -48,6 +48,15 @@ MORE = [
 ]
 
 GOLD = "#efc618"; INK = "#0d0b10"; PURPLE = "#650c75"; BOARD = "#17141c"; FLAP = "#221d2a"; CREAM = "#f2ead9"
+
+
+def short_name(n):
+    """Trim listing names down to what fits on a map pin."""
+    import re as _re
+    n = _re.sub(r"\s+(Of Lompoc|of Lompoc|Lompoc)$", "", n)
+    n = _re.sub(r"\s+(Social House|Cocktail Bar|Taproom & Eatery|Italian Restaurant|Restaurant|& Grill|and BBQ)$", "", n)
+    n = n.replace("Tacos y Mariscos ", "").replace("pizza", "Pizza")
+    return n.replace("&", "&amp;")
 
 def css(cid):
     return f"""
@@ -138,28 +147,65 @@ def scene_html(cid, dur):
                 f' tl.to(o, {{ v:12, duration:1.30, ease:"none", onUpdate:()=>{{ el.textContent = "6:" + String(Math.round(o.v)).padStart(2,"0"); }} }}, 0.60); }}')
         return wrap(cid, dur, inner, js, first=True)
 
-    if cid == "s2-members":
+    if cid == "s2-picks":
         top = 0.175
         rows = [f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>RECOMMENDED</span><em>OPEN TILL</em></div>']
         js = [f'tl.fromTo("#{cid}-bar", {{ autoAlpha:0, y:-10 }}, {{ autoAlpha:1, y:0, duration:0.3 }}, 0.05)']
         for i, (img, nm, tm) in enumerate(PICKS):
             y = int(1920 * top) + 58 + i * 138
             rows.append(f'<div class="row" id="{cid}-r{i}" style="top:{y}px; perspective:900px"><span class="dot"></span><img src="public/{img}" alt="" /><span class="nm">{nm}</span><span class="tm">{tm}</span></div>')
-            js.append(flap_in(cid, f"#{cid}-r{i}", 0.42 + i * 0.62))
+            js.append(flap_in(cid, f"#{cid}-r{i}", 0.30 + i * 0.30, 0.26))
         return wrap(cid, dur, "\n      ".join(rows), "\n        ".join(js))
 
-    if cid == "s3-more":
-        head = f'<div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px"><span>+50 MORE STILL OPEN</span><em>OPEN TILL</em></div>'
-        js = [f'tl.fromTo("#{cid}-bar", {{ autoAlpha:0, y:-10 }}, {{ autoAlpha:1, y:0, duration:0.3 }}, 0.05)']
-        rows = []
-        for i, (nm, tm) in enumerate(MORE):
-            y = int(1920 * 0.175) + 58 + i * 108
-            rows.append(f'<div class="row plain" id="{cid}-r{i}" style="top:{y}px; perspective:900px"><span class="nm">{nm}</span><span class="tm">{tm}</span></div>')
-            js.append(flap_in(cid, f"#{cid}-r{i}", 0.30 + i * 0.38, 0.22))
-        # no drift: ten rows sit inside the safe band between the header and the captions
-        scrim = ('<div style="position:absolute; left:0; right:0; bottom:0; height:560px; z-index:43; pointer-events:none; '
-                 'background:linear-gradient(to top, #0c0a10 0%, rgba(12,10,16,0.96) 42%, rgba(12,10,16,0) 100%)"></div>')
-        inner = head + f'\n      <div id="{cid}-scroll" style="position:absolute; inset:0; z-index:41">' + "\n        ".join(rows) + "</div>\n      " + scrim
+    if cid == "s3-route":
+        import json
+        pins = json.load(open(os.path.join(HERE, "public", "pins.json")))
+        pins.sort(key=lambda p: -p["y"])          # south (Old Town) → north (H Street)
+        path = " ".join(("M" if i == 0 else "L") + f'{p["x"]:.0f},{p["y"]:.0f}' for i, p in enumerate(pins))
+        # label only well-separated pins so names never collide (north H St stacks tightly)
+        LABELS = {}
+        chosen = []
+        for p in pins:
+            if len(chosen) >= 5: break
+            if all((p["x"] - c["x"]) ** 2 + (p["y"] - c["y"]) ** 2 > 300 ** 2 for c in chosen):
+                chosen.append(p); LABELS[p["name"]] = "below" if len(chosen) % 2 else "above"
+        dots = "".join(
+            f'<circle class="pin" id="{cid}-p{i}" cx="{p["x"]:.0f}" cy="{p["y"]:.0f}" r="13" />'
+            for i, p in enumerate(pins))
+        labs = []
+        for i, p in enumerate(pins):
+            if p["name"] in LABELS:
+                dy = 40 if LABELS[p["name"]] == "below" else -26
+                anchor = "start" if p["x"] < 700 else "end"
+                labs.append(f'<text class="plab" id="{cid}-l{i}" x="{p["x"]:.0f}" y="{p["y"]+dy:.0f}" text-anchor="{anchor}">{short_name(p["name"])}</text>')
+        inner = f'''<img src="public/map.png" alt="" style="position:absolute; inset:0; z-index:1; width:1080px; height:1920px; object-fit:cover; opacity:1; filter:brightness(1.85) contrast(1.15) saturate(0.9)" />
+      <div style="position:absolute; inset:0; z-index:2; background:radial-gradient(ellipse 78% 52% at 50% 48%, rgba(239,198,24,0.07) 0%, rgba(12,10,16,0.10) 55%, rgba(12,10,16,0.72) 100%)"></div>
+      <svg id="{cid}-svg" viewBox="0 0 1080 1920" style="position:absolute; inset:0; width:1080px; height:1920px; z-index:41; overflow:visible">
+        <style>
+          .route {{ fill:none; stroke:{GOLD}; stroke-width:7; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 10px rgba(239,198,24,0.65)); }}
+          .pin {{ fill:{GOLD}; stroke:#0c0a10; stroke-width:3; opacity:0; filter:drop-shadow(0 0 9px rgba(239,198,24,0.8)); }}
+          .plab {{ fill:#fff; font-weight:800; font-size:34px; opacity:0; paint-order:stroke; stroke:#0c0a10; stroke-width:6; stroke-linejoin:round; }}
+        </style>
+        <path class="route" id="{cid}-route" d="{path}" />
+        {dots}
+        {"".join(labs)}
+      </svg>
+      <div class="secbar" id="{cid}-bar" style="top:{int(1920*0.145)}px; z-index:45"><span>TONIGHT'S ROUTE</span><em>24 OPEN</em></div>
+      <div id="{cid}-attr" style="position:absolute; right:84px; bottom:120px; z-index:44; color:rgba(242,234,217,0.82); font-size:19px; font-weight:700; text-shadow:0 1px 4px rgba(0,0,0,0.9)">© Mapbox © OpenStreetMap</div>'''
+        n = len(pins)
+        js = [f'tl.fromTo("#{cid}-bar", {{ autoAlpha:0, y:-10 }}, {{ autoAlpha:1, y:0, duration:0.3 }}, 0.05)',
+              f'tl.set("#{cid}-attr", {{ autoAlpha:1 }}, 0)',
+              # the route draws itself across town
+              f'{{ const el=document.querySelector("#{cid}-route"); const L=el.getTotalLength();'
+              f' el.style.strokeDasharray=L; el.style.strokeDashoffset=L;'
+              f' tl.to(el, {{ strokeDashoffset:0, duration:{dur-2.1:.2f}, ease:"none" }}, 0.55); }}']
+        for i in range(n):
+            at = 0.55 + (i / max(n - 1, 1)) * (dur - 2.1)
+            js.append(f'tl.fromTo("#{cid}-p{i}", {{ autoAlpha:0, scale:0.2, transformOrigin:"50% 50%" }}, {{ autoAlpha:1, scale:1, duration:0.26, ease:"back.out(2.2)" }}, {at:.2f});')
+        for i, p in enumerate(pins):
+            if p["name"] in LABELS:
+                at = 0.55 + (i / max(n - 1, 1)) * (dur - 2.1)
+                js.append(f'tl.fromTo("#{cid}-l{i}", {{ autoAlpha:0, y:6 }}, {{ autoAlpha:1, y:0, duration:0.3 }}, {at+0.12:.2f});')
         return wrap(cid, dur, inner, "\n        ".join(js))
 
     if cid == "s4-end":
@@ -167,7 +213,7 @@ def scene_html(cid, dur):
       <div style="position:absolute; left:0; right:0; top:30%; z-index:46; text-align:center">
         <span id="{cid}-t1" style="display:block; color:#fff; font-weight:800; font-size:112px; line-height:0.98; letter-spacing:-4px; opacity:0">Pick one.</span>
         <span id="{cid}-pill" style="display:inline-block; margin-top:52px; background:{GOLD}; color:{INK}; font-weight:800; font-size:42px; padding:20px 38px; border-radius:999px; opacity:0">lompoclocals.com/find/dinner</span>
-        <span id="{cid}-t2" style="display:block; margin-top:34px; color:rgba(255,255,255,0.85); font-weight:600; font-size:31px; letter-spacing:1px; opacity:0">Every local kitchen · hours · phone · tonight's deals</span>
+        <span id="{cid}-t2" style="display:block; margin-top:34px; color:rgba(255,255,255,0.85); font-weight:600; font-size:31px; letter-spacing:1px; opacity:0">Every local kitchen · on the map · hours · phone</span>
       </div>'''
         js = (f'tl.fromTo("#{cid}-t1", {{ autoAlpha:0, y:22, scale:1.06 }}, {{ autoAlpha:1, y:0, scale:1, duration:0.5, ease:"expo.out" }}, 0.22);'
               f'tl.fromTo("#{cid}-pill", {{ autoAlpha:0, y:16, scale:0.94 }}, {{ autoAlpha:1, y:0, scale:1, duration:0.5, ease:"back.out(1.4)" }}, 1.55);'
