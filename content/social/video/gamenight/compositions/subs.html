@@ -1,0 +1,36 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="13.50" style="position:absolute; inset:0; overflow:hidden; background:transparent; pointer-events:none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position:absolute; left:60px; right:60px; bottom:310px; z-index:70; display:flex; justify-content:center; }
+      [data-composition-id="subs"] .sub { position:absolute; left:0; right:0; bottom:0; display:flex; justify-content:center; opacity:0; }
+      [data-composition-id="subs"] .sub span { display:inline-block; max-width:920px; background:rgba(0,0,0,0.64); color:#fff; font-weight:600; font-size:42px; line-height:1.25; padding:14px 28px; border-radius:20px; text-align:center; }
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Tonight.</span></div>
+      <div class="sub" id="sub-1"><span>Seven o'clock.</span></div>
+      <div class="sub" id="sub-2"><span>Huyck Stadium.</span></div>
+      <div class="sub" id="sub-3"><span>The Lompoc Braves are 3-0.</span></div>
+      <div class="sub" id="sub-4"><span>And Dublin's in town.</span></div>
+      <div class="sub" id="sub-5"><span>Every score at lompoclocals.com/football</span></div>
+    </div>
+    <script>
+      (() => {
+        const S = [
+          [0.40, 1.20],
+          [1.43, 2.55],
+          [2.92, 4.05],
+          [4.49, 6.60],
+          [6.78, 8.20],
+          [8.49, 12.40]
+        ];
+        const tl = gsap.timeline({ paused:true });
+        S.forEach(([a,b], i) => {
+          tl.fromTo("#sub-"+i, { autoAlpha:0, y:10 }, { autoAlpha:1, y:0, duration:0.12 }, a);
+          tl.to("#sub-"+i, { autoAlpha:0, duration:0.1 }, b-0.1);
+        });
+        tl.set({}, {}, 13.50);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>
