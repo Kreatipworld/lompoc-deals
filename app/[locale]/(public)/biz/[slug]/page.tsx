@@ -90,6 +90,9 @@ export async function generateMetadata({
       title: `${name} ${t("metaOgSuffix")}`.trim(),
       description: metaDescription,
     },
+    // Their own logo as the tab/link icon, so a shared business link carries their mark
+    // and not ours (owner, Sep 19 2026). Falls back to the site icon when they have none.
+    ...(data.business.logoUrl ? { icons: { icon: data.business.logoUrl } } : {}),
   }
 }
 

@@ -1,8 +1,10 @@
 import { ImageResponse } from "next/og"
 import { getBusinessBySlug } from "@/lib/queries"
 
-// Per-business branded social share cover — the business name WITH the Lompoc
-// Locals logo, so every shared business link carries our brand.
+// Per-business social share cover. A shared business link has to preview THAT business —
+// their own cover photo and their own logo — not our house card (owner, Sep 19 2026:
+// "the plumbing company is showing just the cover of the local Lompoc"). We stay as a small
+// presenter strip at the bottom. Falls back to the branded card when a listing has no photo.
 export const alt = "Lompoc Locals business"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
@@ -14,15 +16,35 @@ const MARK =
   '<path fill="#ffffff" d="M250.9,465.7h0s-72.8,0-72.8,0c21.8-102.6,83.4-304.7-107.3-296.1,108.1,59.5,27.8,259.1,6.6,359.2h244v-63.1h-70.5Z"/>' +
   "</svg>"
 
-export default async function BizOpengraphImage({
-  params,
-}: {
-  params: { slug: string }
-}) {
+// satori cannot fetch remote images itself reliably (timeouts, HEIC, redirects, huge files),
+// so every image is fetched here, type-checked and size-capped, then inlined as a data URI.
+async function inline(url: string | null | undefined, maxBytes = 3_000_000): Promise<string | null> {
+  if (!url) return null
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(6000) })
+    const ct = (res.headers.get("content-type") ?? "").split(";")[0]
+    if (!res.ok || !/^image\/(jpeg|png|webp)$/.test(ct)) return null
+    const buf = Buffer.from(await res.arrayBuffer())
+    if (buf.length > maxBytes) return null
+    return `data:${ct};base64,${buf.toString("base64")}`
+  } catch {
+    return null
+  }
+}
+
+export default async function BizOpengraphImage({ params }: { params: { slug: string } }) {
   const data = await getBusinessBySlug(params.slug).catch(() => null)
-  const name = data?.business.name ?? "A local business"
-  const category = data?.business.category?.name ?? null
+  const b = data?.business
+  const name = b?.name ?? "A local business"
+  const category = b?.category?.name ?? null
   const mark = `data:image/svg+xml;base64,${Buffer.from(MARK).toString("base64")}`
+
+  const [photo, logo] = await Promise.all([
+    inline(b?.coverUrl ?? (Array.isArray(b?.photosJson) ? (b.photosJson[0] as string) : null)),
+    inline(b?.logoUrl ?? null, 1_500_000),
+  ])
+
+  const nameSize = name.length > 34 ? 56 : name.length > 22 ? 68 : 80
 
   return new ImageResponse(
     (
@@ -31,46 +53,99 @@ export default async function BizOpengraphImage({
           height: "100%",
           width: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "72px 80px",
+          position: "relative",
           backgroundColor: "#650C75",
           backgroundImage:
-            "radial-gradient(60% 55% at 88% 0%, rgba(239,198,24,0.26) 0%, transparent 60%), radial-gradient(55% 55% at 0% 100%, rgba(11,153,47,0.30) 0%, transparent 60%), linear-gradient(135deg, #4a0857, #650C75 55%, #37043f)",
+            "radial-gradient(60% 55% at 88% 0%, rgba(239,198,24,0.26) 0%, transparent 60%), linear-gradient(135deg, #4a0857, #650C75 55%, #37043f)",
           color: "white",
         }}
       >
-        {/* brand row */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={mark} width={46} height={59} alt="" />
-          <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: -1 }}>Lompoc Locals</div>
-        </div>
+        {/* their photo fills the card */}
+        {photo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={photo}
+            alt=""
+            width={1200}
+            height={630}
+            style={{ position: "absolute", inset: 0, width: 1200, height: 630, objectFit: "cover" }}
+          />
+        ) : null}
+        {/* legibility scrim under the type */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            background: photo
+              ? "linear-gradient(90deg, rgba(20,10,23,0.94) 0%, rgba(20,10,23,0.80) 46%, rgba(20,10,23,0.18) 100%)"
+              : "linear-gradient(90deg, rgba(20,10,23,0.30) 0%, rgba(20,10,23,0.10) 100%)",
+          }}
+        />
 
-        {/* business name */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {category ? (
-            <div
-              style={{
-                fontSize: 26,
-                fontWeight: 700,
-                letterSpacing: 3,
-                textTransform: "uppercase",
-                color: "#EFC618",
-                marginBottom: 14,
-              }}
-            >
-              {category}
-            </div>
-          ) : null}
-          <div style={{ fontSize: 82, fontWeight: 800, lineHeight: 1.02, letterSpacing: -2 }}>
-            {name}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: "64px 72px",
+            width: 820,
+          }}
+        >
+          {/* their logo leads */}
+          <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+            {logo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logo}
+                alt=""
+                width={104}
+                height={104}
+                style={{
+                  width: 104,
+                  height: 104,
+                  borderRadius: 20,
+                  objectFit: "contain",
+                  backgroundColor: "#ffffff",
+                  padding: 8,
+                }}
+              />
+            ) : null}
+            {category ? (
+              <div
+                style={{
+                  fontSize: 24,
+                  fontWeight: 700,
+                  letterSpacing: 3,
+                  textTransform: "uppercase",
+                  color: "#EFC618",
+                }}
+              >
+                {category}
+              </div>
+            ) : null}
           </div>
-        </div>
 
-        {/* footer */}
-        <div style={{ fontSize: 28, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>
-          Find them on lompoclocals.com
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontSize: nameSize, fontWeight: 800, lineHeight: 1.02, letterSpacing: -2 }}>
+              {name}
+            </div>
+            {b?.address ? (
+              <div style={{ marginTop: 14, fontSize: 27, fontWeight: 600, color: "rgba(255,255,255,0.86)" }}>
+                {b.address.split(",")[0]} · Lompoc, CA
+              </div>
+            ) : null}
+          </div>
+
+          {/* presenter strip */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={mark} width={30} height={38} alt="" />
+            <div style={{ fontSize: 24, fontWeight: 600, color: "rgba(255,255,255,0.82)" }}>
+              on Lompoc Locals
+            </div>
+          </div>
         </div>
       </div>
     ),
