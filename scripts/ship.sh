@@ -122,7 +122,7 @@ fi
 
 if [[ -z "$DEPLOY_URL" ]]; then
   WT="$(mktemp -d /tmp/ship-${SHORT}-XXXX)"
-  cleanup() { git -C "$ROOT" worktree remove --force "$WT" >/dev/null 2>&1 || rm -rf "$WT"; }
+  cleanup() { rm -f "$WT/node_modules" 2>/dev/null; git -C "$ROOT" worktree remove --force "$WT" >/dev/null 2>&1 || rm -rf "$WT"; }
   trap cleanup EXIT
   bold "▶ Building ${SHORT} on Vercel (production target, domain NOT attached)..."
   git worktree add --detach "$WT" "$SHA" >/dev/null
@@ -144,8 +144,12 @@ if [[ -z "$DEPLOY_URL" ]]; then
     export VERCEL_AUTOMATION_BYPASS_SECRET="$(node scripts/vercel-gate.mjs bypass)"
   fi
   bold "▶ Checking the build (server checks + real browser on desktop and iPhone)..."
-  if ! node --env-file=.env.local scripts/check-production.mjs --base="$DEPLOY_URL" \
-     || ! node --env-file=.env.local scripts/smoke-real-estate.mjs --base="$DEPLOY_URL"; then
+  # The checks are the ones committed WITH this build (worktree), not whatever the working
+  # tree has now — a newer check for a route this build does not have is a false red.
+  CHECKS_DIR="$WT"
+  ln -sfn "$ROOT/node_modules" "$WT/node_modules"
+  if ! node --env-file=.env.local "$CHECKS_DIR/scripts/check-production.mjs" --base="$DEPLOY_URL" \
+     || ! node --env-file=.env.local "$CHECKS_DIR/scripts/smoke-real-estate.mjs" --base="$DEPLOY_URL"; then
     echo
     red "══════════════════════════════════════════════════════════════"
     red "  ✗ BUILD FAILED CHECKS — ${SHORT} will NOT be promoted."
@@ -174,8 +178,9 @@ git push origin "$SHA:refs/heads/$PROD_BRANCH" >/dev/null 2>&1 || red "  (could 
 # ── 5. check production itself; roll back on red ─────────────────────────────
 bold "▶ Running production checks against $PROD_URL..."
 sleep 5
-if ! node --env-file=.env.local scripts/check-production.mjs --base="$PROD_URL" \
-   || ! node --env-file=.env.local scripts/smoke-real-estate.mjs --base="$PROD_URL"; then
+CHECKS_DIR="${CHECKS_DIR:-$ROOT}"
+if ! node --env-file=.env.local "$CHECKS_DIR/scripts/check-production.mjs" --base="$PROD_URL" \
+   || ! node --env-file=.env.local "$CHECKS_DIR/scripts/smoke-real-estate.mjs" --base="$PROD_URL"; then
   echo
   red "══════════════════════════════════════════════════════════════"
   red "  ✗ PRODUCTION IS RED after promoting ${SHORT} — rolling back now."

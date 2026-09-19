@@ -3,7 +3,7 @@
     data-composition-id="d2-stories"
     data-width="1080"
     data-height="1350"
-    data-duration="22.85"
+    data-duration="29.95"
     style="position: absolute; inset: 0; overflow: hidden; background: #241629"
   >
     <style>
@@ -70,6 +70,19 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n2)' opacity='1'/%3E%3C/svg%3E");
       }
     </style>
+
+    <!-- ============ phase 0 — Spencer's open (photo) ============ -->
+    <div class="d2-phase" id="d2-p0">
+      <div class="d2-photo-wrap">
+        <img id="d2-p0-img" src="public/spencers-meat-dept.jpg" alt="" />
+      </div>
+      <div class="d2-scrim"></div>
+      <div class="d2-copy">
+        <div class="d2-h" id="d2-p0-h">Spencer's Fresh Market is open on North&nbsp;H.</div>
+        <div class="d2-serif" id="d2-p0-s">family-run · deli counter · local produce</div>
+      </div>
+      <div class="d2-credit" id="d2-p0-c">photo: Spencer's Fresh Market</div>
+    </div>
 
     <!-- ============ phase 1 — Falcon 9 launch (photo) ============ -->
     <div class="d2-phase" id="d2-p1">
@@ -231,10 +244,12 @@
         const tl = gsap.timeline({ paused: true });
 
         const XFADE = 0.35;
-        // phase boundaries (comp-local): p1 0–8.05, p2 8.05–13.65, p3 13.65–17.75, p4 17.75–22.85
-        const B1 = 8.05, B2 = 13.65, B3 = 17.75;
+        // phase boundaries (comp-local): p0 0–7.1, p1 7.1–15.15, p2 15.15–20.75, p3 20.75–24.85, p4 24.85–29.95
+        const B0 = 7.1, B1 = 15.15, B2 = 20.75, B3 = 24.85, END = 29.95;
 
-        tl.set("#d2-p1", { opacity: 1 }, 0);
+        tl.set("#d2-p0", { opacity: 1 }, 0);
+        tl.to("#d2-p0", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, B0);
+        tl.to("#d2-p1", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, B0);
         tl.to("#d2-p1", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, B1);
         tl.to("#d2-p2", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, B1);
         tl.to("#d2-p2", { opacity: 0, duration: XFADE, ease: "power1.inOut" }, B2);
@@ -243,13 +258,9 @@
         tl.to("#d2-p4", { opacity: 1, duration: XFADE, ease: "power1.inOut" }, B3);
 
         // slow breathe on the photos
-        tl.fromTo("#d2-p1-img", { scale: 1 }, { scale: 1.06, duration: B1 + XFADE, ease: "none" }, 0);
-        tl.fromTo(
-          "#d2-p4-img",
-          { scale: 1.06 },
-          { scale: 1, duration: 22.85 - B3 + XFADE, ease: "none" },
-          B3 - XFADE
-        );
+        tl.fromTo("#d2-p0-img", { scale: 1 }, { scale: 1.06, duration: B0 + XFADE, ease: "none" }, 0);
+        tl.fromTo("#d2-p1-img", { scale: 1.06 }, { scale: 1, duration: B1 - B0 + XFADE, ease: "none" }, B0 - XFADE);
+        tl.fromTo("#d2-p4-img", { scale: 1.06 }, { scale: 1, duration: END - B3 + XFADE, ease: "none" }, B3 - XFADE);
 
         const copyIn = (h, s, at, credit) => {
           tl.fromTo(h, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, at);
@@ -258,12 +269,12 @@
             tl.fromTo(credit, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, at + 0.35);
           }
         };
-        copyIn("#d2-p1-h", "#d2-p1-s", 0.2, "#d2-p1-c");
+        copyIn("#d2-p0-h", "#d2-p0-s", 0.2, "#d2-p0-c");
+        copyIn("#d2-p1-h", "#d2-p1-s", B0 + 0.25, "#d2-p1-c");
         copyIn("#d2-p2-h", "#d2-p2-s", B1 + 0.25, null);
         copyIn("#d2-p3-h", "#d2-p3-s", B2 + 0.25, null);
         copyIn("#d2-p4-h", "#d2-p4-s", B3 + 0.25, "#d2-p4-c");
 
-        // badge settles in on phase 2
         tl.fromTo(
           "#d2-p2-badge",
           { opacity: 0, scale: 0.7, rotation: -8 },
@@ -277,7 +288,6 @@
           B1 + 0.4
         );
 
-        // portal card + rows build on phase 3
         tl.fromTo(
           "#d2-p3-card",
           { opacity: 0, y: 44 },
