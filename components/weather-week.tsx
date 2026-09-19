@@ -31,6 +31,12 @@ const BAND: Record<WeatherIcon, string> = {
  * band stays with the day names and an "updating" note. Motion is CSS only and
  * stops under prefers-reduced-motion.
  */
+/**
+ * Weather strip: one compact row — today first and highlighted, then the next six days.
+ * Deliberately short (owner, Sep 19 2026: "simplify and make it smaller… less height"):
+ * no hero tile, no per-day condition text (the icon carries it), and today's condition
+ * rides in the heading line so no tile needs a second row of type.
+ */
 export function WeatherWeek({ days, labels }: { days: ForecastDay[] | null; labels: Labels }) {
   const tiles: (ForecastDay | { dayKey: ForecastDay["dayKey"]; placeholder: true })[] =
     days && days.length > 0
@@ -42,86 +48,60 @@ export function WeatherWeek({ days, labels }: { days: ForecastDay[] | null; labe
 
   const first = tiles[0]
   const today = first && !("placeholder" in first) ? first : null
-  const rest = tiles.slice(1)
   const band = today ? BAND[today.icon] : "linear-gradient(135deg, #3a2a4d 0%, #5a4a6f 60%, #8a7a9f 100%)"
 
   return (
     <section aria-label={labels.heading} className="ww-band relative overflow-hidden text-white" style={{ background: band }}>
       <style>{css}</style>
       <div className="ww-shine pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div className="relative mx-auto max-w-6xl px-4 pb-4 pt-4 sm:px-6 sm:pb-5 sm:pt-5">
+      <div className="relative mx-auto max-w-6xl px-4 py-2.5 sm:px-6 sm:py-3">
         <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#EFC618]">{labels.heading}</h2>
-          <span className="text-[10px] uppercase tracking-[0.12em] text-white/60">{days ? labels.source : labels.updating}</span>
+          <h2 className="truncate text-[10px] font-bold uppercase tracking-[0.2em] text-[#EFC618]">
+            {labels.heading}
+            {today && <span className="ml-2 font-semibold normal-case tracking-normal text-white/80">{labels.conditions[today.icon]}</span>}
+          </h2>
+          <span className="hidden shrink-0 text-[9px] uppercase tracking-[0.12em] text-white/55 sm:inline">{days ? labels.source : labels.updating}</span>
+          {!days && <span className="shrink-0 text-[9px] uppercase tracking-[0.12em] text-white/55 sm:hidden">{labels.updating}</span>}
         </div>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-[minmax(0,1.35fr)_minmax(0,3fr)] sm:items-stretch">
-          {/* Today — the big tile */}
-          <div className="ww-today flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-[2px] sm:px-5 sm:py-4">
-            <span className="block h-16 w-16 shrink-0 sm:h-20 sm:w-20" aria-hidden="true">
-              {today ? <Icon kind={today.icon} size="lg" /> : <span className="ww-dot block h-16 w-16 rounded-full bg-white/15 sm:h-20 sm:w-20" />}
-            </span>
-            <div className="min-w-0">
-              <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#EFC618]">{labels.today}</span>
-              {today ? (
-                <>
-                  <span className="mt-0.5 flex items-baseline gap-2">
-                    <span className="text-4xl font-extrabold leading-none tabular-nums sm:text-5xl">
-                      {today.high !== null ? `${today.high}°` : today.low !== null ? `${today.low}°` : "–"}
-                    </span>
-                    {today.high !== null && today.low !== null && (
-                      <span className="text-base font-semibold tabular-nums text-white/70">{today.low}°</span>
-                    )}
-                  </span>
-                  <span className="mt-1 block text-sm font-semibold leading-snug">{labels.conditions[today.icon]}</span>
-                  <span className="mt-0.5 line-clamp-2 block text-xs leading-snug text-white/75">{today.shortForecast}</span>
-                  {today.precip !== null && today.precip >= 30 && (
-                    <span className="mt-1 inline-block rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-semibold">{today.precip}%</span>
-                  )}
-                </>
-              ) : (
-                <span className="mt-1 block text-sm text-white/70">{labels.updating}</span>
-              )}
-            </div>
-          </div>
-
-          {/* The other six — compact, scroll on phone, one row on desktop */}
-          <ol className="ww-row -mx-4 flex snap-x gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-6 sm:overflow-visible sm:px-0 sm:pb-0">
-            {rest.map((t, i) => {
-              const day = "placeholder" in t ? null : t
-              return (
-                <li
-                  key={t.dayKey + i}
-                  className="flex min-w-[84px] shrink-0 snap-start flex-col items-center justify-center rounded-2xl border border-white/12 bg-white/[0.07] px-2 py-2.5 text-center sm:min-w-0"
-                >
-                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">{labels.days[t.dayKey]}</span>
-                  <span className="my-1 block h-8 w-8" aria-hidden="true">
-                    {day ? <Icon kind={day.icon} size="sm" /> : <span className="ww-dot block h-8 w-8 rounded-full bg-white/15" />}
+        <ol className="ww-row -mx-4 mt-1.5 flex snap-x gap-1.5 overflow-x-auto px-4 pb-0.5 sm:mx-0 sm:grid sm:grid-cols-7 sm:overflow-visible sm:px-0 sm:pb-0">
+          {tiles.map((t, i) => {
+            const day = "placeholder" in t ? null : t
+            const isToday = i === 0
+            return (
+              <li
+                key={t.dayKey + i}
+                className={`flex min-w-[68px] shrink-0 snap-start items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 sm:min-w-0 ${
+                  isToday ? "border-white/25 bg-white/[0.14]" : "border-white/10 bg-white/[0.06]"
+                }`}
+              >
+                <span className="block h-7 w-7 shrink-0" aria-hidden="true">
+                  {day ? <Icon kind={day.icon} size="sm" /> : <span className="ww-dot block h-7 w-7 rounded-full bg-white/15" />}
+                </span>
+                <span className="min-w-0">
+                  <span className={`block text-[9px] font-bold uppercase leading-none tracking-[0.12em] ${isToday ? "text-[#EFC618]" : "text-white/65"}`}>
+                    {isToday ? labels.today : labels.days[t.dayKey]}
                   </span>
                   {day ? (
-                    <>
-                      <span className="text-sm font-extrabold tabular-nums">
-                        {day.high !== null ? `${day.high}°` : day.low !== null ? `${day.low}°` : "–"}
-                        {day.high !== null && day.low !== null && <span className="ml-1 text-[11px] font-medium text-white/60">{day.low}°</span>}
-                      </span>
-                      <span className="mt-0.5 text-[10px] leading-tight text-white/70">{labels.conditions[day.icon]}</span>
-                      {day.precip !== null && day.precip >= 30 && <span className="mt-0.5 text-[10px] font-semibold text-[#9cc4ff]">{day.precip}%</span>}
-                    </>
+                    <span className="mt-0.5 block whitespace-nowrap text-[13px] font-extrabold leading-none tabular-nums">
+                      {day.high !== null ? `${day.high}°` : day.low !== null ? `${day.low}°` : "–"}
+                      {day.high !== null && day.low !== null && <span className="ml-1 text-[10px] font-medium text-white/60">{day.low}°</span>}
+                    </span>
                   ) : (
-                    <span className="text-[11px] text-white/40">—</span>
+                    <span className="mt-0.5 block text-[11px] text-white/40">—</span>
                   )}
-                </li>
-              )
-            })}
-          </ol>
-        </div>
+                </span>
+              </li>
+            )
+          })}
+        </ol>
       </div>
     </section>
   )
 }
 
-function Icon({ kind, size }: { kind: WeatherIcon; size: "sm" | "lg" }) {
-  const cls = size === "lg" ? "h-16 w-16 sm:h-20 sm:w-20" : "h-8 w-8"
+function Icon({ kind }: { kind: WeatherIcon; size?: "sm" }) {
+  const cls = "h-7 w-7"
   switch (kind) {
     case "sun":
       return (
@@ -200,7 +180,6 @@ const css = `
 .ww-mist { animation: ww-mist 4s ease-in-out infinite; }
 .ww-bolt { animation: ww-flash 2.6s ease-in-out infinite; }
 .ww-wind { animation: ww-sway 2.8s ease-in-out infinite; }
-.ww-today { animation: ww-pulse 3.4s ease-in-out infinite; }
 .ww-dot { animation: ww-glow 1.6s ease-in-out infinite; }
 @keyframes ww-spin { to { transform: rotate(360deg); } }
 @keyframes ww-glow { 0%,100% { filter: drop-shadow(0 0 0 rgba(239,198,24,0)); opacity: .92 } 50% { filter: drop-shadow(0 0 8px rgba(239,198,24,.95)); opacity: 1 } }
@@ -209,8 +188,7 @@ const css = `
 @keyframes ww-mist { 0%,100% { transform: translateX(-2px); opacity: .6 } 50% { transform: translateX(2px); opacity: 1 } }
 @keyframes ww-flash { 0%,88%,100% { opacity: .85 } 92% { opacity: 1; filter: drop-shadow(0 0 5px rgba(239,198,24,.9)) } 96% { opacity: .6 } }
 @keyframes ww-sway { 0%,100% { transform: translateX(0) } 50% { transform: translateX(2.5px) } }
-@keyframes ww-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(239,198,24,.28) } 50% { box-shadow: 0 0 0 8px rgba(239,198,24,0) } }
 @media (prefers-reduced-motion: reduce) {
-  .ww-sun, .ww-rays, .ww-sun-small, .ww-cloud, .ww-drop, .ww-mist, .ww-bolt, .ww-wind, .ww-today, .ww-dot { animation: none !important; }
+  .ww-sun, .ww-rays, .ww-sun-small, .ww-cloud, .ww-drop, .ww-mist, .ww-bolt, .ww-wind, .ww-dot { animation: none !important; }
 }
 `
