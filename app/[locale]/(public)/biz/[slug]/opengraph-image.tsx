@@ -5,6 +5,9 @@ import { getBusinessBySlug } from "@/lib/queries"
 // their own cover photo and their own logo — not our house card (owner, Sep 19 2026:
 // "the plumbing company is showing just the cover of the local Lompoc"). We stay as a small
 // presenter strip at the bottom. Falls back to the branded card when a listing has no photo.
+//
+// satori rules this file must obey: no `inset`/`background` shorthands, every element with
+// more than one child needs an explicit display, and remote images are inlined by hand.
 export const alt = "Lompoc Locals business"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
@@ -44,7 +47,8 @@ export default async function BizOpengraphImage({ params }: { params: { slug: st
     inline(b?.logoUrl ?? null, 1_500_000),
   ])
 
-  const nameSize = name.length > 34 ? 56 : name.length > 22 ? 68 : 80
+  const nameSize = name.length > 34 ? 54 : name.length > 22 ? 66 : 78
+  const town = b?.address ? `${b.address.split(",")[0]} · Lompoc, CA` : null
 
   return new ImageResponse(
     (
@@ -60,7 +64,6 @@ export default async function BizOpengraphImage({ params }: { params: { slug: st
           color: "white",
         }}
       >
-        {/* their photo fills the card */}
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -68,17 +71,20 @@ export default async function BizOpengraphImage({ params }: { params: { slug: st
             alt=""
             width={1200}
             height={630}
-            style={{ position: "absolute", inset: 0, width: 1200, height: 630, objectFit: "cover" }}
+            style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }}
           />
         ) : null}
-        {/* legibility scrim under the type */}
+
         <div
           style={{
             position: "absolute",
-            inset: 0,
+            top: 0,
+            left: 0,
+            width: 1200,
+            height: 630,
             display: "flex",
-            background: photo
-              ? "linear-gradient(90deg, rgba(20,10,23,0.94) 0%, rgba(20,10,23,0.80) 46%, rgba(20,10,23,0.18) 100%)"
+            backgroundImage: photo
+              ? "linear-gradient(90deg, rgba(20,10,23,0.95) 0%, rgba(20,10,23,0.82) 46%, rgba(20,10,23,0.20) 100%)"
               : "linear-gradient(90deg, rgba(20,10,23,0.30) 0%, rgba(20,10,23,0.10) 100%)",
           }}
         />
@@ -89,33 +95,34 @@ export default async function BizOpengraphImage({ params }: { params: { slug: st
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: "64px 72px",
-            width: 820,
+            padding: "62px 70px",
+            width: 810,
+            height: 630,
           }}
         >
-          {/* their logo leads */}
-          <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             {logo ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={logo}
                 alt=""
-                width={104}
-                height={104}
+                width={100}
+                height={100}
                 style={{
-                  width: 104,
-                  height: 104,
-                  borderRadius: 20,
+                  width: 100,
+                  height: 100,
+                  borderRadius: 18,
                   objectFit: "contain",
                   backgroundColor: "#ffffff",
-                  padding: 8,
+                  marginRight: 22,
                 }}
               />
             ) : null}
             {category ? (
               <div
                 style={{
-                  fontSize: 24,
+                  display: "flex",
+                  fontSize: 23,
                   fontWeight: 700,
                   letterSpacing: 3,
                   textTransform: "uppercase",
@@ -128,21 +135,28 @@ export default async function BizOpengraphImage({ params }: { params: { slug: st
           </div>
 
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontSize: nameSize, fontWeight: 800, lineHeight: 1.02, letterSpacing: -2 }}>
+            <div style={{ display: "flex", fontSize: nameSize, fontWeight: 800, lineHeight: 1.04, letterSpacing: -2 }}>
               {name}
             </div>
-            {b?.address ? (
-              <div style={{ marginTop: 14, fontSize: 27, fontWeight: 600, color: "rgba(255,255,255,0.86)" }}>
-                {b.address.split(",")[0]} · Lompoc, CA
+            {town ? (
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: 14,
+                  fontSize: 26,
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.86)",
+                }}
+              >
+                {town}
               </div>
             ) : null}
           </div>
 
-          {/* presenter strip */}
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={mark} width={30} height={38} alt="" />
-            <div style={{ fontSize: 24, fontWeight: 600, color: "rgba(255,255,255,0.82)" }}>
+            <img src={mark} width={30} height={38} alt="" style={{ marginRight: 14 }} />
+            <div style={{ display: "flex", fontSize: 23, fontWeight: 600, color: "rgba(255,255,255,0.82)" }}>
               on Lompoc Locals
             </div>
           </div>
