@@ -212,6 +212,10 @@
         "href": "/search?q=cafe"
       },
       {
+        "label": "🍷 Bodegas",
+        "href": "/category/wineries"
+      },
+      {
         "label": "💸 Ofertas de hoy",
         "href": "/deals"
       }

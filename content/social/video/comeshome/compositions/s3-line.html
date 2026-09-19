@@ -1,0 +1,55 @@
+<template>
+  <div data-composition-id="s3-line" data-width="1080" data-height="1920" data-duration="13.10" style="position:absolute; inset:0; overflow:hidden; background:transparent">
+    <style>
+      [data-composition-id="s3-line"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s3-line"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none; background:radial-gradient(ellipse 100% 82% at 50% 45%, rgba(8,6,10,0) 58%, rgba(8,6,10,0.62) 100%); }
+      [data-composition-id="s3-line"] .grain { position:absolute; inset:0; pointer-events:none; opacity:0.08; z-index:50; background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s3-line"] .mark { position:absolute; top:150px; right:84px; width:92px; height:auto; z-index:44; }
+      [data-composition-id="s3-line"] .cover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+      [data-composition-id="s3-line"] .scrim { position:absolute; inset:0; z-index:31; pointer-events:none; background:linear-gradient(to top, rgba(14,10,18,0.96) 0%, rgba(14,10,18,0.68) 40%, rgba(14,10,18,0.22) 72%); }
+      [data-composition-id="s3-line"] .kicker { color:#efc618; font-weight:800; font-size:30px; letter-spacing:7px; text-transform:uppercase; }
+      [data-composition-id="s3-line"] .hero { color:#fff; font-weight:800; line-height:0.96; letter-spacing:-4px; text-shadow:0 8px 34px rgba(8,6,10,0.75); }
+    
+    </style>
+    <div class="stage" id="s3-line-stage">
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg,#0e0a12 0%, #15101b 60%, #0e0a12 100%)"></div>
+      <div id="s3-line-rail" style="position:absolute; left:163px; top:498px; width:4px; height:830px; background:linear-gradient(180deg,#efc618,rgba(239,198,24,0.25)); transform-origin:50% 0%; z-index:37"></div>
+      <div id="s3-line-s0" style="position:absolute; left:250px; right:84px; top:480px; z-index:38; opacity:0">
+          <span style="display:block; color:#efc618; font-weight:800; font-size:44px; letter-spacing:4px">1990</span>
+          <span style="display:block; margin-top:8px; color:#fff; font-weight:800; font-size:60px; letter-spacing:-1.5px; line-height:1.02">LOMPOC HIGH</span>
+          <span style="display:block; margin-top:12px; color:rgba(242,234,217,0.78); font-weight:600; font-size:36px"><span id="s3-line-y" style="font-variant-numeric:tabular-nums">0</span> yards · <span id="s3-line-t" style="font-variant-numeric:tabular-nums">0</span> touchdowns</span>
+        </div>
+        <div id="s3-line-d0" style="position:absolute; left:151px; top:498px; width:28px; height:28px; border-radius:50%; background:#efc618; box-shadow:0 0 22px rgba(239,198,24,0.8); z-index:39; opacity:0"></div><div id="s3-line-s1" style="position:absolute; left:250px; right:84px; top:880px; z-index:38; opacity:0">
+          <span style="display:block; color:#efc618; font-weight:800; font-size:44px; letter-spacing:4px">1995</span>
+          <span style="display:block; margin-top:8px; color:#fff; font-weight:800; font-size:60px; letter-spacing:-1.5px; line-height:1.02">FIRST-ROUND PICK</span>
+          <span style="display:block; margin-top:12px; color:rgba(242,234,217,0.78); font-weight:600; font-size:36px">Six seasons · Oakland Raiders</span>
+        </div>
+        <div id="s3-line-d1" style="position:absolute; left:151px; top:898px; width:28px; height:28px; border-radius:50%; background:#efc618; box-shadow:0 0 22px rgba(239,198,24,0.8); z-index:39; opacity:0"></div><div id="s3-line-s2" style="position:absolute; left:250px; right:84px; top:1280px; z-index:38; opacity:0">
+          <span style="display:block; color:#efc618; font-weight:800; font-size:44px; letter-spacing:4px">2026</span>
+          <span style="display:block; margin-top:8px; color:#fff; font-weight:800; font-size:60px; letter-spacing:-1.5px; line-height:1.02">HEAD COACH, DUBLIN</span>
+          <span style="display:block; margin-top:12px; color:rgba(242,234,217,0.78); font-weight:600; font-size:36px">Back at Huyck tonight</span>
+        </div>
+        <div id="s3-line-d2" style="position:absolute; left:151px; top:1298px; width:28px; height:28px; border-radius:50%; background:#efc618; box-shadow:0 0 22px rgba(239,198,24,0.8); z-index:39; opacity:0"></div>
+      <div class="vig"></div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out", duration:0.5 } });
+        tl.fromTo("#s3-line-stage", { autoAlpha:0 }, { autoAlpha:1, duration:0.28, ease:"power1.inOut" }, 0);
+        tl.fromTo("#s3-line-rail", { scaleY:0 }, { scaleY:1, duration:11.10, ease:"none" }, 0.30)
+        tl.fromTo("#s3-line-d0", { autoAlpha:0, scale:0.2 }, { autoAlpha:1, scale:1, duration:0.34, ease:"back.out(2.4)" }, 0.30);
+        tl.fromTo("#s3-line-s0", { autoAlpha:0, x:26 }, { autoAlpha:1, x:0, duration:0.46, ease:"expo.out" }, 0.40);
+        tl.fromTo("#s3-line-d1", { autoAlpha:0, scale:0.2 }, { autoAlpha:1, scale:1, duration:0.34, ease:"back.out(2.4)" }, 7.15);
+        tl.fromTo("#s3-line-s1", { autoAlpha:0, x:26 }, { autoAlpha:1, x:0, duration:0.46, ease:"expo.out" }, 7.25);
+        tl.fromTo("#s3-line-d2", { autoAlpha:0, scale:0.2 }, { autoAlpha:1, scale:1, duration:0.34, ease:"back.out(2.4)" }, 11.00);
+        tl.fromTo("#s3-line-s2", { autoAlpha:0, x:26 }, { autoAlpha:1, x:0, duration:0.46, ease:"expo.out" }, 11.10);
+        { const o={v:0}; const el=document.querySelector("#s3-line-y"); tl.to(o, { v:5151, duration:2.60, ease:"power2.out", onUpdate:()=>{ el.textContent = String(Math.round(o.v)).replace(/\B(?=(\d{3})+(?!\d))/g, ","); } }, 2.10); }
+        { const o={v:0}; const el=document.querySelector("#s3-line-t"); tl.to(o, { v:86, duration:1.20, ease:"power2.out", onUpdate:()=>{ el.textContent = String(Math.round(o.v)); } }, 5.40); }
+        tl.set({}, {}, 13.10);
+        window.__timelines["s3-line"] = tl;
+      })();
+    </script>
+  </div>
+</template>

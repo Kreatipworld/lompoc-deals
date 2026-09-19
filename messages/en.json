@@ -212,6 +212,10 @@
         "href": "/search?q=coffee"
       },
       {
+        "label": "🍷 Wineries",
+        "href": "/category/wineries"
+      },
+      {
         "label": "💸 Today's deals",
         "href": "/deals"
       }
