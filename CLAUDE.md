@@ -47,7 +47,8 @@ Visiting `/` auto-redirects to `/en` (or `/es` based on browser language) via mi
 Git pushes build NOTHING on Vercel (`vercel.json` → `ignoreCommand` → `scripts/vercel-ignore.sh`).
 That gate skips the `production` branch outright (ship.sh already built and promoted that exact
 commit) and skips `main` unless `PREVIEW_BUILDS=paths` is set in the project's Preview env, in which
-case it builds only when a compiled path changed. `[build]` in a commit message forces a build.
+case it builds only when a compiled path changed. A commit whose subject line opens with `[build]` forces a build; mentioning the
+token elsewhere in the message does not.
 `scripts/ship.sh` is the ONLY path to production, and it costs exactly one build per ship:
 
 ```bash

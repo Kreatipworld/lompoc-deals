@@ -67,7 +67,10 @@ deploy-connected, so each one is a second build trigger.
 
 `scripts/vercel-ignore.sh` rewritten:
 
-1. `[build]` in a commit message forces a build on any branch.
+1. A commit whose **subject line opens with** `[build]` forces a build on any branch. The first
+   version matched `[build]` anywhere in the message, and commit 9841ec6 tripped its own gate by
+   documenting the token in its body: it ran a 93s preview build (~2 billed minutes, ~60 CPU-minutes)
+   for nothing. Anchored to the subject line in the follow-up commit.
 2. `production` branch always skips — ship.sh already built and promoted that exact commit, so a
    git build of it is duplicate work every time.
 3. `main` skips by default. Setting `PREVIEW_BUILDS=paths` in the project's **Preview** environment

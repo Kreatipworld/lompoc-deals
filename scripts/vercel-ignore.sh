@@ -26,7 +26,12 @@ skip() { echo "SKIP: $1"; exit 0; }
 build() { echo "BUILD: $1"; exit 1; }
 
 # 1. Explicit opt-in always wins, on any branch.
-[[ "$msg" == *"[build]"* ]] && build "commit message contains [build]"
+#    The token must OPEN the subject line: "[build] fix the header". A loose
+#    substring match fires on any commit that merely mentions the token, which
+#    is exactly what happened to 9841ec6 — a commit documenting this gate said
+#    "[build] still forces one" in its body and bought a 93s build for nothing.
+subject="${msg%%$'\n'*}"
+[[ "$subject" == "[build]"* ]] && build "subject line opens with [build]"
 
 # 2. The `production` branch is a RECORD of what ship.sh already built and
 #    promoted. That exact commit has a live production deployment. Rebuilding
