@@ -45,6 +45,9 @@ Visiting `/` auto-redirects to `/en` (or `/es` based on browser language) via mi
 ## Shipping — how changes reach https://www.lompoclocals.com
 
 Git pushes build NOTHING on Vercel (`vercel.json` → `ignoreCommand` → `scripts/vercel-ignore.sh`).
+That gate skips the `production` branch outright (ship.sh already built and promoted that exact
+commit) and skips `main` unless `PREVIEW_BUILDS=paths` is set in the project's Preview env, in which
+case it builds only when a compiled path changed. `[build]` in a commit message forces a build.
 `scripts/ship.sh` is the ONLY path to production, and it costs exactly one build per ship:
 
 ```bash
@@ -71,6 +74,33 @@ Rules:
   `/api/me`); health check runs every 2 min with page rotation; image variants cache 30 days.
 - If a check is red, fix forward and ship again; production keeps the last good deployment.
 
+## Build budget — STANDING RULES (Sep 20 2026)
+
+Build CPU-minutes are the biggest line on the Vercel invoice: 21,960 CPU-minutes and $60.76 of a
+$94.16 month. The formula is **wall-clock minutes rounded UP to the next whole minute, times the
+number of vCPUs on the build machine**. On Pro + Elastic that multiplier measured ~28.6, so a
+28-second build we throw away still bills roughly 30 CPU-minutes. Full audit and the numbers behind
+it: `docs/ops/vercel-build-cost.md`.
+
+These rules are not negotiable and are not scoped to one task:
+
+- **Never push to a deploy-connected branch just to see if something works.** Run the production
+  build locally first (`npm run build`) and push only once it passes. `main` and `production` are
+  both connected to Vercel; a push to either boots a build machine even when the build is skipped.
+- **One commit and one push per completed task.** Never push after each file edit. Batch the whole
+  task, then push once.
+- **Never run `vercel deploy`, `vercel --prod`, `vercel redeploy` or any CLI deploy unless the owner
+  asks for it in that same message.** `scripts/ship.sh` is still the only sanctioned path, and
+  running it is itself a deploy — it needs the same explicit ask.
+- **Ask before pushing anything that triggers a production build.** Say what will build and why,
+  then wait.
+- **If a change only touches docs, comments, content, or config that does not affect build output,
+  say so and let the owner decide whether to push at all.** Do not push it on your own initiative.
+
+A skipped build is cheaper than a real one but is NOT free: the machine still boots and still bills
+a rounded-up minute. The only way to stop the boot is to turn automatic deploys off for the branch
+in the Vercel dashboard.
+
 ## Health, bugs, backups
 - `/api/cron/health-check` runs every minute (13 pages + DB; one heartbeat row per 10 min in `cron_runs`,
   every failure logged, email to hello@ on the first failure and on recovery).
@@ -92,3 +122,5 @@ DATABASE_URL, AUTH_SECRET, AUTH_URL, RESEND_API_KEY, BLOB_READ_WRITE_TOKEN, CRON
 - Prefer small, readable files over clever abstractions.
 - Ask before adding new dependencies or scope.
 - When in doubt, re-read `docs/build-plan.md`.
+- Respect the build-budget standing rules above: one push per task, no speculative pushes, no CLI
+  deploy without an explicit ask in that same message.
