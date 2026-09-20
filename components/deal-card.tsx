@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation"
+import { dealImage } from "@/lib/deal-image"
 import {
   Heart,
   ArrowRight,
@@ -90,7 +91,7 @@ export async function DealCard({
         {/* IMAGE */}
         <Link href={`/biz/${deal.business.slug}`} data-tilt="img" className="relative block h-44 overflow-hidden flex-shrink-0">
           <SafeImage
-            src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
+            src={dealImage(deal)}
             alt={deal.imageUrl ? deal.title : deal.business.name}
             className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
             fallback={
@@ -299,7 +300,7 @@ export async function DealCard({
       <div className="relative h-52 overflow-hidden">
         <Link href={`/biz/${deal.business.slug}`} data-tilt="img" className="block h-full w-full" aria-label={deal.title}>
           <SafeImage
-            src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
+            src={dealImage(deal)}
             alt={deal.imageUrl ? deal.title : deal.business.name}
             className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
             fallback={

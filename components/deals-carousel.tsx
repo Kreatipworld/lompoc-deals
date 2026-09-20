@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation"
+import { dealImage } from "@/lib/deal-image"
 import { ArrowRight, Tag, Sparkles, Megaphone } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import type { DealCardData } from "@/lib/queries"
@@ -34,7 +35,7 @@ function DealsCarouselCard({ deal, index }: { deal: DealCardData; index: number 
       {/* Image */}
       <div className="relative h-36 overflow-hidden bg-accent flex-shrink-0">
         <SafeImage
-          src={deal.imageUrl ?? deal.business.coverUrl ?? undefined}
+          src={dealImage(deal)}
           alt={deal.imageUrl ? deal.title : deal.business.name}
           className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
           fallback={
