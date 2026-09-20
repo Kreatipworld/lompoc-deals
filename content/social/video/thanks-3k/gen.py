@@ -28,11 +28,12 @@ SCENES = [
 TOTAL = 15.20
 
 # burned-in captions — they carry the whole message, there is no voice track
+# With a voice track the display type already carries "Every business…", "This town showed
+# up." and "Thank you, Lompoc." — captioning those again would print the same words twice on
+# the same frame. Only the opening sentence, which the screen states as "3,000 / OF YOU",
+# needs a caption for sound-off viewers.
 SUBS = [
-    (0.45,  4.25, "Three thousand of you follow Lompoc Locals on Instagram."),
-    (4.60,  9.35, "You showed up for all of it."),
-    (9.75, 11.80, "Every business, every Friday night, every launch, every taco."),
-    (12.15, 14.95, "Three thousand strong \u2014 and we are just getting started."),
+    (0.55, 4.35, "Three thousand of you follow Lompoc Locals on Instagram."),
 ]
 
 GOLD = "#efc618"; INK = "#241629"; PURPLE = "#650c75"; GREEN = "#0b992f"
@@ -264,7 +265,7 @@ def index_html():
         vo = ''
         if has_vo:
             vo = f'''
-      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo.wav" data-start="0.40" data-media-start="0" data-duration="{TOTAL-0.6:.2f}" data-track-index="{a0}" data-volume="0.78" data-fade-in="0.05" data-fade-out="0.12"></audio>'''
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo.wav" data-start="0.55" data-media-start="0" data-duration="{TOTAL-0.55:.2f}" data-track-index="{a0}" data-volume="0.78" data-fade-in="0.05" data-fade-out="0.12"></audio>'''
         carve = ' data-fx-carve=\'{"enabled":true,"sources":["voiceover"],"strength":0.55}\'' if has_vo else ''
         audio = f'''{vo}
       <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0+1}" data-volume="0.30" data-fade-in="0.5" data-fade-out="1.3" data-automation='{auto}'{carve}></audio>
