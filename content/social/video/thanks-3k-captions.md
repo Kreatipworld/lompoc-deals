@@ -3,12 +3,17 @@
 Posted Sat Sep 20 2026, 2:18 PM PDT. Video: `thanks-3k/renders/thanks-3k-master.mp4`
 (20.4s, 9:16, -15.3 LUFS, VO by Arthur). Campaign slug `thanks-3k`.
 
-| Channel | Buffer post | Mode | Due (UTC) |
+All four confirmed `sent`.
+
+| Channel | Buffer post | Sent (UTC) | Live |
 |---|---|---|---|
-| Instagram Reel | 6ab04da39a5eadd2b1cd1d1a | shareNow | 21:18 |
-| Facebook | 6ab04db9c88b75a7de2cb97f | customScheduled | 21:24 |
-| TikTok | 6ab04dc3969826aa9cb6c1b9 | customScheduled | 21:28 |
-| Instagram Story | 6ab04dcdb07e536c5a1cbdca | customScheduled | 21:32 |
+| Instagram Reel | 6ab04da39a5eadd2b1cd1d1a | 21:19 | https://www.instagram.com/reel/DdhiKWPEoY-/ |
+| Facebook | 6ab04db9c88b75a7de2cb97f | 21:24 | https://www.facebook.com/reel/2048955605752904/ |
+| TikTok | 6ab04dc3969826aa9cb6c1b9 | 21:28 | https://tiktok.com/@lompoclocals/video/7687732337961946381 |
+| Instagram Story | 6ab04dcdb07e536c5a1cbdca | 21:32 | https://www.instagram.com/stories/lompoclocals_/3990627782462828155 |
+
+Facebook published this as a Reel even though the post metadata asked for `type: post` —
+Facebook converts 9:16 video on its own. Better surface anyway; nothing to fix.
 
 Story link sticker: "See what's on in Lompoc" →
 `lompoclocals.com?utm_source=ig-story&utm_medium=social&utm_campaign=thanks-3k`
