@@ -1,0 +1,32 @@
+<template>
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="15.20" style="position:absolute; inset:0; overflow:hidden; background:transparent; pointer-events:none">
+    <style>
+      [data-composition-id="subs"] .wrapz { position:absolute; left:60px; right:60px; bottom:310px; z-index:70; display:flex; justify-content:center; }
+      [data-composition-id="subs"] .sub { position:absolute; left:0; right:0; bottom:0; display:flex; justify-content:center; opacity:0; }
+      [data-composition-id="subs"] .sub span { display:inline-block; max-width:920px; background:rgba(0,0,0,0.64); color:#fff; font-weight:600; font-size:42px; line-height:1.25; padding:14px 28px; border-radius:20px; text-align:center; }
+    </style>
+    <div class="wrapz" data-layout-allow-overlap>
+      <div class="sub" id="sub-0"><span>Three thousand of you follow Lompoc Locals on Instagram.</span></div>
+      <div class="sub" id="sub-1"><span>You showed up for all of it.</span></div>
+      <div class="sub" id="sub-2"><span>Every business, every Friday night, every launch, every taco.</span></div>
+      <div class="sub" id="sub-3"><span>Three thousand strong — and we are just getting started.</span></div>
+    </div>
+    <script>
+      (() => {
+        const S = [
+          [0.45, 4.25],
+          [4.60, 9.35],
+          [9.75, 11.80],
+          [12.15, 14.95]
+        ];
+        const tl = gsap.timeline({ paused:true });
+        S.forEach(([a,b], i) => {
+          tl.fromTo("#sub-"+i, { autoAlpha:0, y:10 }, { autoAlpha:1, y:0, duration:0.12 }, a);
+          tl.to("#sub-"+i, { autoAlpha:0, duration:0.1 }, b-0.1);
+        });
+        tl.set({}, {}, 15.20);
+        window.__timelines["subs"] = tl;
+      })();
+    </script>
+  </div>
+</template>

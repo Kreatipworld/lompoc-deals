@@ -1,0 +1,65 @@
+<template>
+  <div data-composition-id="s1-count" data-width="1080" data-height="1920" data-duration="4.40" style="position:absolute; inset:0; overflow:hidden; background:#140a17">
+    <style>
+      [data-composition-id="s1-count"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s1-count"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none; background:radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 60%, rgba(10,6,12,0.55) 100%); }
+      [data-composition-id="s1-count"] .grain { position:absolute; inset:0; pointer-events:none; opacity:0.08; z-index:50; background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s1-count"] .mark { position:absolute; top:150px; right:84px; width:96px; height:auto; z-index:44; }
+      [data-composition-id="s1-count"] video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+      [data-composition-id="s1-count"] .cover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+      [data-composition-id="s1-count"] .wrap { position:absolute; inset:0; overflow:hidden; transform-origin:50% 50%; will-change:transform; }
+      [data-composition-id="s1-count"] .scrim { position:absolute; inset:0; z-index:31; pointer-events:none; background:linear-gradient(to top, rgba(20,10,23,0.95) 0%, rgba(20,10,23,0.66) 34%, rgba(20,10,23,0.10) 66%); }
+      [data-composition-id="s1-count"] .topscrim { position:absolute; inset:0; z-index:31; pointer-events:none; background:linear-gradient(to bottom, rgba(20,10,23,0.72) 0%, rgba(20,10,23,0.24) 20%, rgba(20,10,23,0) 38%); }
+      [data-composition-id="s1-count"] .word { display:block; color:#fff; font-weight:800; font-size:126px; line-height:0.96; letter-spacing:-5px; text-shadow:0 8px 38px rgba(10,6,12,0.8); opacity:0; will-change:transform, opacity; }
+      [data-composition-id="s1-count"] .pill { display:inline-block; background:rgba(0,0,0,0.58); border:2px solid rgba(255,255,255,0.26); color:#fff; font-weight:700; font-size:38px; letter-spacing:0.5px; padding:16px 34px; border-radius:999px; }
+    
+    </style>
+    <div class="stage" id="s1-count-stage" style="opacity:1">
+      <div class="wrap" id="s1-mos" data-layout-allow-overflow>
+        <div style="position:absolute; inset:0; display:grid; grid-template-columns:repeat(3, 1fr); grid-template-rows:repeat(5, 1fr); gap:4px; filter:brightness(0.52) saturate(0.82) contrast(1.06)">
+        <img src="public/m-clark-builders-inc.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/huyck-goalposts.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 45%; display:block" />
+        <img src="public/tacos.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/launch.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 60%; display:block" />
+        <img src="public/m-the-garden-shoppe.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/riverbend.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 45%; display:block" />
+        <img src="public/sweet.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/enchiladas.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/m-coastal-tint.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/beach.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/hangar.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/plume.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/m-hangar-7-social-house.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/breakfast.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block" />
+        <img src="public/civic.jpg" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 45%; display:block" />
+        </div>
+      </div>
+      <div style="position:absolute; inset:0; z-index:12; background:radial-gradient(ellipse 84% 58% at 50% 45%, rgba(101,12,117,0.80) 0%, rgba(38,6,46,0.86) 56%, rgba(14,5,18,0.94) 100%)"></div>
+      <div style="position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); z-index:36; text-align:center; padding:0 36px" data-layout-allow-overlap>
+        <span id="s1-count-pill" class="pill" style="margin-bottom:34px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-8px; margin-right:14px" aria-hidden="true"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1.25" fill="#fff" stroke="none"></circle></svg>Instagram · @lompoclocals</span>
+        <span id="s1-count-num" data-layout-allow-overlap style="display:block; color:#efc618; font-weight:800; font-size:300px; line-height:0.94; letter-spacing:-12px; font-variant-numeric:tabular-nums; text-shadow:0 14px 64px rgba(10,6,12,0.8); will-change:transform, color">3,000</span>
+        <span id="s1-count-of" style="display:block; margin-top:14px; color:#fff; font-weight:800; font-size:150px; line-height:1; letter-spacing:-3px; text-transform:uppercase; text-shadow:0 8px 34px rgba(10,6,12,0.7)">of you</span>
+        <span id="s1-count-rule" style="display:block; width:190px; height:8px; margin:44px auto 0; border-radius:99px; background:#0b992f"></span>
+        <span id="s1-count-ty" style="display:block; margin-top:40px; color:#f2ead9; font-weight:700; font-size:58px; letter-spacing:-0.5px">Thank you, Lompoc.</span>
+      </div>
+      <div class="vig"></div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true, defaults:{ ease:"power4.out", duration:0.45 } });
+        tl.set("#s1-count-stage", { autoAlpha:1 }, 0);
+        tl.fromTo("#s1-count-mos", { scale:1.0 }, { scale:1.07, duration:4.40, ease:"none" }, 0);
+        { const o = { v:3000 }; const el = document.querySelector("#s1-count-num");
+          tl.set(o, { v:0 }, 0.85);
+          tl.set("#s1-count-num", { color:"#ffffff" }, 0.85);
+          tl.to(o, { v:3000, duration:1.20, ease:"power3.out", onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString("en-US"); } }, 0.85); }
+        tl.to("#s1-count-num", { color:"#efc618", scale:1.03, duration:0.16, ease:"power2.out" }, 2.05);
+        tl.to("#s1-count-num", { scale:1.0, duration:0.40, ease:"back.out(2.2)" }, 2.21);
+        tl.set({}, {}, 4.40);
+        window.__timelines["s1-count"] = tl;
+      })();
+    </script>
+  </div>
+</template>
