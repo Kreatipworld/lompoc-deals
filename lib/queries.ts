@@ -1,4 +1,5 @@
 import { and, desc, eq, gt, gte, inArray, ne, or, sql } from "drizzle-orm"
+import { eventCoverUrl, venueBusinessSlug } from "./event-cover"
 import { db } from "@/db/client"
 import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions, listingLeads } from "@/db/schema"
 import { looseLike } from "@/lib/search-match"
@@ -1093,21 +1094,49 @@ export async function getUpcomingEvents(
     .orderBy(events.startsAt)
     .limit(limit)
 
-  return rows.map((r) => ({
-    id: r.id,
-    title: r.title ?? "",
-    description: r.description,
-    location: r.location,
-    imageUrl: r.imageUrl,
-    category: r.category,
-    startsAt: r.startsAt,
-    endsAt: r.endsAt,
-    source: r.source,
-    business:
-      r.bizId && r.bizName && r.bizSlug
-        ? { id: r.bizId, name: r.bizName, slug: r.bizSlug }
-        : null,
-  }))
+  // Every feed event arrives with the same generic photo, so resolve a real cover here:
+  // the venue's own photo for the handful of venues we carry, otherwise a topic card.
+  const venueSlugs = Array.from(new Set(rows.map((r) => venueBusinessSlug(r.location)).filter(Boolean) as string[]))
+  const venuePhotos = new Map<string, string[]>()
+  if (venueSlugs.length > 0) {
+    const vb = await db
+      .select({
+        slug: businesses.slug,
+        cover: businesses.coverUrl,
+        photos: businesses.photosJson,
+      })
+      .from(businesses)
+      .where(and(eq(businesses.status, "approved"), inArray(businesses.slug, venueSlugs)))
+    for (const v of vb) {
+      const list = [
+        ...(Array.isArray(v.photos) ? (v.photos as string[]) : []),
+        ...(v.cover ? [v.cover] : []),
+      ].filter((u, i, a) => u && a.indexOf(u) === i)
+      if (list.length > 0) venuePhotos.set(v.slug, list)
+    }
+  }
+
+  return rows.map((r) => {
+    const vslug = venueBusinessSlug(r.location)
+    return {
+      id: r.id,
+      title: r.title ?? "",
+      description: r.description,
+      location: r.location,
+      imageUrl: eventCoverUrl(
+        { id: r.id, imageUrl: r.imageUrl, title: r.title, location: r.location },
+        vslug ? venuePhotos.get(vslug) ?? null : null
+      ),
+      category: r.category,
+      startsAt: r.startsAt,
+      endsAt: r.endsAt,
+      source: r.source,
+      business:
+        r.bizId && r.bizName && r.bizSlug
+          ? { id: r.bizId, name: r.bizName, slug: r.bizSlug }
+          : null,
+    }
+  })
 }
 
 // ─── Activities ───────────────────────────────────────────────────────────────

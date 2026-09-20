@@ -1,4 +1,5 @@
 import { gt, lt, asc, and, eq, desc, sql, inArray, ne } from "drizzle-orm"
+import { eventCoverUrl, venueBusinessSlug } from "./event-cover"
 import { newsCoverUrl } from "./news-cover"
 import { db } from "@/db/client"
 import { deals, businesses, events, categories, blogPosts } from "@/db/schema"
@@ -127,7 +128,41 @@ export async function getDigestEvents(days = 7, limit = 8, locale = "en"): Promi
     )
     .orderBy(asc(events.title), asc(events.startsAt))
 
+  // Same cover resolution as the site grid: the venue's own photo where we carry it,
+  // otherwise a topic card — never the one generic feed photo on every row.
+  const venueSlugs = Array.from(
+    new Set(rows.map((r) => venueBusinessSlug(r.location)).filter(Boolean) as string[])
+  )
+  const venuePhotos = new Map<string, string[]>()
+  if (venueSlugs.length > 0) {
+    const vb = await db
+      .select({
+        slug: businesses.slug,
+        cover: businesses.coverUrl,
+        photos: businesses.photosJson,
+      })
+      .from(businesses)
+      .where(and(eq(businesses.status, "approved"), inArray(businesses.slug, venueSlugs)))
+    for (const v of vb) {
+      const list = [
+        ...(Array.isArray(v.photos) ? (v.photos as string[]) : []),
+        ...(v.cover ? [v.cover] : []),
+      ].filter((u, i, a) => u && a.indexOf(u) === i)
+      if (list.length > 0) venuePhotos.set(v.slug, list)
+    }
+  }
+
   return rows
+    .map((r) => {
+      const vslug = venueBusinessSlug(r.location)
+      return {
+        ...r,
+        imageUrl: eventCoverUrl(
+          { imageUrl: r.imageUrl, title: r.title, location: r.location },
+          vslug ? venuePhotos.get(vslug) ?? null : null
+        ),
+      }
+    })
     .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
     .slice(0, limit)
 }
