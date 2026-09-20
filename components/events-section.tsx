@@ -71,10 +71,13 @@ function EventCard({
   event,
   label,
   intl,
+  cadenceLabel,
 }: {
   event: Awaited<ReturnType<typeof getUpcomingEvents>>[number]
   label: string
   intl: string
+  /** "Weekly", "Every 2 weeks"… when the feed listed this event on several dates. */
+  cadenceLabel?: string | null
 }) {
   const Icon = categoryIcon(event.category)
 
@@ -91,6 +94,11 @@ function EventCard({
             alt={event.title}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
+          {cadenceLabel && (
+            <span className="absolute right-2 top-2 rounded-full bg-black/65 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white backdrop-blur-[2px]">
+              {cadenceLabel}
+            </span>
+          )}
         </div>
       ) : (
         <div className="flex h-36 items-center justify-center bg-gradient-to-br from-primary/10 to-accent">
@@ -235,6 +243,19 @@ export async function EventsSection() {
               event={e}
               label={CATEGORY_LABEL[e.category] ?? CATEGORY_LABEL.other}
               intl={intl}
+              cadenceLabel={
+                e.cadence === "daily"
+                  ? t("cadenceDaily")
+                  : e.cadence === "weekly"
+                    ? t("cadenceWeekly")
+                    : e.cadence === "biweekly"
+                      ? t("cadenceBiweekly")
+                      : e.cadence === "monthly"
+                        ? t("cadenceMonthly")
+                        : e.cadence === "multi"
+                          ? t("cadenceMulti", { count: e.occurrences })
+                          : null
+              }
             />
           ))
         ) : (

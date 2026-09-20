@@ -2494,7 +2494,12 @@
     "sports": "Deportes",
     "market": "Mercado",
     "event": "Evento",
-    "viewAll": "Ver todos los eventos"
+    "viewAll": "Ver todos los eventos",
+    "cadenceDaily": "Todos los días",
+    "cadenceWeekly": "Cada semana",
+    "cadenceBiweekly": "Cada 2 semanas",
+    "cadenceMonthly": "Cada mes",
+    "cadenceMulti": "{count} fechas"
   },
   "wineriesSection": {
     "heading": "Lompoc Wine Ghetto y Santa Rita Hills",

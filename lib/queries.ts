@@ -1,5 +1,6 @@
 import { and, desc, eq, gt, gte, inArray, ne, or, sql } from "drizzle-orm"
 import { eventCoverUrl, venueBusinessSlug } from "./event-cover"
+import { collapseRecurring, type Cadence } from "./event-recurrence"
 import { db } from "@/db/client"
 import { deals, businesses, categories, favorites, propertyListings, events, dealEvents, activities, blogPosts, subscriptions, listingLeads } from "@/db/schema"
 import { looseLike } from "@/lib/search-match"
@@ -1046,6 +1047,10 @@ export type EventCardData = {
   /** Where the row came from ("launch-library" rows get a parsed Spanish title as fallback). */
   source: string
   business: { id: number; name: string; slug: string } | null
+  /** How often this event repeats, when the feed listed several occurrences. */
+  cadence: Cadence
+  /** Upcoming occurrences of this event, including this one. */
+  occurrences: number
 }
 
 /**
@@ -1092,7 +1097,9 @@ export async function getUpcomingEvents(
       )
     )
     .orderBy(events.startsAt)
-    .limit(limit)
+    // Recurring events occupy many rows (the ghost tour alone has 14), so read a wider
+    // window and collapse below — otherwise one weekly event can fill the whole grid.
+    .limit(Math.min(limit * 8, 200))
 
   // Every feed event arrives with the same generic photo, so resolve a real cover here:
   // the venue's own photo for the handful of venues we carry, otherwise a topic card.
@@ -1116,7 +1123,9 @@ export async function getUpcomingEvents(
     }
   }
 
-  return rows.map((r) => {
+  return collapseRecurring(rows)
+    .slice(0, limit)
+    .map((r) => {
     const vslug = venueBusinessSlug(r.location)
     return {
       id: r.id,
@@ -1135,6 +1144,8 @@ export async function getUpcomingEvents(
         r.bizId && r.bizName && r.bizSlug
           ? { id: r.bizId, name: r.bizName, slug: r.bizSlug }
           : null,
+      cadence: r.cadence,
+      occurrences: r.occurrences,
     }
   })
 }
