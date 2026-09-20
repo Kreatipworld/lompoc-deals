@@ -23,9 +23,9 @@ SCENES = [
     ("s1-count",    0.00,  4.40),   # mosaic + 3,000 count-up  (frame 0 poster)
     ("s2-every",    4.20,  5.40),   # 4 cuts: business / Friday night / launch / taco
     ("s3-town",     9.40,  2.60),   # River Bend soccer · "This town showed up."
-    ("s4-end",     11.80,  3.40),   # Thank you, Lompoc. · lompoclocals.com
+    ("s4-end",     11.80,  8.60),   # Thank you, Lompoc. → the ask: awareness, together
 ]
-TOTAL = 15.20
+TOTAL = 20.40
 
 # burned-in captions — they carry the whole message, there is no voice track
 # With a voice track the display type already carries "Every business…", "This town showed
@@ -188,14 +188,23 @@ def scene_html(cid, dur):
         inner = f'''<div style="position:absolute; inset:0; background:linear-gradient(170deg, {PURPLE} 0%, #38083f 52%, #17061c 100%)"></div>
       <div style="position:absolute; left:0; right:0; top:29%; z-index:20; text-align:center; padding:0 70px">
         <span id="{cid}-rule" style="display:block; width:160px; height:8px; margin:0 auto; border-radius:99px; background:{GOLD}; opacity:0"></span>
-        <span id="{cid}-t1" style="display:block; margin-top:52px; color:#fff; font-weight:800; font-size:122px; line-height:0.98; letter-spacing:-4px; opacity:0">Thank you,<br />Lompoc.</span>
+        <div style="position:relative; height:300px; margin-top:52px">
+          <span id="{cid}-t1" style="position:absolute; left:0; right:0; top:0; color:#fff; font-weight:800; font-size:122px; line-height:0.98; letter-spacing:-4px; opacity:0">Thank you,<br />Lompoc.</span>
+          <span id="{cid}-a1" style="position:absolute; left:0; right:0; top:14px; color:#fff; font-weight:800; font-size:76px; line-height:1.06; letter-spacing:-2px; opacity:0">Let's keep bringing<br />awareness to Lompoc.</span>
+          <span id="{cid}-a2" style="position:absolute; left:0; right:0; top:26px; color:{GOLD}; font-weight:800; font-size:86px; line-height:1.04; letter-spacing:-2.5px; opacity:0">Together we can<br />make some noise.</span>
+        </div>
         <span id="{cid}-pill" style="display:inline-block; margin-top:64px; background:{GOLD}; color:{INK}; font-weight:800; font-size:48px; padding:22px 44px; border-radius:999px; opacity:0">lompoclocals.com</span>
         <span id="{cid}-t3" style="display:block; margin-top:34px; color:rgba(255,255,255,0.72); font-weight:600; font-size:34px; opacity:0">@lompoclocals</span>
       </div>'''
         js = (f'tl.fromTo("#{cid}-rule", {{ autoAlpha:0, scaleX:0.2 }}, {{ autoAlpha:1, scaleX:1, duration:0.40, ease:"expo.out" }}, 0.10);'
               f'tl.fromTo("#{cid}-t1", {{ autoAlpha:0, y:24, scale:1.05 }}, {{ autoAlpha:1, y:0, scale:1, duration:0.48, ease:"expo.out" }}, 0.26);'
               f'tl.fromTo("#{cid}-pill", {{ autoAlpha:0, y:16, scale:0.94 }}, {{ autoAlpha:1, y:0, scale:1, duration:0.46, ease:"back.out(1.5)" }}, 0.95);'
-              f'tl.fromTo("#{cid}-t3", {{ autoAlpha:0 }}, {{ autoAlpha:1, duration:0.32 }}, 1.45);')
+              f'tl.fromTo("#{cid}-t3", {{ autoAlpha:0 }}, {{ autoAlpha:1, duration:0.32 }}, 1.45);'
+              # the ask, timed to the closing read (abs 14.60 / 17.46 → scene-relative 2.80 / 5.66)
+              f'tl.to("#{cid}-t1", {{ autoAlpha:0, duration:0.34, ease:"power2.in" }}, 2.42);'
+              f'tl.fromTo("#{cid}-a1", {{ autoAlpha:0, y:18 }}, {{ autoAlpha:1, y:0, duration:0.42, ease:"expo.out" }}, 2.80);'
+              f'tl.to("#{cid}-a1", {{ autoAlpha:0, duration:0.32, ease:"power2.in" }}, 5.26);'
+              f'tl.fromTo("#{cid}-a2", {{ autoAlpha:0, y:18, scale:1.04 }}, {{ autoAlpha:1, y:0, scale:1, duration:0.46, ease:"expo.out" }}, 5.62);')
         return wrap(cid, dur, inner, js)
 
     raise ValueError(cid)
@@ -265,7 +274,7 @@ def index_html():
         vo = ''
         if has_vo:
             vo = f'''
-      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo.wav" data-start="0.55" data-media-start="0" data-duration="{TOTAL-0.55:.2f}" data-track-index="{a0}" data-volume="0.78" data-fade-in="0.05" data-fade-out="0.12"></audio>'''
+      <audio id="vo" class="clip" data-audio-group="voiceover" src="public/vo.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0}" data-volume="0.78" data-fade-in="0.05" data-fade-out="0.12"></audio>'''
         carve = ' data-fx-carve=\'{"enabled":true,"sources":["voiceover"],"strength":0.55}\'' if has_vo else ''
         audio = f'''{vo}
       <audio id="music-bed" class="clip" data-audio-group="music" src="public/bed.wav" data-start="0" data-media-start="0" data-duration="{TOTAL:.2f}" data-track-index="{a0+1}" data-volume="0.30" data-fade-in="0.5" data-fade-out="1.3" data-automation='{auto}'{carve}></audio>

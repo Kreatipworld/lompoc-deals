@@ -1,5 +1,5 @@
 <template>
-  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="15.20" style="position:absolute; inset:0; overflow:hidden; background:transparent; pointer-events:none">
+  <div data-composition-id="subs" data-width="1080" data-height="1920" data-duration="20.40" style="position:absolute; inset:0; overflow:hidden; background:transparent; pointer-events:none">
     <style>
       [data-composition-id="subs"] .wrapz { position:absolute; left:60px; right:60px; bottom:310px; z-index:70; display:flex; justify-content:center; }
       [data-composition-id="subs"] .sub { position:absolute; left:0; right:0; bottom:0; display:flex; justify-content:center; opacity:0; }
@@ -18,7 +18,7 @@
           tl.fromTo("#sub-"+i, { autoAlpha:0, y:10 }, { autoAlpha:1, y:0, duration:0.12 }, a);
           tl.to("#sub-"+i, { autoAlpha:0, duration:0.1 }, b-0.1);
         });
-        tl.set({}, {}, 15.20);
+        tl.set({}, {}, 20.40);
         window.__timelines["subs"] = tl;
       })();
     </script>
