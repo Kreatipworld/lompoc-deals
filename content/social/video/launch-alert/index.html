@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      @font-face { font-family:"Plus Jakarta Sans"; src:url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2"); font-weight:200 800; font-style:normal; }
+      html, body { margin:0; width:1080px; height:1920px; overflow:hidden; background:#0a0805; }
+      body { font-family:"Plus Jakarta Sans", sans-serif; }
+      #root { position:relative; width:1080px; height:1920px; overflow:hidden; }
+      #root > div[data-composition-src] { position:absolute; inset:0; }
+    </style>
+  </head>
+  <body>
+    <!-- LAUNCH ALERT — Falcon 9 / Starlink 15-27, SLC-4E Vandenberg, Sat Sep 19 2026 6:47 PM PT.
+         Photo: U.S. Space Force, public domain (see content/social/assets/LAUNCH-PHOTO-CREDIT.md). -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15.60" data-width="1080" data-height="1920">
+      <div id="el-s1-alert" data-composition-id="s1-alert" data-composition-src="compositions/s1-alert.html" data-start="0.00" data-duration="4.20" data-track-index="1"></div>
+      <div id="el-s2-what" data-composition-id="s2-what" data-composition-src="compositions/s2-what.html" data-start="4.00" data-duration="4.20" data-track-index="2"></div>
+      <div id="el-s3-where" data-composition-id="s3-where" data-composition-src="compositions/s3-where.html" data-start="8.00" data-duration="3.40" data-track-index="3"></div>
+      <div id="el-s4-end" data-composition-id="s4-end" data-composition-src="compositions/s4-end.html" data-start="11.20" data-duration="4.40" data-track-index="4"></div>
+      <div id="el-subs" data-composition-id="subs" data-composition-src="compositions/subs.html" data-start="0" data-duration="15.60" data-track-index="5"></div>
+      <div id="el-progress" data-composition-id="progress" data-composition-src="compositions/progress.html" data-start="0" data-duration="15.60" data-track-index="6"></div>
+
+    </div>
+    <script>window.__timelines["main"] = gsap.timeline({ paused:true });</script>
+  </body>
+</html>

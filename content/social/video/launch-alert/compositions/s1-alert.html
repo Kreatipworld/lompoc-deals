@@ -1,0 +1,51 @@
+<template>
+  <div data-composition-id="s1-alert" data-width="1080" data-height="1920" data-duration="4.20" style="position:absolute; inset:0; overflow:hidden; background:#0a0805">
+    <style>
+      [data-composition-id="s1-alert"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s1-alert"] .wrap { position:absolute; inset:0; overflow:hidden; will-change:transform; transform-origin:50% 50%; }
+      [data-composition-id="s1-alert"] .cover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+      [data-composition-id="s1-alert"] .heat { position:absolute; inset:0; z-index:29; pointer-events:none;
+          background: radial-gradient(38% 30% at 50% 44%, rgba(255,154,60,0.26) 0%, rgba(255,154,60,0) 68%); }
+      [data-composition-id="s1-alert"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none;
+          background: radial-gradient(ellipse 96% 78% at 50% 44%, rgba(6,4,3,0) 46%, rgba(6,4,3,0.82) 100%); }
+      [data-composition-id="s1-alert"] .scrim { position:absolute; inset:0; z-index:31; pointer-events:none;
+          background: linear-gradient(to top, rgba(6,4,3,0.96) 0%, rgba(6,4,3,0.62) 32%, rgba(6,4,3,0.06) 62%); }
+      [data-composition-id="s1-alert"] .topscrim { position:absolute; inset:0; z-index:31; pointer-events:none;
+          background: linear-gradient(to bottom, rgba(6,4,3,0.82) 0%, rgba(6,4,3,0.28) 22%, rgba(6,4,3,0) 40%); }
+      [data-composition-id="s1-alert"] .grain { position:absolute; inset:0; pointer-events:none; opacity:0.09; z-index:50;
+          background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s1-alert"] .mark { position:absolute; top:150px; right:84px; width:84px; height:auto; z-index:45; opacity:0.9; }
+      [data-composition-id="s1-alert"] .alert { position:absolute; left:84px; top:150px; z-index:45; display:flex; align-items:center; }
+      [data-composition-id="s1-alert"] .alert .dot { width:20px; height:20px; border-radius:50%; background:#ff9a3c; margin-right:16px; box-shadow:0 0 22px rgba(255,154,60,0.95); }
+      [data-composition-id="s1-alert"] .alert .txt { color:#efc618; font-weight:800; font-size:30px; letter-spacing:7px; text-transform:uppercase; }
+      [data-composition-id="s1-alert"] .hero { color:#fff; font-weight:800; line-height:0.94; letter-spacing:-5px; text-shadow:0 10px 44px rgba(6,4,3,0.9); }
+      [data-composition-id="s1-alert"] .facts { position:absolute; left:84px; right:84px; bottom:430px; z-index:40; }
+      [data-composition-id="s1-alert"] .fact { display:flex; align-items:center; opacity:0; will-change:transform,opacity; }
+      [data-composition-id="s1-alert"] .fact .bar { width:6px; height:52px; background:#efc618; border-radius:3px; margin-right:24px; }
+      [data-composition-id="s1-alert"] .fact .t { color:#fdf6e9; font-weight:800; font-size:52px; letter-spacing:-1.5px; }
+    
+    </style>
+    <div class="stage" id="s1-alert-stage" style="opacity:1">
+      <div class="wrap" id="s1-alert-w" data-layout-allow-overflow><img class="cover" src="public/hero.jpg" alt="" style="object-position:50% 42%" /></div>
+      <div class="scrim"></div><div class="topscrim"></div>
+      <div style="position:absolute; left:84px; right:84px; bottom:26%; z-index:40">
+        <span id="s1-alert-k" style="display:block; color:#efc618; font-weight:800; font-size:32px; letter-spacing:7px; text-transform:uppercase; opacity:1">Tonight over Vandenberg</span>
+        <span class="hero" id="s1-alert-t" style="display:block; margin-top:26px; margin-bottom:18px; font-size:190px; line-height:1.0; opacity:1">6:47</span>
+        <span id="s1-alert-p" style="display:block; color:rgba(253,246,233,0.88); font-weight:700; font-size:46px; letter-spacing:2px; opacity:1">PM &nbsp;·&nbsp; Saturday</span>
+      </div>
+      <div class="heat"></div><div class="vig"></div>
+    </div>
+    <div class="alert" id="s1-alert-alert"><span class="dot" id="s1-alert-dot"></span><span class="txt">Launch alert</span></div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out", duration:0.5 } });
+        tl.set("#s1-alert-stage", { autoAlpha:1 }, 0);tl.to("#s1-alert-dot", { opacity:0.25, duration:0.5, ease:"sine.inOut", yoyo:true, repeat:8 }, 0);
+        tl.fromTo("#s1-alert-w", { scale:1.0 }, { scale:1.10, duration:4.20, ease:"none" }, 0);tl.fromTo("#s1-alert-t", { scale:1.05 }, { scale:1, duration:1.6, ease:"expo.out" }, 0.05);
+        tl.set({}, {}, 4.20);
+        window.__timelines["s1-alert"] = tl;
+      })();
+    </script>
+  </div>
+</template>

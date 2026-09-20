@@ -1,0 +1,7 @@
+<template>
+  <div data-composition-id="progress" data-width="1080" data-height="1920" data-duration="15.60" style="position:absolute; inset:0; overflow:hidden; background:transparent; pointer-events:none">
+    <style>[data-composition-id="progress"] .bar { position:absolute; left:0; right:0; bottom:0; height:8px; background:#ff9a3c; transform-origin:0% 50%; z-index:70; box-shadow:0 0 14px rgba(255,154,60,0.7); }</style>
+    <div class="bar" id="prog-bar"></div>
+    <script>(() => { const tl=gsap.timeline({paused:true}); tl.fromTo("#prog-bar",{scaleX:0},{scaleX:1,duration:15.60,ease:"none"},0); window.__timelines["progress"]=tl; })();</script>
+  </div>
+</template>

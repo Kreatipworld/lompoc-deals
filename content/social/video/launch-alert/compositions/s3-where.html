@@ -1,0 +1,50 @@
+<template>
+  <div data-composition-id="s3-where" data-width="1080" data-height="1920" data-duration="3.40" style="position:absolute; inset:0; overflow:hidden; background:transparent">
+    <style>
+      [data-composition-id="s3-where"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s3-where"] .wrap { position:absolute; inset:0; overflow:hidden; will-change:transform; transform-origin:50% 50%; }
+      [data-composition-id="s3-where"] .cover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+      [data-composition-id="s3-where"] .heat { position:absolute; inset:0; z-index:29; pointer-events:none;
+          background: radial-gradient(38% 30% at 50% 44%, rgba(255,154,60,0.26) 0%, rgba(255,154,60,0) 68%); }
+      [data-composition-id="s3-where"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none;
+          background: radial-gradient(ellipse 96% 78% at 50% 44%, rgba(6,4,3,0) 46%, rgba(6,4,3,0.82) 100%); }
+      [data-composition-id="s3-where"] .scrim { position:absolute; inset:0; z-index:31; pointer-events:none;
+          background: linear-gradient(to top, rgba(6,4,3,0.96) 0%, rgba(6,4,3,0.62) 32%, rgba(6,4,3,0.06) 62%); }
+      [data-composition-id="s3-where"] .topscrim { position:absolute; inset:0; z-index:31; pointer-events:none;
+          background: linear-gradient(to bottom, rgba(6,4,3,0.82) 0%, rgba(6,4,3,0.28) 22%, rgba(6,4,3,0) 40%); }
+      [data-composition-id="s3-where"] .grain { position:absolute; inset:0; pointer-events:none; opacity:0.09; z-index:50;
+          background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s3-where"] .mark { position:absolute; top:150px; right:84px; width:84px; height:auto; z-index:45; opacity:0.9; }
+      [data-composition-id="s3-where"] .alert { position:absolute; left:84px; top:150px; z-index:45; display:flex; align-items:center; }
+      [data-composition-id="s3-where"] .alert .dot { width:20px; height:20px; border-radius:50%; background:#ff9a3c; margin-right:16px; box-shadow:0 0 22px rgba(255,154,60,0.95); }
+      [data-composition-id="s3-where"] .alert .txt { color:#efc618; font-weight:800; font-size:30px; letter-spacing:7px; text-transform:uppercase; }
+      [data-composition-id="s3-where"] .hero { color:#fff; font-weight:800; line-height:0.94; letter-spacing:-5px; text-shadow:0 10px 44px rgba(6,4,3,0.9); }
+      [data-composition-id="s3-where"] .facts { position:absolute; left:84px; right:84px; bottom:430px; z-index:40; }
+      [data-composition-id="s3-where"] .fact { display:flex; align-items:center; opacity:0; will-change:transform,opacity; }
+      [data-composition-id="s3-where"] .fact .bar { width:6px; height:52px; background:#efc618; border-radius:3px; margin-right:24px; }
+      [data-composition-id="s3-where"] .fact .t { color:#fdf6e9; font-weight:800; font-size:52px; letter-spacing:-1.5px; }
+    
+    </style>
+    <div class="stage" id="s3-where-stage">
+      <div class="wrap" id="s3-where-w" data-layout-allow-overflow><img class="cover" src="public/hero.jpg" alt="" style="object-position:50% 38%" /></div>
+      <div class="scrim"></div><div class="topscrim"></div>
+      <div style="position:absolute; left:84px; right:84px; bottom:28%; z-index:40">
+        <span class="hero" id="s3-where-h" style="display:block; font-size:130px; letter-spacing:-4px; opacity:0">LOOK<br />SOUTHWEST</span>
+        <span id="s3-where-s" style="display:block; margin-top:22px; color:rgba(253,246,233,0.84); font-weight:600; font-size:38px; opacity:0">A bright plume climbing out of the dark hills.</span>
+      </div>
+      <div class="heat"></div><div class="vig"></div>
+    </div>
+    <div class="alert" id="s3-where-alert"><span class="dot" id="s3-where-dot"></span><span class="txt">Launch alert</span></div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out", duration:0.5 } });
+        tl.fromTo("#s3-where-stage", { autoAlpha:0 }, { autoAlpha:1, duration:0.3, ease:"power1.inOut" }, 0);tl.to("#s3-where-dot", { opacity:0.25, duration:0.5, ease:"sine.inOut", yoyo:true, repeat:6 }, 0);
+        tl.fromTo("#s3-where-w", { scale:1.06 }, { scale:1.14, duration:3.40, ease:"none" }, 0);tl.fromTo("#s3-where-h", { autoAlpha:0, y:24 }, { autoAlpha:1, y:0, duration:0.5, ease:"expo.out" }, 0.15);tl.fromTo("#s3-where-s", { autoAlpha:0, y:14 }, { autoAlpha:1, y:0, duration:0.42 }, 0.85);
+        tl.set({}, {}, 3.40);
+        window.__timelines["s3-where"] = tl;
+      })();
+    </script>
+  </div>
+</template>
