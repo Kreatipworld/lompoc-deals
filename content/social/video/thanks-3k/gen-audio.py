@@ -12,14 +12,14 @@ def poll(jid, name, tries=18, wait=7):
         time.sleep(wait)
     print("FAIL", name); return False
 if what == "vo":
-    CILLIAN = "d8ba9f14-8a24-44db-932b-99e16c45bd32"
+    ARTHUR = "30fc8796-ceb6-4a66-b3a7-4a145ef7f346"  # Arthur says "Lompoke" the way the football spot does; Cillian did not
     TEXT = ("Three thousand of you follow Lompoke Locals on Instagram. "
             "Every business. Every Friday night. Every launch. Every taco. "
             "This town showed up. Thank you, Lompoke.")
     INSTR = "Warm grateful narrator, sincere and unhurried, natural breathing, close and personal"
     for a in range(4):
         t = hf.call("generate_audio", {"params":{"model":"qwen_audio_tts","prompt":TEXT,"voice_type":"preset",
-            "voice_id":CILLIAN,"instruction":INSTR,"language":"en","use_unlim":False}}, timeout=90)["text"]
+            "voice_id":ARTHUR,"instruction":INSTR,"language":"en","use_unlim":False}}, timeout=90)["text"]
         jid = hf.job_id(t)
         if jid: break
         time.sleep(2)

@@ -191,7 +191,7 @@ def scene_html(cid, dur):
         <div style="position:relative; height:300px; margin-top:52px">
           <span id="{cid}-t1" style="position:absolute; left:0; right:0; top:0; color:#fff; font-weight:800; font-size:122px; line-height:0.98; letter-spacing:-4px; opacity:0">Thank you,<br />Lompoc.</span>
           <span id="{cid}-a1" style="position:absolute; left:0; right:0; top:14px; color:#fff; font-weight:800; font-size:76px; line-height:1.06; letter-spacing:-2px; opacity:0">Let's keep bringing<br />awareness to Lompoc.</span>
-          <span id="{cid}-a2" style="position:absolute; left:0; right:0; top:26px; color:{GOLD}; font-weight:800; font-size:86px; line-height:1.04; letter-spacing:-2.5px; opacity:0">Together we can<br />make some noise.</span>
+          <span id="{cid}-a2" style="position:absolute; left:0; right:0; top:26px; color:{GOLD}; font-weight:800; font-size:86px; line-height:1.04; letter-spacing:-2.5px; opacity:0">Let's grow Lompoc<br />together.</span>
         </div>
         <span id="{cid}-pill" style="display:inline-block; margin-top:64px; background:{GOLD}; color:{INK}; font-weight:800; font-size:48px; padding:22px 44px; border-radius:999px; opacity:0">lompoclocals.com</span>
         <span id="{cid}-t3" style="display:block; margin-top:34px; color:rgba(255,255,255,0.72); font-weight:600; font-size:34px; opacity:0">@lompoclocals</span>
