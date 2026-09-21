@@ -51,6 +51,33 @@ function isLompocSchool(opponent: string): boolean {
 }
 
 /** Parse every game row on a MaxPreps schedule page. Rows it can't read are reported, not guessed. */
+/**
+ * Scores MaxPreps itself disagrees on.
+ *
+ * MaxPreps' schedule table and MaxPreps' own recap article do not always carry
+ * the same score. The schedule cell is what we parse, and it does not always
+ * get the late correction. When outside sources agree against it, the game goes
+ * here, keyed by its MaxPreps game URL, and the sync stops overwriting the truth
+ * every night.
+ *
+ * Every entry needs at least two independent sources named in the comment.
+ */
+const SCORE_CORRECTIONS: Record<string, { scoreFor: number; scoreAgainst: number }> = {
+  // Sep 18 2026, Lompoc vs Dublin. Schedule cell says 40-7; MaxPreps' own recap,
+  // Noozhawk's Week 4 roundup and Sports Illustrated all say 41-7.
+  "https://www.maxpreps.com/ca/football/game/dublin-vs-lompoc/9-18-2026/": { scoreFor: 41, scoreAgainst: 7 },
+}
+
+function applyCorrection(
+  url: string,
+  parsed: { scoreFor: number | null; scoreAgainst: number | null }
+): { scoreFor: number | null; scoreAgainst: number | null } {
+  const fix = SCORE_CORRECTIONS[url]
+  // Only override a game that actually has a score, so an unplayed row stays null.
+  if (!fix || parsed.scoreFor === null) return parsed
+  return fix
+}
+
 export function parseSchedule(html: string, school: School): { games: ParsedGame[]; skipped: string[] } {
   const games: ParsedGame[] = []
   const skipped: string[] = []
@@ -77,6 +104,10 @@ export function parseSchedule(html: string, school: School): { games: ParsedGame
       // Both schools' home games are at Huyck; the crosstown game is at Huyck whichever side MaxPreps lists as home.
       const venue = !away || isLompocSchool(opponent) ? HUYCK : `${opponent} (away)`
       const href = link[1].startsWith("http") ? link[1] : `https://www.maxpreps.com${link[1]}`
+      const corrected = applyCorrection(href.split("?")[0], {
+        scoreFor: res ? (res[1] === "L" ? lo : hi) : null,
+        scoreAgainst: res ? (res[1] === "L" ? hi : lo) : null,
+      })
       games.push({
         school,
         season: month >= 7 ? year : year - 1,
@@ -87,8 +118,8 @@ export function parseSchedule(html: string, school: School): { games: ParsedGame
         venue,
         leagueGame,
         result: res ? (res[1] as "W" | "L" | "T") : null,
-        scoreFor: res ? (res[1] === "L" ? lo : hi) : null,
-        scoreAgainst: res ? (res[1] === "L" ? hi : lo) : null,
+        scoreFor: corrected.scoreFor,
+        scoreAgainst: corrected.scoreAgainst,
         maxprepsUrl: href.split("?")[0],
       })
     }

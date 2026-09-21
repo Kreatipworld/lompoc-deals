@@ -19,6 +19,7 @@ class Scene:
     dur: float
     html: Callable[[str, float, tuple], str]   # (cid, dur, size) -> inner markup
     js: Callable[[str, float], str] = lambda cid, dur: ""
+    lines: tuple = ()   # voiceover line indices this scene illustrates
 
 
 @dataclass
@@ -63,6 +64,32 @@ class Video:
     vo_lines: list = field(default_factory=list)   # plain sentences, in order
     note: str = ""
     size: tuple = B.SIZES["9x16"]
+
+    def time_to_read(self, placed: list, tail: float = 1.10) -> bool:
+        """Re-time every scene so it covers the lines it illustrates.
+
+        Without this the scenes keep their hand-guessed lengths and the read
+        slides across boundaries: Lompoc's points get spoken over Cabrillo's
+        card. Only runs when every scene declares its lines.
+        """
+        if not all(s.lines for s in self.scenes):
+            return False
+        span = {p["index"]: p for p in placed}
+        at = 0.0
+        for i, sc in enumerate(self.scenes):
+            first = span[min(sc.lines)]["start"]
+            last = span[max(sc.lines)]["end"]
+            # The first scene opens at 0; every later one opens a crossfade early
+            # so its art is up before its sentence starts.
+            sc.start = round(0.0 if i == 0 else max(at, first - B.X - 0.18), 2)
+            end = last + (tail if i == len(self.scenes) - 1 else 0.20)
+            sc.dur = round(end - sc.start, 2)
+            at = round(sc.start + sc.dur - B.X, 2)
+        self.total = round(self.scenes[-1].start + self.scenes[-1].dur, 2)
+        for a in self.audio:
+            if a.group in ("music", "voiceover"):
+                a.dur = self.total
+        return True
 
     def stretch_to(self, needed: float) -> float:
         """Grow the closing scene so the whole read fits.

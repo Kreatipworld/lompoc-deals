@@ -72,6 +72,34 @@ if (what === "next-game") {
     week: await weekOf(g.school, gd),
     gameDate: gd,
   }, null, 2))
+} else if (what === "season") {
+  // Every played game for both schools, plus each school's record and next game.
+  const rows = await sql`
+    select school, to_char(game_date, 'YYYY-MM-DD') as game_date, opponent, home_away, venue,
+           kickoff, result, score_for, score_against
+    from football_games where season = ${season} order by game_date asc`
+  const out = {}
+  for (const k of ["lompoc", "cabrillo"]) {
+    const all = rows.filter((r) => r.school === k)
+    const played = all.filter((r) => r.result)
+    const next = all.find((r) => !r.result && r.game_date >= today)
+    out[NAME[k]] = {
+      record: await recordFor(k, today),
+      pointsFor: played.reduce((a, g) => a + (g.score_for || 0), 0),
+      pointsAgainst: played.reduce((a, g) => a + (g.score_against || 0), 0),
+      games: played.map((g) => ({
+        date: g.game_date, opponent: g.opponent,
+        result: g.result, us: g.score_for, them: g.score_against,
+        home: g.home_away === "home",
+      })),
+      next: next ? {
+        date: next.game_date, opponent: next.opponent,
+        kickoff: next.kickoff || "7:00 PM", venue: next.venue || VENUE_HOME[k],
+        home: next.home_away === "home",
+      } : null,
+    }
+  }
+  console.log(JSON.stringify({ season, today, teams: out }, null, 2))
 } else {
   console.error(`unknown query ${what}`); process.exit(1)
 }

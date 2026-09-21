@@ -38,6 +38,21 @@ def speech_span(path: str, floor_db: int = 38, min_sil: float = 0.15) -> tuple:
     return max(0.0, begin - LEAD), min(dur, finish + LEAD)
 
 
+def plan(line_files: list, start: float = START, gap: float = GAP) -> list:
+    """Where each line will land, computed before anything is rendered.
+
+    Scene lengths are derived from this, so a scene is on screen for exactly as
+    long as the sentence about it is being spoken.
+    """
+    out, cursor = [], 0.0
+    for i, src in enumerate(line_files):
+        a, b = speech_span(src)
+        cursor += (start if i == 0 else gap)
+        out.append({"index": i, "start": round(cursor, 3), "end": round(cursor + (b - a), 3)})
+        cursor += b - a
+    return out
+
+
 def assemble(line_files: list, out_path: str, total: float,
              start: float = START, gap: float = GAP) -> dict:
     """Concatenate the lines with deterministic silence between them.

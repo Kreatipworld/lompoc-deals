@@ -26,7 +26,7 @@ KIT = os.path.dirname(os.path.abspath(__file__))
 VIDEO_DIR = os.path.dirname(KIT)
 REPO = os.path.abspath(os.path.join(VIDEO_DIR, "..", "..", ".."))
 
-AUTO_QUERY = {"game-night": "next-game", "game-result": "latest-result"}
+AUTO_QUERY = {"game-night": "next-game", "game-result": "latest-result", "season-recap": "season"}
 
 
 def load_auto(fmt: str) -> dict:
@@ -106,11 +106,14 @@ def main() -> int:
         wavs = sorted((f for f in os.listdir(args.vo) if f.startswith("line-") and f.endswith(".wav")),
                       key=lambda f: int(f.split("-")[1].split(".")[0]))
         if wavs:
-            spans = [_audio.speech_span(os.path.join(args.vo, f)) for f in wavs]
-            need = _audio.START + sum(b - a for a, b in spans) + _audio.GAP * (len(wavs) - 1) + 0.70
-            grew = video.stretch_to(round(need, 2))
-            if grew:
-                print(f"  read needs {need:.2f}s — closing scene extended by {grew:.2f}s")
+            placed = _audio.plan([os.path.join(args.vo, f) for f in wavs])
+            if video.time_to_read(placed):
+                print(f"  scenes timed to the read — {video.total:.2f}s")
+            else:
+                need = placed[-1]["end"] + 0.70
+                grew = video.stretch_to(round(need, 2))
+                if grew:
+                    print(f"  read needs {need:.2f}s — closing scene extended by {grew:.2f}s")
 
     stamp = data.get("gameDate") or __import__("datetime").date.today().isoformat()
     out_dir = args.out or os.path.join(VIDEO_DIR, "out", f"{video.slug}-{stamp}")
