@@ -15,8 +15,13 @@ Data contract (``data.mjs member`` produces all of it):
     services        ["tires", "brakes", ...] parsed from the description
     clips           [path, ...]              optional generated b-roll, service beats only
     beats           [{chip,title,sub,media}] optional; derived from services when absent
-    quote           {"text", "chip"}         optional; something the member wrote themselves
+    quote           {"text", "chip", "brightness"}   optional; something they wrote themselves
     opener          "logo" | "photo-1" | ...  defaults to "logo" when a logo exists
+    opener_position "41% 50%"                which part of the photo the 9:16 crop keeps
+    opener_zoom     [1.10, 1.14]             push-in, start and end scale
+    opener_origin   "50% 42%"                the point the push holds still
+    opener_name     false                    drop the printed name — for a photo of
+                                             their sign, which already says it
     closer          {chip,title,sub,media}   optional hero shot of what they sell, last
                                              thing before the contact card
 
@@ -168,6 +173,15 @@ def build(d: dict) -> Video:
     # overcast day does not. So the logo card is the default opener whenever
     # there is a logo, and their photos do their real job — proof — later.
     opener_media = d.get("opener") or ("logo" if d.get("logo") else "photo-0")
+    # A photo of their own signage is the strongest possible opener, but only if
+    # the crop is aimed at it: a 3:4 photo dropped into a 9:16 frame hands a
+    # third of the picture to sky and lawn.
+    o_pos = d.get("opener_position", "50% 50%")
+    o_zoom = d.get("opener_zoom", [1.16, 1.26])
+    o_origin = d.get("opener_origin", "50% 62%")
+    o_bright = d.get("opener_brightness", 0.92)
+    # Never print the business name over a photograph of the business name.
+    o_name = d.get("opener_name", True)
     end_media = d.get("end_photo")
 
     # ── opener A: the member's wordmark, as a built card ──────────────────
@@ -193,33 +207,44 @@ def build(d: dict) -> Video:
     # ── opener B: one of their photos, with their address ─────────────────
     def opener(cid, dur, size):
         src, kind = _media_src(assets, opener_media)
-        art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, opener_media), "filter:brightness(0.66)")
+        style = f"filter:brightness({o_bright}) saturate(1.06); object-position:{o_pos}"
+        art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, opener_media), style)
                if kind == "video" else
-               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="filter:brightness(0.78) saturate(1.06)" />')
+               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{style}" />')
+        title = (f'<span class="hero" id="{cid}-h1" style="font-size:112px; opacity:1">{name}</span>'
+                 if o_name else "")
+        gap = "26px" if o_name else "0px"
         return f'''{art}
       <div class="scrim"></div>
       <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; top:16%; z-index:36"><span class="chip" id="{cid}-chip" style="opacity:1">{tagline}</span></div>
       <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; bottom:{B.SCENE_BOTTOM_PCT}%; z-index:36">
-        <span class="hero" id="{cid}-h1" style="font-size:112px; opacity:1">{name}</span>
-        <span id="{cid}-h2" style="display:block; margin-top:26px; color:{B.GOLD}; font-weight:800; font-size:62px; letter-spacing:-1px; opacity:0">{street} · {city}</span>
+        {title}
+        <span id="{cid}-h2" style="display:block; margin-top:{gap}; color:{B.GOLD}; font-weight:800; font-size:62px; letter-spacing:-1px; opacity:1">{street} · {city}</span>
       </div>'''
 
     def opener_js(cid, dur):
         # Frame 0 is the thumbnail: the photo and the name are already painted,
         # so only the slow push and the second line are animated.
-        return (f'tl.fromTo("#{cid}-bg", {{ scale:1.16 }}, {{ scale:1.26, duration:{dur:.2f}, ease:"none", transformOrigin:"50% 62%" }}, 0);'
-                + f'tl.fromTo("#{cid}-h1", {{ scale:1.05 }}, {{ scale:1, duration:1.30, ease:"power2.out", transformOrigin:"0% 100%" }}, 0);'
-                + S.rise(cid, "h2", 1.20, dy=16, dur=0.42)
-                + _exit(cid, dur, ("chip", "h1", "h2")))
+        js = (f'tl.fromTo("#{cid}-bg", {{ scale:{o_zoom[0]} }}, {{ scale:{o_zoom[1]}, '
+              f'duration:{dur:.2f}, ease:"none", transformOrigin:"{o_origin}" }}, 0);')
+        els = ["chip", "h2"]
+        if o_name:
+            js += (f'tl.fromTo("#{cid}-h1", {{ scale:1.05 }}, {{ scale:1, duration:1.30, '
+                   f'ease:"power2.out", transformOrigin:"0% 100%" }}, 0);')
+            els.insert(1, "h1")
+        # Nothing fades up: frame 0 is the finished composition. The address
+        # settles into place instead.
+        js += f'tl.fromTo("#{cid}-h2", {{ y:14 }}, {{ y:0, duration:0.85, ease:"power2.out" }}, 0);'
+        return js + _exit(cid, dur, tuple(els))
 
     # ── service beats: generated b-roll or their photos ───────────────────
     def beat_html(beat):
         def html(cid, dur, size):
             src, kind = _media_src(assets, beat["media"])
             art = (_video_layers(cid, src, dur, beat.get("at", 0.0), _clip_len(assets, beat["media"]),
-                                 "filter:brightness(0.92) saturate(1.06)")
+                                 "filter:brightness(1.0) saturate(1.08)")
                    if kind == "video" else
-                   f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="filter:brightness(0.70) saturate(1.06)" />')
+                   f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="filter:brightness(0.86) saturate(1.08)" />')
             sub = (f'<span id="{cid}-sub" style="display:block; margin-top:22px; color:rgba(255,255,255,0.86); '
                    f'font-weight:600; font-size:40px; letter-spacing:0; opacity:0">{beat["sub"]}</span>'
                    if beat.get("sub") else "")
@@ -245,7 +270,8 @@ def build(d: dict) -> Video:
         src, kind = _media_src(assets, quote["media"])
         art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, quote["media"]), "filter:brightness(0.58)")
                if kind == "video" else
-               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="filter:brightness(0.66) saturate(1.04)" />')
+               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" '
+               f'style="filter:brightness({quote.get("brightness", 0.80)}) saturate(1.06)" />')
         return f'''{art}
       <div class="scrim"></div>
       <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; top:16%; z-index:36"><span class="chip" id="{cid}-chip" style="opacity:0">{quote.get("chip", "In their own words")}</span></div>
@@ -269,16 +295,17 @@ def build(d: dict) -> Video:
             bg = f'<img class="cover" src="{src}" alt="" style="filter:brightness(0.34) saturate(0.7)" />'
         logo = (f'<div id="{cid}-card" style="display:block; width:fit-content; margin:0 auto; background:#fff; '
                 f'border-radius:28px; padding:34px 44px; box-shadow:0 22px 60px rgba(0,0,0,0.45); opacity:0">'
-                f'<img src="public/logo.png" alt="" style="width:400px; height:auto; display:block" /></div>'
+                f'<img src="public/logo.png" alt="" style="width:470px; height:auto; display:block" /></div>'
                 if d.get("logo") else
                 f'<span class="hero" id="{cid}-card" style="display:block; font-size:96px; opacity:0">{name}</span>')
         return f'''{bg}
       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(101,12,117,0.88) 0%, rgba(26,5,32,0.96) 100%)"></div>
+      <div style="position:absolute; left:0; right:0; top:8%; height:2px; z-index:20; background:linear-gradient(90deg, transparent, {B.GOLD}, transparent); opacity:0.5"></div>
       <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; top:30%; z-index:36; text-align:center">
         {logo}
         <div style="margin-top:52px"><span class="pill" id="{cid}-tel" style="opacity:0">{phone}</span></div>
         <span id="{cid}-addr" style="display:block; margin-top:38px; color:#fff; font-weight:800; font-size:52px; letter-spacing:-1px; opacity:0">{street}</span>
-        <span id="{cid}-site" style="display:block; margin-top:30px; color:rgba(255,255,255,0.86); font-weight:600; font-size:36px; opacity:0">{site}</span>
+        <span id="{cid}-site" style="display:block; margin-top:30px; color:rgba(255,255,255,0.86); font-weight:600; font-size:38px; opacity:0">{site}</span>
       </div>'''
 
     def end_js(cid, dur):
