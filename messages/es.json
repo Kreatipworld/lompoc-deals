@@ -1450,7 +1450,8 @@
       "invalidInput": "Entrada no válida",
       "propertyListingsRequirePremium": "Los listados de propiedades requieren el plan Plus",
       "photosStillUploading": "Las fotos aún se están subiendo — espera un momento y guarda de nuevo.",
-      "photoHeic": "Esta foto está en formato HEIC. En iPhone, abre Ajustes → Cámara → Formatos → Más compatible, o comparte la foto como JPEG, y vuelve a intentarlo."
+      "photoHeic": "Esta foto está en formato HEIC. En iPhone, abre Ajustes → Cámara → Formatos → Más compatible, o comparte la foto como JPEG, y vuelve a intentarlo.",
+      "photosSkipped": "Algunas fotos no se pudieron guardar — {details}"
     },
     "userSignup": {
       "emailAlreadyExists": "Ya existe una cuenta con ese correo",
@@ -1721,7 +1722,10 @@
     "save": "Guardar galería",
     "saving": "Guardando…",
     "saved": "Galería guardada",
-    "saveError": "Algo salió mal. Inténtalo de nuevo."
+    "saveError": "Algo salió mal. Inténtalo de nuevo.",
+    "preparing": "Preparando…",
+    "heicHint": "Parecen fotos HEIC de iPhone que este navegador no puede leer. En Ajustes › Cámara › Formatos elige “Más compatible”, o envíatelas primero para que se guarden como JPEG.",
+    "unreadable": "No se pudo leer {names}. Prueba con un JPEG o PNG."
   },
   "dashboardDealForm": {
     "typeLabel": "Tipo",

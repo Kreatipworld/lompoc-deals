@@ -287,6 +287,7 @@ export async function saveGalleryAction(
   // that fails validation (not an image, too large) is skipped rather than
   // failing the whole save.
   const final: string[] = []
+  const skipped: string[] = []
   for (const entry of manifest) {
     if (final.length >= MAX_GALLERY_PHOTOS) break
     if (entry.kind === "existing") {
@@ -297,7 +298,12 @@ export async function saveGalleryAction(
       try {
         const url = await uploadImage(file, "photos")
         final.push(url)
-      } catch {
+      } catch (e) {
+        // Never swallow this. Skipping a failed upload and still returning
+        // ok:true is what made a paying member think the gallery was broken on
+        // Sep 21 2026 — their photos were over the size limit, every one was
+        // dropped, and the page said "Saved".
+        skipped.push(`${file.name}: ${e instanceof Error ? e.message : "upload failed"}`)
         continue
       }
     }
@@ -322,6 +328,9 @@ export async function saveGalleryAction(
   revalidatePath("/dashboard/profile")
   revalidateBusinessSurfaces({ slug: biz.slug })
 
+  if (skipped.length) {
+    return { ok: false, error: t("photosSkipped", { details: skipped.join("; ") }) }
+  }
   return { ok: true }
 }
 

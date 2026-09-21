@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { isHeicFile, toJpeg } from "@/lib/client-image"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { ArrowLeft, ArrowRight, Star, Trash2, Upload } from "lucide-react"
@@ -29,6 +30,7 @@ export function PhotoManager({ initialPhotos }: { initialPhotos: string[] }) {
     initialPhotos.map((url) => ({ id: makeId(), kind: "existing", url }))
   )
   const [isSaving, setIsSaving] = useState(false)
+  const [isPreparing, setIsPreparing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -52,21 +54,39 @@ export function PhotoManager({ initialPhotos }: { initialPhotos: string[] }) {
 
   const atLimit = items.length >= MAX_PHOTOS
 
-  function handleFiles(fileList: FileList | null) {
+  // Re-encode in the browser before queueing anything. The server rejects
+  // files over 5 MB and a phone photo is routinely bigger, so raw files were
+  // being dropped — silently, because the save still reported success. The
+  // listing uploader always did this; the gallery never did.
+  async function handleFiles(fileList: FileList | null) {
     if (!fileList || fileList.length === 0) return
     setError(null)
     setSuccess(false)
-    setItems((prev) => {
-      const room = MAX_PHOTOS - prev.length
-      if (room <= 0) return prev
-      const files = Array.from(fileList).slice(0, room)
-      const added: Item[] = files.map((file) => {
-        const previewUrl = URL.createObjectURL(file)
-        objectUrlsRef.current.add(previewUrl)
-        return { id: makeId(), kind: "new", file, previewUrl }
-      })
-      return [...prev, ...added]
-    })
+
+    const room = MAX_PHOTOS - items.length
+    if (room <= 0) return
+    const picked = Array.from(fileList).slice(0, room)
+
+    setIsPreparing(true)
+    const added: Item[] = []
+    const unreadable: string[] = []
+    for (const raw of picked) {
+      const file = await toJpeg(raw)
+      if (!file) {
+        unreadable.push(raw.name)
+        continue
+      }
+      const previewUrl = URL.createObjectURL(file)
+      objectUrlsRef.current.add(previewUrl)
+      added.push({ id: makeId(), kind: "new", file, previewUrl })
+    }
+    setIsPreparing(false)
+
+    if (added.length) setItems((prev) => [...prev, ...added])
+    if (unreadable.length) {
+      const anyHeic = picked.some(isHeicFile)
+      setError(anyHeic ? t("heicHint") : t("unreadable", { names: unreadable.join(", ") }))
+    }
   }
 
   function handleRemove(id: string) {
@@ -236,18 +256,18 @@ export function PhotoManager({ initialPhotos }: { initialPhotos: string[] }) {
           multiple
           className="hidden"
           onChange={(e) => {
-            handleFiles(e.target.files)
+            void handleFiles(e.target.files)
             e.target.value = ""
           }}
         />
         <Button
           type="button"
           variant="outline"
-          disabled={atLimit}
+          disabled={atLimit || isPreparing}
           onClick={() => fileInputRef.current?.click()}
         >
           <Upload className="h-4 w-4" />
-          {t("addPhotos")}
+          {isPreparing ? t("preparing") : t("addPhotos")}
         </Button>
         <span className="text-xs text-muted-foreground">
           {atLimit ? t("limitReached", { max: MAX_PHOTOS }) : t("countHint", { count: items.length, max: MAX_PHOTOS })}

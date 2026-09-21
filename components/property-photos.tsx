@@ -1,12 +1,11 @@
 "use client"
+import { isHeicFile, toJpeg } from "@/lib/client-image"
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { upload } from "@vercel/blob/client"
 import { ImagePlus, Star, X, GripVertical, AlertCircle } from "lucide-react"
 
 export const MAX_LISTING_PHOTOS = 12
-const MAX_EDGE = 2000
-const JPEG_QUALITY = 0.85
 
 export type PhotoItem = {
   key: string
@@ -16,31 +15,6 @@ export type PhotoItem = {
   error?: string
 }
 
-const HEIC_RE = /\.(heic|heif)$/i
-export function isHeicFile(file: File): boolean {
-  return /^image\/hei[cf]$/i.test(file.type) || HEIC_RE.test(file.name)
-}
-
-// Re-encode EVERY photo in the browser as a JPEG (max 2000 px, ~85%) so a
-// 12-photo listing uploads fast, never trips a body limit, and — above all —
-// never lands in Blob as a format browsers can't display. HEIC/HEIF that this
-// browser cannot decode returns null; the caller shows the iPhone hint instead
-// of uploading the original (Sep 13 2026: two HEIC uploads broke a listing).
-async function toJpeg(file: File): Promise<File | null> {
-  const bitmap = await createImageBitmap(file).catch(() => null)
-  if (!bitmap || !bitmap.width || !bitmap.height) return null
-  const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height))
-  const canvas = document.createElement("canvas")
-  canvas.width = Math.round(bitmap.width * scale)
-  canvas.height = Math.round(bitmap.height * scale)
-  const ctx = canvas.getContext("2d")
-  if (!ctx) return null
-  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
-  bitmap.close?.()
-  const blob: Blob | null = await new Promise((res) => canvas.toBlob(res, "image/jpeg", JPEG_QUALITY))
-  if (!blob) return null
-  return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" })
-}
 
 export function PropertyPhotos({
   businessId,

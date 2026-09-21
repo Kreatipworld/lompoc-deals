@@ -1450,7 +1450,8 @@
       "invalidInput": "Invalid input",
       "propertyListingsRequirePremium": "Property listings require the Plus plan",
       "photosStillUploading": "Photos are still uploading — give it a second, then save again.",
-      "photoHeic": "This photo is in HEIC format. On iPhone, open Settings → Camera → Formats → Most Compatible, or share the photo as JPEG, then try again."
+      "photoHeic": "This photo is in HEIC format. On iPhone, open Settings → Camera → Formats → Most Compatible, or share the photo as JPEG, then try again.",
+      "photosSkipped": "Some photos couldn't be saved — {details}"
     },
     "userSignup": {
       "emailAlreadyExists": "An account with that email already exists",
@@ -1721,7 +1722,10 @@
     "save": "Save gallery",
     "saving": "Saving…",
     "saved": "Gallery saved",
-    "saveError": "Something went wrong. Please try again."
+    "saveError": "Something went wrong. Please try again.",
+    "preparing": "Preparing…",
+    "heicHint": "Those look like iPhone HEIC photos this browser can't read. In Settings › Camera › Formats choose “Most Compatible”, or share them to yourself first so they save as JPEG.",
+    "unreadable": "Couldn't read {names}. Try a JPEG or PNG."
   },
   "dashboardDealForm": {
     "typeLabel": "Type",
