@@ -23,7 +23,8 @@ const unsubUrl = (e) => `https://www.lompoclocals.com/api/unsubscribe?e=${encode
 
 const TO = process.env.TO || "leasing@americanstages.com"   // from their website
 const biz = { name: "American Stages Realty & Management", slug: "american-stages-realty-management-inc" }
-const claimUrl = `https://www.lompoclocals.com/signup?claim=${biz.slug}&plan=plus&email=${encodeURIComponent(TO)}`
+const claimPlus = `https://www.lompoclocals.com/signup?claim=${biz.slug}&plan=plus&email=${encodeURIComponent(TO)}`
+const claimGrowth = `https://www.lompoclocals.com/signup?claim=${biz.slug}&plan=standard&email=${encodeURIComponent(TO)}`
 const profileUrl = `https://www.lompoclocals.com/biz/${biz.slug}`
 const homesUrl = "https://www.lompoclocals.com/homes"
 
@@ -46,17 +47,37 @@ const html = `
 
     <p style="color:#444; line-height:1.6; margin:0 0 18px;">We noticed something while we were building it. Your rentals go out as flyers &mdash; a photo of the kitchen, <em>2 bed 1 bath</em>, the address typed across the bottom. That works on a feed for a day. It doesn't work when somebody in town opens their phone at 9pm and searches for a rental in Lompoc.</p>
 
-    <div style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:20px 22px; margin:0 0 22px;">
-      <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">Plus membership &mdash; built for a brokerage</div>
+    <p style="color:#444; line-height:1.6; margin:0 0 6px; font-weight:700; color:#1a1a1a;">There are two ways in. Both are month to month, cancel anytime.</p>
+    <p style="color:#777; line-height:1.6; margin:0 0 18px; font-size:14px;">Same three-minute claim either way &mdash; set a password, add a card, the page is yours.</p>
+
+    <!-- PLUS — the one that fits a brokerage -->
+    <div style="background:#F7F3E9; border:2px solid ${P}; border-radius:12px; padding:20px 22px; margin:0 0 14px; position:relative;">
+      <div style="display:inline-block; background:${P}; color:#fff; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border-radius:20px; margin:0 0 10px;">Our pick for you</div>
+      <div style="font-size:20px; font-weight:800; color:#1a1a1a; margin:0 0 2px;">Plus &mdash; <span style="color:${P};">$99.99</span><span style="font-size:14px; font-weight:600; color:#777;">/month</span></div>
+      <div style="font-size:13px; color:#777; margin:0 0 12px;">Everything in Growth, plus your inventory.</div>
       <ul style="color:#444; line-height:1.7; margin:0 0 14px; padding-left:20px;">
         <li style="margin-bottom:6px;"><strong>Post rentals and homes as real listings</strong> &mdash; beds, baths, price, photo gallery, map pin, on <a href="${homesUrl}" style="color:${P}; font-weight:700;">the homes page</a>. Not a flyer. A page that stays findable.</li>
-        <li style="margin-bottom:6px;"><strong>Every enquiry comes to you with the listing attached</strong>, so you know which unit they're asking about before you pick up.</li>
-        <li style="margin-bottom:6px;"><strong>You'd be first.</strong> There are <strong>${F.rentalsLive} rentals</strong> on the platform today. The whole category is open.</li>
-        <li><strong>Your listings and any offer go into the Monday email</strong> that lands with ${F.subs} local inboxes.</li>
+        <li style="margin-bottom:6px;"><strong>Every enquiry arrives with the listing attached</strong>, so you know which unit they mean before you pick up.</li>
+        <li style="margin-bottom:6px;"><strong>Featured placement</strong> on the homes market and the town map.</li>
+        <li><strong>You'd be first.</strong> There are <strong>${F.rentalsLive} rentals</strong> on the platform today. The category is wide open.</li>
       </ul>
-      <p style="color:#1a1a1a; line-height:1.6; margin:0 0 12px; font-size:14px;"><strong style="font-size:19px; color:${P};">$99.99</strong>/month, cancel anytime. Claim the page, set a password, add a card &mdash; about three minutes.</p>
-      <p style="margin:0;"><a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim American Stages &amp; post your first listing</a></p>
+      <p style="margin:0;"><a href="${claimPlus}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim with Plus &amp; post your listings</a></p>
     </div>
+
+    <!-- GROWTH — the smaller door -->
+    <div style="background:#ffffff; border:1px solid #e3e3e3; border-radius:12px; padding:18px 22px; margin:0 0 22px;">
+      <div style="font-size:18px; font-weight:800; color:#1a1a1a; margin:0 0 2px;">Growth &mdash; <span style="color:${G};">$39.99</span><span style="font-size:14px; font-weight:600; color:#777;">/month</span></div>
+      <div style="font-size:13px; color:#777; margin:0 0 12px;">The page and the audience, without the listings.</div>
+      <ul style="color:#444; line-height:1.7; margin:0 0 14px; padding-left:20px;">
+        <li style="margin-bottom:6px;">Your page with hours, photos, contact and the <strong>Official Partner badge</strong> on the map.</li>
+        <li style="margin-bottom:6px;">Up to <strong>5 live offers</strong> &mdash; a reduced application fee, a move-in special &mdash; in the deals feed.</li>
+        <li style="margin-bottom:6px;">Everything you post lands in the <strong>Monday email</strong> to ${F.subs} local inboxes.</li>
+        <li>Views and clicks, reported weekly.</li>
+      </ul>
+      <p style="margin:0;"><a href="${claimGrowth}" style="display:inline-block; background:#ffffff; color:${P}; border:2px solid ${P}; padding:11px 22px; border-radius:8px; text-decoration:none; font-weight:600;">Claim with Growth</a></p>
+    </div>
+
+    <p style="color:#444; line-height:1.6; margin:0 0 16px; font-size:14px;">Start on Growth and move up whenever you want &mdash; but Plus is the one that carries listings, and listings are your business.</p>
 
     <p style="color:#444; line-height:1.6; margin:0 0 16px;"><strong>${F.members} Lompoc businesses</strong> pay to be on here &mdash; trades, restaurants, shops. You'd be the first brokerage to put actual inventory on it.</p>
 
@@ -82,7 +103,8 @@ const to = PREVIEW ? "hello@lompoclocals.com" : TO
 writeFileSync("/tmp/american-stages-invite.html", html)
 console.log(`  to       ${to}${PREVIEW ? "  (PREVIEW)" : ""}`)
 console.log(`  subject  ${subject}`)
-console.log(`  claim    ${claimUrl}`)
+console.log(`  plus     ${claimPlus}`)
+console.log(`  growth   ${claimGrowth}`)
 console.log(`  profile  ${profileUrl}`)
 console.log(`  preview  /tmp/american-stages-invite.html`)
 if (!SEND) { console.log("\n  dry run — nothing sent. Add SEND=1 to send."); process.exit(0) }
