@@ -26,24 +26,30 @@ KIT = os.path.dirname(os.path.abspath(__file__))
 VIDEO_DIR = os.path.dirname(KIT)
 REPO = os.path.abspath(os.path.join(VIDEO_DIR, "..", "..", ".."))
 
-AUTO_QUERY = {"game-night": "next-game", "game-result": "latest-result", "season-recap": "season"}
+AUTO_QUERY = {"game-night": "next-game", "game-result": "latest-result",
+              "season-recap": "season", "member-spotlight": "member"}
 
 
-def load_auto(fmt: str) -> dict:
+def load_auto(fmt: str, slug: str = "") -> dict:
     q = AUTO_QUERY.get(fmt)
     if not q:
         raise SystemExit(f"{fmt} has no --auto data source; pass --data")
-    out = subprocess.run(
-        ["node", "--env-file=.env.local", os.path.join(KIT, "data.mjs"), q],
-        cwd=REPO, capture_output=True, text=True,
-    )
+    argv = ["node", "--env-file=.env.local", os.path.join(KIT, "data.mjs"), q]
+    if slug:
+        argv.append(f"--slug={slug}")
+    out = subprocess.run(argv, cwd=REPO, capture_output=True, text=True)
     if out.returncode != 0:
         raise SystemExit(f"data.mjs {q} failed:\n{out.stderr.strip() or out.stdout.strip()}")
     return json.loads(out.stdout)
 
 
 def stage_assets(out_dir: str, video) -> list:
-    """Copy the shared pool into the project's public/. Returns missing audio."""
+    """Copy the shared pool into the project's public/. Returns missing audio.
+
+    A format may also declare `assets`: media that belongs to this video only —
+    a member's photos and logo, say — as staged filename -> URL or local path.
+    Each one is fetched once and then reused, so re-running is free.
+    """
     pub = os.path.join(out_dir, "public")
     os.makedirs(pub, exist_ok=True)
     pool = os.path.join(KIT, "assets")
@@ -54,6 +60,21 @@ def stage_assets(out_dir: str, video) -> list:
                 shutil.copytree(src, dst)
         elif not os.path.exists(dst):
             shutil.copy2(src, dst)
+
+    for name, source in (video.assets or {}).items():
+        dst = os.path.join(pub, name)
+        if os.path.exists(dst):
+            continue
+        if str(source).startswith(("http://", "https://")):
+            r = subprocess.run(["curl", "-sfL", "-o", dst, source])
+            if r.returncode != 0 or not os.path.exists(dst):
+                raise SystemExit(f"could not fetch asset {name} from {source}")
+        else:
+            path = source if os.path.isabs(source) else os.path.join(REPO, source)
+            if not os.path.exists(path):
+                raise SystemExit(f"asset {name}: no such file {path}")
+            shutil.copy2(path, dst)
+
     missing = [a.src for a in video.audio if not os.path.exists(os.path.join(out_dir, a.src))]
     return missing
 
@@ -86,16 +107,24 @@ def main() -> int:
     p.add_argument("format", choices=sorted(REGISTRY))
     p.add_argument("--auto", action="store_true", help="pull the facts from the live database")
     p.add_argument("--data", help="JSON object of facts, instead of --auto")
+    p.add_argument("--slug", help="business slug, for formats whose data source takes one")
+    p.add_argument("--merge", help="JSON object layered over the loaded data: curated photos, "
+                                   "beats, generated b-roll. Nothing here may contradict the profile.")
     p.add_argument("--out", help="output directory (default: out/<slug>-<date>)")
     p.add_argument("--render", action="store_true", help="also run hyperframes check + render")
     p.add_argument("--vo", help="directory holding line-*.wav, to size the video to the read")
+    p.add_argument("--gap", type=float, help="silence between spoken lines, in seconds. A 30s "
+                                             "commercial breathes tighter than a game recap.")
+    p.add_argument("--tail", type=float, default=1.10, help="hold after the last word, in seconds")
     args = p.parse_args()
 
     if args.auto and args.data:
         raise SystemExit("use --auto or --data, not both")
-    data = load_auto(args.format) if args.auto else json.loads(args.data or "{}")
+    data = load_auto(args.format, args.slug or "") if args.auto else json.loads(args.data or "{}")
     if "error" in data:
         raise SystemExit(f"no data: {data['error']}")
+    if args.merge:
+        data.update(json.loads(args.merge))
 
     video = REGISTRY[args.format].build(data)
 
@@ -106,11 +135,12 @@ def main() -> int:
         wavs = sorted((f for f in os.listdir(args.vo) if f.startswith("line-") and f.endswith(".wav")),
                       key=lambda f: int(f.split("-")[1].split(".")[0]))
         if wavs:
-            placed = _audio.plan([os.path.join(args.vo, f) for f in wavs])
-            if video.time_to_read(placed):
+            gap = args.gap if args.gap is not None else _audio.GAP
+            placed = _audio.plan([os.path.join(args.vo, f) for f in wavs], gap=gap)
+            if video.time_to_read(placed, tail=args.tail):
                 print(f"  scenes timed to the read — {video.total:.2f}s")
             else:
-                need = placed[-1]["end"] + 0.70
+                need = placed[-1]["end"] + args.tail
                 grew = video.stretch_to(round(need, 2))
                 if grew:
                     print(f"  read needs {need:.2f}s — closing scene extended by {grew:.2f}s")

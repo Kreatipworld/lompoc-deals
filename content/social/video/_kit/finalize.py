@@ -17,7 +17,7 @@ from _kit import audio  # noqa: E402
 HOLD = 0.35   # leave a caption up this long after its sentence ends
 
 
-def main(project: str) -> int:
+def main(project: str, gap: float = audio.GAP) -> int:
     man = json.load(open(os.path.join(project, "build.json")))
     pub = os.path.join(project, "public")
     lines = sorted(
@@ -28,7 +28,7 @@ def main(project: str) -> int:
         print("no public/line-*.wav — generate the voiceover first"); return 1
 
     placed = audio.assemble([os.path.join(pub, f) for f in lines],
-                            os.path.join(pub, "vo.wav"), man["total"])
+                            os.path.join(pub, "vo.wav"), man["total"], gap=gap)
     print(f"  voiceover {placed['total']:.2f}s of {man['total']:.2f}s")
     for p in placed["lines"]:
         print(f"    L{p['index']}  {p['start']:6.2f} → {p['end']:6.2f}")
@@ -78,4 +78,6 @@ def main(project: str) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1]))
+    # argv[2] is the same --gap make.py was given; the two have to agree or the
+    # captions land on the wrong sentence.
+    raise SystemExit(main(sys.argv[1], float(sys.argv[2]) if len(sys.argv) > 2 else audio.GAP))

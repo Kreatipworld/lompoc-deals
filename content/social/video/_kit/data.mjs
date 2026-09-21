@@ -2,6 +2,7 @@
 // Live football facts for the video kit. Prints JSON to stdout.
 //   node _kit/data.mjs next-game       → the soonest unplayed game, both schools
 //   node _kit/data.mjs latest-result   → the most recently played game
+//   node _kit/data.mjs member --slug=<slug>  → one business, shaped for member-spotlight
 // Run from the repo root with --env-file=.env.local.
 import { neon } from "@neondatabase/serverless"
 
@@ -33,7 +34,84 @@ async function weekOf(school, date) {
   return `Week ${r[0].n}`
 }
 
-if (what === "next-game") {
+// ── one member, shaped for the member-spotlight format ──────────────────────
+// Everything a spotlight states has to be something the profile already says,
+// so this reads the row and derives nothing it cannot point at.
+const DAY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+const DAY_LABEL = { mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun" }
+
+function clock(hhmm) {
+  const [h, m] = hhmm.split(":").map(Number)
+  const ampm = h >= 12 ? "pm" : "am"
+  const hour = h % 12 === 0 ? 12 : h % 12
+  return m ? `${hour}:${String(m).padStart(2, "0")}${ampm}` : `${hour}${ampm}`
+}
+
+// "Mon-Fri 8am-5pm · Sat 8am-3pm". Consecutive identical days collapse into a
+// range so the line fits a phone screen.
+function hoursLine(hours) {
+  if (!hours) return ""
+  const runs = []
+  for (const d of DAY) {
+    const v = hours[d]
+    const key = v ? `${v.open}-${v.close}` : null
+    const last = runs[runs.length - 1]
+    if (last && last.key === key) last.days.push(d)
+    else runs.push({ key, days: [d] })
+  }
+  return runs
+    .filter((r) => r.key)
+    .map((r) => {
+      const [o, c] = r.key.split("-")
+      const span = r.days.length === 1
+        ? DAY_LABEL[r.days[0]]
+        : `${DAY_LABEL[r.days[0]]}–${DAY_LABEL[r.days[r.days.length - 1]]}`
+      return `${span} ${clock(o)}–${clock(c)}`
+    })
+    .join(" · ")
+}
+
+// Our descriptions are written "<what it is> — <services> for <who>", so the
+// service list is the clause after the dash. If a profile is not written that
+// way this returns [] and the format falls back to the description itself.
+function servicesFrom(description) {
+  const tail = (description || "").split(/[—–-]\s/)[1]
+  if (!tail) return []
+  return tail
+    .split(/\s+for\s+/)[0]
+    .split(/,|\sand\s/)
+    .map((s) => s.trim().replace(/\.$/, ""))
+    .filter((s) => s && s.split(/\s+/).length <= 3)
+}
+
+if (what === "member") {
+  const slug = (process.argv.find((a) => a.startsWith("--slug=")) || "").split("=")[1]
+  if (!slug) { console.error("member needs --slug=<slug>"); process.exit(1) }
+  const rows = await sql`
+    select name, slug, description, about, address, phone, website, logo_url, cover_url,
+           photos_json, hours_json
+    from businesses where slug = ${slug} and status = 'approved' limit 1`
+  if (!rows.length) { console.log(JSON.stringify({ error: `no approved business ${slug}` })); process.exit(2) }
+  const b = rows[0]
+  const photos = Array.isArray(b.photos_json) ? b.photos_json : []
+  console.log(JSON.stringify({
+    name: b.name,
+    slug: b.slug,
+    address: b.address,
+    street: (b.address || "").split(",")[0].trim(),
+    phone: b.phone,
+    website: b.website,
+    about: b.about,
+    description: b.description,
+    logo: b.logo_url,
+    // The cover first: it is the photo the owner already chose to lead with.
+    photos: [b.cover_url, ...photos].filter((u, i, a) => u && a.indexOf(u) === i),
+    hours: b.hours_json,
+    hoursLine: hoursLine(b.hours_json),
+    services: servicesFrom(b.description),
+    site: `lompoclocals.com/biz/${b.slug}`,
+  }, null, 2))
+} else if (what === "next-game") {
   const rows = await sql`
     select school, game_date, kickoff, opponent, home_away, venue
     from football_games

@@ -62,6 +62,9 @@ class Video:
     subs: list = field(default_factory=list)
     audio: list = field(default_factory=list)
     vo_lines: list = field(default_factory=list)   # plain sentences, in order
+    # Media this format needs that is not in the shared pool: staged public/
+    # filename -> a URL or a local path. make.py fetches each one once.
+    assets: dict = field(default_factory=dict)
     note: str = ""
     size: tuple = B.SIZES["9x16"]
 
@@ -86,6 +89,15 @@ class Video:
             sc.dur = round(end - sc.start, 2)
             at = round(sc.start + sc.dur - B.X, 2)
         self.total = round(self.scenes[-1].start + self.scenes[-1].dur, 2)
+        # Put the captions on their own measured sentence now, not in finalize.
+        # Dedupe runs at write time and compares a caption against whatever is
+        # on screen while it is up; a caption still sitting at 0.0-0.0 overlaps
+        # no scene, so nothing is ever deduped and every line prints twice.
+        for i, sub in enumerate(self.subs):
+            p = span.get(i)
+            if p:
+                sub.start = p["start"]
+                sub.end = min(self.total, p["end"] + 0.35)
         for a in self.audio:
             if a.group in ("music", "voiceover"):
                 a.dur = self.total
