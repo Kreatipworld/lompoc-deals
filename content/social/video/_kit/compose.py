@@ -268,6 +268,17 @@ def write(v: Video, out_dir: str) -> dict:
     open(os.path.join(comp, "progress.html"), "w").write(_progress_html(v))
     open(os.path.join(out_dir, "index.html"), "w").write(index_html(v))
 
+    # Drop compositions left behind by an earlier build. Re-running with a
+    # different scene list otherwise leaves orphans referencing media that has
+    # since been removed, and `hyperframes check` fails on a file index.html
+    # does not even load.
+    keep = {f"{s.cid}.html" for s in v.scenes} | {"progress.html"}
+    if v.subs:
+        keep.add("subs.html")
+    for name in os.listdir(comp):
+        if name.endswith(".html") and name not in keep:
+            os.remove(os.path.join(comp, name))
+
     manifest = {
         "slug": v.slug,
         "title": v.title,

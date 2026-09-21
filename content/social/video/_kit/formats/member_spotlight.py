@@ -16,6 +16,9 @@ Data contract (``data.mjs member`` produces all of it):
     clips           [path, ...]              optional generated b-roll, service beats only
     beats           [{chip,title,sub,media}] optional; derived from services when absent
     quote           {"text", "chip"}         optional; something the member wrote themselves
+    opener          "logo" | "photo-1" | ...  defaults to "logo" when a logo exists
+    closer          {chip,title,sub,media}   optional hero shot of what they sell, last
+                                             thing before the contact card
 
 `media` names a staged asset without its extension — "photo-2", "clip-0" — so a
 beat can be moved from a photo to a clip without touching anything else.
@@ -157,12 +160,37 @@ def build(d: dict) -> Video:
     if not beats:
         raise ValueError("member_spotlight needs beats or a parseable description")
     quote = d.get("quote")
+    closer = d.get("closer")
     tagline = d.get("tagline", "A Lompoc Locals member")
 
-    opener_media = d.get("opener", "photo-0")
+    # Frame 0 is the thumbnail, and in a feed grid it is the whole pitch. A
+    # member's wordmark reads at that size; a wide photo of their street on an
+    # overcast day does not. So the logo card is the default opener whenever
+    # there is a logo, and their photos do their real job — proof — later.
+    opener_media = d.get("opener") or ("logo" if d.get("logo") else "photo-0")
     end_media = d.get("end_photo")
 
-    # ── opener: their photo, their address ────────────────────────────────
+    # ── opener A: the member's wordmark, as a built card ──────────────────
+    def logo_opener(cid, dur, size):
+        return f'''<div style="position:absolute; inset:0; background:
+        radial-gradient(ellipse 78% 52% at 50% 36%, #7d1594 0%, #43084f 46%, {B.BG} 100%)"></div>
+      <div style="position:absolute; left:0; right:0; top:8%; height:2px; z-index:20; background:linear-gradient(90deg, transparent, {B.GOLD}, transparent); opacity:0.5"></div>
+      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; top:27%; z-index:36; text-align:center">
+        <div id="{cid}-card" style="display:inline-block; background:#fff; border-radius:34px; padding:46px 52px; box-shadow:0 30px 80px rgba(0,0,0,0.55); opacity:1">
+          <img src="public/logo.png" alt="" style="width:740px; height:auto; display:block" />
+        </div>
+        <span class="chip" id="{cid}-chip" style="margin-top:52px; opacity:1">{tagline}</span>
+        <span id="{cid}-addr" style="display:block; margin-top:34px; color:#fff; font-weight:800; font-size:58px; letter-spacing:-1px; opacity:1">{street} · {city}</span>
+      </div>'''
+
+    def logo_opener_js(cid, dur):
+        # Everything is already painted at t=0 — the thumbnail is this exact
+        # card — so the open is a slow settle, never a fade up from nothing.
+        return (f'tl.fromTo("#{cid}-card", {{ scale:1.045 }}, {{ scale:1, duration:1.60, ease:"power2.out" }}, 0);'
+                + f'tl.fromTo("#{cid}-addr", {{ y:10 }}, {{ y:0, duration:0.90, ease:"power2.out" }}, 0);'
+                + _exit(cid, dur, ("card", "chip", "addr")))
+
+    # ── opener B: one of their photos, with their address ─────────────────
     def opener(cid, dur, size):
         src, kind = _media_src(assets, opener_media)
         art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, opener_media), "filter:brightness(0.66)")
@@ -217,7 +245,7 @@ def build(d: dict) -> Video:
         src, kind = _media_src(assets, quote["media"])
         art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, quote["media"]), "filter:brightness(0.58)")
                if kind == "video" else
-               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="filter:brightness(0.50) saturate(1.02)" />')
+               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="filter:brightness(0.66) saturate(1.04)" />')
         return f'''{art}
       <div class="scrim"></div>
       <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; top:16%; z-index:36"><span class="chip" id="{cid}-chip" style="opacity:0">{quote.get("chip", "In their own words")}</span></div>
@@ -239,15 +267,16 @@ def build(d: dict) -> Video:
         if end_media:
             src, _ = _media_src(assets, end_media)
             bg = f'<img class="cover" src="{src}" alt="" style="filter:brightness(0.34) saturate(0.7)" />'
-        logo = (f'<div id="{cid}-card" style="display:inline-block; background:#fff; border-radius:28px; padding:34px 44px; '
-                f'box-shadow:0 22px 60px rgba(0,0,0,0.45); opacity:0"><img src="public/logo.png" alt="" style="width:560px; height:auto; display:block" /></div>'
+        logo = (f'<div id="{cid}-card" style="display:block; width:fit-content; margin:0 auto; background:#fff; '
+                f'border-radius:28px; padding:34px 44px; box-shadow:0 22px 60px rgba(0,0,0,0.45); opacity:0">'
+                f'<img src="public/logo.png" alt="" style="width:400px; height:auto; display:block" /></div>'
                 if d.get("logo") else
-                f'<span class="hero" id="{cid}-card" style="font-size:96px; opacity:0">{name}</span>')
+                f'<span class="hero" id="{cid}-card" style="display:block; font-size:96px; opacity:0">{name}</span>')
         return f'''{bg}
       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(101,12,117,0.88) 0%, rgba(26,5,32,0.96) 100%)"></div>
       <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; top:30%; z-index:36; text-align:center">
         {logo}
-        <span class="pill" id="{cid}-tel" style="margin-top:56px; opacity:0">{phone}</span>
+        <div style="margin-top:52px"><span class="pill" id="{cid}-tel" style="opacity:0">{phone}</span></div>
         <span id="{cid}-addr" style="display:block; margin-top:38px; color:#fff; font-weight:800; font-size:52px; letter-spacing:-1px; opacity:0">{street}</span>
         <span id="{cid}-site" style="display:block; margin-top:30px; color:rgba(255,255,255,0.86); font-weight:600; font-size:36px; opacity:0">{site}</span>
       </div>'''
@@ -262,7 +291,12 @@ def build(d: dict) -> Video:
     scenes, subs = [], []
     say_name = d.get("say_name", name)
 
-    scenes.append(Scene("s0-open", 0.0, OPEN, opener, opener_js, lines=(0,)))
+    use_logo_card = opener_media == "logo"
+    if use_logo_card and not d.get("logo"):
+        raise ValueError("opener 'logo' needs a logo on the profile")
+    scenes.append(Scene("s0-open", 0.0, OPEN,
+                        logo_opener if use_logo_card else opener,
+                        logo_opener_js if use_logo_card else opener_js, lines=(0,)))
     subs.append(Sub(0.0, OPEN, f"{street} · {city}",
                     say=f"{say_name}, {d.get('say_street', street)} in {city}."))
 
@@ -276,6 +310,15 @@ def build(d: dict) -> Video:
     if quote:
         scenes.append(Scene("sq-quote", at, BEAT, quote_html, quote_js, lines=(len(subs),)))
         subs.append(Sub(at, at + BEAT, quote["text"], say=quote.get("say", quote["text"])))
+        at = round(at + BEAT - B.X, 2)
+
+    # The hero shot of the thing they actually sell, held last. A spotlight that
+    # ends on a quote ends on an adjective; this ends on the product.
+    if closer:
+        chtml, cjs = beat_html(closer)
+        scenes.append(Scene("sc-closer", at, BEAT, chtml, cjs, lines=(len(subs),)))
+        subs.append(Sub(at, at + BEAT, closer["title"],
+                        say=closer.get("say", closer["title"] + ".")))
         at = round(at + BEAT - B.X, 2)
 
     scenes.append(Scene("sz-end", at, END, end, end_js, lines=(len(subs),)))
