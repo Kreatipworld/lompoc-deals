@@ -7,6 +7,10 @@ export const alt = "Lompoc businesses by category — Lompoc Locals"
 export const size = OG_SIZE
 export const contentType = OG_TYPE
 
+// Regenerate hourly. This card counts businesses and borrows a member photo,
+// both of which change; without it the card is frozen at build time.
+export const revalidate = 3600
+
 export default async function Image({ params }: { params: { locale: string; slug: string } }) {
   const es = params.locale === "es"
   const r = await db

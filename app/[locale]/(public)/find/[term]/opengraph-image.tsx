@@ -5,6 +5,13 @@ import { findTermBySlug } from "@/lib/find-terms"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
+// Regenerate hourly. These cards are built from database rows, and without
+// this the card is rendered once at build time and frozen there: a member
+// uploads a new logo, their page updates, and every link they share keeps
+// showing the old card. revalidateBusinessSurfaces busts the page route, not
+// this one.
+export const revalidate = 3600
+
 const MARK =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 136 314 402">' +
   '<path fill="#efc618" fill-rule="evenodd" d="M257,161.4c-10-17.2-32.1-23.1-49.4-13.1-17.2,10-23.1,32.1-13.1,49.4,10,17.2,32.1,23.1,49.4,13.1,17.2-10,23.1-32.1,13.1-49.4"/>' +
