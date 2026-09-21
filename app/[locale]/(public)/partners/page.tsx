@@ -202,8 +202,11 @@ export default async function PartnersPage({
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">{t("intro.subtitle")}</p>
         </div>
         <div className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-2xl border bg-card shadow-lg">
+          {/* The poster IS the first frame of the file, so the card never shows a
+              half-painted page before play and never flashes on the first frame. */}
           <video
             src="/videos/partner-intro.mp4"
+            poster="/videos/partner-intro-poster.jpg"
             controls
             playsInline
             preload="metadata"

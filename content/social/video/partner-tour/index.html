@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      @font-face {
+        font-family: "Plus Jakarta Sans";
+        src: url("public/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+        font-weight: 200 800; font-style: normal;
+      }
+      html, body { margin:0; width:1920px; height:1080px; overflow:hidden; background:#140a17; }
+      body { font-family:"Plus Jakarta Sans", sans-serif; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; }
+      #root > div[data-composition-src] { position:absolute; inset:0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.00"
+         data-width="1920" data-height="1080">
+      <div id="el-s1-home" data-composition-id="s1-home" data-composition-src="compositions/s1-home.html"
+           data-start="0.00" data-duration="4.91" data-track-index="1"></div>
+      <div id="el-s2-search" data-composition-id="s2-search" data-composition-src="compositions/s2-search.html"
+           data-start="4.65" data-duration="2.95" data-track-index="2"></div>
+      <div id="el-s3-deals" data-composition-id="s3-deals" data-composition-src="compositions/s3-deals.html"
+           data-start="7.34" data-duration="4.36" data-track-index="3"></div>
+      <div id="el-s4-member" data-composition-id="s4-member" data-composition-src="compositions/s4-member.html"
+           data-start="11.44" data-duration="4.64" data-track-index="4"></div>
+      <div id="el-s5-map" data-composition-id="s5-map" data-composition-src="compositions/s5-map.html"
+           data-start="15.82" data-duration="3.75" data-track-index="5"></div>
+      <div id="el-s6-claim" data-composition-id="s6-claim" data-composition-src="compositions/s6-claim.html"
+           data-start="19.31" data-duration="4.69" data-track-index="6"></div>
+
+      <audio id="a-vo" class="clip" data-audio-group="voiceover" src="public/vo.wav"
+             data-start="0" data-media-start="0" data-duration="24.00" data-track-index="7"
+             data-volume="0.90" data-fade-in="0.05" data-fade-out="0.25"></audio>
+      <audio id="a-bed" class="clip" data-audio-group="music" src="public/bed.wav"
+             data-start="0" data-media-start="0" data-duration="24.00" data-track-index="8"
+             data-volume="0.24" data-fade-in="0.6" data-fade-out="1.4"
+             data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.60}'></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

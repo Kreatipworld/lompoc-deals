@@ -1,0 +1,26 @@
+<template>
+  <div data-composition-id="s5-map" data-width="1920" data-height="1080" data-duration="3.75"
+       style="position:absolute; inset:0; overflow:hidden; background:transparent">
+    <style>
+      [data-composition-id="s5-map"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s5-map"] .shotwrap { position:absolute; inset:0; overflow:hidden; background:#140a17; }
+      [data-composition-id="s5-map"] .shot { position:absolute; left:0; top:0; width:1920px; display:block;
+        will-change:transform; transform-origin:0 0; image-rendering:auto; }
+      [data-composition-id="s5-map"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none;
+        background:radial-gradient(ellipse 98% 94% at 50% 46%, rgba(10,6,12,0) 70%, rgba(10,6,12,0.26) 100%); }
+</style>
+    <div class="stage" id="s5-map-stage">
+      <div class="shotwrap"><img class="shot" id="s5-map-img" data-layout-allow-overflow src="public/map.jpg" style="transform:translate(-733.2px,-394.8px) scale(1.41);" /></div>
+      <div class="vig"></div>
+    </div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true });
+        tl.fromTo("#s5-map-stage", { autoAlpha:0 }, { autoAlpha:1, duration:0.26, ease:"power1.inOut" }, 0);
+        tl.fromTo("#s5-map-img", { x:-733.2, y:-394.8, scale:1.41 }, { x:-1004.4, y:-612.4, scale:1.62, duration:3.23, ease:"none" }, 0.26);
+        tl.set({}, {}, 3.75);
+        window.__timelines["s5-map"] = tl;
+      })();
+    </script>
+  </div>
+</template>

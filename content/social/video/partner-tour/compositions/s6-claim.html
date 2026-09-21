@@ -1,0 +1,49 @@
+<template>
+  <div data-composition-id="s6-claim" data-width="1920" data-height="1080" data-duration="4.69"
+       style="position:absolute; inset:0; overflow:hidden; background:transparent">
+    <style>
+      [data-composition-id="s6-claim"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s6-claim"] .shotwrap { position:absolute; inset:0; overflow:hidden; background:#140a17; }
+      [data-composition-id="s6-claim"] .shot { position:absolute; left:0; top:0; width:1920px; display:block;
+        will-change:transform; transform-origin:0 0; image-rendering:auto; }
+      [data-composition-id="s6-claim"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none;
+        background:radial-gradient(ellipse 98% 94% at 50% 46%, rgba(10,6,12,0) 70%, rgba(10,6,12,0.26) 100%); }
+</style>
+    <div class="stage" id="s6-claim-stage">
+      <div style="position:absolute; inset:0; background:
+        radial-gradient(ellipse 120% 90% at 22% 12%, #7d1b8f 0%, rgba(125,27,143,0) 62%),
+        radial-gradient(ellipse 110% 100% at 88% 96%, #3d0747 0%, rgba(61,7,71,0) 60%),
+        linear-gradient(160deg, #650c75 0%, #34073d 58%, #140a17 100%);"></div>
+      <div id="s6-glow" style="position:absolute; left:50%; top:52%; width:1500px; height:1500px; margin:-750px 0 0 -750px;
+        background:radial-gradient(circle, rgba(239,198,24,0.15) 0%, rgba(239,198,24,0) 62%); z-index:2;"></div>
+      <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
+        justify-content:center; z-index:10; text-align:center; padding:0 140px;">
+        <img id="s6-mark" src="public/mark-white.png" style="width:104px; height:auto; margin-bottom:44px;" />
+        <div id="s6-h" style="color:#fff; font-weight:800; font-size:88px; line-height:1.04; letter-spacing:-3px;">
+          Your business, where<br /><span style="color:#efc618; font-style:italic;">Lompoc is already looking.</span>
+        </div>
+        <div id="s6-p" style="margin-top:34px; color:rgba(255,255,255,0.78); font-size:34px; font-weight:500;">
+          3-minute setup · Cancel anytime
+        </div>
+        <div id="s6-cta" style="margin-top:52px; display:inline-block; background:#efc618; color:#140a17;
+          font-weight:800; font-size:40px; padding:24px 52px; border-radius:999px; letter-spacing:-0.5px;">
+          lompoclocals.com/partners
+        </div>
+      </div>
+      <div class="vig"></div>
+    </div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true });
+        tl.fromTo("#s6-claim-stage", { autoAlpha:0 }, { autoAlpha:1, duration:0.26, ease:"power1.inOut" }, 0);
+        tl.fromTo("#s6-mark", { autoAlpha:0, y:26 }, { autoAlpha:1, y:0, duration:0.55, ease:"power2.out" }, 0.10);
+        tl.fromTo("#s6-h",    { autoAlpha:0, y:34 }, { autoAlpha:1, y:0, duration:0.62, ease:"power2.out" }, 0.24);
+        tl.fromTo("#s6-p",    { autoAlpha:0, y:22 }, { autoAlpha:1, y:0, duration:0.55, ease:"power2.out" }, 0.46);
+        tl.fromTo("#s6-cta",  { autoAlpha:0, y:26, scale:0.96 }, { autoAlpha:1, y:0, scale:1, duration:0.62, ease:"back.out(1.6)" }, 0.62);
+        tl.fromTo("#s6-glow", { scale:0.86 }, { scale:1.12, duration:4.69, ease:"none" }, 0);
+        tl.set({}, {}, 4.69);
+        window.__timelines["s6-claim"] = tl;
+      })();
+    </script>
+  </div>
+</template>

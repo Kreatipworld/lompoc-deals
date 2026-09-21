@@ -1,0 +1,26 @@
+<template>
+  <div data-composition-id="s4-member" data-width="1920" data-height="1080" data-duration="4.64"
+       style="position:absolute; inset:0; overflow:hidden; background:transparent">
+    <style>
+      [data-composition-id="s4-member"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s4-member"] .shotwrap { position:absolute; inset:0; overflow:hidden; background:#140a17; }
+      [data-composition-id="s4-member"] .shot { position:absolute; left:0; top:0; width:1920px; display:block;
+        will-change:transform; transform-origin:0 0; image-rendering:auto; }
+      [data-composition-id="s4-member"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none;
+        background:radial-gradient(ellipse 98% 94% at 50% 46%, rgba(10,6,12,0) 70%, rgba(10,6,12,0.26) 100%); }
+</style>
+    <div class="stage" id="s4-member-stage">
+      <div class="shotwrap"><img class="shot" id="s4-member-img" data-layout-allow-overflow src="public/biz.jpg" style="transform:translate(-0.0px,0.0px) scale(1.0);" /></div>
+      <div class="vig"></div>
+    </div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true });
+        tl.fromTo("#s4-member-stage", { autoAlpha:0 }, { autoAlpha:1, duration:0.26, ease:"power1.inOut" }, 0);
+        tl.fromTo("#s4-member-img", { x:-0.0, y:0.0, scale:1.0 }, { x:-38.4, y:-540.8, scale:1.04, duration:4.12, ease:"power1.inOut" }, 0.26);
+        tl.set({}, {}, 4.64);
+        window.__timelines["s4-member"] = tl;
+      })();
+    </script>
+  </div>
+</template>
