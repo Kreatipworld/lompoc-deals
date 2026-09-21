@@ -126,6 +126,8 @@ const PAGES = [
   { p: "/this-week", marker: "This Week in Lompoc" },
   { p: "/en/map", marker: "Businesses on the map" },
   { p: "/en/partners", marker: "Get found by the locals" },
+  { p: "/en/members", marker: "Official Partners" },
+  { p: "/es/members", marker: "Socios oficiales" },
   { p: "/en/deals", marker: "Deals &amp; Coupons" },
   { p: "/homes", marker: "Homes in Lompoc" },
   { p: "/listings/50", marker: 'data-lead="showing"' },
@@ -506,7 +508,7 @@ if (!/lompoclocals\.com/.test(SITE)) {
 
 console.log("\n18. Link covers — every key page has its own share image (owner: 'all the links have the same cover')")
 try {
-  const routes = ["/realtors", "/football", "/this-week", "/news", "/map", "/businesses", "/deals", "/events", "/things-to-do", "/homes", "/category/wineries", "/category/food-drink"]
+  const routes = ["/realtors", "/football", "/this-week", "/news", "/map", "/businesses", "/members", "/deals", "/events", "/things-to-do", "/homes", "/category/wineries", "/category/food-drink"]
   const sizes = new Map()
   for (const r of routes) {
     // Next names generated covers /path/opengraph-image-<hash> and prints them absolute to
@@ -525,6 +527,50 @@ try {
   if (sizes.size === routes.length && distinct === routes.length) pass(`${routes.length} pages, ${distinct} distinct covers`)
   else if (sizes.size === routes.length) fail(`covers rendered but only ${distinct} of ${routes.length} are distinct — some pages share an image`)
 } catch (e) { fail(`link covers: ${e.message}`) }
+
+console.log("\n19. URLs people type — the words our own labels teach must resolve (owner: 'this is not working /category/partners')")
+try {
+  // Two kinds live here. LANDS: a word the site itself teaches (a nav label, a
+  // heading, a badge) whose obvious URL must answer 200 after redirects — the
+  // nav said "Directory" while /directory 404'd. GOES: a URL with history —
+  // a retired category, or one the owner shared — that must 301 to a live page.
+  const LANDS = [
+    "/directory", "/es/directory", "/members", "/es/members", "/neighborhood",
+    "/coupons", "/specials", "/wineries", "/restaurants", "/digest", "/newsletter",
+    // The nav and footer labels themselves, both locales.
+    "/businesses", "/es/businesses", "/deals", "/es/deals", "/map", "/es/map",
+    "/news", "/es/news", "/this-week", "/es/this-week", "/feed", "/es/feed",
+    "/locals", "/es/locals", "/partners", "/es/partners", "/hotels", "/es/hotels",
+    "/homes", "/es/homes", "/football", "/es/football", "/things-to-do", "/es/things-to-do",
+    "/events", "/es/events", "/search", "/es/search", "/blog", "/garage-sales", "/es/garage-sales",
+    "/activities", "/es/activities", "/realtors", "/contact", "/es/contact", "/subscribe", "/es/subscribe",
+  ]
+  const GOES = [
+    ["/category/partners", "/members"],
+    ["/es/category/partners", "/es/members"],
+    ["/category/dispensaries", "/category/retail"],
+    ["/category/restaurants", "/category/food-drink"],
+    ["/category/automotive", "/category/auto"],
+    ["/directory", "/businesses"],
+    ["/neighborhood", "/feed"],
+    ["/for-businesses", "/partners"],
+  ]
+  let bad = 0
+  for (const p of LANDS) {
+    const res = await fetch(`${SITE}${p}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "follow", cache: "no-store" })
+    if (res.status !== 200) { bad++; fail(`${p} → ${res.status} (a word the site teaches must not dead-end)`) }
+  }
+  if (bad === 0) pass(`${LANDS.length} plausible-by-construction URLs all resolve`)
+  for (const [from, to] of GOES) {
+    const res = await fetch(`${SITE}${from}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "manual", cache: "no-store" })
+    const loc = res.headers.get("location") || ""
+    res.status >= 300 && res.status < 400 && loc.replace(/^https?:\/\/[^/]+/, "") === to
+      ? pass(`${from} → ${to}`)
+      : fail(`${from} → ${res.status}${loc ? ` ${loc}` : ""} (expected a redirect to ${to})`)
+  }
+} catch (e) {
+  fail(`typed URLs: ${e.message}`)
+}
 
 console.log(
   failures === 0

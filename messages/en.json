@@ -81,7 +81,8 @@
     "contact": "Contact",
     "events": "Events",
     "thingsToDo": "Things to do",
-    "reportBug": "Report a bug"
+    "reportBug": "Report a bug",
+    "officialPartners": "Official Partners"
   },
   "home": {
     "metaTitle": "Lompoc Businesses, Deals & Things To Do",
@@ -728,7 +729,8 @@
       "h2": "{count} Lompoc businesses. Is one of them yours?",
       "subtitle": "Many are listed with no photo and no owner. Claim yours, become a member, and make it work for you — alongside partners like these.",
       "badge": "Official Partner",
-      "emptyState": "Partner spotlights are coming soon — yours could be the first."
+      "emptyState": "Partner spotlights are coming soon — yours could be the first.",
+      "seeAll": "See every Official Partner"
     },
     "values": {
       "eyebrow": "Why partner with us",
@@ -3148,7 +3150,10 @@
     "notFoundHeading": "Not found",
     "notFoundBody": "That page doesn’t exist — it may have been removed, or the address may be mistyped.",
     "notFoundHome": "Back to Lompoc Locals",
-    "notFoundBrowse": "Browse the directory"
+    "notFoundBrowse": "Browse the directory",
+    "categoryNotFoundHeading": "No such category",
+    "categoryNotFoundBody": "Lompoc Locals sorts businesses into ten categories, and that is not one of them. Search for what you need, or pick a category below.",
+    "categoryNotFoundMembers": "See our members"
   },
   "bizRoad": {},
   "thingsToDo": {
@@ -3360,5 +3365,29 @@
     "mo4Body": "The market is opening this month. Listings added now are what the town sees first, in the videos, the digest and on the map.",
     "h1": "Lompoc's homes market is open. Put your listings where the town already looks.",
     "statDeals": "Live deals"
+  },
+  "members": {
+    "metaTitle": "Lompoc Locals Members — Official Partners",
+    "metaDescription": "Every Lompoc business that is an Official Partner of Lompoc Locals — the local shops, trades, restaurants and agents that keep the feed running. Browse them all in one place.",
+    "heading": "Official Partners",
+    "allBusinesses": "All businesses",
+    "memberSingular": "member business",
+    "memberPlural": "member businesses",
+    "inLompoc": "in Lompoc",
+    "intro": "These businesses pay to be part of Lompoc Locals. They post the deals, the announcements and the events you see on this site — and every dollar of it stays in town. Shop them first.",
+    "searchWithin": "Search members…",
+    "sortFeatured": "Featured first",
+    "sortAz": "A–Z",
+    "showMore": "Show more",
+    "countLabel": "{count} businesses",
+    "memberBadge": "Member",
+    "dealSingular": "deal",
+    "dealPlural": "deals",
+    "openNow": "Open now",
+    "noMatch": "No members match that. Try another word.",
+    "empty": "No member businesses yet.",
+    "ctaHeading": "Want your business on this page?",
+    "ctaBody": "Growth members get the Official Partner badge, a gold pin on the map, a spot in the Monday digest, and a listing locals actually find.",
+    "ctaButton": "Become a member"
   }
 }

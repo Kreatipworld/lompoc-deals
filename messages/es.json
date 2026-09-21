@@ -81,7 +81,8 @@
     "contact": "Contacto",
     "events": "Eventos",
     "thingsToDo": "Qué hacer",
-    "reportBug": "Reportar un error"
+    "reportBug": "Reportar un error",
+    "officialPartners": "Socios oficiales"
   },
   "home": {
     "metaTitle": "Negocios, Ofertas y Qué Hacer en Lompoc",
@@ -728,7 +729,8 @@
       "h2": "{count} negocios de Lompoc. ¿Uno de ellos es el tuyo?",
       "subtitle": "Muchos están listados sin foto y sin dueño. Reclama el tuyo, hazte miembro y ponlo a trabajar — junto a socios como estos.",
       "badge": "Socio Oficial",
-      "emptyState": "Los socios destacados llegan pronto — el tuyo podría ser el primero."
+      "emptyState": "Los socios destacados llegan pronto — el tuyo podría ser el primero.",
+      "seeAll": "Ver todos los socios oficiales"
     },
     "values": {
       "eyebrow": "Por qué ser socio",
@@ -3148,7 +3150,10 @@
     "notFoundHeading": "No encontrada",
     "notFoundBody": "Esa página no existe — puede que se haya eliminado o que la dirección esté mal escrita.",
     "notFoundHome": "Volver a Lompoc Locals",
-    "notFoundBrowse": "Ver el directorio"
+    "notFoundBrowse": "Ver el directorio",
+    "categoryNotFoundHeading": "Esa categoría no existe",
+    "categoryNotFoundBody": "Lompoc Locals organiza los negocios en diez categorías y esa no es una de ellas. Busca lo que necesitas o elige una categoría abajo.",
+    "categoryNotFoundMembers": "Ver nuestros socios"
   },
   "bizRoad": {},
   "thingsToDo": {
@@ -3360,5 +3365,29 @@
     "mo4Body": "El mercado abre este mes. Las propiedades que se suben ahora son las que el pueblo ve primero, en los videos, el resumen y el mapa.",
     "h1": "El mercado de casas de Lompoc está abierto. Pon tus propiedades donde el pueblo ya mira.",
     "statDeals": "Ofertas activas"
+  },
+  "members": {
+    "metaTitle": "Socios oficiales de Lompoc Locals",
+    "metaDescription": "Todos los negocios de Lompoc que son Socios Oficiales de Lompoc Locals: las tiendas, los oficios, los restaurantes y los agentes locales que mantienen vivo este sitio. Míralos todos aquí.",
+    "heading": "Socios oficiales",
+    "allBusinesses": "Todos los negocios",
+    "memberSingular": "negocio socio",
+    "memberPlural": "negocios socios",
+    "inLompoc": "en Lompoc",
+    "intro": "Estos negocios pagan por ser parte de Lompoc Locals. Ellos publican las ofertas, los anuncios y los eventos que ves en este sitio, y cada dólar se queda en el pueblo. Compra con ellos primero.",
+    "searchWithin": "Buscar socios…",
+    "sortFeatured": "Destacados primero",
+    "sortAz": "A–Z",
+    "showMore": "Ver más",
+    "countLabel": "{count} negocios",
+    "memberBadge": "Socio",
+    "dealSingular": "oferta",
+    "dealPlural": "ofertas",
+    "openNow": "Abierto ahora",
+    "noMatch": "Ningún socio coincide con eso. Prueba otra palabra.",
+    "empty": "Todavía no hay negocios socios.",
+    "ctaHeading": "¿Quieres tu negocio en esta página?",
+    "ctaBody": "Los miembros Growth reciben la insignia de Socio Oficial, un pin dorado en el mapa, un lugar en el boletín del lunes y una ficha que los vecinos sí encuentran.",
+    "ctaButton": "Hazte socio"
   }
 }

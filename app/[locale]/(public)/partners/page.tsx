@@ -285,6 +285,17 @@ export default async function PartnersPage({
               </Link>
             ))}
           </Reveal>
+
+          {/* Six is the spotlight; /members is the whole roster. */}
+          <div className="mt-8 text-center">
+            <Link
+              href="/members"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+            >
+              {t("alreadyListed.seeAll")}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </section>
       )}
 

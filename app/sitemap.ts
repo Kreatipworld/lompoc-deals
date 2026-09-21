@@ -87,6 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/businesses",
     "/deals",
     "/partners",
+    "/members",
     "/map",
     "/subscribe",
     "/blog",
@@ -100,6 +101,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/football",
     "/for-businesses/real-estate",
     "/for-businesses/real-estate/guide",
+    // Indexable, canonical-bearing, and missing from this list until Sep 21 2026.
+    "/realtors",
     "/activities",
     "/things-to-do",
     "/locals",

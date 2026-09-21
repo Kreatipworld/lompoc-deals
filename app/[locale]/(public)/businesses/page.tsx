@@ -201,8 +201,10 @@ export default async function BusinessesPage({ params }: { params: { locale: str
               <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">{t("membersHeading")}</h2>
               <p className="text-sm text-muted-foreground">{t("membersSub")}</p>
             </div>
-            <Link href="/partners" className="hidden items-center gap-1 text-sm font-semibold text-primary hover:underline sm:inline-flex">
-              {t("ctaListFree")}
+            {/* The rail is a taste; /members is the whole roster at a URL you
+                can share (and where /category/partners now lands). */}
+            <Link href="/members" className="hidden items-center gap-1 text-sm font-semibold text-primary hover:underline sm:inline-flex">
+              {t("seeAll")}
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
