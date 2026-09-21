@@ -24,6 +24,12 @@ const nextConfig = {
     // the routing layer instead — covers the default locale (unprefixed),
     // /en/, and /es/ variants.
     return [
+      // The 2026 partner guide deck is retired. It printed "2,400+ locals a
+      // month" as "real numbers, this month" (measured July, stale by
+      // September), pitched a Free tier we no longer sell, and priced Plus as
+      // "let's talk" when it has been self-serve at $99.99 for weeks. Invites
+      // already in inboxes link to it, so it redirects rather than 404s.
+      { source: "/partner-guide.html", destination: "/partners", permanent: true },
       { source: "/for-businesses", destination: "/partners", permanent: true },
       { source: "/en/for-businesses", destination: "/partners", permanent: true },
       { source: "/es/for-businesses", destination: "/es/partners", permanent: true },

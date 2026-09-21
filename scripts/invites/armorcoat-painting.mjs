@@ -14,7 +14,7 @@ const SEND = process.env.SEND === "1", PREVIEW = process.env.PREVIEW === "1"
 const AT = process.env.AT || ""   // ISO 8601; Resend schedules the send server-side
 const P = "#650C75", G = "#0B992F", Y = "#EFC618"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
-const GUIDE = "https://www.lompoclocals.com/partner-guide.html"
+const GUIDE = "https://www.lompoclocals.com/partners"
 const POSTAL = "Lompoc Locals · PO Box 880, Lompoc, CA 93438"
 const unsubToken = (email) => crypto.createHmac("sha256", secret).update(email.trim().toLowerCase()).digest("base64url").slice(0, 24)
 const unsubUrl = (email) => `https://www.lompoclocals.com/api/unsubscribe?e=${encodeURIComponent(email)}&t=${unsubToken(email)}`

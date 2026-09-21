@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Branded, per-business "claim your page" outreach round for unclaimed listings.
 // Same look as the Alfie's invite (cream header + full-color logo, free-claim +
-// Growth sell, partner-guide invitation), personalized per business: name, its
+// Growth sell, /partners invitation), personalized per business: name, its
 // real 30-day view count, a category-specific deal example, and its claim link.
 //
 // EMAIL-APPROVAL RULE: dry-run by default. Nothing sends without SEND=1, and
@@ -24,7 +24,7 @@ const PREVIEW = process.env.PREVIEW === "1"           // route every email to th
 const ONLY = process.env.ONLY ? Number(process.env.ONLY) : null
 const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
-const GUIDE = "https://www.lompoclocals.com/partner-guide.html"
+const GUIDE = "https://www.lompoclocals.com/partners"
 
 // First wave: top commercial, deal-friendly unclaimed listings (30-day views).
 const TARGETS = [

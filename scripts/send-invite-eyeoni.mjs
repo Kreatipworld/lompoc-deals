@@ -18,7 +18,7 @@ const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
 const dash = "https://www.lompoclocals.com/dashboard"
 const page = "https://www.lompoclocals.com/biz/eye-on-i"
-const guide = "https://www.lompoclocals.com/partner-guide.html"
+const guide = "https://www.lompoclocals.com/partners"
 
 const subject = "You're part of Lompoc Locals — welcome, Eye on I"
 const bullets = [

@@ -46,7 +46,7 @@ const SUPPRESS_LOG = process.env.SUPPRESS_LOG || "/Users/kreatip/Projects/lompoc
 const POSTAL = process.env.POSTAL || "Lompoc Locals · PO Box 880, Lompoc, CA 93438"
 const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
-const GUIDE = "https://www.lompoclocals.com/partner-guide.html"
+const GUIDE = "https://www.lompoclocals.com/partners"
 
 // Businesses already contacted (Wave 1 + Alfie's) and ones held back on purpose
 // (nonprofits, a volunteer trail committee, a property-mgmt firm) — non-deal fit.

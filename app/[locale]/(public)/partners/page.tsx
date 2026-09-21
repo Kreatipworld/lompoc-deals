@@ -17,7 +17,8 @@ import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { and, eq, gt, sql } from "drizzle-orm"
 import { db } from "@/db/client"
-import { analyticsEvents, events } from "@/db/schema"
+import { events } from "@/db/schema"
+import { sessionCounts } from "@/lib/analytics/engaged"
 import { getSiteStats } from "@/lib/queries"
 import { getDigestPartners } from "@/lib/digest"
 import { TIERS } from "@/lib/stripe"
@@ -71,12 +72,23 @@ async function getUpcomingEventCount() {
   return row?.n ?? 0
 }
 
+/**
+ * Engaged sessions in the last 30 days — the number we are willing to defend.
+ *
+ * This page counted every distinct session_id, which inflated it ~18x: 53,427
+ * against 2,883 on Sep 21 2026. `business_page_viewed` fires server-side on
+ * every render of a business page, so every crawler walking the directory and
+ * every health-check ping minted a "visitor" — 52,040 of those events across
+ * 50,829 sessions, at 1.02 events per session. Nobody real reads one business
+ * page and leaves forever, fifty thousand times a month.
+ *
+ * lib/analytics/engaged.ts is the one definition of a real session and every
+ * admin surface already used it. This page, the one shown to business owners
+ * deciding whether to trust us, was the only place that did not.
+ */
 async function getThirtyDayVisitorCount() {
-  const [row] = await db
-    .select({ n: sql<number>`count(distinct ${analyticsEvents.sessionId})::int` })
-    .from(analyticsEvents)
-    .where(sql`${analyticsEvents.createdAt} > now() - interval '30 days'`)
-  return row?.n ?? 0
+  const { engaged } = await sessionCounts(30)
+  return engaged
 }
 
 /** Floors to the nearest 100 so the hero shows a friendly "2,400+" figure. */
@@ -310,38 +322,6 @@ export default async function PartnersPage({
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────────
-          INTERACTIVE GUIDE — self-hosted deck, embedded
-         ───────────────────────────────────────────────── */}
-      <section className={`${PAGE_CONTAINER} py-16 sm:py-24`}>
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("guide.eyebrow")}
-          </div>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            {t("guide.h2")}
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">{t("guide.subtitle")}</p>
-        </div>
-        <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border bg-card shadow-lg">
-          <iframe
-            src="/partner-guide.html"
-            title={t("guide.h2")}
-            loading="lazy"
-            className="h-[82vh] min-h-[560px] w-full border-0"
-          />
-        </div>
-        <div className="mt-6 text-center">
-          <a
-            href="/partner-guide.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border px-6 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
-          >
-            {t("guide.openFull")}
-          </a>
-        </div>
-      </section>
 
       {/* ─────────────────────────────────────────────────
           MORE THAN A LISTING — living hub

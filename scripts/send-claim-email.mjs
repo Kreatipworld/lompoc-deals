@@ -57,7 +57,7 @@ const html = `
         <a href="${claimUrl}" style="display:inline-block; background:${P}; color:#ffffff; padding:13px 24px; border-radius:8px; text-decoration:none; font-weight:600;">Claim Alfie's &amp; start your free trial</a>
       </p>
       <p style="color:#777; line-height:1.5; margin:0 0 22px; font-size:13px;">Claiming your page is always free &mdash; and you&rsquo;ll see the option to start Growth free for 14 days right after. No charge to begin.</p>
-      <p style="color:#444; line-height:1.6; margin:0 0 16px;">And consider this a personal invitation: <a href="https://www.lompoclocals.com/partner-guide.html" style="color:${P}; font-weight:700;">take a look at our partner guide</a> &mdash; it walks through everything Lompoc Locals does for neighborhood spots like yours. No pressure at all; claiming the page is free and yours to keep either way.</p>
+      <p style="color:#444; line-height:1.6; margin:0 0 16px;">And consider this a personal invitation: <a href="https://www.lompoclocals.com/partners" style="color:${P}; font-weight:700;">take a look at our partner guide</a> &mdash; it walks through everything Lompoc Locals does for neighborhood spots like yours. No pressure at all; claiming the page is free and yours to keep either way.</p>
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">We're just neighbors trying to help local spots get found. Reply any time; this reaches a real person here in Lompoc.</p>
       <p style="color:#888; margin:16px 0 0;">&mdash; The Lompoc Locals team</p>
       <div style="margin-top:26px; padding-top:18px; border-top:1px solid #eee; text-align:center;">

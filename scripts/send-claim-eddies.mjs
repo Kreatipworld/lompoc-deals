@@ -20,7 +20,7 @@ const OWNER_EMAIL = "j.carlosmeza1995@yahoo.com"   // real recipient (for unsubs
 const SEND = process.env.SEND === "1"
 const P = "#650C75"
 const LOGO = "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/brand/lompoc-locals-logo-color-e7Xn4oY3ho5ZOGjfvQa2fQWxO4juzD.png"
-const GUIDE = "https://www.lompoclocals.com/partner-guide.html"
+const GUIDE = "https://www.lompoclocals.com/partners"
 const POSTAL = "Lompoc Locals · PO Box 880, Lompoc, CA 93438"
 const claimUrl = "https://www.lompoclocals.com/signup?claim=eddies-grill"
 const villageUrl = "https://www.lompoclocals.com/biz/eddie-s-grill-village"
