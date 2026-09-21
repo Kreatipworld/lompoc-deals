@@ -26,7 +26,8 @@
     "db:audit-businesses": "node --env-file=.env.local node_modules/.bin/tsx db/audit-businesses-from-places.ts",
     "test:analytics": "node --env-file=.env.local node_modules/.bin/tsx lib/analytics/test-track.ts",
     "test:football-facts": "node --env-file=.env.local node_modules/.bin/tsx lib/football-fact-sheet.test.ts && node --env-file=.env.local node_modules/.bin/tsx scripts/check-football-facts.ts",
-    "translate:content": "node --env-file=.env.local node_modules/.bin/tsx scripts/translate-content.ts"
+    "translate:content": "node --env-file=.env.local node_modules/.bin/tsx scripts/translate-content.ts",
+    "test:claim-transfer": "node_modules/.bin/tsx lib/claim-transfer.test.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.71",

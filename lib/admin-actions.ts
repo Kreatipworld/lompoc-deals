@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { eq, sql, and, gt } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db } from "@/db/client"
+import { transferBusinessToOwner } from "@/lib/claim-transfer"
 import { businesses, deals, users, businessClaims, events, dealEvents } from "@/db/schema"
 import { track } from "@/lib/analytics/track"
 import { sessionCounts, engagedSessionsByWeek } from "@/lib/analytics/engaged"
@@ -334,11 +335,9 @@ export async function approveClaimAction(formData: FormData) {
     where: (b, { eq: e }) => e(b.id, claim.businessId),
     columns: { slug: true },
   })
-  // Transfer ownership and mark claim approved
-  await db
-    .update(businesses)
-    .set({ ownerUserId: claim.userId })
-    .where(eq(businesses.id, claim.businessId))
+  // Transfer ownership and mark claim approved. This also clears any comp:
+  // a claimed listing is on the same terms as every other member.
+  await transferBusinessToOwner(claim.businessId, claim.userId)
   await db
     .update(businessClaims)
     .set({ status: "approved" })

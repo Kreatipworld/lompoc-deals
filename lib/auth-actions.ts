@@ -9,6 +9,7 @@ import { AuthError } from "next-auth"
 import { randomBytes } from "crypto"
 import { getTranslations } from "next-intl/server"
 import { db } from "@/db/client"
+import { transferBusinessToOwner } from "@/lib/claim-transfer"
 import { ensureDigestSubscription } from "@/lib/digest-subscribe"
 import { users, businesses, businessClaims, subscriptions, passwordResetTokens } from "@/db/schema"
 import { isUnclaimedBusiness } from "@/lib/business-ownership"
@@ -74,6 +75,7 @@ export async function signupAction(
   // dashboard instead of waiting on an admin. Only listings still held by a
   // placeholder owner qualify; anything contested stays pending for review.
   let claimAutoApproved = false
+  let compRevoked: string | null = null
   if (claimSlug && newUserId) {
     const biz = await db.query.businesses.findFirst({
       where: (b, { eq: e }) => e(b.slug, claimSlug),
@@ -104,10 +106,10 @@ export async function signupAction(
         status: claimAutoApproved ? "approved" : "pending",
       })
       if (claimAutoApproved) {
-        await db
-          .update(businesses)
-          .set({ ownerUserId: newUserId })
-          .where(eq(businesses.id, biz.id))
+        // Also clears any comp — see lib/claim-transfer.ts. A claimed listing
+        // pays like everyone else.
+        const { revokedComp } = await transferBusinessToOwner(biz.id, newUserId)
+        if (revokedComp) compRevoked = revokedComp
       }
       await track(
         claimAutoApproved ? "business_claim_approved" : "business_claim_submitted",
@@ -128,6 +130,9 @@ export async function signupAction(
       claimAutoApproved
         ? "Auto-approved — the account email matches the listing's email on file. Ownership transferred."
         : "Approve it in the admin dashboard to transfer ownership.",
+      ...(compRevoked
+        ? [`<strong>Comp revoked</strong> — this listing was on a '${compRevoked}' override. They now need a real subscription.`]
+        : []),
     ])
   } else if (dbRole === "business") {
     await notifyPlatform("🏪 New business signup", [
