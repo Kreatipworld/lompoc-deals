@@ -14,7 +14,11 @@ Data contract (``data.mjs member`` produces all of it):
     photos          [url, ...]               the member's OWN photos, cover first
     services        ["tires", "brakes", ...] parsed from the description
     clips           [path, ...]              optional generated b-roll, service beats only
-    beats           [{chip,title,sub,media}] optional; derived from services when absent
+    beats           [{chip,title,sub,media,zoom,brightness}]  optional; derived from
+                                             services when absent. `zoom` sets the push-in
+                                             start and end scale, which is how two beats shot
+                                             in the same dim bay are told apart: one macro,
+                                             one at arm's length.
     quote           {"text", "chip", "brightness"}   optional; something they wrote themselves
     opener          "logo" | "photo-1" | ...  defaults to "logo" when a logo exists
     opener_position "41% 50%"                which part of the photo the 9:16 crop keeps
@@ -241,10 +245,13 @@ def build(d: dict) -> Video:
     def beat_html(beat):
         def html(cid, dur, size):
             src, kind = _media_src(assets, beat["media"])
-            art = (_video_layers(cid, src, dur, beat.get("at", 0.0), _clip_len(assets, beat["media"]),
-                                 "filter:brightness(1.0) saturate(1.08)")
+            # A photo carries its own exposure and needs pulling down under the
+            # text; generated footage comes back flat and does not.
+            lit = beat.get("brightness", 1.0 if kind == "video" else 0.86)
+            grade = f'filter:brightness({lit}) saturate({beat.get("saturate", 1.08)})'
+            art = (_video_layers(cid, src, dur, beat.get("at", 0.0), _clip_len(assets, beat["media"]), grade)
                    if kind == "video" else
-                   f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="filter:brightness(0.86) saturate(1.08)" />')
+                   f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{grade}" />')
             sub = (f'<span id="{cid}-sub" style="display:block; margin-top:22px; color:rgba(255,255,255,0.86); '
                    f'font-weight:600; font-size:40px; letter-spacing:0; opacity:0">{beat["sub"]}</span>'
                    if beat.get("sub") else "")
@@ -256,7 +263,9 @@ def build(d: dict) -> Video:
       </div>'''
 
         def js(cid, dur):
-            out = f'tl.fromTo("#{cid}-bg", {{ scale:1.0 }}, {{ scale:1.07, duration:{dur:.2f}, ease:"none", transformOrigin:"50% 50%" }}, 0);'
+            z = beat.get("zoom", [1.0, 1.07])
+            out = (f'tl.fromTo("#{cid}-bg", {{ scale:{z[0]} }}, {{ scale:{z[1]}, '
+                   f'duration:{dur:.2f}, ease:"none", transformOrigin:"50% 50%" }}, 0);')
             out += S.rise(cid, "chip", 0.10, dy=12, dur=0.34)
             out += S.rise(cid, "t", 0.26, dy=22, dur=0.46)
             if beat.get("sub"):
