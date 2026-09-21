@@ -88,6 +88,7 @@ def main() -> int:
     p.add_argument("--data", help="JSON object of facts, instead of --auto")
     p.add_argument("--out", help="output directory (default: out/<slug>-<date>)")
     p.add_argument("--render", action="store_true", help="also run hyperframes check + render")
+    p.add_argument("--vo", help="directory holding line-*.wav, to size the video to the read")
     args = p.parse_args()
 
     if args.auto and args.data:
@@ -97,6 +98,19 @@ def main() -> int:
         raise SystemExit(f"no data: {data['error']}")
 
     video = REGISTRY[args.format].build(data)
+
+    # If the voiceover has already been generated, size the video to the read
+    # before anything is written, rather than discovering the overrun later.
+    if args.vo:
+        from _kit import audio as _audio
+        wavs = sorted((f for f in os.listdir(args.vo) if f.startswith("line-") and f.endswith(".wav")),
+                      key=lambda f: int(f.split("-")[1].split(".")[0]))
+        if wavs:
+            spans = [_audio.speech_span(os.path.join(args.vo, f)) for f in wavs]
+            need = _audio.START + sum(b - a for a, b in spans) + _audio.GAP * (len(wavs) - 1) + 0.70
+            grew = video.stretch_to(round(need, 2))
+            if grew:
+                print(f"  read needs {need:.2f}s — closing scene extended by {grew:.2f}s")
 
     stamp = data.get("gameDate") or __import__("datetime").date.today().isoformat()
     out_dir = args.out or os.path.join(VIDEO_DIR, "out", f"{video.slug}-{stamp}")

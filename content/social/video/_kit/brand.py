@@ -69,3 +69,17 @@ def spoken_record(record: str, subject: str) -> str:
     if len(parts) == 2:
         return f"{subject} are {parts[0]} and {parts[1]}."
     return f"{subject} are {record}."
+
+
+def spoken_url(url: str) -> str:
+    """"lompoclocals.com/football" -> "Lompoke Locals dot com, slash football."
+
+    A URL handed to a voice engine gets read character by character or skipped.
+    Every spoken reference to the site has to go through here.
+    """
+    u = url.replace("https://", "").replace("http://", "").replace("www.", "").rstrip("/")
+    host, _, path = u.partition("/")
+    said = host.replace("lompoclocals.com", "Lompoke Locals dot com").replace(".com", " dot com")
+    for part in [p for p in path.split("/") if p]:
+        said += f", slash {part}"
+    return said

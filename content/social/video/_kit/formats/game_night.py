@@ -94,7 +94,7 @@ def build(d: dict) -> Video:
         Sub(4.49, 6.60, f"{school} {meta['nick']} · {record}",
             say=B.spoken_record(record, f"The {school} {meta['nick']}")),
         Sub(6.78, 8.20, matchup_line),
-        Sub(8.49, 12.40, f"Every score at {site}"),
+        Sub(8.49, 12.40, f"Every score at {site}", say=f"Every score at {B.spoken_url(site)}."),
     ]
 
     vo = [B.for_tts(s.spoken) for s in subs]

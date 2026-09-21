@@ -32,6 +32,7 @@ class Sub:
     end: float
     text: str
     say: str = ""
+    vo_index: int = -1   # which voiceover line this is; survives caption dedupe
 
     @property
     def spoken(self) -> str:
@@ -62,6 +63,24 @@ class Video:
     vo_lines: list = field(default_factory=list)   # plain sentences, in order
     note: str = ""
     size: tuple = B.SIZES["9x16"]
+
+    def stretch_to(self, needed: float) -> float:
+        """Grow the closing scene so the whole read fits.
+
+        A voice read is whatever length it is. Cutting the video to a round
+        number and then squeezing the read into it is how captions drift. The
+        end card simply holds a little longer instead.
+        """
+        if needed <= self.total:
+            return 0.0
+        delta = round(needed - self.total, 2)
+        last = self.scenes[-1]
+        last.dur = round(last.dur + delta, 2)
+        self.total = round(self.total + delta, 2)
+        for a in self.audio:
+            if a.group == "music":
+                a.dur = self.total
+        return delta
 
 
 def _subs_html(v: Video) -> str:
@@ -193,6 +212,8 @@ def write(v: Video, out_dir: str) -> dict:
     """Write the whole project. Returns a small manifest for the caller."""
     comp = os.path.join(out_dir, "compositions")
     os.makedirs(comp, exist_ok=True)
+    for i, sub in enumerate(v.subs):
+        sub.vo_index = i
     rendered = {}
     for i, s in enumerate(v.scenes):
         inner = s.html(s.cid, s.dur, v.size)
@@ -214,7 +235,7 @@ def write(v: Video, out_dir: str) -> dict:
         "total": v.total,
         "size": list(v.size),
         "scenes": [{"id": s.cid, "start": s.start, "dur": s.dur} for s in v.scenes],
-        "subs": [{"start": s.start, "end": s.end, "text": s.text, "say": s.spoken} for s in v.subs],
+        "subs": [{"start": s.start, "end": s.end, "text": s.text, "say": s.spoken, "vo_index": s.vo_index} for s in v.subs],
         "vo_lines": v.vo_lines,
         "audio": [a.__dict__ for a in v.audio],
         "note": v.note,

@@ -97,7 +97,7 @@ def build(d: dict) -> Video:
         Sub(4.30, 7.20, line),
         Sub(7.50, 8.90, record, say=B.spoken_record(record, f"The {nick}")) if record
         else Sub(7.50, 8.90, closer),
-        Sub(9.20, 12.20, f"Every score at {site}"),
+        Sub(9.20, 12.20, f"Every score at {site}", say=f"Every score at {B.spoken_url(site)}."),
     ]
     subs = [s for s in subs if s.text]
 
