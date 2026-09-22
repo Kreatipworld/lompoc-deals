@@ -21,7 +21,7 @@ Their words, not ours: "Fast, affordable and trusted."
 📍 503 N H St, Lompoc
 📞 (805) 736-9332
 
-They're an Official Partner on Lompoc Locals, which means their page, their hours and their number are always current. Full profile → link in bio
+Sorted in town, back on the road. They're an Official Partner on Lompoc Locals, so their page, hours and number stay current. Full profile → link in bio
 
 #Lompoc #LompocCA #805 #InAndOutTires #ShopLocalLompoc #tires #brakes #smogcheck #oilchange #CentralCoast #SupportLocal
 
@@ -40,6 +40,8 @@ Their own line for it: "Fast, affordable and trusted."
 📍 503 N H St, Lompoc
 📞 (805) 736-9332
 
+Sorted in town, back on the road.
+
 In & Out Tires is an Official Partner on Lompoc Locals — their page, hours and number stay current, and you can find them any time here:
 👉 https://www.lompoclocals.com/biz/in-out-tires-lpc?utm_source=fb&utm_medium=social&utm_campaign=spotlight-in-out-tires
 
@@ -47,7 +49,7 @@ In & Out Tires is an Official Partner on Lompoc Locals — their page, hours and
 
 ## TikTok
 
-Member spotlight 🔧 In & Out Tires, 503 N H St, Lompoc. Tires, brakes, suspension, alignments, oil changes, tune-ups, diagnostics and smog checks — one shop instead of a drive to Santa Maria. "Fast, affordable and trusted," their words. 📞 (805) 736-9332 · lompoclocals.com/biz/in-out-tires-lpc #Lompoc #LompocCA #805 #tires #brakes #smogcheck #oilchange #ShopLocal #CentralCoast
+Member spotlight 🔧 In & Out Tires, 503 N H St, Lompoc. Tires, brakes, suspension, alignments, oil changes, tune-ups, diagnostics and smog checks — one shop instead of a drive to Santa Maria. "Fast, affordable and trusted," their words. Sorted in town, back on the road. 📞 (805) 736-9332 · lompoclocals.com/biz/in-out-tires-lpc #Lompoc #LompocCA #805 #tires #brakes #smogcheck #oilchange #ShopLocal #CentralCoast
 
 ---
 
