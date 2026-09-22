@@ -1,0 +1,11 @@
+{
+  "name": "aquarium-40",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npx --yes hyperframes@0.8.26 check",
+    "render": "npx --yes hyperframes@0.8.26 render",
+    "publish": "npx --yes hyperframes@0.8.26 publish",
+    "dev": "npx --yes hyperframes@0.8.26 preview"
+  }
+}

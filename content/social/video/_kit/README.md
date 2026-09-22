@@ -74,6 +74,25 @@ tighter than a game recap: `--gap 0.16 --tail 0.85` is the spotlight setting.
 Whatever you pass to `make.py` you must also pass to `finalize.py`, or the
 captions land on the wrong sentence.
 
+## Event promos
+
+`event-promo` is the format for one upcoming event told with history and
+numbers rather than read off a calendar row: a cold open on one figure, the
+story so far, what it is today, what is new, then the invitation card and a
+poster-style end card. Everything it states is passed in as data, with the
+source for each figure recorded in the post file:
+
+```bash
+python3 _kit/make.py event-promo --data "$(cat out/<project>/event.json)" --out out/<project> \
+    --vo out/<project>/public --gap 0.16 --tail 0.6
+python3 _kit/masters.py event-promo --data @out/<project>/event.json --project out/<project> \
+    --gap 0.16 --tail 0.6
+```
+
+Generated clips are mood, never evidence: a clip beat's chip and title carry a
+sourced fact, and the venue's name only ever appears on the designed cards.
+First use: `out/aquarium-40` (Cabrillo High School Aquarium, 40th anniversary).
+
 ## Master sets
 
 Once a cut is locked, `masters.py` produces the house set — `-MASTER.mp4`,

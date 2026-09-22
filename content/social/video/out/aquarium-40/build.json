@@ -1,0 +1,79 @@
+{
+  "slug": "aquarium-40",
+  "title": "EVENT PROMO \u2014 Cabrillo High School Aquarium, 40th anniversary open house + mural unveiling, Wed Sep 23 2026",
+  "total": 29.72,
+  "size": [
+    1080,
+    1920
+  ],
+  "scenes": [
+    {
+      "id": "s0-open",
+      "start": 0.0,
+      "dur": 2.19
+    },
+    {
+      "id": "s1-stat",
+      "start": 1.97,
+      "dur": 6.02
+    },
+    {
+      "id": "s2-clip",
+      "start": 7.77,
+      "dur": 4.6
+    },
+    {
+      "id": "s3-rows",
+      "start": 12.15,
+      "dur": 5.17
+    },
+    {
+      "id": "s4-clip",
+      "start": 17.1,
+      "dur": 3.42
+    },
+    {
+      "id": "s5-card",
+      "start": 20.3,
+      "dur": 3.96
+    },
+    {
+      "id": "s6-end",
+      "start": 24.04,
+      "dur": 5.68
+    }
+  ],
+  "subs": [],
+  "vo_lines": [
+    "Forty years.",
+    "Nineteen eighty-six. A school club. One classroom. A few tanks.",
+    "Today? More than twenty live and static displays.",
+    "Three galleries. Hundreds of students. Thousands of visitors.",
+    "And now: the Choomash Kelp Forest mural.",
+    "Made with two Noah national marine sanctuaries.",
+    "Tomorrow night. Six to eight. Free. Constellation Road."
+  ],
+  "audio": [
+    {
+      "src": "public/vo.wav",
+      "group": "voiceover",
+      "start": 0.0,
+      "dur": 29.72,
+      "volume": 0.8,
+      "media_start": 0.0,
+      "fade_in": 0.05,
+      "fade_out": 0.2
+    },
+    {
+      "src": "public/bed.wav",
+      "group": "music",
+      "start": 0.0,
+      "dur": 29.72,
+      "volume": 0.26,
+      "media_start": 0.0,
+      "fade_in": 0.4,
+      "fade_out": 1.4
+    }
+  ],
+  "note": "Every figure is sourced in content/social/posts/2026-09-22-aquarium-40.md. The three clips are generated mood: no chip or title on a clip names the aquarium, its tanks or its mural as the thing pictured."
+}

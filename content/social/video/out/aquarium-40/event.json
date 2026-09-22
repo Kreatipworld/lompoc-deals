@@ -1,0 +1,98 @@
+{
+  "slug": "aquarium-40",
+  "title": "EVENT PROMO — Cabrillo High School Aquarium, 40th anniversary open house + mural unveiling, Wed Sep 23 2026",
+  "assets": {
+    "clip-0.mp4": "content/social/video/out/aquarium-40/public/clip-0.mp4",
+    "clip-1.mp4": "content/social/video/out/aquarium-40/public/clip-1.mp4",
+    "clip-2.mp4": "content/social/video/out/aquarium-40/public/clip-2.mp4"
+  },
+  "open": {
+    "big": "40",
+    "small": "years of the ocean, in Lompoc",
+    "media": "clip-0",
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "brightness": 0.8,
+    "say": "Forty years.",
+    "cap": "40 years"
+  },
+  "beats": [
+    {
+      "kind": "stat",
+      "chip": "It started in",
+      "big": "1986",
+      "span": [
+        "1986",
+        "2026"
+      ],
+      "title": "A school club. One classroom.<br />A few tanks.",
+      "say": "Nineteen eighty-six. A school club. One classroom. A few tanks.",
+      "cap": "A school club. One classroom. A few tanks."
+    },
+    {
+      "kind": "clip",
+      "media": "clip-1",
+      "chip": "Today",
+      "title": "20+ live &amp; static displays",
+      "zoom": [
+        1.0,
+        1.09
+      ],
+      "say": "Today? More than twenty live and static displays.",
+      "cap": "20+ live &amp; static displays"
+    },
+    {
+      "kind": "rows",
+      "chip": "Student-run from the start",
+      "rows": [
+        [
+          "3",
+          "galleries"
+        ],
+        [
+          "Hundreds",
+          "of students"
+        ],
+        [
+          "Thousands",
+          "of visitors"
+        ]
+      ],
+      "say": "Three galleries. Hundreds of students. Thousands of visitors.",
+      "cap": "3 galleries Hundreds of students Thousands of visitors"
+    },
+    {
+      "kind": "clip",
+      "media": "clip-2",
+      "chip": "New",
+      "title": "Chumash Kelp Forest mural",
+      "zoom": [
+        1.0,
+        1.15
+      ],
+      "say": "And now: the Choomash Kelp Forest mural.",
+      "cap": "Chumash Kelp Forest mural"
+    },
+    {
+      "kind": "card",
+      "chip": "Made with",
+      "title": "NOAA&rsquo;s Channel Islands &amp; Chumash Heritage National Marine Sanctuaries",
+      "say": "Made with two Noah national marine sanctuaries.",
+      "cap": "NOAA&rsquo;s Channel Islands &amp; Chumash Heritage National Marine Sanctuaries"
+    }
+  ],
+  "end": {
+    "chip": "Open house · Free",
+    "title": "40th Anniversary<br />Open House",
+    "line": "Wed Sep 23 · 6–8 PM<br />Free",
+    "line_size": 84,
+    "venue": "Cabrillo High School Aquarium · 4350 Constellation Rd, Lompoc",
+    "url": "lompoclocals.com/events",
+    "note": "@chsaquarium · cabrillohighschoolaquarium.org",
+    "say": "Tomorrow night. Six to eight. Free. Constellation Road.",
+    "cap": "Wed Sep 23 6–8 PM Free"
+  },
+  "note": "Every figure is sourced in content/social/posts/2026-09-22-aquarium-40.md. The three clips are generated mood: no chip or title on a clip names the aquarium, its tanks or its mural as the thing pictured."
+}

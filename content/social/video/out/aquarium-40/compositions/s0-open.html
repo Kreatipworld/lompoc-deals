@@ -1,0 +1,61 @@
+<template>
+  <div data-composition-id="s0-open" data-width="1080" data-height="1920" data-duration="2.19" style="position:absolute; inset:0; overflow:hidden; background:#140a17">
+    <style>
+      [data-composition-id="s0-open"] .stage { position:absolute; inset:0; opacity:0; will-change:opacity; }
+      [data-composition-id="s0-open"] .vig { position:absolute; inset:0; z-index:30; pointer-events:none;
+        background:radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 62%, rgba(10,6,12,0.5) 100%); }
+      [data-composition-id="s0-open"] .grain { position:absolute; inset:0; pointer-events:none; opacity:0.08; z-index:50;
+        background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%271%27/%3E%3C/svg%3E"); }
+      [data-composition-id="s0-open"] .mark { position:absolute; top:150px; right:84px; width:96px; height:auto; z-index:44; }
+      [data-composition-id="s0-open"] video, [data-composition-id="s0-open"] .cover { position:absolute; inset:0;
+        width:100%; height:100%; object-fit:cover; display:block; }
+      [data-composition-id="s0-open"] .scrim { position:absolute; inset:0; z-index:31; pointer-events:none;
+        background:linear-gradient(to top, rgba(20,10,23,0.95) 0%, rgba(20,10,23,0.62) 38%, rgba(20,10,23,0.12) 70%); }
+      [data-composition-id="s0-open"] .chip { display:inline-block; background:#efc618; color:#241629; font-weight:800;
+        font-size:34px; letter-spacing:4px; padding:14px 28px; border-radius:10px; text-transform:uppercase; }
+      [data-composition-id="s0-open"] .hero { display:block; color:#fff; font-weight:800; line-height:0.94;
+        letter-spacing:-4px; text-shadow:0 8px 34px rgba(10,6,12,0.7); }
+      [data-composition-id="s0-open"] .pill { display:inline-block; background:#efc618; color:#241629; font-weight:800;
+        font-size:44px; padding:20px 38px; border-radius:999px; }
+    
+    </style>
+    <div class="stage" id="s0-open-stage" style="opacity:1">
+      <style>
+      [data-composition-id="s0-open"] .field { position:absolute; inset:0; background:radial-gradient(ellipse 90% 70% at 50% 40%, #7d1590 0%, #650c75 45%, #3a0743 100%); }
+      [data-composition-id="s0-open"] .ocean { position:absolute; inset:0; background:radial-gradient(ellipse 90% 70% at 50% 30%, #1c6f8a 0%, #0f3f55 48%, #08202c 100%); }
+      [data-composition-id="s0-open"] .bloom { position:absolute; left:50%; top:40%; width:1100px; height:1100px; margin-left:-550px; margin-top:-550px; border-radius:50%; background:radial-gradient(circle, rgba(239,198,24,0.16), rgba(239,198,24,0) 60%); opacity:0; }
+      [data-composition-id="s0-open"] .block { position:absolute; left:84px; right:84px; bottom:35%; z-index:36; }
+      [data-composition-id="s0-open"] .centre { position:absolute; left:84px; right:84px; top:24%; z-index:36; text-align:center; }
+      [data-composition-id="s0-open"] .big { display:block; color:#efc618; font-weight:800; line-height:0.9; letter-spacing:-8px; text-shadow:0 10px 40px rgba(10,6,12,0.5); }
+      [data-composition-id="s0-open"] .title { display:block; color:#fff; font-weight:800; line-height:1.04; letter-spacing:-2px; text-shadow:0 8px 34px rgba(10,6,12,0.6); }
+      [data-composition-id="s0-open"] .sub { display:block; color:rgba(255,255,255,0.86); font-weight:600; line-height:1.25; letter-spacing:0; }
+      [data-composition-id="s0-open"] .rule { display:block; height:6px; background:#efc618; border-radius:3px; transform-origin:0% 50%; }
+      [data-composition-id="s0-open"] .year { color:rgba(255,255,255,0.8); font-weight:800; font-size:34px; letter-spacing:3px; }
+      [data-composition-id="s0-open"] .row { display:flex; align-items:baseline; justify-content:center; gap:22px; opacity:0; }
+      [data-composition-id="s0-open"] .rowbig { color:#efc618; font-weight:800; font-size:124px; line-height:1; letter-spacing:-4px; }
+      [data-composition-id="s0-open"] .rowsmall { color:#fff; font-weight:700; font-size:46px; letter-spacing:-0.5px; }
+      [data-composition-id="s0-open"] .card { display:inline-block; background:rgba(20,10,23,0.66); border-radius:30px; padding:38px 46px; box-shadow:0 24px 60px rgba(10,6,12,0.5); }
+      [data-composition-id="s0-open"] .cardchip { display:inline-block; background:#0b992f; color:#fff; font-weight:800; font-size:30px; letter-spacing:4px; padding:12px 26px; border-radius:10px; text-transform:uppercase; }
+    </style>
+      <video id="s0-open-bg" class="clip" src="public/clip-0.mp4" data-start="0" data-media-start="0.00" data-duration="2.19" data-track-index="0" muted playsinline style="filter:brightness(0.8) saturate(1.1)"></video>
+      <div class="scrim"></div>
+      
+      <div class="block">
+        <span class="big" id="s0-open-big" style="font-size:300px">40</span>
+        <span class="title" id="s0-open-small" style="margin-top:18px; font-size:72px">years of the ocean, in Lompoc</span>
+      </div>
+      <div class="vig"></div>
+    </div>
+    <img class="mark" src="public/mark-white.png" alt="" />
+    <div class="grain"></div>
+    <script>
+      (() => {
+        const tl = gsap.timeline({ paused:true, defaults:{ ease:"power4.out", duration:0.45 } });
+        tl.set("#s0-open-stage", { autoAlpha:1 }, 0);
+        tl.fromTo("#s0-open-bg", { scale:1.0 }, { scale:1.1, duration:2.19, ease:"none", transformOrigin:"50% 50%" }, 0);tl.fromTo("#s0-open-big", { scale:1.06 }, { scale:1, duration:1.2, ease:"power3.out", transformOrigin:"0% 100%" }, 0);tl.fromTo("#s0-open-small", { y:12 }, { y:0, duration:0.9, ease:"power2.out" }, 0);tl.to("#s0-open-big", { autoAlpha:0, duration:0.2, ease:"power2.in" }, 1.8699999999999999);tl.to("#s0-open-small", { autoAlpha:0, duration:0.2, ease:"power2.in" }, 1.8699999999999999);
+        tl.set({}, {}, 2.19);
+        window.__timelines["s0-open"] = tl;
+      })();
+    </script>
+  </div>
+</template>
