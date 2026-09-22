@@ -6,6 +6,7 @@ index.html, which is everything HyperFrames needs to render.
 import inspect
 import json
 import os
+import re
 from dataclasses import dataclass, field
 from typing import Callable
 
@@ -242,7 +243,10 @@ def _dedupe_subs(v: Video, rendered: dict) -> list:
             rendered[sc.cid] for sc in v.scenes
             if sc.start < sub.end and (sc.start + sc.dur) > sub.start
         ]
-        if any(sub.text.rstrip(".").lower() in html.lower() for html in onscreen):
+        # Compare against what the viewer reads, not the markup: a headline
+        # broken with <br /> is still the same sentence as the caption.
+        want = " ".join(sub.text.rstrip(".").lower().split())
+        if any(want in " ".join(re.sub(r"<[^>]+>", " ", html).lower().split()) for html in onscreen):
             continue
         kept.append(sub)
     return kept
@@ -252,8 +256,14 @@ def write(v: Video, out_dir: str) -> dict:
     """Write the whole project. Returns a small manifest for the caller."""
     comp = os.path.join(out_dir, "compositions")
     os.makedirs(comp, exist_ok=True)
+    # A caption keeps the index of the line it was written for. write() runs
+    # more than once on the same Video (make.py re-writes after dropping audio
+    # it cannot find yet), and by then dedupe has already removed captions —
+    # renumbering the survivors would time every later caption to the wrong
+    # sentence, one line early, and finalize would burn that in.
     for i, sub in enumerate(v.subs):
-        sub.vo_index = i
+        if sub.vo_index < 0:
+            sub.vo_index = i
     rendered = {}
     for i, s in enumerate(v.scenes):
         inner = s.html(s.cid, s.dur, v.size)

@@ -51,8 +51,10 @@ def lufs(path):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("format")
-    p.add_argument("--slug", required=True)
+    p.add_argument("--slug", default="", help="business slug for --auto formats")
+    p.add_argument("--data", default="", help="JSON facts (or @file) for formats without a live query")
     p.add_argument("--merge", default="")
+    p.add_argument("--ratios", default=",".join(RATIOS), help="comma list, e.g. 9x16,4x5")
     p.add_argument("--project", required=True, help="the locked 9:16 project directory")
     p.add_argument("--name", help="basename for the master set (default: project dir name)")
     p.add_argument("--gap", type=float, default=0.16)
@@ -66,7 +68,11 @@ def main():
     pub = os.path.join(project, "public")
     report = {}
 
-    for ratio in RATIOS:
+    data = a.data
+    if data.startswith("@"):
+        data = open(data[1:]).read()
+
+    for ratio in [r for r in a.ratios.split(",") if r]:
         work = os.path.join(project, ".ratio", ratio)
         os.makedirs(work, exist_ok=True)
         # Reuse the locked project's media and voiceover; only the layout changes.
@@ -74,9 +80,10 @@ def main():
         if not os.path.exists(wp):
             os.symlink(pub, wp)
 
-        cmd = ["python3", os.path.join(KIT, "make.py"), a.format, "--auto", "--slug", a.slug,
+        cmd = ["python3", os.path.join(KIT, "make.py"), a.format,
                "--out", work, "--size", ratio, "--vo", pub,
                "--gap", str(a.gap), "--tail", str(a.tail)]
+        cmd += ["--data", data] if data else ["--auto", "--slug", a.slug]
         if a.merge:
             cmd += ["--merge", a.merge]
         run(cmd, cwd=REPO)
@@ -96,6 +103,8 @@ def main():
         report[ratio] = lufs(dst)
         if ratio == "9x16":
             shutil.copy2(dst, os.path.join(masters, f"{name}-MASTER.mp4"))
+            run(["ffmpeg", "-v", "error", "-y", "-ss", "0", "-i", dst, "-frames:v", "1",
+                 "-q:v", "2", os.path.join(masters, f"{name}-cover-9x16.jpg")])
         if ratio == "16x9":
             run(["ffmpeg", "-v", "error", "-y", "-ss", "0", "-i", dst, "-frames:v", "1",
                  "-q:v", "2", os.path.join(masters, f"{name}-poster.jpg")])

@@ -34,7 +34,17 @@ def speech_span(path: str, floor_db: int = 38, min_sil: float = 0.15) -> tuple:
         if "silence_end:" in line:
             ends.append(float(line.split("silence_end:")[1].split()[0]))
     begin = ends[0] if ends and starts and starts[0] <= 0.05 else 0.0
-    finish = starts[-1] if starts and starts[-1] > begin else dur
+    # Only a silence that runs to the end of the file is trailing air. The last
+    # detected silence is otherwise a pause between two sentences of the same
+    # line — "forty-two to fourteen. [pause] The Conqs are one and four." — and
+    # cutting there drops the second sentence from the video.
+    trailing = bool(starts) and (len(ends) < len(starts) or ends[-1] >= dur - 0.05)
+    finish = starts[-1] if trailing and starts[-1] > begin else dur
+    # A line with nothing audible in it is a deliberate pause — a silent beat
+    # for a headline stack, say — and keeps its whole length. Trimming it to
+    # the lead-in alone would swallow the pause it exists to make.
+    if finish - begin < 0.1:
+        return 0.0, dur
     return max(0.0, begin - LEAD), min(dur, finish + LEAD)
 
 

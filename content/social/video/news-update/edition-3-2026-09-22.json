@@ -1,0 +1,147 @@
+{
+  "date_pill": "SEPT 22 · 2026",
+  "week_label": "Weekly recap · Sept 15–21",
+  "credit": "Facts via Noozhawk · KSBY · Lompoc Record · SB Independent · MaxPreps",
+  "assets": {
+    "city-pines.jpg": "/Users/kreatip/Backups/lompoc-locals/blob/news-covers/lompoc-city-pines.jpg",
+    "surf-beach.jpg": "/Users/kreatip/Backups/lompoc-locals/blob/activities/g-surf-beach-3.jpeg",
+    "harris-grade.jpg": "/Users/kreatip/Backups/lompoc-locals/blob/news-covers/lompoc-valley-harris-grade.jpg",
+    "hangar7.jpg": "/Users/kreatip/Backups/lompoc-locals/blob/biz-photos/hanger-7-social-house/7c8357e1a9.jpg"
+  },
+  "hook": [
+    "Censure motion fails 2–2",
+    "Surf Beach fishing: state decision in Oct.",
+    "Braves 41–7 · now 4–0"
+  ],
+  "results": [
+    {
+      "school": "Lompoc",
+      "nick": "Braves",
+      "badge": "badge-braves.png",
+      "us": 41,
+      "them": 7,
+      "opponent": "Dublin",
+      "record": "4–0",
+      "venue": "Huyck Stadium",
+      "when": "Fri Sept 18",
+      "verdict": "Final",
+      "say": "The Braves beat Dublin forty-one to seven, and are four and oh.",
+      "cap": "The Braves beat Dublin 41–7 and are 4–0."
+    },
+    {
+      "school": "Cabrillo",
+      "nick": "Conquistadores",
+      "badge": "badge-conqs.png",
+      "us": 14,
+      "them": 42,
+      "opponent": "Righetti",
+      "record": "1–4",
+      "venue": "Huyck Stadium",
+      "when": "Thu Sept 17",
+      "verdict": "Final",
+      "say": "Cabrillo fell to Righetti forty-two to fourteen. The Conqs are one and four.",
+      "cap": "Cabrillo fell to Righetti 42–14. The Conqs are 1–4."
+    }
+  ],
+  "stories": [
+    {
+      "slug": "council",
+      "chip": "City Hall",
+      "photo": "city-pines.jpg",
+      "position": "50% 50%",
+      "headline": "Censure motion fails on a 2–2 tie",
+      "fact": "Councilman Stephen Bridge · faces 25 criminal charges tied to city rebate programs · Tue Sept 15",
+      "say": "A motion to censure Councilman Stephen Bridge failed two to two. He faces twenty-five criminal charges.",
+      "cap": "Motion to censure Councilman Stephen Bridge failed 2–2. He faces 25 criminal charges."
+    },
+    {
+      "slug": "surf",
+      "chip": "Parks",
+      "photo": "surf-beach.jpg",
+      "position": "50% 45%",
+      "zoom": [
+        1.08,
+        1.0
+      ],
+      "headline": "Surf Beach shore fishing goes to the state",
+      "fact": "Petition for about a half-mile of shore · Fish and Game Commission meets Oct 13–16 · a 25-year campaign",
+      "say": "Shore fishing at Surf Beach could go before the state in October.",
+      "cap": "Shore fishing at Surf Beach could go before the state in October."
+    },
+    {
+      "slug": "wreaths",
+      "chip": "Community",
+      "photo": "harris-grade.jpg",
+      "position": "50% 60%",
+      "headline": "Wreaths for 1,600+ veterans at Evergreen Cemetery",
+      "fact": "Rancho Purisima DAR · sponsorships from $17 · ceremony Sat Dec 19, 10 AM",
+      "say": "Wreath sponsors are sought for sixteen hundred veterans at Evergreen Cemetery.",
+      "cap": "Wreath sponsors sought for 1,600 veterans at Evergreen Cemetery."
+    }
+  ],
+  "week": {
+    "title": "This week",
+    "photo": "hangar7.jpg",
+    "position": "50% 40%",
+    "credit": "Photo: Hangar 7 Social House",
+    "rows": [
+      {
+        "when": "Wed 6 PM",
+        "what": "Cabrillo HS Aquarium 40th + mural unveiling",
+        "where": "4350 Constellation Rd"
+      },
+      {
+        "when": "Fri 10:30 AM",
+        "what": "“Dolly Day” bilingual story time · free",
+        "where": "Ryon Park, 800 W Ocean Ave"
+      },
+      {
+        "when": "Sat 10 AM",
+        "what": "Historical Society open house",
+        "where": "Fabing McKay Spanne House, 207 N L St"
+      },
+      {
+        "when": "Sat 3 PM",
+        "what": "Afternoon tea + farm tour",
+        "where": "Santa Rita Hills Lavender Farm, 1900 Tularosa Rd"
+      },
+      {
+        "when": "Sat 7 PM",
+        "what": "Live music · no cover",
+        "where": "Hangar 7 Social House, 107 W Ocean Ave"
+      },
+      {
+        "when": "All week",
+        "what": "“Pouring My Art Out” — Chris Jeszeck",
+        "where": "Cypress Gallery, 119 E Cypress Ave"
+      }
+    ],
+    "say": "Cabrillo's aquarium turns forty Wednesday. Saturday: open house, lavender farm tea, live music at Hangar Seven.",
+    "cap": "Cabrillo's aquarium turns 40 Wed · Sat: open house, lavender farm tea, live music at Hangar 7"
+  },
+  "launch": {
+    "title": "Falcon 9 · USSF-385",
+    "line": "On the calendar for early Saturday",
+    "note": "Launch times slip — check lompoclocals.com/find/rocket-launch before you go.",
+    "say": "And a Falcon Nine is on the calendar for early Saturday. Check before you go.",
+    "cap": "A Falcon 9 is on the calendar for early Saturday. Check before you go."
+  },
+  "friday": {
+    "label": "Both teams on the road",
+    "date": "Fri Sept 25",
+    "rows": [
+      {
+        "badge": "badge-braves.png",
+        "line": "Braves at Morro Bay",
+        "sub": "7:00 PM · Morro Bay (away)"
+      },
+      {
+        "badge": "badge-conqs.png",
+        "line": "Conqs at Paso Robles",
+        "sub": "7:30 PM · Paso Robles (away)"
+      }
+    ],
+    "say": "Friday, both teams are on the road: Braves at Morro Bay, Conqs at Paso Robles.",
+    "cap": "Friday, both teams are away: Braves at Morro Bay 7 PM, Conqs at Paso Robles 7:30 PM."
+  }
+}
