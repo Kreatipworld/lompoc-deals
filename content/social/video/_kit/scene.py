@@ -14,7 +14,7 @@ GRAIN_SVG = (
 )
 
 
-def css(cid: str) -> str:
+def css(cid: str, size=None) -> str:
     """The shared class library, scoped to one composition id.
 
     stage   the fading layer every scene lives in
@@ -26,13 +26,14 @@ def css(cid: str) -> str:
     hero    the big white headline
     cover   a full-bleed photo or video
     """
+    g = B.geom(size or B.SIZES["9x16"])
     return f"""
       [data-composition-id="{cid}"] .stage {{ position:absolute; inset:0; opacity:0; will-change:opacity; }}
       [data-composition-id="{cid}"] .vig {{ position:absolute; inset:0; z-index:30; pointer-events:none;
         background:radial-gradient(ellipse 100% 85% at 50% 45%, rgba(10,6,12,0) 62%, rgba(10,6,12,0.5) 100%); }}
       [data-composition-id="{cid}"] .grain {{ position:absolute; inset:0; pointer-events:none; opacity:0.08; z-index:50;
         background-image:{GRAIN_SVG}; }}
-      [data-composition-id="{cid}"] .mark {{ position:absolute; top:150px; right:{B.SAFE_SIDE_PX}px; width:96px; height:auto; z-index:44; }}
+      [data-composition-id="{cid}"] .mark {{ position:absolute; top:{g["mark_top"]}px; right:{g["side"]}px; width:{g["mark_w"]}px; height:auto; z-index:44; }}
       [data-composition-id="{cid}"] video, [data-composition-id="{cid}"] .cover {{ position:absolute; inset:0;
         width:100%; height:100%; object-fit:cover; display:block; }}
       [data-composition-id="{cid}"] .scrim {{ position:absolute; inset:0; z-index:31; pointer-events:none;
@@ -63,7 +64,7 @@ def wrap(cid: str, dur: float, inner: str, js: str, size, first: bool = False) -
     stage_style = ' style="opacity:1"' if first else ""
     return f'''<template>
   <div data-composition-id="{cid}" data-width="{w}" data-height="{h}" data-duration="{dur:.2f}" style="position:absolute; inset:0; overflow:hidden; background:{bg}">
-    <style>{css(cid)}
+    <style>{css(cid, size)}
     </style>
     <div class="stage" id="{cid}-stage"{stage_style}>
       {inner}

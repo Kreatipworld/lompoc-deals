@@ -24,6 +24,7 @@ writes a HyperFrames project and a voiceover script, and stops.
 | `compose.py` | Scenes and captions to `compositions/*.html` and `index.html` |
 | `data.mjs` | Live facts from Neon: `next-game`, `latest-result`, `season`, `member` |
 | `make.py` | The command: data to format to project on disk |
+| `masters.py` | The master set: every ratio re-rendered, checked and loudness-matched |
 | `formats/` | One module per recurring post |
 | `assets/` | Shared media pool, copied into each build's `public/` |
 
@@ -72,6 +73,31 @@ tighter than a game recap: `--gap 0.16 --tail 0.85` is the spotlight setting.
 Whatever you pass to `make.py` you must also pass to `finalize.py`, or the
 captions land on the wrong sentence.
 
+## Master sets
+
+Once a cut is locked, `masters.py` produces the house set — `-MASTER.mp4`,
+`-9x16`, `-4x5`, `-1x1`, `-16x9` and `-poster.jpg`:
+
+```bash
+python3 _kit/masters.py member-spotlight --slug <slug> \
+    --merge "$(cat out/<project>/curation.json)" --project out/<project>
+```
+
+Each ratio is a **fresh build at that frame size, never a crop of the 9:16
+export**. `brand.geom()` holds the safe zones per shape, because the numbers
+genuinely differ: a vertical feed video sits under a caption, an account name
+and a row of buttons, while a 16:9 is watched in a player with none of that. So
+scene text stops at 35% of the frame on 9:16 and 18% on 16:9, and a chip that
+sits in the top corner of a tall frame becomes a lower third on a wide one,
+where the subject fills the frame edge to edge.
+
+Crop keys (`opener_zoom`, `quote.position`, a beat's `zoom`, …) each take either
+one value or one per ratio — `{"9x16": [1.10, 1.14], "16x9": [1.0, 1.04]}` —
+because the same photo needs a different crop in a different shape.
+
+`hyperframes check` runs on every ratio. Layout and contrast are per
+composition, and a beat that passes at 9:16 can collide at 1x1.
+
 ## Rules the kit enforces so you do not have to
 
 - **Frame 0 is the thumbnail.** The first scene paints solid and starts visible.
@@ -93,6 +119,8 @@ captions land on the wrong sentence.
 - **A scene clears its own text before the crossfade.** Two chips dissolving
   through each other in the same corner reads as a smudge, and it is what
   `hyperframes check` reports as a content overlap.
+- **Frame 0 is the thumbnail at every ratio.** Judge it in the centre-square
+  crop, which is what a feed grid shows, not in the full frame.
 - **Music ducks under the voice** through `data-fx-carve`, not hand-drawn
   envelopes, so a longer read never needs the bed re-timed.
 

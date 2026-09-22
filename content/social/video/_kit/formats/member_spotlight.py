@@ -19,7 +19,10 @@ Data contract (``data.mjs member`` produces all of it):
                                              start and end scale, which is how two beats shot
                                              in the same dim bay are told apart: one macro,
                                              one at arm's length.
-    quote           {"text", "chip", "brightness"}   optional; something they wrote themselves
+    quote           {"text", "chip", "brightness", "zoom", "origin", "position"}
+                                             optional; something they wrote themselves, over a
+                                             photo the crop keys can be aimed the same way the
+                                             opener's can
     opener          "logo" | "photo-1" | ...  defaults to "logo" when a logo exists
     opener_position "41% 50%"                which part of the photo the 9:16 crop keeps
     opener_zoom     [1.10, 1.14]             push-in, start and end scale
@@ -124,6 +127,37 @@ def _video_layers(cid: str, src: str, dur: float, at: float, length: float, styl
     return f'<div id="{cid}-bg" style="position:absolute; inset:0" data-layout-allow-overlap>{"".join(out)}</div>'
 
 
+def _pick(value, size, default):
+    """A crop value that may be one setting, or one setting per frame shape.
+
+    A photo cropped for a 1080x1920 phone frame is the wrong crop for a 16:9
+    letterbox — the subject sits somewhere else and a different amount of it
+    fits. So every crop key takes either a plain value or a dict keyed by
+    ratio name: {"9x16": [1.10, 1.14], "16x9": [1.0, 1.05]}.
+    """
+    if value is None:
+        return default
+    if isinstance(value, dict):
+        return value.get(B.ratio_name(size), value.get("default", default))
+    return value
+
+
+def _chip(cid: str, g: dict, label: str) -> tuple:
+    """(top-corner chip, in-block chip) — only one of them is ever non-empty.
+
+    A tall frame has room for a chip in the top corner above the art. A wide
+    one does not: the subject fills the frame edge to edge, and a chip up there
+    lands on it. Landscape gets a proper lower third instead, the chip sitting
+    directly above the headline it labels.
+    """
+    if not label:
+        return "", ""
+    span = f'<span class="chip" id="{cid}-chip" style="opacity:0">{label}</span>'
+    if g["wide"]:
+        return "", f'<div style="margin-bottom:24px">{span}</div>'
+    return (f'<div style="position:absolute; left:{g["side"]}px; top:16%; z-index:36">{span}</div>', "")
+
+
 def _exit(cid: str, dur: float, els: tuple) -> str:
     """Clear a scene's own text just before the crossfade to the next one.
 
@@ -210,27 +244,36 @@ def build(d: dict) -> Video:
 
     # ── opener B: one of their photos, with their address ─────────────────
     def opener(cid, dur, size):
+        g = B.geom(size)
         src, kind = _media_src(assets, opener_media)
-        style = f"filter:brightness({o_bright}) saturate(1.06); object-position:{o_pos}"
+        pos = _pick(o_pos, size, "50% 50%")
+        style = f"filter:brightness({o_bright}) saturate(1.06); object-position:{pos}"
         art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, opener_media), style)
                if kind == "video" else
-               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{style}" />')
+               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{style}" '
+               f'data-layout-allow-overflow />')
         title = (f'<span class="hero" id="{cid}-h1" style="font-size:112px; opacity:1">{name}</span>'
                  if o_name else "")
+        ochip_top, ochip_in = _chip(cid, g, tagline)
+        # Frame 0 is the thumbnail, so the opener's chip is painted, not faded.
+        ochip_top = ochip_top.replace('opacity:0', 'opacity:1')
+        ochip_in = ochip_in.replace('opacity:0', 'opacity:1')
         gap = "26px" if o_name else "0px"
         return f'''{art}
       <div class="scrim"></div>
-      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; top:16%; z-index:36"><span class="chip" id="{cid}-chip" style="opacity:1">{tagline}</span></div>
-      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; bottom:{B.SCENE_BOTTOM_PCT}%; z-index:36">
-        {title}
+      {ochip_top}
+      <div style="position:absolute; left:{g["side"]}px; right:{g["side"]}px; bottom:{g["scene_bottom_pct"]}%; z-index:36">
+        {ochip_in}{title}
         <span id="{cid}-h2" style="display:block; margin-top:{gap}; color:{B.GOLD}; font-weight:800; font-size:62px; letter-spacing:-1px; opacity:1">{street} · {city}</span>
       </div>'''
 
-    def opener_js(cid, dur):
+    def opener_js(cid, dur, size=None):
         # Frame 0 is the thumbnail: the photo and the name are already painted,
         # so only the slow push and the second line are animated.
-        js = (f'tl.fromTo("#{cid}-bg", {{ scale:{o_zoom[0]} }}, {{ scale:{o_zoom[1]}, '
-              f'duration:{dur:.2f}, ease:"none", transformOrigin:"{o_origin}" }}, 0);')
+        z = _pick(o_zoom, size, [1.16, 1.26])
+        org = _pick(o_origin, size, "50% 62%")
+        js = (f'tl.fromTo("#{cid}-bg", {{ scale:{z[0]} }}, {{ scale:{z[1]}, '
+              f'duration:{dur:.2f}, ease:"none", transformOrigin:"{org}" }}, 0);')
         els = ["chip", "h2"]
         if o_name:
             js += (f'tl.fromTo("#{cid}-h1", {{ scale:1.05 }}, {{ scale:1, duration:1.30, '
@@ -244,6 +287,7 @@ def build(d: dict) -> Video:
     # ── service beats: generated b-roll or their photos ───────────────────
     def beat_html(beat):
         def html(cid, dur, size):
+            g = B.geom(size)
             src, kind = _media_src(assets, beat["media"])
             # A photo carries its own exposure and needs pulling down under the
             # text; generated footage comes back flat and does not.
@@ -255,42 +299,52 @@ def build(d: dict) -> Video:
             sub = (f'<span id="{cid}-sub" style="display:block; margin-top:22px; color:rgba(255,255,255,0.86); '
                    f'font-weight:600; font-size:40px; letter-spacing:0; opacity:0">{beat["sub"]}</span>'
                    if beat.get("sub") else "")
+            chip_top, chip_in = _chip(cid, g, beat.get("chip", ""))
             return f'''{art}
       <div class="scrim"></div>
-      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; top:16%; z-index:36"><span class="chip" id="{cid}-chip" style="opacity:0">{beat["chip"]}</span></div>
-      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; bottom:{B.SCENE_BOTTOM_PCT}%; z-index:36">
-        <span class="hero" id="{cid}-t" style="font-size:{beat.get("size", 84)}px; letter-spacing:-2px; opacity:0">{beat["title"]}</span>{sub}
+      {chip_top}
+      <div style="position:absolute; left:{g["side"]}px; right:{g["side"]}px; bottom:{g["scene_bottom_pct"]}%; z-index:36">
+        {chip_in}<span class="hero" id="{cid}-t" style="font-size:{beat.get("size", 84)}px; letter-spacing:-2px; opacity:0">{beat["title"]}</span>{sub}
       </div>'''
 
-        def js(cid, dur):
-            z = beat.get("zoom", [1.0, 1.07])
+        def js(cid, dur, size=None):
+            z = _pick(beat.get("zoom"), size, [1.0, 1.07])
             out = (f'tl.fromTo("#{cid}-bg", {{ scale:{z[0]} }}, {{ scale:{z[1]}, '
                    f'duration:{dur:.2f}, ease:"none", transformOrigin:"50% 50%" }}, 0);')
-            out += S.rise(cid, "chip", 0.10, dy=12, dur=0.34)
+            if beat.get("chip"):
+                out += S.rise(cid, "chip", 0.10, dy=12, dur=0.34)
             out += S.rise(cid, "t", 0.26, dy=22, dur=0.46)
             if beat.get("sub"):
                 out += S.rise(cid, "sub", 0.58, dy=12, dur=0.36)
-            return out + _exit(cid, dur, ("chip", "t") + (("sub",) if beat.get("sub") else ()))
+            els = (("chip",) if beat.get("chip") else ()) + ("t",) + (("sub",) if beat.get("sub") else ())
+            return out + _exit(cid, dur, els)
 
         return html, js
 
     # ── their own words, on their own photo ───────────────────────────────
     def quote_html(cid, dur, size):
+        g = B.geom(size)
         src, kind = _media_src(assets, quote["media"])
-        art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, quote["media"]), "filter:brightness(0.58)")
+        qstyle = (f'filter:brightness({quote.get("brightness", 0.80)}) saturate(1.06); '
+                  f'object-position:{_pick(quote.get("position"), size, "50% 50%")}')
+        qchip_top, qchip_in = _chip(cid, g, quote.get("chip", "In their own words"))
+        art = (_video_layers(cid, src, dur, 0.0, _clip_len(assets, quote["media"]), qstyle)
                if kind == "video" else
-               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" '
-               f'style="filter:brightness({quote.get("brightness", 0.80)}) saturate(1.06)" />')
+               f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{qstyle}" '
+               f'data-layout-allow-overflow />')
         return f'''{art}
       <div class="scrim"></div>
-      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; top:16%; z-index:36"><span class="chip" id="{cid}-chip" style="opacity:0">{quote.get("chip", "In their own words")}</span></div>
-      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; bottom:{B.SCENE_BOTTOM_PCT}%; z-index:36">
-        <span class="hero" id="{cid}-q" style="font-size:92px; letter-spacing:-2px; opacity:0">&ldquo;{quote["text"]}&rdquo;</span>
+      {qchip_top}
+      <div style="position:absolute; left:{g["side"]}px; right:{g["side"]}px; bottom:{g["scene_bottom_pct"]}%; z-index:36">
+        {qchip_in}<span class="hero" id="{cid}-q" style="font-size:92px; letter-spacing:-2px; opacity:0">&ldquo;{quote["text"]}&rdquo;</span>
         <span id="{cid}-a" style="display:block; margin-top:24px; color:rgba(255,255,255,0.72); font-weight:600; font-size:34px; opacity:0">&mdash; {name}</span>
       </div>'''
 
-    def quote_js(cid, dur):
-        return (f'tl.fromTo("#{cid}-bg", {{ scale:1.0 }}, {{ scale:1.06, duration:{dur:.2f}, ease:"none" }}, 0);'
+    def quote_js(cid, dur, size=None):
+        qz = _pick(quote.get("zoom"), size, [1.0, 1.06])
+        qo = _pick(quote.get("origin"), size, "50% 50%")
+        return (f'tl.fromTo("#{cid}-bg", {{ scale:{qz[0]} }}, {{ scale:{qz[1]}, duration:{dur:.2f}, '
+                f'ease:"none", transformOrigin:"{qo}" }}, 0);'
                 + S.rise(cid, "chip", 0.10, dy=12, dur=0.34)
                 + S.rise(cid, "q", 0.24, dy=24, dur=0.50)
                 + S.rise(cid, "a", 0.80, dy=10, dur=0.34)
@@ -298,6 +352,7 @@ def build(d: dict) -> Video:
 
     # ── end card: their logo, their phone, their page ─────────────────────
     def end(cid, dur, size):
+        g = B.geom(size)
         bg = ""
         if end_media:
             src, _ = _media_src(assets, end_media)
@@ -310,18 +365,43 @@ def build(d: dict) -> Video:
         return f'''{bg}
       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(101,12,117,0.88) 0%, rgba(26,5,32,0.96) 100%)"></div>
       <div style="position:absolute; left:0; right:0; top:8%; height:2px; z-index:20; background:linear-gradient(90deg, transparent, {B.GOLD}, transparent); opacity:0.5"></div>
-      <div style="position:absolute; left:{B.SAFE_SIDE_PX}px; right:{B.SAFE_SIDE_PX}px; top:30%; z-index:36; text-align:center">
-        {logo}
-        <div style="margin-top:52px"><span class="pill" id="{cid}-tel" style="opacity:0">{phone}</span></div>
-        <span id="{cid}-addr" style="display:block; margin-top:38px; color:#fff; font-weight:800; font-size:52px; letter-spacing:-1px; opacity:0">{street}</span>
-        <span id="{cid}-site" style="display:block; margin-top:30px; color:rgba(255,255,255,0.86); font-weight:600; font-size:38px; opacity:0">{site}</span>
-      </div>'''
+      {_end_block(cid, g, logo)}'''
 
     def end_js(cid, dur):
         return (S.pop(cid, "card", 0.12, scale=1.10, dur=0.46)
                 + S.rise(cid, "tel", 0.62, dy=16, dur=0.40)
                 + S.rise(cid, "addr", 0.98, dy=14, dur=0.36)
                 + S.rise(cid, "site", 1.28, dy=10, dur=0.34))
+
+    def _end_block(cid, g, logo):
+        """Stacked for a tall frame, side by side for a wide one.
+
+        A contact card that stacks a logo, a phone pill, an address and a URL
+        runs out of height in a 16:9 letterbox. Landscape has the opposite
+        problem — height is scarce, width is not — so it gets its own layout
+        rather than the phone one shrunk.
+        """
+        contact = (
+            f'<div style="margin-top:52px"><span class="pill" id="{cid}-tel" style="opacity:0">{phone}</span></div>'
+            f'<span id="{cid}-addr" style="display:block; margin-top:38px; color:#fff; font-weight:800; '
+            f'font-size:52px; letter-spacing:-1px; opacity:0">{street}</span>'
+            f'<span id="{cid}-site" style="display:block; margin-top:30px; color:rgba(255,255,255,0.86); '
+            f'font-weight:600; font-size:38px; opacity:0">{site}</span>'
+        )
+        if not g["wide"]:
+            return (f'<div style="position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:30%; '
+                    f'z-index:36; text-align:center">{logo}{contact}</div>')
+        contact_wide = (
+            f'<span class="pill" id="{cid}-tel" style="opacity:0">{phone}</span>'
+            f'<span id="{cid}-addr" style="display:block; margin-top:30px; color:#fff; font-weight:800; '
+            f'font-size:52px; letter-spacing:-1px; opacity:0">{street}</span>'
+            f'<span id="{cid}-site" style="display:block; margin-top:22px; color:rgba(255,255,255,0.86); '
+            f'font-weight:600; font-size:38px; opacity:0">{site}</span>'
+        )
+        return (f'<div style="position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:50%; '
+                f'transform:translateY(-50%); z-index:36; display:flex; align-items:center; '
+                f'justify-content:center; gap:96px">'
+                f'<div>{logo}</div><div style="text-align:left">{contact_wide}</div></div>')
 
     # ── assemble ──────────────────────────────────────────────────────────
     scenes, subs = [], []

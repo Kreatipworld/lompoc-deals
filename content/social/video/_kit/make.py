@@ -111,6 +111,7 @@ def main() -> int:
     p.add_argument("--merge", help="JSON object layered over the loaded data: curated photos, "
                                    "beats, generated b-roll. Nothing here may contradict the profile.")
     p.add_argument("--out", help="output directory (default: out/<slug>-<date>)")
+    p.add_argument("--size", choices=sorted(B.SIZES), help="frame shape (default: the format's own)")
     p.add_argument("--render", action="store_true", help="also run hyperframes check + render")
     p.add_argument("--vo", help="directory holding line-*.wav, to size the video to the read")
     p.add_argument("--gap", type=float, help="silence between spoken lines, in seconds. A 30s "
@@ -127,6 +128,8 @@ def main() -> int:
         data.update(json.loads(args.merge))
 
     video = REGISTRY[args.format].build(data)
+    if args.size:
+        video.size = B.SIZES[args.size]
 
     # If the voiceover has already been generated, size the video to the read
     # before anything is written, rather than discovering the overrun later.

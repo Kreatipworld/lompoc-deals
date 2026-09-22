@@ -15,8 +15,15 @@ FONT = "Plus Jakarta Sans"
 FONT_WOFF2 = "public/fonts/plus-jakarta-sans-latin.woff2"
 GSAP_CDN = "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
 
-# 9:16 is the master. 4:5 is produced by re-rendering with SIZES["4x5"].
-SIZES = {"9x16": (1080, 1920), "4x5": (1080, 1350)}
+# 9:16 is the master. Every other shape is produced by re-rendering the
+# composition at that size, never by cropping the 9:16 export: a caption safe
+# zoned for a phone frame sits in the middle of a 16:9 letterbox.
+SIZES = {
+    "9x16": (1080, 1920),
+    "4x5": (1080, 1350),
+    "1x1": (1080, 1080),
+    "16x9": (1920, 1080),
+}
 
 # Default scene crossfade, in seconds. Matches the hand-built generators.
 X = 0.22
@@ -31,6 +38,44 @@ SAFE_SIDE_PX = 84
 # the two text blocks collide. `hyperframes check` fails the render when they do.
 CAPTION_BAND_PCT = 11
 SCENE_BOTTOM_PCT = SAFE_BOTTOM_PCT + CAPTION_BAND_PCT
+
+# How much of the bottom of the frame the host covers, by shape. A vertical feed
+# video sits under a caption, an account name and a row of buttons; a square or
+# landscape export is watched in a player with none of that, so its text can sit
+# far lower. These are the numbers that make a master set look composed for each
+# shape rather than squeezed out of the phone one.
+_CHROME_PCT = {"9x16": 24, "4x5": 16, "1x1": 12, "16x9": 8}
+
+
+def ratio_name(size) -> str:
+    for name, wh in SIZES.items():
+        if tuple(wh) == tuple(size):
+            return name
+    return "9x16"
+
+
+def geom(size) -> dict:
+    """Safe zones, margins and mark size for one frame shape.
+
+    Everything positional in a format reads from here, so adding a shape to
+    SIZES is all it takes for the next member spotlight to get that shape too.
+    """
+    w, h = size
+    name = ratio_name(size)
+    chrome = _CHROME_PCT.get(name, 24)
+    band = CAPTION_BAND_PCT if h >= w else 10
+    short = min(w, h)
+    return {
+        "name": name, "w": w, "h": h, "wide": w > h,
+        "side": round(w * 0.078),              # side margin, proportional to width
+        "safe_bottom_pct": chrome,
+        "scene_bottom_pct": chrome + band,
+        "mark_top": round(h * 0.078),
+        "mark_w": round(short * 0.089),
+        # Type is measured against the short edge, so a headline keeps its weight
+        # in the frame whichever way round the frame is.
+        "type": short / 1080.0,
+    }
 
 # Loudness target for the mastered file, in LUFS.
 LUFS = -15.0

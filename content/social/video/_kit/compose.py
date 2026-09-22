@@ -3,6 +3,7 @@
 A format module returns a Video. This module writes compositions/*.html plus
 index.html, which is everything HyperFrames needs to render.
 """
+import inspect
 import json
 import os
 from dataclasses import dataclass, field
@@ -130,7 +131,7 @@ def _subs_html(v: Video) -> str:
         for i, s in enumerate(v.subs)
     )
     spans = ",\n          ".join(f"[{s.start:.2f}, {s.end:.2f}]" for s in v.subs)
-    bottom = int(h * B.SAFE_BOTTOM_PCT / 100)
+    bottom = int(h * B.geom(v.size)["safe_bottom_pct"] / 100)
     return f'''<template>
   <div data-composition-id="{cid}" data-width="{w}" data-height="{h}" data-duration="{v.total:.2f}" style="position:absolute; inset:0; overflow:hidden; background:transparent; pointer-events:none">
     <style>
@@ -257,7 +258,11 @@ def write(v: Video, out_dir: str) -> dict:
     for i, s in enumerate(v.scenes):
         inner = s.html(s.cid, s.dur, v.size)
         rendered[s.cid] = inner
-        js = s.js(s.cid, s.dur)
+        # A format may want the frame shape to choose a crop; the older ones
+        # do not take it. Pass it only when the callable asks for it.
+        js = (s.js(s.cid, s.dur, v.size)
+              if len(inspect.signature(s.js).parameters) >= 3
+              else s.js(s.cid, s.dur))
         open(os.path.join(comp, f"{s.cid}.html"), "w").write(
             S.wrap(s.cid, s.dur, inner, js, v.size, first=(i == 0))
         )
