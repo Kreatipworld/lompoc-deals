@@ -106,25 +106,42 @@ def _clip_len(assets: dict, key: str) -> float:
         return 0.0
 
 
-def _video_layers(cid: str, src: str, dur: float, at: float, length: float, style: str) -> str:
-    """One or more <video> clips laid end to end so `dur` seconds are covered.
+# Below this, motion starts to judder and the slow-down becomes the thing you
+# notice. A beat that would need less than this has to be shortened instead.
+MIN_RATE = 0.75
 
-    A single element is emitted whenever the footage is long enough, which is
-    the normal case; the repeats only appear when a sentence outlasts the shot.
+
+def _video_layers(cid: str, src: str, dur: float, at: float, length: float, style: str) -> str:
+    """One <video> for the beat, slowed to fit when the sentence outlasts the shot.
+
+    Never two. Scenes are sized by the voiceover, so a sentence is routinely
+    longer than a four-second generated shot. Laying a second copy end to end
+    covers the gap but *replays* it: the camera snaps back to its opening
+    framing part-way through the beat and starts the same push again. That
+    reads as a mistake — worse than the frozen last frame it was meant to
+    avoid, and invisible to `hyperframes check`, which has no opinion about a
+    shot repeating. A constant playback rate is one continuous take.
     """
-    if length <= 0 or at + dur <= length + 0.05:
-        return (f'<video id="{cid}-bg" class="clip" src="{src}" data-start="0" data-media-start="{at:.2f}" '
-                f'data-duration="{dur:.2f}" data-track-index="0" muted playsinline style="{style}"></video>')
-    out, cursor, media_at, i = [], 0.0, at, 0
-    while cursor < dur - 0.02:
-        seg = min(dur - cursor, length - media_at)
-        out.append(f'<video id="{cid}-bg{i}" class="clip" src="{src}" data-start="{cursor:.2f}" '
-                   f'data-media-start="{media_at:.2f}" data-duration="{seg:.2f}" data-track-index="0" '
-                   f'muted playsinline style="{style}"></video>')
-        cursor += seg
-        media_at, i = 0.0, i + 1
-    # They never share a moment, only a box, so the layout check is told so.
-    return f'<div id="{cid}-bg" style="position:absolute; inset:0" data-layout-allow-overlap>{"".join(out)}</div>'
+    def tag(rate: float = 0.0) -> str:
+        r = f' data-playback-rate="{rate:.4f}"' if rate else ""
+        return (f'<video id="{cid}-bg" class="clip" src="{src}" data-start="0" '
+                f'data-media-start="{at:.2f}" data-duration="{dur:.2f}" data-track-index="0"'
+                f'{r} muted playsinline style="{style}"></video>')
+
+    if length <= 0:
+        return tag()
+    available = length - at
+    if dur <= available + 0.05:
+        return tag()
+    rate = available / dur
+    if rate < MIN_RATE:
+        raise ValueError(
+            f"{cid}: the beat runs {dur:.2f}s but only {available:.2f}s of footage is left "
+            f"(clip {length:.2f}s, entered at {at:.2f}s). Filling it would need "
+            f"{rate:.2f}x playback, under the {MIN_RATE:.2f} floor where the motion starts to "
+            f"judder. Shorten this beat's spoken line, enter the clip earlier, or use a longer "
+            f"clip. Do not replay the shot.")
+    return tag(rate)
 
 
 def _pick(value, size, default):

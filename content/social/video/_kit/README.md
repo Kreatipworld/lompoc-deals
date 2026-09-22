@@ -25,6 +25,7 @@ writes a HyperFrames project and a voiceover script, and stops.
 | `data.mjs` | Live facts from Neon: `next-game`, `latest-result`, `season`, `member` |
 | `make.py` | The command: data to format to project on disk |
 | `masters.py` | The master set: every ratio re-rendered, checked and loudness-matched |
+| `framecheck.py` | Perceptual-hash sweep for a shot that plays twice |
 | `formats/` | One module per recurring post |
 | `assets/` | Shared media pool, copied into each build's `public/` |
 
@@ -98,6 +99,25 @@ because the same photo needs a different crop in a different shape.
 `hyperframes check` runs on every ratio. Layout and contrast are per
 composition, and a beat that passes at 9:16 can collide at 1x1.
 
+## Catching a repeated shot
+
+A visible restart is the failure mode of sizing beats to a read, and nothing
+else finds it. `hyperframes check` has no opinion — a shot playing twice is a
+valid composition. Frame sampling walks past it unless the step is fine enough,
+because the repeat is exactly as far apart as the clip is long: a four-second
+sweep over a four-second clip lands on the same point of the same push every
+time and sees nothing wrong.
+
+```bash
+python3 _kit/framecheck.py out/<project>/masters/<name>-MASTER.mp4
+```
+
+It samples every second, hashes each frame, and reports any two that match. A
+pair only counts as a repeat if the picture travelled somewhere in between and
+came back; if everything between them matches too, it is a still — a photo
+under a slow push, or the end card — and that is not a defect. Run it on the
+master before delivering.
+
 ## Rules the kit enforces so you do not have to
 
 - **Frame 0 is the thumbnail.** The first scene paints solid and starts visible.
@@ -113,9 +133,15 @@ composition, and a beat that passes at 9:16 can collide at 1x1.
   respell by hand on top of it.
 - **Visuals cannot claim what is untrue.** An away fixture does not get a photo
   of Huyck Stadium behind it.
-- **A beat never outruns its footage.** Scenes are sized by the voiceover, so a
-  sentence is routinely longer than a four-second generated shot. The clip is
-  laid end to end to cover the beat instead of freezing on its last frame.
+- **A beat never outruns its footage, and never repeats to cover it.** Scenes
+  are sized by the voiceover, so a sentence is routinely longer than a
+  four-second generated shot. The clip is slowed with a constant
+  `data-playback-rate` — one continuous take. It used to be laid end to end
+  instead, which *replayed* the shot: the camera snapped back to its opening
+  framing part-way through the beat and pushed in again. That reads as a
+  mistake, worse than the freeze it was meant to avoid. Under 0.75x the build
+  fails loudly naming the beat and both durations, because below that the
+  motion judders and the beat should be shortened instead.
 - **A scene clears its own text before the crossfade.** Two chips dissolving
   through each other in the same corner reads as a smudge, and it is what
   `hyperframes check` reports as a content overlap.
