@@ -20,7 +20,8 @@ Data contract (all copy is passed in; the format asserts nothing itself):
     beats           [ {kind: "clip",  media, chip, title, sub?, say, cap?, at?, zoom?}
                       {kind: "stat",  chip, big, title, sub?, span?, say, cap?}
                       {kind: "rows",  chip, rows: [[big, small], ...], say, cap?}
-                      {kind: "card",  chip, title, sub?, media?, say, cap?} ]
+                      {kind: "card",  chip, title, sub?, media?, say, cap?}
+                      {kind: "review", chip, big, title, quote, credit, say, cap?} ]
     invite          {chip, date, time, venue, address, note?, say, cap?}   optional
     end             {chip, title, line, venue?, url, note?, say}   the poster; carries
                     the invitation itself when `invite` is omitted
@@ -220,6 +221,32 @@ def build(d: dict) -> Video:
             return out + _exit(cid, dur, tuple(els))
         return html, js
 
+    def review_beat(bt):
+        """Social proof as a designed card: the rating big, the count, then one
+        public review in quotation marks with its credit. Never footage."""
+        def html(cid, dur, size):
+            g = B.geom(size)
+            tall = g["h"] > 1400
+            return f'''<div class="field"></div>
+      <div class="bloom" id="{cid}-bloom" data-layout-allow-overflow></div>
+      <div class="centre" style="top:{"20%" if tall else "11%"}">
+        <span class="chip" id="{cid}-chip" style="opacity:0">{bt["chip"]}</span>
+        <span class="big" id="{cid}-big" style="margin-top:{30 if tall else 18}px; font-size:{230 if tall else 170}px; line-height:1.05; letter-spacing:-6px; opacity:0">{bt["big"]}</span>
+        <span class="title" id="{cid}-t" style="margin-top:{40 if tall else 24}px; font-size:{60 if tall else 48}px; opacity:0">{bt["title"]}</span>
+        <span class="sub" id="{cid}-q" style="margin-top:{44 if tall else 26}px; font-size:{40 if tall else 32}px; font-style:italic; opacity:0">&ldquo;{bt["quote"]}&rdquo;</span>
+        <span class="sub" id="{cid}-c" style="margin-top:14px; font-size:{28 if tall else 24}px; color:rgba(255,255,255,0.68); letter-spacing:1px; opacity:0">&mdash; {bt["credit"]}</span>
+      </div>'''
+
+        def js(cid, dur, size=None):
+            return (f'tl.fromTo("#{cid}-bloom", {{ autoAlpha:0, scale:0.6 }}, {{ autoAlpha:1, scale:1, duration:0.9, ease:"power2.out" }}, 0.05);'
+                    + S.rise(cid, "chip", 0.10, dy=12, dur=0.34)
+                    + S.pop(cid, "big", 0.22, scale=1.25, dur=0.38)
+                    + S.rise(cid, "t", 0.62, dy=16, dur=0.40)
+                    + S.rise(cid, "q", 0.95, dy=16, dur=0.44)
+                    + S.rise(cid, "c", 1.25, dy=8, dur=0.30)
+                    + _exit(cid, dur, ("chip", "big", "t", "q", "c")))
+        return html, js
+
     def card_beat(bt):
         """A statement card on the ocean field: a chip and a headline, no footage."""
         def html(cid, dur, size):
@@ -242,7 +269,7 @@ def build(d: dict) -> Video:
             return out + _exit(cid, dur, tuple(els))
         return html, js
 
-    KINDS = {"clip": clip_beat, "stat": stat_beat, "rows": rows_beat, "card": card_beat}
+    KINDS = {"clip": clip_beat, "stat": stat_beat, "rows": rows_beat, "card": card_beat, "review": review_beat}
     for i, bt in enumerate(d["beats"]):
         kind = bt.get("kind", "clip")
         if kind not in KINDS:

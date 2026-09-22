@@ -64,6 +64,16 @@
       "cap": "3 galleries Hundreds of students Thousands of visitors"
     },
     {
+      "kind": "review",
+      "chip": "On Google",
+      "big": "4.6 ★",
+      "title": "107 Google reviews",
+      "quote": "The high school students do an awesome job of informing visitors about the exhibits.",
+      "credit": "Google review",
+      "say": "Four point six stars. Over a hundred reviews.",
+      "cap": "4.6 ★ 107 Google reviews"
+    },
+    {
       "kind": "clip",
       "media": "clip-2",
       "chip": "New",
