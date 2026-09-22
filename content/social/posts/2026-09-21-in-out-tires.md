@@ -8,6 +8,18 @@ Business: 503 N H St, Lompoc · (805) 736-9332 · paying Growth member since Sep
 Undated spotlight — no dates, no expiring offer, so it can be reposted any time.
 Campaign slug: `spotlight-in-out-tires`
 
+**Posted Mon 21 Sep 2026, 6:35–6:50 PM PDT. All four confirmed `sent`.**
+
+| Surface | Buffer id | Live |
+|---|---|---|
+| Instagram Reel | 6ab1db436ed20e9354f3ecb9 | https://www.instagram.com/reel/DdkkT3SgQTq/ |
+| Facebook | 6ab1db5c74424003bca504af | https://facebook.com/1898952607093480_1376564141307727 |
+| TikTok | 6ab1db6a25dc7f133e1dd22e | https://tiktok.com/@lompoclocals/video/7688169730078805262 |
+| Instagram Story | 6ab1db7774424003bca5064b | https://www.instagram.com/stories/lompoclocals_/3991482418871508807 |
+
+Posted from the corrected master (`spotlight-v2`, 29.6s). The first blob upload predated
+the smog-repeat fix and was never used.
+
 ---
 
 ## Instagram (Reel)
