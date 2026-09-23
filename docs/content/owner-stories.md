@@ -149,9 +149,15 @@ question at a time. Today, [business]."
 
 Say: "Ten questions, one line each, don't think." Cut with a fast beat under it.
 
-1. Coffee or energy drink?  2. First job ever?  3. Earliest you've ever opened?
-4. Latest you've ever closed?  5. One tool you'd save in a fire?  6. Best taco in Lompoc?
-7. The word your customers use for you?  8. Cash or card?  9. Song that plays most in the shop?
+1. Coffee or energy drink?
+2. First job ever?
+3. Earliest you've ever opened?
+4. Latest you've ever closed?
+5. One tool you'd save in a fire?
+6. Best taco in Lompoc?
+7. The word your customers use for you?
+8. Cash or card?
+9. Song that plays most in the shop?
 10. Three words: owning a business is ___.
 
 ---
@@ -253,6 +259,7 @@ centre-square crop ([[cover-quality]]).
 > Built in Lompoc, episode <n>: <one line on what they answered>.
 >
 > <Business> · <address> · <phone if they want it>
+>
 > Their page: lompoclocals.com/biz/<slug>
 >
 > #Lompoc #LompocLocals #BuiltInLompoc #ShopLocal #<category tag> #CentralCoast
