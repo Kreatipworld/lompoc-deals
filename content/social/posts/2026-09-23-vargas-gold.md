@@ -6,7 +6,7 @@
 **Video:** `content/social/video/out/vargas-gold/masters/` — `vargas-gold-MASTER.mp4` (9:16), `-9x16`, `-4x5`, `-1x1`, `-16x9`, `-cover-9x16.jpg`, `-poster.jpg`
 **Format:** `_kit/formats/deal_promo.py` (`deal-promo`) — first use. `data.mjs deal --id=175` + `curation.json`. Arthur (Qwen), new sonilo bed, one Seedance clip (cold open only).
 **Runtime:** 29.92 s composition (30.00 s container) at every ratio · **Loudness:** −15.2 LUFS integrated, −2.6 dBTP on 9x16, 4x5, 1x1 and 16x9 (`masters/loudness.json`) · `hyperframes check` 0 errors on every ratio (the 16x9 render died once in a transient `Page.captureScreenshot` browser error at frame 210 and was re-run clean) · `framecheck.py`: no repeated shots (the five pairs it lists as *still* are photos under a slow push at 6–9 s, 16–18 s, 20–22 s and the end card at 27–29 s — not a clip restart)
-**Status:** built and committed, NOT posted. Posts **today, Wed Sep 23, 6 PM PT** (TikTok 6:00, IG Reel 6:20, IG Story 6:35, FB 6:40). "3 days left" counts Wed–Thu–Fri; if it slips to Thursday the hook line and the opener card both need "2 DAYS LEFT" (rebuild with `--auto`, the count is computed).
+**Status:** POSTED Sep 23 8:20 AM PT — owner said "now" after scheduling, all four flipped to shareNow (TikTok + FB sent 8:21, IG Reel + Story sending). Posts **today, Wed Sep 23, 6 PM PT** (TikTok 6:00, IG Reel 6:20, IG Story 6:35, FB 6:40). "3 days left" counts Wed–Thu–Fri; if it slips to Thursday the hook line and the opener card both need "2 DAYS LEFT" (rebuild with `--auto`, the count is computed).
 
 ## Instagram Reel
 
@@ -61,6 +61,9 @@ Small text (bottom, above the safe zone): "Show this coupon in-store · excludes
 Post 10–15 min after the Reel.
 
 ## Scheduling
+
+Buffer post IDs (originally `customScheduled` for 6 PM, pushed live 8:20 AM on "now"): TikTok 6:00 `6ab3ed3394e8c40aa82d9c67` · IG Reel 6:20 `6ab3ed3a6eda6e5e7d1ae9a1` · IG Story 6:35 `6ab3ed3fdd3e44983aaf9f4e` · FB Reel 6:40 `6ab3ed4694e8c40aa82da0a6`.
+Blob: `vargas-gold-9x16-aWxuD9Nsi0TIMNAcVNFeaRl0UBMvoj.mp4` (video/mp4 — the first upload went up as image/jpeg and Buffer refused it) + `cover-9x16-9kJaaY0HTZ3ErPO5EJ9JOSeooWtpIO.jpg`.
 
 - Wed Sep 23: TikTok 6:00 PM, IG Reel 6:20 PM, IG Story 6:35 PM, FB 6:40 PM PT (best hours 6–8 PM).
 - Buffer: `shareNow` false, `customScheduled`; assets via Blob. Cover = frame 0 (`vargas-gold-cover-9x16.jpg`), no thumbnail offset — frame 0 is the chain under "3 DAYS LEFT", checked in the centre-square crop.
