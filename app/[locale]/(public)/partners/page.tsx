@@ -18,7 +18,7 @@ import type { ReactNode } from "react"
 import { and, eq, gt, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { events } from "@/db/schema"
-import { sessionCounts } from "@/lib/analytics/engaged"
+import { engagedPageViews } from "@/lib/analytics/engaged"
 import { getSiteStats } from "@/lib/queries"
 import { getDigestPartners } from "@/lib/digest"
 import { TIERS } from "@/lib/stripe"
@@ -86,9 +86,8 @@ async function getUpcomingEventCount() {
  * admin surface already used it. This page, the one shown to business owners
  * deciding whether to trust us, was the only place that did not.
  */
-async function getThirtyDayVisitorCount() {
-  const { engaged } = await sessionCounts(30)
-  return engaged
+async function getThirtyDayPageViews() {
+  return engagedPageViews(30)
 }
 
 /** Floors to the nearest 100 so the hero shows a friendly "2,400+" figure. */
@@ -104,10 +103,10 @@ export default async function PartnersPage({
   setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "partners" })
 
-  const [stats, upcomingEvents, visitors30d, digestPartners] = await Promise.all([
+  const [stats, upcomingEvents, pageViews30d, digestPartners] = await Promise.all([
     getSiteStats(),
     getUpcomingEventCount(),
-    getThirtyDayVisitorCount(),
+    getThirtyDayPageViews(),
     getDigestPartners(6),
   ])
 
@@ -181,7 +180,7 @@ export default async function PartnersPage({
             data-hero="cta"
             className="mx-auto mt-12 grid max-w-xl grid-cols-3 divide-x divide-white/20 rounded-2xl border border-white/15 bg-white/5 py-6 backdrop-blur-sm"
           >
-            <HeroStat value={<CountUp value={friendlyFloor(visitors30d)} suffix="+" duration={1.4} delay={1.1} />} label={t("hero.statVisitorsLabel")} />
+            <HeroStat value={<CountUp value={friendlyFloor(pageViews30d)} suffix="+" duration={1.4} delay={1.1} />} label={t("hero.statVisitorsLabel")} />
             <HeroStat value={<CountUp value={stats.businesses} duration={1.4} delay={1.1} />} label={t("hero.statBusinessesLabel")} />
             <HeroStat value={<CountUp value={upcomingEvents} suffix="+" duration={1.4} delay={1.1} />} label={t("hero.statEventsLabel")} />
           </div>

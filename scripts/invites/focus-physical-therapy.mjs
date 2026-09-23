@@ -24,8 +24,8 @@ const biz = { name: "Focus Physical Therapy", slug: "focus-physical-therapy" }
 const claimUrl = `https://www.lompoclocals.com/signup?claim=${biz.slug}&plan=standard${TO ? `&email=${encodeURIComponent(TO)}` : ""}`
 const profileUrl = `https://www.lompoclocals.com/biz/${biz.slug}`
 
-// Real figures, pulled Sep 23 2026 (analytics_events business_page_viewed, 30 days; paying members).
-const F = { members: 29, views30d: "58,460" }
+// Real figures, pulled Sep 23 2026 — engaged sessions only (lib/analytics/engaged.ts), never raw counts.
+const F = { members: 29, locals30d: "3,100", views30d: "7,200" }
 
 const html = `
 <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
@@ -37,7 +37,7 @@ const html = `
     <h1 style="font-size:23px; margin:0 0 10px; color:#1a1a1a; font-weight:800; letter-spacing:-0.01em;">Focus Physical Therapy is on Lompoc Locals.</h1>
     <div style="height:3px; width:52px; background:${Y}; border-radius:2px; margin:0 0 18px;"></div>
     <p style="color:#444; line-height:1.6; margin:0 0 14px;">We built you a page on <strong>Lompoc Locals</strong> &mdash; the #1 local hub in Lompoc, where neighbors find local businesses, read local news, follow Friday night football, and see what's happening in town each week. Your page is live now with your logo, your clinic, your 4.9 Google rating, your hours and your number &mdash; <a href="${profileUrl}" style="color:${P}; font-weight:700;">take a look</a>. Anything you want changed, just reply and we'll fix it the same day.</p>
-    <p style="color:#444; line-height:1.6; margin:0 0 18px;">A few facts: neighbors opened <strong>${F.views30d} business pages</strong> on Lompoc Locals in the last 30 days, and every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in local inboxes across town. Twenty-nine Lompoc businesses are already members &mdash; among them <strong>The Waxed Honey</strong>, <strong>Paisano's Family Barbershop</strong>, <strong>Coastal Tint</strong>, and <strong>Clark Builders</strong> &mdash; with the partner badge on the map, a spot in the homepage member rail, and their deals in the Monday email.</p>
+    <p style="color:#444; line-height:1.6; margin:0 0 18px;">A few facts: more than <strong>${F.locals30d} neighbors</strong> used Lompoc Locals in the last 30 days, opening <strong>${F.views30d}+ pages</strong> between them, and every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in local inboxes across town. Twenty-nine Lompoc businesses are already members &mdash; among them <strong>The Waxed Honey</strong>, <strong>Paisano's Family Barbershop</strong>, <strong>Coastal Tint</strong>, and <strong>Clark Builders</strong> &mdash; with the partner badge on the map, a spot in the homepage member rail, and their deals in the Monday email.</p>
 
     <div style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:20px 22px; margin:0 0 22px;">
       <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">Growth membership, built for a local clinic</div>

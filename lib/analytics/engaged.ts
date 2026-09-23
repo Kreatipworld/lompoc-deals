@@ -35,6 +35,23 @@ export async function sessionCounts(days: number): Promise<SessionCounts> {
   return { total: Number(r[0]?.total ?? 0), engaged: Number(r[0]?.engaged ?? 0) }
 }
 
+/**
+ * Page views (public pages + business pages) inside engaged sessions in the last
+ * N days. Raw page views run ~9× higher and are almost all single-hit crawlers
+ * with browser user-agents; this is the number a business owner can be shown.
+ */
+export async function engagedPageViews(days: number): Promise<number> {
+  const r = rows<{ c: number }>(
+    await db.execute(sql`
+      SELECT COUNT(*)::int AS c
+      FROM analytics_events a
+      WHERE a.session_id IN ${engagedSessionIds(days)}
+        AND a.created_at > now() - make_interval(days => ${days})
+        AND a.event_name IN ('page_viewed', 'business_page_viewed')`)
+  )
+  return Number(r[0]?.c ?? 0)
+}
+
 /** Engaged sessions per ISO week (key = Monday as YYYY-MM-DD). */
 export async function engagedSessionsByWeek(weeks: number): Promise<Map<string, number>> {
   const r = rows<{ week: string; c: number }>(

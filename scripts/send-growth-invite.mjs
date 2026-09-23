@@ -26,11 +26,12 @@ if (dbUrl) {
         and (b.plan_override is not null or (s.status in ('active','trialing') and s.tier != 'free'))`
     const prefer = ["Eddie's Grill", "Eye on I", "In&Out Tires Lpc", "Jasper's Saloon", "Lompoc Valley Florist", "J's Glass Co"]
     PROOF.partners = prefer.map((n) => partners.find((p) => p.name === n)).filter(Boolean).slice(0, 6)
-    const [tot] = await sql`select count(*)::int c from analytics_events where event_name='business_page_viewed' and created_at > now() - interval '30 days'`
+    // Engaged sessions only (2+ events) — raw business_page_viewed is ~9× higher and almost all crawlers.
+    const [tot] = await sql`select count(*)::int c from analytics_events where event_name='business_page_viewed' and created_at > now() - interval '30 days' and session_id in (select session_id from analytics_events where session_id is not null and created_at > now() - interval '30 days' group by 1 having count(*) > 1)`
     PROOF.views30d = tot?.c ?? 0
     const [top] = await sql`
       select b.name, count(*)::int c from analytics_events a join businesses b on b.id = a.target_id
-      where a.event_name='business_page_viewed' and a.created_at > now() - interval '30 days'
+      where a.event_name='business_page_viewed' and a.created_at > now() - interval '30 days' and a.session_id in (select session_id from analytics_events where session_id is not null and created_at > now() - interval '30 days' group by 1 having count(*) > 1)
         and (b.plan_override is not null or exists (select 1 from subscriptions s where s.user_id=b.owner_user_id and s.status in ('active','trialing') and s.tier != 'free'))
       group by b.name order by c desc limit 1`
     if (top) { PROOF.topName = top.name; PROOF.topViews = top.c }
