@@ -1,0 +1,79 @@
+{
+  "slug": "vargas-gold",
+  "title": "DEAL PROMO \u2014 Vargas Jewelers Trophies & Awards: 20% OFF all GOLD ESTATE JEWELRY (Ends Friday)",
+  "total": 29.92,
+  "size": [
+    1080,
+    1920
+  ],
+  "scenes": [
+    {
+      "id": "s0-open",
+      "start": 0.0,
+      "dur": 4.69
+    },
+    {
+      "id": "s1-photo-5",
+      "start": 4.47,
+      "dur": 5.82
+    },
+    {
+      "id": "s2-photo-1",
+      "start": 10.07,
+      "dur": 4.46
+    },
+    {
+      "id": "s3-photo-0",
+      "start": 14.31,
+      "dur": 4.8
+    },
+    {
+      "id": "s4-photo-3",
+      "start": 18.89,
+      "dur": 4.0
+    },
+    {
+      "id": "s5-coupon",
+      "start": 22.67,
+      "dur": 3.4
+    },
+    {
+      "id": "s6-end",
+      "start": 25.85,
+      "dur": 4.07
+    }
+  ],
+  "subs": [],
+  "vo_lines": [
+    "Three days left: twenty percent off gold estate jewelry.",
+    "Vargas Jewelers: chains, engagement rings, necklaces and bracelets.",
+    "A full-time jeweler in-house. Engraving done on site.",
+    "Four point seven stars on Google. A gem in itself.",
+    "The best gift, for the person who matters most.",
+    "Show this coupon in-store. Ends Friday.",
+    "Six forty North H Street, Old Town Lompoke."
+  ],
+  "audio": [
+    {
+      "src": "public/vo.wav",
+      "group": "voiceover",
+      "start": 0.4,
+      "dur": 29.92,
+      "volume": 0.8,
+      "media_start": 0.0,
+      "fade_in": 0.05,
+      "fade_out": 0.2
+    },
+    {
+      "src": "public/bed.wav",
+      "group": "music",
+      "start": 0.0,
+      "dur": 29.92,
+      "volume": 0.26,
+      "media_start": 0.0,
+      "fade_in": 0.4,
+      "fade_out": 1.4
+    }
+  ],
+  "note": "Deal 175: title and terms printed verbatim from the row; ends Friday (3 day(s) left as of 2026-09-23). Identity beats use the member's own photos and logo; any generated clip is atmosphere and carries no business name."
+}

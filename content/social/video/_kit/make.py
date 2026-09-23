@@ -27,16 +27,18 @@ VIDEO_DIR = os.path.dirname(KIT)
 REPO = os.path.abspath(os.path.join(VIDEO_DIR, "..", "..", ".."))
 
 AUTO_QUERY = {"game-night": "next-game", "game-result": "latest-result",
-              "season-recap": "season", "member-spotlight": "member"}
+              "season-recap": "season", "member-spotlight": "member", "deal-promo": "deal"}
 
 
-def load_auto(fmt: str, slug: str = "") -> dict:
+def load_auto(fmt: str, slug: str = "", row_id: int = 0) -> dict:
     q = AUTO_QUERY.get(fmt)
     if not q:
         raise SystemExit(f"{fmt} has no --auto data source; pass --data")
     argv = ["node", "--env-file=.env.local", os.path.join(KIT, "data.mjs"), q]
     if slug:
         argv.append(f"--slug={slug}")
+    if row_id:
+        argv.append(f"--id={row_id}")
     out = subprocess.run(argv, cwd=REPO, capture_output=True, text=True)
     if out.returncode != 0:
         raise SystemExit(f"data.mjs {q} failed:\n{out.stderr.strip() or out.stdout.strip()}")
@@ -108,6 +110,7 @@ def main() -> int:
     p.add_argument("--auto", action="store_true", help="pull the facts from the live database")
     p.add_argument("--data", help="JSON object of facts, instead of --auto")
     p.add_argument("--slug", help="business slug, for formats whose data source takes one")
+    p.add_argument("--id", type=int, help="row id, for formats whose data source takes one (deal-promo)")
     p.add_argument("--merge", help="JSON object layered over the loaded data: curated photos, "
                                    "beats, generated b-roll. Nothing here may contradict the profile.")
     p.add_argument("--out", help="output directory (default: out/<slug>-<date>)")
@@ -121,7 +124,7 @@ def main() -> int:
 
     if args.auto and args.data:
         raise SystemExit("use --auto or --data, not both")
-    data = load_auto(args.format, args.slug or "") if args.auto else json.loads(args.data or "{}")
+    data = load_auto(args.format, args.slug or "", args.id or 0) if args.auto else json.loads(args.data or "{}")
     if "error" in data:
         raise SystemExit(f"no data: {data['error']}")
     if args.merge:

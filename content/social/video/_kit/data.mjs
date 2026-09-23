@@ -3,6 +3,7 @@
 //   node _kit/data.mjs next-game       → the soonest unplayed game, both schools
 //   node _kit/data.mjs latest-result   → the most recently played game
 //   node _kit/data.mjs member --slug=<slug>  → one business, shaped for member-spotlight
+//   node _kit/data.mjs deal --id=<n>         → one deal plus its business, shaped for deal-promo
 // Run from the repo root with --env-file=.env.local.
 import { neon } from "@neondatabase/serverless"
 
@@ -84,17 +85,9 @@ function servicesFrom(description) {
     .filter((s) => s && s.split(/\s+/).length <= 3)
 }
 
-if (what === "member") {
-  const slug = (process.argv.find((a) => a.startsWith("--slug=")) || "").split("=")[1]
-  if (!slug) { console.error("member needs --slug=<slug>"); process.exit(1) }
-  const rows = await sql`
-    select name, slug, description, about, address, phone, website, logo_url, cover_url,
-           photos_json, hours_json
-    from businesses where slug = ${slug} and status = 'approved' limit 1`
-  if (!rows.length) { console.log(JSON.stringify({ error: `no approved business ${slug}` })); process.exit(2) }
-  const b = rows[0]
+function shapeMember(b) {
   const photos = Array.isArray(b.photos_json) ? b.photos_json : []
-  console.log(JSON.stringify({
+  return {
     name: b.name,
     slug: b.slug,
     address: b.address,
@@ -110,6 +103,53 @@ if (what === "member") {
     hoursLine: hoursLine(b.hours_json),
     services: servicesFrom(b.description),
     site: `lompoclocals.com/biz/${b.slug}`,
+  }
+}
+
+if (what === "member") {
+  const slug = (process.argv.find((a) => a.startsWith("--slug=")) || "").split("=")[1]
+  if (!slug) { console.error("member needs --slug=<slug>"); process.exit(1) }
+  const rows = await sql`
+    select name, slug, description, about, address, phone, website, logo_url, cover_url,
+           photos_json, hours_json
+    from businesses where slug = ${slug} and status = 'approved' limit 1`
+  if (!rows.length) { console.log(JSON.stringify({ error: `no approved business ${slug}` })); process.exit(2) }
+  console.log(JSON.stringify(shapeMember(rows[0]), null, 2))
+} else if (what === "deal") {
+  // One coupon or special, with the business that posted it. The video states
+  // the deal row verbatim — title, what is included, terms — and derives only
+  // the calendar: which weekday it ends and how many days are left, counted in
+  // Pacific time so a deal expiring at 00:00 UTC ends on the evening before.
+  const id = Number((process.argv.find((a) => a.startsWith("--id=")) || "").split("=")[1])
+  if (!id) { console.error("deal needs --id=<n>"); process.exit(1) }
+  const rows = await sql`
+    select d.id, d.type, d.title, d.description, d.discount_text, d.terms, d.starts_at, d.expires_at,
+           d.view_count, d.paused,
+           b.name, b.slug, b.description as b_description, b.about, b.address, b.phone, b.website,
+           b.logo_url, b.cover_url, b.photos_json, b.hours_json, b.status
+    from deals d join businesses b on b.id = d.business_id
+    where d.id = ${id} limit 1`
+  if (!rows.length) { console.log(JSON.stringify({ error: `no deal ${id}` })); process.exit(2) }
+  const r = rows[0]
+  if (r.status !== "approved" || r.paused) {
+    console.log(JSON.stringify({ error: `deal ${id} is ${r.paused ? "paused" : "on an unapproved business"}` })); process.exit(2)
+  }
+  const ptDate = (d) => new Date(d).toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" })
+  const weekday = (ymd) => new Date(ymd + "T12:00:00").toLocaleDateString("en-US", { weekday: "long" })
+  // An expiry stamped at midnight UTC is the end of the previous Pacific day.
+  const endsOn = r.expires_at ? ptDate(new Date(new Date(r.expires_at).getTime() - 60_000)) : null
+  const daysLeft = endsOn
+    ? Math.round((new Date(endsOn + "T12:00:00") - new Date(today + "T12:00:00")) / 86_400_000) + 1
+    : null
+  const member = shapeMember({ ...r, description: r.b_description })
+  console.log(JSON.stringify({
+    ...member,
+    deal: {
+      id: r.id, type: r.type, title: r.title, description: r.description,
+      discount: r.discount_text, terms: r.terms, views: r.view_count,
+      startsOn: r.starts_at ? ptDate(r.starts_at) : null,
+      endsOn, endsWeekday: endsOn ? weekday(endsOn) : null, daysLeft, today,
+    },
   }, null, 2))
 } else if (what === "next-game") {
   const rows = await sql`

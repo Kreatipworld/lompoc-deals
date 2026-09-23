@@ -52,6 +52,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("format")
     p.add_argument("--slug", default="", help="business slug for --auto formats")
+    p.add_argument("--id", type=int, default=0, help="row id for --auto formats that take one (deal-promo)")
     p.add_argument("--data", default="", help="JSON facts (or @file) for formats without a live query")
     p.add_argument("--merge", default="")
     p.add_argument("--ratios", default=",".join(RATIOS), help="comma list, e.g. 9x16,4x5")
@@ -83,7 +84,7 @@ def main():
         cmd = ["python3", os.path.join(KIT, "make.py"), a.format,
                "--out", work, "--size", ratio, "--vo", pub,
                "--gap", str(a.gap), "--tail", str(a.tail)]
-        cmd += ["--data", data] if data else ["--auto", "--slug", a.slug]
+        cmd += ["--data", data] if data else ["--auto"] + (["--slug", a.slug] if a.slug else []) + (["--id", str(a.id)] if a.id else [])
         if a.merge:
             cmd += ["--merge", a.merge]
         run(cmd, cwd=REPO)

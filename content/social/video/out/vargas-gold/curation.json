@@ -1,0 +1,137 @@
+{
+  "out_slug": "vargas-gold",
+  "say_name": "Vargas Jewelers",
+  "area": "Old Town Lompoc",
+  "clips": [
+    "content/social/video/out/vargas-gold/public/clip-0.mp4"
+  ],
+  "open": {
+    "media": "clip-0",
+    "big": "3 DAYS LEFT",
+    "title": "20% off gold estate jewelry",
+    "zoom": [
+      1.28,
+      1.38
+    ],
+    "brightness": 0.86,
+    "say": "Three days left: twenty percent off gold estate jewelry.",
+    "cap": "3 DAYS LEFT",
+    "origin": "28% 24%"
+  },
+  "beats": [
+    {
+      "media": "photo-5",
+      "chip": "Vargas Jewelers · Old Town Lompoc",
+      "title": "Gold chains · Engagement rings<br />Necklaces · Bracelets",
+      "sub": "From their Estate Collection · 20% off<br />Promotional financing &amp; in-house payment options available",
+      "size": 78,
+      "zoom": {
+        "9x16": [
+          1.16,
+          1.24
+        ],
+        "4x5": [
+          1.04,
+          1.1
+        ],
+        "1x1": [
+          1.06,
+          1.12
+        ],
+        "16x9": [
+          1.0,
+          1.06
+        ]
+      },
+      "origin": "62% 48%",
+      "position": {
+        "9x16": "58% 45%",
+        "default": "50% 45%"
+      },
+      "brightness": 0.82,
+      "say": "Vargas Jewelers: chains, engagement rings, necklaces and bracelets."
+    },
+    {
+      "media": "photo-1",
+      "chip": "In the shop",
+      "title": "Full-time in-house jeweler<br />Engraving done on site",
+      "sub": "Repairs of all kinds · Citizen watches · Trophies &amp; awards",
+      "zoom": {
+        "9x16": [
+          1.04,
+          1.12
+        ],
+        "default": [
+          1.0,
+          1.07
+        ]
+      },
+      "origin": "40% 40%",
+      "position": {
+        "9x16": "38% 40%",
+        "default": "50% 45%"
+      },
+      "brightness": 0.86,
+      "say": "A full-time jeweler in-house. Engraving done on site."
+    },
+    {
+      "kind": "review",
+      "media": "photo-0",
+      "chip": "On Google",
+      "big": "4.7 ★",
+      "title": "on Google",
+      "quote": "This family run business is a gem in itself, in addition to the ones they sell!",
+      "credit": "Google review",
+      "quote_size": 48,
+      "zoom": [
+        1.0,
+        1.06
+      ],
+      "position": {
+        "9x16": "42% 50%",
+        "default": "50% 50%"
+      },
+      "brightness": 0.6,
+      "say": "Four point seven stars on Google. A gem in itself.",
+      "cap": "4.7 ★ on Google"
+    },
+    {
+      "media": "photo-3",
+      "chip": "The gift",
+      "title": "For the person<br />who matters most",
+      "sub": "Help from people who know what they&rsquo;re doing",
+      "zoom": {
+        "9x16": [
+          1.18,
+          1.26
+        ],
+        "default": [
+          1.02,
+          1.08
+        ]
+      },
+      "origin": "50% 58%",
+      "position": {
+        "9x16": "48% 62%",
+        "default": "50% 55%"
+      },
+      "brightness": 0.86,
+      "say": "The best gift, for the person who matters most."
+    }
+  ],
+  "coupon": {
+    "chip": "Coupon",
+    "included": "Gold chains · engagement rings · necklaces &amp; bracelets from the Estate Collection",
+    "note": "Promotional financing &amp; in-house payment options available",
+    "pill": "Ends Friday",
+    "size": 88,
+    "say": "Show this coupon in-store. Ends Friday.",
+    "cap": "Show this coupon in-store"
+  },
+  "end_photo": "photo-6",
+  "end_position": {
+    "9x16": "50% 40%",
+    "default": "50% 40%"
+  },
+  "say_close": "Six forty North H Street, Old Town Lompoc."
+}

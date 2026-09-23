@@ -93,6 +93,30 @@ Generated clips are mood, never evidence: a clip beat's chip and title carry a
 sourced fact, and the venue's name only ever appears on the designed cards.
 First use: `out/aquarium-40` (Cabrillo High School Aquarium, 40th anniversary).
 
+## Deal promos
+
+`deal-promo` is a coupon or special as a commercial, for any member, driven by
+the deal row and the business row together. The title, what is included and
+the terms are printed as the owner wrote them; the calendar — which weekday it
+ends, how many days are left — comes out of `expires_at` in Pacific time, so
+the hook on a Wednesday is "3 DAYS LEFT" and the card says "Ends Friday", never
+a clock time.
+
+```bash
+python3 _kit/make.py deal-promo --auto --id 175                       # preview from the rows alone
+python3 _kit/make.py deal-promo --auto --id 175 --merge "$(cat out/<project>/curation.json)" \
+    --out out/<project> --vo out/<project>/public --gap 0.16 --tail 0.85
+python3 _kit/masters.py deal-promo --id 175 --merge "$(cat out/<project>/curation.json)" \
+    --project out/<project>
+```
+
+Shape: cold open on the hook, the offer beat, who they are (a `review` beat
+carries the Google rating and one quoted review, over their own photo), the
+gift line, the coupon card, the end card. The opener may sit on a generated
+clip, but then it carries no chip: a business name over generated footage
+captions it as theirs. The name lands on the first beat, which is their photo.
+First use: `out/vargas-gold` (Vargas Jewelers, 20% off gold estate jewelry).
+
 ## Master sets
 
 Once a cut is locked, `masters.py` produces the house set — `-MASTER.mp4`,
