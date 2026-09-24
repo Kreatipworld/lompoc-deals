@@ -1,6 +1,6 @@
 ---
 title: "The Old Way" — Lompoc Locals master commercial
-status: BRIEF — awaiting the owner's yes before any credit is spent (Sep 24 2026)
+status: FIRST CUT delivered Sep 24 2026 (21.8 credits); masters in out/master-story/masters; see content/social/posts/2026-09-24-master-story.md
 length: ~48 s · master 9:16 + 4:5, 1:1, 16:9 from the kit
 voice: Arthur (Qwen), cinematic narrator, unhurried; "Lompoke" respelled
 music: one new sonilo bed, ~50 s — nostalgic felt piano + vinyl warmth that turns into warm strings and a soft modern pulse at the phone beat; no vocals
