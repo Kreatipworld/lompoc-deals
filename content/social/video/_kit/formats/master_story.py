@@ -107,6 +107,11 @@ def build(d: dict) -> Video:
                    if kind == "video" else f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{FILM}" />')
             if head:
                 art = art.replace('data-start="0"', f'data-start="{head:.2f}"', 1)
+            # Under a title card the clip starts late; a still of its first frame keeps
+            # frame 0 — the thumbnail — a real picture instead of an empty stage.
+            if bt.get("still"):
+                ssrc, _ = _media_src(assets, bt["still"])
+                art = f'<img class="cover" src="{ssrc}" alt="" style="{FILM}" />' + art
             insert = ""
             if bt.get("insert"):
                 isrc, _ = _media_src(assets, bt["insert"])
