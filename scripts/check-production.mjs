@@ -186,8 +186,9 @@ if (!queries.length) console.log("  (no searches recorded yet — anchors below 
 for (const q of queries) {
   try {
     const d = await api(`/api/search/autocomplete?q=${encodeURIComponent(q)}`)
-    const hits = names(d).length + (d.categories ?? []).length
-    hits > 0 ? pass(`"${q}" → ${names(d).length} business(es), ${(d.categories ?? []).length} category`) : fail(`"${q}" → NOTHING. A resident searching this gets an empty box.`)
+    const pages = (d.pages ?? []).length
+    const hits = names(d).length + (d.categories ?? []).length + pages
+    hits > 0 ? pass(`"${q}" → ${names(d).length} business(es), ${(d.categories ?? []).length} category${pages ? `, ${pages} page` : ""}`) : fail(`"${q}" → NOTHING. A resident searching this gets an empty box.`)
   } catch (e) {
     fail(`"${q}" → ${e.message}`)
   }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { pick } from "@/lib/localize"
 import { db } from "@/db/client"
 import { businesses, deals, categories } from "@/db/schema"
+import { findTermForQuery } from "@/lib/find-terms"
 import { and, eq, gt, or, sql } from "drizzle-orm"
 import {
   CATEGORY_SYNONYMS,
@@ -128,11 +129,19 @@ export async function GET(req: NextRequest) {
   ])
 
   const ranked = rankBusinessHits(dropCompetitorMentions(bizRows, q), q, 6)
+  // A curated page for this word ("football" → /football, "garage sales", launches…). The search
+  // bar already shows these from its local index; the API answers the same so a client reading
+  // JSON — and the production check — never sees an empty box for a word we have a page for.
+  const page = findTermForQuery(q)
+  const pages = page
+    ? [{ slug: page.slug, title: pick(locale, page.title.en, page.title.es), href: `/find/${page.slug}` }]
+    : []
   // Nothing matched: offer the nearest name rather than an empty box. See fuzzyBusinessSearch.
   const businessesOut =
-    ranked.length || categoryHits.length ? ranked : await fuzzyBusinessSearch(q, 4)
+    ranked.length || categoryHits.length || pages.length ? ranked : await fuzzyBusinessSearch(q, 4)
 
   return NextResponse.json({
+    pages,
     categories: categoryHits,
     businesses: businessesOut,
     deals: dealRows.map(({ titleEs, discountTextEs, ...d }) => ({
