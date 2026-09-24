@@ -52,6 +52,23 @@ export async function engagedPageViews(days: number): Promise<number> {
   return Number(r[0]?.c ?? 0)
 }
 
+/**
+ * Raw page views (public + business pages) in the last N days, crawlers included.
+ * Owner's decision, Sep 24 2026: the /partners hero shows this total, not the
+ * engaged figure — "so people are impressed because it's real". Every other
+ * surface (admin, member dashboards, invite emails) keeps using engaged numbers.
+ */
+export async function rawPageViews(days: number): Promise<number> {
+  const r = rows<{ c: number }>(
+    await db.execute(sql`
+      SELECT COUNT(*)::int AS c
+      FROM analytics_events
+      WHERE created_at > now() - make_interval(days => ${days})
+        AND event_name IN ('page_viewed', 'business_page_viewed')`)
+  )
+  return Number(r[0]?.c ?? 0)
+}
+
 /** Engaged sessions per ISO week (key = Monday as YYYY-MM-DD). */
 export async function engagedSessionsByWeek(weeks: number): Promise<Map<string, number>> {
   const r = rows<{ week: string; c: number }>(

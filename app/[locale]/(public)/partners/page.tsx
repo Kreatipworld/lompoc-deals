@@ -18,7 +18,7 @@ import type { ReactNode } from "react"
 import { and, eq, gt, sql } from "drizzle-orm"
 import { db } from "@/db/client"
 import { events } from "@/db/schema"
-import { engagedPageViews } from "@/lib/analytics/engaged"
+import { rawPageViews } from "@/lib/analytics/engaged"
 import { getSiteStats } from "@/lib/queries"
 import { getDigestPartners } from "@/lib/digest"
 import { TIERS } from "@/lib/stripe"
@@ -73,21 +73,15 @@ async function getUpcomingEventCount() {
 }
 
 /**
- * Engaged sessions in the last 30 days — the number we are willing to defend.
- *
- * This page counted every distinct session_id, which inflated it ~18x: 53,427
- * against 2,883 on Sep 21 2026. `business_page_viewed` fires server-side on
- * every render of a business page, so every crawler walking the directory and
- * every health-check ping minted a "visitor" — 52,040 of those events across
- * 50,829 sessions, at 1.02 events per session. Nobody real reads one business
- * page and leaves forever, fifty thousand times a month.
- *
- * lib/analytics/engaged.ts is the one definition of a real session and every
- * admin surface already used it. This page, the one shown to business owners
- * deciding whether to trust us, was the only place that did not.
+ * Hero stat: raw page views in the last 30 days (page_viewed + business_page_viewed,
+ * crawlers included). Sep 21 2026 this stat was switched to engaged sessions
+ * (2,883 vs 53,427 raw — most raw sessions are one hit and gone). Sep 24 2026 the
+ * owner chose the raw total for this page: "instead of locals, the views … so
+ * people are impressed because it's real". Admin, member dashboards and invite
+ * emails still use lib/analytics/engaged.ts.
  */
 async function getThirtyDayPageViews() {
-  return engagedPageViews(30)
+  return rawPageViews(30)
 }
 
 /** Floors to the nearest 100 so the hero shows a friendly "2,400+" figure. */
