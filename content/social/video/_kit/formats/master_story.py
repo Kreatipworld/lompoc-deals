@@ -26,7 +26,7 @@ from .member_spotlight import _clip_len, _exit, _media_src, _video_layers
 
 FIELD = f"radial-gradient(ellipse 90% 70% at 50% 40%, #7d1590 0%, {B.PURPLE} 45%, #3a0743 100%)"
 FILM = "filter:sepia(0.48) contrast(1.06) brightness(0.86) saturate(0.92)"
-CAPTURE_W = 1179      # iPhone 14 Pro at 3x; scroll values in the data are in these pixels
+CAPTURE_W, CAPTURE_H = 1179, 1980   # Playwright "iPhone 14 Pro" viewport is 393×660 css (no browser chrome), at 3x
 BAR = 7               # letterbox bar height, % of frame
 
 THEN, TURN, UI, MONTAGE, STAT, END = 4.2, 3.8, 4.0, 8.0, 6.0, 4.5
@@ -37,11 +37,11 @@ def _css(cid: str, size) -> str:
     s = f'[data-composition-id="{cid}"]'
     tall = g["h"] > 1400
     # The phone: centred by computed left, never a transform. Screen is 393:852.
-    pw = round(g["w"] * (0.52 if tall else 0.24))
+    pw = round(g["w"] * (0.58 if tall else 0.26))
     pad = round(pw * 0.028)
-    # The screen inside the bezel is exactly 393:852 (the capture's shape), so a
-    # viewport capture fills it edge to edge — no strip left at the bottom.
-    ph = round((pw - 2 * pad) * 852 / 393) + 2 * pad
+    # The screen inside the bezel has exactly the capture's shape, so a viewport
+    # capture fills it edge to edge — no strip at the bottom, no crop at the sides.
+    ph = round((pw - 2 * pad) * CAPTURE_H / CAPTURE_W) + 2 * pad
     ptop = round(g["h"] * (0.06 if tall else 0.10))
     return f"""
       {s} .bar {{ position:absolute; left:0; right:0; height:{BAR}%; background:#07040a; z-index:33; }}
@@ -153,7 +153,7 @@ def build(d: dict) -> Video:
         def js(cid, dur, size=None, bt=bt):
             g = B.geom(size or B.SIZES["9x16"])
             tall = g["h"] > 1400
-            pw = round(g["w"] * (0.52 if tall else 0.24)) - 2 * round(g["w"] * (0.52 if tall else 0.24) * 0.028)
+            pw = round(g["w"] * (0.58 if tall else 0.26)) - 2 * round(g["w"] * (0.58 if tall else 0.26) * 0.028)
             k = pw / CAPTURE_W
             y0, y1 = bt.get("scroll", [0, 0])
             hold = 0.7
