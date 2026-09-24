@@ -1,28 +1,29 @@
 # Master commercial — "The Old Way" (Lompoc Locals platform spot)
 
 Project: `content/social/video/out/master-story/` (kit format `master-story`, `story.json` is the source of truth)
-Masters: `out/master-story/masters/` — `master-story-MASTER.mp4` (9:16, 58.5 s, −15.0 LUFS), 4x5, 1x1, 16x9, cover (frame 0: the kitchen phone under THE OLD WAY)
-Voice: Arthur (Qwen), 12 lines; line 4 re-recorded brisk (take a, 4.70 s) so the storefront beat fits its clip.
+Masters: `out/master-story/masters/` — `master-story-MASTER.mp4` (9:16, **v2: 46.5 s**, −15.1 LUFS), 4x5, 1x1, 16x9, cover (frame 0: the woman at the kitchen wall phone under THE OLD WAY)
+Voice: Arthur (Qwen), v2 = 11 lines (VO2.txt): lines 1/2/3/6/7/8 rewritten shorter, lines 0/6/8/9 brisk retakes, all lines atempo 1.06; line 4 = brisk take a.
 Music: sonilo bed, 62 s, brand-new (the first 50 s bed is in `public/takes/`, unused).
 
-**Status: FIRST CUT delivered for curation Sep 24 2026 12:10 PM PT. Not posted.**
+**Status: v2 delivered Sep 24 2026 ~1:05 PM PT — people in the retro scenes (owner: 'too AI… add the people factor'), 46.5 s (was 59), phone screen fixed. Not posted.**
 
-## Beats
+## Beats (v2)
 
 | t | Beat | Source |
 |---|---|---|
-| 0–4.6 | Kitchen wall phone, THE OLD WAY kicker — "Back then, if you needed somebody in Lompoc… you asked." | clip-0 (Seedance) |
-| 4.9–8.9 | Phone book, page lifting — "Or you went page by page through the phone book." | clip-1 |
-| 9.2–13.1 | Blank flyer on a pole — "Or you trusted a flyer on a pole on H Street." | clip-2 |
-| 13.4–17.0 | Classifieds + coffee — "Or the classifieds — if you got the paper that week." | clip-5 (regenerated without steam; clip-3 had generated steam and is unused) |
-| 17.3–22.0 | Storefront at dusk, balloons, nobody — "And if you were the one opening the doors… you hoped somebody would notice." | clip-4 |
-| 22.3–25.8 | Phone lights up with the live home page — "Now, Lompoc has one place." | ui/home-0 |
-| 26.1–27.3 | Search "tacos" → results | ui/search-0 → search-1 |
-| 27.6–32.8 | In&Out Tires page → tap-to-call — "Who's open. Who's near. Who's got a deal this week." | ui/biz-0 → biz-1 |
-| 33.1–38.3 | Map → This Week — "Every business in town, on one map. Every event, in one week." | ui/map-0 → week-0 |
-| 38.6–46.8 | Montage: Eddie's Grill · Hangar 7 · Lompoc Valley Florist · In&Out Tires · Focus PT — "…this is new. Your business, your page, in front of the whole valley." | their own cover photos |
-| 47.1–53.7 | 62,000+ page views this month · 460 businesses · 57 events coming up | designed card |
-| 54.0–58.5 | Get found by the whole valley. · lompoclocals.com | end card |
+| 0–4.4 | A woman at the avocado wall phone, kids at the table behind — "Back then, if you needed somebody in Lompoc… you asked." | clip-6 |
+| 4.6–7.5 | A man at the diner counter, finger down the phone book, waitress passing — "Or you went through the phone book." | clip-7 |
+| 7.7–10.6 | Two neighbors at the pole flyer, a kid on a bike — "Or a flyer on a pole on H Street." | clip-8 |
+| 10.8–14.6 | Wide diner: regulars at the counter, a man with the paper by the window — "Or the classifieds, if you got the paper." | clip-12 (clip-9 and clip-11 rejected: fake newsprint facing camera) |
+| 14.8–19.4 | The owner in his apron in the lit doorway, balloons, empty sidewalk — "…you hoped somebody would notice." | clip-10 |
+| 19.6–23.0 | Phone lights up: home page — "Now, Lompoc has one place." | ui/home-0 |
+| 23.2–27.7 | Search "tacos" → In&Out Tires with tap-to-call — "Type what you need. Who's open, who's near, who's got a deal." | ui/search-0 → biz-1 |
+| 27.9–32.1 | Map → This Week — "Every business. Every event. One place." | ui/map-0 → week-0 |
+| 32.3–37.8 | Montage: Eddie's · Hangar 7 · Florist · In&Out · Focus PT — "…this is new. Your page, in front of the whole valley." | their cover photos |
+| 38.0–44.3 | 62,000+ page views this month · 460 · 57 | card |
+| 44.5–46.5 | Get found by the whole valley. · lompoclocals.com | end card |
+
+Generated people rule for this piece (owner's ask, Sep 24): people mid-distance, turned or backs to camera; no close faces; anything with fake print facing the lens is rejected.
 
 ## Fact table
 
@@ -32,14 +33,15 @@ Music: sonilo bed, 62 s, brand-new (the first 50 s bed is in `public/takes/`, un
 | 460 businesses | `businesses` status approved | Sep 24 |
 | 57 events coming up | `events` approved, starts_at > now | Sep 24 |
 
-## Credits (Higgsfield, balance 787.45 → 765.61)
+## Credits (Higgsfield, balance 787.45 → 748.52)
 
 | Item | Credits |
 |---|---|
-| Seedance 1.5 × 6 (5 planned + the no-steam retake), 9:16 4 s 720p — ledger 2.40 each (preflight said 4.80) | 14.40 |
-| sonilo bed 50 s (unused) + 62 s | ≈ 6.0 |
-| Arthur: 12 lines + 2 retakes of line 4 | ≈ 0.5 |
-| **Total** | **21.84** of the 33 cap |
+| v1: Seedance × 6 (objects-only clips; clip-0/1/2/4/5 unused in v2, clip-3 rejected for steam) | 14.40 |
+| v2: Seedance × 5 people-in-frame clips + 2 classifieds retakes (clip-11 rejected, clip-12 used) | 16.80 |
+| sonilo beds: 50 s (unused) + 62 s | ≈ 6.0 |
+| Arthur: 12 + 6 + 4 + 2 lines | ≈ 1.7 |
+| **Total, both versions** | **38.93** |
 
 ## Captions — DRAFT, pending the owner's curation of the cut
 
