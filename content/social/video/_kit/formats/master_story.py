@@ -25,9 +25,9 @@ from ..compose import Audio, Scene, Sub, Video
 from .member_spotlight import _clip_len, _exit, _media_src, _video_layers
 
 FIELD = f"radial-gradient(ellipse 90% 70% at 50% 40%, #7d1590 0%, {B.PURPLE} 45%, #3a0743 100%)"
-FILM = "filter:sepia(0.48) contrast(1.06) brightness(0.86) saturate(0.92)"
+FILM = "filter:contrast(1.03) brightness(0.94) saturate(0.96)"
 CAPTURE_W, CAPTURE_H = 1179, 1980   # Playwright "iPhone 14 Pro" viewport is 393×660 css (no browser chrome), at 3x
-BAR = 7               # letterbox bar height, % of frame
+BAR = 10              # letterbox bar height, % of frame
 
 THEN, TURN, UI, MONTAGE, STAT, END = 4.2, 3.8, 4.0, 8.0, 6.0, 4.5
 
@@ -95,25 +95,43 @@ def build(d: dict) -> Video:
         scenes.append(Scene(cid, 0.0, dur, _styled(html), js, lines=(len(subs),)))
         subs.append(Sub(0.0, dur, cap, say=say))
 
-    # ── THEN: five clips under film grade and bars ─────────────────────────
+    # ── THEN: filmed clips under bars; a designed close-up can cut in mid-beat ──
     for i, bt in enumerate(d["then"]):
         def html(cid, dur, size, bt=bt, i=i):
             g = B.geom(size)
+            tall = g["h"] > 1400
             src, kind = _media_src(assets, bt["media"])
-            grade = FILM + f";filter:brightness({bt.get('brightness', 1.0)})" if False else FILM
-            art = (_video_layers(cid, src, dur, bt.get("at", 0.0), _clip_len(assets, bt["media"]), grade)
-                   if kind == "video" else f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{grade}" />')
-            kicker = (f'<div style="position:absolute; left:{g["side"]}px; top:{BAR + 4}%; z-index:36"><span class="kicker" id="{cid}-k" style="opacity:{1 if i == 0 else 0}">{bt["kicker"]}</span></div>'
-                      if bt.get("kicker") else "")
-            return f'''{art}
-      <div class="scrim" style="opacity:0.55"></div>
+            head = float(bt.get("title_hold", 0.0))          # a title card before the clip
+            body = dur - head
+            art = (_video_layers(cid, src, body, bt.get("at", 0.0), _clip_len(assets, bt["media"]), FILM)
+                   if kind == "video" else f'<img id="{cid}-bg" class="cover" src="{src}" alt="" style="{FILM}" />')
+            if head:
+                art = art.replace('data-start="0"', f'data-start="{head:.2f}"', 1)
+            insert = ""
+            if bt.get("insert"):
+                isrc, _ = _media_src(assets, bt["insert"])
+                insert = f'<img id="{cid}-ins" class="cover" src="{isrc}" alt="" style="opacity:0; z-index:32; {FILM}" />'
+            title = ""
+            if bt.get("title"):
+                title = (f'<div id="{cid}-card" style="position:absolute; inset:0; z-index:40; background:#07040a; display:flex; align-items:center; justify-content:center; text-align:center">'
+                         f'<span style="font-family:Georgia,\'Times New Roman\',serif; color:#e8dcc0; font-size:{72 if tall else 56}px; letter-spacing:6px; text-transform:uppercase; line-height:1.3; padding:0 {g["side"]}px">{bt["title"]}</span></div>')
+            return f'''<style>[data-composition-id="{cid}"] .mark {{ display:none }}</style>
+      {art}{insert}
+      <div class="scrim" style="opacity:0.5"></div>
       {_bars()}
-      {kicker}'''
+      {title}'''
 
         def js(cid, dur, size=None, bt=bt):
+            head = float(bt.get("title_hold", 0.0))
             out = f'tl.fromTo("#{cid}-bg", {{ scale:1.0 }}, {{ scale:1.06, duration:{dur:.2f}, ease:"none", transformOrigin:"50% 50%" }}, 0);'
-            if bt.get("kicker"):
-                out += _exit(cid, dur, ("k",))
+            if bt.get("title"):
+                # A real opacity tween at t=0 so the checker knows the card is meant to be the first frame.
+                out += (f'tl.fromTo("#{cid}-card", {{ autoAlpha:0 }}, {{ autoAlpha:1, duration:0.06, ease:"none" }}, 0);'
+                        f'tl.to("#{cid}-card", {{ autoAlpha:0, duration:0.10, ease:"none" }}, {head:.2f});')
+            if bt.get("insert"):
+                at = float(bt.get("cut_at", dur * 0.45))
+                out += (f'tl.set("#{cid}-ins", {{ opacity:1 }}, {at:.2f});'
+                        f'tl.fromTo("#{cid}-ins", {{ scale:{bt.get("insert_zoom", [1.0, 1.22])[0]} }}, {{ scale:{bt.get("insert_zoom", [1.0, 1.22])[1]}, duration:{dur - at:.2f}, ease:"power1.inOut", transformOrigin:"{bt.get("insert_origin", "50% 42%")}" }}, {at:.2f});')
             return out
         add(f"s{i}-then", THEN, html, js, bt["say"], bt.get("cap", bt["say"]))
 
