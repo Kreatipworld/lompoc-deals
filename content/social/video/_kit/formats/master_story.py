@@ -113,7 +113,7 @@ def build(d: dict) -> Video:
                 insert = f'<img id="{cid}-ins" class="cover" src="{isrc}" alt="" style="opacity:0; z-index:32; {FILM}" />'
             title = ""
             if bt.get("title"):
-                title = (f'<div id="{cid}-card" style="position:absolute; inset:0; z-index:40; background:#07040a; display:flex; align-items:center; justify-content:center; text-align:center">'
+                title = (f'<div id="{cid}-card" style="position:absolute; inset:0; z-index:40; opacity:0; background:#07040a; display:flex; align-items:center; justify-content:center; text-align:center">'
                          f'<span style="font-family:Georgia,\'Times New Roman\',serif; color:#e8dcc0; font-size:{72 if tall else 56}px; letter-spacing:6px; text-transform:uppercase; line-height:1.3; padding:0 {g["side"]}px">{bt["title"]}</span></div>')
             return f'''<style>[data-composition-id="{cid}"] .mark {{ display:none }}</style>
       {art}{insert}
