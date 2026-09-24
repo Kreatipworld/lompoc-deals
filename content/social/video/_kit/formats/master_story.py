@@ -37,9 +37,12 @@ def _css(cid: str, size) -> str:
     s = f'[data-composition-id="{cid}"]'
     tall = g["h"] > 1400
     # The phone: centred by computed left, never a transform. Screen is 393:852.
-    pw = round(g["w"] * (0.46 if tall else 0.22))
-    ph = round(pw * 852 / 393)
-    ptop = round(g["h"] * (0.07 if tall else 0.10))
+    pw = round(g["w"] * (0.52 if tall else 0.24))
+    pad = round(pw * 0.028)
+    # The screen inside the bezel is exactly 393:852 (the capture's shape), so a
+    # viewport capture fills it edge to edge — no strip left at the bottom.
+    ph = round((pw - 2 * pad) * 852 / 393) + 2 * pad
+    ptop = round(g["h"] * (0.06 if tall else 0.10))
     return f"""
       {s} .bar {{ position:absolute; left:0; right:0; height:{BAR}%; background:#07040a; z-index:33; }}
       {s} .bar.top {{ top:0 }} {s} .bar.bot {{ bottom:0 }}
@@ -56,10 +59,10 @@ def _css(cid: str, size) -> str:
       {s} .rowsmall {{ color:#fff; font-weight:700; font-size:{40 if tall else 32}px; }}
       {s} .cardchip {{ display:inline-block; background:{B.GREEN}; color:#fff; font-weight:800; font-size:30px; letter-spacing:4px; padding:12px 26px; border-radius:10px; text-transform:uppercase; }}
       {s} .desk {{ position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 60%, #2a1630 0%, #150a19 55%, #07040a 100%); }}
-      {s} .phone {{ position:absolute; left:{round((g["w"] - pw) / 2)}px; top:{ptop}px; width:{pw}px; height:{ph}px; z-index:34;
-        background:#0b0b0d; border-radius:{round(pw * 0.14)}px; padding:{round(pw * 0.028)}px; box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.08); }}
+      {s} .phone {{ position:absolute; box-sizing:border-box; left:{round((g["w"] - pw) / 2)}px; top:{ptop}px; width:{pw}px; height:{ph}px; z-index:34;
+        background:#0b0b0d; border-radius:{round(pw * 0.14)}px; padding:{pad}px; box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.08); }}
       {s} .screen {{ position:relative; width:100%; height:100%; overflow:hidden; border-radius:{round(pw * 0.115)}px; background:#000; }}
-      {s} .screen img {{ position:absolute; left:0; top:0; width:100%; height:auto; display:block; will-change:transform; }}
+      {s} .screen img {{ position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; object-position:top; display:block; will-change:transform; }}
       {s} .glow {{ position:absolute; left:50%; top:{ptop + round(ph / 2)}px; width:{round(pw * 1.9)}px; height:{round(pw * 1.9)}px; margin-left:-{round(pw * 0.95)}px; margin-top:-{round(pw * 0.95)}px; border-radius:50%;
         background:radial-gradient(circle, rgba(239,198,24,0.22), rgba(101,12,117,0.18) 45%, rgba(0,0,0,0) 68%); opacity:0; z-index:32; }}
       {s} .namechip {{ display:inline-block; background:rgba(20,10,23,0.72); color:#fff; font-weight:800; font-size:{44 if tall else 36}px; letter-spacing:-0.5px; padding:16px 30px; border-radius:14px; border-left:8px solid {B.GOLD}; }}
@@ -150,7 +153,7 @@ def build(d: dict) -> Video:
         def js(cid, dur, size=None, bt=bt):
             g = B.geom(size or B.SIZES["9x16"])
             tall = g["h"] > 1400
-            pw = round(g["w"] * (0.46 if tall else 0.22)) - 2 * round(g["w"] * (0.46 if tall else 0.22) * 0.028)
+            pw = round(g["w"] * (0.52 if tall else 0.24)) - 2 * round(g["w"] * (0.52 if tall else 0.24) * 0.028)
             k = pw / CAPTURE_W
             y0, y1 = bt.get("scroll", [0, 0])
             hold = 0.7
