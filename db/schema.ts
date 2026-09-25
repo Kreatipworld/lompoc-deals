@@ -70,6 +70,9 @@ export const users = pgTable("users", {
   zip: varchar("zip", { length: 20 }),
   interestsJson: jsonb("interests_json"),
   notificationEmails: boolean("notification_emails").notNull().default(true),
+  // Lompoc Sales (Sep 2026): set by an admin when a seller abuses the marketplace;
+  // a blocked user cannot post a listing. NULL = in good standing.
+  salesBlockedAt: timestamp("sales_blocked_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
@@ -757,6 +760,113 @@ export const footballGames = pgTable(
     schoolUrlIdx: uniqueIndex("football_games_school_url_idx").on(t.school, t.maxprepsUrl),
   })
 )
+
+// ---------- Lompoc Sales (marketplace) ----------
+// docs/superpowers/specs/2026-09-25-sales-marketplace-design.md. A local posts a
+// garage sale, a used couch, a truck; an admin approves it; buyers reach the seller
+// through an email relay. The seller's address never leaves the server.
+export const saleKind = pgEnum("sale_kind", ["item", "garage-sale", "vehicle"])
+export const saleStatus = pgEnum("sale_status", [
+  "pending",
+  "active",
+  "sold",
+  "expired",
+  "hidden",
+  "rejected",
+])
+
+export type SaleVehicleAttrs = {
+  year?: number
+  make?: string
+  model?: string
+  mileage?: number
+  transmission?: "automatic" | "manual"
+}
+
+export const saleListings = pgTable(
+  "sale_listings",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    kind: saleKind("kind").notNull(),
+    category: varchar("category", { length: 32 }).notNull(),
+    title: varchar("title", { length: 120 }).notNull(),
+    description: text("description").notNull(),
+    descriptionEs: text("description_es"),
+    priceCents: integer("price_cents"),
+    priceType: varchar("price_type", { length: 8 }).notNull().default("fixed"), // fixed | obo | free
+    condition: varchar("condition", { length: 12 }), // new | like-new | good | fair
+    attrs: jsonb("attrs").$type<SaleVehicleAttrs>(),
+    photos: jsonb("photos").$type<string[]>().notNull().default([]),
+    address: text("address"),
+    area: varchar("area", { length: 60 }),
+    lat: doublePrecision("lat"),
+    lng: doublePrecision("lng"),
+    startsAt: timestamp("starts_at", { withTimezone: true }),
+    endsAt: timestamp("ends_at", { withTimezone: true }),
+    contactPhone: varchar("contact_phone", { length: 30 }),
+    showPhone: boolean("show_phone").notNull().default(false),
+    status: saleStatus("status").notNull().default("pending"),
+    rejectReason: text("reject_reason"),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    viewCount: integer("view_count").notNull().default(0),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    approvedBy: integer("approved_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    statusExpiresIdx: index("sale_listings_status_expires_idx").on(t.status, t.expiresAt),
+    categoryStatusIdx: index("sale_listings_category_status_idx").on(t.category, t.status),
+    userIdx: index("sale_listings_user_idx").on(t.userId),
+  })
+)
+
+// Buyer → seller, relayed by email (reply-to = buyer). One row per message so the
+// per-listing / per-email daily rate limit is a count, not a guess.
+export const saleMessages = pgTable("sale_messages", {
+  id: serial("id").primaryKey(),
+  listingId: integer("listing_id")
+    .notNull()
+    .references(() => saleListings.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 200 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  message: text("message").notNull(),
+  sourcePath: varchar("source_path", { length: 300 }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  emailedAt: timestamp("emailed_at", { withTimezone: true }),
+})
+
+// "Report this listing" — phase 2 UI; the table ships with phase 1 so the schema is settled.
+export const saleReports = pgTable("sale_reports", {
+  id: serial("id").primaryKey(),
+  listingId: integer("listing_id")
+    .notNull()
+    .references(() => saleListings.id, { onDelete: "cascade" }),
+  reporterUserId: integer("reporter_user_id").references(() => users.id, { onDelete: "set null" }),
+  reporterEmail: varchar("reporter_email", { length: 320 }),
+  reason: varchar("reason", { length: 40 }).notNull(), // scam | prohibited | wrong-category | duplicate | other
+  note: text("note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+})
+
+// One-click "verify your email" links. Signup never set users.email_verified
+// (0 of 69 accounts on Sep 25 2026), and a verified address is the price of
+// posting a sale — so the first post attempt sends one of these.
+export const emailVerificationTokens = pgTable("email_verification_tokens", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  token: varchar("token", { length: 100 }).notNull().unique(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+})
 
 // ---------- bug reports ----------
 // "Report a bug" from the error page, the 404 page, or the footer. Anyone can file one

@@ -111,6 +111,17 @@ const nextConfig = {
       { source: "/newsletter", destination: "/subscribe", permanent: true },
       { source: "/en/newsletter", destination: "/subscribe", permanent: true },
       { source: "/es/newsletter", destination: "/es/subscribe", permanent: true },
+      // Sep 25 2026: /garage-sales grew into Lompoc Sales (/sales). The old
+      // browse, detail and post URLs live on as permanent redirects.
+      { source: "/garage-sales", destination: "/sales/c/garage-sales", permanent: true },
+      { source: "/en/garage-sales", destination: "/sales/c/garage-sales", permanent: true },
+      { source: "/es/garage-sales", destination: "/es/sales/c/garage-sales", permanent: true },
+      { source: "/garage-sales/post", destination: "/sales/post", permanent: true },
+      { source: "/en/garage-sales/post", destination: "/sales/post", permanent: true },
+      { source: "/es/garage-sales/post", destination: "/es/sales/post", permanent: true },
+      { source: "/garage-sales/:id(\\d+)", destination: "/sales/:id", permanent: true },
+      { source: "/en/garage-sales/:id(\\d+)", destination: "/sales/:id", permanent: true },
+      { source: "/es/garage-sales/:id(\\d+)", destination: "/es/sales/:id", permanent: true },
       { source: "/grow", destination: "/signup/business", permanent: false },
       { source: "/en/grow", destination: "/signup/business", permanent: false },
       { source: "/es/grow", destination: "/es/signup/business", permanent: false },

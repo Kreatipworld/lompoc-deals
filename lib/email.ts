@@ -1472,3 +1472,7 @@ export async function sendBroadcastEmail(
     return { ok: false, error: e instanceof Error ? e.message : "Send failed" }
   }
 }
+
+// Shared pieces for feature email modules (lib/sales-email.ts): the branded
+// shell, the escaper, the sender, and the site URL — one look for every mail.
+export { welcomeHtml as brandedEmailHtml, escapeHtml, getResend, siteUrl as emailSiteUrl, FROM_ADDRESS }

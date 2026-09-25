@@ -27,7 +27,8 @@
     "test:analytics": "node --env-file=.env.local node_modules/.bin/tsx lib/analytics/test-track.ts",
     "test:football-facts": "node --env-file=.env.local node_modules/.bin/tsx lib/football-fact-sheet.test.ts && node --env-file=.env.local node_modules/.bin/tsx scripts/check-football-facts.ts",
     "translate:content": "node --env-file=.env.local node_modules/.bin/tsx scripts/translate-content.ts",
-    "test:claim-transfer": "node_modules/.bin/tsx lib/claim-transfer.test.ts"
+    "test:claim-transfer": "node_modules/.bin/tsx lib/claim-transfer.test.ts",
+    "test:sales": "node_modules/.bin/tsx lib/sales.test.ts && DATABASE_URL=postgresql://u:p@localhost.test/db node_modules/.bin/tsx lib/sales-email.test.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.71",

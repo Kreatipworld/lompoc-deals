@@ -4,7 +4,7 @@ import { z } from "zod"
 import { and, eq, getTableColumns, gt, isNull, ne, or, sql, type SQL } from "drizzle-orm"
 import type { PgColumn, PgTable } from "drizzle-orm/pg-core"
 import { db } from "@/db/client"
-import { activities, blogPosts, businesses, deals, events, garageSales } from "@/db/schema"
+import { activities, blogPosts, businesses, deals, events, garageSales, saleListings } from "@/db/schema"
 
 /**
  * Automatic Spanish for database content.
@@ -120,6 +120,18 @@ export const JOBS: Job[] = [
     where: sql`true`,
     model: SHORT_MODEL,
     batchSize: 6,
+  },
+  {
+    // Lompoc Sales: the approval action translates immediately; this is the
+    // backstop for the ones it missed (no key, model error). Active only —
+    // nothing is paid for a listing that never got approved.
+    table: "sale_listings",
+    tbl: saleListings,
+    idCol: saleListings.id,
+    fields: [{ en: saleListings.description, es: saleListings.descriptionEs, name: "description" }],
+    where: eq(saleListings.status, "active"),
+    model: SHORT_MODEL,
+    batchSize: 15,
   },
   {
     table: "garage_sales",

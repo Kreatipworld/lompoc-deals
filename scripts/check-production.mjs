@@ -494,7 +494,7 @@ if (!/lompoclocals\.com/.test(SITE)) {
 } else try {
   // Pages that read searchParams (/news, /homes, /deals) or the viewer (/biz, /category) are
   // dynamic by design; these five have no per-request input and must come from the edge.
-  const pages = ["/", "/football", "/this-week", "/businesses", "/map"]
+  const pages = ["/", "/football", "/this-week", "/businesses", "/map", "/sales"]
   let bad = 0
   for (const p of pages) {
     // Two fetches: the first may MISS (fills the cache); the second must be served from the edge.
@@ -543,7 +543,7 @@ try {
     "/news", "/es/news", "/this-week", "/es/this-week", "/feed", "/es/feed",
     "/locals", "/es/locals", "/partners", "/es/partners", "/hotels", "/es/hotels",
     "/homes", "/es/homes", "/football", "/es/football", "/things-to-do", "/es/things-to-do",
-    "/events", "/es/events", "/search", "/es/search", "/blog", "/garage-sales", "/es/garage-sales",
+    "/events", "/es/events", "/search", "/es/search", "/blog", "/garage-sales", "/es/garage-sales", "/sales", "/es/sales",
     "/activities", "/es/activities", "/realtors", "/contact", "/es/contact", "/subscribe", "/es/subscribe",
   ]
   const GOES = [
@@ -572,6 +572,57 @@ try {
 } catch (e) {
   fail(`typed URLs: ${e.message}`)
 }
+
+console.log("\n20. Lompoc Sales — the marketplace renders, its shelves answer, the old garage-sales URLs land on it (owner: 'we are trying to fight with the Facebook groups')")
+try {
+  const SALES_PAGES = [
+    { p: "/sales", marker: "data-sales-browser" },
+    { p: "/es/sales", marker: "data-sales-browser" },
+    { p: "/sales/c/vehicles", marker: "data-sales-browser" },
+    { p: "/sales/c/garage-sales", marker: "data-sales-browser" },
+    { p: "/es/sales/c/vehicles", marker: "data-sales-browser" },
+  ]
+  for (const { p, marker } of SALES_PAGES) {
+    const res = await fetch(`${SITE}${p}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "follow", cache: "no-store" })
+    const body = await res.text()
+    if (!res.ok) fail(`${p} → ${res.status}`)
+    else if (body.includes(ERROR_BOUNDARY_MARKER)) fail(`${p} → 200 but the error boundary is showing`)
+    else if (!body.includes(marker)) fail(`${p} → 200 but missing "${marker}"`)
+    else pass(`${p} renders`)
+  }
+  // A listing that is live must render with its contact form; a hidden one must 404, not leak.
+  const [live] = await sql`select id from sale_listings where status = 'active' and expires_at > now() order by approved_at desc limit 1`
+  if (live) {
+    const res = await fetch(`${SITE}/sales/${live.id}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, cache: "no-store" })
+    const body = await res.text()
+    res.ok && body.includes('data-sale-message="open"') && body.includes("data-sale-seller")
+      ? pass(`/sales/${live.id} shows the listing with Message seller`)
+      : fail(`/sales/${live.id} → ${res.status}${res.ok ? " without the message button / seller card" : ""}`)
+  } else console.log("  – no live listing yet (post → approve to arm this check)")
+  const [hidden] = await sql`select id from sale_listings where status in ('pending','hidden','rejected') order by id desc limit 1`
+  if (hidden) {
+    const res = await fetch(`${SITE}/sales/${hidden.id}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, cache: "no-store" })
+    res.status === 404 ? pass(`/sales/${hidden.id} (not public) → 404`) : fail(`/sales/${hidden.id} is ${res.status} — a non-public listing must 404`)
+  }
+  const [bad] = await sql`select count(*)::int n from sale_listings where kind = 'garage-sale' and status = 'active' and address is not null and address !~ '9343[678]'`
+  bad && bad.n > 0 ? fail(`${bad.n} live garage sale(s) with an address outside 93436/37/38`) : pass("every live garage sale is inside the ZIP fence")
+  const GOES = [
+    ["/garage-sales", "/sales/c/garage-sales"],
+    ["/es/garage-sales", "/es/sales/c/garage-sales"],
+    ["/garage-sales/post", "/sales/post"],
+  ]
+  for (const [from, to] of GOES) {
+    const res = await fetch(`${SITE}${from}`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "manual", cache: "no-store" })
+    const loc = res.headers.get("location") || ""
+    res.status === 308 || res.status === 301
+      ? loc.replace(/^https?:\/\/[^/]+/, "") === to ? pass(`${from} → ${res.status} ${to}`) : fail(`${from} → ${res.status} ${loc} (expected ${to})`)
+      : fail(`${from} → ${res.status} (expected a permanent redirect to ${to})`)
+  }
+  // Posting needs an account: the form must bounce to login, never render for a stranger.
+  const post = await fetch(`${SITE}/sales/post`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "manual", cache: "no-store" })
+  const postLoc = post.headers.get("location") || ""
+  post.status >= 300 && post.status < 400 && /\/login/.test(postLoc) ? pass("/sales/post sends a stranger to /login") : fail(`/sales/post → ${post.status} ${postLoc} for a stranger (must redirect to login)`)
+} catch (e) { fail(`lompoc sales: ${e.message}`) }
 
 console.log(
   failures === 0

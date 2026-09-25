@@ -24,10 +24,15 @@ export function BusinessMapLoader({
   lat,
   lng,
   name,
+  card,
+  closeLabel,
 }: {
   lat: number
   lng: number
   name: string
+  /** Shown on pin tap (popup on desktop, bottom sheet on phones). */
+  card?: React.ReactNode
+  closeLabel?: string
 }) {
-  return <BusinessMap lat={lat} lng={lng} name={name} />
+  return <BusinessMap lat={lat} lng={lng} name={name} card={card} closeLabel={closeLabel} />
 }

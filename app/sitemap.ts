@@ -93,7 +93,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/blog",
     "/news",
     "/feed",
-    "/garage-sales",
+    "/sales",
     "/this-week",
     "/events",
     "/hotels",
@@ -113,13 +113,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency:
-      path === "/feed" || path === "/garage-sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" || path === "/homes" || path === "/football" ? ("daily" as const)
+      path === "/feed" || path === "/sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" || path === "/homes" || path === "/football" ? ("daily" as const)
       : path === "/contact" || path === "/privacy" || path === "/terms" ? ("monthly" as const)
       : ("weekly" as const),
     priority:
       path === "" ? 1
       : path === "/news" || path === "/events" ? 0.9
-      : path === "/feed" || path === "/garage-sales" || path === "/blog" || path === "/deals" || path === "/things-to-do" || path === "/homes" ? 0.8
+      : path === "/feed" || path === "/sales" || path === "/blog" || path === "/deals" || path === "/things-to-do" || path === "/homes" ? 0.8
       : path === "/contact" ? 0.4
       : path === "/privacy" || path === "/terms" ? 0.3
       : 0.7,
