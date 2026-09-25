@@ -24,7 +24,7 @@ def _css(cid, size):
       {s} .num {{ position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:{"38%" if tall else "30%"}; z-index:36; text-align:center;
         color:{B.GOLD}; font-weight:800; font-size:{230 if tall else 170}px; line-height:1; letter-spacing:-8px; font-variant-numeric:tabular-nums;
         text-shadow:0 10px 40px rgba(0,0,0,0.5); }}
-      {s} .line {{ position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:{"56%" if tall else "52%"}; z-index:36; text-align:center;
+      {s} .line {{ position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:{"53%" if tall else "48%"}; z-index:36; text-align:center;
         color:#fff; font-weight:800; font-size:{56 if tall else 44}px; line-height:1.1; letter-spacing:-1.5px; }}
       {s} .ask {{ position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:{"36%" if tall else "28%"}; z-index:36; text-align:center;
         color:#fff; font-weight:800; font-size:{110 if tall else 80}px; line-height:1.0; letter-spacing:-4px; }}
@@ -58,7 +58,8 @@ def build(d):
 
     # s2 — the slam
     def slam_html(cid, dur, size):
-        return f'<div class="field"></div><div class="num" id="{cid}-n" style="top:30%">{n:,}</div><div class="line" id="{cid}-l" style="opacity:0">{d["line"]}</div>'
+        # Same vertical position as the counter so the crossfade lands the figure on itself.
+        return f'<div class="field"></div><div class="num" id="{cid}-n">{n:,}</div><div class="line" id="{cid}-l" style="opacity:0">{d["line"]}</div>'
     def slam_js(cid, dur, size=None):
         return (f'tl.fromTo("#{cid}-n", {{ scale:1.35 }}, {{ scale:1, duration:0.35, ease:"expo.out", transformOrigin:"50% 50%" }}, 0);'
                 + S.rise(cid, "l", 0.45, dy=16, dur=0.4))

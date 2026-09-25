@@ -88,7 +88,9 @@ def main():
         if a.merge:
             cmd += ["--merge", a.merge]
         run(cmd, cwd=REPO)
-        run(["python3", os.path.join(KIT, "finalize.py"), work, str(a.gap)], cwd=REPO)
+        # A silent format (no voiceover lines) has nothing to fold in or re-time.
+        if any(f.startswith("line-") and f.endswith(".wav") for f in os.listdir(pub)):
+            run(["python3", os.path.join(KIT, "finalize.py"), work, str(a.gap)], cwd=REPO)
 
         print(f"\n  == {ratio}: check ==")
         run(["npx", "--yes", HF, "check"], cwd=work)
