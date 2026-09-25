@@ -27,7 +27,7 @@ export const CARD = "rounded-2xl border border-[#e3dacb] bg-white transition hov
  */
 export function Sec({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (
-    <section id={id} className={`scroll-mt-24 py-7 sm:py-10 ${className}`}>
+    <section id={id} className={`scroll-mt-[120px] py-7 sm:py-10 ${className}`}>
       {children}
     </section>
   )
