@@ -3414,7 +3414,9 @@
       "noMatch": "Nothing matches “{q}”.",
       "clear": "Clear",
       "posted": "Posted {ago}",
-      "categoriesHeading": "Browse by category"
+      "categoriesHeading": "Browse by category",
+      "emptyTitle": "Be the first to post",
+      "noMatchTitle": "Nothing matches yet"
     },
     "card": {
       "free": "FREE",

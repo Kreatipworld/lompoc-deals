@@ -3414,7 +3414,9 @@
       "noMatch": "Nada coincide con “{q}”.",
       "clear": "Borrar",
       "posted": "Publicado {ago}",
-      "categoriesHeading": "Por categoría"
+      "categoriesHeading": "Por categoría",
+      "emptyTitle": "Sé el primero en publicar",
+      "noMatchTitle": "Nada coincide todavía"
     },
     "card": {
       "free": "GRATIS",

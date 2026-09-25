@@ -8,7 +8,7 @@ import { SaleCard } from "@/components/sale-card"
 import { SALE_CATEGORIES, type SaleCategory } from "@/lib/sales"
 import type { SaleCardData } from "@/lib/sales-queries"
 
-type Filter = "free" | "under100" | "vehicles" | null
+type Filter = "free" | "under100" | null
 
 /** Word-prefix match over title + description (never a raw substring — "search matches words"). */
 function matches(item: SaleCardData, q: string): boolean {
@@ -32,15 +32,16 @@ export function SalesBrowser({ items, category }: { items: SaleCardData[]; categ
     return items.filter((i) => {
       if (filter === "free" && !(i.priceType === "free" || i.category === "free")) return false
       if (filter === "under100" && !(i.priceCents != null && i.priceCents < 10_000)) return false
-      if (filter === "vehicles" && i.kind !== "vehicle") return false
       return matches(i, q)
     })
   }, [items, q, filter])
 
   const chip = (active: boolean) =>
-    `inline-flex shrink-0 items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition ${
-      active ? "border-primary bg-primary text-primary-foreground" : "border-border/80 bg-card hover:bg-accent"
+    `inline-flex shrink-0 items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-200 active:scale-95 ${
+      active ? "border-primary bg-primary text-primary-foreground shadow-[0_6px_16px_rgba(101,12,117,0.25)]" : "border-border/80 bg-card hover:border-primary/40 hover:bg-accent"
     }`
+  // A key that changes whenever the visible set changes, so the grid re-enters softly instead of snapping.
+  const gridKey = `${category ?? "all"}|${filter ?? ""}|${q.trim().toLowerCase()}`
 
   return (
     <div data-sales-browser>
@@ -79,7 +80,6 @@ export function SalesBrowser({ items, category }: { items: SaleCardData[]; categ
             [
               ["free", t("browse.filterFree")],
               ["under100", t("browse.filterUnder100")],
-              ["vehicles", t("browse.filterVehicles")],
             ] as [Exclude<Filter, null>, string][]
           ).map(([key, label]) => (
             <button key={key} type="button" onClick={() => setFilter((f) => (f === key ? null : key))} className={chip(filter === key)} aria-pressed={filter === key}>
@@ -94,18 +94,28 @@ export function SalesBrowser({ items, category }: { items: SaleCardData[]; categ
       </p>
 
       {shown.length === 0 ? (
-        <div className="mt-4 rounded-2xl border border-dashed bg-secondary/30 px-6 py-12 text-center">
-          <p className="text-muted-foreground">
+        <div key={gridKey} className="mt-4 animate-in fade-in duration-300 rounded-3xl border border-dashed border-primary/25 bg-gradient-to-b from-secondary/40 to-transparent px-6 py-14 text-center">
+          <p className="font-display text-2xl font-bold tracking-tight">{q ? t("browse.noMatchTitle") : t("browse.emptyTitle")}</p>
+          <p className="mx-auto mt-2 max-w-md text-muted-foreground">
             {q ? t("browse.noMatch", { q }) : category ? t(`categories.${category}.empty`) : t("browse.empty")}
           </p>
-          <Link href="/sales/post" className="mt-4 inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
-            {q ? t("postCta") : t("browse.emptyCta")}
-          </Link>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Link href="/sales/post" className="inline-flex min-h-[44px] items-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 active:scale-95">
+              {q ? t("postCta") : t("browse.emptyCta")}
+            </Link>
+            {(q || category) && (
+              <Link href="/sales" className="inline-flex min-h-[44px] items-center rounded-full border border-border/80 bg-card px-6 text-sm font-semibold transition hover:bg-accent">
+                {t("browse.all")}
+              </Link>
+            )}
+          </div>
         </div>
       ) : (
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+        <div key={gridKey} className="mt-4 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
           {shown.map((item, i) => (
-            <SaleCard key={item.id} item={item} priority={i < 4} />
+            <div key={item.id} className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both duration-300" style={{ animationDelay: `${Math.min(i, 11) * 35}ms` }}>
+              <SaleCard item={item} priority={i < 4} />
+            </div>
           ))}
         </div>
       )}
