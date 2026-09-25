@@ -51,10 +51,10 @@ def build(d):
         g = B.geom(size); tall = g["h"] > 1400
         badges = "".join(f'<img class="badge" id="{cid}-b{i}" src="{_media_src(assets, gm["badge"])[0]}" alt="" style="opacity:0" />' for i, gm in enumerate(games))
         return f'''<div class="field"></div>
-      <div class="centre">
+      <div class="centre" style="top:{"12%" if tall else "8%"}">
         <span class="chip" id="{cid}-chip" style="opacity:0">{d["week"]}</span>
         <div class="badges" style="margin-top:{40 if tall else 24}px">{badges}</div>
-        <span class="kick" id="{cid}-k" style="margin-top:{50 if tall else 30}px; opacity:0">GAME<br>NIGHT</span>
+        <span class="kick" id="{cid}-k" style="margin-top:{40 if tall else 24}px; font-size:{170 if tall else 130}px; opacity:0">GAME<br>NIGHT</span>
         <span class="sub gold" id="{cid}-s" style="margin-top:{26 if tall else 16}px; opacity:0">{d["open"]["sub"]}</span>
       </div>'''
     def open_js(cid, dur, size=None):
