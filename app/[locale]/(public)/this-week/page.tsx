@@ -11,6 +11,7 @@ import { PAGE_CONTAINER } from "@/lib/layout-constants"
 import { launchTitle } from "@/lib/launch-display"
 import { getWeekForecast } from "@/lib/weather"
 import { WeatherWeek } from "@/components/weather-week"
+import { EditionNav } from "@/components/edition-nav"
 import { getFootballSeason, upcomingGames, isFootballSeason } from "@/lib/football"
 import { getRecentBlogPosts, getNewListingsSince, getDealsEndingWithin, getDirectoryBusinesses } from "@/lib/queries"
 import { GamesBlock, NewsBlock, HomesBlock, EndingBlock, OpenLateBlock, openLateTonight, Sec, Head, Foot, CARD } from "./briefing"
@@ -145,6 +146,19 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
       : lead.deal.business.name
     : ""
 
+  // One chip per section actually on the page, in page order.
+  const navItems = [
+    games.length > 0 && { id: "games", label: t("gamesTitle") },
+    lead && { id: "lead", label: t("leadStory") },
+    events.length > 0 && { id: "calendar", label: t("calendarTitle") },
+    news.length > 0 && { id: "news", label: t("newsTitle") },
+    newHomes.length > 0 && { id: "homes", label: t("homesTitle") },
+    ending.length > 0 && { id: "ending", label: t("endingTitle") },
+    openLate.length > 0 && { id: "open-late", label: t("openLateTitle") },
+    deals.length > 0 && { id: "deals", label: t("dealsTitle") },
+    content.things.length > 0 && { id: "things", label: t("thingsTitle") },
+    content.partners.length > 0 && { id: "neighbors", label: t("neighborsTitle") },
+  ].filter((x): x is { id: string; label: string } => Boolean(x))
   return (
     <div className="min-h-screen bg-[#f7f3ec] text-[#1a1712]">
       {/* ── Weather: always the first thing on the page, never hidden ── */}
@@ -162,6 +176,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
         </div>
       </header>
 
+      <EditionNav items={navItems} label={t("nameplate")} />
       <main className={`${PAGE_CONTAINER} pb-10 sm:pb-14`}>
         {/* ── This week's games (in season only) ── */}
         <GamesBlock games={games} intl={intl} t={t} tf={tf} />
@@ -174,11 +189,11 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
           <>
             {/* ── Lead story: full-bleed image, title over a scrim ── */}
             {lead && (
-              <Sec>
+              <Sec id="lead">
                 <Head title={t("leadStory")} />
                 <Link href={leadHref} className="group relative mt-5 block overflow-hidden rounded-2xl bg-[#1a0a1f] text-white">
                   {leadImage ? (
-                    <SafeImage src={leadImage} alt={leadTitle} className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-[1.03] sm:h-[520px]" />
+                    <SafeImage src={leadImage} alt={leadTitle} optWidth={1080} loading="eager" fetchPriority="high" className="h-[360px] w-full object-cover transition duration-700 group-hover:scale-[1.03] sm:h-[520px]" />
                   ) : (
                     <div className="h-[360px] w-full bg-gradient-to-br from-[#650C75] to-[#2c0736] sm:h-[440px]" />
                   )}
@@ -199,7 +214,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
 
             {/* ── Calendar: timeline, day column left ── */}
             {events.length > 0 && (
-              <Sec>
+              <Sec id="calendar">
                 <Head title={t("calendarTitle")} />
                 <ol className="mt-5 overflow-hidden rounded-2xl border border-[#e3dacb] bg-white">
                   {events.slice(0, 8).map((e, i) => (
@@ -238,7 +253,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
 
             {/* ── Deals ── */}
             {deals.length > 0 && (
-              <Sec>
+              <Sec id="deals">
                 <Head title={t("dealsTitle")} />
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {deals.map((d) => (
@@ -247,6 +262,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                         <SafeImage
                           src={img(d.imageUrl ?? d.business.coverUrl) as string}
                           alt={`${d.title} — ${d.business.name}`}
+                          optWidth={256}
                           className="h-20 w-20 shrink-0 rounded-xl object-cover"
                         />
                       )}
@@ -268,7 +284,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
 
             {/* ── Things to do — swipeable ── */}
             {content.things.length > 0 && (
-              <Sec>
+              <Sec id="things">
                 <Head title={t("thingsTitle")} sub={t("swipeHint")} />
                 <div className="mt-5">
                   <EditionGallery label={t("thingsTitle")} prevLabel={t("prev")} nextLabel={t("next")}>
@@ -277,6 +293,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                         <SafeImage
                           src={img(thing.imageUrl) ?? ""}
                           alt={thing.title}
+                          optWidth={640}
                           className="h-44 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                           fallback={<div className="h-44 w-full bg-[#650C75]" />}
                         />
@@ -296,7 +313,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
 
             {/* ── Neighbors — swipeable ── */}
             {content.partners.length > 0 && (
-              <Sec>
+              <Sec id="neighbors">
                 <Head title={t("neighborsTitle")} sub={t("swipeHint")} />
                 <div className="mt-5">
                   <EditionGallery label={t("neighborsTitle")} prevLabel={t("prev")} nextLabel={t("next")}>
@@ -305,6 +322,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                         <SafeImage
                           src={img(p.coverUrl) ?? ""}
                           alt={p.name}
+                          optWidth={640}
                           className="h-44 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                           fallback={<div className="h-44 w-full bg-[#650C75]" />}
                         />

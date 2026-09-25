@@ -1,7 +1,6 @@
 import { Link } from "@/i18n/navigation"
 import { ArrowRight, Ticket } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
-import { Reveal } from "@/components/motion/reveal"
 import { FootballCountdown } from "@/components/football-countdown"
 import { newsCoverUrl } from "@/lib/news-cover"
 import { formatListingPriceShort, formatListingFacts } from "@/lib/listing-utils"
@@ -20,11 +19,17 @@ const BADGE: Record<string, string> = { lompoc: "/football/badge-braves.png", ca
 /* ── Shared edition primitives (one spacing scale, one card language) ── */
 export const CARD = "rounded-2xl border border-[#e3dacb] bg-white transition hover:border-[#650C75]/60 hover:shadow-[0_10px_30px_rgba(26,23,18,0.06)]"
 
-export function Sec({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+/**
+ * A section of the edition. Rendered visible from the first paint: the old
+ * scroll-triggered reveal hid every block until it scrolled into view, which on
+ * a phone reads as "the page is still loading" (owner, Sep 25 2026). `id` gives
+ * the quick-nav something to jump to.
+ */
+export function Sec({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (
-    <Reveal as="section" className={`py-10 sm:py-12 ${className}`}>
+    <section id={id} className={`scroll-mt-24 py-7 sm:py-10 ${className}`}>
       {children}
-    </Reveal>
+    </section>
   )
 }
 
@@ -65,7 +70,7 @@ export function GamesBlock({
   if (games.length === 0) return null
   const cd = { days: tf("cdDays"), hours: tf("cdHours"), minutes: tf("cdMinutes"), tonight: tf("cdTonight"), live: tf("cdLive"), final: tf("cdFinal") }
   return (
-    <Sec>
+    <Sec id="games">
       <Head title={t("gamesTitle")} />
       <ul className="mt-5 grid gap-4 sm:grid-cols-2">
         {games.map((g) => {
@@ -75,11 +80,10 @@ export function GamesBlock({
             : new Date(g.gameDate + "T12:00:00-07:00").toLocaleDateString(intl, { weekday: "short", month: "short", day: "numeric", timeZone: TZ })
           return (
             <li key={`${g.school}-${g.id}`}>
-              <div className="relative overflow-hidden rounded-2xl bg-[#1a0a1f] p-5 text-white">
+              <div className="relative overflow-hidden rounded-2xl bg-[#1a0a1f] p-4 text-white sm:p-5">
                 <div className="pointer-events-none absolute -right-8 -top-10 h-40 w-40 rounded-full bg-[#650C75]/50 blur-2xl" aria-hidden="true" />
                 <div className="relative flex items-start gap-4">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={BADGE[g.school] ?? BADGE.lompoc} alt="" className="h-14 w-14 shrink-0 rounded-xl bg-white object-contain p-1" />
+                  <SafeImage src={BADGE[g.school] ?? BADGE.lompoc} alt="" optWidth={128} loading="eager" className="h-12 w-12 shrink-0 rounded-xl bg-white object-contain p-1 sm:h-14 sm:w-14" />
                   <div className="min-w-0 flex-1">
                     <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#EFC618]">{g.teamName}</p>
                     <Link href="/football" className="font-edition mt-0.5 block text-2xl font-bold leading-tight hover:underline">
@@ -120,7 +124,7 @@ export function GamesBlock({
 export function NewsBlock({ posts, intl, t }: { posts: BlogPostCard[]; intl: string; t: T }) {
   if (posts.length === 0) return null
   return (
-    <Sec>
+    <Sec id="news">
       <Head title={t("newsTitle")} />
       <div className="mt-5 grid gap-3 lg:grid-cols-3">
         {posts.map((p) => (
@@ -128,6 +132,7 @@ export function NewsBlock({ posts, intl, t }: { posts: BlogPostCard[]; intl: str
             <SafeImage
               src={newsCoverUrl({ ...p, title: p.titleEn })}
               alt=""
+              optWidth={256}
               className="h-24 w-28 shrink-0 rounded-xl object-cover"
               fallback={<span className="h-24 w-28 shrink-0 rounded-xl bg-[#650C75]" />}
             />
@@ -151,12 +156,12 @@ export function NewsBlock({ posts, intl, t }: { posts: BlogPostCard[]; intl: str
 export function HomesBlock({ homes, intl, t }: { homes: PropertyListing[]; intl: string; t: T }) {
   if (homes.length === 0) return null
   return (
-    <Sec>
+    <Sec id="homes">
       <Head title={t("homesTitle")} />
       <div className="mt-5 grid gap-4 sm:grid-cols-3">
         {homes.map((h) => (
           <Link key={h.id} href={`/listings/${h.id}`} className={`group overflow-hidden ${CARD}`}>
-            <SafeImage src={h.imageUrl ?? ""} alt={h.title} className="aspect-[4/3] w-full object-cover" fallback={<div className="aspect-[4/3] w-full bg-[#f1e6f4]" />} />
+            <SafeImage src={h.imageUrl ?? ""} alt={h.title} optWidth={640} className="aspect-[4/3] w-full object-cover" fallback={<div className="aspect-[4/3] w-full bg-[#f1e6f4]" />} />
             <span className="block p-4">
               <span className="block text-xl font-extrabold tabular-nums group-hover:text-[#650C75]">{formatListingPriceShort(h.priceCents, h.type, intl)}</span>
               <span className="mt-0.5 block text-sm text-[#5e5448]">{formatListingFacts(h.beds, h.baths, h.sqft)}</span>
@@ -174,13 +179,13 @@ export function HomesBlock({ homes, intl, t }: { homes: PropertyListing[]; intl:
 export function EndingBlock({ deals, intl, t }: { deals: DealEndingSoon[]; intl: string; t: T }) {
   if (deals.length === 0) return null
   return (
-    <Sec>
+    <Sec id="ending">
       <Head title={t("endingTitle")} />
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         {deals.map((d) => (
           <Link key={d.id} href={`/biz/${d.business.slug}`} className={`group flex items-center gap-4 p-3 ${CARD}`}>
             {(d.imageUrl ?? d.business.coverUrl) && (
-              <SafeImage src={(d.imageUrl ?? d.business.coverUrl) as string} alt={`${d.title} — ${d.business.name}`} className="h-20 w-20 shrink-0 rounded-xl object-cover" />
+              <SafeImage src={(d.imageUrl ?? d.business.coverUrl) as string} alt={`${d.title} — ${d.business.name}`} optWidth={256} className="h-20 w-20 shrink-0 rounded-xl object-cover" />
             )}
             <span className="min-w-0 flex-1">
               {d.discountText && (
@@ -231,13 +236,13 @@ export function openLateTonight(all: DirectoryBusiness[], limit = 6): { biz: Dir
 export function OpenLateBlock({ items, t }: { items: { biz: DirectoryBusiness; close: string }[]; t: T }) {
   if (items.length === 0) return null
   return (
-    <Sec>
+    <Sec id="open-late">
       <Head title={t("openLateTitle")} sub={t("openLateSub")} />
       <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {items.map(({ biz, close }) => (
           <li key={biz.slug}>
             <Link href={`/biz/${biz.slug}`} className={`flex min-h-[64px] items-center gap-3 p-3 ${CARD}`}>
-              <SafeImage src={biz.logoUrl ?? biz.photoUrl ?? ""} alt="" className="h-12 w-12 shrink-0 rounded-xl object-cover" fallback={<span className="h-12 w-12 shrink-0 rounded-xl bg-[#f1e6f4]" />} />
+              <SafeImage src={biz.logoUrl ?? biz.photoUrl ?? ""} alt="" optWidth={128} className="h-12 w-12 shrink-0 rounded-xl object-cover" fallback={<span className="h-12 w-12 shrink-0 rounded-xl bg-[#f1e6f4]" />} />
               <span className="min-w-0">
                 <span className="block truncate text-base font-bold">{biz.name}</span>
                 <span className="flex items-center gap-1.5 text-sm text-[#0B992F]">
