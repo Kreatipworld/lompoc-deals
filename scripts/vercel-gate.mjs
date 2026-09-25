@@ -57,11 +57,19 @@ function die(msg, code = 1) {
 async function api(path, init = {}) {
   const { teamId } = project()
   const sep = path.includes("?") ? "&" : "?"
-  const res = await fetch(`${API}${path}${sep}teamId=${teamId}`, {
-    ...init,
-    headers: { authorization: `Bearer ${token()}`, "content-type": "application/json", ...(init.headers || {}) },
-  })
-  const body = await res.json().catch(() => ({}))
+  // Vercel's API intermittently answers 403 "Not authorized" to a token that works
+  // a second later (seen Sep 22–25 2026, killing three ships). Retry with a short
+  // backoff before giving up; a real auth failure still fails after the last try.
+  let res, body
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    res = await fetch(`${API}${path}${sep}teamId=${teamId}`, {
+      ...init,
+      headers: { authorization: `Bearer ${token()}`, "content-type": "application/json", ...(init.headers || {}) },
+    })
+    body = await res.json().catch(() => ({}))
+    if (res.ok || (res.status !== 403 && res.status < 500) || attempt === 4) break
+    await new Promise((r) => setTimeout(r, 4000 * attempt))
+  }
   if (!res.ok) throw new Error(`${init.method || "GET"} ${path} → ${res.status} ${body?.error?.message || JSON.stringify(body)}`)
   return body
 }
