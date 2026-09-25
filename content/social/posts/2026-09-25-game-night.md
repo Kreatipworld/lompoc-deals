@@ -11,12 +11,12 @@ Blob `social/posts/2026-09-25-game-night/game-night-9x16-83jL17bWAiRJJGqaodMTHxw
 
 **Posted Fri Sep 25 2026, 11:59 AM PT — owner: "Post it right now".**
 
-| Surface | Buffer id |
-|---|---|
-| TikTok | 6ab6c46d115c32477f3bba4a |
-| Instagram Reel | 6ab6c479637945f3f28dc281 |
-| Instagram Story (link → /football, utm ig-story, campaign game-night-sep25) | 6ab6c4847c984ccc7fa2f154 |
-| Facebook Reel (utm facebook) | 6ab6c49090e8c5cefac57f00 |
+| Surface | Buffer id | Live (all `sent` by 12:01 PM PT) |
+|---|---|---|
+| TikTok | 6ab6c46d115c32477f3bba4a | https://tiktok.com/@lompoclocals/video/7689549302309408013 |
+| Instagram Reel | 6ab6c479637945f3f28dc281 | https://www.instagram.com/reel/DduKLkpFqk-/ |
+| Instagram Story (link → /football) | 6ab6c4847c984ccc7fa2f154 | https://www.instagram.com/stories/lompoclocals_/3994174945009728602 |
+| Facebook Reel | 6ab6c49090e8c5cefac57f00 | https://www.facebook.com/reel/1557482445705388/ |
 
 ## Facts (football_games, pulled Sep 25)
 Lompoc Braves 4-0 (Santa Ynez W 42-0, Cabrillo W 38-2, Pioneer Valley W 48-6, Dublin W 41-7) at Morro Bay, 7:00 PM ·
