@@ -172,6 +172,92 @@ if (what === "member") {
     week: await weekOf(g.school, gd),
     when, gameDate: gd,
   }, null, 2))
+} else if (what === "friday-games") {
+  // GAME NIGHT, town edition: every Lompoc school playing on the next game date,
+  // records, kickoffs, the drive for away games, and two members as pit stops.
+  // Fridays are game night until the season ends (owner, Sep 25 2026), so this
+  // is the query `make.py game-night-town --auto` runs every week.
+  const next = await sql`
+    select min(game_date) as d from football_games
+    where season = ${season} and result is null and game_date >= ${today}`
+  if (!next.length || !next[0].d) { console.log(JSON.stringify({ error: "no upcoming game", today, season })); process.exit(2) }
+  const gd = next[0].d instanceof Date ? next[0].d.toLocaleDateString("en-CA") : String(next[0].d)
+  const rows = await sql`
+    select school, kickoff, opponent, home_away, venue from football_games
+    where season = ${season} and game_date = ${gd} order by kickoff asc, school asc`
+  const WORDS = ["oh", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"]
+  const spoken = (rec) => rec.split("-").map((n) => WORDS[Number(n)] ?? n).join(" and ")
+  const NICK = { lompoc: "Lompoc Braves", cabrillo: "Cabrillo Conquistadores" }
+  const SHORT = { lompoc: "Braves", cabrillo: "Conquistadores" }
+  const BADGE = { lompoc: "badge-braves", cabrillo: "badge-conqs" }
+  const CLIP = { lompoc: "clip-braves", cabrillo: "clip-conqs" }
+  const KIT = "content/social/video/_kit/assets"
+  const assets = {
+    "badge-braves.png": `${KIT}/badge-braves.png`, "badge-conqs.png": `${KIT}/badge-conqs.png`,
+    "clip-braves.mp4": `${KIT}/n2-brave-ready.mp4`, "clip-conqs.mp4": `${KIT}/land-cabrillo.mp4`,
+  }
+  // Drive from Lompoc High for away games: Places for the venue, Mapbox Directions for the road.
+  const mapbox = process.env.NEXT_PUBLIC_MAPBOX_TOKEN, gkey = process.env.GOOGLE_MAPS_API_KEY
+  async function drive(opponent) {
+    if (!mapbox || !gkey) return null
+    try {
+      const q = encodeURIComponent(`${opponent} High School, CA`)
+      const pr = await (await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${q}&key=${gkey}`)).json()
+      const loc = pr.results?.[0]?.geometry?.location
+      if (!loc) return null
+      const dr = await (await fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/-120.463727,34.6486491;${loc.lng},${loc.lat}?overview=false&access_token=${mapbox}`)).json()
+      const r = dr.routes?.[0]
+      if (!r) return null
+      const mins = Math.round(r.duration / 60)
+      return { miles: String(Math.round(r.distance / 1609.34)), drive: mins >= 60 ? `${Math.floor(mins / 60)} h ${String(mins % 60).padStart(2, "0")}` : `${mins} min` }
+    } catch { return null }
+  }
+  const games = []
+  for (const g of rows) {
+    const home = g.home_away === "home"
+    const rec = await recordFor(g.school, gd)
+    const d = home ? null : await drive(g.opponent)
+    const kickoff = g.kickoff || "7:00 PM"
+    const venue = g.venue || VENUE_HOME[g.school]
+    games.push({
+      school: g.school, nick: NICK[g.school], badge: BADGE[g.school], clip: CLIP[g.school],
+      opponent: g.opponent, kickoff, venue: venue.replace(/\s*\(away\)|\s*\(home\)/i, ""), record: rec, home,
+      ...(d || {}),
+      say: home
+        ? `The ${SHORT[g.school]} — ${spoken(rec)} — host ${g.opponent} at ${venue.replace(/\s*\(home\)/i, "")}. Kickoff at ${kickoff.replace(/:00/, "").replace(/\s?(AM|PM)/i, "")}.`
+        : `The ${SHORT[g.school]} — ${spoken(rec)} — head to ${g.opponent}. Kickoff at ${kickoff.replace(/:00/, "").replace(/\s?(AM|PM)/i, "")}.`,
+    })
+  }
+  const homes = games.filter((g) => g.home).length, aways = games.length - homes
+  const sub = games.length === 1 ? (homes ? "One game. At home." : "One game. On the road.")
+    : homes === games.length ? `${games.length === 2 ? "Two" : games.length} games. Both at home.`
+    : aways === games.length ? `${games.length === 2 ? "Two" : games.length} games. Both on the road.`
+    : "One at home. One on the road."
+  // Pit stops: two paying members with their own cover photo and a street address, rotated by week.
+  const members = await sql`
+    select b.name, b.slug, b.address, b.cover_url, c.name as category
+    from businesses b left join categories c on c.id = b.category_id
+    left join lateral (select tier from subscriptions s where s.user_id = b.owner_user_id and s.status in ('active','trialing') order by s.created_at desc limit 1) s on true
+    where b.status = 'approved' and b.cover_url is not null and b.address is not null
+      and coalesce(b.plan_override::text, s.tier::text) in ('standard','premium')
+    order by b.id`
+  const wk = Math.floor((Date.parse(gd) - Date.parse(`${season}-08-01`)) / 604800000)
+  const pick = (i) => members[(wk * 2 + i) % members.length]
+  const stops = [0, 1].map((i) => {
+    const m = pick(i); const street = (m.address || "").split(",")[0]
+    assets[`stop-${i}.jpg`] = m.cover_url
+    return { media: `stop-${i}`, name: m.name.replace(/&/g, "&amp;"), line: `${street} · ${m.category || "Lompoc"}` }
+  })
+  console.log(JSON.stringify({
+    slug: `game-night-${gd}`, title: `GAME NIGHT — ${gd}`, gameDate: gd,
+    week: `${await weekOf(games[0].school, gd)} · ${new Date(gd + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}`,
+    assets,
+    open: { sub, say: `Game night in Lompoc. ${sub.replace(/\./g, "").replace(" Both", " — both").replace(" At home", ", at home").replace(" On the road", ", on the road")}.` },
+    games,
+    stops, stops_say: `Before you go: ${stops[0].name.replace(/&amp;/g, "and")}, and ${stops[1].name.replace(/&amp;/g, "and")} — both right here in Lompoc.`,
+    end: { chip: "Every score, live", title: games.length > 1 ? "Follow both games tonight" : "Follow the game tonight", site: "lompoclocals.com/football", sub: "Drive safe, Lompoc.",
+           say: "Every score, live, at Lompoc Locals dot com, slash football. Drive safe, Lompoc." },
+  }, null, 2))
 } else if (what === "latest-result") {
   const rows = await sql`
     select school, game_date, opponent, home_away, venue, result, score_for, score_against
