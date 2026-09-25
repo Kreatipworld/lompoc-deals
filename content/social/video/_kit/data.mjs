@@ -185,7 +185,9 @@ if (what === "member") {
   const rows = await sql`
     select school, kickoff, opponent, home_away, venue from football_games
     where season = ${season} and game_date = ${gd} order by kickoff asc, school asc`
-  const WORDS = ["oh", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"]
+  const ONES = ["oh", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"]
+  const TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy"]
+  const WORDS = new Proxy({}, { get: (_, k) => { const n = Number(k); if (Number.isNaN(n)) return undefined; if (n < 20) return ONES[n]; return TENS[Math.floor(n / 10)] + (n % 10 ? "-" + ONES[n % 10] : "") } })
   const spoken = (rec) => rec.split("-").map((n) => WORDS[Number(n)] ?? n).join(" and ")
   const NICK = { lompoc: "Lompoc Braves", cabrillo: "Cabrillo Conquistadores" }
   const SHORT = { lompoc: "Braves", cabrillo: "Conquistadores" }
@@ -212,22 +214,41 @@ if (what === "member") {
       return { miles: String(Math.round(r.distance / 1609.34)), drive: mins >= 60 ? `${Math.floor(mins / 60)} h ${String(mins % 60).padStart(2, "0")}` : `${mins} min` }
     } catch { return null }
   }
+  // Form so far: every played game this season, oldest first, and the last result.
+  async function formFor(school) {
+    const r = await sql`
+      select opponent, result, score_for, score_against, to_char(game_date, 'Mon D') as d
+      from football_games where season = ${season} and school = ${school} and result is not null and game_date < ${gd}
+      order by game_date asc`
+    const last = r.length ? r[r.length - 1] : null
+    return {
+      results: r.map((x) => ({ opponent: x.opponent, result: x.result, us: x.score_for, them: x.score_against })),
+      last: last ? { opponent: last.opponent, result: last.result, us: last.score_for, them: last.score_against } : null,
+    }
+  }
   const games = []
   for (const g of rows) {
     const home = g.home_away === "home"
     const rec = await recordFor(g.school, gd)
+    const form = await formFor(g.school)
     const d = home ? null : await drive(g.opponent)
     const kickoff = g.kickoff || "7:00 PM"
     const venue = g.venue || VENUE_HOME[g.school]
     games.push({
       school: g.school, nick: NICK[g.school], badge: BADGE[g.school], clip: CLIP[g.school],
       opponent: g.opponent, kickoff, venue: venue.replace(/\s*\(away\)|\s*\(home\)/i, ""), record: rec, home,
-      ...(d || {}),
+      ...form, ...(d || {}),
       say: home
         ? `The ${SHORT[g.school]} — ${spoken(rec)} — host ${g.opponent} at ${venue.replace(/\s*\(home\)/i, "")}. Kickoff at ${kickoff.replace(/:00/, "").replace(/\s?(AM|PM)/i, "")}.`
         : `The ${SHORT[g.school]} — ${spoken(rec)} — head to ${g.opponent}. Kickoff at ${kickoff.replace(/:00/, "").replace(/\s?(AM|PM)/i, "")}.`,
     })
   }
+  const formSay = games.map((g) => {
+    const rec = spoken(g.record)
+    if (!g.last) return `The ${SHORT[g.school]} open the season.`
+    const w = g.last.result === "W"
+    return `The ${SHORT[g.school]} are ${rec}, ${w ? "off a" : "after a"} ${WORDS[g.last.us] ?? g.last.us} to ${WORDS[g.last.them] ?? g.last.them} ${w ? "win over" : "loss to"} ${g.last.opponent}.`
+  }).join(" ")
   const homes = games.filter((g) => g.home).length, aways = games.length - homes
   const sub = games.length === 1 ? (homes ? "One game. At home." : "One game. On the road.")
     : homes === games.length ? `${games.length === 2 ? "Two" : games.length} games. Both at home.`
@@ -255,6 +276,7 @@ if (what === "member") {
     assets,
     open: { sub, say: `Game night in Lompoc. ${sub.replace(/\./g, "").replace(" Both", " — both").replace(" At home", ", at home").replace(" On the road", ", on the road")}.` },
     games,
+    form_say: formSay,
     stops, stops_say: `Before you go: ${stops[0].name.replace(/&amp;/g, "and")}, and ${stops[1].name.replace(/&amp;/g, "and")} — both right here in Lompoc.`,
     end: { chip: "Every score, live", title: games.length > 1 ? "Follow both games tonight" : "Follow the game tonight", site: "lompoclocals.com/football", sub: "Drive safe, Lompoc.",
            say: "Every score, live, at Lompoc Locals dot com, slash football. Drive safe, Lompoc." },
