@@ -50,7 +50,8 @@ def main(project: str, gap: float = audio.GAP) -> int:
     from _kit.compose import Sub, Video, _subs_html
     stub = Video(slug=man["slug"], title=man["title"], total=man["total"],
                  scenes=[], size=tuple(man["size"]),
-                 subs=[Sub(s["start"], s["end"], s["text"], s.get("say", "")) for s in man["subs"]])
+                 subs=[] if man.get("captions") is False else
+                      [Sub(s["start"], s["end"], s["text"], s.get("say", "")) for s in man["subs"]])
     open(os.path.join(project, "compositions", "subs.html"), "w").write(_subs_html(stub))
 
     # Put the audio tags back into index.html now that the files exist.

@@ -250,7 +250,8 @@ if (what === "member") {
   })
   console.log(JSON.stringify({
     slug: `game-night-${gd}`, title: `GAME NIGHT — ${gd}`, gameDate: gd,
-    week: `${await weekOf(games[0].school, gd)} · ${new Date(gd + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}`,
+    // Just the date: a "Week N" label is per school and the two schools are on different counts.
+    week: new Date(gd + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }),
     assets,
     open: { sub, say: `Game night in Lompoc. ${sub.replace(/\./g, "").replace(" Both", " — both").replace(" At home", ", at home").replace(" On the road", ", on the road")}.` },
     games,

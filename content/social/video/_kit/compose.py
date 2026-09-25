@@ -69,6 +69,7 @@ class Video:
     assets: dict = field(default_factory=dict)
     note: str = ""
     size: tuple = B.SIZES["9x16"]
+    captions: bool = True   # False = subs still time the scenes, but nothing is burned in
 
     def time_to_read(self, placed: list, tail: float = 1.10) -> bool:
         """Re-time every scene so it covers the lines it illustrates.
@@ -279,7 +280,7 @@ def write(v: Video, out_dir: str) -> dict:
     # The voiceover still speaks every line; only the on-screen duplicate goes.
     v.subs = _dedupe_subs(v, rendered)
     if v.subs:
-        open(os.path.join(comp, "subs.html"), "w").write(_subs_html(v))
+        open(os.path.join(comp, "subs.html"), "w").write(_subs_html(v if v.captions else Video(slug=v.slug, title=v.title, total=v.total, scenes=[], size=v.size)))
     open(os.path.join(comp, "progress.html"), "w").write(_progress_html(v))
     open(os.path.join(out_dir, "index.html"), "w").write(index_html(v))
 
@@ -299,6 +300,7 @@ def write(v: Video, out_dir: str) -> dict:
         "title": v.title,
         "total": v.total,
         "size": list(v.size),
+        "captions": v.captions,
         "scenes": [{"id": s.cid, "start": s.start, "dur": s.dur} for s in v.scenes],
         "subs": [{"start": s.start, "end": s.end, "text": s.text, "say": s.spoken, "vo_index": s.vo_index} for s in v.subs],
         "vo_lines": v.vo_lines,

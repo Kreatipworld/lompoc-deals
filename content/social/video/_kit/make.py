@@ -26,7 +26,7 @@ KIT = os.path.dirname(os.path.abspath(__file__))
 VIDEO_DIR = os.path.dirname(KIT)
 REPO = os.path.abspath(os.path.join(VIDEO_DIR, "..", "..", ".."))
 
-AUTO_QUERY = {"game-night": "next-game", "game-night-town": "friday-games", "game-result": "latest-result",
+AUTO_QUERY = {"game-night": "next-game", "game-night-town": "friday-games", "game-night-card": "friday-games", "game-result": "latest-result",
               "season-recap": "season", "member-spotlight": "member", "deal-promo": "deal"}
 
 
