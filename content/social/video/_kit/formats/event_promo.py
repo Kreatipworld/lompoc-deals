@@ -330,7 +330,7 @@ def build(d: dict) -> Video:
                 if en.get("note") else "")
         return f'''<div class="field"></div>
       <div class="bloom" id="{cid}-bloom" data-layout-allow-overflow></div>
-      <div class="centre" style="top:{"18%" if tall else "10%"}">
+      <div class="centre" style="top:{en.get("top", "18%" if tall else "10%")}">
         <span class="cardchip" id="{cid}-chip" style="opacity:0">{en["chip"]}</span>
         <span class="title" id="{cid}-t" style="margin-top:{34 if tall else 20}px; font-size:{en.get("size", 96 if tall else 72)}px; opacity:0">{en["title"]}</span>
         <span class="big" id="{cid}-line" style="margin-top:{30 if tall else 16}px; font-size:{en.get("line_size", 78 if tall else 60)}px; letter-spacing:-3px; opacity:0">{en["line"]}</span>{venue}
