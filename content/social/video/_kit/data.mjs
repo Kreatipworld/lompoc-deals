@@ -281,6 +281,62 @@ if (what === "member") {
     end: { chip: "Every score, live", title: games.length > 1 ? "Follow both games tonight" : "Follow the game tonight", site: "lompoclocals.com/football", sub: "Drive safe, Lompoc.",
            say: "Every score, live, at Lompoc Locals dot com, slash football. Drive safe, Lompoc." },
   }, null, 2))
+} else if (what === "friday-results") {
+  // RESULTS, town edition: every Lompoc school that played on the most recent game
+  // date, the scores, records after the game, form so far, and each school's next game.
+  const last = await sql`
+    select max(game_date) as d from football_games
+    where season = ${season} and result is not null`
+  if (!last.length || !last[0].d) { console.log(JSON.stringify({ error: "no played game", season })); process.exit(2) }
+  const gd = last[0].d instanceof Date ? last[0].d.toLocaleDateString("en-CA") : String(last[0].d)
+  const rows = await sql`
+    select school, opponent, home_away, venue, result, score_for, score_against from football_games
+    where season = ${season} and game_date = ${gd} and result is not null order by (school = 'lompoc') desc, school`
+  const ONES = ["oh", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"]
+  const TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy"]
+  const num = (n) => n < 20 ? ONES[n] : TENS[Math.floor(n / 10)] + (n % 10 ? "-" + ONES[n % 10] : "")
+  const score = (a, b) => `${num(a)} to ${b === 0 ? "nothing" : num(b)}`
+  const spoken = (rec) => rec.split("-").map((x) => num(Number(x))).join(" and ")
+  const NICK = { lompoc: "Lompoc Braves", cabrillo: "Cabrillo Conquistadores" }
+  const SHORT = { lompoc: "Braves", cabrillo: "Conquistadores" }
+  const BADGE = { lompoc: "badge-braves", cabrillo: "badge-conqs" }
+  const KIT = "content/social/video/_kit/assets"
+  const assets = { "badge-braves.png": `${KIT}/badge-braves.png`, "badge-conqs.png": `${KIT}/badge-conqs.png` }
+  const nextDay = new Date(gd + "T12:00:00"); nextDay.setDate(nextDay.getDate() + 1)
+  const after = nextDay.toLocaleDateString("en-CA")
+  const games = []
+  for (const g of rows) {
+    const record = await recordFor(g.school, after)          // record including this game
+    const played = await sql`
+      select opponent, result, score_for, score_against from football_games
+      where season = ${season} and school = ${g.school} and result is not null and game_date <= ${gd} order by game_date asc`
+    const nx = await sql`
+      select opponent, home_away, venue, kickoff, to_char(game_date, 'Dy, Mon FMDD') as d from football_games
+      where season = ${season} and school = ${g.school} and result is null and game_date > ${gd} order by game_date asc limit 1`
+    const won = g.result === "W"
+    const next = nx.length ? { opponent: nx[0].opponent, home: nx[0].home_away === "home", venue: (nx[0].venue || VENUE_HOME[g.school]).replace(/\s*\((away|home)\)/i, ""), kickoff: nx[0].kickoff || "7:00 PM", day: nx[0].d } : null
+    games.push({
+      school: g.school, nick: NICK[g.school], badge: BADGE[g.school], opponent: g.opponent, home: g.home_away === "home",
+      venue: (g.venue || VENUE_HOME[g.school]).replace(/\s*\((away|home)\)/i, ""), result: g.result, us: g.score_for, them: g.score_against, record,
+      results: played.map((x) => ({ opponent: x.opponent, result: x.result, us: x.score_for, them: x.score_against })),
+      next,
+      say: `The ${SHORT[g.school]} ${won ? "beat" : "fell to"} ${g.opponent}, ${score(g.score_for, g.score_against)}${g.home_away === "away" ? ", on the road" : ", at home"}. They're ${spoken(record)}.`,
+      next_say: next ? `Next for the ${SHORT[g.school]}: ${next.home ? "home against" : "at"} ${next.opponent}, ${next.day}.` : `That closes the regular season for the ${SHORT[g.school]}.`,
+    })
+  }
+  const wins = games.filter((g) => g.result === "W").length
+  const sub = games.length === 2 ? (wins === 2 ? "Two wins." : wins === 1 ? "One win, one loss." : "Two losses.") : (wins ? "A win." : "A loss.")
+  console.log(JSON.stringify({
+    slug: `results-${gd}`, title: `RESULTS — ${gd}`, gameDate: gd,
+    week: new Date(gd + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }),
+    assets,
+    open: { sub, say: `Final scores from Friday night in Lompoc. ${sub}` },
+    games,
+    form_say: games.map((g) => g.say).join(" "),
+    next_say: games.map((g) => g.next_say).join(" "),
+    end: { chip: "Every score, every week", title: "Follow both teams", site: "lompoclocals.com/football", sub: "See you Friday, Lompoc.",
+           say: "Every score, every week, at Lompoc Locals dot com, slash football. See you Friday, Lompoc." },
+  }, null, 2))
 } else if (what === "latest-result") {
   const rows = await sql`
     select school, game_date, opponent, home_away, venue, result, score_for, score_against

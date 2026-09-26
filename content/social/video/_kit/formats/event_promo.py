@@ -368,6 +368,7 @@ def build(d: dict) -> Video:
         subs=subs,
         vo_lines=[B.for_tts(s.spoken) for s in subs],
         assets=assets,
+        captions=d.get("captions", True),   # owner, Sep 25 2026: no burned-in captions unless asked
         audio=[
             Audio("public/vo.wav", "voiceover", 0.0, total, volume=0.80, fade_in=0.05, fade_out=0.20),
             Audio("public/bed.wav", "music", 0.0, total, volume=0.26, fade_in=0.4, fade_out=1.4),
