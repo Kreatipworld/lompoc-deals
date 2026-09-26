@@ -278,3 +278,17 @@ export function phoneHref(phone: string): string {
   const digits = phone.replace(/[^\d+]/g, "")
   return digits.startsWith("+") ? digits : `+1${digits.replace(/^1/, "")}`
 }
+
+/** "Sat, Sep 26 – Sun, Sep 27" or "Sat, Sep 26 · 7–1 PM", in Pacific time. Lives here (not in the
+ * client SaleCard) so Server Components can call it — a function exported from a "use client"
+ * module is a client reference on the server, and calling it throws "N is not a function". */
+export function garageSaleWhen(startsAt: string | null, endsAt: string | null, intl: string): string | null {
+  if (!startsAt) return null
+  const s = new Date(startsAt)
+  const e = endsAt ? new Date(endsAt) : null
+  const day = (d: Date) => d.toLocaleDateString(intl, { weekday: "short", month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
+  const time = (d: Date) => d.toLocaleTimeString(intl, { hour: "numeric", minute: "2-digit", timeZone: "America/Los_Angeles" }).replace(":00", "")
+  if (!e) return `${day(s)} · ${time(s)}`
+  const sameDay = day(s) === day(e)
+  return sameDay ? `${day(s)} · ${time(s)}–${time(e)}` : `${day(s)} – ${day(e)}`
+}

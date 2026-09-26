@@ -6,21 +6,10 @@ import { es } from "date-fns/locale"
 import { Camera, MapPin } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { SafeImage } from "@/components/safe-image"
-import { formatSalePrice } from "@/lib/sales"
+import { formatSalePrice, garageSaleWhen } from "@/lib/sales"
 import type { SaleCardData } from "@/lib/sales-queries"
 
 /** "Sat, Oct 3 · 8 AM–2 PM" in Pacific time. */
-export function garageSaleWhen(startsAt: string | null, endsAt: string | null, intl: string): string | null {
-  if (!startsAt) return null
-  const s = new Date(startsAt)
-  const e = endsAt ? new Date(endsAt) : null
-  const day = (d: Date) => d.toLocaleDateString(intl, { weekday: "short", month: "short", day: "numeric", timeZone: "America/Los_Angeles" })
-  const time = (d: Date) => d.toLocaleTimeString(intl, { hour: "numeric", minute: "2-digit", timeZone: "America/Los_Angeles" }).replace(":00", "")
-  if (!e) return `${day(s)} · ${time(s)}`
-  const sameDay = day(s) === day(e)
-  return sameDay ? `${day(s)} · ${time(s)}–${time(e)}` : `${day(s)} – ${day(e)}`
-}
-
 export function SaleCard({ item, priority = false }: { item: SaleCardData; priority?: boolean }) {
   const t = useTranslations("sales")
   const locale = useLocale()
