@@ -6,12 +6,12 @@ import { DealGrid } from "@/components/deal-card"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { MapPin, Store, ArrowRight } from "lucide-react"
-import { Link } from "@/i18n/navigation"
+import { Link, redirect } from "@/i18n/navigation"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 import { SponsorRow } from "@/components/sponsor-row"
 import { categoryLabel } from "@/lib/category-label"
-import { findTermForQuery, FIND_TERMS } from "@/lib/find-terms"
+import { findTermForQuery, FIND_TERMS, HUB_FOR_TERM } from "@/lib/find-terms"
 import { memberTiers } from "@/lib/member-tier"
 import { getAllCategories } from "@/lib/queries"
 import { fold, editDistance, instantSearch } from "@/lib/search/instant"
@@ -49,6 +49,18 @@ export default async function SearchPage({
   const tc = await getTranslations({ locale, namespace: "categoryLabels" })
 
   const q = (searchParams.q ?? "").trim()
+  // A word whose page grew into a hub (football) goes straight there.
+  const hub = q ? HUB_FOR_TERM[findTermForQuery(q)?.slug ?? ""] : undefined
+  if (hub) {
+    await track("search_run", {
+      userId: null,
+      sessionId: getSessionId(),
+      targetType: "search",
+      targetId: null,
+      props: { query: q, resultCount: 1, locale: locale as "en" | "es" },
+    })
+    redirect({ href: hub, locale })
+  }
   const [results, viewer] = await Promise.all([
     q ? searchAll(q, locale) : Promise.resolve({ businesses: [], categories: [], deals: [] }),
     getViewer(),

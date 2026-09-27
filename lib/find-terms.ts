@@ -287,7 +287,7 @@ export const FIND_TERMS: FindTerm[] = [
   {
     slug: "football",
     query: "football",
-    aliases: ["football", "high school football", "friday night lights", "braves", "lompoc braves", "conquistadores", "conqs", "cabrillo football", "lompoc football", "big game", "fútbol americano"],
+    aliases: ["football", "high school football", "friday night lights", "braves", "lompoc braves", "conquistadores", "conqs", "cabrillo football", "lompoc football", "big game", "fútbol americano", "lompoc high football", "braves football", "cabrillo conquistadores", "football scores", "football schedule", "football games"],
     kind: "events",
     eventCategory: "sports",
     eventWindowDays: 21,
@@ -304,6 +304,13 @@ export function findTermBySlug(slug: string): FindTerm | undefined {
 }
 
 /** Match a raw search query to a curated page (slug, query, or alias — case/whitespace-blind). */
+/**
+ * Word pages that grew into their own hub. Searching one of these words goes
+ * straight to the hub instead of a results page that says "0 results" above a
+ * small banner (Sep 26 2026: "football" searches all hit that dead end).
+ */
+export const HUB_FOR_TERM: Record<string, "/football"> = { football: "/football" }
+
 export function findTermForQuery(q: string | null | undefined): FindTerm | undefined {
   const n = (q ?? "").toLowerCase().replace(/\s+/g, " ").trim()
   if (n.length < 2) return undefined
