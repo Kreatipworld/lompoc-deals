@@ -193,24 +193,24 @@ export default async function HomePage({ params }: { params: { locale: string } 
           }}
         />
 
-        <div className="mx-auto max-w-3xl px-4 pb-7 pt-8 text-center sm:py-24">
+        <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
           {/* CSS background images are discovered after stylesheet parse — this
               preload lets the LCP hero start downloading with the HTML. */}
           <link rel="preload" as="image" href="/lompoc-hero.jpg" />
-          <div data-hero="line" className="mb-5 hidden items-center sm:inline-flex gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+          <div data-hero="line" className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             <MapPin className="h-3 w-3" />
             {t("location")}
           </div>
 
-          <h1 data-hero="line" className="font-display text-[2rem] font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h1 data-hero="line" className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
             {t("heroTitle")} <br className="sm:hidden" />
             <span data-hero="accent" className="inline-block italic text-gold">{t("heroHighlight")}</span>
           </h1>
-          <p data-hero="line" className="mx-auto mt-4 hidden max-w-xl text-base text-white/80 sm:block sm:text-lg">
+          <p data-hero="line" className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
             {t("heroSubheadline")}
           </p>
 
-          <div data-hero="cta" className="mx-auto mt-5 max-w-xl sm:mt-8">
+          <div data-hero="cta" className="mx-auto mt-8 max-w-xl">
             <SearchBar size="lg" scrim />
           </div>
 
@@ -228,7 +228,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
             ))}
           </div>
 
-          <div data-hero="cta" className="mt-6 hidden flex-wrap items-center justify-center gap-x-4 sm:flex gap-y-2 text-xs font-medium text-white/70">
+          <div data-hero="cta" className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
               <AnimatedCounter value={stats.activeDeals} duration={1200} delay={600} /> {t("statActiveDeals")}
