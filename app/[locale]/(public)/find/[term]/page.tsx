@@ -113,7 +113,7 @@ export default async function FindTermPage({ params }: { params: Promise<Params>
 
   const [results, picked] = await Promise.all([searchAll(t.query, l), businessesBySlugs(t.include ?? [], l)])
   const excluded = new Set(t.exclude ?? [])
-  const merged = [...picked, ...results.businesses.filter((b) => !picked.some((p) => p.id === b.id))].filter((b) => !excluded.has(b.slug))
+  const merged = (t.exclusive ? picked : [...picked, ...results.businesses.filter((b) => !picked.some((p) => p.id === b.id))]).filter((b) => !excluded.has(b.slug))
   const tiers = await memberTiers(merged.map((b) => b.id))
   const businesses = [...merged].sort((a, b) => (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0))
   const ids = new Set(businesses.map((b) => b.id))

@@ -40,11 +40,14 @@ function campaignProps(): Record<string, string> {
  * Crawlers read every page and used to count as "views" — a member's dashboard
  * number is a promise about neighbors, not about Googlebot. Matched requests are
  * dropped at the door; requests with no UA at all (cron, scripts) are kept, since
- * those are our own calls. The healthcheck's UA is deliberately NOT matched — its
- * probe asserts that recording works, and it deletes its own row afterwards.
+ * those are our own calls. Our own monitors ("LompocLocals-HealthCheck" cron,
+ * "lompoc-locals-healthcheck" ship checks) are matched: their page loads and
+ * searches were landing as ~250 "tacos"/"electrician" searches a month (Sep 26 2026).
+ * The tracking probe in check-production posts with Node's default UA, so it
+ * still proves recording works (and deletes its own row).
  */
 const BOT_UA =
-  /bot|crawl|spider|slurp|bingpreview|headless|lighthouse|pingdom|facebookexternalhit|meta-externalagent|whatsapp|telegrambot|skypeuricheck|embedly|quora link preview|vkshare|curl\/|wget\/|python-requests|httpx\/|go-http-client/i
+  /bot|crawl|spider|slurp|bingpreview|headless|lighthouse|pingdom|facebookexternalhit|meta-externalagent|whatsapp|telegrambot|skypeuricheck|embedly|quora link preview|vkshare|curl\/|wget\/|python-requests|httpx\/|go-http-client|healthcheck/i
 
 function isBotRequest(): boolean {
   try {

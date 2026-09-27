@@ -22,6 +22,8 @@ export type FindTerm = {
   exclude?: string[]
   /** Business slugs we know belong even if the words never appear in their listing. */
   include?: string[]
+  /** true: the page lists ONLY `include` (the matcher pulls every realtor into "rentals"). */
+  exclusive?: boolean
   /** events only: restrict to one feed (e.g. "launch-library" for rocket launches). */
   eventSource?: string
   /** events only: how far ahead to look (default 7 days). */
@@ -297,6 +299,42 @@ export const FIND_TERMS: FindTerm[] = [
       es: "Los viernes por la noche en Lompoc son de dos programas: los Lompoc Braves en el Huyck Stadium y los Cabrillo Conquistadores. Esta página mantiene los próximos partidos en el calendario con hora de inicio y lugar, y enlaza las crónicas de cada partido del Lompoc News desk conforme salen.",
     },
   },
+  {
+    slug: "rentals",
+    query: "property management rentals",
+    aliases: ["rent", "rentals", "rental", "for rent", "houses for rent", "homes for rent", "apartments", "apartment", "apartments for rent", "property management", "property manager", "renta", "casas en renta", "departamentos", "apartamentos"],
+    kind: "businesses",
+    include: [
+      "american-stages-realty-management-inc",
+      "plus-property-management-lompoc",
+      "twin-oaks-real-estate-management",
+      "california-west",
+      "wiser-property-management-and-sales",
+      "ebberts-heritage-real-estate",
+      "hinkens-group",
+    ],
+    exclusive: true,
+    category: "real-estate",
+    title: { en: "Rentals in Lompoc", es: "Rentas en Lompoc" },
+    intro: {
+      en: "Most houses and apartments for rent in Lompoc are leased through local property management offices, and what is open changes week to week. These are the offices that handle rentals in Lompoc and Vandenberg Village. Call them or check their websites for what is available right now.",
+      es: "La mayoría de las casas y departamentos en renta en Lompoc se rentan a través de oficinas locales de administración de propiedades, y lo disponible cambia cada semana. Estas son las oficinas que manejan rentas en Lompoc y Vandenberg Village. Llámalas o revisa sus sitios web para ver qué hay disponible ahora mismo.",
+    },
+  },
+  {
+    slug: "mortgage",
+    query: "mortgage home loans",
+    aliases: ["mortgage", "mortgages", "home loan", "home loans", "mortgage broker", "lender", "lenders", "refinance", "hipoteca", "préstamo", "préstamos", "prestamo para casa"],
+    kind: "businesses",
+    include: ["john-maida-real-estate-loans", "pacific-premier-bank-lompoc", "wells-fargo-lompoc"],
+    exclusive: true,
+    category: "real-estate",
+    title: { en: "Mortgages and Home Loans in Lompoc", es: "Hipotecas y préstamos para casa en Lompoc" },
+    intro: {
+      en: "Buying in Lompoc usually starts with a pre-approval. These are the local offices in town that handle home loans: a longtime Lompoc mortgage broker and the bank branches that write mortgages. Talk to more than one before you choose.",
+      es: "Comprar en Lompoc normalmente empieza con una pre-aprobación. Estas son las oficinas locales que manejan préstamos para casa: un corredor hipotecario de muchos años en Lompoc y las sucursales bancarias que otorgan hipotecas. Habla con más de una antes de decidir.",
+    },
+  },
 ]
 
 export function findTermBySlug(slug: string): FindTerm | undefined {
@@ -304,13 +342,6 @@ export function findTermBySlug(slug: string): FindTerm | undefined {
 }
 
 /** Match a raw search query to a curated page (slug, query, or alias — case/whitespace-blind). */
-/**
- * Word pages that grew into their own hub. Searching one of these words goes
- * straight to the hub instead of a results page that says "0 results" above a
- * small banner (Sep 26 2026: "football" searches all hit that dead end).
- */
-export const HUB_FOR_TERM: Record<string, "/football"> = { football: "/football" }
-
 export function findTermForQuery(q: string | null | undefined): FindTerm | undefined {
   const n = (q ?? "").toLowerCase().replace(/\s+/g, " ").trim()
   if (n.length < 2) return undefined
@@ -318,3 +349,20 @@ export function findTermForQuery(q: string | null | undefined): FindTerm | undef
     (t) => t.slug === n || t.query === n || t.aliases.includes(n) || t.slug.replace(/-/g, " ") === n
   )
 }
+
+/**
+ * Words that go straight to a hub instead of a results page (Sep 26 2026: every
+ * "football" search hit "0 results" above a small banner; "houses for sale"
+ * found nothing while /homes lists them). Football rides its word page's aliases;
+ * homes words are listed here because /homes has no word page.
+ */
+const HOMES_FOR_SALE_WORDS = ["houses for sale", "homes for sale", "house for sale", "home for sale", "houses fof sals", "houses", "homes", "buy a house", "casas en venta", "casa en venta", "casas"]
+
+export function hubForQuery(q: string | null | undefined): string | undefined {
+  const n = (q ?? "").toLowerCase().replace(/\s+/g, " ").trim()
+  if (!n) return undefined
+  if (findTermForQuery(n)?.slug === "football") return "/football"
+  if (HOMES_FOR_SALE_WORDS.includes(n)) return "/homes?tab=sale"
+  return undefined
+}
+

@@ -11,7 +11,7 @@ import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 import { SponsorRow } from "@/components/sponsor-row"
 import { categoryLabel } from "@/lib/category-label"
-import { findTermForQuery, FIND_TERMS, HUB_FOR_TERM } from "@/lib/find-terms"
+import { findTermForQuery, FIND_TERMS, hubForQuery } from "@/lib/find-terms"
 import { memberTiers } from "@/lib/member-tier"
 import { getAllCategories } from "@/lib/queries"
 import { fold, editDistance, instantSearch } from "@/lib/search/instant"
@@ -49,8 +49,8 @@ export default async function SearchPage({
   const tc = await getTranslations({ locale, namespace: "categoryLabels" })
 
   const q = (searchParams.q ?? "").trim()
-  // A word whose page grew into a hub (football) goes straight there.
-  const hub = q ? HUB_FOR_TERM[findTermForQuery(q)?.slug ?? ""] : undefined
+  // Hub words (football, houses for sale) go straight to the hub.
+  const hub = hubForQuery(q)
   if (hub) {
     await track("search_run", {
       userId: null,
@@ -75,6 +75,22 @@ export default async function SearchPage({
     )
   }
   const count = results.businesses.length + results.categories.length + results.deals.length
+
+  // A word with its own page and nothing in the plain results, or a hand-curated
+  // page (rentals, mortgage — the loose matcher returns every realtor): send them
+  // to the page rather than a thin results screen (Sep 26 2026).
+  const matchedTerm = q ? findTermForQuery(q) : undefined
+  const wordPage = matchedTerm && (count === 0 || matchedTerm.exclusive) ? matchedTerm : undefined
+  if (wordPage) {
+    await track("search_run", {
+      userId: viewer?.userId ?? null,
+      sessionId: getSessionId(),
+      targetType: "search",
+      targetId: null,
+      props: { query: q, resultCount: 1, locale: locale as "en" | "es" },
+    })
+    redirect({ href: `/find/${wordPage.slug}`, locale })
+  }
 
   if (q) {
     const sid = getSessionId()
