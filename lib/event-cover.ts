@@ -24,6 +24,8 @@ export const VENUE_BUSINESS: Record<string, string> = {
 }
 
 const TOPIC_RULES: [string, RegExp][] = [
+  // the monthly Art Walk gets its own card so it isn't one more "Art & galleries" in a row
+  ["art-walk", /\bart walk\b/i],
   // cars before marine: "Ocean" here is Ocean Avenue, so a car show at Ocean & 7th is not the sea
   ["cars", /car show|cruise night|motorcycle|hot rod|shift change/i],
   // aquarium next: "Sharktoberfest" is an aquarium open house, not a Halloween party

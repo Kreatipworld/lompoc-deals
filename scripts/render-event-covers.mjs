@@ -26,6 +26,7 @@ const G = {
   marine: '<path d="M14 46c10-12 22-18 34-18 14 0 22 8 22 8s-6 4-6 10 6 10 6 10-8 8-22 8c-12 0-24-6-34-18Z"/><circle cx="34" cy="42" r="3"/><path d="M70 36l10-8v36l-10-8"/>',
   sports: '<circle cx="42" cy="42" r="28"/><path d="M42 14c-8 8-12 18-12 28s4 20 12 28M42 14c8 8 12 18 12 28s-4 20-12 28M15 34h54M15 50h54"/>',
   cars: '<path d="M12 50l6-16c1-3 4-5 7-5h34c3 0 6 2 7 5l6 16v10H12V50Z"/><path d="M12 50h60"/><circle cx="26" cy="60" r="6"/><circle cx="58" cy="60" r="6"/>',
+  "art-walk": '<path d="M16 70V30l14-8 14 8v40"/><path d="M44 70V40l12-7 12 7v30"/><path d="M8 70h70"/><rect x="24" y="38" width="12" height="10" rx="1"/><rect x="50" y="46" width="12" height="9" rx="1"/>',
   community: '<circle cx="30" cy="30" r="9"/><circle cx="56" cy="34" r="8"/><path d="M12 64c0-10 8-17 18-17s18 7 18 17"/><path d="M44 64c0-8 6-14 14-14s14 6 14 14"/>',
 }
 
@@ -38,6 +39,7 @@ const TOPICS = [
   { slug: "marine",    label: "Ocean & wildlife",a: "#06303f", b: "#0d5f74", c: "#4fb0b8" },
   { slug: "sports",    label: "Sports",          a: "#1d3a1d", b: "#2f6b2f", c: "#8dc63f" },
   { slug: "cars",      label: "Cars & shows",    a: "#2a2a33", b: "#4a4a58", c: "#9aa3b2" },
+  { slug: "art-walk",  label: "First Thursday<br>Art Walk", a: "#0f3b4a", b: "#1f7a7a", c: "#f2c14e" },
   { slug: "community", label: "Community",       a: "#4a0857", b: "#650C75", c: "#c98a2a" },
 ]
 
@@ -72,7 +74,8 @@ const page = (t) => `<!doctype html><html><head><meta charset="utf-8"><style>
 
 const b = await chromium.launch()
 const p = await b.newPage({ viewport: { width: 1200, height: 675 }, deviceScaleFactor: 1 })
-for (const t of TOPICS) {
+const only = process.argv[2]
+for (const t of TOPICS.filter((x) => !only || x.slug === only)) {
   await p.setContent(page(t), { waitUntil: "networkidle" })
   await p.screenshot({ path: join(OUT, `${t.slug}.jpg`), type: "jpeg", quality: 88 })
   console.log("✓", t.slug)

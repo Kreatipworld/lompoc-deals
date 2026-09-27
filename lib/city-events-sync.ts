@@ -45,6 +45,23 @@ function stripHtml(html: string): string {
     .trim()
 }
 
+/**
+ * The feed files some events under a directory page instead of a venue — the Art Walk
+ * came through as venue "Restaurants in Lompoc", so the card read "Lompoc, Restaurants
+ * in Lompoc, Lompoc" (owner, Sep 27 2026). Those are not places; drop them.
+ */
+const NOT_A_VENUE = /^(restaurants|shops|shopping|things to do|hotels|lodging|wineries|events?)( in lompoc)?$/i
+
+/**
+ * Recurring events whose feed venue is wrong or vague, with the facts we verified by
+ * hand. Keyed by lowercased title; the sync writes this location instead of the feed's.
+ */
+export const KNOWN_EVENT_LOCATIONS: Record<string, string> = {
+  // Santa Maria Sun + the organizer (The Lonely Plover Social Club): Old Town blocks,
+  // start at Cypress Gallery, first Thursday 5–8 PM, free.
+  "lompoc art walk": "Old Town Lompoc (H St, Ocean Ave, I & J St, Cypress Ave), starts at Cypress Gallery, 119 E Cypress Ave",
+}
+
 function toDate(utc: string | undefined, local: string): Date {
   // Prefer the UTC field; fall back to local time with the Lompoc offset
   if (utc) return new Date(utc + "Z")
@@ -92,13 +109,16 @@ export async function syncExploreLompocEvents(): Promise<SyncReport> {
     for (const evt of data.events ?? []) {
       try {
         const venue = Array.isArray(evt.venue) ? undefined : evt.venue
+        const title = decodeEntities(evt.title).trim().slice(0, 300)
+        const venueName = venue?.venue && !NOT_A_VENUE.test(venue.venue.trim()) ? venue.venue : undefined
         const location =
-          [venue?.venue, venue?.address, venue?.city ?? "Lompoc"]
+          KNOWN_EVENT_LOCATIONS[title.toLowerCase()] ??
+          ([venueName, venue?.address, venue?.city ?? "Lompoc"]
             .filter(Boolean)
-            .join(", ") || "Lompoc, CA"
+            .join(", ") || "Lompoc, CA")
 
         const facts = {
-          title: decodeEntities(evt.title).trim().slice(0, 300),
+          title,
           location: location.slice(0, 500),
           category: mapCategory(evt.categories),
           startsAt: toDate(evt.utc_start_date, evt.start_date),
