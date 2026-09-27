@@ -791,6 +791,21 @@ export async function getCategoryCoverImages(): Promise<Record<string, string>> 
   return map
 }
 
+/** Cover URLs for a hand-picked set of businesses (approved, real http covers only), keyed by id. */
+export async function getBusinessCoverUrls(ids: number[]): Promise<Record<number, string>> {
+  if (!ids.length) return {}
+  const res = await db.execute(sql`
+    SELECT b.id AS id, b.cover_url AS cover_url FROM businesses b
+    WHERE b.id IN ${sql.raw(`(${ids.map((n) => Math.trunc(n)).join(",")})`)}
+      AND b.status = 'approved' AND b.cover_url LIKE 'http%'
+  `)
+  const rows = (res as unknown as { rows?: Array<{ id: number; cover_url: string }> }).rows
+    ?? (res as unknown as Array<{ id: number; cover_url: string }>)
+  const map: Record<number, string> = {}
+  for (const r of rows) map[Number(r.id)] = r.cover_url
+  return map
+}
+
 export type CategoryWithDeals = {
   id: number
   name: string

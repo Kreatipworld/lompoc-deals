@@ -12,8 +12,10 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
   const t = await getTranslations("dealsDigest")
   if (!deals.length) return null
 
-  const featured = deals[0]
-  const grid = deals.slice(1, 7)
+  // Lead with a deal people can use today — a realtor listing is still a deal, but it
+  // opened "This Week's Deals" with a house photo (Sep 26 review), so it gives up the hero.
+  const featured = deals.find((d) => d.business.categoryName !== "Real Estate") ?? deals[0]
+  const grid = deals.filter((d) => d !== featured).slice(0, 6)
   const bizHref = (slug: string) => `/biz/${slug}`
 
   const FeatureBanner = (
@@ -35,7 +37,7 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
   )
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14">
+    <section className="mx-auto max-w-7xl px-4 py-8 sm:py-14">
       {/* Heading */}
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
@@ -52,11 +54,8 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
         </Link>
       </div>
 
-      {/* Top sponsor banner */}
-      {FeatureBanner}
-
-      {/* Featured hero + deal grid */}
-      <div className="mt-4 flex flex-col gap-4">
+      {/* Featured hero + deal grid (the sponsor banner sits below the deals, not above them) */}
+      <div className="flex flex-col gap-4">
         {/* Featured hero */}
         <Link href={bizHref(featured.business.slug)} className="group relative flex flex-col overflow-hidden rounded-2xl border bg-card sm:flex-row">
           <span className="absolute left-0 top-4 z-10 rounded-r-full bg-gold px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wide text-gold-foreground">
@@ -79,9 +78,9 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
         </Link>
 
         {/* Deal grid */}
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:overflow-visible sm:px-0 sm:pb-0 sm:grid-cols-2 xl:grid-cols-3">
           {grid.map((d) => (
-            <Link key={d.id} href={bizHref(d.business.slug)} className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
+            <Link key={d.id} href={bizHref(d.business.slug)} className="group flex w-[80%] shrink-0 snap-start flex-col sm:w-auto overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={dealImage(d)} alt={`${d.title} — ${d.business.name}`} className="h-32 w-full object-cover" />
               <div className="flex flex-1 flex-col p-4">
@@ -98,6 +97,8 @@ export async function DealsDigest({ deals }: { deals: DealCardData[] }) {
           ))}
         </div>
       </div>
+
+      <div className="mt-6">{FeatureBanner}</div>
     </section>
   )
 }

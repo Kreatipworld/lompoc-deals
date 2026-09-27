@@ -344,11 +344,12 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
         ))}
       </div>
 
+      {/* Phones swipe; the arrows covered card text there (Sep 26 review). */}
       <button
         type="button"
         onClick={() => nudge(-1)}
         aria-label={prevLabel}
-        className="absolute left-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary"
+        className="absolute left-1 top-1/2 hidden h-9 w-9 sm:flex -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
@@ -356,7 +357,7 @@ export function FeaturedBusinessesMarquee({ businesses, dealLabel, dealsLabel, p
         type="button"
         onClick={() => nudge(1)}
         aria-label={nextLabel}
-        className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary"
+        className="absolute right-1 top-1/2 hidden h-9 w-9 sm:flex -translate-y-1/2 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-md backdrop-blur transition hover:bg-background hover:text-primary"
       >
         <ChevronRight className="h-5 w-5" />
       </button>

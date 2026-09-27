@@ -1,9 +1,9 @@
 import { Link } from "@/i18n/navigation"
 import {
-  ArrowRight, MapPin, Mail, Sparkles, ChevronDown, Compass
+  ArrowRight, MapPin, Mail, Sparkles
 } from "lucide-react"
 import { getNextFootballGames } from "@/lib/football"
-import { getPartnerBusinesses, getAllCategories, getSiteStats, getFeaturedActivities, getActiveDeals, getCategoryCoverImages, getFoodSpots, getRecentBlogPosts, getAllRealEstateListings } from "@/lib/queries"
+import { getAllCategories, getSiteStats, getActiveDeals, getCategoryCoverImages, getBusinessCoverUrls, getFoodSpots, getRecentBlogPosts, getAllRealEstateListings } from "@/lib/queries"
 import { PropertyListingCard } from "@/components/property-listing-card"
 import { newsCoverUrl } from "@/lib/news-cover"
 import { DealsDigest } from "@/components/deals-digest"
@@ -17,7 +17,6 @@ import { Reveal as MotionReveal } from "@/components/motion/reveal"
 import { HeroIntro } from "@/components/motion/hero-intro"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Reveal } from "@/components/reveal"
-import { CouponDemo } from "@/components/coupon-demo"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import { categoryLabel } from "@/lib/category-label"
 import type { Metadata } from "next"
@@ -57,6 +56,24 @@ const CATEGORY_IMAGES: Record<string, string> = {
   "cannabis":      "/categories/dispensaries.jpg",
   "construction":  "/categories/construction.jpg",
   "other":         "/categories/other.jpg",
+}
+
+/**
+ * Category tiles: one hand-picked real photo per category (Sep 26 2026 review —
+ * the automatic pick showed a gas station for Food & Drink and rocks for
+ * Construction). Business ids; a pick that is no longer approved or has no
+ * cover falls back to the automatic one. Members first when their photo is strong.
+ */
+const CURATED_CATEGORY_COVER_BIZ: Record<string, number> = {
+  "food-drink": 55,     // Eddie's Grill — burger
+  "health-beauty": 673, // Paisano's Family Barbershop
+  auto: 224,            // In&Out Tires
+  construction: 678,    // Armorcoat Painting — finished house
+  retail: 566,          // Vargas Jewelers — showroom
+  services: 409,        // Heritage Home & Plumbing — truck
+  "real-estate": 36,    // Coldwell Banker Select — office
+  wineries: 303,        // Zotovich — bottles
+  entertainment: 656,   // La Purisima Golf Course
 }
 
 function getCategoryImage(slug: string): string | null {
@@ -110,13 +127,12 @@ const siteJsonLd = {
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale)
-  const [categories, featuredBusinesses, stats, featuredActivities, activeDeals, categoryCovers, foodSpots, t, latestNews, latestHomes, th, nextGames] = await Promise.all([
+  const [categories, stats, activeDeals, categoryCovers, curatedById, foodSpots, t, latestNews, latestHomes, th, nextGames] = await Promise.all([
     getAllCategories(),
-    getPartnerBusinesses(params.locale),
     getSiteStats(),
-    getFeaturedActivities(6, params.locale),
     getActiveDeals(12, params.locale),
     getCategoryCoverImages(),
+    getBusinessCoverUrls(Object.values(CURATED_CATEGORY_COVER_BIZ)),
     getFoodSpots(10, params.locale),
     getTranslations({ locale: params.locale, namespace: "home" }),
     getRecentBlogPosts(3, params.locale),
@@ -124,8 +140,9 @@ export default async function HomePage({ params }: { params: { locale: string } 
     getTranslations({ locale: params.locale, namespace: "homes" }),
     getNextFootballGames(),
   ])
-  const tl = await getTranslations({ locale: params.locale, namespace: "locals" })
   const tc = await getTranslations({ locale: params.locale, namespace: "categoryLabels" })
+  const curatedCovers: Record<string, string> = {}
+  for (const [slug, id] of Object.entries(CURATED_CATEGORY_COVER_BIZ)) if (curatedById[id]) curatedCovers[slug] = curatedById[id]
   // Food-row cards print `categoryName` straight from the DB (English); hand them the localized label.
   const localizedFoodSpots = foodSpots.map((b) => ({
     ...b,
@@ -176,24 +193,24 @@ export default async function HomePage({ params }: { params: { locale: string } 
           }}
         />
 
-        <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
+        <div className="mx-auto max-w-3xl px-4 pb-7 pt-8 text-center sm:py-24">
           {/* CSS background images are discovered after stylesheet parse — this
               preload lets the LCP hero start downloading with the HTML. */}
           <link rel="preload" as="image" href="/lompoc-hero.jpg" />
-          <div data-hero="line" className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+          <div data-hero="line" className="mb-5 hidden items-center sm:inline-flex gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             <MapPin className="h-3 w-3" />
             {t("location")}
           </div>
 
-          <h1 data-hero="line" className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h1 data-hero="line" className="font-display text-[2rem] font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
             {t("heroTitle")} <br className="sm:hidden" />
             <span data-hero="accent" className="inline-block italic text-gold">{t("heroHighlight")}</span>
           </h1>
-          <p data-hero="line" className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">
+          <p data-hero="line" className="mx-auto mt-4 hidden max-w-xl text-base text-white/80 sm:block sm:text-lg">
             {t("heroSubheadline")}
           </p>
 
-          <div data-hero="cta" className="mx-auto mt-8 max-w-xl">
+          <div data-hero="cta" className="mx-auto mt-5 max-w-xl sm:mt-8">
             <SearchBar size="lg" scrim />
           </div>
 
@@ -211,7 +228,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
             ))}
           </div>
 
-          <div data-hero="cta" className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-white/70">
+          <div data-hero="cta" className="mt-6 hidden flex-wrap items-center justify-center gap-x-4 sm:flex gap-y-2 text-xs font-medium text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
               <AnimatedCounter value={stats.activeDeals} duration={1200} delay={600} /> {t("statActiveDeals")}
@@ -234,7 +251,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
           HUNGRY RIGHT NOW — food is the #1 search intent; feed it first
          ───────────────────────────────────────────────── */}
       {foodSpots.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 pt-14">
+        <section className="mx-auto max-w-7xl px-4 pt-8 sm:pt-14">
           <AnimeReveal direction="up" delay={0} duration={600} className="mb-6">
             <h2 className="font-display text-3xl font-bold tracking-tight">
               {t("hungryHeading")}
@@ -252,100 +269,15 @@ export default async function HomePage({ params }: { params: { locale: string } 
       )}
 
       {/* ─────────────────────────────────────────────────
-          EXPLORE BY CATEGORY — the hub's front door: browse first
-         ───────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 py-14">
-        <AnimeReveal direction="up" delay={0} duration={600} className="mb-8">
-          <h2 className="font-display text-3xl font-bold tracking-tight">
-            {t("liveLoveHeading")}
-          </h2>
-          <p className="mt-1 text-muted-foreground">
-            {t("liveLoveSubheading")}
-          </p>
-        </AnimeReveal>
-
-        {/* Mobile: two rows that scroll sideways. Desktop: filling 5-col grid
-            (two full rows), centered across the section. */}
-        <MotionReveal stagger={0.06} className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0">
-          {categories.map((cat) => {
-            // Real business photo when available, else the static category image
-            const image = categoryCovers[cat.slug] ?? getCategoryImage(cat.slug)
-            const label = categoryLabel(tc, cat.slug, cat.name)
-            return (
-              <Link
-                key={cat.slug}
-                href={`/category/${cat.slug}`}
-                className="group snap-start"
-              >
-                {/* Clean photo card — no overlay, label sits below. */}
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-accent shadow-sm ring-1 ring-black/[0.06] [transition:box-shadow_220ms_ease] group-hover:shadow-md">
-                  {image ? (
-                    <SafeImage
-                      src={image}
-                      alt={label}
-                      className="h-full w-full object-cover [transition:transform_320ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
-                      fallback={<div className="h-full w-full bg-gradient-to-br from-muted to-accent" />}
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-gradient-to-br from-muted to-accent" />
-                  )}
-                </div>
-                <p className="mt-2.5 px-0.5 text-sm font-semibold tracking-tight text-foreground [transition:color_180ms_ease] group-hover:text-primary">
-                  {label}
-                </p>
-              </Link>
-            )
-          })}
-        </MotionReveal>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
           THIS WEEK'S DEALS — single deals section (purple flyer)
          ───────────────────────────────────────────────── */}
       <DealsDigest deals={activeDeals} />
 
       {/* ─────────────────────────────────────────────────
-          LOMPOC NEWS — the three newest stories from the news desk
-         ───────────────────────────────────────────────── */}
-      {latestNews.length > 0 && (
-        <section className="border-t py-14">
-          <div className="mx-auto max-w-7xl px-4">
-            <div className="mb-8 flex items-end justify-between">
-              <div>
-                <h2 className="font-display text-3xl font-bold tracking-tight">{t("newsHeading")}</h2>
-                <p className="mt-1 text-muted-foreground">{t("newsSubheading")}</p>
-              </div>
-              <Link href="/news" className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex">
-                {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-3">
-              {latestNews.map((post) => (
-                <Link key={post.slug} href={`/blog/${post.slug}`} className="group overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={newsCoverUrl({ ...post, title: post.titleEn })} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
-                  <div className="p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" }) : ""}
-                    </p>
-                    <h3 className="mt-1 font-display text-lg font-bold leading-snug group-hover:text-primary">{post.title}</h3>
-                    {post.excerpt && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>}
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <Link href="/news" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
-              {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </section>
-      )}
-
-      {/* ─────────────────────────────────────────────────
           FRIDAY NIGHT FOOTBALL — in season only (Aug 15–Dec 15): the next game per school
          ───────────────────────────────────────────────── */}
       {nextGames.length > 0 && (
-        <section className="border-t py-10">
+        <section className="border-t py-8 sm:py-10">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mb-5 flex items-end justify-between">
               <div>
@@ -380,12 +312,17 @@ export default async function HomePage({ params }: { params: { locale: string } 
       )}
 
       {/* ─────────────────────────────────────────────────
+          EVENTS — upcoming around Lompoc (synced daily)
+         ───────────────────────────────────────────────── */}
+      <EventsSection />
+
+      {/* ─────────────────────────────────────────────────
           HOMES IN LOMPOC — newest homes listed by local agents (only when there are any)
          ───────────────────────────────────────────────── */}
       {latestHomes.length > 0 && (
-        <section className="border-t py-16">
+        <section className="border-t py-8 sm:py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <div className="mb-10 flex items-end justify-between">
+            <div className="mb-6 flex items-end justify-between sm:mb-10">
               <div>
                 <h2 className="font-display text-3xl font-bold tracking-tight">{th("homeHeading")}</h2>
                 <p className="mt-1 text-muted-foreground">{th("homeSubheading")}</p>
@@ -407,218 +344,89 @@ export default async function HomePage({ params }: { params: { locale: string } 
       )}
 
       {/* ─────────────────────────────────────────────────
-          FEATURED BUSINESSES — "Popular in Lompoc"
+          EXPLORE BY CATEGORY — the hub's front door: browse first
          ───────────────────────────────────────────────── */}
-      {featuredBusinesses.length > 0 && (
-        <section className="border-t bg-accent/20 py-14">
-          <div className="mx-auto max-w-7xl px-4">
-            <div className="mb-8 flex items-end justify-between">
-              <div>
-                <h2 className="font-display text-3xl font-bold tracking-tight">
-                  {t("popularInLompoc")}
-                </h2>
-                <p className="mt-1 text-muted-foreground">
-                  {t("businessesSubheading")}
-                </p>
-              </div>
+      <section className="border-t mx-auto max-w-7xl px-4 py-8 sm:py-14">
+        <AnimeReveal direction="up" delay={0} duration={600} className="mb-6 sm:mb-8">
+          <h2 className="font-display text-3xl font-bold tracking-tight">
+            {t("liveLoveHeading")}
+          </h2>
+          <p className="mt-1 text-muted-foreground">
+            {t("liveLoveSubheading")}
+          </p>
+        </AnimeReveal>
+
+        {/* Mobile: two rows that scroll sideways. Desktop: filling 5-col grid
+            (two full rows), centered across the section. */}
+        <MotionReveal stagger={0.06} className="-mx-4 grid grid-flow-col grid-rows-2 auto-cols-[43%] gap-x-4 gap-y-5 overflow-x-auto px-4 pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0">
+          {categories.filter((cat) => cat.slug !== "other").map((cat) => {
+            // Hand-picked member photo first, then the best real business photo, then the static image
+            const image = curatedCovers[cat.slug] ?? categoryCovers[cat.slug] ?? getCategoryImage(cat.slug)
+            const label = categoryLabel(tc, cat.slug, cat.name)
+            return (
               <Link
-                href="/businesses"
-                className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
+                key={cat.slug}
+                href={`/category/${cat.slug}`}
+                className="group snap-start"
               >
-                {t("viewAllBusinesses")}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            <FeaturedBusinessesMarquee
-              businesses={featuredBusinesses}
-              dealLabel={t("deal")}
-              dealsLabel={t("deals")}
-              prevLabel={t("carouselPrev")}
-              nextLabel={t("carouselNext")}
-            />
-
-            <div className="mt-6 text-center sm:hidden">
-              <Link
-                href="/businesses"
-                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-              >
-                {t("viewAllBusinesses")}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ─────────────────────────────────────────────────
-          EVENTS — upcoming around Lompoc (synced daily)
-         ───────────────────────────────────────────────── */}
-      <EventsSection />
-
-      {/* ─────────────────────────────────────────────────
-          THINGS TO DO — Featured activities
-         ───────────────────────────────────────────────── */}
-      {featuredActivities.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-14">
-          <div className="mb-8 flex items-end justify-between">
-            <div>
-              <h2 className="font-display text-3xl font-bold tracking-tight">
-                {t("activitiesHeading")}
-              </h2>
-              <p className="mt-1 text-muted-foreground">
-                {t("activitiesSubheading")}
-              </p>
-            </div>
-            <Link
-              href="/activities"
-              className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
-            >
-              {t("seeAllActivities")}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <MotionReveal stagger={0.06} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredActivities.map((activity) => (
-              <Link
-                key={activity.id}
-                href={`/activities/${activity.slug}`}
-                className="group relative overflow-hidden rounded-2xl border bg-background shadow-sm card-lift hover:shadow-lg hover:-translate-y-1"
-              >
-                <div className="relative aspect-[16/9] overflow-hidden bg-accent">
-                  {activity.imageUrl && (
+                {/* Clean photo card — no overlay, label sits below. */}
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-accent shadow-sm ring-1 ring-black/[0.06] [transition:box-shadow_220ms_ease] group-hover:shadow-md">
+                  {image ? (
                     <SafeImage
-                      src={activity.imageUrl}
-                      alt={activity.title}
-                      className="h-full w-full object-cover [transition:transform_300ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+                      src={image}
+                      alt={label}
+                      className="h-full w-full object-cover [transition:transform_320ms_cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
+                      fallback={<div className="h-full w-full bg-gradient-to-br from-muted to-accent" />}
                     />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  {activity.seasonality && (
-                    <div className="absolute right-3 top-3 rounded-full bg-black/50 px-2.5 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
-                      {activity.seasonality}
-                    </div>
+                  ) : (
+                    <div className="h-full w-full bg-gradient-to-br from-muted to-accent" />
                   )}
                 </div>
-                <div className="p-4">
-                  <h3 className="font-display font-semibold leading-snug group-hover:text-primary transition-colors">
-                    {activity.title}
-                  </h3>
-                  {activity.description && (
-                    <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
-                      {activity.description}
-                    </p>
-                  )}
-                  {activity.address && (
-                    <span className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-                      <MapPin className="h-3 w-3 flex-shrink-0" />
-                      {activity.address.split(",")[0]}
-                    </span>
-                  )}
-                </div>
+                <p className="mt-2.5 px-0.5 text-sm font-semibold tracking-tight text-foreground [transition:color_180ms_ease] group-hover:text-primary">
+                  {label}
+                </p>
               </Link>
-            ))}
-          </MotionReveal>
+            )
+          })}
+        </MotionReveal>
+      </section>
 
-          <div className="mt-6 flex items-center justify-between">
-            <div className="sm:hidden">
-              <Link
-                href="/activities"
-                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-              >
-                {t("seeAllActivities")}
-                <ArrowRight className="h-4 w-4" />
+      {/* ─────────────────────────────────────────────────
+          LOMPOC NEWS — the three newest stories from the news desk
+         ───────────────────────────────────────────────── */}
+      {latestNews.length > 0 && (
+        <section className="border-t py-8 sm:py-14">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-6 flex items-end justify-between sm:mb-8">
+              <div>
+                <h2 className="font-display text-3xl font-bold tracking-tight">{t("newsHeading")}</h2>
+                <p className="mt-1 text-muted-foreground">{t("newsSubheading")}</p>
+              </div>
+              <Link href="/news" className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex">
+                {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            <Link
-              href="/map"
-              className="ml-auto inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
-            >
-              <Compass className="h-4 w-4 text-primary" />
-              {t("exploreMap")}
+            <div className="grid gap-5 sm:grid-cols-3">
+              {latestNews.map((post) => (
+                <Link key={post.slug} href={`/blog/${post.slug}`} className="group overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-md">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={newsCoverUrl({ ...post, title: post.titleEn })} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
+                  <div className="p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(params.locale === "es" ? "es-US" : "en-US", { month: "short", day: "numeric", timeZone: "America/Los_Angeles" }) : ""}
+                    </p>
+                    <h3 className="mt-1 font-display text-lg font-bold leading-snug group-hover:text-primary">{post.title}</h3>
+                    {post.excerpt && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Link href="/news" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline sm:hidden">
+              {t("newsSeeAll")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </section>
       )}
-
-      {/* ─────────────────────────────────────────────────
-          HOW IT WORKS — 3-step explainer
-         ───────────────────────────────────────────────── */}
-      <section className="border-t bg-accent/30 py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <AnimeReveal direction="up" delay={0} duration={600} className="mb-10 text-center">
-            <h2 className="font-display text-3xl font-bold tracking-tight">
-              {t("howItWorks.title")}
-            </h2>
-            <p className="mt-2 text-muted-foreground">
-              {t("howItWorks.subtitle")}
-            </p>
-          </AnimeReveal>
-          <CouponDemo
-            labels={{
-              scenes: [
-                { title: t("howItWorks.step1Title"), body: t("howItWorks.step1Body") },
-                { title: t("howItWorks.step2Title"), body: t("howItWorks.step2Body") },
-                { title: t("howItWorks.step3Title"), body: t("howItWorks.step3Body") },
-              ],
-              panelLabels: [tl("demoPanel1"), tl("demoPanel2"), tl("demoPanel3")],
-              demoChip: tl("demoChip"),
-              businessName: tl("demoBizName"),
-              dealTitle: tl("demoDealTitle"),
-              dealDiscount: tl("demoDealDiscount"),
-              dealTerms: tl("demoDealTerms"),
-              expires: tl("demoExpires"),
-              claimCta: tl("demoClaimCta"),
-              code: tl("demoCode"),
-              showAtRegister: tl("demoShowAtRegister"),
-              usedCta: tl("demoUsedCta"),
-              usedTitle: tl("demoUsedTitle"),
-              usedBody: tl("demoUsedBody"),
-              playAgain: tl("demoPlayAgain"),
-            }}
-          />
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────
-          FAQ — 6 questions
-         ───────────────────────────────────────────────── */}
-      <section className="border-t bg-accent/20 py-16">
-        <div className="mx-auto max-w-3xl px-4">
-          <div className="mb-10 text-center">
-            <h2 className="font-display text-3xl font-bold tracking-tight">
-              {t("faq.title")}
-            </h2>
-            <p className="mt-2 text-muted-foreground">
-              {t("faq.subtitle")}
-            </p>
-          </div>
-          <div className="space-y-3">
-            {[
-              { q: t("faq.q1"), a: t("faq.a1") },
-              { q: t("faq.q2"), a: t("faq.a2") },
-              { q: t("faq.q3"), a: t("faq.a3") },
-              { q: t("faq.q4"), a: t("faq.a4") },
-              { q: t("faq.q5"), a: t("faq.a5") },
-              { q: t("faq.q6"), a: t("faq.a6") },
-            ].map(({ q, a }) => (
-              <details
-                key={q}
-                className="group rounded-xl border bg-background open:shadow-sm"
-              >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-medium hover:bg-accent/50 rounded-xl group-open:rounded-b-none transition-colors">
-                  {q}
-                  <ChevronDown className="h-4 w-4 flex-shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-                </summary>
-                <div className="border-t px-5 py-4 text-sm text-muted-foreground leading-relaxed">
-                  {a}
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ─────────────────────────────────────────────────
           BUSINESS CTA

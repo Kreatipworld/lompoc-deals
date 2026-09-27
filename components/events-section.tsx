@@ -158,7 +158,7 @@ function EventCard({
 
 function EmptyEvents({ noEvents, submitLabel }: { noEvents: string; submitLabel: string }) {
   return (
-    <div className="col-span-full flex flex-col items-center gap-3 rounded-2xl border border-dashed py-12 text-center">
+    <div className="col-span-full flex w-full flex-col items-center gap-3 rounded-2xl border border-dashed py-12 text-center">
       <CalendarDays className="h-8 w-8 text-muted-foreground/40" />
       <p className="text-sm text-muted-foreground">
         {noEvents}
@@ -214,7 +214,7 @@ export async function EventsSection() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10">
+    <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
       {/* Header */}
       <div className="mb-6 flex items-end justify-between">
         <div>
@@ -234,10 +234,11 @@ export async function EventsSection() {
         </Link>
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Grid — a sideways row on phones (the stacked list ran ~4 screens), grid from sm: up */}
+      <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:overflow-visible sm:px-0 sm:pb-0 sm:grid-cols-2 lg:grid-cols-4">
         {evts.length > 0 ? (
           evts.map((e) => (
+            <div key={e.id} className="w-[80%] shrink-0 snap-start sm:w-auto">
             <EventCard
               key={e.id}
               event={e}
@@ -257,6 +258,7 @@ export async function EventsSection() {
                           : null
               }
             />
+            </div>
           ))
         ) : (
           <EmptyEvents noEvents={t("noEvents")} submitLabel={t("submitEvent")} />

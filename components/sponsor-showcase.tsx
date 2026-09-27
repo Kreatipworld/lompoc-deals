@@ -27,7 +27,7 @@ export async function SponsorShowcase({
   const useMarquee = !scoped && members.length >= 4
 
   return (
-    <section className="border-y bg-gradient-to-b from-accent/30 to-transparent py-10">
+    <section className="border-y bg-gradient-to-b from-accent/30 to-transparent py-6 sm:py-10">
       <div className="mx-auto max-w-7xl px-4">
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
