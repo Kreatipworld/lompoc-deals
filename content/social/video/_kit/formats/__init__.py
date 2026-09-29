@@ -1,4 +1,4 @@
-from . import deal_promo, event_promo, flyer_story, game_night, game_night_card, game_night_town, game_result, master_story, member_spotlight, monday_paper, news_recap, number_ad, results_card, season_recap, sunday_lunch
+from . import deal_promo, event_promo, flyer_story, game_night, game_night_card, game_night_town, game_result, master_story, member_fiesta, member_spotlight, monday_paper, news_recap, number_ad, results_card, season_recap, sunday_lunch
 
 REGISTRY = {
     "deal-promo": deal_promo,
@@ -11,6 +11,7 @@ REGISTRY = {
     "number-ad": number_ad,
     "results-card": results_card,
     "master-story": master_story,
+    "member-fiesta": member_fiesta,
     "member-spotlight": member_spotlight,
     "monday-paper": monday_paper,
     "news-recap": news_recap,
