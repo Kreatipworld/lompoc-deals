@@ -26,8 +26,9 @@ const biz = { name: "Capulín Eats &amp; Provisions", plain: "Capulín Eats & Pr
 const claimUrl = `https://www.lompoclocals.com/signup?claim=${biz.slug}&plan=standard${TO ? `&email=${encodeURIComponent(TO)}` : ""}`
 const profileUrl = `https://www.lompoclocals.com/biz/${biz.slug}`
 
-// Real figures, pulled Sep 30 2026.
-const F = { members: 22 }
+// Real figures, pulled Sep 30 2026. Engaged visits exclude bots and our own monitors (project_honest_numbers).
+// Followers: IG 3,000+ (our Sep 20 milestone post) + FB 1.9K (page header). "coffee" searches = search_run, last 30 days.
+const F = { members: 22, followers: "4,900+", visits: "819", coffee: 26, digest: 87 }
 
 const html = `
 <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
@@ -40,6 +41,17 @@ const html = `
     <div style="height:3px; width:52px; background:${Y}; border-radius:2px; margin:0 0 18px;"></div>
     <p style="color:#444; line-height:1.6; margin:0 0 14px;">We built you a page on <strong>Lompoc Locals</strong> &mdash; the #1 local hub in Lompoc, where neighbors find local businesses, read local news, and see what's happening in town each week. Your page is live now with your logo, your photos, your menu favorites (egg sandwiches, tortas, pan dulce, coffee and aguas frescas) and your number &mdash; <a href="${profileUrl}" style="color:${P}; font-weight:700;">take a look</a>. Anything you want changed, just reply and we'll fix it the same day.</p>
     <p style="color:#444; line-height:1.6; margin:0 0 18px;"><strong>${F.members} Lompoc businesses</strong> are members today, and every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in inboxes across town. Local kitchens like <strong>Eddie's Grill</strong>, <strong>Hangar 7</strong>, <strong>El Culichi</strong> and <strong>Taqueria Don Tacho</strong> are already members, with the partner badge on the map, a spot in the homepage member rail, and their specials in the Monday email.</p>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px; border-collapse:separate; border-spacing:8px;">
+      <tr>
+        <td style="background:${P}; border-radius:12px; padding:16px; text-align:center; width:50%;"><div style="font-size:28px; font-weight:800; color:#fff;">${F.followers}</div><div style="font-size:12px; color:#f0e6f3; line-height:1.4;">people follow Lompoc Locals on Instagram &amp; Facebook</div></td>
+        <td style="background:${G}; border-radius:12px; padding:16px; text-align:center; width:50%;"><div style="font-size:28px; font-weight:800; color:#fff;">${F.visits}</div><div style="font-size:12px; color:#e3f5e8; line-height:1.4;">real visits to the site in the last 30 days (bots not counted)</div></td>
+      </tr>
+      <tr>
+        <td style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:16px; text-align:center;"><div style="font-size:28px; font-weight:800; color:${P};">${F.coffee}</div><div style="font-size:12px; color:#555; line-height:1.4;">searches for &ldquo;coffee&rdquo; on Lompoc Locals this month</div></td>
+        <td style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:16px; text-align:center;"><div style="font-size:28px; font-weight:800; color:${P};">${F.members}</div><div style="font-size:12px; color:#555; line-height:1.4;">local businesses are members today</div></td>
+      </tr>
+    </table>
 
     <div style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:20px 22px; margin:0 0 22px;">
       <div style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:${P}; margin:0 0 8px;">Growth membership, built for a caf&eacute; like yours</div>
