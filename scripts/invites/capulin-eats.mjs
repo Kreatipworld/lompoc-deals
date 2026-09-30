@@ -48,12 +48,7 @@ const html = `
         <td colspan="2" style="background:linear-gradient(135deg,${P} 0%,#8a1aa0 100%); background-color:${P}; border-radius:12px; padding:20px; text-align:center;"><div style="font-size:40px; font-weight:800; color:${Y}; line-height:1;">${F.social}</div><div style="font-size:14px; color:#fff; line-height:1.4; margin-top:6px;">views on Lompoc Locals posts in the last 30 days<br><span style="color:#e8d9ee; font-size:12px;">Instagram + Facebook + TikTok</span></div></td>
       </tr>
       <tr>
-        <td style="background:${P}; border-radius:12px; padding:16px; text-align:center; width:50%;"><div style="font-size:28px; font-weight:800; color:#fff;">${F.followers}</div><div style="font-size:12px; color:#f0e6f3; line-height:1.4;">people follow Lompoc Locals on Instagram &amp; Facebook</div></td>
-        <td style="background:${G}; border-radius:12px; padding:16px; text-align:center; width:50%;"><div style="font-size:28px; font-weight:800; color:#fff;">${F.visits}</div><div style="font-size:12px; color:#e3f5e8; line-height:1.4;">visits to Lompoc Locals in the last 30 days</div></td>
-      </tr>
-      <tr>
-        <td style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:16px; text-align:center;"><div style="font-size:28px; font-weight:800; color:${P};">${F.coffee}</div><div style="font-size:12px; color:#555; line-height:1.4;">searches for &ldquo;coffee&rdquo; on Lompoc Locals this month</div></td>
-        <td style="background:#F7F3E9; border:1px solid #E9DFC2; border-radius:12px; padding:16px; text-align:center;"><div style="font-size:28px; font-weight:800; color:${P};">${F.members}</div><div style="font-size:12px; color:#555; line-height:1.4;">local businesses are members today</div></td>
+        <td style="background:${G}; border-radius:12px; padding:16px; text-align:center;"><div style="font-size:30px; font-weight:800; color:#fff;">${F.followers}</div><div style="font-size:13px; color:#e3f5e8; line-height:1.4;">people follow Lompoc Locals on Instagram &amp; Facebook</div></td>
       </tr>
     </table>
 
