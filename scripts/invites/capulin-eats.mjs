@@ -28,7 +28,8 @@ const profileUrl = `https://www.lompoclocals.com/biz/${biz.slug}`
 
 // Real figures, pulled Sep 30 2026. Engaged visits exclude bots and our own monitors (project_honest_numbers).
 // Followers: IG 3,000+ (our Sep 20 milestone post) + FB 1.9K (page header). "coffee" searches = search_run, last 30 days.
-const F = { members: 22, followers: "4,900+", visits: "819", coffee: 26, digest: 87 }
+// Social views = Buffer post metrics Sep 3–30 2026: IG views 29,870 + TikTok views 54,389 + FB impressions 35,848 = 120,107.
+const F = { members: 22, followers: "4,900+", visits: "819", coffee: 26, digest: 87, social: "120,000+" }
 
 const html = `
 <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
@@ -43,6 +44,9 @@ const html = `
     <p style="color:#444; line-height:1.6; margin:0 0 18px;"><strong>${F.members} Lompoc businesses</strong> are members today, and every Monday morning our email &mdash; local news, this week's events, and members' deals &mdash; lands in inboxes across town. Local kitchens like <strong>Eddie's Grill</strong>, <strong>Hangar 7</strong>, <strong>El Culichi</strong> and <strong>Taqueria Don Tacho</strong> are already members, with the partner badge on the map, a spot in the homepage member rail, and their specials in the Monday email.</p>
 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px; border-collapse:separate; border-spacing:8px;">
+      <tr>
+        <td colspan="2" style="background:linear-gradient(135deg,${P} 0%,#8a1aa0 100%); background-color:${P}; border-radius:12px; padding:20px; text-align:center;"><div style="font-size:40px; font-weight:800; color:${Y}; line-height:1;">${F.social}</div><div style="font-size:14px; color:#fff; line-height:1.4; margin-top:6px;">views on Lompoc Locals posts in the last 30 days<br><span style="color:#e8d9ee; font-size:12px;">Instagram + Facebook + TikTok</span></div></td>
+      </tr>
       <tr>
         <td style="background:${P}; border-radius:12px; padding:16px; text-align:center; width:50%;"><div style="font-size:28px; font-weight:800; color:#fff;">${F.followers}</div><div style="font-size:12px; color:#f0e6f3; line-height:1.4;">people follow Lompoc Locals on Instagram &amp; Facebook</div></td>
         <td style="background:${G}; border-radius:12px; padding:16px; text-align:center; width:50%;"><div style="font-size:28px; font-weight:800; color:#fff;">${F.visits}</div><div style="font-size:12px; color:#e3f5e8; line-height:1.4;">real visits to the site in the last 30 days (bots not counted)</div></td>
