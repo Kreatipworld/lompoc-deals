@@ -27,6 +27,7 @@ import {
   ShoppingBag,
   CheckCircle2,
   Bug,
+  Search,
 } from "lucide-react"
 import {
   getAdminStats,
@@ -65,6 +66,7 @@ import {
 } from "@/lib/admin-analytics"
 import type { FunnelWindow } from "@/lib/funnel-queries"
 import { countNewBugReports } from "@/lib/bug-report-actions"
+import { seoTileStats } from "@/lib/keyword-positions"
 import { FunnelStep, Sparkline, BusinessLink } from "@/components/admin/analytics-bits"
 import { findTermForQuery } from "@/lib/find-terms"
 import { TrendChart } from "@/components/trend-chart"
@@ -289,6 +291,7 @@ export default async function AdminPage({
     topBizResult,
     dailyMetricsResult,
     bugsResult,
+    seoResult,
   ] = await Promise.allSettled([
     getAdminStats(),
     getPendingBusinesses(),
@@ -313,6 +316,7 @@ export default async function AdminPage({
     topBusinessesByInterest(days),
     dailyMetrics(days),
     countNewBugReports(),
+    seoTileStats(),
   ])
 
   const stats = settled(statsResult, DEFAULT_STATS)
@@ -325,6 +329,7 @@ export default async function AdminPage({
   const growth = settled(growthResult, [])
   const kpis = settled(kpisResult, DEFAULT_KPIS)
   const openBugs = settled(bugsResult, 0)
+  const seo = settled(seoResult, { clicks28d: 0, tracked: 0, hasData: false })
   const daily = settled(dailyResult, [])
   const sources = settled(sourcesResult, [])
   const actions = settled(actionsResult, { total: 0, rows: [] })
@@ -585,6 +590,14 @@ export default async function AdminPage({
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           <Link href="/admin/bugs" className="contents">
             <StatTile icon={<Bug className="h-3.5 w-3.5" />} label={t("kpiBugs")} value={openBugs} sub={t("kpiBugsSub")} />
+          </Link>
+          <Link href="/admin/seo" className="contents">
+            <StatTile
+              icon={<Search className="h-3.5 w-3.5" />}
+              label={t("kpiSeo")}
+              value={seo.clicks28d}
+              sub={seo.hasData ? t("kpiSeoSub", { count: seo.tracked }) : t("kpiSeoNoData")}
+            />
           </Link>
           <StatTile
             icon={<Eye className="h-3.5 w-3.5" />}

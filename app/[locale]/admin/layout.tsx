@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { DashboardNav } from "@/components/dashboard-nav"
-import { LayoutDashboard, Users, Tag, CalendarDays, Rss, Megaphone, LifeBuoy, Activity, Clock, Store, Newspaper, Bug, ShoppingBag } from "lucide-react"
+import { LayoutDashboard, Users, Tag, CalendarDays, Rss, Megaphone, LifeBuoy, Activity, Clock, Store, Newspaper, Bug, ShoppingBag, Search } from "lucide-react"
 
 export default async function AdminLayout({
   children,
@@ -56,6 +56,11 @@ export default async function AdminLayout({
               href: "/admin/news-desk",
               icon: <Newspaper className="h-4 w-4" />,
               label: "News desk",
+            },
+            {
+              href: "/admin/seo",
+              icon: <Search className="h-4 w-4" />,
+              label: "Google positions",
             },
             {
               href: "/admin/users",

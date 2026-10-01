@@ -624,6 +624,17 @@ try {
   post.status >= 300 && post.status < 400 && /\/login/.test(postLoc) ? pass("/sales/post sends a stranger to /login") : fail(`/sales/post → ${post.status} ${postLoc} for a stranger (must redirect to login)`)
 } catch (e) { fail(`lompoc sales: ${e.message}`) }
 
+console.log("\n21. Google positions — the admin page is gated and the Search Console cron needs its secret (spec 2026-09-30)")
+try {
+  const seo = await fetch(`${SITE}/admin/seo`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, redirect: "manual", cache: "no-store" })
+  const seoLoc = seo.headers.get("location") || ""
+  seo.status >= 300 && seo.status < 400 && /\/login/.test(seoLoc)
+    ? pass("/admin/seo sends a stranger to /login")
+    : fail(`/admin/seo → ${seo.status} ${seoLoc} for a stranger (must redirect to login)`)
+  const cron = await fetch(`${SITE}/api/cron/gsc-pull`, { headers: { "user-agent": "lompoc-locals-healthcheck" }, cache: "no-store" })
+  cron.status === 401 ? pass("/api/cron/gsc-pull → 401 without the secret") : fail(`/api/cron/gsc-pull → ${cron.status} without the secret (expected 401)`)
+} catch (e) { fail(`google positions: ${e.message}`) }
+
 console.log(
   failures === 0
     ? `\n\x1b[32mAll checks passed.\x1b[0m\n`

@@ -9,6 +9,7 @@ import {
   date,
   timestamp,
   doublePrecision,
+  real,
   jsonb,
   primaryKey,
   uniqueIndex,
@@ -887,4 +888,39 @@ export const bugReports = pgTable("bug_reports", {
   adminNote: text("admin_note"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+})
+
+// ---------- keyword positions (Google Search Console) ----------
+// docs/superpowers/specs/2026-09-30-keyword-positions-design.md
+// gsc_daily mirrors the Search Analytics API (date × query × page); every pull
+// re-fetches the last 4 days and upserts, because Google's numbers lag ~2 days.
+export const gscDaily = pgTable(
+  "gsc_daily",
+  {
+    id: serial("id").primaryKey(),
+    date: date("date").notNull(),
+    query: text("query").notNull(),
+    page: text("page").notNull(),
+    clicks: integer("clicks").notNull().default(0),
+    impressions: integer("impressions").notNull().default(0),
+    ctr: real("ctr").notNull().default(0),
+    position: real("position").notNull().default(0),
+    fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    dateQueryPageIdx: uniqueIndex("gsc_daily_date_query_page_idx").on(t.date, t.query, t.page),
+    queryDateIdx: index("gsc_daily_query_date_idx").on(t.query, t.date),
+    pageDateIdx: index("gsc_daily_page_date_idx").on(t.page, t.date),
+  })
+)
+
+// The searches we care about, for the town and for each member ("our clients"):
+// a member can have many keywords. keyword is lower-cased + trimmed.
+export const trackedKeywords = pgTable("tracked_keywords", {
+  id: serial("id").primaryKey(),
+  keyword: text("keyword").notNull().unique(),
+  targetPath: text("target_path"),
+  businessId: integer("business_id").references(() => businesses.id, { onDelete: "set null" }),
+  note: text("note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 })
