@@ -10,3 +10,5 @@ Built from the owner's own phone clips and photos sent on Telegram (sauce drizzl
 | IG Story → /biz/bowl-and-soul (utm ig-story) | 6abea1bbea8c2a50c928e2de | 11:25 |
 
 Weak spot: their only logo is a 100px Instagram image — ask for a real file.
+
+Live: IG https://www.instagram.com/reel/Dd9hL4-Fapx/ · FB https://www.facebook.com/reel/29216099768013560/ · TikTok https://tiktok.com/@lompoclocals/video/7691765759911005454 · Story https://www.instagram.com/stories/lompoclocals_/3998506534417761229 (sent 11:27).
