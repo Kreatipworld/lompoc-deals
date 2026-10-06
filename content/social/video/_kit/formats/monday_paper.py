@@ -180,10 +180,11 @@ def build(d):
         return "".join(f'tl.fromTo("#{cid}-n{k}", {{ autoAlpha:0, y:-90, rotation:{-10 if k % 2 == 0 else 10} }}, {{ autoAlpha:1, y:0, rotation:{[-3, 2.5, -1.5][k % 3]}, duration:0.6, ease:"back.out(1.6)" }}, {0.15 + 0.3 * k:.2f});' for k in range(len(we["notes"])))
     add(f"s{n0 + 2}-weekend", 4.6, we_html, we_js, we["say"])
 
-    # sign-off
+    # sign-off: the coffee cup from the masthead closes the edition (a bare ring read as
+    # an unexplained circle, owner Oct 6 2026)
     e = d["end"]
     def end_html(cid, dur, size):
-        return (f'{base}<div class="ring" id="{cid}-r" style="left:370px; top:260px; opacity:0"></div>'
+        return (f'{base}<div class="cup" id="{cid}-r" style="left:390px; top:300px; opacity:0"></div>'
                 f'<div class="head" id="{cid}-h" style="top:700px; font-size:112px; text-align:center; opacity:0">{e["line"]}</div>'
                 f'<div id="{cid}-u" style="position:absolute; left:0; right:0; top:1010px; text-align:center; opacity:0"><span class="pill">{e["url"]}</span></div>'
                 f'<img class="logo" src="{src("logo")}" style="left:440px; top:1200px" />')
