@@ -114,8 +114,13 @@ def build(d):
                 if st.get("badge"):
                     h += f'<img class="badge" id="{cid}-b" src="{src(st["badge"])}" style="right:70px; top:{st.get("photo_top", 780) + 400}px" />'
             else:
-                h += (f'<div class="note {st.get("color", "")}" id="{cid}-n" style="left:110px; right:110px; top:420px; transform:rotate(-2.5deg)">'
-                      f'<div class="tape"></div><div class="nh" style="font-size:96px">{st["head"]}</div><div class="ns" style="font-size:44px">{st["sub"]}</div></div>')
+                h += (f'<div class="note {st.get("color", "")}" id="{cid}-n" style="left:90px; right:90px; top:380px; transform:rotate(-2.5deg)">'
+                      f'<div class="tape"></div><div class="nh" style="font-size:104px">{st["head"]}</div><div class="ns" style="font-size:46px">{st["sub"]}</div></div>')
+                # A note alone left the lower half of the frame empty (owner, Oct 6 2026): a sourced stat fills it.
+                if st.get("stat"):
+                    h += (f'<div id="{cid}-st" style="position:absolute; left:0; right:0; top:1080px; text-align:center; opacity:0">'
+                          f'<div style="font-family:Fraunces,serif; font-weight:900; font-size:330px; line-height:0.9; letter-spacing:-12px; color:{B.PURPLE}">{st["stat"]["n"]}</div>'
+                          f'<div style="margin-top:18px; font-weight:800; font-size:48px; letter-spacing:2px; color:{INK}">{st["stat"]["label"]}</div></div>')
             return h
         def st_js(cid, dur, size=None, st=st):
             if st["kind"] == "lead":
@@ -126,7 +131,10 @@ def build(d):
                 if st.get("badge"):
                     out += S.pop(cid, "b", 0.7, scale=1.5, dur=0.45)
                 return out
-            return S.rise(cid, "k", 0.05, dy=12, dur=0.35) + (f'tl.fromTo("#{cid}-n", {{ autoAlpha:0, y:-120, rotation:-10 }}, {{ autoAlpha:1, y:0, rotation:-2.5, duration:0.7, ease:"back.out(1.6)" }}, 0.15);')
+            out = S.rise(cid, "k", 0.05, dy=12, dur=0.35) + (f'tl.fromTo("#{cid}-n", {{ autoAlpha:0, y:-120, rotation:-10 }}, {{ autoAlpha:1, y:0, rotation:-2.5, duration:0.7, ease:"back.out(1.6)" }}, 0.15);')
+            if st.get("stat"):
+                out += S.pop(cid, "st", 0.75, scale=1.25, dur=0.5)
+            return out
         add(f"s{i + 1}-story", 4.0, st_html, st_js, st["say"])
 
     n0 = len(d["stories"]) + 1
