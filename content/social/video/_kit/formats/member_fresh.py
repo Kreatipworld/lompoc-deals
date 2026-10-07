@@ -37,9 +37,14 @@ def build(d):
 
     def css(cid, size):
         s = f'[data-composition-id="{cid}"]'
-        leaves = "".join(
-            f'<i style="left:{x}px;transform:rotate({[-30, 25, -10, 35, -25][i % 5]}deg);background:{[A, Bc][i % 2]}"></i>'
-            for i, x in enumerate(range(10, 1080, 118)))
+        # deco "stripes": a flag-like band of diagonal stripes for trades/patriotic brands (Arthur A. Wise, Oct 2026)
+        if d.get("deco") == "stripes":
+            leaves = "".join(f'<i style="left:{x}px;width:60px;height:80px;border-radius:0;transform:skewX(-25deg);background:{[A, Bc, "#ffffff"][i % 3]}"></i>'
+                             for i, x in enumerate(range(-20, 1100, 70)))
+        else:
+          leaves = "".join(
+              f'<i style="left:{x}px;transform:rotate({[-30, 25, -10, 35, -25][i % 5]}deg);background:{[A, Bc][i % 2]}"></i>'
+              for i, x in enumerate(range(10, 1080, 118)))
         return f"""<style>
           @font-face {{ font-family:"Fraunces"; src:url("public/Fraunces.ttf") format("truetype"); font-weight:100 900; }}
           @font-face {{ font-family:"Fraunces"; src:url("public/Fraunces-Italic.ttf") format("truetype"); font-weight:100 900; font-style:italic; }}
