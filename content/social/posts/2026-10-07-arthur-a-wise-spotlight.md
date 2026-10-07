@@ -8,3 +8,5 @@ Member since Sep 13 (biz 676), first spotlight. member-fresh with the new "strip
 | FB Reel (→ /biz/arthur-a-wise-inc) | 6ac69626223f8511230c2a44 | 12:03 |
 | TikTok | 6ac69627a8c569b3dfae06b9 | 12:08 |
 | IG Story → their page | 6ac696289c24023398415dfd | 12:13 |
+
+Live: IG https://www.instagram.com/reel/DeNDpZMAifl/ · FB https://www.facebook.com/reel/1755471809079943/ · TikTok https://tiktok.com/@lompoclocals/video/7694004642140769549 · Story https://www.instagram.com/stories/lompoclocals_/4002878998476680484
