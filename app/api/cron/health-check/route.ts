@@ -7,7 +7,6 @@ import {
   evaluatePage,
   formatDowntime,
   HEALTH_PAGES,
-  isQuotaError,
   type CheckFailure,
   type HealthState,
 } from "@/lib/uptime"
@@ -17,35 +16,24 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
 /**
- * Every 2 minutes: is the site actually alive for a neighbor right now?
- * Checks the database and a representative page from every section — each
- * must answer 200 AND render its own content (the error boundary answers 200
- * too). On failure, emails the founder inbox (repeats at most hourly); on
- * recovery, says so once. State lives in Vercel Blob so this works precisely
- * when Postgres doesn't.
+ * Every 15 minutes: is the site actually alive for a neighbor right now?
+ * Checks a representative page from every section — each must answer 200 AND
+ * render its own content (the error boundary answers 200 too). A page that
+ * renders its content proves the database too, so there is no separate
+ * `select 1`: that ping, every two minutes inside Neon's five-minute suspend,
+ * kept the compute awake around the clock and was most of the October Neon
+ * bill (2026-10-07). On failure, emails the founder inbox (repeats at most
+ * hourly); on recovery, says so once. State lives in Vercel Blob so this works
+ * precisely when Postgres doesn't.
  *
- * Why every minute: on Sep 14 2026 a bad build 500'd every /category/* page
- * for ~6 minutes and the 10-minute check of "/" and "/deals" never saw it.
+ * Why not every 2 minutes: on Sep 14 2026 a bad build 500'd every /category/*
+ * page for ~6 minutes and a 10-minute check missed it — but a 2-minute check
+ * cost more per month than the outage did. Fifteen minutes is the trade.
  */
 
 const STATE_PATH = "health/state.json"
 const SITE = "https://www.lompoclocals.com"
 const NEON_BILLING = "https://console.neon.tech/app/orgs/org-proud-cell-62155403/billing"
-
-async function checkDatabase(): Promise<CheckFailure | null> {
-  try {
-    const { neon } = await import("@neondatabase/serverless")
-    const sql = neon(process.env.DATABASE_URL!)
-    await Promise.race([
-      sql`select 1`,
-      new Promise((_, rej) => setTimeout(() => rej(new Error("timed out after 10s")), 10_000)),
-    ])
-    return null
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    return { target: "database", error: msg.slice(0, 300), quota: isQuotaError(msg) }
-  }
-}
 
 async function checkPage(page: { path: string; marker: string }): Promise<CheckFailure | null> {
   const url = `${SITE}${page.path}`
@@ -99,7 +87,7 @@ function shell(inner: string): string {
     </div>
     <div style="padding:24px;">${inner}</div>
     <div style="padding:12px 24px;border-top:1px solid #eee;color:#8a7f90;font-size:12px;">
-      Automated check runs every 2 minutes from lompoclocals.com — home page + database every run, the other ${HEALTH_PAGES.length - 1} pages in rotation.
+      Automated check runs every 15 minutes from lompoclocals.com — home page every run, the other ${HEALTH_PAGES.length - 1} pages in rotation.
     </div>
   </div>
 </div>`
@@ -189,7 +177,7 @@ export async function GET(request: Request) {
   const rotation = HEALTH_PAGES.slice(1)
   const pick = [0, 1, 2].map((i) => rotation[(slot * 3 + i) % rotation.length])
   const pagesThisRun = [HEALTH_PAGES[0], ...pick.filter((p, i, arr) => arr.indexOf(p) === i)]
-  const results = await Promise.all([checkDatabase(), ...pagesThisRun.map((p) => checkPage(p))])
+  const results = await Promise.all(pagesThisRun.map((p) => checkPage(p)))
   const failures = results.filter((f): f is CheckFailure => f !== null)
 
   const prev = await readState()
@@ -217,7 +205,7 @@ export async function GET(request: Request) {
   }
 
   const summary = { ok: failures.length === 0, action: action.kind, checked: pagesThisRun.length + 1, rotation: pagesThisRun.map((p) => p.path), failures, emailId }
-  // Runs every 2 minutes; a healthy row per run is 21k rows/month of nothing.
+  // Runs every 15 minutes; a healthy row per run would still be ~3k rows/month of nothing.
   // Log every failure, alert and recovery, and one healthy heartbeat per 10 min.
   const heartbeat = new Date().getMinutes() % 10 === 0
   if (!summary.ok || action.kind !== "none" || heartbeat) {
