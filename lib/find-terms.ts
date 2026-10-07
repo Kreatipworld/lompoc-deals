@@ -67,6 +67,8 @@ export const FIND_TERMS: FindTerm[] = [
     aliases: ["cafe", "café", "coffee shop", "espresso", "latte"],
     kind: "businesses",
     category: "food-drink",
+    // A coworking space whose page mentions its coffee bar ranked first as a member (Oct 7 2026).
+    exclude: ["launchpad-lompoc"],
     title: { en: "Coffee in Lompoc", es: "Café en Lompoc" },
     intro: {
       en: "Morning in Lompoc runs on coffee. Independent cafés, drive-through espresso, and bakeries that pour a good cup all sit within a few minutes of each other. Here is where locals get theirs, with hours so you know who opens early.",
