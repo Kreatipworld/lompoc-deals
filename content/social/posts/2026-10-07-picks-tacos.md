@@ -8,3 +8,5 @@ Engagement sprint post #2 (comment debate). Animated scenes (scratchpad/eng/taco
 | FB Reel (→ /find/tacos) | 6ac66512e94c2c45e0070094 | 18:05 |
 | TikTok | 6ac66515c0d59d54e02485d4 | 18:10 |
 | IG Story → /find/tacos | 6ac6651875e2178a9949d12a | 18:15 |
+
+Live: IG https://www.instagram.com/reel/DeNtG3MCFfx/ · FB https://www.facebook.com/reel/1624429789228106/ · TikTok https://tiktok.com/@lompoclocals/video/7694098006710209805 · Story https://www.instagram.com/stories/lompoclocals_/4003061211322953218
