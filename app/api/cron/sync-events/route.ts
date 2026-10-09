@@ -3,8 +3,9 @@ import { unstable_noStore } from "next/cache"
 import { syncEventbriteEvents } from "@/lib/event-sync"
 import { syncVandenbergLaunches } from "@/lib/launch-sync"
 import { syncExploreLompocEvents } from "@/lib/city-events-sync"
+import { syncEvvntEvents, syncStateParksEvents } from "@/lib/community-events-sync"
 
-export const maxDuration = 120
+export const maxDuration = 300
 
 export async function GET(request: Request) {
   // Crons must read the live database, never Next's fetch cache (the Neon
@@ -24,6 +25,8 @@ export async function GET(request: Request) {
     syncVandenbergLaunches,
     syncExploreLompocEvents,
     syncEventbriteEvents,
+    syncStateParksEvents,
+    syncEvvntEvents,
   ]) {
     try {
       reports.push(await sync())
