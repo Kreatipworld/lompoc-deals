@@ -196,6 +196,36 @@ export const FIND_TERMS: FindTerm[] = [
     },
   },
   {
+    slug: "electrician",
+    query: "electrician",
+    aliases: ["electrician", "electricians", "electric", "electrical", "electrical contractor", "electricista", "electricistas", "eléctrico", "electricidad"],
+    kind: "businesses",
+    category: "construction",
+    // The word matcher pulls in every trade that mentions "electrical" work (plumbers, painters,
+    // builders); this page lists only the electrical contractors.
+    include: ["debolt-electric", "net-construct-electric", "rare-electric", "steve-childs-electric", "watt-electric", "weber-electric", "wolf-electric-co", "yanez-electric-inc"],
+    exclusive: true,
+    title: { en: "Electricians in Lompoc", es: "Electricistas en Lompoc" },
+    intro: {
+      en: "A panel upgrade, a new circuit for the garage, or lights that flicker every time the dryer runs: these are local electrical contractors serving Lompoc and Vandenberg Village. Call a few, compare, and keep the number handy.",
+      es: "Un cambio de panel, un circuito nuevo para la cochera o luces que parpadean cada vez que corre la secadora: estos son contratistas eléctricos locales que atienden Lompoc y Vandenberg Village. Llama a varios, compara y guarda el número.",
+    },
+  },
+  {
+    slug: "breakfast",
+    query: "breakfast",
+    aliases: ["breakfast", "breakfast near me", "brunch", "breakfast burrito", "pancakes", "desayuno", "desayunos", "almuerzo temprano"],
+    kind: "businesses",
+    category: "food-drink",
+    // Hotels match on "free breakfast" for guests; this page is for places that serve the public.
+    exclude: ["inn-at-highway-1", "inn-of-lompoc", "lompoc-valley-inn-suites", "lotus-of-lompoc-a-great-hospitality-inn", "o-cairns-inn-suites"],
+    title: { en: "Breakfast in Lompoc", es: "Desayuno en Lompoc" },
+    intro: {
+      en: "Breakfast burritos before a shift on base, pancakes after Saturday soccer, a pastry with the first coffee of the day: Lompoc starts early. These are local spots serving breakfast around town.",
+      es: "Burritos de desayuno antes del turno en la base, hotcakes después del fútbol del sábado, un pan dulce con el primer café del día: Lompoc empieza temprano. Estos son lugares locales que sirven desayuno en la ciudad.",
+    },
+  },
+  {
     slug: "window-replacement",
     query: "windows glass",
     aliases: ["window replacement", "window replacements", "windows", "glass", "window repair", "glass repair", "ventanas", "vidrios"],

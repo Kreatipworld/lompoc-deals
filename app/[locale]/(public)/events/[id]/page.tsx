@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation"
 import { db } from "@/db/client"
 import { businesses, events } from "@/db/schema"
 import { pageAlternates, seoTitle } from "@/lib/seo"
+import { eventCoverUrl } from "@/lib/event-cover"
 import { LAUNCH_TITLE_RE, eventDescription, eventTitle } from "@/lib/launch-display"
 
 const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
@@ -73,7 +74,8 @@ export async function generateMetadata({
       title: eventTitle(ev, params.locale, tLaunch),
       description: eventDescription(ev, params.locale, tLaunch)?.slice(0, 200) ?? undefined,
       locale: params.locale === "es" ? "es_US" : "en_US",
-      ...(ev.imageUrl ? { images: [{ url: ev.imageUrl }] } : {}),
+      // Every event shares with a picture: its own cover, else the designed topic card.
+      images: [{ url: eventCoverUrl(ev, null, siteUrl) }],
     },
     alternates: pageAlternates(`/events/${ev.id}`, params.locale),
   }

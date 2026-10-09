@@ -20,6 +20,8 @@ function bilingual(path: string) {
   return { languages: { en: `${siteUrl}${path}`, es: esUrl(path) } }
 }
 
+// lastModified only where we know a real date: a lastmod that is always "now" teaches
+// Google to ignore lastmod for the whole sitemap, including the accurate story dates.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [bizs, cats, posts, acts, upcomingEvents, homes] = await Promise.all([
     db.query.businesses
@@ -111,7 +113,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/terms",
   ].map((path) => ({
     url: `${siteUrl}${path}`,
-    lastModified: new Date(),
     changeFrequency:
       path === "/feed" || path === "/sales" || path === "" || path === "/deals" || path === "/news" || path === "/events" || path === "/homes" || path === "/football" ? ("daily" as const)
       : path === "/contact" || path === "/privacy" || path === "/terms" ? ("monthly" as const)
@@ -136,7 +137,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const catPages = cats.map((c) => ({
     url: `${siteUrl}/category/${c.slug}`,
-    lastModified: new Date(),
     changeFrequency: "daily" as const,
     priority: 0.5,
     alternates: bilingual(`/category/${c.slug}`),
@@ -146,7 +146,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // /find/football redirects to /football — sitemaps list final URLs only.
   const findPages = FIND_TERMS.filter((f) => f.slug !== "football").map((f) => ({
     url: `${siteUrl}/find/${f.slug}`,
-    lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.7,
     alternates: bilingual(`/find/${f.slug}`),
@@ -154,14 +153,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogPages = posts.map((p) => ({
     url: `${siteUrl}/blog/${p.slug}`,
-    lastModified: p.updatedAt ?? p.publishedAt ?? new Date(),
+    lastModified: p.updatedAt ?? p.publishedAt ?? undefined,
     changeFrequency: (("category" in p && p.category === "local-news") ? "weekly" : "monthly") as "weekly" | "monthly",
     priority: "category" in p && p.category === "local-news" ? 0.8 : 0.7,
   }))
 
   const hotelPages = HOTELS.map((h) => ({
     url: `${siteUrl}/hotels/${h.slug}`,
-    lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.6,
     alternates: bilingual(`/hotels/${h.slug}`),
