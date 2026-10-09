@@ -11,4 +11,4 @@ Credits ≈ 80 total across iterations (12 clips incl. discarded ones, VO/auditi
 | TikTok | 6ac7c8df6f30750f2f4ce409 | 9:57 |
 | IG Story → /biz/js-glass-co | 6ac7c8e234ed38f0ddb386c7 | 10:02 |
 
-Live: IG https://www.instagram.com/reel/DePZSmdiOuP/ · FB https://www.facebook.com/reel/1827531331719703/ · TikTok https://tiktok.com/@lompoclocals/video/7694341929957362957 · Story sending at 10:05.
+Live: IG https://www.instagram.com/reel/DePZSmdiOuP/ · FB https://www.facebook.com/reel/1827531331719703/ · TikTok https://tiktok.com/@lompoclocals/video/7694341929957362957 · Story https://www.instagram.com/stories/lompoclocals_/4003540060380616192
