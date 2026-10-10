@@ -118,15 +118,20 @@ def build(d):
     add("s3-visit", v.get("dur", 4.0), visit_html, lambda cid, dur, size=None: zoom(cid, "im", dur) + S.rise(cid, "c", 0.35, dy=22, dur=0.45), v["say"])
 
     e = d["end"]
+    # dy pushes the line/url/strip down when the name wraps to two lines; partner=False drops the
+    # "Official Partner" tag for businesses that are not (yet) paying members.
+    dy = e.get("dy", 0)
+    partner = e.get("partner", True)
     def end_html(cid, dur, size):
+        tag = f'<div id="{cid}-t" style="position:absolute; left:0; right:0; top:790px; text-align:center; opacity:0"><span class="fr-partner">Official Partner</span></div>' if partner else ""
         return (f'<img class="fr-logo" id="{cid}-lg" src="{_media_src(assets, "logo")[0]}" style="left:330px; top:300px; width:420px; height:420px; opacity:0" />'
-                f'<div id="{cid}-t" style="position:absolute; left:0; right:0; top:790px; text-align:center; opacity:0"><span class="fr-partner">Official Partner</span></div>'
+                + tag +
                 f'<div class="fr-name" id="{cid}-n" style="top:880px; text-align:center; opacity:0">{d["name_html"]}</div>'
-                f'<div class="fr-quote" id="{cid}-l" style="top:1030px; text-align:center; font-size:56px; opacity:0">{e["line"]}</div>'
-                f'<div id="{cid}-u" style="position:absolute; left:0; right:0; top:1190px; text-align:center; opacity:0"><span class="fr-pill">{e["url"]}</span></div>'
-                + "".join(f'<div class="fr-print" id="{cid}-t{k}" style="left:{80 + k * 320}px; top:1400px; width:290px; height:330px; transform:rotate({[-4, 2, 5][k]}deg); opacity:0"><img src="{_media_src(assets, ph)[0]}" /></div>' for k, ph in enumerate(e["strip"])))
+                f'<div class="fr-quote" id="{cid}-l" style="top:{1030 + dy}px; text-align:center; font-size:56px; opacity:0">{e["line"]}</div>'
+                f'<div id="{cid}-u" style="position:absolute; left:0; right:0; top:{1190 + dy}px; text-align:center; opacity:0"><span class="fr-pill">{e["url"]}</span></div>'
+                + "".join(f'<div class="fr-print" id="{cid}-t{k}" style="left:{80 + k * 320}px; top:{1400 + dy}px; width:290px; height:330px; transform:rotate({[-4, 2, 5][k]}deg); opacity:0"><img src="{_media_src(assets, ph)[0]}" /></div>' for k, ph in enumerate(e["strip"])))
     def end_js(cid, dur, size=None):
-        return (S.pop(cid, "lg", 0.05, scale=1.2, dur=0.5) + S.rise(cid, "t", 0.3, dy=12, dur=0.35)
+        return (S.pop(cid, "lg", 0.05, scale=1.2, dur=0.5) + (S.rise(cid, "t", 0.3, dy=12, dur=0.35) if partner else "")
                 + S.rise(cid, "n", 0.45, dy=20, dur=0.45) + S.rise(cid, "l", 0.65, dy=16, dur=0.4) + S.pop(cid, "u", 0.85, scale=1.12, dur=0.4)
                 + "".join(S.pop(cid, f"t{k}", 1.05 + 0.15 * k, scale=1.15, dur=0.4) for k in range(3)))
     add("s4-end", e.get("dur", 3.8), end_html, end_js, e["say"])
