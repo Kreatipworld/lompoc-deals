@@ -8,3 +8,5 @@ Biz 682, added and curated the same day (a service-area listing; their site list
 | FB Reel | 6aca8896ed92ed8fa5dba5bc | 11:55 |
 | TikTok | 6aca8897f91f772d45a3119f | 12:00 |
 | IG Story → /biz/unique-professional-landscape | 6aca8898b07d37ac97827db8 | 12:05 |
+
+Live: IG https://www.instagram.com/reel/DeUw6rlke4i/ · FB https://www.facebook.com/reel/1087727540728982/ · TikTok https://tiktok.com/@lompoclocals/video/7695115918845709581 · Story https://www.instagram.com/stories/lompoclocals_/4005049487931300339
