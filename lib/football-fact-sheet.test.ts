@@ -57,4 +57,15 @@ assert.equal(recordWords(2, 0, 1), "2 wins, 0 losses, 1 tie")
 const m = sheet.match(/Record: (\d+)-(\d+)(?:-(\d+))? \(/)!
 assert.equal(Number(m[1]) + Number(m[2]) + Number(m[3] ?? 0), played.length, "W+L+T equals games played")
 
+// The Oct 13 2026 miss: once a league game is played, the next one is not the "league opener".
+const g2 = [
+  g({ gameDate: "2026-10-02", opponent: "Paso Robles", homeAway: "away", result: "W", scoreFor: 44, scoreAgainst: 14, leagueGame: true }),
+  g({ gameDate: "2026-10-09", opponent: "St. Joseph", homeAway: "away", result: "L", scoreFor: 0, scoreAgainst: 42 }),
+  g({ gameDate: "2026-10-16", opponent: "Nipomo", homeAway: "home", leagueGame: true }),
+]
+const sheet2 = footballFactSheet({ ...team, school: "lompoc", name: "Lompoc Braves", wins: 1, losses: 1, next: g2[2], last: g2[1], games: g2 }, "2026-10-10")
+assert.ok(!sheet2.includes("League play begins"), `no "begins" after a league game is played; got: ${sheet2}`)
+assert.ok(sheet2.includes("League play began Oct 2 at Paso Robles; league record 1-0."), `league record stated; got: ${sheet2}`)
+assert.ok(sheet2.includes("Next league game: Oct 16 vs Nipomo."), "next league game named")
+
 console.log("football-fact-sheet.test.ts: ok")

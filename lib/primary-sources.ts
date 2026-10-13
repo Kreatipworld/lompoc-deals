@@ -119,8 +119,21 @@ export function footballFactSheet(team: TeamSeason, syncedOn: string): string {
   const nextLine = next
     ? ` Next game: ${fmtDate(next.gameDate, true)} ${next.homeAway === "away" ? "at" : "vs"} ${next.opponent}${next.kickoff ? `, ${next.kickoff}` : ""}${next.venue ? `, ${next.venue}` : ""} (${next.homeAway}).`
     : " No further games on the schedule."
-  const firstLeague = team.games.find((g) => g.leagueGame && !g.result)
-  const leagueLine = firstLeague ? ` League play begins ${fmtDate(firstLeague.gameDate)} ${firstLeague.homeAway === "away" ? "at" : "vs"} ${firstLeague.opponent}.` : ""
+  // "League play begins" only before any league game is played; once one is in the books,
+  // state the league record instead (Oct 13 2026: the sheet called game 2 the "league opener").
+  const leaguePlayed = played.filter((g) => g.leagueGame)
+  const nextLeague = team.games.find((g) => g.leagueGame && !g.result)
+  const vsAt = (g: { homeAway: string | null }) => (g.homeAway === "away" ? "at" : "vs")
+  let leagueLine = ""
+  if (leaguePlayed.length === 0) {
+    if (nextLeague) leagueLine = ` League play begins ${fmtDate(nextLeague.gameDate)} ${vsAt(nextLeague)} ${nextLeague.opponent}.`
+  } else {
+    const lw = leaguePlayed.filter((g) => g.result === "W").length
+    const ll = leaguePlayed.filter((g) => g.result === "L").length
+    const lt = leaguePlayed.length - lw - ll
+    leagueLine = ` League play began ${fmtDate(leaguePlayed[0].gameDate)} ${vsAt(leaguePlayed[0])} ${leaguePlayed[0].opponent}; league record ${lw}-${ll}${lt ? `-${lt}` : ""}.`
+    if (nextLeague) leagueLine += ` Next league game: ${fmtDate(nextLeague.gameDate)} ${vsAt(nextLeague)} ${nextLeague.opponent}.`
+  }
   return (
     `${FACT_SHEET} — ${team.name} varsity football (Lompoc, CA), ${team.games[0]?.season ?? ""} season, per MaxPreps schedule and results as synced ${syncedOn}. ` +
     `Record: ${record} (${recordWords(team.wins, team.losses, team.ties)}) after ${played.length} ${played.length === 1 ? "game" : "games"}. ` +
