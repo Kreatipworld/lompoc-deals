@@ -244,7 +244,7 @@ export async function businessSignupSubmitAction(
   // the fix for the duplicate-listing problem (e.g. the Vargas Jewelers case).
   const normalizedPhone = (phone ?? "").replace(/[^0-9]/g, "")
   const candidates = await db
-    .select({ id: businesses.id, ownerEmail: users.email, status: businesses.status })
+    .select({ id: businesses.id, slug: businesses.slug, ownerEmail: users.email, status: businesses.status })
     .from(businesses)
     .leftJoin(users, eq(businesses.ownerUserId, users.id))
     .where(
@@ -284,7 +284,11 @@ export async function businessSignupSubmitAction(
   }
 
   // Fire-and-forget welcome email — don't block signup on failure
-  sendWelcomeEmail(email, ownerFullName, "business", locale).catch((err) =>
+  // Website badge links to the live /biz page only when they adopted an
+  // already-approved listing; a brand-new listing is pending → dashboard.
+  sendWelcomeEmail(email, ownerFullName, "business", locale, {
+    bizSlug: adopt?.status === "approved" ? adopt.slug : null,
+  }).catch((err) =>
     console.error("[businessSignupSubmitAction] welcome email failed:", err)
   )
 

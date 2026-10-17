@@ -353,6 +353,10 @@ export default async function DashboardHomePage({
         />
       </div>
 
+      {/* Website badge — links the member's own site to their listing. Sits
+          right under the stats so owners see it; welcome emails deep-link here. */}
+      {liveListings.length > 0 && <WebsiteBadgeCard listings={liveListings} t={t} />}
+
       {/* Plan status card */}
       <div className="rounded-3xl border bg-card p-6 shadow-sm">
         <div className="flex items-start justify-between gap-4">
@@ -511,9 +515,6 @@ export default async function DashboardHomePage({
           />
         </div>
       </div>
-
-      {/* Website badge — links the member's own site to their listing */}
-      {liveListings.length > 0 && <WebsiteBadgeCard listings={liveListings} t={t} />}
     </div>
   )
 }
@@ -536,7 +537,7 @@ function WebsiteBadgeCard({
   t: HomeT
 }) {
   return (
-    <div className="rounded-3xl border bg-card p-6 shadow-sm">
+    <div id="website-badge" className="scroll-mt-24 rounded-3xl border bg-card p-6 shadow-sm">
       <div className="flex items-center gap-2">
         <Link2 className="h-4 w-4 text-primary" />
         <h2 className="font-display text-lg font-semibold">{t("badgeTitle")}</h2>

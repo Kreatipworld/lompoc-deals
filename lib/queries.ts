@@ -1,4 +1,5 @@
-import { and, desc, eq, gt, gte, inArray, ne, or, sql } from "drizzle-orm"
+import { and, desc, eq, gt, gte, inArray, ne, notInArray, or, sql } from "drizzle-orm"
+import { REDIRECTED_BLOG_SLUGS } from "@/lib/blog-redirects"
 import { eventCoverUrl, venueBusinessSlug } from "./event-cover"
 import { collapseRecurring, type Cadence } from "./event-recurrence"
 import { db } from "@/db/client"
@@ -1328,7 +1329,8 @@ export async function getPublishedBlogPosts(
   topicTag?: string,
   locale?: string
 ): Promise<BlogPostCard[]> {
-  const conditions = [eq(blogPosts.status, "published")]
+  // Posts folded into another page (lib/blog-redirects.ts) 308 away — never list them.
+  const conditions = [eq(blogPosts.status, "published"), notInArray(blogPosts.slug, REDIRECTED_BLOG_SLUGS)]
   if (category) conditions.push(eq(blogPosts.category, category))
   if (topicTag) conditions.push(sql`${blogPosts.tags} @> ${JSON.stringify([topicTag])}::jsonb`)
 
@@ -1395,7 +1397,8 @@ export async function getBlogCategories(): Promise<string[]> {
 }
 
 export async function countPublishedBlogPosts(category?: string, topicTag?: string): Promise<number> {
-  const conditions = [eq(blogPosts.status, "published")]
+  // Posts folded into another page (lib/blog-redirects.ts) 308 away — never list them.
+  const conditions = [eq(blogPosts.status, "published"), notInArray(blogPosts.slug, REDIRECTED_BLOG_SLUGS)]
   if (category) conditions.push(eq(blogPosts.category, category))
   if (topicTag) conditions.push(sql`${blogPosts.tags} @> ${JSON.stringify([topicTag])}::jsonb`)
   const rows = await db

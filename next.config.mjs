@@ -45,6 +45,11 @@ const nextConfig = {
       // Sep 13 2026: first realtor renamed her listing after claiming; keep the shared links alive.
       { source: "/biz/maressa-martinez-realtor", destination: "/biz/empire-real-estate-group-maressa-the-realtor", permanent: true },
       { source: "/:locale(en|es)/biz/maressa-martinez-realtor", destination: "/:locale/biz/empire-real-estate-group-maressa-the-realtor", permanent: true },
+      // Oct 16 2026: the Jalama blog guide competed with the activity page for the
+      // same searches; /activities/jalama-beach is canonical (lib/blog-redirects.ts).
+      { source: "/blog/jalama-beach-complete-guide", destination: "/activities/jalama-beach", permanent: true },
+      { source: "/en/blog/jalama-beach-complete-guide", destination: "/activities/jalama-beach", permanent: true },
+      { source: "/es/blog/jalama-beach-complete-guide", destination: "/es/activities/jalama-beach", permanent: true },
       { source: "/find/football", destination: "/football", permanent: true },
       { source: "/en/find/football", destination: "/football", permanent: true },
       { source: "/es/find/football", destination: "/es/football", permanent: true },

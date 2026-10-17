@@ -9,6 +9,7 @@ import { pageAlternates } from "@/lib/seo"
 import { PageHeader } from "@/components/page-header"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
 import { LAUNCH_SOURCE, eventTitle } from "@/lib/launch-display"
+import { FaqSection, type FaqItem } from "@/components/faq-section"
 
 // Events sync daily via cron — keep the page fresh without a redeploy
 export const revalidate = 300
@@ -99,6 +100,20 @@ export default async function EventsPage({
   const weekendEvents = nonLaunch.filter((e) => weekend.has(laDay(e.startsAt)))
   const others = collapseRecurring(nonLaunch.filter((e) => !weekend.has(laDay(e.startsAt))))
 
+  const faqs: FaqItem[] = [
+    {
+      q: t("faqWeekendQ"),
+      a: t("faqWeekendA"),
+      links: [
+        { href: "/find/things-to-do-tonight", label: t("faqWeekendLinkTonight") },
+        { href: "/this-week", label: t("faqWeekendLinkWeek") },
+      ],
+    },
+    { q: t("faqLaunchQ"), a: t("faqLaunchA"), links: [{ href: "/find/rocket-launch", label: t("faqLaunchLink") }] },
+    { q: t("faqSubmitQ"), a: t("faqSubmitA"), links: [{ href: "/submit-event", label: t("faqSubmitLink") }] },
+    { q: t("faqUpdatedQ"), a: t("faqUpdatedA"), links: [{ href: "/subscribe", label: t("faqUpdatedLink") }] },
+  ]
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -119,7 +134,12 @@ export default async function EventsPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <p className="max-w-3xl text-muted-foreground">{t("intro")}</p>
+      <p className="max-w-3xl text-muted-foreground">
+        {t("intro")} {t("introMore")}{" "}
+        <Link href="/submit-event" className="font-medium text-primary hover:underline">
+          {t("submitLink")} →
+        </Link>
+      </p>
 
       {weekendEvents.length > 0 && (
         <section className="mt-6">
@@ -233,6 +253,8 @@ export default async function EventsPage({
           </ul>
         )}
       </section>
+
+      <FaqSection heading={t("faqHeading")} items={faqs} className="mt-10 sm:mt-12" />
     </main>
     <FeaturedDeals />
     </>

@@ -82,7 +82,8 @@
     "events": "Events",
     "thingsToDo": "Things to do",
     "reportBug": "Report a bug",
-    "officialPartners": "Official Partners"
+    "officialPartners": "Official Partners",
+    "lompocEvents": "Lompoc events"
   },
   "home": {
     "metaTitle": "Lompoc Businesses, Deals & Things To Do",
@@ -2565,7 +2566,8 @@
     "cadenceWeekly": "Weekly",
     "cadenceBiweekly": "Every 2 weeks",
     "cadenceMonthly": "Monthly",
-    "cadenceMulti": "{count} dates"
+    "cadenceMulti": "{count} dates",
+    "viewAllLompoc": "All Lompoc events"
   },
   "wineriesSection": {
     "heading": "Lompoc Wine Ghetto & Santa Rita Hills",
@@ -2934,7 +2936,23 @@
     "launchesSub": "Launch times shift often — check back before heading out.",
     "upcomingHeading": "Happening around town",
     "noEvents": "No upcoming events right now — check back soon.",
-    "moreDates": "+{count} more dates"
+    "moreDates": "+{count} more dates",
+    "introMore": "Weekend picks sit at the top, Vandenberg launches get their own row, and everything else follows by date. Hosting something in Lompoc? Add it to the calendar.",
+    "submitLink": "Submit an event",
+    "faqHeading": "Lompoc events: common questions",
+    "faqWeekendQ": "What's happening in Lompoc this weekend?",
+    "faqWeekendA": "The This weekend in Lompoc list at the top of this page shows events from Friday through Sunday. For today only, Things to Do in Lompoc Tonight lists what is on this evening, and This Week sums up the next seven days.",
+    "faqWeekendLinkTonight": "Things to do tonight",
+    "faqWeekendLinkWeek": "This week in Lompoc",
+    "faqLaunchQ": "Where can I watch a Vandenberg rocket launch from Lompoc?",
+    "faqLaunchA": "Launches from Vandenberg Space Force Base are often visible from around Lompoc on clear days and nights. Locals watch from spots with an open sky to the west, such as the Ocean Avenue overpass, Harris Grade Road and downtown. Launch times shift often, so check the launch list before heading out.",
+    "faqLaunchLink": "Upcoming Vandenberg launches",
+    "faqSubmitQ": "How do I add an event to the Lompoc calendar?",
+    "faqSubmitA": "Send it through the event form with the date, time, place and a short description. We review each submission before it goes on the calendar.",
+    "faqSubmitLink": "Submit an event",
+    "faqUpdatedQ": "How often is this calendar updated?",
+    "faqUpdatedA": "Every day. Events and launch times are synced daily, so new events and schedule changes show up here without waiting for the weekly digest.",
+    "faqUpdatedLink": "Get the weekly digest"
   },
   "sponsors": {
     "sponsored": "Sponsored",

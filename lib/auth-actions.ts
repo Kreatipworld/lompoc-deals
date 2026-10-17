@@ -142,7 +142,11 @@ export async function signupAction(
 
   // Welcome the new account (branded, community-first; fire-and-forget).
   const welcomeLocale = (await getCurrentLocale()) as "en" | "es"
-  await sendWelcomeEmail(email, "", dbRole as "business" | "local", welcomeLocale)
+  // A self-serve claim that auto-approved owns a live /biz page right now, so
+  // the website badge in the welcome links there; otherwise to the dashboard.
+  await sendWelcomeEmail(email, "", dbRole as "business" | "local", welcomeLocale, {
+    bizSlug: claimAutoApproved ? claimSlug : null,
+  })
 
   try {
     await signIn("credentials", {

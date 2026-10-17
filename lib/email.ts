@@ -155,6 +155,8 @@ function welcomeHtml(opts: {
   ctaUrl: string
   closing: string
   signoff: string
+  /** Optional block rendered after the closing line, before the sign-off. */
+  extraHtml?: string
 }): string {
   return `
   <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 560px; margin: 0 auto; background:#ffffff;">
@@ -174,6 +176,7 @@ function welcomeHtml(opts: {
         <a href="${opts.ctaUrl}" style="display:inline-block; background:${BRAND_PURPLE}; color:#ffffff; padding:12px 22px; border-radius:8px; text-decoration:none; font-weight:600;">${opts.ctaLabel}</a>
       </p>` : ""}
       <p style="color:#444; line-height:1.6; margin:0 0 4px;">${opts.closing}</p>
+      ${opts.extraHtml ?? ""}
       <p style="color:#888; margin:16px 0 0;">${opts.signoff}</p>
       <div style="margin-top:26px; padding-top:18px; border-top:1px solid #eee; text-align:center;">
         <div style="margin-bottom:8px;">
@@ -188,12 +191,46 @@ function welcomeHtml(opts: {
   </div>`
 }
 
-/** Welcome email for a new business account. Fire-and-forget — never throws. */
-export async function sendBusinessWelcomeEmail(email: string, name: string, locale: "en" | "es"): Promise<void> {
+// PNG (2x, rendered from the SVG) — Gmail and Outlook don't display SVG images.
+// The website snippet itself keeps the SVG.
+const BADGE_IMG_URL = "https://www.lompoclocals.com/badge/find-us-on-lompoc-locals.png"
+
+/**
+ * "Find us on Lompoc Locals" website badge block for member emails. The badge
+ * links to the owner's live /biz page when we know it; otherwise (listing not
+ * approved yet, claim still pending) it links to the dashboard, where the
+ * copyable snippet card lives (#website-badge).
+ */
+export function websiteBadgeBlockHtml(locale: "en" | "es", bizSlug?: string | null): string {
+  const codeUrl = siteUrl(`/${locale}/dashboard#website-badge`)
+  const badgeHref = bizSlug ? siteUrl(`/${locale}/biz/${encodeURIComponent(bizSlug)}`) : codeUrl
+  const copy =
+    locale === "es"
+      ? { line: "Agrega esta insignia a tu sitio web — lleva a tus clientes a tu página de Lompoc Locals.", code: "Obtén el código" }
+      : { line: "Add this badge to your website — it links customers to your Lompoc Locals page.", code: "Get the code" }
+  return `<div style="margin:22px 0 4px; padding:18px; background:#F7F3E9; border-radius:10px; text-align:center;">
+        <a href="${badgeHref}" target="_blank" rel="noopener" style="display:inline-block;"><img src="${BADGE_IMG_URL}" alt="Find us on Lompoc Locals" width="180" height="56" style="display:inline-block; border:0;"></a>
+        <p style="color:#444; line-height:1.5; margin:12px 0 6px; font-size:14px;">${copy.line}</p>
+        <a href="${codeUrl}" style="color:${BRAND_PURPLE}; font-weight:600; font-size:14px;">${copy.code} &rarr;</a>
+      </div>`
+}
+
+/**
+ * Welcome email for a new business account. Fire-and-forget — never throws.
+ * `bizSlug` is the owner's live listing (claim auto-approved, or an adopted
+ * approved listing); omit it when the listing isn't public yet.
+ */
+export async function sendBusinessWelcomeEmail(
+  email: string,
+  name: string,
+  locale: "en" | "es",
+  opts: { bizSlug?: string | null } = {}
+): Promise<void> {
   const resend = getResend()
   if (!resend) return
   const dashUrl = siteUrl(`/${locale}/dashboard`)
   const billingUrl = siteUrl(`/${locale}/dashboard/billing`)
+  const badgeBlock = websiteBadgeBlockHtml(locale, opts.bizSlug)
   // Social proof with LIVE numbers — hardcoded counts go stale, and stale
   // numbers in an owner's first email cost trust. Falls back to prose if the
   // query hiccups; the email still sends.
@@ -238,6 +275,7 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
             closing:
               "$39.99/mes — cancela cuando quieras. Responde a este correo cuando quieras; lo lee una persona real aquí en Lompoc.",
             signoff: "— El equipo de Lompoc Locals",
+            extraHtml: badgeBlock,
           }),
         }
       : {
@@ -258,6 +296,7 @@ export async function sendBusinessWelcomeEmail(email: string, name: string, loca
             closing:
               "$39.99/month, cancel anytime. Reply to this email anytime; it reaches a real person here in Lompoc.",
             signoff: "— The Lompoc Locals team",
+            extraHtml: badgeBlock,
           }),
         }
   try {
@@ -495,7 +534,8 @@ export async function sendWelcomeEmail(
   email: string,
   name: string,
   role: "local" | "business",
-  locale: "en" | "es"
+  locale: "en" | "es",
+  opts: { bizSlug?: string | null } = {}
 ): Promise<{ ok: boolean; error?: string }> {
   const resend = getResend()
   if (!resend) {
@@ -504,7 +544,7 @@ export async function sendWelcomeEmail(
   }
 
   // Delegates to the branded, community-first per-role welcome emails above.
-  if (role === "business") await sendBusinessWelcomeEmail(email, name, locale)
+  if (role === "business") await sendBusinessWelcomeEmail(email, name, locale, opts)
   else await sendLocalWelcomeEmail(email, name, locale)
   return { ok: true }
 }

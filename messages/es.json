@@ -82,7 +82,8 @@
     "events": "Eventos",
     "thingsToDo": "Qué hacer",
     "reportBug": "Reportar un error",
-    "officialPartners": "Socios oficiales"
+    "officialPartners": "Socios oficiales",
+    "lompocEvents": "Eventos en Lompoc"
   },
   "home": {
     "metaTitle": "Negocios, Ofertas y Qué Hacer en Lompoc",
@@ -2565,7 +2566,8 @@
     "cadenceWeekly": "Cada semana",
     "cadenceBiweekly": "Cada 2 semanas",
     "cadenceMonthly": "Cada mes",
-    "cadenceMulti": "{count} fechas"
+    "cadenceMulti": "{count} fechas",
+    "viewAllLompoc": "Todos los eventos de Lompoc"
   },
   "wineriesSection": {
     "heading": "Lompoc Wine Ghetto y Santa Rita Hills",
@@ -2934,7 +2936,23 @@
     "launchesSub": "Los horarios de lanzamiento cambian con frecuencia — verifica antes de salir.",
     "upcomingHeading": "Pasando en la ciudad",
     "noEvents": "No hay eventos próximos por ahora — vuelve pronto.",
-    "moreDates": "+{count} fechas más"
+    "moreDates": "+{count} fechas más",
+    "introMore": "Lo del fin de semana va arriba, los lanzamientos de Vandenberg tienen su propia fila y todo lo demás sigue por fecha. ¿Organizas algo en Lompoc? Agrégalo al calendario.",
+    "submitLink": "Envía un evento",
+    "faqHeading": "Eventos en Lompoc: preguntas frecuentes",
+    "faqWeekendQ": "¿Qué hay en Lompoc este fin de semana?",
+    "faqWeekendA": "La lista Este fin de semana en Lompoc, arriba en esta página, muestra los eventos de viernes a domingo. Para hoy, Qué hacer en Lompoc esta noche muestra lo de esta tarde, y Esta semana resume los próximos siete días.",
+    "faqWeekendLinkTonight": "Qué hacer esta noche",
+    "faqWeekendLinkWeek": "Esta semana en Lompoc",
+    "faqLaunchQ": "¿Dónde puedo ver un lanzamiento de cohete de Vandenberg desde Lompoc?",
+    "faqLaunchA": "Los lanzamientos desde la Base de la Fuerza Espacial Vandenberg suelen verse desde Lompoc en días y noches despejados. La gente los ve desde lugares con cielo abierto hacia el oeste, como el paso elevado de Ocean Avenue, Harris Grade Road y el centro. Los horarios cambian seguido, así que revisa la lista de lanzamientos antes de salir.",
+    "faqLaunchLink": "Próximos lanzamientos de Vandenberg",
+    "faqSubmitQ": "¿Cómo agrego un evento al calendario de Lompoc?",
+    "faqSubmitA": "Envíalo con el formulario de eventos, con la fecha, hora, lugar y una descripción corta. Revisamos cada envío antes de publicarlo en el calendario.",
+    "faqSubmitLink": "Envía un evento",
+    "faqUpdatedQ": "¿Cada cuánto se actualiza este calendario?",
+    "faqUpdatedA": "Todos los días. Los eventos y los horarios de lanzamiento se sincronizan a diario, así que los eventos nuevos y los cambios aparecen aquí sin esperar el boletín semanal.",
+    "faqUpdatedLink": "Recibe el boletín semanal"
   },
   "sponsors": {
     "sponsored": "Patrocinado",

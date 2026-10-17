@@ -216,7 +216,7 @@ export async function EventsSection() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
       {/* Header */}
-      <div className="mb-6 flex items-end justify-between">
+      <div className="mb-6 flex items-end justify-between gap-4">
         <div>
           <h2 className="font-display text-2xl font-semibold tracking-tight">
             {t("heading")}
@@ -225,11 +225,13 @@ export async function EventsSection() {
             {t("subtitle")}
           </p>
         </div>
+        {/* Anchor text names the query /events should own ("lompoc events") — shown on
+            phones too, since Google indexes the mobile page. */}
         <Link
           href="/events"
-          className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:inline-flex"
+          className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-primary hover:underline"
         >
-          {t("viewAll")}
+          {t("viewAllLompoc")}
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>

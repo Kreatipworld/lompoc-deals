@@ -5,6 +5,7 @@ import { blogPosts } from "@/db/schema"
 import { HOTELS } from "@/lib/hotels-data"
 import { siteUrl, esUrl } from "@/lib/seo"
 import { FIND_TERMS } from "@/lib/find-terms"
+import { BLOG_REDIRECTS } from "@/lib/blog-redirects"
 
 // Regenerate hourly: events cancel, businesses close, stories publish — a build-time
 // sitemap would advertise dead URLs until the next deploy.
@@ -151,7 +152,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: bilingual(`/find/${f.slug}`),
   }))
 
-  const blogPages = posts.map((p) => ({
+  // Folded posts 308 to their new home — sitemaps list final URLs only.
+  const blogPages = posts.filter((p) => !(p.slug in BLOG_REDIRECTS)).map((p) => ({
     url: `${siteUrl}/blog/${p.slug}`,
     lastModified: p.updatedAt ?? p.publishedAt ?? undefined,
     changeFrequency: (("category" in p && p.category === "local-news") ? "weekly" : "monthly") as "weekly" | "monthly",

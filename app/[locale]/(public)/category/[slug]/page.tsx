@@ -24,6 +24,8 @@ import { PageHeader } from "@/components/page-header"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 import { categoryLabel } from "@/lib/category-label"
+import { categoryCopy, CATEGORY_FAQ_HEADING } from "@/lib/category-copy"
+import { FaqSection } from "@/components/faq-section"
 
 export async function generateMetadata({
   params,
@@ -101,6 +103,8 @@ export default async function CategoryPage({
   const quick = quickCandidates.filter((_, i) => quickCounts[i] > 0)
   const tLabels = await getTranslations({ locale: params.locale, namespace: "categoryLabels" })
   const catName = categoryLabel(tLabels, cat.slug, cat.name)
+  // Per-category intro + FAQ (lib/category-copy.ts) — each page's own words.
+  const copy = categoryCopy(cat.slug, params.locale)
 
   // Preserve other existing searchParams (e.g. ?tab=) when toggling ?open=1
   const toggledParams = new URLSearchParams()
@@ -164,6 +168,12 @@ export default async function CategoryPage({
           />
         </div>
       </section>
+
+      {copy && (
+        <section className="mx-auto max-w-6xl px-4 pt-6 sm:pt-8">
+          <p className="max-w-3xl text-muted-foreground">{copy.intro}</p>
+        </section>
+      )}
 
       {/* WINERIES: the category's own map — every winery and tasting room with a
           street address, nothing else (owner, Sep 15 2026). Members get gold pins. */}
@@ -301,6 +311,14 @@ export default async function CategoryPage({
             </section>
           )}
         </>
+      )}
+
+      {copy && (
+        <FaqSection
+          heading={(params.locale === "es" ? CATEGORY_FAQ_HEADING.es : CATEGORY_FAQ_HEADING.en)(catName)}
+          items={copy.faqs}
+          className="mx-auto max-w-6xl px-4 pt-4 pb-10 sm:pb-12"
+        />
       )}
     </>
   )

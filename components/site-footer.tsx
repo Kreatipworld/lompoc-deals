@@ -42,7 +42,7 @@ export async function SiteFooter() {
               </li>
               <li>
                 <Link href="/events" className="hover:text-foreground">
-                  {t("events")}
+                  {t("lompocEvents")}
                 </Link>
               </li>
               <li>

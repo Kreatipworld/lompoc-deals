@@ -14,6 +14,7 @@ import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import { getTranslations } from "next-intl/server"
 import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
+import { activityGuide, GUIDE_HEADING } from "@/lib/activity-guides"
 
 // Lazy-load single-pin map to avoid SSR issues with Leaflet
 const ActivityMapPin = dynamic(
@@ -84,6 +85,8 @@ export default async function ActivityDetailPage({
           getActivitiesNearPoint(activity.lat, activity.lng, 4, activity.slug, locale),
         ])
       : [[], []]
+
+  const guide = activityGuide(activity.slug, locale)
 
   const photos: string[] = Array.isArray(activity.photosJson)
     ? (activity.photosJson as string[]).filter((p): p is string => typeof p === "string")
@@ -173,6 +176,28 @@ export default async function ActivityDetailPage({
                 {activity.tips}
               </p>
             </div>
+          )}
+
+          {/* Plan your visit — extra facts kept in code (lib/activity-guides.ts) */}
+          {guide.length > 0 && (
+            <section className="mt-8">
+              <h2 className="font-display text-xl font-semibold tracking-tight">
+                {locale === "es" ? GUIDE_HEADING.es : GUIDE_HEADING.en}
+              </h2>
+              <div className="mt-4 space-y-5">
+                {guide.map((s) => (
+                  <div key={s.heading}>
+                    <h3 className="font-semibold">{s.heading}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-foreground">{s.body}</p>
+                    {s.link && (
+                      <Link href={s.link.href} className="mt-1 inline-block text-sm font-medium text-primary hover:underline">
+                        {s.link.label} →
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
           )}
 
           {/* External link */}

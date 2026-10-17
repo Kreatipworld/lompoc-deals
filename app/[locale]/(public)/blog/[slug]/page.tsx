@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
+import { BLOG_REDIRECTS } from "@/lib/blog-redirects"
 import { FeaturedDeals } from "@/components/featured-deals"
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
@@ -61,6 +62,9 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({ params }: { params: { slug: string; locale: string } }) {
   setRequestLocale(params.locale)
+  // next.config.mjs does the 308 at the routing layer; this is the fallback.
+  const movedTo = BLOG_REDIRECTS[params.slug]
+  if (movedTo) permanentRedirect(`${params.locale === "es" ? "/es" : ""}${movedTo}`)
   const [t, tUi, tCat] = await Promise.all([
     getTranslations({ locale: params.locale, namespace: "blog" }),
     getTranslations({ locale: params.locale, namespace: "newsUi.blog" }),
