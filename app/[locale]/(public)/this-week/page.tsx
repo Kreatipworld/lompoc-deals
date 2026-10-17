@@ -307,7 +307,7 @@ export default async function ThisWeekPage({ params }: { params: { locale: strin
                     ))}
                   </EditionGallery>
                 </div>
-                <Foot href="/activities" label={t("allThings")} />
+                <Foot href="/things-to-do" label={t("allThings")} />
               </Sec>
             )}
 

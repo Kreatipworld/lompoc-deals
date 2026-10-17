@@ -399,11 +399,11 @@
     "mobileFollowSocial": "Follow for today's location"
   },
   "activities": {
-    "metaTitle": "Lompoc Activities & Attractions",
-    "metaDescription": "Discover the best things to do in Lompoc, CA — historic missions, flower fields, wine tasting, beaches, murals, and outdoor adventures. Updated by locals.",
-    "metaOgTitle": "Lompoc Activities & Attractions",
+    "metaTitle": "Lompoc Attractions & Places to Go",
+    "metaDescription": "Every Lompoc attraction in one place — La Purísima Mission, the flower fields, Jalama Beach, Old Town murals, rocket launches and the Wine Ghetto. Kept current by locals.",
+    "metaOgTitle": "Lompoc Attractions & Places to Go",
     "metaOgDescription": "Discover Lompoc — missions, flower fields, wine tasting, rocket launches, and more.",
-    "heading": "Things to Do in Lompoc",
+    "heading": "Places to Go in Lompoc",
     "all": "All",
     "empty": "No activities found. Check back soon!",
     "featured": "Featured",
@@ -1609,6 +1609,14 @@
     "openLink": "Open: {label}"
   },
   "dashboardHome": {
+    "badgeTitle": "Link your website to your Lompoc Locals page",
+    "badgeWhy": "Add this badge to your website so customers who find you there can see your deals, photos and reviews on Lompoc Locals.",
+    "badgeAlt": "Find us on Lompoc Locals",
+    "badgeLight": "Light",
+    "badgeDark": "Dark",
+    "badgeHowTo": "Copy one snippet and paste it into your website's HTML (footer or contact page works well). It links straight to your listing.",
+    "badgeCopy": "Copy",
+    "badgeCopied": "Copied",
     "welcomeBack": "Welcome back, {name}",
     "welcome": "Welcome",
     "overview": "Here's an overview of your business on Lompoc Locals.",

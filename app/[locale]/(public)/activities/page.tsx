@@ -14,11 +14,10 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     title: t("metaTitle"),
     description: t("metaDescription"),
     keywords: [
-      "things to do in lompoc",
       "lompoc activities",
       "lompoc adventures",
       "lompoc attractions",
-      "lompoc ca things to do",
+      "places to visit in lompoc",
     ],
     openGraph: {
       title: t("metaOgTitle"),

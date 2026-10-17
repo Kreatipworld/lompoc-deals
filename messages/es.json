@@ -399,11 +399,11 @@
     "mobileFollowSocial": "Síguelos para ver dónde están hoy"
   },
   "activities": {
-    "metaTitle": "Actividades y Atracciones en Lompoc",
-    "metaDescription": "Descubre las mejores cosas que hacer en Lompoc, CA — misiones históricas, campos de flores, cata de vinos, playas, murales y aventuras al aire libre. Actualizado por locales.",
-    "metaOgTitle": "Actividades y Atracciones en Lompoc",
+    "metaTitle": "Atracciones y lugares para visitar en Lompoc",
+    "metaDescription": "Todas las atracciones de Lompoc en un solo lugar — la Misión La Purísima, los campos de flores, Jalama Beach, los murales, los lanzamientos de cohetes y más. Al día, por locales.",
+    "metaOgTitle": "Atracciones y lugares para visitar en Lompoc",
     "metaOgDescription": "Descubre Lompoc — misiones, campos de flores, cata de vinos, lanzamientos de cohetes y más.",
-    "heading": "Qué hacer en Lompoc",
+    "heading": "Lugares para visitar en Lompoc",
     "all": "Todo",
     "empty": "No encontramos actividades. ¡Vuelve pronto!",
     "featured": "Destacado",
@@ -1609,6 +1609,14 @@
     "openLink": "Abrir: {label}"
   },
   "dashboardHome": {
+    "badgeTitle": "Enlaza tu sitio web con tu página de Lompoc Locals",
+    "badgeWhy": "Agrega esta insignia a tu sitio web para que los clientes que te encuentren ahí vean tus ofertas, fotos y reseñas en Lompoc Locals.",
+    "badgeAlt": "Encuéntranos en Lompoc Locals",
+    "badgeLight": "Claro",
+    "badgeDark": "Oscuro",
+    "badgeHowTo": "Copia un código y pégalo en el HTML de tu sitio web (el pie de página o la página de contacto funcionan bien). Lleva directo a tu ficha.",
+    "badgeCopy": "Copiar",
+    "badgeCopied": "Copiado",
     "welcomeBack": "Bienvenido de nuevo, {name}",
     "welcome": "Bienvenido",
     "overview": "Aquí tienes un resumen de tu negocio en Lompoc Locals.",

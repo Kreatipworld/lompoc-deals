@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import { Link } from "@/i18n/navigation"
 import { SuccessCheck } from "@/components/motion/success-check"
 import { TrendChart } from "@/components/trend-chart"
+import { CopySnippetButton } from "@/components/copy-snippet-button"
 import {
   CreditCard,
   Tag,
@@ -26,6 +27,7 @@ import {
   Trophy,
   TrendingUp,
   Compass,
+  Link2,
 } from "lucide-react"
 import { isPast } from "date-fns"
 import { getTranslations } from "next-intl/server"
@@ -68,11 +70,17 @@ export default async function DashboardHomePage({
   }
   const userId = Number(session.user.id)
 
-  const [sub, biz] = await Promise.all([
+  const [sub, biz, liveListings] = await Promise.all([
     db.query.subscriptions.findFirst({ where: eq(subscriptions.userId, userId) }),
     db.query.businesses.findFirst({
       where: (b, { eq: e }) => e(b.ownerUserId, userId),
       columns: { id: true, name: true, status: true, gracePeriodEndsAt: true },
+    }),
+    // Every live listing this owner has — one website badge snippet per listing.
+    db.query.businesses.findMany({
+      where: (b, { eq: e, and: a }) => a(e(b.ownerUserId, userId), e(b.status, "approved")),
+      columns: { id: true, name: true, slug: true },
+      orderBy: (b, { asc }) => [asc(b.id)],
     }),
   ])
 
@@ -502,6 +510,75 @@ export default async function DashboardHomePage({
             upgradeLabel="Plus"
           />
         </div>
+      </div>
+
+      {/* Website badge — links the member's own site to their listing */}
+      {liveListings.length > 0 && <WebsiteBadgeCard listings={liveListings} t={t} />}
+    </div>
+  )
+}
+
+const SITE_URL = "https://www.lompoclocals.com"
+const BADGES = [
+  { key: "light", file: "find-us-on-lompoc-locals.svg" },
+  { key: "dark", file: "find-us-on-lompoc-locals-dark.svg" },
+] as const
+
+function badgeSnippet(slug: string, file: string) {
+  return `<a href="${SITE_URL}/biz/${slug}" target="_blank" rel="noopener"><img src="${SITE_URL}/badge/${file}" alt="Find us on Lompoc Locals" width="180" height="56"></a>`
+}
+
+function WebsiteBadgeCard({
+  listings,
+  t,
+}: {
+  listings: { id: number; name: string; slug: string }[]
+  t: HomeT
+}) {
+  return (
+    <div className="rounded-3xl border bg-card p-6 shadow-sm">
+      <div className="flex items-center gap-2">
+        <Link2 className="h-4 w-4 text-primary" />
+        <h2 className="font-display text-lg font-semibold">{t("badgeTitle")}</h2>
+      </div>
+      <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{t("badgeWhy")}</p>
+
+      <div className="mt-4 flex flex-wrap gap-4">
+        {BADGES.map((b) => (
+          <figure key={b.key} className="space-y-1.5">
+            {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, shown exactly as members embed it */}
+            <img src={`/badge/${b.file}`} alt={t("badgeAlt")} width={180} height={56} />
+            <figcaption className="text-xs text-muted-foreground">
+              {b.key === "light" ? t("badgeLight") : t("badgeDark")}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <p className="mt-5 text-xs text-muted-foreground">{t("badgeHowTo")}</p>
+
+      <div className="mt-3 space-y-5">
+        {listings.map((l) => (
+          <div key={l.id} className="space-y-3">
+            {listings.length > 1 && <p className="text-sm font-medium">{l.name}</p>}
+            {BADGES.map((b) => {
+              const code = badgeSnippet(l.slug, b.file)
+              return (
+                <div key={b.key} className="rounded-2xl border bg-muted/30 p-3">
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      {b.key === "light" ? t("badgeLight") : t("badgeDark")}
+                    </span>
+                    <CopySnippetButton text={code} label={t("badgeCopy")} copiedLabel={t("badgeCopied")} />
+                  </div>
+                  <pre className="overflow-x-auto whitespace-pre-wrap break-all rounded-xl bg-background p-3 font-mono text-[11px] leading-relaxed">
+                    <code>{code}</code>
+                  </pre>
+                </div>
+              )
+            })}
+          </div>
+        ))}
       </div>
     </div>
   )
