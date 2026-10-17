@@ -34,6 +34,12 @@ export type FindTerm = {
   category?: string
   title: { en: string; es: string }
   intro: { en: string; es: string }
+  /**
+   * What the listed places are called ("restaurants"). When set, the page adds a
+   * Q&A block whose answers are computed from the list itself (count, members,
+   * places with deals) — true by construction, with FAQPage JSON-LD (Oct 17 2026).
+   */
+  noun?: { en: string; es: string }
 }
 
 export const FIND_TERMS: FindTerm[] = [
@@ -138,9 +144,11 @@ export const FIND_TERMS: FindTerm[] = [
   {
     slug: "auto-repair",
     query: "auto repair",
-    aliases: ["mechanic", "mechanics", "auto shop", "car repair", "tires", "tire shop", "smog", "oil change", "mecánico", "taller"],
+    aliases: ["mechanic", "mechanics", "auto shop", "car repair", "smog", "automotive service", "mecánico", "taller"],
     kind: "businesses",
     category: "auto",
+    include: ["in-out-tires-lpc", "automotive-service-center-of-lompoc"],
+    noun: { en: "auto repair shops", es: "talleres mecánicos" },
     title: { en: "Auto Repair in Lompoc", es: "Talleres mecánicos en Lompoc" },
     intro: {
       en: "Between the commute to Vandenberg and trips over the hill, Lompoc cars work hard. These are the local mechanics, tire shops, and smog stations in town, with phone numbers and hours so you can get back on the road.",
@@ -365,6 +373,87 @@ export const FIND_TERMS: FindTerm[] = [
     intro: {
       en: "Buying in Lompoc usually starts with a pre-approval. These are the local offices in town that handle home loans: a longtime Lompoc mortgage broker and the bank branches that write mortgages. Talk to more than one before you choose.",
       es: "Comprar en Lompoc normalmente empieza con una pre-aprobación. Estas son las oficinas locales que manejan préstamos para casa: un corredor hipotecario de muchos años en Lompoc y las sucursales bancarias que otorgan hipotecas. Habla con más de una antes de decidir.",
+    },
+  },
+  // Oct 17 2026 SEO batch: Search Console showed these searches landing on generic
+  // category pages at positions 20–40. Each gets its own page, members first.
+  {
+    slug: "restaurants",
+    query: "restaurant",
+    aliases: ["restaurants", "where to eat", "food", "lompoc food", "best restaurants", "restaurantes", "dónde comer", "donde comer"],
+    kind: "businesses",
+    category: "food-drink",
+    include: ["eddies-grill", "toro-loco", "taqueria-don-tacho", "eye-on-i", "sweet-baking-co", "hangar-7-social-house"],
+    exclude: ["hilton-garden-inn-lompoc", "motel-6-lompoc-ca", "star-motel", "mission-plaza-shopping-center", "central-plaza", "civilization-wine-company"],
+    noun: { en: "restaurants", es: "restaurantes" },
+    title: { en: "Where to Eat in Lompoc", es: "Dónde comer en Lompoc" },
+    intro: {
+      en: "Lompoc eats well for a small town: family taquerías, burger grills, sushi, Thai, Hawaiian plates, Italian, bakeries and Sunday-brunch spots, most of them run by people who live here. Below are the restaurants in town, with members first, plus hours, phone numbers and this week's deals.",
+      es: "Lompoc come bien para ser un pueblo chico: taquerías familiares, hamburgueserías, sushi, comida tailandesa, platos hawaianos, italiana, panaderías y lugares para el brunch del domingo, la mayoría atendidos por gente de aquí. Abajo están los restaurantes del pueblo, primero los miembros, con horarios, teléfonos y las ofertas de la semana.",
+    },
+  },
+  {
+    slug: "tires-and-oil-change",
+    query: "tire",
+    aliases: ["tires", "tire shop", "tire shops", "oil change", "oil changes", "brakes", "llantas", "llantera", "cambio de aceite"],
+    kind: "businesses",
+    category: "auto",
+    include: ["in-out-tires-lpc", "automotive-service-center-of-lompoc", "garcia-s-auto-repair-smog"],
+    exclude: ["805-bees-knees-the-garden-shoppe", "brewer-clifton-winery", "jeffrey-a-warren-dds-jared-d-mccune-dds", "melville-winery", "montemar-wines", "jeffrey-s-mobile-detailing"],
+    noun: { en: "tire and oil change shops", es: "llanteras y talleres de cambio de aceite" },
+    title: { en: "Tires and Oil Changes in Lompoc", es: "Llantas y cambio de aceite en Lompoc" },
+    intro: {
+      en: "New tires, a flat fixed before work, brakes, or a quick oil change: these are the shops in Lompoc that do it, from local family tire shops to the national chains on Ocean Avenue. Members are listed first, with phone numbers and hours so you can call ahead.",
+      es: "Llantas nuevas, una ponchadura antes del trabajo, frenos o un cambio de aceite rápido: estos son los talleres de Lompoc que lo hacen, desde llanteras familiares hasta las cadenas nacionales de la Ocean Avenue. Los miembros aparecen primero, con teléfonos y horarios para llamar antes.",
+    },
+  },
+  {
+    slug: "grocery",
+    query: "grocery",
+    aliases: ["groceries", "grocery store", "grocery stores", "supermarket", "market", "markets", "mercado", "supermercado", "tienda de abarrotes"],
+    kind: "businesses",
+    category: "retail",
+    exclude: ["cvs-lompoc", "albertsons-pharmacy", "family-market-liquor-grocery"],
+    noun: { en: "grocery stores and markets", es: "supermercados y mercados" },
+    title: { en: "Grocery Stores and Markets in Lompoc", es: "Supermercados y mercados en Lompoc" },
+    intro: {
+      en: "Lompoc has the big supermarkets and a good run of local markets: Mexican carnicerías, an international market, a Vandenberg Village market and corner delis. Here they all are, with hours, so you know who is open early and late.",
+      es: "Lompoc tiene los supermercados grandes y muy buenos mercados locales: carnicerías mexicanas, un mercado internacional, el mercado de Vandenberg Village y tienditas con deli. Aquí están todos, con horarios para saber quién abre temprano y quién cierra tarde.",
+    },
+  },
+  {
+    slug: "burgers",
+    query: "burger",
+    aliases: ["burgers", "hamburger", "hamburgers", "hamburguesa", "hamburguesas"],
+    kind: "businesses",
+    category: "food-drink",
+    include: ["eddies-grill"],
+    exclude: ["hoptions-taproom", "johnny-s-bar-grill"],
+    noun: { en: "burger spots", es: "lugares de hamburguesas" },
+    title: { en: "Burgers in Lompoc", es: "Hamburguesas en Lompoc" },
+    intro: {
+      en: "From a local grill with a loyal lunch crowd to the drive-throughs on H Street, these are the places in Lompoc that make a burger. Members come first, with hours and current deals.",
+      es: "Desde un grill local con clientela fiel a la hora de la comida hasta los autoservicios de la calle H, estos son los lugares de Lompoc que preparan hamburguesas. Primero los miembros, con horarios y ofertas actuales.",
+    },
+  },
+  {
+    slug: "shopping",
+    query: "boutique",
+    aliases: ["shops", "shopping", "stores", "lompoc stores", "thrift", "thrift store", "thrift stores", "gift shop", "tiendas", "compras", "segunda mano"],
+    kind: "businesses",
+    category: "retail",
+    include: [
+      "the-garden-shoppe", "vargas-jewelers-trophies-awards", "lompoc-valley-florist",
+      "deasees-boutique", "la-cherry-moda", "jupiter-s-spark-collection", "bella-florist-gifts",
+      "vandenberg-thrift-shop", "reviving-hope-thrift-and-refurbishing", "goodwill-retail-store-donation-center",
+      "lompoc-ace-hardware", "big-5-lompoc", "ross-dress-lompoc", "marshalls",
+    ],
+    exclusive: true,
+    noun: { en: "shops", es: "tiendas" },
+    title: { en: "Shops in Lompoc", es: "Tiendas en Lompoc" },
+    intro: {
+      en: "Shopping in Lompoc means local first: a garden shop, a family jeweler, florists, boutiques and thrift stores, plus the everyday stores for the rest. Local members are listed first, each with hours, phone and directions.",
+      es: "Comprar en Lompoc es primero lo local: una tienda de jardín, una joyería familiar, florerías, boutiques y tiendas de segunda mano, además de las tiendas de todos los días para lo demás. Los miembros locales aparecen primero, cada uno con horario, teléfono y cómo llegar.",
     },
   },
 ]

@@ -474,8 +474,8 @@
     "memberBadge": "Miembro"
   },
   "hotels": {
-    "metaTitle": "Hoteles y Alojamientos en Lompoc — Dónde Hospedarse",
-    "metaDescription": "Encuentra hoteles seleccionados en Lompoc, CA. Desde moteles económicos hasta suites de lujo — cerca de Vandenberg Space Force Base, el centro de Lompoc…",
+    "metaTitle": "Hoteles en Lompoc, CA: dónde hospedarse cerca de Vandenberg",
+    "metaDescription": "Los {count} hoteles y moteles de Lompoc, CA en un mapa, con fotos, calificación de Google, precios y servicios: alberca, desayuno gratis y mascotas.",
     "priceUpscale": "De lujo",
     "priceMidRange": "Precio moderado",
     "priceBudget": "Económico",
@@ -513,7 +513,16 @@
     "dealsHookBody": "Los restaurantes y tiendas de Lompoc publican ofertas toda la semana — mira qué hay mientras estás aquí.",
     "dealsHookCta": "Ver ofertas locales",
     "dealsHookSubscribe": "Recibe el correo del lunes",
-    "whileHereHeading": "Mientras estás aquí"
+    "whileHereHeading": "Mientras estás aquí",
+    "guideIntro": "Dónde hospedarse en Lompoc: {count} hoteles y moteles, desde suites completas cerca de los campos de flores hasta moteles económicos en la calle H, todos a poca distancia de Vandenberg y las Santa Rita Hills. Filtra por alberca, desayuno, Wi-Fi, estacionamiento o mascotas.",
+    "faqHeading": "Preguntas sobre hoteles en Lompoc",
+    "faqCountQ": "¿Cuántos hoteles hay en Lompoc?",
+    "faqCountA": "Tenemos {count} hoteles y moteles de Lompoc, cada uno con fotos, calificación de Google, rango de precios, servicios y teléfono.",
+    "faqPoolQ": "¿Qué hoteles de Lompoc tienen alberca?",
+    "faqBreakfastQ": "¿Qué hoteles de Lompoc incluyen desayuno?",
+    "faqPetsQ": "¿Qué hoteles de Lompoc aceptan mascotas?",
+    "faqTopQ": "¿Cuáles son los hoteles mejor calificados de Lompoc?",
+    "faqTopA": "Según Google: {names}."
   },
   "locals": {
     "metaTitle": "Para residentes",
@@ -1429,7 +1438,22 @@
       "listingsHeading": "Propiedades",
       "forSaleHeading": "En venta",
       "forRentHeading": "En renta",
-      "agentPhoneLabel": "Llamar"
+      "agentPhoneLabel": "Llamar",
+      "seoHours": "Horario",
+      "seoDeals": "Ofertas",
+      "seoPhotos": "Fotos",
+      "seoDirections": "Cómo llegar",
+      "metaLead": "{name} en Lompoc, CA: {facts}, además de dirección y teléfono, en español e inglés.",
+      "metaAnd": "y",
+      "faqHeading": "Preguntas sobre {name}",
+      "faqHours": "¿Cuál es el horario de {name}?",
+      "faqWhere": "¿Dónde está {name}?",
+      "faqWhereA": "{name} está en {address}.",
+      "faqPhone": "¿Cuál es el teléfono de {name}?",
+      "faqPhoneA": "Puedes llamar a {name} al {phone}.",
+      "faqDeals": "¿{name} tiene ofertas ahora?",
+      "faqDealsA": "Sí. {name} tiene {count} oferta(s) vigente(s) en Lompoc Locals: {deals}.",
+      "guideLink": "Guía: {title}"
     },
     "amenities": {
       "wheelchair_accessible": "Accesible para sillas de ruedas",
@@ -2278,7 +2302,15 @@
     "mapSub": "{count} bodegas y salas de cata · toca un pin para ver detalles",
     "mapDirections": "Cómo llegar",
     "mapAll": "Todas las bodegas",
-    "mapDowntown": "Salas de cata del centro"
+    "mapDowntown": "Salas de cata del centro",
+    "guideFaqHeading": "Preguntas sobre {name} en Lompoc",
+    "guideFaqCountQ": "¿Cuántas opciones de {noun} hay en Lompoc?",
+    "guideFaqCountA": "Lompoc Locals tiene {count} {noun} en Lompoc, con horario, teléfono y cómo llegar para cada uno.",
+    "guideFaqMembersQ": "¿Qué {noun} son miembros de Lompoc Locals?",
+    "guideFaqMembersA": "{names}.",
+    "guideFaqDealsQ": "¿Qué {noun} tienen ofertas ahora?",
+    "guideFaqDealsA": "Ahora mismo: {names}. Las ofertas cambian cada semana.",
+    "guidesHeading": "Guías"
   },
   "blog": {
     "eyebrow": "Blog de Lompoc Locals",
@@ -2904,7 +2936,8 @@
     "backToFeed": "Volver al feed del vecindario",
     "when": "Cuándo",
     "where": "Dónde",
-    "notFoundTitle": "Evento no encontrado"
+    "notFoundTitle": "Evento no encontrado",
+    "hostedBy": "Organiza"
   },
   "garageSalesPage": {
     "metaTitle": "Ventas de garaje en Lompoc este fin de semana | Lompoc Locals",
@@ -3307,7 +3340,14 @@
     "moreHeading": "La gente también busca",
     "thisWeekCta": "Ver esta semana",
     "allEventsCta": "Todos los eventos",
-    "noEvents": "Aún no hay nada en el calendario para los próximos siete días."
+    "noEvents": "Aún no hay nada en el calendario para los próximos siete días.",
+    "faqHeading": "Preguntas sobre {title}",
+    "faqCountQ": "¿Cuántas opciones de {noun} en Lompoc hay en Lompoc Locals?",
+    "faqCountA": "Aquí aparecen {count} {noun} de Lompoc, con horario, teléfono y cómo llegar para cada lugar.",
+    "faqMembersQ": "¿Qué {noun} son miembros de Lompoc Locals?",
+    "faqMembersA": "{names}. Los miembros son negocios locales que mantienen al día su página, fotos y ofertas con nosotros.",
+    "faqDealsQ": "¿Qué {noun} tienen ofertas ahora?",
+    "faqDealsA": "Ahora mismo: {names}. Las ofertas cambian cada semana, así que vuelve pronto."
   },
   "football": {
     "metaTitle": "Fútbol de Lompoc — Braves y Conqs",
@@ -3816,6 +3856,27 @@
         "hidden": "Oculto",
         "rejected": "Rechazado"
       }
+    },
+    "faq": {
+      "heading": "Preguntas sobre Lompoc Sales",
+      "whoQ": "¿Quién puede publicar en Lompoc Sales?",
+      "whoA": "Vecinos de Lompoc, Vandenberg Village y Mission Hills (códigos postales 93436, 93437 y 93438). Nuestro equipo revisa cada anuncio antes de publicarlo.",
+      "howQ": "¿Cómo contacto al vendedor?",
+      "howA": "Toca Escribir al vendedor en el anuncio. Tu mensaje llega por correo al vendedor, que te responde directamente. Tus datos solo los recibe ese vendedor.",
+      "longQ": "¿Cuánto tiempo dura un anuncio?",
+      "longA": "Los anuncios duran 30 días. Las ventas de garaje se quitan después de su último día. El vendedor puede marcar un artículo como vendido en cualquier momento.",
+      "postQ": "¿Cómo vendo algo?",
+      "postA": "Toca Publicar una venta, agrega fotos, precio y una descripción corta, y elige la sección que le corresponde. Cuando se aprueba, los vecinos lo encuentran aquí y te escriben."
     }
+  },
+  "thisWeekend": {
+    "metaTitle": "Qué hacer en Lompoc este fin de semana ({dates})",
+    "metaDescription": "Eventos en Lompoc este fin de semana, {dates}: eventos comunitarios, música, mercados, deportes y lanzamientos de cohetes, con horarios y lugares. Se actualiza cada hora.",
+    "h1": "Qué hacer en Lompoc este fin de semana",
+    "sub": "{dates} · {count, plural, =0 {aún no hay eventos} one {# evento} other {# eventos}}",
+    "intro": "Todo lo del calendario de Lompoc de viernes a domingo: eventos comunitarios, mercados, partidos, música y lanzamientos desde Vandenberg, con horarios y lugares. La lista se actualiza durante el fin de semana.",
+    "empty": "Todavía no hay nada en el calendario para este fin de semana. Vuelve pronto o mira lo que viene.",
+    "allEvents": "Todos los próximos eventos",
+    "thisWeek": "Esta semana en Lompoc"
   }
 }

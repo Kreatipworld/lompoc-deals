@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
 import { ArrowRight, Store, CalendarDays, MapPin, Tag } from "lucide-react"
@@ -10,12 +10,14 @@ import { FIND_TERMS, findTermBySlug } from "@/lib/find-terms"
 import { searchAll, businessesBySlugs } from "@/lib/search"
 import { memberTiers } from "@/lib/member-tier"
 import { getActiveDeals } from "@/lib/queries"
-import { getViewer } from "@/lib/viewer"
+import { ANON_VIEWER } from "@/lib/viewer"
 import { pageAlternates, seoDescription, seoTitle, siteUrl } from "@/lib/seo"
 import { categoryLabel } from "@/lib/category-label"
 import { SearchBar } from "@/components/search-bar"
 import { SafeImage } from "@/components/safe-image"
 import { DealGrid } from "@/components/deal-card"
+import { FaqSection, type FaqItem } from "@/components/faq-section"
+import { isAlcoholDeal } from "@/lib/biz-seo"
 
 /**
  * /find/<term> — a curated landing page for a word people search for. Same
@@ -35,8 +37,11 @@ function loc(locale: string): "en" | "es" {
   return locale === "es" ? "es" : "en"
 }
 
-export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
-  const { locale, term } = await params
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { locale, term } = params
+  // Before any await: the root layout reads the locale too, and if it gets there first
+  // without this, next-intl falls back to request headers and the page goes per-visit.
+  setRequestLocale(locale)
   const t = findTermBySlug(term)
   if (!t) return {}
   const l = loc(locale)
@@ -48,15 +53,17 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   }
 }
 
-export default async function FindTermPage({ params }: { params: Promise<Params> }) {
-  const { locale, term } = await params
+export default async function FindTermPage({ params }: { params: Params }) {
+  const { locale, term } = params
+  setRequestLocale(locale)
   const t = findTermBySlug(term)
   if (!t) notFound()
   const l = loc(locale)
-  const [tf, tc, viewer] = await Promise.all([
+  // Signed-out view on the server: a session read would make this ISR page per-visit.
+  const viewer = ANON_VIEWER
+  const [tf, tc] = await Promise.all([
     getTranslations({ locale, namespace: "find" }),
     getTranslations({ locale, namespace: "categoryLabels" }),
-    getViewer(),
   ])
 
   if (t.kind === "events") {
@@ -190,6 +197,14 @@ export default async function FindTermPage({ params }: { params: Promise<Params>
         </section>
       )}
 
+      {t.noun && (
+        <FaqSection
+          className="mt-10"
+          heading={tf("faqHeading", { title: t.title[l] })}
+          items={findFaq(t.noun[l], businesses, tiers, deals, tf)}
+        />
+      )}
+
       <section className="mt-10 rounded-2xl border bg-secondary/30 p-5">
         <p className="mb-3 font-semibold">{tf("searchElse")}</p>
         <div className="max-w-md"><SearchBar size="lg" /></div>
@@ -198,6 +213,25 @@ export default async function FindTermPage({ params }: { params: Promise<Params>
       <MoreTerms current={t.slug} l={l} heading={tf("moreHeading")} />
     </main>
   )
+}
+
+/** Q&A computed from the list on this page — count, members, places with deals. */
+function findFaq(
+  noun: string,
+  businesses: { id: number; name: string }[],
+  tiers: Map<number, number>,
+  deals: { title: string; business: { name: string } }[],
+  tf: Awaited<ReturnType<typeof getTranslations>>,
+): FaqItem[] {
+  if (businesses.length === 0) return []
+  const items: FaqItem[] = [
+    { q: tf("faqCountQ", { noun }), a: tf("faqCountA", { noun, count: businesses.length }) },
+  ]
+  const members = businesses.filter((b) => (tiers.get(b.id) ?? 0) > 0).map((b) => b.name)
+  if (members.length > 0) items.push({ q: tf("faqMembersQ", { noun }), a: tf("faqMembersA", { names: members.slice(0, 8).join(", ") }) })
+  const withDeals = Array.from(new Set(deals.filter((d) => !isAlcoholDeal(d.title)).map((d) => d.business.name)))
+  if (withDeals.length > 0) items.push({ q: tf("faqDealsQ", { noun }), a: tf("faqDealsA", { names: withDeals.join(", ") }) })
+  return items
 }
 
 function Header({ t, l, eyebrow }: { t: NonNullable<ReturnType<typeof findTermBySlug>>; l: "en" | "es"; eyebrow: string }) {

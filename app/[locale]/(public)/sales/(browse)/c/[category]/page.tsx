@@ -8,6 +8,7 @@ import { getActiveSaleListings } from "@/lib/sales-queries"
 import { isSaleCategory, SALE_CATEGORIES } from "@/lib/sales"
 import { pageAlternates, siteUrl } from "@/lib/seo"
 import { PAGE_CONTAINER } from "@/lib/layout-constants"
+import { FaqSection } from "@/components/faq-section"
 
 // One shelf of the marketplace, with its own title for search ("Used cars for sale in Lompoc").
 export const revalidate = 300
@@ -60,6 +61,13 @@ export default async function SalesCategoryPage({ params }: { params: { locale: 
       <div className="mt-8">
         <SalesBrowser items={items} category={category} />
       </div>
+
+      {/* Evergreen Q&A so the shelf says something useful even when it's empty (Oct 17 2026 audit). */}
+      <FaqSection
+        className="mt-12 max-w-3xl"
+        heading={t("faq.heading")}
+        items={(["who", "post", "how", "long"] as const).map((k) => ({ q: t(`faq.${k}Q`), a: t(`faq.${k}A`) }))}
+      />
     </main>
   )
 }

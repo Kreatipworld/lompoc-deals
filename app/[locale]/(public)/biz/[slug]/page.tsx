@@ -24,11 +24,8 @@ import {
   getActivitiesNearPoint,
 } from "@/lib/queries"
 import { NearbyPlaces } from "@/components/nearby-links"
-import { getViewer } from "@/lib/viewer"
-import { bumpViewCounts } from "@/lib/tracking"
-import { track } from "@/lib/analytics/track"
-import { getSessionId } from "@/lib/analytics/session"
-import { headers } from "next/headers"
+import { ANON_VIEWER } from "@/lib/viewer"
+import { BusinessViewBeacon } from "@/components/analytics/business-view-beacon"
 import { DealGrid } from "@/components/deal-card"
 import { PropertyListingGrid } from "@/components/property-listing-card"
 import { BusinessSocialLinks } from "@/components/business-social-links"
@@ -45,12 +42,58 @@ import { Reveal } from "@/components/motion/reveal"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import { buildLocalBusinessJsonLd } from "@/lib/business-jsonld"
-import { pageAlternates, seoTitle, seoDescription } from "@/lib/seo"
+import { pageAlternates, seoTitle, seoDescription, bizSeoTitle } from "@/lib/seo"
 import { isUnclaimedBusiness } from "@/lib/business-ownership"
+import { bizFaq, bizTitleParts, isAlcoholDeal, CATEGORY_GUIDE, type BizSeoInput, type BizSeoLabels } from "@/lib/biz-seo"
+import { findTermBySlug } from "@/lib/find-terms"
+import { FaqSection } from "@/components/faq-section"
+
+type Translator = Awaited<ReturnType<typeof getTranslations>>
+
+function bizSeoInput(
+  business: { name: string; address: string | null; phone: string | null; hoursJson: unknown; coverUrl: string | null; photosJson: unknown },
+  deals: { title: string; expiresAt: Date | string }[],
+): BizSeoInput {
+  const gallery = Array.isArray(business.photosJson) ? business.photosJson.filter((u) => typeof u === "string" && u) : []
+  const photoCount = new Set([business.coverUrl, ...gallery].filter(Boolean)).size
+  const now = new Date()
+  return {
+    name: business.name,
+    address: business.address,
+    phone: business.phone,
+    hoursJson: business.hoursJson,
+    photoCount,
+    // Alcohol specials never go into search snippets or the Q&A (no-alcohol-promotion rule).
+    activeDealTitles: deals.filter((d) => new Date(d.expiresAt) > now && !isAlcoholDeal(d.title)).map((d) => d.title),
+  }
+}
+
+function bizSeoLabels(t: Translator, th: Translator): BizSeoLabels {
+  return {
+    hours: t("seoHours"),
+    deals: t("seoDeals"),
+    photos: t("seoPhotos"),
+    directions: t("seoDirections"),
+    qHours: t.raw("faqHours") as string,
+    qWhere: t.raw("faqWhere") as string,
+    aWhere: t.raw("faqWhereA") as string,
+    qPhone: t.raw("faqPhone") as string,
+    aPhone: t.raw("faqPhoneA") as string,
+    qDeals: t.raw("faqDeals") as string,
+    aDeals: t.raw("faqDealsA") as string,
+    days: { mon: th("mon"), tue: th("tue"), wed: th("wed"), thu: th("thu"), fri: th("fri"), sat: th("sat"), sun: th("sun") },
+    closed: th("closed"),
+  }
+}
 
 // Profiles are living data (enrichment sweeps, claims, unpublishes). Without
 // revalidation, a page cached while approved keeps serving after unpublish.
 export const revalidate = 300
+// An empty list opts this dynamic route into ISR: pages render on first visit, then
+// serve from cache until revalidate. Without it the route stays fully dynamic (ƒ).
+export function generateStaticParams() {
+  return []
+}
 
 export async function generateMetadata({
   params,
@@ -80,11 +123,25 @@ export async function generateMetadata({
   const aboutSnippet = about?.trim()
     ? about.trim().slice(0, 155).replace(/\s+\S*$/, "") + (about.trim().length > 155 ? "…" : "")
     : null
-  const metaDescription = seoDescription(aboutSnippet ?? description, fallbackDescription)
+  const isRealEstate = data.business.category?.slug === "real-estate"
+  const seoInput = bizSeoInput(data.business, data.deals)
+  const parts = bizTitleParts(seoInput, bizSeoLabels(t, th))
+  // Lead with what our page has (hours, deals, photos), then their own words.
+  // Real-estate agent pages keep their old copy — "hours" means nothing there.
+  const facts = parts.map((p) => p.toLowerCase())
+  const factsText = facts.length > 1 ? `${facts.slice(0, -1).join(", ")} ${t("metaAnd")} ${facts[facts.length - 1]}` : facts.join("")
+  const lead = !isRealEstate && factsText ? t("metaLead", { name, facts: factsText }) : null
+  const metaDescription = lead
+    ? seoDescription([lead, aboutSnippet ?? description].filter(Boolean).join(" "), fallbackDescription)
+    : seoDescription(aboutSnippet ?? description, fallbackDescription)
   return {
-    // A curated descriptor says what they sell ("Cupcakes & Custom Cakes in Lompoc");
-    // seoTitle falls back to the bare name if it doesn't fit, so keep it short.
-    title: seoTitle(name, seoDescriptor?.trim() || t("metaTitleSuffix")),
+    // A curated descriptor says what they sell ("Cupcakes & Custom Cakes in Lompoc") and wins;
+    // without one, the title lists what our page has ("Name, Lompoc: Hours & Photos").
+    title: seoDescriptor?.trim()
+      ? seoTitle(name, seoDescriptor.trim())
+      : isRealEstate
+        ? seoTitle(name, t("metaTitleSuffix"))
+        : { absolute: bizSeoTitle(name, parts, params.locale) },
     description: metaDescription,
     keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
     alternates: pageAlternates(`/biz/${params.slug}`, params.locale),
@@ -114,13 +171,17 @@ export default async function BusinessPage({
   params: { slug: string; locale: string }
 }) {
   setRequestLocale(params.locale)
-  const [data, viewer, t, tsp, td, tc] = await Promise.all([
+  // No session, cookie or header reads here: any of them turns this ISR page into a
+  // per-visit render (Oct 17 2026 audit — /biz was private, no-store despite revalidate).
+  // The view is counted by a client beacon; the page renders the signed-out view.
+  const viewer = ANON_VIEWER
+  const [data, t, tsp, td, tc, th] = await Promise.all([
     getBusinessBySlug(params.slug, params.locale),
-    getViewer(),
     getTranslations("businesses.profile"),
     getTranslations("sponsors"),
     getTranslations("distance"),
     getTranslations("categoryLabels"),
+    getTranslations("hoursUi"),
   ])
   if (!data) {
     if (params.slug.startsWith("demo-")) {
@@ -173,20 +234,7 @@ export default async function BusinessPage({
     ? itemCount === 1 ? t("listingSingular") : t("listingPlural")
     : itemCount === 1 ? t("dealSingular") : t("dealPlural")
 
-  if (!isRealEstate && deals.length > 0) {
-    void bumpViewCounts(deals.map((d) => d.id))
-  }
-
-  // Emit business_page_viewed after 404 check so we don't track missing pages
   const locale = (params.locale === "es" ? "es" : "en") as "en" | "es"
-  const ref = headers().get("referer") ?? undefined
-  void track("business_page_viewed", {
-    userId: viewer.userId ?? null,
-    sessionId: getSessionId(),
-    targetType: "business",
-    targetId: business.id,
-    props: { locale, referrer: ref },
-  })
 
   const isUnclaimed = isUnclaimedBusiness(business.ownerEmail)
   const reviewsUrl = googleReviewsUrl(business)
@@ -200,7 +248,22 @@ export default async function BusinessPage({
     ? [business.coverUrl, ...gallery.filter((u) => u !== business.coverUrl)]
     : gallery
 
+  // Q&A block from fields this page already shows (hours, address, phone, deals).
+  const faqItems = isRealEstate ? [] : bizFaq(bizSeoInput(business, deals), bizSeoLabels(t, th))
+  const guideTerm = business.category ? findTermBySlug(CATEGORY_GUIDE[business.category.slug] ?? "") : undefined
+
   const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
+  const prefix = locale === "es" ? "/es" : ""
+  // Same trail as the visible breadcrumb: Businesses › Category › Name.
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { name: t("breadcrumbHome"), path: "/businesses" },
+      ...(business.category ? [{ name: categoryName ?? business.category.name, path: `/category/${business.category.slug}` }] : []),
+      { name: business.name, path: `/biz/${business.slug}` },
+    ].map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: `${siteUrl}${prefix}${c.path}` })),
+  }
   const jsonLd = buildLocalBusinessJsonLd(business, {
     siteUrl,
     amenities: (business.amenitiesJson as string[] | null) ?? [],
@@ -219,6 +282,11 @@ export default async function BusinessPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd).replace(/</g, "\\u003c") }}
+      />
+      <BusinessViewBeacon businessId={business.id} dealIds={isRealEstate ? [] : deals.map((d) => d.id)} />
       {/* ─────────────────────────────────────────────────
           COVER IMAGE BANNER (full-width, above header card)
          ───────────────────────────────────────────────── */}
@@ -773,6 +841,19 @@ export default async function BusinessPage({
           </aside>}
         </div>
       </section>
+
+      {faqItems.length >= 2 && (
+        <section className="mx-auto max-w-3xl px-4 pb-6">
+          <FaqSection heading={t("faqHeading", { name: business.name })} items={faqItems} />
+          {guideTerm && (
+            <p className="mt-3 text-sm">
+              <Link href={`/find/${guideTerm.slug}`} className="font-semibold text-primary underline-offset-4 hover:underline">
+                {t("guideLink", { title: guideTerm.title[locale] })}
+              </Link>
+            </p>
+          )}
+        </section>
+      )}
 
       {/* ─────────────────────────────────────────────────
           CLAIM CTA — demoted below the fold so unclaimed profiles lead with content

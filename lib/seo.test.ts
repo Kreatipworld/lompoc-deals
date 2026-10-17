@@ -1,5 +1,12 @@
 import assert from "node:assert/strict"
-import { seoTitle, seoDescription } from "./seo"
+import { seoTitle, seoDescription, bizSeoTitle } from "./seo"
+
+assert.equal(bizSeoTitle("Eddie's Grill", ["Hours", "Deals", "Photos"]), "Eddie's Grill, Lompoc: Hours, Deals & Photos | Lompoc Locals") // exactly 60
+assert.equal(bizSeoTitle("ALDI Lompoc", ["Hours"]), "ALDI Lompoc: Hours | Lompoc Locals") // no doubled town; brand fits
+assert.equal(bizSeoTitle("Toro Loco", ["Horario", "Fotos"], "es"), "Toro Loco, Lompoc: Horario y Fotos | Lompoc Locals")
+assert.equal(bizSeoTitle("Hangar 7 Social House", ["Hours", "Deals", "Photos"]), "Hangar 7 Social House, Lompoc: Hours, Deals & Photos")
+assert.ok(bizSeoTitle("A Very Long Business Name That Goes On And On Forever", ["Hours", "Deals", "Photos"]).length <= 60)
+assert.equal(bizSeoTitle("Coastal Tint", []), "Coastal Tint, Lompoc | Lompoc Locals")
 
 assert.equal(seoTitle("Lompoc Museum", "Things to Do in Lompoc"), "Lompoc Museum — Things to Do") // town dropped, descriptor kept
 assert.equal(seoTitle("Hilton Garden Inn Lompoc", "Lompoc Hotel"), "Hilton Garden Inn Lompoc — Hotel")

@@ -6,6 +6,7 @@ import { HOTELS } from "@/lib/hotels-data"
 import { siteUrl, esUrl } from "@/lib/seo"
 import { FIND_TERMS } from "@/lib/find-terms"
 import { BLOG_REDIRECTS } from "@/lib/blog-redirects"
+import { SALE_CATEGORIES } from "@/lib/sales"
 
 // Regenerate hourly: events cancel, businesses close, stories publish — a build-time
 // sitemap would advertise dead URLs until the next deploy.
@@ -98,6 +99,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/feed",
     "/sales",
     "/this-week",
+    "/this-weekend",
     "/events",
     "/hotels",
     "/homes",
@@ -191,6 +193,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: bilingual(`/listings/${h.id}`),
   }))
 
+  // Lompoc Sales shelves (/sales/c/vehicles …): each has its own search title.
+  const saleShelfPages = SALE_CATEGORIES.map((c) => ({
+    url: `${siteUrl}/sales/c/${c}`,
+    changeFrequency: "daily" as const,
+    priority: 0.5,
+    alternates: bilingual(`/sales/c/${c}`),
+  }))
+
   return [...staticPages, ...bizPages, ...catPages,
-    ...findPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages, ...homePages]
+    ...findPages, ...saleShelfPages, ...blogPages, ...hotelPages, ...activityPages, ...eventPages, ...homePages]
 }

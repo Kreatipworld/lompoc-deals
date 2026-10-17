@@ -14,6 +14,11 @@ const siteUrl = process.env.AUTH_URL ?? "http://localhost:3000"
 
 // Launch times slip and events cancel — keep detail pages fresh
 export const revalidate = 300
+// An empty list opts this dynamic route into ISR: pages render on first visit, then
+// serve from cache until revalidate. Without it the route stays fully dynamic (ƒ).
+export function generateStaticParams() {
+  return []
+}
 
 async function getApprovedEvent(id: number) {
   if (Number.isNaN(id)) return null
@@ -22,6 +27,8 @@ async function getApprovedEvent(id: number) {
       event: events,
       organizerName: businesses.name,
       organizerWebsite: businesses.website,
+      organizerSlug: businesses.slug,
+      organizerStatus: businesses.status,
     })
     .from(events)
     .leftJoin(businesses, eq(events.businessId, businesses.id))
@@ -33,6 +40,8 @@ async function getApprovedEvent(id: number) {
     ...row.event,
     organizerName: row.organizerName,
     organizerWebsite: row.organizerWebsite,
+    // Link the host's page only while it is live (closed/pending pages 404).
+    organizerSlug: row.organizerStatus === "approved" ? row.organizerSlug : null,
   }
 }
 
@@ -177,6 +186,14 @@ export default async function EventDetailPage({
             <MapPin className="h-4 w-4 text-primary" />
             <span className="font-semibold">{`${t("where")}:`}</span>
             <span>{ev.location}</span>
+          </p>
+        )}
+        {ev.organizerName && ev.organizerSlug && (
+          <p className="flex items-center gap-2">
+            <span className="font-semibold">{`${t("hostedBy")}:`}</span>
+            <Link href={`/biz/${ev.organizerSlug}`} className="font-medium text-primary underline-offset-4 hover:underline">
+              {ev.organizerName}
+            </Link>
           </p>
         )}
       </div>

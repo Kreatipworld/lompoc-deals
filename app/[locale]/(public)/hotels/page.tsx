@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { HOTELS } from "@/lib/hotels-data"
 import { HotelsMap } from "@/components/hotels-map"
@@ -8,17 +8,22 @@ import { ActivityTicker } from "@/components/activity-ticker"
 import { getFeaturedActivities, type ActivityData } from "@/lib/queries"
 import { ArrowRight, Tag, Wine, Rocket, Flower2 } from "lucide-react"
 import { pageAlternates } from "@/lib/seo"
+import { FaqSection, type FaqItem } from "@/components/faq-section"
+import type { AmenityKey } from "@/lib/hotels-data"
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>
+  params: { locale: string }
 }) {
-  const { locale } = await params
+  const { locale } = params
+  // Before any await: the root layout reads the locale too, and if it gets there first
+  // without this, next-intl falls back to request headers and the page goes per-visit.
+  setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: "hotels" })
   return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
+    title: { absolute: t("metaTitle") },
+    description: t("metaDescription", { count: HOTELS.length }),
     alternates: pageAlternates("/hotels", locale),
   }
 }
@@ -26,9 +31,10 @@ export async function generateMetadata({
 export default async function HotelsPage({
   params,
 }: {
-  params: Promise<{ locale: string }>
+  params: { locale: string }
 }) {
-  const { locale } = await params
+  const { locale } = params
+  setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: "hotels" })
   const tCat = await getTranslations({ locale, namespace: "activityCategory" })
 
@@ -41,6 +47,19 @@ export default async function HotelsPage({
   }
 
   const hotelCount = HOTELS.length
+  // Q&A straight from the hotel records (amenities + Google ratings) — nothing invented.
+  const withAny = (keys: AmenityKey[]) => HOTELS.filter((h) => h.amenities.some((a) => keys.includes(a))).map((h) => h.name)
+  const pools = withAny(["indoorPool", "outdoorPool"])
+  const breakfast = withAny(["breakfast", "hotBreakfast", "continentalBreakfast"])
+  const pets = withAny(["petFriendly"])
+  const top = [...HOTELS].sort((a, b) => b.rating - a.rating).slice(0, 3).map((h) => `${h.name} (${h.rating.toFixed(1)})`)
+  const faq: FaqItem[] = [
+    { q: t("faqCountQ"), a: t("faqCountA", { count: hotelCount }) },
+    ...(pools.length ? [{ q: t("faqPoolQ"), a: `${pools.join(", ")}.` }] : []),
+    ...(breakfast.length ? [{ q: t("faqBreakfastQ"), a: `${breakfast.join(", ")}.` }] : []),
+    ...(pets.length ? [{ q: t("faqPetsQ"), a: `${pets.join(", ")}.` }] : []),
+    { q: t("faqTopQ"), a: t("faqTopA", { names: top.join(", ") }) },
+  ]
 
   return (
     <main className="pb-20">
@@ -84,6 +103,7 @@ export default async function HotelsPage({
           <h2 className="font-display text-2xl font-semibold tracking-tight">
             {t("hotelsHeading", { count: hotelCount })}
           </h2>
+          <p className="mt-2 max-w-3xl text-sm text-muted-foreground sm:text-base">{t("guideIntro", { count: hotelCount })}</p>
 
           <div className="mt-4">
             <HotelsFilterGrid
@@ -183,6 +203,8 @@ export default async function HotelsPage({
           </div>
         </section>
       )}
+
+      <FaqSection className="mx-auto max-w-3xl px-4 py-12" heading={t("faqHeading")} items={faq} />
 
       {/* ── 6. ACTIVITY TICKER ───────────────────────────────────────── */}
       <ActivityTicker />

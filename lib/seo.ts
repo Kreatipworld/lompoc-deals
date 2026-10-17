@@ -71,6 +71,30 @@ export function seoTitle(name: string, descriptor?: string, opts: { absolute?: b
 }
 
 /**
+ * Click-earning title for a business page (Oct 17 2026: page-1 /biz results drew
+ * 0.4% CTR because the title was just the name — Google already shows the
+ * business's own site for that). The title names what our page has that a bare
+ * name doesn't: "Hangar 7 Social House, Lompoc: Hours, Deals & Photos".
+ *
+ * `parts` must only list things the page really shows (the caller decides).
+ * Absolute title — the brand suffix rides along only when it still fits in 60.
+ * Falls back by dropping parts from the end, then to "<name> · Lompoc", then the name.
+ */
+export function bizSeoTitle(name: string, parts: string[], locale: string = "en"): string {
+  const clean = name.replace(/\s+/g, " ").trim()
+  const and = locale === "es" ? " y " : " & "
+  const lead = /lompoc/i.test(clean) ? clean : `${clean}, Lompoc`
+  const join = (p: string[]) => (p.length <= 1 ? p.join("") : `${p.slice(0, -1).join(", ")}${and}${p[p.length - 1]}`)
+  const withBrand = (s: string) => (s.length + BRAND_SUFFIX_LEN <= TITLE_MAX ? `${s} | Lompoc Locals` : s)
+  for (let n = parts.length; n > 0; n--) {
+    const candidate = `${lead}: ${join(parts.slice(0, n))}`
+    if (candidate.length <= TITLE_MAX) return withBrand(candidate)
+  }
+  if (lead.length <= TITLE_MAX) return withBrand(lead)
+  return seoTitle(clean, undefined, { absolute: true })
+}
+
+/**
  * Meta description sized for search: 70–155 chars, cut at a word boundary,
  * padded with a factual tail when the source text is a stub.
  */

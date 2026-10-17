@@ -1,6 +1,13 @@
 import { Link } from "@/i18n/navigation"
 import { notFound } from "next/navigation"
-export const dynamic = "force-dynamic"
+// ISR (cost rules, Sep 16 2026): no cookies, no searchParams on the server. The open-now
+// filter runs in the browser (CategoryList) and real-estate tabs live on /homes.
+export const revalidate = 300
+// An empty list opts this dynamic route into ISR: pages render on first visit, then
+// serve from cache until revalidate. Without it the route stays fully dynamic (ƒ).
+export function generateStaticParams() {
+  return []
+}
 import { ArrowRight, Home } from "lucide-react"
 import { db } from "@/db/client"
 import {
@@ -8,12 +15,12 @@ import {
   getAllRealEstateListings,
   getBusinessesByCategorySlug,
 } from "@/lib/queries"
-import { filterOpenNow, isOpenNow, parseHours, DAY_KEYS } from "@/lib/hours"
+import { parseHours } from "@/lib/hours"
 import { FIND_TERMS } from "@/lib/find-terms"
 import { searchAll, businessesBySlugs } from "@/lib/search"
 import { CategoryList } from "@/components/directory/category-list"
 import { CategoryMap } from "@/components/category-map"
-import { getViewer } from "@/lib/viewer"
+import { ANON_VIEWER } from "@/lib/viewer"
 import { FeaturedRow } from "@/components/featured-row"
 import { SponsorShowcase } from "@/components/sponsor-showcase"
 import { DealGrid } from "@/components/deal-card"
@@ -25,7 +32,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server"
 import { pageAlternates } from "@/lib/seo"
 import { categoryLabel } from "@/lib/category-label"
 import { categoryCopy, CATEGORY_FAQ_HEADING } from "@/lib/category-copy"
-import { FaqSection } from "@/components/faq-section"
+import { CATEGORY_GUIDES } from "@/lib/category-guides"
+import { isAlcoholDeal } from "@/lib/biz-seo"
+import { FaqSection, type FaqItem } from "@/components/faq-section"
 
 export async function generateMetadata({
   params,
@@ -41,10 +50,24 @@ export async function generateMetadata({
     getTranslations({ locale: params.locale, namespace: "categoryLabels" }),
   ])
   if (!cat) return { title: tMeta("categoryNotFound") }
+  // "Other" is a catch-all with no search intent of its own (backlog B-008): keep it
+  // out of the index, but let Google follow it to the businesses.
+  const robots = cat.slug === "other" ? { index: false, follow: true } : undefined
   // DB names are English-only ("Food & Drink"); the label helper localizes them.
   const label = categoryLabel(tLabels, cat.slug, cat.name)
   const labelLower = label.toLowerCase()
+  const guide = CATEGORY_GUIDES[cat.slug]
+  if (guide) {
+    const l = params.locale === "es" ? "es" : "en"
+    return {
+      title: { absolute: guide.title[l] },
+      description: guide.description[l],
+      keywords: [`lompoc ${labelLower}`, `${labelLower} lompoc`, "lompoc ca"],
+      alternates: pageAlternates(`/category/${params.slug}`, params.locale),
+    }
+  }
   return {
+    ...(robots ? { robots } : {}),
     title: tMeta("categoryTitle", { category: label }),
     description: tMeta("categoryDescription", { category: labelLower }),
     keywords: [`lompoc ${labelLower}`, `${labelLower} lompoc`, `lompoc ${labelLower} deals`, "lompoc ca"],
@@ -54,10 +77,8 @@ export async function generateMetadata({
 
 export default async function CategoryPage({
   params,
-  searchParams,
 }: {
   params: { slug: string; locale: string }
-  searchParams?: { tab?: string; open?: string }
 }) {
   setRequestLocale(params.locale)
   const t = await getTranslations({ locale: params.locale, namespace: "category" })
@@ -68,21 +89,14 @@ export default async function CategoryPage({
   if (!cat) notFound()
 
   const isRealEstate = params.slug === "real-estate"
-  const tab =
-    searchParams?.tab === "rent"
-      ? "for-rent"
-      : searchParams?.tab === "sale"
-        ? "for-sale"
-        : null
-  const openNow = searchParams?.open === "1"
+  const viewer = ANON_VIEWER
 
-  const [allCategoryBusinesses, deals, listings, viewer] = await Promise.all([
+  const [allCategoryBusinesses, deals, listings] = await Promise.all([
     isRealEstate ? Promise.resolve([]) : getBusinessesByCategorySlug(params.slug, params.locale),
     isRealEstate ? Promise.resolve([]) : getDealsByCategorySlug(params.slug, 50, params.locale),
-    isRealEstate ? getAllRealEstateListings(tab ?? undefined) : Promise.resolve([]),
-    getViewer(),
+    isRealEstate ? getAllRealEstateListings() : Promise.resolve([]),
   ])
-  const categoryBusinesses = openNow ? filterOpenNow(allCategoryBusinesses) : allCategoryBusinesses
+  const categoryBusinesses = allCategoryBusinesses
   // The map shows the whole category regardless of the open-now filter.
   const mapPins = allCategoryBusinesses
     .filter((b) => typeof b.lat === "number" && typeof b.lng === "number" && Number.isFinite(b.lat) && Number.isFinite(b.lng))
@@ -105,14 +119,19 @@ export default async function CategoryPage({
   const catName = categoryLabel(tLabels, cat.slug, cat.name)
   // Per-category intro + FAQ (lib/category-copy.ts) — each page's own words.
   const copy = categoryCopy(cat.slug, params.locale)
+  const guide = isRealEstate ? undefined : CATEGORY_GUIDES[params.slug]
+  const guideFaq: FaqItem[] = []
+  if (guide?.noun && allCategoryBusinesses.length > 0) {
+    const noun = guide.noun[localeKey]
+    guideFaq.push({ q: t("guideFaqCountQ", { noun }), a: t("guideFaqCountA", { noun, count: allCategoryBusinesses.length }) })
+    const members = allCategoryBusinesses.filter((b) => b.tier > 0).map((b) => b.name)
+    if (members.length > 0) guideFaq.push({ q: t("guideFaqMembersQ", { noun }), a: t("guideFaqMembersA", { names: members.slice(0, 10).join(", ") }) })
+    const withDeals = Array.from(new Set(deals.filter((d) => !isAlcoholDeal(d.title)).map((d) => d.business.name)))
+    if (withDeals.length > 0) guideFaq.push({ q: t("guideFaqDealsQ", { noun }), a: t("guideFaqDealsA", { names: withDeals.slice(0, 10).join(", ") }) })
+  }
+  // One Q&A block per page (one FAQPage JSON-LD): hand-written category questions first, then data answers.
+  const faqItems: FaqItem[] = [...(copy?.faqs ?? []), ...guideFaq]
 
-  // Preserve other existing searchParams (e.g. ?tab=) when toggling ?open=1
-  const toggledParams = new URLSearchParams()
-  if (searchParams?.tab) toggledParams.set("tab", searchParams.tab)
-  if (!openNow) toggledParams.set("open", "1")
-  const openToggleHref = `/category/${params.slug}${
-    toggledParams.toString() ? `?${toggledParams.toString()}` : ""
-  }`
 
   // For real-estate, show listing count; for others, show business count
   const heroCount = isRealEstate ? listings.length : categoryBusinesses.length
@@ -138,7 +157,7 @@ export default async function CategoryPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd).replace(/</g, "\\u003c") }}
       />
       <PageHeader
-        title={t("headingGeo", { name: catName })}
+        title={guide ? guide.h1[localeKey] : t("headingGeo", { name: catName })}
         backHref="/businesses"
         backLabel={t("allBusinesses")}
         meta={
@@ -155,17 +174,16 @@ export default async function CategoryPage({
         </div>
       </PageHeader>
 
+      {guide?.intro && (
+        <section className="mx-auto max-w-6xl px-4 pt-6">
+          <p className="max-w-3xl text-base text-muted-foreground" data-category-guide={params.slug}>{guide.intro[localeKey]}</p>
+        </section>
+      )}
+
       {/* CHIPS */}
       <section className="border-b bg-secondary/30">
         <div className="mx-auto max-w-6xl px-4 py-4">
-          <CategoryChips
-            activeSlug={params.slug}
-            openNow={
-              isRealEstate
-                ? undefined
-                : { active: openNow, href: openToggleHref, label: t("openNowFilter") }
-            }
-          />
+          <CategoryChips activeSlug={params.slug} />
         </div>
       </section>
 
@@ -204,33 +222,18 @@ export default async function CategoryPage({
             <ArrowRight className="h-4 w-4" />
           </Link>
           <div className="mb-6 flex items-center gap-2 border-b">
-            <Link
-              href={`/category/${params.slug}`}
-              className={`relative -mb-px border-b-2 px-4 pb-3 pt-1 text-sm font-medium transition ${
-                !tab
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
+            <span className="relative -mb-px border-b-2 border-primary px-4 pb-3 pt-1 text-sm font-medium text-foreground">
               {t("tabAll")}
-            </Link>
+            </span>
             <Link
-              href={`/category/${params.slug}?tab=sale`}
-              className={`relative -mb-px border-b-2 px-4 pb-3 pt-1 text-sm font-medium transition ${
-                tab === "for-sale"
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
+              href="/homes?tab=sale"
+              className="relative -mb-px border-b-2 border-transparent px-4 pb-3 pt-1 text-sm font-medium text-muted-foreground transition hover:text-foreground"
             >
               {t("tabForSale")}
             </Link>
             <Link
-              href={`/category/${params.slug}?tab=rent`}
-              className={`relative -mb-px border-b-2 px-4 pb-3 pt-1 text-sm font-medium transition ${
-                tab === "for-rent"
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
+              href="/homes?tab=rent"
+              className="relative -mb-px border-b-2 border-transparent px-4 pb-3 pt-1 text-sm font-medium text-muted-foreground transition hover:text-foreground"
             >
               {t("tabForRent")}
             </Link>
@@ -260,7 +263,6 @@ export default async function CategoryPage({
             <CategoryList
               items={categoryBusinesses.map((b) => {
                 const hours = parseHours(b.hoursJson)
-                const known = DAY_KEYS.some((k) => hours[k] !== null)
                 return {
                   id: b.id,
                   name: b.name,
@@ -271,7 +273,8 @@ export default async function CategoryPage({
                   photoUrl: b.photoUrl,
                   activeDealCount: b.activeDealCount,
                   tier: b.tier,
-                  openNow: known ? isOpenNow(hours) : null,
+                  openNow: null,
+                  hours,
                 }
               })}
               labels={{
@@ -285,6 +288,7 @@ export default async function CategoryPage({
                 dealPlural: t("dealPlural"),
                 openNow: t("openNow"),
                 noMatch: t("noMatch"),
+                openNowFilter: t("openNowFilter"),
               }}
             />
           </section>
@@ -313,10 +317,10 @@ export default async function CategoryPage({
         </>
       )}
 
-      {copy && (
+      {faqItems.length > 0 && (
         <FaqSection
-          heading={(params.locale === "es" ? CATEGORY_FAQ_HEADING.es : CATEGORY_FAQ_HEADING.en)(catName)}
-          items={copy.faqs}
+          heading={copy ? (params.locale === "es" ? CATEGORY_FAQ_HEADING.es : CATEGORY_FAQ_HEADING.en)(catName) : t("guideFaqHeading", { name: catName })}
+          items={faqItems}
           className="mx-auto max-w-6xl px-4 pt-4 pb-10 sm:pb-12"
         />
       )}

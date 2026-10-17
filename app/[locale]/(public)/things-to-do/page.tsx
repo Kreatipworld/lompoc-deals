@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Link } from "@/i18n/navigation"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { MapPin, ArrowRight, CalendarDays, Mail } from "lucide-react"
 import { SafeImage } from "@/components/safe-image"
 import { PageHeader } from "@/components/page-header"
@@ -15,9 +15,12 @@ export const revalidate = 3600
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>
+  params: { locale: string }
 }): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = params
+  // Before any await: the root layout reads the locale too, and if it gets there first
+  // without this, next-intl falls back to request headers and the page goes per-visit.
+  setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: "thingsToDo" })
   return {
     // No brand in the string — the root layout's template appends "| Lompoc Locals".
@@ -52,9 +55,10 @@ type GuideSection = {
 export default async function ThingsToDoPage({
   params,
 }: {
-  params: Promise<{ locale: string }>
+  params: { locale: string }
 }) {
-  const { locale } = await params
+  const { locale } = params
+  setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: "thingsToDo" })
 
   // Eat & drink picks: paying members seed the pool, the directory's rotating

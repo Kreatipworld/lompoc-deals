@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { track } from "@/lib/analytics/track"
 import { getSessionId } from "@/lib/analytics/session"
 import { getViewer } from "@/lib/viewer"
+import { bumpViewCounts } from "@/lib/tracking"
 
 export const dynamic = "force-dynamic"
 
@@ -15,6 +16,10 @@ export const dynamic = "force-dynamic"
  * and track()'s UA filter still drops the ones that do.
  *
  * Kept deliberately narrow: only `page_viewed`, only pathnames, always 204.
+ *
+ * Since Oct 17 2026 it also takes `business_page_viewed` from components/analytics/
+ * business-view-beacon.tsx (business id + the deal ids shown): the /biz page stopped
+ * counting on the server so it can be ISR-cached.
  */
 const EXCLUDED_PREFIXES = ["/biz/", "/api", "/dashboard", "/admin", "/login", "/signup", "/_next"]
 
@@ -31,6 +36,10 @@ export async function POST(request: Request) {
     const body = (await request.json().catch(() => null)) as
       | { name?: unknown; path?: unknown; locale?: unknown; referrer?: unknown }
       | null
+    if (body && (body as { name?: unknown }).name === "business_page_viewed") {
+      await trackBusinessView(body as Record<string, unknown>)
+      return new NextResponse(null, { status: 204 })
+    }
     if (!body || body.name !== "page_viewed") return new NextResponse(null, { status: 204 })
     const path = cleanPath(body.path)
     if (!path) return new NextResponse(null, { status: 204 })
@@ -54,4 +63,30 @@ export async function POST(request: Request) {
     // best-effort: analytics must never surface an error to a visitor
   }
   return new NextResponse(null, { status: 204 })
+}
+
+async function trackBusinessView(body: Record<string, unknown>) {
+  const businessId = typeof body.businessId === "number" && Number.isInteger(body.businessId) && body.businessId > 0 ? body.businessId : null
+  if (!businessId) return
+  const dealIds = Array.isArray(body.dealIds)
+    ? body.dealIds.filter((d): d is number => typeof d === "number" && Number.isInteger(d) && d > 0).slice(0, 50)
+    : []
+  const locale: "en" | "es" = body.locale === "es" ? "es" : "en"
+  const referrer = typeof body.referrer === "string" && body.referrer.length > 0 ? body.referrer.slice(0, 500) : undefined
+  let userId: number | null = null
+  try {
+    userId = (await getViewer()).userId ?? null
+  } catch {
+    userId = null
+  }
+  await Promise.all([
+    track("business_page_viewed", {
+      userId,
+      sessionId: getSessionId(),
+      targetType: "business",
+      targetId: businessId,
+      props: { locale, referrer },
+    }),
+    dealIds.length ? bumpViewCounts(dealIds, userId) : Promise.resolve(),
+  ])
 }

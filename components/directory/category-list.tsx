@@ -1,9 +1,10 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Link } from "@/i18n/navigation"
 import { Store, Search, Tag, ArrowRight } from "lucide-react"
 import { BusinessAvatar } from "@/components/business-avatar"
+import { isOpenNow, DAY_KEYS, type Hours } from "@/lib/hours"
 
 export type CategoryListItem = {
   id: number
@@ -16,6 +17,11 @@ export type CategoryListItem = {
   activeDealCount: number
   tier: number
   openNow: boolean | null
+  /**
+   * Weekly hours. When given, "open now" is worked out in the browser after load,
+   * so an ISR-cached category page never shows yesterday's open/closed dots.
+   */
+  hours?: Hours | null
 }
 
 const PAGE = 30
@@ -42,17 +48,34 @@ export function CategoryList({
     dealPlural: string
     openNow: string
     noMatch: string
+    /** Label for the "Open now" toggle; omit to hide it. */
+    openNowFilter?: string
   }
 }) {
   const [q, setQ] = useState("")
+  const [openOnly, setOpenOnly] = useState(false)
+  // Client-computed open state (null until mounted, so server and first client render match).
+  const [openMap, setOpenMap] = useState<Map<number, boolean | null> | null>(null)
+  useEffect(() => {
+    const m = new Map<number, boolean | null>()
+    for (const b of items) {
+      if (b.hours === undefined) continue
+      const known = !!b.hours && DAY_KEYS.some((k) => b.hours![k] !== null)
+      m.set(b.id, known ? isOpenNow(b.hours) : null)
+    }
+    setOpenMap(m)
+  }, [items])
+  const openOf = (b: CategoryListItem) => (openMap?.has(b.id) ? openMap.get(b.id) ?? null : b.openNow)
   const [sort, setSort] = useState<"members" | "az">("members")
   const [limit, setLimit] = useState(PAGE)
 
   const filtered = useMemo(() => {
     const words = q.toLowerCase().trim().split(/\s+/).filter(Boolean)
     let list = items
+    // Unknown hours are kept — never falsely claim a business is closed.
+    if (openOnly) list = list.filter((b) => openOf(b) !== false)
     if (words.length) {
-      list = items.filter((b) => {
+      list = list.filter((b) => {
         const hay = `${b.name} ${b.description ?? ""}`.toLowerCase()
         return words.every((w) => hay.includes(w))
       })
@@ -62,7 +85,8 @@ export function CategoryList({
         ? b.tier - a.tier || b.activeDealCount - a.activeDealCount || a.name.localeCompare(b.name)
         : a.name.localeCompare(b.name)
     )
-  }, [items, q, sort])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, q, sort, openOnly, openMap])
 
   const shown = filtered.slice(0, limit)
 
@@ -81,6 +105,17 @@ export function CategoryList({
             />
           </label>
           <div className="flex items-center gap-2">
+            {labels.openNowFilter && (
+              <button
+                type="button"
+                onClick={() => { setOpenOnly((v) => !v); setLimit(PAGE) }}
+                aria-pressed={openOnly}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${openOnly ? "border-success bg-success/10 text-foreground" : "bg-card text-muted-foreground"}`}
+              >
+                <span className={`h-2 w-2 rounded-full ${openOnly ? "bg-success" : "bg-muted-foreground/40"}`} />
+                {labels.openNowFilter}
+              </button>
+            )}
             <div className="inline-flex rounded-full border bg-card p-0.5 text-xs font-semibold">
               <button
                 type="button"
@@ -124,7 +159,7 @@ export function CategoryList({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
                     <h3 className="truncate font-display text-base font-bold leading-tight">{b.name}</h3>
-                    {b.openNow && <span className="h-2 w-2 flex-shrink-0 rounded-full bg-success" title={labels.openNow} aria-label={labels.openNow} />}
+                    {openOf(b) && <span className="h-2 w-2 flex-shrink-0 rounded-full bg-success" title={labels.openNow} aria-label={labels.openNow} />}
                   </div>
                   <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{b.description ?? b.address ?? ""}</p>
                   <div className="mt-1 flex flex-wrap items-center gap-1">

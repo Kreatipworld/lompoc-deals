@@ -55,3 +55,17 @@ export async function getViewer(): Promise<Viewer> {
     followedBusinessIds,
   }
 }
+
+/**
+ * The signed-out viewer, for ISR pages (biz, find, category) that must not read
+ * the session on the server — a cookie read turns the page into a per-visit render.
+ */
+export const ANON_VIEWER: Viewer = {
+  isAuthed: false,
+  isAdmin: false,
+  isLocal: false,
+  isBusiness: false,
+  userId: null,
+  favoritedDealIds: new Set(),
+  followedBusinessIds: new Set(),
+}

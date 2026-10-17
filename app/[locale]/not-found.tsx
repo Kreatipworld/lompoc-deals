@@ -1,5 +1,7 @@
+"use client"
+
 import { Link } from "@/i18n/navigation"
-import { getLocale, getTranslations } from "next-intl/server"
+import { useTranslations } from "next-intl"
 import { MapPin, Search } from "lucide-react"
 import { ReportBug } from "@/components/report-bug"
 
@@ -14,16 +16,15 @@ import { ReportBug } from "@/components/report-bug"
  *
  * Keep this file. Deleting it silently reintroduces soft 404s across the whole site.
  * Copy comes from the `siteMeta` namespace so a Spanish visitor gets a Spanish 404.
+ *
+ * A client component on purpose (Oct 17 2026): the server version called getLocale(),
+ * which reads request headers — on ISR routes (/biz, /category) that turned every
+ * notFound() into a 500 "static to dynamic" error. The locale layout's
+ * NextIntlClientProvider supplies the messages here instead. The 404 status already
+ * keeps these pages out of the index.
  */
-export async function generateMetadata() {
-  const locale = await getLocale()
-  const t = await getTranslations({ locale, namespace: "siteMeta" })
-  return { title: t("notFoundTitle"), robots: { index: false, follow: true } }
-}
-
-export default async function LocaleNotFound() {
-  const locale = await getLocale()
-  const t = await getTranslations({ locale, namespace: "siteMeta" })
+export default function LocaleNotFound() {
+  const t = useTranslations("siteMeta")
   return (
     <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
       <MapPin className="h-10 w-10 text-muted-foreground" />

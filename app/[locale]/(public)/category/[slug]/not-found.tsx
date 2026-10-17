@@ -1,8 +1,9 @@
+"use client"
+
 import { Link } from "@/i18n/navigation"
-import { getLocale, getTranslations } from "next-intl/server"
+import { useTranslations } from "next-intl"
 import { Compass } from "lucide-react"
-import { getAllCategories } from "@/lib/queries"
-import { categoryLabel } from "@/lib/category-label"
+import { categoryLabel, CATEGORY_SLUGS } from "@/lib/category-label"
 import { SearchBar } from "@/components/search-bar"
 import { ReportBug } from "@/components/report-bug"
 
@@ -17,20 +18,14 @@ import { ReportBug } from "@/components/report-bug"
  * body. scripts/check-production.mjs asserts /category/bogus-xyz → 404; keep it
  * that way or Google indexes every invented slug.
  */
-export async function generateMetadata() {
-  const locale = await getLocale()
-  const t = await getTranslations({ locale, namespace: "siteMeta" })
-  return { title: t("categoryNotFoundHeading"), robots: { index: false, follow: true } }
-}
-
-export default async function CategoryNotFound() {
-  const locale = await getLocale()
-  const [cats, t, tLabels, tCat] = await Promise.all([
-    getAllCategories(),
-    getTranslations({ locale, namespace: "siteMeta" }),
-    getTranslations({ locale, namespace: "categoryLabels" }),
-    getTranslations({ locale, namespace: "category" }),
-  ])
+export default function CategoryNotFound() {
+  // Client component (Oct 17 2026): the server version read the locale from request
+  // headers, which made every unknown slug a 500 once /category became ISR. The ten
+  // slugs are a constant; labels come from the layout's NextIntlClientProvider.
+  const t = useTranslations("siteMeta")
+  const tLabels = useTranslations("categoryLabels")
+  const tCat = useTranslations("category")
+  const cats = CATEGORY_SLUGS.map((slug) => ({ slug, name: slug }))
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center sm:py-24">
