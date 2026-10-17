@@ -2639,7 +2639,7 @@
     "metaTitle": "Política de Privacidad",
     "metaDescription": "Cómo Lompoc Locals recopila, usa y protege tu información personal. Incluye derechos CCPA/CPRA de California.",
     "pageTitle": "Política de Privacidad",
-    "lastUpdated": "Última actualización: 30 de abril de 2026",
+    "lastUpdated": "Última actualización: 17 de octubre de 2026",
     "intro": {
       "title": "Introducción",
       "body": "Lompoc Locals (operado por [Nombre del Fundador / Entidad Pendiente]) es un directorio de negocios locales y plataforma de promociones al servicio de la comunidad de Lompoc, California. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos tu información cuando visitas nuestro sitio web o usas nuestros servicios. Al usar Lompoc Locals, aceptas las prácticas descritas en esta política. Si no estás de acuerdo, por favor deja de usar el sitio."
@@ -2676,13 +2676,14 @@
         "Neon — Proporciona nuestra base de datos PostgreSQL en la nube donde se almacenan los datos de cuentas y negocios.",
         "Mapbox — Impulsa el mapa interactivo de negocios. Mapbox puede recibir tu ubicación aproximada cuando consultas el mapa.",
         "Anthropic — Impulsa el asistente de chat con inteligencia artificial del sitio. Los mensajes que envíes pueden ser procesados por la API Claude de Anthropic.",
-        "Vercel Blob — Almacena fotos de negocios e imágenes subidas."
+        "Vercel Blob — Almacena fotos de negocios e imágenes subidas.",
+        "Meta (Facebook/Instagram) — El Píxel de Meta funciona solo en nuestras páginas para dueños de negocios (Para Negocios, Socios, registro, panel de negocios) para medir nuestros anuncios. Meta tiene su propia Política de Privacidad."
       ],
       "noSale": "No vendemos tu información personal a ningún tercero."
     },
     "cookies": {
       "title": "Cookies y Seguimiento",
-      "body": "Usamos dos cookies propias: una cookie de sesión de autenticación (para mantenerte conectado) y una cookie de preferencia de idioma (para recordar tu configuración de idioma). No usamos rastreadores publicitarios de terceros, píxeles de retargeting ni cookies de seguimiento entre sitios. Puedes desactivar las cookies en la configuración de tu navegador; hacerlo puede impedir el inicio de sesión y algunas funciones del sitio."
+      "body": "Usamos dos cookies propias: una cookie de sesión de autenticación (para mantenerte conectado) y una cookie de preferencia de idioma (para recordar tu configuración de idioma). Solo en las páginas para dueños de negocios — Para Negocios, Socios, registro y el panel de negocios — usamos el Píxel de Meta para medir nuestra propia publicidad dirigida a negocios de Lompoc (por ejemplo, si alguien que vio nuestro anuncio se registró). Las páginas que usan los vecinos — el feed, las ofertas, el directorio, las páginas de negocios, noticias, eventos y el mapa — no llevan rastreadores publicitarios ni píxeles de retargeting. Puedes desactivar las cookies en la configuración de tu navegador; hacerlo puede impedir el inicio de sesión y algunas funciones del sitio."
     },
     "sessionCookieHeading": "Identificador de sesión",
     "sessionCookieBody": "Establecemos una cookie de origen llamada lompoc_sid que contiene un identificador de sesión aleatorio para medir cómo se utilizan las funciones. No contiene información personal, caduca después de un año y no se comparte con terceros.",

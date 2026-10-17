@@ -2639,7 +2639,7 @@
     "metaTitle": "Privacy Policy",
     "metaDescription": "How Lompoc Locals collects, uses, and protects your personal information. California CCPA/CPRA rights included.",
     "pageTitle": "Privacy Policy",
-    "lastUpdated": "Last updated: April 30, 2026",
+    "lastUpdated": "Last updated: October 17, 2026",
     "intro": {
       "title": "Introduction",
       "body": "Lompoc Locals (operated by [Founder Name / Entity Placeholder]) is a local business directory and promotions platform serving the Lompoc, California area. This Privacy Policy explains how we collect, use, disclose, and protect information about you when you visit our website or use our services. By using Lompoc Locals, you agree to the practices described in this policy. If you do not agree, please discontinue use of the site."
@@ -2676,13 +2676,14 @@
         "Neon — Provides our cloud PostgreSQL database where account and business data is stored.",
         "Mapbox — Powers the interactive business map. Mapbox may receive your approximate location when you view the map.",
         "Anthropic — Powers the AI chat assistant feature on the site. Chat messages you send may be processed by Anthropic's Claude API.",
-        "Vercel Blob — Stores business photos and uploaded images."
+        "Vercel Blob — Stores business photos and uploaded images.",
+        "Meta (Facebook/Instagram) — The Meta Pixel runs only on our pages for business owners (For Businesses, Partners, sign-up, business dashboard) to measure our ads. Meta has its own Privacy Policy."
       ],
       "noSale": "We do not sell your personal information to any third party."
     },
     "cookies": {
       "title": "Cookies and Tracking",
-      "body": "We use two first-party cookies: an authentication session cookie (to keep you logged in) and a locale preference cookie (to remember your language setting). We do not use third-party advertising trackers, retargeting pixels, or cross-site tracking cookies. You can disable cookies in your browser settings; doing so may prevent login and some site features from working."
+      "body": "We use two first-party cookies: an authentication session cookie (to keep you logged in) and a locale preference cookie (to remember your language setting). On the pages for business owners only — For Businesses, Partners, sign-up and the business dashboard — we use the Meta Pixel to measure our own advertising to Lompoc businesses (for example, whether someone who saw our ad signed up). The pages locals browse — the feed, deals, directory, business listings, news, events and map — carry no advertising trackers or retargeting pixels. You can disable cookies in your browser settings; doing so may prevent login and some site features from working."
     },
     "sessionCookieHeading": "Session Identifier",
     "sessionCookieBody": "We set a first-party cookie named lompoc_sid containing a random session identifier so we can measure how features are used. It contains no personal information, expires after one year, and is not shared with third parties.",
