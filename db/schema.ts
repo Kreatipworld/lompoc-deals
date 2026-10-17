@@ -117,6 +117,9 @@ export const businesses = pgTable(
     aboutSource: text("about_source"), // 'google' | 'owner' | null
     descriptionEs: text("description_es"),
     aboutEs: text("about_es"),
+    // Search-result title descriptor ("Cupcakes & Custom Cakes"); null = "Lompoc, CA".
+    seoDescriptor: text("seo_descriptor"),
+    seoDescriptorEs: text("seo_descriptor_es"),
     amenitiesJson: jsonb("amenities_json"),
     amenitiesSource: text("amenities_source"), // 'google' | 'owner' | null
     email: varchar("email", { length: 320 }), // primary contact email

@@ -71,7 +71,7 @@ export async function generateMetadata({
     // emits "index, follow" AND "noindex" together.
     return { title: t("metaNotFound"), robots: { index: false, follow: true } }
   }
-  const { name, description, about } = data.business
+  const { name, description, about, seoDescriptor } = data.business
   const catLabel = data.business.category
     ? categoryLabel(tc, data.business.category.slug, data.business.category.name)
     : th("localBusiness")
@@ -82,7 +82,9 @@ export async function generateMetadata({
     : null
   const metaDescription = seoDescription(aboutSnippet ?? description, fallbackDescription)
   return {
-    title: seoTitle(name, t("metaTitleSuffix")),
+    // A curated descriptor says what they sell ("Cupcakes & Custom Cakes in Lompoc");
+    // seoTitle falls back to the bare name if it doesn't fit, so keep it short.
+    title: seoTitle(name, seoDescriptor?.trim() || t("metaTitleSuffix")),
     description: metaDescription,
     keywords: [name, catLabel, "Lompoc CA", "Lompoc"],
     alternates: pageAlternates(`/biz/${params.slug}`, params.locale),

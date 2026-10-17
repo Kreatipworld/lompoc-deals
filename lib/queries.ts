@@ -946,7 +946,7 @@ export async function getBusinessBySlug(slug: string, locale: Locale = "en") {
 
   // The row carries the raw English plus the *_es twins; on /es the twin leads for
   // description/about (the dashboard reads its own query, so the owner still edits English).
-  const localized = localizeFields(locale, biz, ["description", "about"])
+  const localized = localizeFields(locale, biz, ["description", "about", "seoDescriptor"])
   return {
     business: { ...localized, category, ownerEmail, effectiveTier: paidTier },
     deals: bizDeals.map((r) => rowToCard(r, locale)),
