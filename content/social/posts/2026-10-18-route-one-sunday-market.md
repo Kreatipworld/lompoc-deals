@@ -22,3 +22,7 @@ Seasonal produce, hand-pressed juices, pastries, honey and fresh-cut flowers. Pa
 More this weekend → lompoclocals.com/events
 
 #Lompoc #VandenbergVillage #FarmersMarket #ShopLocal #CentralCoast #LompocLocals
+
+## Published (Post Bridge, Oct 18 ~9:15 AM PT)
+
+IG Reel https://www.instagram.com/reel/DepFu5igLh_/ (cover = frame 0, user tag @route1farmersmarket) · TikTok https://www.tiktok.com/@lompoclocals/video/7698042149287234829 · FB https://facebook.com/1898952607093480/videos/1829565741517439 · IG Story id 17912992467499384 (link sticker added by Andres by phone). Post ids a206a589 (feed) / 4fb9f2dc (story).
