@@ -1,0 +1,234 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@500;700;800;900&display=swap">
+<style>
+:root{--purple:#650C75;--deep:#1d0624;--green:#0B992F;--gold:#EFC618;--navy:#14206b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:Inter,sans-serif;color:#fff}
+.abs{position:absolute}.scene{inset:0;overflow:hidden}
+.anton{font-family:Anton,Impact,sans-serif;text-transform:uppercase;line-height:.9}
+.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.night{filter:brightness(.42) contrast(1.25) saturate(.8)}
+.tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(40,6,52,.75) 0%,rgba(40,6,52,.25) 40%,rgba(20,3,26,.85) 100%);mix-blend-mode:multiply}
+.vig{position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 45%,rgba(0,0,0,0) 40%,rgba(0,0,0,.75) 100%)}
+.flare{position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(255,244,200,.9) 18%,rgba(255,230,150,.25) 45%,rgba(255,230,150,0) 70%);mix-blend-mode:screen}
+.beam{position:absolute;width:900px;height:1800px;top:-300px;background:radial-gradient(50% 60% at 50% 0%,rgba(255,250,220,.45),rgba(255,250,220,0) 70%);filter:blur(8px);transform-origin:50% 0;mix-blend-mode:screen}
+#brand{top:190px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:16px;font:900 30px Inter;letter-spacing:.18em;z-index:20}
+#brand img{height:58px}
+.pill{display:inline-block;background:var(--gold);color:var(--deep);font:900 40px Inter;letter-spacing:.08em;padding:14px 34px;border-radius:999px;white-space:nowrap}
+.chip{display:inline-block;padding:12px 30px;border-radius:999px;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.35);font:800 40px Inter;letter-spacing:.04em}
+.c{left:0;right:0;text-align:center}
+/* S0 cover */
+#s0 .pill{position:absolute;top:330px;left:50%;transform:translateX(-50%)}
+#s0-h{top:440px;font-size:330px;text-shadow:0 12px 0 var(--purple),0 0 80px rgba(239,198,24,.45)}
+#s0-h span{color:var(--gold)}
+.mline{left:90px;right:90px;display:flex;align-items:center;gap:26px;background:rgba(0,0,0,.5);border:3px solid rgba(255,255,255,.2);border-radius:28px;padding:20px 26px}
+.mline img{width:120px;height:120px;object-fit:contain;background:#fff;border-radius:18px}
+.mline .t{font:900 50px Inter;line-height:1.05}.mline small{display:block;font:800 29px Inter;color:var(--gold);margin-top:6px;letter-spacing:.04em}
+#m1{top:1080px}#m2{top:1280px}
+/* S1 braves */
+#s1-clock{top:330px;font-size:260px;color:var(--gold);text-shadow:0 0 50px rgba(239,198,24,.6)}
+#s1-rec{top:640px}
+#s1-t1{top:740px;font-size:230px;text-shadow:0 12px 0 var(--navy)}
+#s1-vs{top:960px;font-size:110px;color:var(--gold)}
+#s1-t2{top:1070px;font-size:230px}
+#s1-where{top:1320px}
+#s1-badge{width:200px;height:200px;object-fit:contain;right:70px;top:300px;filter:drop-shadow(0 10px 30px rgba(0,0,0,.7))}
+/* S2 cabrillo map */
+#s2{background:radial-gradient(90% 60% at 50% 40%,#2a2205 0%,#0b0a05 70%)}
+#map{left:0;top:0}
+#s2-badge{width:300px;height:300px;left:390px;top:300px;object-fit:contain;filter:drop-shadow(0 16px 40px rgba(0,0,0,.8))}
+#s2-t{top:640px;font-size:210px;color:var(--gold);text-shadow:0 10px 0 #000}
+#s2-rec{top:850px}
+#s2-at{top:1340px;font-size:120px}
+#s2-time{top:1470px}
+/* S3 eats */
+#s3{background:#120316}
+#s3-head{top:290px}
+.hero{left:60px;right:60px;top:380px;height:760px;border-radius:36px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.row{left:60px;right:60px;height:118px;display:flex;align-items:center;gap:22px;padding:0 22px;border-radius:24px;background:rgba(255,255,255,.07);border:3px solid rgba(255,255,255,.12)}
+.row .lg{width:92px;height:92px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.row .lg img{max-width:88%;max-height:88%}
+.row .lg.dark{background:#111}
+.row .nm{font:900 46px Inter}.row .ad{margin-left:auto;font:700 30px Inter;color:#d9c7de}
+.row.on{background:var(--purple);border-color:var(--gold)}
+#r1{top:1180px}#r2{top:1314px}#r3{top:1448px}
+/* S4 pack */
+#s4-t{top:430px;font-size:250px;line-height:.86;text-shadow:0 14px 0 var(--purple)}
+#s4-t .g{color:var(--gold)}
+#flash{inset:0;background:#fff;opacity:0}
+.tower{position:absolute;top:70px;width:170px;height:110px;border-radius:14px;background:repeating-linear-gradient(90deg,#fffbe8 0 26px,#2a2a2a 26px 32px),#fff;box-shadow:0 0 80px 40px rgba(255,240,180,.75)}
+#crowd{left:0;right:0;bottom:0;height:520px}
+#crowd i{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 14px 4px rgba(255,255,255,.7)}
+/* S5 end */
+#s5{background:radial-gradient(100% 70% at 50% 30%,#8a1aa0 0%,var(--purple) 45%,#2c0636 100%)}
+#s5-logo{top:360px;left:240px;width:600px}
+#s5-h{top:640px;font-size:170px}
+#s5-h span{color:var(--gold)}
+#s5-u{top:1010px}
+#s5-u .pill{font-size:52px;padding:22px 44px}
+#s5-f{top:1160px;font:800 44px Inter;color:#f1dff5}
+/* captions */
+#cap{left:90px;right:90px;top:1600px;text-align:center;z-index:30}
+#cap span{display:inline-block;background:rgba(0,0,0,.62);border-radius:18px;padding:12px 26px;font:800 42px Inter;line-height:1.25}
+</style></head>
+<body>
+<div id="brand" class="abs"><img src="a/lompoc-locals-mark-white.svg">LOMPOC LOCALS</div>
+
+<!-- S0 cover -->
+<div id="s0" class="abs scene">
+  <img class="ph night" src="a/huyck-goalposts.jpg" style="object-position:50% 30%">
+  <div class="tint"></div>
+  <div class="beam" id="b0l" style="left:-420px;transform:rotate(-24deg)"></div><div class="beam" id="b0r" style="right:-420px;transform:rotate(24deg)"></div>
+  <div class="vig"></div>
+  <div class="pill">FRIDAY · OCT 16 · 7 PM</div>
+  <div id="s0-h" class="abs c anton">Game<br><span>day</span></div>
+  <div id="m1" class="abs mline"><img src="a/badge-braves.png"><div class="t">Braves vs Nipomo<small>BRAVES 6-1 (1-0 LEAGUE) · HOME</small></div></div>
+  <div id="m2" class="abs mline"><img src="a/badge-conqs.png"><div class="t">Cabrillo at Santa Ynez<small>CABRILLO 3-5 (2-0 LEAGUE) · AWAY</small></div></div>
+</div>
+
+<!-- S1 Braves -->
+<div id="s1" class="abs scene">
+  <img id="s1-ph" class="ph" src="a/fly/0001.jpg" style="filter:brightness(.6) contrast(1.1)">
+  <div class="tint"></div><div class="vig"></div>
+    <img id="s1-badge" class="abs" src="a/badge-braves.png">
+  <div id="s1-clock" class="abs c anton">7:00</div>
+  <div id="s1-rec" class="abs c"><span class="chip">BRAVES 6-1 (1-0 LEAGUE)</span></div>
+  <div id="s1-t1" class="abs c anton">Braves</div>
+  <div id="s1-vs" class="abs c anton">vs</div>
+  <div id="s1-t2" class="abs c anton">Nipomo</div>
+  <div id="s1-where" class="abs c"><span class="pill">HUYCK STADIUM · HOME</span></div>
+</div>
+
+<!-- S2 Cabrillo -->
+<div id="s2" class="abs scene">
+  <svg id="map" class="abs" width="1080" height="1920" viewBox="0 0 1080 1920">
+    <defs><pattern id="gr" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="rgba(239,198,24,.08)" stroke-width="2"/></pattern></defs>
+    <rect width="1080" height="1920" fill="url(#gr)"/>
+    <path id="route" d="M190 1180 C 330 1080, 420 1240, 560 1120 S 800 1020, 900 1060" fill="none" stroke="#EFC618" stroke-width="12" stroke-linecap="round" stroke-dasharray="1 26"/>
+    <circle cx="190" cy="1180" r="22" fill="#fff"/><circle id="dest" cx="900" cy="1060" r="26" fill="#EFC618"/>
+    <text x="190" y="1250" fill="#fff" font-family="Inter" font-weight="900" font-size="38" text-anchor="middle" letter-spacing="4">LOMPOC</text>
+    <text id="destlab" x="900" y="1130" fill="#EFC618" font-family="Inter" font-weight="900" font-size="38" text-anchor="middle" letter-spacing="4">SANTA YNEZ</text>
+  </svg>
+  <img id="s2-badge" class="abs" src="a/badge-conqs.png">
+  <div id="s2-t" class="abs c anton">Cabrillo</div>
+  <div id="s2-rec" class="abs c"><span class="chip">CABRILLO 3-5 (2-0 LEAGUE)</span></div>
+  <div id="s2-at" class="abs c anton">@ Santa Ynez</div>
+  <div id="s2-time" class="abs c"><span class="pill">7 PM · ROAD GAME</span></div>
+</div>
+
+<!-- S3 pregame eats -->
+<div id="s3" class="abs scene">
+  <div id="s3-head" class="abs c"><span class="pill">PREGAME EATS</span></div>
+  <div class="abs hero"><img id="h1" src="a/eddies.jpg" style="object-position:50% 55%"><img id="h2" src="a/toro.jpg"><img id="h3" src="a/eye.jpg"></div>
+  <div id="r1" class="abs row"><div class="lg"><img src="a/logo_eddies.png"></div><div class="nm">Eddie's Grill</div><div class="ad">N H St</div></div>
+  <div id="r2" class="abs row"><div class="lg"><img src="a/logo_toro.png"></div><div class="nm">Toro Loco</div><div class="ad">W Central Ave</div></div>
+  <div id="r3" class="abs row"><div class="lg dark"><img src="a/logo_eye.png"></div><div class="nm">Eye on I</div><div class="ad">N I St</div></div>
+</div>
+
+<!-- S4 pack huyck -->
+<div id="s4" class="abs scene" style="background:radial-gradient(90% 55% at 50% 100%,#3a0a48 0%,#0a020d 70%)">
+  <div class="tower" style="left:60px"></div><div class="tower" style="right:60px"></div>
+  <div class="beam" id="b4l" style="left:-380px;transform:rotate(-20deg)"></div><div class="beam" id="b4r" style="right:-380px;transform:rotate(20deg)"></div>
+  <div id="crowd" class="abs"></div>
+  <div id="s4-t" class="abs c anton"><div>Pack</div><div class="g">Huyck</div><div>tonight</div></div>
+  <div id="flash" class="abs"></div>
+</div>
+
+<!-- S5 end -->
+<div id="s5" class="abs scene">
+  <img id="s5-logo" class="abs" src="a/lompoc-locals-mark-white.svg" style="width:220px;left:430px;top:330px">
+  <div id="s5-h" class="abs c anton">Live scores<br><span>tonight</span></div>
+  <div id="s5-u" class="abs c"><span class="pill">lompoclocals.com/football</span></div>
+  <div id="s5-f" class="abs c">Go Braves · Go Conqs</div>
+</div>
+
+<div id="cap" class="abs"><span id="capt"></span></div>
+
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const CAPS=[[0.15,1.35,"Game day, Lompoc!"],[1.45,2.2,"Seven o'clock,"],[2.2,5.25,"the 6-1 Braves host Nipomo at Huyck Stadium."],[5.45,9.3,"Cabrillo, unbeaten in league, plays at Santa Ynez."],[9.45,13.05,"Eat first at Eddie's, Toro Loco or Eye on I."],[13.15,14.8,"Then pack Huyck tonight!"],[14.95,18.6,"Scores at lompoclocals.com/football"]];
+const tl=gsap.timeline({paused:true});
+gsap.set(['#s1','#s2','#s3','#s4','#s5'],{autoAlpha:0});
+gsap.set(['#h2','#h3'],{autoAlpha:0});gsap.set(['#r2','#r3'],{x:-1100});
+// S0 (cover is fully built at t=0)
+tl.to('#s0 .ph',{scale:1.12,duration:1.4,ease:'none'},0);
+tl.to(['#b0l','#b0r'],{opacity:.5,duration:.25,yoyo:true,repeat:5},0);
+tl.to('#s0',{autoAlpha:0,duration:.2},1.25);
+// S1 Braves 1.35–5.3
+tl.set('#s1',{autoAlpha:1},1.35);
+tl.from('#s1-clock',{scale:2.2,autoAlpha:0,duration:.35,ease:'power3.out'},1.45);
+tl.to('#s1-clock',{y:-40,scale:.6,autoAlpha:.0,duration:.3,ease:'power2.in'},2.2);
+tl.from('#s1-badge',{x:300,rotation:30,duration:.45,ease:'back.out(1.8)'},2.25);
+tl.from('#s1-rec',{y:40,autoAlpha:0,duration:.3},2.3);
+tl.from('#s1-t1',{xPercent:-110,duration:.4,ease:'power4.out'},2.35);
+tl.from('#s1-vs',{scale:3,autoAlpha:0,duration:.3},3.0);
+tl.from('#s1-t2',{xPercent:110,duration:.4,ease:'power4.out'},3.2);
+tl.from('#s1-where',{y:80,autoAlpha:0,duration:.35,ease:'back.out(1.6)'},4.25);
+tl.to('#s1',{xPercent:-100,duration:.3,ease:'power2.in'},5.1);
+// S2 Cabrillo 5.4–9.35
+tl.set('#s2',{autoAlpha:1},5.35);
+tl.from('#s2',{xPercent:100,duration:.3,ease:'power2.out'},5.35);
+tl.from('#s2-badge',{scale:.2,rotation:-25,duration:.5,ease:'back.out(2)'},5.5);
+tl.from('#s2-t',{yPercent:70,autoAlpha:0,duration:.4,ease:'power3.out'},5.65);
+tl.from('#s2-rec',{scale:.5,autoAlpha:0,duration:.35,ease:'back.out(2)'},6.4);
+tl.from('#s2-at',{y:60,autoAlpha:0,duration:.35},8.0);
+tl.from('#s2-time',{y:60,autoAlpha:0,duration:.35},8.3);
+tl.to('#s2',{autoAlpha:0,scale:1.06,duration:.25},9.15);
+// S3 eats 9.4–13.1
+tl.set('#s3',{autoAlpha:1},9.4);
+tl.from('#s3-head',{y:-60,autoAlpha:0,duration:.3},9.4);
+tl.from('.hero',{scale:.85,autoAlpha:0,duration:.4,ease:'power3.out'},9.45);
+tl.from('#r1',{x:-1100,duration:.35,ease:'power3.out'},9.5);
+tl.to('#r2',{x:0,duration:.35,ease:'power3.out'},10.95);
+tl.to('#r3',{x:0,duration:.35,ease:'power3.out'},11.75);
+tl.fromTo('#h1',{scale:1.15},{scale:1,duration:1.6,ease:'power1.out'},9.45);
+tl.set('#r1',{className:'abs row on'},9.6);
+tl.to('#h2',{autoAlpha:1,duration:.2},11.0);tl.fromTo('#h2',{scale:1.15},{scale:1,duration:1,ease:'power1.out'},11.0);
+tl.set('#r1',{className:'abs row'},11.0);tl.set('#r2',{className:'abs row on'},11.0);
+tl.to('#h3',{autoAlpha:1,duration:.2},11.8);tl.fromTo('#h3',{scale:1.15},{scale:1,duration:1.4,ease:'power1.out'},11.8);
+tl.set('#r2',{className:'abs row'},11.8);tl.set('#r3',{className:'abs row on'},11.8);
+tl.to('#s3',{autoAlpha:0,duration:.2},12.95);
+// S4 pack 13.15–14.9
+tl.set('#s4',{autoAlpha:1},13.15);
+tl.fromTo('#crowd',{y:60},{y:0,duration:1.6,ease:'power2.out'},13.15);
+tl.from('#s4-t div',{scale:2.5,autoAlpha:0,duration:.28,stagger:.32,ease:'power4.out'},13.25);
+tl.fromTo('#flash',{opacity:.85},{opacity:0,duration:.25},13.15);
+tl.fromTo('#flash',{opacity:.6},{opacity:0,duration:.2},14.1);
+tl.to(['#b4l','#b4r'],{opacity:.4,duration:.15,yoyo:true,repeat:9},13.2);
+tl.to('#s4',{autoAlpha:0,duration:.2},14.8);
+// S5 end 14.95–18.6
+tl.set('#s5',{autoAlpha:1},14.95);
+tl.from('#s5-logo',{scale:.3,autoAlpha:0,duration:.45,ease:'back.out(2)'},14.95);
+tl.from('#s5-h',{y:80,autoAlpha:0,duration:.4,ease:'power3.out'},15.15);
+tl.from('#s5-u',{scale:.6,autoAlpha:0,duration:.4,ease:'back.out(2)'},16.6);
+tl.from('#s5-f',{y:40,autoAlpha:0,duration:.35},17.3);
+tl.to({},{duration:.01},18.6);
+const route=document.getElementById('route');
+const crowd=document.getElementById('crowd');const dots=[];
+for(let i=0;i<140;i++){const d=document.createElement('i');const x=(Math.sin(i*91.7)*.5+.5)*1060,y=(Math.sin(i*37.3)*.5+.5);d.style.left=x+'px';d.style.top=(80+y*420)+'px';d.style.transform=`scale(${.5+y})`;crowd.appendChild(d);dots.push(d)}
+const flyImg=document.getElementById('s1-ph');const FLYN=118;
+window.seek=t=>{
+  window._p=null;
+  tl.seek(t,false);
+  // route draws 6.9–8.1 as a moving dotted line
+  const k=Math.max(0,Math.min(1,(t-6.9)/1.2));
+  route.style.opacity=k>0?1:0;
+  if(t>=1.3&&t<5.5){const fi=Math.min(FLYN,Math.max(1,Math.floor((t-1.35)*30)+1));const u='a/fly/'+String(fi).padStart(4,'0')+'.jpg';if(!flyImg.src.endsWith(u)){flyImg.src=u;window._p=flyImg.decode().catch(()=>0);}}
+  dots.forEach((d,i)=>{d.style.opacity=.25+.75*(Math.sin(t*9+i*1.7)*.5+.5)});
+  route.style.strokeDashoffset=String(-t*60);
+  document.getElementById('rclip').setAttribute('width',String(190+k*740));
+  const c=CAPS.find(c=>t>=c[0]&&t<c[1]);const ce=document.getElementById('capt');
+  ce.textContent=c?c[2]:'';ce.parentElement.style.display=(c&&t>0)?'block':'none';
+  document.getElementById('brand').style.opacity=(t>=14.95)?0:1;
+  return window._p;
+};
+// clip the route so it "draws" left to right
+(()=>{const svg=document.getElementById('map');const ns='http://www.w3.org/2000/svg';
+ const cp=document.createElementNS(ns,'clipPath');cp.id='rc';const r=document.createElementNS(ns,'rect');r.id='rclip';r.setAttribute('x','0');r.setAttribute('y','0');r.setAttribute('height','1920');r.setAttribute('width','0');cp.appendChild(r);
+ svg.querySelector('defs').appendChild(cp);route.setAttribute('clip-path','url(#rc)');})();
+window.READY=document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.complete?1:new Promise(r=>i.onload=i.onerror=r)))).then(()=>seek(0));
+</script>
+</body></html>

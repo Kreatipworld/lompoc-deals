@@ -1,0 +1,178 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@500;700;900&display=swap">
+<style>
+:root{--purple:#650C75;--deep:#1d0624;--green:#0B992F;--gold:#EFC618;--navy:#14206b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--deep)}
+body{font-family:Inter,sans-serif;color:#fff}
+.abs{position:absolute}
+#bg{inset:0;background:radial-gradient(120% 70% at 50% 0%,#3b0c49 0%,var(--deep) 60%,#0c0310 100%)}
+.beam{width:900px;height:1700px;top:-260px;background:radial-gradient(50% 60% at 50% 0%,rgba(255,250,220,.55),rgba(255,250,220,0) 70%);filter:blur(6px);transform-origin:50% 0;mix-blend-mode:screen}
+#beamL{left:-430px;transform:rotate(-24deg)}#beamR{right:-430px;transform:rotate(24deg)}
+.lamp{width:120px;height:56px;top:58px;border-radius:12px;background:repeating-linear-gradient(90deg,#fffbe8 0 18px,#ffe98a 18px 22px);box-shadow:0 0 60px 30px rgba(255,240,180,.7)}
+#lampL{left:70px}#lampR{right:70px}
+#field{left:-300px;right:-300px;bottom:-120px;height:1000px;transform:perspective(700px) rotateX(58deg);transform-origin:50% 100%;
+ background:repeating-linear-gradient(0deg,rgba(255,255,255,.0) 0 118px,rgba(255,255,255,.35) 118px 124px),linear-gradient(0deg,#0a5e22,#0B992F 40%,#076b23)}
+#fieldfade{left:0;right:0;bottom:0;height:1100px;background:linear-gradient(180deg,var(--deep) 0%,rgba(29,6,36,.65) 45%,rgba(29,6,36,.2) 100%)}
+#grain{inset:0;opacity:.08;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+#brand{top:190px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:16px;font:900 30px Inter;letter-spacing:.18em}
+#brand img{height:58px}
+.scene{inset:0}
+.pill{display:inline-block;background:var(--gold);color:var(--deep);font:900 40px Inter;letter-spacing:.08em;padding:14px 34px;border-radius:999px}
+.anton{font-family:Anton,Impact,sans-serif;text-transform:uppercase;line-height:.9}
+/* cover */
+#cover .pill{position:absolute;top:330px;left:50%;transform:translateX(-50%);white-space:nowrap}
+#cv-h{top:440px;left:0;right:0;text-align:center;font-size:240px;text-shadow:0 10px 0 var(--purple),0 0 60px rgba(239,198,24,.35)}
+#cv-h span{color:var(--gold)}
+.mrow{left:80px;right:80px;height:200px;border-radius:30px;background:rgba(255,255,255,.08);border:3px solid rgba(255,255,255,.18);display:flex;align-items:center;gap:26px;padding:0 30px;backdrop-filter:blur(4px)}
+.mrow img{width:136px;height:136px;object-fit:contain;border-radius:20px;background:#fff}
+.mrow .t{font:900 50px Inter;line-height:1.05}
+.mrow .t small{display:block;font:700 30px Inter;color:var(--gold);letter-spacing:.04em;margin-top:6px}
+.mrow .q{margin-left:auto;font-family:Anton;font-size:110px;color:var(--gold)}
+#cv-r1{top:980px}#cv-r2{top:1200px}
+#cv-cta{top:1450px;left:0;right:0;text-align:center;font:900 46px Inter}
+#cv-cta b{color:var(--gold)}
+/* matchup scenes */
+.big{left:0;right:0;text-align:center}
+.badge{width:360px;height:360px;left:360px;object-fit:contain;filter:drop-shadow(0 20px 40px rgba(0,0,0,.6))}
+.vs{left:0;right:0;text-align:center;font-family:Anton;font-size:110px;color:var(--gold)}
+.team{font-size:200px}
+.meta{left:0;right:0;text-align:center;font:900 50px Inter;letter-spacing:.06em}
+.chip{display:inline-block;padding:12px 30px;border-radius:999px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);font:800 40px Inter}
+#sB .team.home{color:#fff;text-shadow:0 10px 0 var(--navy)}
+#sC{background:radial-gradient(90% 60% at 50% 30%,rgba(239,198,24,.22),rgba(0,0,0,0) 70%)}
+#sC .team{text-shadow:0 10px 0 #000}
+/* scoreboard */
+#board{left:70px;right:70px;top:520px;border-radius:36px;background:#0b0b0e;border:8px solid #2b2b33;box-shadow:0 30px 80px rgba(0,0,0,.7),inset 0 0 0 4px #000;padding:40px 40px}
+.brow{display:flex;align-items:center;height:150px;border-bottom:3px dashed #2b2b33}
+.brow:last-child{border:0}
+.brow .n{flex:1;font-family:Anton;font-size:84px;letter-spacing:.02em;color:#fff}
+.brow .d{width:150px;height:118px;border-radius:14px;background:#17171d;display:flex;align-items:center;justify-content:center;font-family:Anton;font-size:96px;color:var(--gold);text-shadow:0 0 18px rgba(239,198,24,.8)}
+.blab{font:800 34px Inter;color:#9c9cab;letter-spacing:.2em;margin:8px 0 4px}
+#sD-h{top:300px;font-size:150px}
+#sD-s{top:1370px}
+/* comment */
+#cm{left:90px;right:90px;top:640px;background:#fff;color:#111;border-radius:34px;padding:36px 40px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+#cm .who{display:flex;align-items:center;gap:20px;font:800 38px Inter}
+#cm .av{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--gold))}
+#cm .txt{font:700 56px Inter;margin-top:24px;min-height:140px;line-height:1.25}
+#cm .caret{display:inline-block;width:5px;height:56px;background:var(--purple);vertical-align:-8px;margin-left:4px}
+#sE-h{top:300px;font-size:140px}
+#sE-h span{color:var(--gold)}
+#sE-p{top:1130px;font:900 64px Inter;line-height:1.15}
+#sE-p b{color:var(--gold)}
+#sE-u{top:1340px}
+/* captions */
+#cap{left:90px;right:90px;top:1560px;text-align:center}
+#cap span{display:inline-block;background:rgba(0,0,0,.62);border-radius:18px;padding:12px 26px;font:800 42px Inter;line-height:1.25}
+</style></head>
+<body>
+<div id="bg" class="abs"></div>
+<div id="beamL" class="abs beam"></div><div id="beamR" class="abs beam"></div>
+<div id="lampL" class="abs lamp"></div><div id="lampR" class="abs lamp"></div>
+<div id="field" class="abs"></div><div id="fieldfade" class="abs"></div>
+<div id="brand" class="abs"><img src="a/lompoc-locals-mark-white.svg">LOMPOC LOCALS</div>
+
+<div id="cover" class="abs scene">
+  <div class="pill">FOOTBALL FRIDAY · OCT 16</div>
+  <div id="cv-h" class="abs anton">Guess the<br>score<span>?</span></div>
+  <div id="cv-r1" class="abs mrow"><img src="a/badge-braves.png"><div class="t">Braves vs Nipomo<small>BRAVES 6-1 (1-0 LEAGUE)<br>7 PM · HUYCK STADIUM</small></div><div class="q">?</div></div>
+  <div id="cv-r2" class="abs mrow"><img src="a/badge-conqs.png"><div class="t">Cabrillo at Santa Ynez<small>CABRILLO 3-5 (2-0 LEAGUE)<br>7 PM · AWAY</small></div><div class="q">?</div></div>
+  <div id="cv-cta" class="abs">Comment both scores. <b>Closest guess<br>gets a shout-out Saturday.</b></div>
+</div>
+
+<div id="sB" class="abs scene">
+  <img class="abs badge" src="a/badge-braves.png" style="top:330px">
+  <div class="abs big anton team home" style="top:720px">Braves</div>
+  <div class="abs vs" style="top:912px">VS</div>
+  <div class="abs big anton team" style="top:1040px">Nipomo</div>
+  <div class="abs meta" style="top:1250px"><span class="chip">BRAVES 6-1 (1-0 LEAGUE)</span><br><span class="chip" style="margin-top:14px">HOME · 7 PM</span></div>
+</div>
+
+<div id="sC" class="abs scene">
+  <img class="abs badge" src="a/badge-conqs.png" style="top:330px">
+  <div class="abs big anton team" style="top:720px;color:var(--gold)">Cabrillo</div>
+  <div class="abs vs" style="top:912px;color:#fff">AT</div>
+  <div class="abs big anton team" style="top:1040px;font-size:180px">Santa Ynez</div>
+  <div class="abs meta" style="top:1250px"><span class="chip">CABRILLO 3-5 (2-0 LEAGUE)</span><br><span class="chip" style="margin-top:14px">AWAY · 7 PM</span></div>
+</div>
+
+<div id="sD" class="abs scene">
+  <div id="sD-h" class="abs big anton">Your <span style="color:var(--gold)">call</span></div>
+  <div id="board" class="abs">
+    <div class="blab">HUYCK STADIUM · 7 PM</div>
+    <div class="brow"><div class="n">Nipomo</div><div class="d" id="d1">?</div></div>
+    <div class="brow"><div class="n">Lompoc</div><div class="d" id="d2">?</div></div>
+    <div class="blab" style="margin-top:26px">SANTA YNEZ · 7 PM</div>
+    <div class="brow"><div class="n">Cabrillo</div><div class="d" id="d3">?</div></div>
+    <div class="brow"><div class="n">Santa Ynez</div><div class="d" id="d4">?</div></div>
+  </div>
+  <div id="sD-s" class="abs meta">GUESS BOTH FINAL SCORES</div>
+</div>
+
+<div id="sE" class="abs scene">
+  <div id="sE-h" class="abs big anton">Drop it<br>in the <span>comments</span></div>
+  <div id="cm" class="abs"><div class="who"><div class="av"></div>you</div><div class="txt"><span id="typed"></span><span class="caret" id="caret"></span></div></div>
+  <div id="sE-p" class="abs big">Closest guess gets a<br><b>shout-out Saturday</b></div>
+  <div id="sE-u" class="abs meta"><span class="chip">lompoclocals.com/football</span></div>
+</div>
+
+<div id="cap" class="abs"><span id="capt"></span></div>
+
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const CAPS=[[0,1.3,"Football Friday!"],[1.4,2.95,"The Braves host Nipomo."],[2.95,4.95,"Cabrillo plays at Santa Ynez."],[4.95,7.3,"Guess both final scores in the comments."],[7.3,10,"Closest guess gets a shout-out Saturday!"]];
+const TYPED="Braves __–__\nConqs __–__";
+const tl=gsap.timeline({paused:true});
+gsap.set(['#sB','#sC','#sD','#sE'],{autoAlpha:0});
+// lights breathe
+tl.to('.beam',{opacity:.75,duration:.5,yoyo:true,repeat:19,ease:'sine.inOut'},0);
+tl.to('#field',{backgroundPositionY:'+=248px',duration:10,ease:'none'},0);
+// cover out
+tl.to('#cover',{yPercent:-12,autoAlpha:0,duration:.35,ease:'power2.in'},1.15);
+// B
+tl.set('#sB',{autoAlpha:1},1.4);
+tl.from('#sB .badge',{scale:.2,rotation:-20,autoAlpha:0,duration:.45,ease:'back.out(2)'},1.4);
+tl.from('#sB .team.home',{xPercent:-110,duration:.4,ease:'power3.out'},1.5);
+tl.from('#sB .vs',{scale:3,autoAlpha:0,duration:.3,ease:'power2.out'},1.75);
+tl.from('#sB .team:not(.home)',{xPercent:110,duration:.4,ease:'power3.out'},1.85);
+tl.from('#sB .meta',{y:60,autoAlpha:0,duration:.3},2.1);
+tl.to('#sB',{autoAlpha:0,scale:1.08,duration:.25},2.75);
+// C
+tl.set('#sC',{autoAlpha:1},2.95);
+tl.from('#sC .badge',{scale:.2,rotation:20,autoAlpha:0,duration:.45,ease:'back.out(2)'},2.95);
+tl.from('#sC .team',{yPercent:60,autoAlpha:0,stagger:.22,duration:.4,ease:'power3.out'},3.05);
+tl.from('#sC .vs',{scale:3,autoAlpha:0,duration:.3},3.3);
+tl.from('#sC .meta',{y:60,autoAlpha:0,duration:.3},3.65);
+tl.to('#sC',{autoAlpha:0,scale:1.08,duration:.25},4.72);
+// D
+tl.set('#sD',{autoAlpha:1},4.95);
+tl.from('#sD-h',{y:-80,autoAlpha:0,duration:.35,ease:'power3.out'},4.95);
+tl.from('#board',{scaleY:0,transformOrigin:'50% 0',duration:.4,ease:'power3.out'},5.0);
+tl.from('#sD-s',{y:60,autoAlpha:0,duration:.3},5.5);
+tl.to('#sD',{autoAlpha:0,duration:.25},7.08);
+// E
+tl.set('#sE',{autoAlpha:1},7.3);
+tl.from('#sE-h',{y:-80,autoAlpha:0,duration:.35,ease:'power3.out'},7.3);
+tl.from('#cm',{y:120,scale:.9,autoAlpha:0,duration:.4,ease:'back.out(1.6)'},7.4);
+tl.from('#sE-p',{y:60,autoAlpha:0,duration:.35},8.2);
+tl.from('#sE-u',{y:60,autoAlpha:0,duration:.3},8.5);
+tl.to({},{duration:.01},10);
+const rnd=(i,k)=>{const x=Math.sin(i*12.9898+k*78.233)*43758.5453;return Math.floor((x-Math.floor(x))*60)};
+window.seek=t=>{
+  tl.seek(t,false);
+  // flipping digits 5.2–6.6 then land on ?
+  const f=Math.floor(t*14);
+  ['d1','d2','d3','d4'].forEach((id,k)=>{const el=document.getElementById(id);
+    el.textContent=(t>5.2&&t<6.4+k*.12)?String(rnd(f,k)).padStart(2,'0'):'?';});
+  // typing 7.6–9.0
+  const n=Math.max(0,Math.min(TYPED.length,Math.floor((t-7.6)/1.3*TYPED.length)));
+  document.getElementById('typed').innerHTML=TYPED.slice(0,n).replace('\n','<br>');
+  document.getElementById('caret').style.opacity=(Math.floor(t*3)%2||n<TYPED.length)?1:0;
+  const c=CAPS.find(c=>t>=c[0]&&t<c[1]);const ce=document.getElementById('capt');
+  ce.textContent=c?c[2]:'';ce.parentElement.style.display=(c&&t>0)?'block':'none';
+};
+window.READY=document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.complete?1:new Promise(r=>i.onload=i.onerror=r)))).then(()=>seek(0));
+</script>
+</body></html>

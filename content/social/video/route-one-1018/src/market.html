@@ -1,0 +1,198 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@500;700;800;900&display=swap">
+<style>
+:root{--purple:#650C75;--deep:#2a0632;--green:#0B992F;--gold:#EFC618;--cream:#FFF4DC;--red:#E8432E;--orange:#F28A1E}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:Inter,sans-serif;color:#fff}
+.abs{position:absolute}.scene{inset:0;overflow:hidden}
+.anton{font-family:Anton,Impact,sans-serif;text-transform:uppercase;line-height:.9}
+.c{left:0;right:0;text-align:center}
+#brand{top:190px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:16px;font:900 30px Inter;letter-spacing:.18em;z-index:20}
+#brand img{height:58px}
+.pill{display:inline-block;color:#fff;font:900 46px Inter;letter-spacing:.06em;padding:16px 38px;border-radius:999px;white-space:nowrap}
+.ic{position:absolute;filter:drop-shadow(0 14px 18px rgba(0,0,0,.28))}
+/* S0 cover: sunny */
+#s0{background:radial-gradient(120% 75% at 50% 18%,#FFE27A 0%,#F7B733 45%,#E07B1A 100%)}
+#sun{left:290px;top:250px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#fff6c9 0%,#ffe066 55%,rgba(255,224,102,0) 72%)}
+#rays{left:40px;top:0;width:1000px;height:1000px;opacity:.35}
+#s0-logo{left:300px;top:270px;width:480px;filter:drop-shadow(0 16px 30px rgba(90,30,0,.35))}
+#s0-h{top:800px;font-size:220px;color:var(--purple);text-shadow:0 10px 0 #fff4dc}
+#s0-h .w{color:#fff;text-shadow:0 10px 0 var(--purple)}
+#s0-o{top:1250px}
+#s0-o .pill{background:var(--green);font-size:56px;box-shadow:0 10px 0 #076b20}
+#s0-n{top:1380px;font:900 56px Inter;color:var(--deep)}
+/* S1 what's there */
+#s1{background:var(--cream)}
+#s1-h{top:300px;font-size:150px;color:var(--purple)}
+.tile{position:absolute;width:440px;height:330px;border-radius:40px;background:#fff;box-shadow:0 18px 40px rgba(80,30,10,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border:5px solid #fff}
+.tile svg{width:190px;height:190px}
+.tile b{font:900 42px Inter;text-align:center;color:var(--deep)}
+#t1{left:80px;top:520px}#t2{left:560px;top:520px}
+#t3{left:80px;top:890px}#t4{left:560px;top:890px}
+#t5{left:80px;top:1260px}#t6{left:560px;top:1260px}
+/* S2 EBT */
+#s2{background:radial-gradient(110% 70% at 50% 30%,#18b83f 0%,var(--green) 45%,#05581a 100%)}
+#s2-h{top:330px;font-size:170px;text-shadow:0 10px 0 #05581a}
+.ck{left:150px;right:150px;height:150px;border-radius:30px;background:rgba(255,255,255,.14);border:4px solid rgba(255,255,255,.35);display:flex;align-items:center;gap:34px;padding:0 40px;font:900 64px Inter}
+.ck i{width:92px;height:92px;border-radius:50%;background:var(--gold);color:var(--green);display:flex;align-items:center;justify-content:center;font:900 64px Inter;font-style:normal}
+#c1{top:600px;font-size:54px;white-space:nowrap}
+#s2-n{top:1360px;font:800 46px Inter;line-height:1.3;color:#e6ffe9}
+#mm{left:90px;right:90px;top:810px;border-radius:36px;background:var(--gold);color:var(--deep);padding:34px 40px;text-align:center}
+#mm .a{font:900 40px Inter;letter-spacing:.12em;color:var(--purple)}
+#mm .b{font-family:Anton;font-size:130px;line-height:1;text-transform:uppercase;margin-top:10px}
+#mm .d{font:900 64px Inter;margin-top:12px}
+/* S3 where */
+#s3{background:radial-gradient(100% 70% at 50% 35%,#8a1aa0 0%,var(--purple) 50%,#2c0636 100%)}
+#map{left:0;top:160px;width:1080px;height:900px}
+#pin{left:440px;top:370px;width:200px;height:260px}
+#s3-a{top:1020px;font-size:140px;color:#fff}
+#s3-v{top:1300px;font:900 56px Inter;color:var(--gold);letter-spacing:.04em}
+#s3-t{top:1400px}
+#s3-t .pill{background:var(--green)}
+/* S4 end */
+#s4{background:radial-gradient(100% 70% at 50% 30%,#8a1aa0 0%,var(--purple) 45%,#2c0636 100%)}
+#s4-logo{top:300px;left:290px;width:500px;filter:drop-shadow(0 18px 40px rgba(0,0,0,.5))}
+#s4-h{top:840px;font-size:170px}
+#s4-h span{color:var(--gold)}
+#s4-u{top:1200px}
+#s4-u .pill{background:var(--gold);color:var(--deep);font-size:52px;padding:22px 44px}
+#s4-f{top:1340px;font:800 44px Inter;color:#f1dff5}
+/* captions */
+#cap{left:90px;right:90px;top:1600px;text-align:center;z-index:30}
+#cap span{display:inline-block;background:rgba(0,0,0,.62);border-radius:18px;padding:12px 26px;font:800 42px Inter;line-height:1.25}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+ <symbol id="tomato" viewBox="0 0 100 100"><circle cx="50" cy="57" r="38" fill="#E8432E"/><ellipse cx="36" cy="44" rx="10" ry="6" fill="#ff8a78" opacity=".7"/><path d="M50 22l7 10 12-3-7 10 9 8-12 0-9 9-3-11-12 2 8-9-6-10 11 3z" fill="#1f8f3a"/></symbol>
+ <symbol id="carrot" viewBox="0 0 100 100"><path d="M30 38 Q50 30 70 38 L52 96 Q50 99 48 96Z" fill="#F28A1E"/><path d="M40 52h10M44 66h8M47 80h5" stroke="#c96a0c" stroke-width="3" stroke-linecap="round"/><path d="M50 36 Q40 14 30 10 M50 36 Q50 10 52 4 M50 36 Q62 14 74 10" stroke="#1f8f3a" stroke-width="8" fill="none" stroke-linecap="round"/></symbol>
+ <symbol id="honey" viewBox="0 0 100 100"><rect x="30" y="14" width="40" height="12" rx="4" fill="#8a4b14"/><path d="M24 30h52q6 0 6 8v44q0 12-12 12H30q-12 0-12-12V38q0-8 6-8z" fill="#F4A81D"/><rect x="28" y="46" width="44" height="26" rx="6" fill="#fff4dc"/><path d="M42 54l8-4 8 4v8l-8 4-8-4z" fill="#F4A81D"/><path d="M24 30q10 10 22 2 10 12 30-2" fill="#d9860c"/></symbol>
+ <symbol id="flower" viewBox="0 0 100 100"><path d="M50 60 V98" stroke="#1f8f3a" stroke-width="6"/><path d="M50 84 Q32 76 30 66 Q44 66 50 80" fill="#1f8f3a"/><g fill="#EFC618"><ellipse cx="50" cy="20" rx="10" ry="18"/><ellipse cx="50" cy="20" rx="10" ry="18" transform="rotate(45 50 40)"/><ellipse cx="50" cy="20" rx="10" ry="18" transform="rotate(90 50 40)"/><ellipse cx="50" cy="20" rx="10" ry="18" transform="rotate(135 50 40)"/><ellipse cx="50" cy="20" rx="10" ry="18" transform="rotate(180 50 40)"/><ellipse cx="50" cy="20" rx="10" ry="18" transform="rotate(225 50 40)"/><ellipse cx="50" cy="20" rx="10" ry="18" transform="rotate(270 50 40)"/><ellipse cx="50" cy="20" rx="10" ry="18" transform="rotate(315 50 40)"/></g><circle cx="50" cy="40" r="13" fill="#6b3a12"/></symbol>
+ <symbol id="bread" viewBox="0 0 100 100"><path d="M10 62 Q10 30 50 28 Q90 30 90 62 Q90 76 76 76 H24 Q10 76 10 62z" fill="#D9963F"/><path d="M14 62 Q16 36 50 34 Q84 36 86 62" fill="#E9AE5A"/><path d="M32 42l-6 16M50 38l-4 18M68 42l-4 16" stroke="#fff1d2" stroke-width="5" stroke-linecap="round"/></symbol>
+ <symbol id="juice" viewBox="0 0 100 100"><path d="M60 6 L52 30" stroke="#650C75" stroke-width="5" stroke-linecap="round"/><path d="M28 28h44l-6 64q-1 4-5 4H39q-4 0-5-4z" fill="#ffffff" opacity=".9"/><path d="M31 46h38l-4 46q-1 4-5 4H40q-4 0-5-4z" fill="#F28A1E"/><circle cx="72" cy="30" r="14" fill="#EFC618"/><circle cx="72" cy="30" r="9" fill="#fff6b0"/></symbol>
+ <symbol id="basket" viewBox="0 0 100 100"><path d="M24 44 Q50 0 76 44" stroke="#8a4b14" stroke-width="7" fill="none"/><path d="M10 44h80l-10 46H20z" fill="#C27A35"/><path d="M14 58h72M18 74h64M34 44l-4 46M50 44v46M66 44l4 46" stroke="#8a4b14" stroke-width="4"/><circle cx="32" cy="38" r="10" fill="#E8432E"/><circle cx="50" cy="34" r="11" fill="#0B992F"/><circle cx="68" cy="38" r="10" fill="#EFC618"/></symbol>
+ <symbol id="berry" viewBox="0 0 100 100"><path d="M50 30 Q86 30 80 56 Q72 86 50 96 Q28 86 20 56 Q14 30 50 30z" fill="#E8263E"/><g fill="#ffe08a"><circle cx="38" cy="48" r="2.5"/><circle cx="54" cy="46" r="2.5"/><circle cx="66" cy="54" r="2.5"/><circle cx="44" cy="62" r="2.5"/><circle cx="58" cy="68" r="2.5"/><circle cx="48" cy="80" r="2.5"/><circle cx="32" cy="62" r="2.5"/></g><path d="M50 32l-14-14 10 2 4-12 4 12 10-2z" fill="#1f8f3a"/></symbol>
+<symbol id="lav" viewBox="0 0 100 100"><g stroke="#1f8f3a" stroke-width="4" fill="none"><path d="M50 98 V40"/><path d="M50 98 Q40 60 30 30"/><path d="M50 98 Q60 60 70 30"/></g><g fill="#9b6bd1"><ellipse cx="50" cy="36" rx="6" ry="8"/><ellipse cx="50" cy="22" rx="5" ry="7"/><ellipse cx="50" cy="10" rx="4" ry="6"/><ellipse cx="30" cy="28" rx="6" ry="8"/><ellipse cx="27" cy="15" rx="5" ry="7"/><ellipse cx="70" cy="28" rx="6" ry="8"/><ellipse cx="73" cy="15" rx="5" ry="7"/></g><path d="M36 76 Q50 66 64 76 L60 84 Q50 78 40 84z" fill="#650C75"/></symbol>
+</defs></svg>
+
+<div id="brand" class="abs"><img src="a/lompoc-locals-mark-white.svg">LOMPOC LOCALS</div>
+
+<!-- S0 cover -->
+<div id="s0" class="abs scene">
+ <svg id="rays" class="abs" viewBox="0 0 1000 1000"><g id="raysg" transform="rotate(0 500 500)" fill="#fff">
+  <path d="M500 500 L470 -200 L530 -200z"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(30 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(60 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(90 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(120 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(150 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(180 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(210 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(240 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(270 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(300 500 500)"/><path d="M500 500 L470 -200 L530 -200z" transform="rotate(330 500 500)"/></g></svg>
+ <div id="sun" class="abs"></div>
+ <svg class="ic fall" style="left:50px;top:600px;width:190px;height:190px"><use href="#tomato"/></svg>
+ <svg class="ic fall" style="left:840px;top:620px;width:190px;height:190px"><use href="#flower"/></svg>
+ <svg class="ic fall" style="left:40px;top:1470px;width:210px;height:210px"><use href="#carrot"/></svg>
+ <svg class="ic fall" style="left:840px;top:1460px;width:200px;height:200px"><use href="#honey"/></svg>
+ <svg class="ic fall" style="left:430px;top:1480px;width:220px;height:220px"><use href="#basket"/></svg>
+ <svg class="ic fall" style="left:290px;top:1700px;width:150px;height:150px"><use href="#berry"/></svg>
+ <svg class="ic fall" style="left:640px;top:1700px;width:170px;height:170px"><use href="#bread"/></svg>
+ <img id="s0-logo" class="abs" src="a/rt1-logo.png">
+ <div id="s0-h" class="abs c anton">Sunday<br><span class="w">Market</span></div>
+ <div id="s0-o" class="abs c"><span class="pill">OPEN NOW · TILL 2 PM</span></div>
+ <div id="s0-n" class="abs c">Vandenberg Village</div>
+</div>
+
+<!-- S1 what's there -->
+<div id="s1" class="abs scene">
+ <div id="s1-h" class="abs c anton">What's there</div>
+ <div id="t1" class="tile"><svg><use href="#tomato"/></svg><b>Seasonal produce</b></div>
+ <div id="t2" class="tile"><svg><use href="#honey"/></svg><b>Honey</b></div>
+ <div id="t3" class="tile"><svg><use href="#flower"/></svg><b>Fresh-cut flowers</b></div>
+ <div id="t4" class="tile"><svg><use href="#bread"/></svg><b>Pastries</b></div>
+ <div id="t5" class="tile"><svg><use href="#juice"/></svg><b>Hand-pressed juices</b></div>
+ <div id="t6" class="tile"><svg><use href="#lav"/></svg><b>Lavender &amp; crafts</b></div>
+</div>
+
+<!-- S2 EBT -->
+<div id="s2" class="abs scene">
+ <div id="s2-h" class="abs c anton">Pay with EBT</div>
+ <div id="c1" class="abs ck"><i>✓</i>CalFresh EBT welcome</div>
+ <div id="mm" class="abs"><div class="a">MARKET MATCH</div><div class="b">Doubles your EBT</div><div class="d">up to $15</div></div>
+ <div id="s2-n" class="abs c">The only EBT farmers market<br>in a 67-mile stretch</div>
+</div>
+
+<!-- S3 where -->
+<div id="s3" class="abs scene">
+ <svg id="map" class="abs" viewBox="0 0 1080 900">
+  <g stroke="rgba(255,255,255,.16)" stroke-width="26" fill="none" stroke-linecap="round">
+   <path d="M-40 640 Q300 600 540 600 T1120 560"/><path d="M540 -40 V940"/><path d="M180 -40 Q240 400 160 940"/><path d="M880 -40 Q840 380 930 940"/>
+  </g>
+  <g stroke="rgba(255,255,255,.08)" stroke-width="12" fill="none"><path d="M-40 300 H1120"/><path d="M-40 820 H1120"/><path d="M360 -40 V940"/><path d="M720 -40 V940"/></g>
+  <circle id="ring" cx="540" cy="600" r="60" fill="none" stroke="#EFC618" stroke-width="8"/>
+  <text x="560" y="680" fill="rgba(255,255,255,.55)" font-family="Inter" font-weight="800" font-size="30" letter-spacing="3">CONSTELLATION RD</text>
+ </svg>
+ <svg id="pin" class="abs" viewBox="0 0 100 130"><path d="M50 4 C24 4 8 24 8 46 C8 78 50 124 50 124 C50 124 92 78 92 46 C92 24 76 4 50 4z" fill="#EFC618" stroke="#fff" stroke-width="5"/><circle cx="50" cy="46" r="20" fill="#650C75"/></svg>
+ <div id="s3-a" class="abs c anton">3745<br>Constellation Rd</div>
+ <div id="s3-v" class="abs c">VANDENBERG VILLAGE</div>
+ <div id="s3-t" class="abs c"><span class="pill">TODAY · 10 AM – 2 PM</span></div>
+</div>
+
+<!-- S4 end -->
+<div id="s4" class="abs scene">
+ <img id="s4-logo" class="abs" src="a/rt1-logo.png">
+ <div id="s4-h" class="abs c anton">See you<br><span>there!</span></div>
+ <div id="s4-u" class="abs c"><span class="pill">lompoclocals.com/events</span></div>
+ <div id="s4-f" class="abs c">Every Sunday 10–2 · @route1farmersmarket</div>
+</div>
+
+<div id="cap" class="abs"><span id="capt"></span></div>
+
+<script>
+window.TIMES={s1:7.1,s2:13.0,s3:17.8,s4:20.65,end:23.0};
+window.CAPS=[[0.05,1.9,"It's Sunday market day, Lompoc!"],[2.2,4.6,"Route One Farmers Market is open right now"],[4.6,6.9,"in Vandenberg Village, until 2."],[7.25,9.85,"Seasonal produce, hand-pressed juices,"],[9.95,12.8,"pastries, honey and fresh-cut flowers."],[13.2,14.4,"Paying with EBT?"],[14.6,17.5,"Market Match doubles it, up to $15."],[17.95,20.55,"3745 Constellation Road."],[20.85,22.2,"See you there!"]];
+</script>
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const T=window.TIMES||{s1:2.6,s2:6.3,s3:10.0,s4:13.4,end:16.0};
+const CAPS=window.CAPS||[];
+const tl=gsap.timeline({paused:true});
+gsap.set(['#s1','#s2','#s3','#s4'],{autoAlpha:0});
+// S0 cover fully built at t=0
+tl.to('#raysg',{rotation:40,svgOrigin:'500 500',duration:T.s1,ease:'none'},0);
+tl.to('.fall',{y:-30,rotation:i=>(i%2?10:-10),duration:1.2,yoyo:true,repeat:1,ease:'sine.inOut',stagger:.08},0);
+tl.to('#s0-h',{scale:1.05,duration:T.s1,ease:'none'},0);
+tl.to('#s0',{yPercent:-100,duration:.35,ease:'power2.in'},T.s1-.3);
+// S1 tiles
+tl.set('#s1',{autoAlpha:1},T.s1-.3);
+tl.from('#s1',{yPercent:100,duration:.35,ease:'power2.out'},T.s1-.3);
+tl.from('#s1-h',{y:-60,autoAlpha:0,duration:.3},T.s1);
+[['#t1',7.3],['#t5',8.25],['#t4',9.15],['#t2',10.0],['#t3',10.85],['#t6',11.8]].forEach(([id,at],i)=>tl.from(id,{scale:.2,autoAlpha:0,rotation:i%2?8:-8,duration:.4,ease:'back.out(2)'},at-.1));
+tl.to('#s1',{autoAlpha:0,scale:1.06,duration:.25},T.s2-.25);
+// S2 EBT
+tl.set('#s2',{autoAlpha:1},T.s2);
+tl.from('#s2-h',{scale:2,autoAlpha:0,duration:.35,ease:'power3.out'},T.s2);
+tl.from('#c1',{x:-1100,duration:.35,ease:'power3.out'},T.s2+.3);
+tl.from('.ck i',{scale:0,duration:.3,ease:'back.out(3)'},T.s2+.55);
+tl.from('#mm',{y:300,autoAlpha:0,duration:.45,ease:'back.out(1.6)'},T.s2+1.5);
+tl.from('#s2-n',{y:60,autoAlpha:0,duration:.35},T.s2+3.0);
+tl.to('#s2',{xPercent:-100,duration:.3,ease:'power2.in'},T.s3-.3);
+// S3 where
+tl.set('#s3',{autoAlpha:1},T.s3-.3);
+tl.from('#s3',{xPercent:100,duration:.3,ease:'power2.out'},T.s3-.3);
+tl.from('#map',{scale:1.6,duration:1.2,ease:'power2.out'},T.s3-.3);
+tl.from('#pin',{y:-500,duration:.5,ease:'bounce.out'},T.s3+.1);
+tl.fromTo('#ring',{attr:{r:20},opacity:1},{attr:{r:200},opacity:0,duration:1,repeat:2,ease:'power1.out'},T.s3+.5);
+tl.from('#s3-a',{y:80,autoAlpha:0,duration:.35,ease:'power3.out'},T.s3+.4);
+tl.from('#s3-v',{y:40,autoAlpha:0,duration:.3},T.s3+.7);
+tl.from('#s3-t',{scale:.5,autoAlpha:0,duration:.35,ease:'back.out(2)'},T.s3+1.3);
+tl.to('#s3',{autoAlpha:0,duration:.2},T.s4-.2);
+// S4 end
+tl.set('#s4',{autoAlpha:1},T.s4);
+tl.from('#s4-logo',{scale:.3,autoAlpha:0,duration:.45,ease:'back.out(2)'},T.s4);
+tl.from('#s4-h',{y:80,autoAlpha:0,duration:.4,ease:'power3.out'},T.s4+.2);
+tl.from('#s4-u',{scale:.6,autoAlpha:0,duration:.4,ease:'back.out(2)'},T.s4+.7);
+tl.from('#s4-f',{y:40,autoAlpha:0,duration:.35},T.s4+1.1);
+tl.to({},{duration:.01},T.end);
+window.seek=t=>{
+  tl.seek(t,false);
+  const c=CAPS.find(c=>t>=c[0]&&t<c[1]);const ce=document.getElementById('capt');
+  ce.textContent=c?c[2]:'';ce.parentElement.style.display=(c&&t>0)?'block':'none';
+  const br=document.getElementById('brand');br.style.opacity=1;br.style.color=(t>=T.s1-.1&&t<T.s2)?'#650C75':'#fff';br.querySelector('img').style.filter=(t>=T.s1-.1&&t<T.s2)?'brightness(0) saturate(100%) invert(12%) sepia(60%) saturate(4000%) hue-rotate(280deg)':'none';
+};
+window.READY=document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.complete?1:new Promise(r=>i.onload=i.onerror=r)))).then(()=>seek(0));
+</script>
+</body></html>
