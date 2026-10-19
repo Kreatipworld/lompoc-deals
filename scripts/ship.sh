@@ -121,7 +121,7 @@ if [[ -f "$VERIFIED_MARK" && "$RECHECK" != "1" && "$MODE" == "promote" ]]; then
 fi
 
 if [[ -z "$DEPLOY_URL" ]]; then
-  WT="$(mktemp -d /tmp/ship-${SHORT}-XXXX)"
+  WT="$(mktemp -d "${SHIP_TMPDIR:-/tmp}/ship-${SHORT}-XXXX")"  # SHIP_TMPDIR: the Linux box has a small /tmp tmpfs
   cleanup() { rm -f "$WT/node_modules" 2>/dev/null; git -C "$ROOT" worktree remove --force "$WT" >/dev/null 2>&1 || rm -rf "$WT"; }
   trap cleanup EXIT
   bold "▶ Building ${SHORT} on Vercel (production target, domain NOT attached)..."
