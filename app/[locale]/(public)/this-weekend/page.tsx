@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const t = await getTranslations({ locale: params.locale, namespace: "thisWeekend" })
   const dates = weekendLabel(new Date(), loc(params.locale))
   return {
-    title: { absolute: t("metaTitle", { dates }) },
+    title: t("metaTitle", { dates }),
     description: t("metaDescription", { dates }),
     alternates: pageAlternates("/this-weekend", params.locale),
   }

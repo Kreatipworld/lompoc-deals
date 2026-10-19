@@ -22,7 +22,7 @@ export async function generateMetadata({
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: "hotels" })
   return {
-    title: { absolute: t("metaTitle") },
+    title: t("metaTitle"),
     description: t("metaDescription", { count: HOTELS.length }),
     alternates: pageAlternates("/hotels", locale),
   }
