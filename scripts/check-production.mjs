@@ -120,7 +120,7 @@ const PAGES = [
   { p: "/en", marker: "All of Lompoc" },
   { p: "/es", marker: "Todo Lompoc" },
   { p: "/en/businesses", marker: "Lompoc Business Directory" },
-  { p: "/category/food-drink", marker: "Lompoc Food &amp; Drink" },
+  { p: "/category/food-drink", marker: "Restaurants in Lompoc, CA" },
   { p: "/es/category/food-drink", marker: "Comida y bebida en Lompoc" },
   { p: "/en/events", marker: "Events in Lompoc" },
   { p: "/this-week", marker: "This Week in Lompoc" },
