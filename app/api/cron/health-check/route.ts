@@ -6,6 +6,7 @@ import {
   decideAction,
   evaluatePage,
   formatDowntime,
+  splitBySeverity,
   HEALTH_PAGES,
   type CheckFailure,
   type HealthState,
@@ -48,7 +49,8 @@ async function checkPage(page: { path: string; marker: string }): Promise<CheckF
     return evaluatePage(page, res.status, html)
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    return { target: page.path, error: msg.slice(0, 300), quota: false }
+    // Fetch itself threw (timeout, DNS, connection refused) — the page is unreachable: a real outage.
+    return { target: page.path, error: msg.slice(0, 300), quota: false, severity: "outage" }
   }
 }
 
@@ -158,8 +160,8 @@ export async function GET(request: Request) {
       "[TEST] Lompoc Locals monitor — sample DOWN alert",
       alertHtml(
         [
-          { target: "database", error: "HTTP 402: exceeded the compute time quota (sample)", quota: true },
-          { target: "/category/food-drink", error: "HTTP 500 (sample)", quota: false, excerpt: "Something went wrong. We've been notified. Please try again or head back home." },
+          { target: "database", error: "HTTP 402: exceeded the compute time quota (sample)", quota: true, severity: "outage" },
+          { target: "/category/food-drink", error: "HTTP 500 (sample)", quota: false, excerpt: "Something went wrong. We've been notified. Please try again or head back home.", severity: "outage" },
         ],
         new Date().toISOString(),
         true
@@ -180,15 +182,20 @@ export async function GET(request: Request) {
   const results = await Promise.all(pagesThisRun.map((p) => checkPage(p)))
   const failures = results.filter((f): f is CheckFailure => f !== null)
 
+  // Only a real outage pages the founder. "Drift" (the page served fine but a
+  // copy/SEO string moved) is logged and never emailed — a word change on the
+  // site can no longer set off a false "site is DOWN" alarm (Oct 19 2026).
+  const { outages, drifts } = splitBySeverity(failures)
+
   const prev = await readState()
-  const action = decideAction(prev, failures, new Date())
+  const action = decideAction(prev, outages, new Date())
 
   let emailId: string | null = null
   try {
     if (action.kind === "alert" || action.kind === "realert") {
       emailId = await sendAlertEmail(
-        `\u{1F534} lompoclocals.com DOWN — ${failures[0].target}: ${failures[0].error.slice(0, 80)}`,
-        alertHtml(failures, action.state.since)
+        `\u{1F534} lompoclocals.com DOWN — ${outages[0].target}: ${outages[0].error.slice(0, 80)}`,
+        alertHtml(outages, action.state.since)
       )
     } else if (action.kind === "recovery") {
       emailId = await sendAlertEmail(
@@ -204,11 +211,20 @@ export async function GET(request: Request) {
     }
   }
 
-  const summary = { ok: failures.length === 0, action: action.kind, checked: pagesThisRun.length + 1, rotation: pagesThisRun.map((p) => p.path), failures, emailId }
+  const summary = {
+    ok: outages.length === 0,
+    action: action.kind,
+    checked: pagesThisRun.length + 1,
+    rotation: pagesThisRun.map((p) => p.path),
+    failures: outages,
+    // Content/SEO drift: page is up, a marker moved. Surfaced for a quiet fix, never emailed.
+    warnings: drifts,
+    emailId,
+  }
   // Runs every 15 minutes; a healthy row per run would still be ~3k rows/month of nothing.
-  // Log every failure, alert and recovery, and one healthy heartbeat per 10 min.
+  // Log every outage, alert, recovery and drift warning, and one healthy heartbeat per 10 min.
   const heartbeat = new Date().getMinutes() % 10 === 0
-  if (!summary.ok || action.kind !== "none" || heartbeat) {
+  if (!summary.ok || drifts.length > 0 || action.kind !== "none" || heartbeat) {
     await logCronRun("health-check", summary, summary.ok)
   }
   return NextResponse.json(summary)

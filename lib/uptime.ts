@@ -4,6 +4,8 @@
  * this module decides *what* to do so the behavior is unit-testable.
  */
 
+import { CATEGORY_GUIDES } from "./category-guides"
+
 export type HealthStatus = "up" | "down"
 
 export type HealthState = {
@@ -16,6 +18,17 @@ export type HealthState = {
   reason?: string
 }
 
+/**
+ * Severity splits a real outage from harmless content drift:
+ *  - "outage": the page did not serve — non-200, the error boundary is showing,
+ *    the server threw, or the HTML never finished. These page the founder.
+ *  - "drift":  the page served fine (200, no error boundary, no thrown error,
+ *    complete HTML) but an expected marker string is gone — almost always a
+ *    copy/SEO edit, not an outage. These are logged, never emailed, so a word
+ *    change on the site can NEVER again set off a false "site is DOWN" alarm.
+ */
+export type FailureSeverity = "outage" | "drift"
+
 export type CheckFailure = {
   target: string // "database" | "/" | "/category/food-drink"
   error: string
@@ -23,22 +36,37 @@ export type CheckFailure = {
   quota: boolean
   /** First ~300 visible characters of the failing page, so the email says what a neighbor saw */
   excerpt?: string
+  /** outage = real down (emails); drift = content changed but page is alive (logged only) */
+  severity: FailureSeverity
 }
 
 /**
- * The pages a neighbor actually opens, each with a marker that only renders
- * when the page's own server component succeeded. Status alone lies twice:
- * the error boundary can answer 200, and "Something went wrong" is in every
- * English payload as a dormant translation string — so we assert the positive
- * marker and the boundary's DOM attribute, never the text.
+ * The pages a neighbor actually opens, each with a marker that renders only
+ * when the page's own server component succeeded. We never trust status alone:
+ * the error boundary answers 200, and "Something went wrong" is a dormant
+ * translation string in every English payload.
+ *
+ * The marker is now only a *drift* signal (see FailureSeverity): if it is gone
+ * but the page is otherwise healthy, we log it and move on — we do not cry
+ * "down". Real outages are caught by status / error-boundary / thrown-digest /
+ * incomplete-HTML, none of which depend on page copy. So keeping a marker
+ * up to date is nice (it makes the drift log meaningful) but a stale marker
+ * can no longer wake anyone at 2am. Where a marker IS the page's real heading,
+ * we read it from the same source the page renders from (CATEGORY_GUIDES), so
+ * the two can never disagree again.
  *
  * Sep 14 2026: commit c5a36aa 500'd every /category/* page for ~6 minutes and
  * the old check (/ and /deals only) never noticed. This list is the fix.
+ * Oct 19 2026: an SEO heading change ("Lompoc Food & Drink" → "Restaurants in
+ * Lompoc, CA") made the monitor email false DOWN alerts for 24h — the marker
+ * was a brittle copy string. Hence the severity split and the shared source.
  */
+const FOOD_DRINK_H1 = CATEGORY_GUIDES["food-drink"]?.h1.en ?? "Food & Drink"
+
 export const HEALTH_PAGES: ReadonlyArray<{ path: string; marker: string }> = [
   { path: "/", marker: "All of Lompoc" },
   { path: "/businesses", marker: "Find any business in Lompoc" },
-  { path: "/category/food-drink", marker: "Restaurants in Lompoc, CA" },
+  { path: "/category/food-drink", marker: FOOD_DRINK_H1 },
   { path: "/homes", marker: "Homes in Lompoc" },
   { path: "/listings/50", marker: 'data-lead="showing"' },
   { path: "/football", marker: "Lompoc Football" },
@@ -84,25 +112,53 @@ export function visibleExcerpt(html: string, n = 300): string {
 
 /**
  * Judge one fetched page. Pure, so it can be tested with canned HTML and
- * shared between the cron and the pre-promotion check.
+ * shared between the cron and the pre-promotion check. Returns null when the
+ * page is healthy, or a CheckFailure whose `severity` says whether it is a real
+ * outage (emails) or harmless content drift (logged only).
+ *
+ * Order matters: every hard outage signal is checked before the soft marker,
+ * so a broken page is always an outage even if its marker happens to be absent.
  */
 export function evaluatePage(
   page: { path: string; marker: string },
   status: number,
   html: string
 ): CheckFailure | null {
+  // ── Hard outage signals: the page did not actually serve ──────────────
   if (status !== 200) {
-    return { target: page.path, error: `HTTP ${status}`, quota: false, excerpt: visibleExcerpt(html) }
+    return { target: page.path, error: `HTTP ${status}`, quota: false, excerpt: visibleExcerpt(html), severity: "outage" }
   }
   if (html.includes(ERROR_BOUNDARY_MARKER)) {
-    return { target: page.path, error: "200 but the error boundary is showing (\"Something went wrong\")", quota: false, excerpt: visibleExcerpt(html) }
+    return { target: page.path, error: '200 but the error boundary is showing ("Something went wrong")', quota: false, excerpt: visibleExcerpt(html), severity: "outage" }
   }
+  const digests = findErrorDigests(html)
+  if (digests.length) {
+    return { target: page.path, error: `200 but the server threw an error (digest ${digests.join(", ")})`, quota: false, excerpt: visibleExcerpt(html), severity: "outage" }
+  }
+  if (!html.includes("</html>")) {
+    return { target: page.path, error: `200 but the HTML never finished (${html.length} bytes, no closing </html>) — render crashed mid-stream`, quota: false, excerpt: visibleExcerpt(html), severity: "outage" }
+  }
+
+  // ── Page served fine. Is its content what we expect? ──────────────────
   if (!html.includes(page.marker)) {
-    const digests = findErrorDigests(html)
-    const why = digests.length ? `server error digest ${digests.join(", ")}` : "page content missing"
-    return { target: page.path, error: `200 but missing "${page.marker}" — ${why}`, quota: false, excerpt: visibleExcerpt(html) }
+    // The page is alive; only a copy/SEO string moved. Never an outage.
+    return {
+      target: page.path,
+      error: `200, page healthy, but marker "${page.marker}" not found — content/SEO drift; update the marker in lib/uptime.ts`,
+      quota: false,
+      excerpt: visibleExcerpt(html),
+      severity: "drift",
+    }
   }
   return null
+}
+
+/** Split a batch of failures into the ones that page the founder vs the ones that only get logged. */
+export function splitBySeverity(failures: CheckFailure[]): { outages: CheckFailure[]; drifts: CheckFailure[] } {
+  return {
+    outages: failures.filter((f) => f.severity === "outage"),
+    drifts: failures.filter((f) => f.severity === "drift"),
+  }
 }
 
 export type HealthAction =
@@ -114,12 +170,17 @@ export type HealthAction =
 /** Re-alert at most once per hour while an outage persists. */
 export const REALERT_MS = 60 * 60 * 1000
 
+/**
+ * Decide what to do given the previous state and the current OUTAGE failures.
+ * Callers must pass only outage-severity failures (see splitBySeverity): drift
+ * never changes up/down status and never emails.
+ */
 export function decideAction(
   prev: HealthState | null,
-  failures: CheckFailure[],
+  outages: CheckFailure[],
   now: Date
 ): HealthAction {
-  const ok = failures.length === 0
+  const ok = outages.length === 0
   const nowIso = now.toISOString()
   const wasDown = prev?.status === "down"
 
@@ -137,7 +198,7 @@ export function decideAction(
     }
   }
 
-  const reason = failures.map((f) => `${f.target}: ${f.error}`).join("; ")
+  const reason = outages.map((f) => `${f.target}: ${f.error}`).join("; ")
 
   if (!wasDown) {
     return {

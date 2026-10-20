@@ -1,8 +1,8 @@
 import assert from "node:assert/strict"
-import { decideAction, evaluatePage, findErrorDigests, visibleExcerpt, formatDowntime, isQuotaError, HEALTH_PAGES, ERROR_BOUNDARY_MARKER, REALERT_MS, type HealthState } from "./uptime"
+import { decideAction, evaluatePage, splitBySeverity, findErrorDigests, visibleExcerpt, formatDowntime, isQuotaError, HEALTH_PAGES, ERROR_BOUNDARY_MARKER, REALERT_MS, type CheckFailure, type HealthState } from "./uptime"
 
 const T0 = new Date("2026-08-23T12:00:00Z")
-const fail = [{ target: "database", error: "HTTP 402 quota", quota: true }]
+const fail: CheckFailure[] = [{ target: "database", error: "HTTP 402 quota", quota: true, severity: "outage" }]
 
 // healthy + no prior state → none
 assert.equal(decideAction(null, [], T0).kind, "none")
@@ -83,6 +83,37 @@ console.log("uptime.test.ts: all assertions passed")
 
   // every configured page has a path and a marker
   for (const p of HEALTH_PAGES) assert.ok(p.path.startsWith("/") && p.marker.length > 3, p.path)
+
+  // the food-drink marker now follows the live SEO heading (shared source of truth)
+  const foodPage = HEALTH_PAGES.find((p) => p.path === "/category/food-drink")!
+  assert.equal(foodPage.marker, "Restaurants in Lompoc, CA")
+
+  // ── severity split (Oct 19 2026): a copy change must NEVER read as an outage ──
+  // Page served fine, complete HTML, but the old marker string is gone → DRIFT, not down.
+  const driftHtml = `<html><body><main><h1>Restaurants in Lompoc, CA</h1><p>plenty of real content here</p></main></body></html>`
+  const drift = evaluatePage({ path: "/category/food-drink", marker: "Lompoc Food &amp; Drink" }, 200, driftHtml)
+  assert.equal(drift?.severity, "drift", "stale marker on a healthy page is drift")
+
+  // Same page with its current marker present → healthy, no failure at all.
+  assert.equal(evaluatePage(foodPage, 200, driftHtml), null)
+
+  // Hard outages stay outages regardless of marker.
+  assert.equal(evaluatePage(foodPage, 500, "<html><body>boom</body></html>")?.severity, "outage")
+  assert.equal(evaluatePage(foodPage, 200, `<div ${ERROR_BOUNDARY_MARKER}>oops</div>`)?.severity, "outage")
+  // 200 that never finished streaming (no closing </html>) is an outage, not drift.
+  assert.equal(evaluatePage(foodPage, 200, "<html><body><p>cut off mid")?.severity, "outage")
+
+  // splitBySeverity routes each kind correctly
+  const mixed: CheckFailure[] = [
+    { target: "/", error: "HTTP 500", quota: false, severity: "outage" },
+    { target: "/news", error: "marker moved", quota: false, severity: "drift" },
+  ]
+  const { outages, drifts } = splitBySeverity(mixed)
+  assert.equal(outages.length, 1)
+  assert.equal(drifts.length, 1)
+
+  // the decision engine only goes "down" on outages; a lone drift keeps it up
+  assert.equal(decideAction(null, splitBySeverity([mixed[1]]).outages, T0).kind, "none")
 }
 
 console.log("uptime.test.ts: page evaluation ok")
