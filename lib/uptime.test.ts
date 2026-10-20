@@ -55,10 +55,10 @@ console.log("uptime.test.ts: all assertions passed")
 
 // ── page evaluation (Sep 14 2026: /category/* 500'd and the old check missed it) ──
 {
-  const page = { path: "/category/food-drink", marker: "Lompoc Food &amp; Drink" }
+  const page = { path: "/category/food-drink", marker: "Restaurants in Lompoc, CA" }
 
   // healthy page: marker present, benign bailout digest ignored
-  const healthy = `<html><body><h1>Lompoc Food &amp; Drink</h1><template data-dgst="BAILOUT_TO_CLIENT_SIDE_RENDERING"></template><script>self.__next_f.push([1,"error\\":\\"Something went wrong"])</script></body></html>`
+  const healthy = `<html><body><h1>Restaurants in Lompoc, CA: Food, Hours &amp; Deals</h1><template data-dgst="BAILOUT_TO_CLIENT_SIDE_RENDERING"></template><script>self.__next_f.push([1,"error\\":\\"Something went wrong"])</script></body></html>`
   assert.equal(evaluatePage(page, 200, healthy), null)
   assert.deepEqual(findErrorDigests(healthy), [])
 

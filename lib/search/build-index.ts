@@ -51,6 +51,8 @@ export async function buildSearchIndex(): Promise<SearchIndex> {
         when ${businesses.planOverride} = 'free' then 0
         when ${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} = 'premium' then 2
         when ${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} = 'standard' then 1
+        when ${subscriptions.status} = 'past_due' and ${businesses.gracePeriodEndsAt} > now() and ${subscriptions.tier} = 'premium' then 2
+        when ${subscriptions.status} = 'past_due' and ${businesses.gracePeriodEndsAt} > now() and ${subscriptions.tier} = 'standard' then 1
         else 0 end), 0)::int`,
     })
     .from(businesses)

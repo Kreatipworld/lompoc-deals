@@ -38,7 +38,7 @@ export type CheckFailure = {
 export const HEALTH_PAGES: ReadonlyArray<{ path: string; marker: string }> = [
   { path: "/", marker: "All of Lompoc" },
   { path: "/businesses", marker: "Find any business in Lompoc" },
-  { path: "/category/food-drink", marker: "Lompoc Food &amp; Drink" },
+  { path: "/category/food-drink", marker: "Restaurants in Lompoc, CA" },
   { path: "/homes", marker: "Homes in Lompoc" },
   { path: "/listings/50", marker: 'data-lead="showing"' },
   { path: "/football", marker: "Lompoc Football" },

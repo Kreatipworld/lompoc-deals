@@ -21,7 +21,7 @@ export async function GET(req: Request) {
         slug: businesses.slug,
         member: sql<boolean>`bool_or(
           ${businesses.planOverride} in ('standard','premium')
-          or (${subscriptions.status} in ('active','trialing') and ${subscriptions.tier} in ('standard','premium'))
+          or ((${subscriptions.status} in ('active','trialing') or (${subscriptions.status} = 'past_due' and ${businesses.gracePeriodEndsAt} > now())) and ${subscriptions.tier} in ('standard','premium'))
         )`,
       })
       .from(businesses)

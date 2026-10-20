@@ -55,7 +55,8 @@ export async function GET(req: NextRequest) {
         // is an Official Partner and gets the prominent marker.
         isPartner: sql<boolean>`(
           ${businesses.planOverride} in ('standard','premium')
-          or (${subscriptions.status} in ('active','trialing')
+          or ((${subscriptions.status} in ('active','trialing')
+               or (${subscriptions.status} = 'past_due' and ${businesses.gracePeriodEndsAt} > now()))
               and ${subscriptions.tier} in ('standard','premium'))
         )`,
       })

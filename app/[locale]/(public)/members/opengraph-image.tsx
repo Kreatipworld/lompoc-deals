@@ -22,7 +22,8 @@ export default async function Image({ params }: { params: { locale: string } }) 
       left join subscriptions s on s.user_id = b.owner_user_id
       where b.status = 'approved'
         and (b.plan_override in ('standard','premium')
-             or (s.status in ('active','trialing') and s.tier in ('standard','premium')))`)
+             or ((s.status in ('active','trialing') or (s.status = 'past_due' and b.grace_period_ends_at > now()))
+                 and s.tier in ('standard','premium')))`)
     .catch(() => ({ rows: [] as Record<string, unknown>[] }))
   const row = r.rows[0] as { n?: number; photo?: string | null } | undefined
   const n = Number(row?.n ?? 0)
