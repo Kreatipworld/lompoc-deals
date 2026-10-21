@@ -130,10 +130,24 @@ export async function generateMetadata({
   // Real-estate agent pages keep their old copy — "hours" means nothing there.
   const facts = parts.map((p) => p.toLowerCase())
   const factsText = facts.length > 1 ? `${facts.slice(0, -1).join(", ")} ${t("metaAnd")} ${facts[facts.length - 1]}` : facts.join("")
-  const lead = !isRealEstate && factsText ? t("metaLead", { name, facts: factsText }) : null
-  const metaDescription = lead
-    ? seoDescription([lead, aboutSnippet ?? description].filter(Boolean).join(" "), fallbackDescription)
-    : seoDescription(aboutSnippet ?? description, fallbackDescription)
+  // Oct 20 2026 (GSC: /biz pages had ~11K impressions/28d at avg position ~9 but 0.6% CTR): the
+  // old lead ("Name in Lompoc, CA: hours and photos, plus address and phone, in English and
+  // Spanish.") burned ~95 of Google's ~155 chars on boilerplate shared by every listing, so the
+  // business's own words were cut off. Now: a live deal first (the one thing their own site and
+  // Google's panel don't show), then their first sentence, then a short facts tail.
+  const firstSentence = (about ?? description ?? "").replace(/\s+/g, " ").trim().match(/^.{20,}?[.!?](?=\s|$)/)?.[0]
+    ?? (about ?? description ?? "").replace(/\s+/g, " ").trim()
+  const liveDeal = seoInput.activeDealTitles[0]
+  const metaDescription = isRealEstate
+    ? seoDescription(aboutSnippet ?? description, fallbackDescription)
+    : seoDescription(
+        [
+          liveDeal ? t("metaDealLead", { deal: liveDeal.replace(/[.!?\s]+$/, "") }) : null,
+          firstSentence || null,
+          factsText ? t("metaFactsTail", { facts: factsText.charAt(0).toUpperCase() + factsText.slice(1) }) : null,
+        ].filter(Boolean).join(" "),
+        fallbackDescription,
+      )
   return {
     // A curated descriptor says what they sell ("Cupcakes & Custom Cakes in Lompoc") and wins;
     // without one, the title lists what our page has ("Name, Lompoc: Hours & Photos").
@@ -237,6 +251,7 @@ export default async function BusinessPage({
   const locale = (params.locale === "es" ? "es" : "en") as "en" | "es"
 
   const isUnclaimed = isUnclaimedBusiness(business.ownerEmail)
+  const isMember = business.effectiveTier !== "free"
   const reviewsUrl = googleReviewsUrl(business)
 
   // The cover the owner chose leads; the gallery follows it (deduped). Owners
@@ -552,8 +567,67 @@ export default async function BusinessPage({
               </div>
             </div>
 
+            {/* Members get big, thumb-sized actions (Oct 20 2026): visits only pay a member back when
+                they turn into a call, a trip or a deal claim — small chips buried those. */}
+            {isMember && (business.phone || business.address || business.website || deals.length > 0) && (
+              <div className="mt-6 grid grid-cols-2 gap-2 border-t pt-5 sm:flex sm:flex-wrap" data-member-actions>
+                {business.phone && (
+                  <OutboundLink
+                    action="phone_click"
+                    slug={business.slug}
+                    businessId={business.id}
+                    category={business.category?.name}
+                    href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`}
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary whitespace-nowrap px-3 text-sm font-semibold sm:px-5 text-primary-foreground shadow-sm transition-colors duration-150 hover:bg-primary/90"
+                  >
+                    <Phone className="h-4 w-4" />
+                    {t("actionCall")}
+                  </OutboundLink>
+                )}
+                {business.address && (
+                  <OutboundLink
+                    action="directions_click"
+                    slug={business.slug}
+                    businessId={business.id}
+                    category={business.category?.name}
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(business.address)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gold whitespace-nowrap px-3 text-sm font-semibold sm:px-5 text-gold-foreground shadow-sm transition-opacity duration-150 hover:opacity-90"
+                  >
+                    <Navigation className="h-4 w-4" />
+                    {t("actionDirections")}
+                  </OutboundLink>
+                )}
+                {deals.length > 0 && (
+                  <a
+                    href="#deals"
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border-2 border-primary whitespace-nowrap px-3 text-sm font-semibold sm:px-5 text-primary transition-colors duration-150 hover:bg-primary/5"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    {t("actionDeals", { count: deals.length })}
+                  </a>
+                )}
+                {business.website && (
+                  <OutboundLink
+                    action="website_click"
+                    slug={business.slug}
+                    businessId={business.id}
+                    category={business.category?.name}
+                    href={business.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border bg-card whitespace-nowrap px-3 text-sm font-semibold sm:px-5 text-foreground transition-colors duration-150 hover:border-foreground/30"
+                  >
+                    <Globe className="h-4 w-4 text-primary" />
+                    {t("actionWebsite")}
+                  </OutboundLink>
+                )}
+              </div>
+            )}
+
             {/* Contact chips inside the header card */}
-            <div className="mt-6 flex flex-wrap gap-2 border-t pt-5">
+            <div className={`flex flex-wrap gap-2 ${isMember ? "mt-3" : "mt-6 border-t pt-5"}`}>
               {/* Mobile vendors, home-based and PO-box businesses have no public
                   address. Say so plainly rather than leaving a gap that reads as
                   an incomplete listing — and point at where they can be found. */}
@@ -583,7 +657,7 @@ export default async function BusinessPage({
                   {business.address}
                 </OutboundLink>
               )}
-              {business.address && (
+              {business.address && !isMember && (
                 <OutboundLink
                   action="directions_click"
                   slug={business.slug}
@@ -600,7 +674,7 @@ export default async function BusinessPage({
                   {t("getDirections")}
                 </OutboundLink>
               )}
-              {business.phone && (
+              {business.phone && !isMember && (
                 <OutboundLink
                   action="phone_click"
                   slug={business.slug}
@@ -613,7 +687,7 @@ export default async function BusinessPage({
                   {business.phone}
                 </OutboundLink>
               )}
-              {business.website && (
+              {business.website && !isMember && (
                 <OutboundLink
                   action="website_click"
                   slug={business.slug}
@@ -653,7 +727,7 @@ export default async function BusinessPage({
       <section className="mx-auto max-w-6xl px-4 py-10">
         <div className={`grid grid-cols-1 gap-8 ${isRealEstate ? "" : "lg:grid-cols-[1fr_320px]"}`}>
           {/* MAIN — active deals OR listings depending on category */}
-          <div>
+          <div id="deals" className="scroll-mt-24">
             {(isRealEstate || deals.length > 0) && (
               <div className="mb-6 flex items-end justify-between">
                 <h2 className="font-display text-2xl font-semibold tracking-tight">
