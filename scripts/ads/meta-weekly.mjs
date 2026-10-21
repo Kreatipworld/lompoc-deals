@@ -85,7 +85,7 @@ const timeParams = datePreset
   ? { date_preset: datePreset }
   : (() => {
       const until = new Date(); const since = new Date(); since.setDate(since.getDate() - (DAYS - 1))
-      const iso = (d) => d.toISOString().slice(0, 10)
+      const iso = (d) => d.toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }) // ad account runs on Pacific time; UTC flips to tomorrow at 5 PM
       return { time_range: JSON.stringify({ since: iso(since), until: iso(until) }) }
     })()
 

@@ -50,7 +50,11 @@ function tierFromPriceId(priceId: string): TierKey | null {
   return null
 }
 
-const GRACE_PERIOD_DAYS = 7
+// Owner, Oct 21 2026: no daily card retries. Stripe retries a failed card every 5 days
+// (dashboard: Billing → Revenue recovery → Retries — day 5 and day 10, then cancel), so the
+// grace window runs 14 days from the FIRST failure and covers both retries. Retries never
+// push the deadline back and never send the member another email.
+const GRACE_PERIOD_DAYS = 14
 
 // Stripe requires raw body — disable Next.js body parsing
 export const dynamic = "force-dynamic"
@@ -291,32 +295,36 @@ export async function POST(request: Request) {
         where: eq(subscriptions.stripeCustomerId, customerId),
       })
       if (existing) {
-        const gracePeriodEndsAt = new Date(
-          Date.now() + GRACE_PERIOD_DAYS * 24 * 60 * 60 * 1000
-        )
         await db.update(subscriptions)
           .set({ status: "past_due", updatedAt: new Date() })
           .where(eq(subscriptions.stripeCustomerId, customerId))
-        // Set grace period on associated business
         const biz = await db.query.businesses.findFirst({
           where: (b, { eq: e }) => e(b.ownerUserId, existing.userId),
-          columns: { id: true },
+          columns: { id: true, gracePeriodEndsAt: true },
         })
-        if (biz) {
+        // A retry of the same unpaid invoice (attempt 2+) or an already-running grace window
+        // means this member was already told — keep the original deadline, send nothing.
+        const isRetry = (invoice.attempt_count ?? 1) > 1 || !!biz?.gracePeriodEndsAt
+        const gracePeriodEndsAt = biz?.gracePeriodEndsAt && isRetry
+          ? biz.gracePeriodEndsAt
+          : new Date(Date.now() + GRACE_PERIOD_DAYS * 24 * 60 * 60 * 1000)
+        if (biz && !biz.gracePeriodEndsAt) {
           await db.update(businesses)
             .set({ gracePeriodEndsAt })
             .where(eq(businesses.id, biz.id))
         }
 
-        // Recover the card before the grace period lapses to free.
+        // Recover the card before the grace period lapses to free — once per unpaid invoice.
         const member = await resolveMember({ userId: existing.userId, customerId })
-        if (member) await sendPaymentFailedEmail(member.email, member.name)
+        if (member && !isRetry) await sendPaymentFailedEmail(member.email, member.name)
         // The owner should hear about a failing member card the moment Stripe
         // does — an at-risk $39.99/mo was invisible until a manual check.
         await notifyPlatform("⚠️ Payment failed — member at risk", [
           `Member: ${member?.name || customerId}`,
           `Email: ${member?.email || "unknown"}`,
-          `Status: past_due — recovery email sent to the member`,
+          isRetry
+            ? `Status: past_due — retry ${invoice.attempt_count ?? "?"} failed; no new email, deadline unchanged`
+            : `Status: past_due — recovery email sent to the member`,
           `Grace period ends: ${gracePeriodEndsAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
         ])
       }
