@@ -79,14 +79,23 @@ export async function getConversionsBySource(days: number | null): Promise<Sourc
       WHERE ${since(days)} AND session_id IN (${engagedSessions(days)})
       GROUP BY 1`),
   )
-  // conversions per first-touch source (these events carry src even without a session_id)
+  // conversions per first-touch source. Sign-ups carry the campaign cookie's src directly, but
+  // paid_upgrade is emitted by the Stripe webhook (no cookie, no src) — so fall back to the
+  // member's own earliest tagged event, or every paid member reads as "direct / organic".
   const conv = rows<{ src: string; signups: number; paid: number }>(
     await db.execute<{ src: string; signups: number; paid: number }>(sql`
-      SELECT COALESCE(NULLIF(props->>'src',''), 'direct / organic') AS src,
-        COUNT(*) FILTER (WHERE event_name IN ${SIGNUP_EVENTS})::int AS signups,
-        COUNT(*) FILTER (WHERE event_name = 'paid_upgrade')::int AS paid
-      FROM analytics_events
-      WHERE ${since(days)} AND event_name IN ('business_signup','business_claim_submitted','paid_upgrade')
+      WITH firsttouch AS (
+        SELECT DISTINCT ON (user_id) user_id, props->>'src' AS src
+        FROM analytics_events
+        WHERE user_id IS NOT NULL AND COALESCE(props->>'src','') <> ''
+        ORDER BY user_id, created_at
+      )
+      SELECT COALESCE(NULLIF(e.props->>'src',''), f.src, 'direct / organic') AS src,
+        COUNT(*) FILTER (WHERE e.event_name IN ${SIGNUP_EVENTS})::int AS signups,
+        COUNT(*) FILTER (WHERE e.event_name = 'paid_upgrade')::int AS paid
+      FROM analytics_events e
+      LEFT JOIN firsttouch f ON f.user_id = e.user_id
+      WHERE ${days == null ? sql`TRUE` : sql`e.created_at >= now() - make_interval(days => ${days})`} AND e.event_name IN ('business_signup','business_claim_submitted','paid_upgrade')
       GROUP BY 1`),
   )
   const map = new Map<string, SourceRow>()
