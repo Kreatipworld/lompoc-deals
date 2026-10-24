@@ -1,0 +1,86 @@
+{
+  "date_pill": "OCT 19 · 2026",
+  "week_label": "Weekly recap · Oct 12–18",
+  "credit": "Facts via MaxPreps · SB Independent · Lompoc Record · City of Lompoc",
+  "assets": {
+    "civic-center.jpg": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/news-covers/lompoc-civic-center.jpg",
+    "community.jpg": "/home/orchestra/Projects/lompoc-deals/public/news-covers/community.jpg",
+    "huyck.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/_kit/assets/huyck-stadium.jpg",
+    "theatre.jpg": "https://hdmjeo8b19ivdmlw.public.blob.vercel-storage.com/activities/g-lompoc-theatre-4.jpeg"
+  },
+  "hook": [
+    "Braves fall to Nipomo",
+    "City grants from $15K",
+    "Sharktoberfest Wednesday"
+  ],
+  "results": [
+    {
+      "school": "Lompoc", "nick": "Braves", "badge": "badge-braves.png",
+      "us": 7, "them": 45, "opponent": "Nipomo", "record": "6–2",
+      "venue": "Huyck Stadium", "when": "Fri Oct 16", "verdict": "Final",
+      "say": "The Braves fell to Nipomo forty-five to seven. They're six and two.",
+      "cap": "The Braves fell to Nipomo 45–7. They're 6–2."
+    },
+    {
+      "school": "Cabrillo", "nick": "Conquistadores", "badge": "badge-conqs.png",
+      "us": 32, "them": 36, "opponent": "Santa Ynez", "record": "3–6",
+      "venue": "Santa Ynez", "when": "Fri Oct 16", "verdict": "Final",
+      "say": "Cabreeyo lost a close one at Santa Ynez, thirty-six to thirty-two.",
+      "cap": "Cabrillo lost a close one at Santa Ynez, 36–32."
+    }
+  ],
+  "stories": [
+    {
+      "slug": "grants", "chip": "City Hall", "photo": "civic-center.jpg", "position": "50% 50%",
+      "headline": "City grants open for nonprofits",
+      "fact": "CDBG + Human Service Funds · grants from $15,000 · 2027–28 fiscal year",
+      "say": "The city is taking grant applications from nonprofits, starting at fifteen thousand dollars.",
+      "cap": "The city is taking grant applications from nonprofits, from $15,000."
+    },
+    {
+      "slug": "daisy", "chip": "Community", "photo": "community.jpg", "position": "50% 50%",
+      "headline": "LVMC nurse wins the DAISY Award",
+      "fact": "ER nurse Shelby Menjivar · honored for compassionate care",
+      "say": "E.R. nurse Shelby Menjivar at Lompoke Valley Medical Center won the DAISY Award.",
+      "cap": "ER nurse Shelby Menjivar won the DAISY Award."
+    },
+    {
+      "slug": "pathways", "chip": "Schools", "photo": "huyck.jpg", "position": "50% 50%",
+      "headline": "Free career day for teens, Nov 7",
+      "fact": "Pathways at Lompoc High · grades 7–12 · meals included · 300 spots",
+      "say": "And Pathways, a free career day for teens, is November seventh at Lompoc High.",
+      "cap": "Pathways, a free career day for teens, is Nov 7 at Lompoc High."
+    }
+  ],
+  "week": {
+    "title": "This week",
+    "photo": "theatre.jpg",
+    "position": "50% 45%",
+    "credit": "",
+    "rows": [
+      {"when": "Wed 6 PM", "what": "Sharktoberfest · aquarium open house", "where": "Cabrillo High, 4350 Constellation Rd"},
+      {"when": "Sat 12–3", "what": "Old Town Trick or Treat · kids 12 & under", "where": "100 block of S H St"},
+      {"when": "Sun 3:30", "what": "Dunkin' for Pumpkins", "where": "Lompoc Aquatic Center"},
+      {"when": "Sun 4 PM", "what": "Trunk or Treat", "where": "The Mission Club, Vandenberg Village"}
+    ],
+    "say": "This week: Sharktoberfest Wednesday at Cabreeyo's aquarium, Old Town Trick or Treat Saturday, and pumpkins in the pool Sunday.",
+    "cap": "Sharktoberfest Wed · Old Town Trick or Treat Sat · pumpkins in the pool Sun"
+  },
+  "launch": {
+    "title": "Falcon 9 · Starlink",
+    "line": "On the calendar Tuesday at 3:14 PM",
+    "note": "Launch times slip — check lompoclocals.com/find/rocket-launch before you go.",
+    "say": "A Falcon Nine is on the calendar Tuesday afternoon. Check before you go.",
+    "cap": "A Falcon 9 is on the calendar Tuesday afternoon. Check before you go."
+  },
+  "friday": {
+    "label": "Friday night football",
+    "date": "Fri Oct 23",
+    "rows": [
+      {"badge": "badge-braves.png", "line": "Braves host Atascadero", "sub": "7:30 PM · Huyck Stadium"},
+      {"badge": "badge-conqs.png", "line": "Conqs at Pioneer Valley", "sub": "7:00 PM · Pioneer Valley (away)"}
+    ],
+    "say": "Friday, the Braves host Atascadero at Hike Stadium, and the Conqs play at Pioneer Valley.",
+    "cap": "Friday: Braves host Atascadero 7:30 PM, Conqs at Pioneer Valley 7 PM."
+  }
+}
