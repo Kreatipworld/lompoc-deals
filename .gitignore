@@ -86,3 +86,4 @@ content/social/video/*/node_modules/
 scripts/higgsfield-mcp/hf-auth-url.txt
 scripts/higgsfield-mcp/hf-token.json
 content/social/video/out/
+__pycache__/
