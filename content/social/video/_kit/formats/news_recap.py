@@ -75,6 +75,28 @@ def _photo(cid: str, src: str, size, position: str = "50% 50%") -> str:
             f'<img class="cover" src="{src}" alt="" style="object-position:{position}; filter:contrast(1.06) saturate(1.08)" /></div>')
 
 
+def _tiles(cid: str, stats, top: int = 34) -> str:
+    """A row of stat tiles ([value, label] pairs) that fills the lower half of a card."""
+    if not stats:
+        return ""
+    cells = "".join(
+        f'<div id="{cid}-k{i}" style="flex:1; padding:22px 10px 20px; border-radius:20px; background:rgba(255,255,255,0.08); '
+        f'border-top:5px solid {B.GOLD}; text-align:center; opacity:0">'
+        f'<span style="display:block; color:#fff; font-weight:800; font-size:54px; line-height:1; letter-spacing:-1.5px">{v}</span>'
+        f'<span style="display:block; margin-top:10px; color:rgba(255,255,255,0.72); font-weight:700; font-size:22px; letter-spacing:1.5px; text-transform:uppercase; line-height:1.2">{k}</span></div>'
+        for i, (v, k) in enumerate(stats)
+    )
+    return f'<div style="display:flex; gap:18px; margin-top:{top}px">{cells}</div>'
+
+
+def _tiles_js(cid: str, stats, at: float) -> str:
+    return "".join(S.rise(cid, f"k{i}", at + 0.18 * i, dy=18, dur=0.36) for i in range(len(stats or [])))
+
+
+def _tile_ids(stats) -> tuple:
+    return tuple(f"k{i}" for i in range(len(stats or [])))
+
+
 def _css(cid: str, size) -> str:
     g = B.geom(size)
     s = f'[data-composition-id="{cid}"]'
@@ -92,8 +114,10 @@ def _css(cid: str, size) -> str:
       {s} .hl {{ display:block; color:#fff; font-weight:800; font-size:{56 if g["h"] > 1400 else 50}px; line-height:1.06; letter-spacing:-1px; opacity:0; }}
       {s} .fact {{ display:block; margin-top:14px; color:{B.GOLD}; font-weight:700; font-size:29px; line-height:1.3; letter-spacing:0.3px; opacity:0; }}
       {s} .credit {{ display:block; margin-top:16px; color:rgba(255,255,255,0.62); font-weight:600; font-size:21px; letter-spacing:1.2px; text-transform:uppercase; }}
+      {s} .bul {{ display:flex; align-items:flex-start; gap:16px; margin-top:14px; color:rgba(255,255,255,0.92); font-weight:600; font-size:29px; line-height:1.28; }}
+      {s} .dot {{ flex:none; width:12px; height:12px; margin-top:12px; border-radius:50%; background:{B.GOLD}; }}
       {s} .row {{ display:flex; align-items:center; gap:22px; margin-top:16px; }}
-      {s} .when {{ flex:none; width:172px; color:{B.GOLD}; font-weight:800; font-size:27px; letter-spacing:0.5px; }}
+      {s} .when {{ flex:none; width:206px; color:{B.GOLD}; font-weight:800; font-size:26px; letter-spacing:0.5px; }}
       {s} .what {{ color:#fff; font-weight:700; font-size:31px; line-height:1.18; letter-spacing:-0.3px; }}
       {s} .where {{ display:block; color:rgba(255,255,255,0.68); font-weight:600; font-size:23px; margin-top:2px; }}
     """
@@ -145,7 +169,7 @@ def build(d: dict) -> Video:
         rows = "".join(
             f'<div id="{cid}-h{i}" style="margin-top:{0 if i == 0 else 30}px; padding:26px 34px; border-radius:22px; background:rgba(20,10,23,0.55); border-left:10px solid {B.GOLD}; opacity:0">'
             f'<span style="display:block; color:#fff; font-weight:800; font-size:58px; line-height:1.04; letter-spacing:-1.5px">{h}</span></div>'
-            for i, h in enumerate(d["hook"][:3])
+            for i, h in enumerate(d["hook"][:5])
         )
         return f'''<div class="field"></div>
       {_wipe(cid)}
@@ -157,9 +181,11 @@ def build(d: dict) -> Video:
     def hook_js(cid, dur, size=None):
         w = (size or B.SIZES["9x16"])[0]
         js = _wipe_js(cid, w) + S.rise(cid, "lab", 0.10, dy=10, dur=0.30)
-        for i in range(min(3, len(d["hook"]))):
-            js += S.rise(cid, f"h{i}", 0.25 + 0.5 * i, dy=26, dur=0.38)
-        return js + _exit(cid, dur, ("lab", "h0", "h1", "h2"))
+        n = min(5, len(d["hook"]))
+        step = 0.5 if n <= 3 else 0.3
+        for i in range(n):
+            js += S.rise(cid, f"h{i}", 0.25 + step * i, dy=26, dur=0.38)
+        return js + _exit(cid, dur, ("lab",) + tuple(f"h{i}" for i in range(n)))
 
     add("s1-hook", HOOK, hook_html, hook_js, "This week in Lompoc", "")
 
@@ -181,6 +207,8 @@ def build(d: dict) -> Video:
         <span id="{cid}-opp" style="display:block; margin-top:30px; color:rgba(255,255,255,0.9); font-weight:700; font-size:48px; letter-spacing:-1px; opacity:0">{r["school"]} {r["nick"]} · {r["opponent"]}</span>
         <span id="{cid}-ven" style="display:block; margin-top:14px; color:rgba(255,255,255,0.66); font-weight:600; font-size:31px; opacity:0">{r["venue"]} · {r["when"]}</span>
         <span id="{cid}-rec" style="display:inline-block; margin-top:28px; background:{B.GOLD}; color:{B.INK}; font-weight:800; font-size:42px; padding:10px 26px; border-radius:12px; opacity:0">{r["record"]}</span>
+        <div style="margin:0 {g["side"]}px">{_tiles(cid, r.get("stats"))}</div>
+        {f'<span id="{cid}-next" style="display:block; margin-top:26px; color:{B.GOLD}; font-weight:700; font-size:30px; letter-spacing:0.5px; opacity:0">{r["next"]}</span>' if r.get("next") else ""}
       </div>'''
 
         def js(cid, dur, size=None):
@@ -194,7 +222,10 @@ def build(d: dict) -> Video:
                     + S.rise(cid, "opp", 1.40, dy=14, dur=0.36)
                     + S.rise(cid, "ven", 1.60, dy=10, dur=0.34)
                     + S.rise(cid, "rec", 1.85, dy=12, dur=0.34)
-                    + _exit(cid, dur, ("chip", "badge", "us", "dash", "them", "opp", "ven", "rec")))
+                    + _tiles_js(cid, r.get("stats"), 2.10)
+                    + (S.rise(cid, "next", 2.80, dy=10, dur=0.34) if r.get("next") else "")
+                    + _exit(cid, dur, ("chip", "badge", "us", "dash", "them", "opp", "ven", "rec")
+                            + _tile_ids(r.get("stats")) + (("next",) if r.get("next") else ())))
         return html, js
 
     for i, r in enumerate(d["results"]):
@@ -214,6 +245,7 @@ def build(d: dict) -> Video:
         <span class="rule" id="{cid}-rule"></span>
         <span class="hl" id="{cid}-hl">{st["headline"]}</span>
         <span class="fact" id="{cid}-fact">{st["fact"]}</span>
+        {"".join(f'<div class="bul" id="{cid}-b{i}" style="opacity:0"><span class="dot"></span><span>{b}</span></div>' for i, b in enumerate(st.get("bullets") or []))}
         {f'<span class="credit">{st["credit"]}</span>' if st.get("credit") else ""}
       </div>'''
 
@@ -227,7 +259,8 @@ def build(d: dict) -> Video:
                     + f'tl.fromTo("#{cid}-panel", {{ autoAlpha:0, y:26 }}, {{ autoAlpha:1, y:0, duration:0.45, ease:"expo.out" }}, 0.30);'
                     + f'tl.fromTo("#{cid}-rule", {{ scaleX:0 }}, {{ scaleX:1, duration:0.4 }}, 0.35);'
                     + f'tl.fromTo("#{cid}-hl", {{ autoAlpha:0, y:16 }}, {{ autoAlpha:1, y:0, duration:0.45, ease:"expo.out" }}, 0.38);'
-                    + f'tl.fromTo("#{cid}-fact", {{ autoAlpha:0, y:10 }}, {{ autoAlpha:1, y:0, duration:0.4 }}, 1.10);'
+                    + f'tl.fromTo("#{cid}-fact", {{ autoAlpha:0, y:10 }}, {{ autoAlpha:1, y:0, duration:0.4 }}, 0.80);'
+                    + "".join(S.rise(cid, f"b{i}", 1.20 + 0.35 * i, dy=12, dur=0.34) for i in range(len(st.get("bullets") or [])))
                     + _exit(cid, dur, ("chip", "brand", "panel")))
         return html, js
 
@@ -276,7 +309,7 @@ def build(d: dict) -> Video:
 
     def launch_html(cid, dur, size):
         g = B.geom(size)
-        top = "30%" if g["h"] > 1400 else "22%"
+        top = ("30%" if not la.get("rows") else "20%") if g["h"] > 1400 else "16%"
         return f'''<div style="position:absolute; inset:0; background:radial-gradient(ellipse 90% 60% at 50% 20%, #1b2a5a 0%, #0d1230 40%, {B.BG} 100%)"></div>
       <div style="position:absolute; left:0; right:0; top:18%; height:2px; z-index:20; background:linear-gradient(90deg, transparent, {B.GOLD}, transparent); opacity:0.45"></div>
       {_wipe(cid)}
@@ -284,14 +317,23 @@ def build(d: dict) -> Video:
       <div style="position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:{top}; z-index:36">
         <span id="{cid}-t" class="hero" style="font-size:104px; opacity:0">{la["title"]}</span>
         <span id="{cid}-l" style="display:block; margin-top:30px; color:{B.GOLD}; font-weight:800; font-size:50px; letter-spacing:-1px; line-height:1.1; opacity:0">{la["line"]}</span>
+        {"".join(f'<div id="{cid}-r{i}" style="margin-top:{30 if i == 0 else 18}px; padding:22px 28px; border-radius:20px; background:rgba(255,255,255,0.07); border-left:8px solid {B.GOLD}; opacity:0">'
+                 f'<span style="display:block; color:{B.GOLD}; font-weight:800; font-size:30px; letter-spacing:1px; text-transform:uppercase">{r["when"]}</span>'
+                 f'<span style="display:block; margin-top:6px; color:#fff; font-weight:700; font-size:36px; letter-spacing:-0.5px">{r["what"]}</span></div>'
+                 for i, r in enumerate(la.get("rows") or []))}
+        {_tiles(cid, la.get("stats"), top=24)}
         <span id="{cid}-n" style="display:block; margin-top:26px; color:rgba(255,255,255,0.78); font-weight:600; font-size:31px; line-height:1.3; opacity:0">{la["note"]}</span>
       </div>'''
 
     def launch_js(cid, dur, size=None):
         w = (size or B.SIZES["9x16"])[0]
+        rows = la.get("rows") or []
         return (_wipe_js(cid, w) + S.rise(cid, "chip", 0.12, dy=12, dur=0.34)
                 + S.rise(cid, "t", 0.28, dy=22, dur=0.46) + S.rise(cid, "l", 0.62, dy=14, dur=0.38)
-                + S.rise(cid, "n", 1.30, dy=10, dur=0.36) + _exit(cid, dur, ("chip", "t", "l", "n")))
+                + "".join(S.rise(cid, f"r{i}", 0.95 + 0.3 * i, dy=16, dur=0.36) for i in range(len(rows)))
+                + _tiles_js(cid, la.get("stats"), 1.6)
+                + S.rise(cid, "n", 2.3, dy=10, dur=0.36)
+                + _exit(cid, dur, ("chip", "t", "l", "n") + tuple(f"r{i}" for i in range(len(rows))) + _tile_ids(la.get("stats"))))
 
     add(f"s{n + 1}-launch", BEAT, launch_html, launch_js, la["cap"], la["say"])
 
@@ -308,20 +350,36 @@ def build(d: dict) -> Video:
             f'<span style="display:block; margin-top:6px; color:rgba(255,255,255,0.7); font-weight:600; font-size:30px">{r["sub"]}</span></div></div>'
             for i, r in enumerate(fr["rows"])
         )
+        # A home game may carry the home field behind it; an away one never does.
+        bg = (f'<div id="{cid}-w0" class="pw" data-layout-allow-overflow><img class="cover" src="public/{fr["photo"]}" alt="" '
+              f'style="object-position:{fr.get("position", "50% 50%")}; filter:brightness(0.42) saturate(1.1)" /></div>') if fr.get("photo") else ""
         return f'''<div style="position:absolute; inset:0; background:linear-gradient(170deg, #241236 0%, {B.BG} 70%)"></div>
+      {bg}
+      <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(20,10,23,0.55) 0%, rgba(20,10,23,0.25) 40%, rgba(20,10,23,0.85) 100%)"></div>
       {_wipe(cid)}
       <span class="chip tchip" id="{cid}-chip" style="{_chip_style("SPORTS")}">Sports · {fr["date"]}</span>
       <div style="position:absolute; left:{g["side"]}px; right:{g["side"]}px; top:{top}; z-index:36">
         <span id="{cid}-t" style="display:block; color:{B.GOLD}; font-weight:800; font-size:62px; letter-spacing:-2px; opacity:0">{fr["label"]}</span>
         {cards}
+        {f'<span id="{cid}-sl" style="display:block; margin-top:34px; color:rgba(255,255,255,0.8); font-weight:800; font-size:24px; letter-spacing:3px; text-transform:uppercase; opacity:0">{fr["stats_label"]}</span>' if fr.get("stats_label") else ""}
+        {_tiles(cid, fr.get("stats"), top=16)}
+        {f'<span id="{cid}-note" style="display:block; margin-top:26px; color:{B.GOLD}; font-weight:700; font-size:31px; line-height:1.3; opacity:0">{fr["note"]}</span>' if fr.get("note") else ""}
       </div>'''
 
     def friday_js(cid, dur, size=None):
         w = (size or B.SIZES["9x16"])[0]
         js = _wipe_js(cid, w) + S.rise(cid, "chip", 0.12, dy=12, dur=0.34) + S.rise(cid, "t", 0.25, dy=14, dur=0.38)
+        if fr.get("photo"):
+            js += f'tl.fromTo("#{cid}-w0", {{ scale:1.0 }}, {{ scale:1.08, duration:{dur:.2f}, ease:"none" }}, 0);'
         for i in range(len(fr["rows"])):
             js += S.rise(cid, f"c{i}", 0.60 + 0.35 * i, dy=22, dur=0.42)
-        return js + _exit(cid, dur, ("chip", "t") + tuple(f"c{i}" for i in range(len(fr["rows"]))))
+        extra = _tile_ids(fr.get("stats"))
+        if fr.get("stats_label"):
+            js += S.rise(cid, "sl", 1.1, dy=10, dur=0.3); extra += ("sl",)
+        js += _tiles_js(cid, fr.get("stats"), 1.3)
+        if fr.get("note"):
+            js += S.rise(cid, "note", 2.0, dy=10, dur=0.34); extra += ("note",)
+        return js + _exit(cid, dur, ("chip", "t") + tuple(f"c{i}" for i in range(len(fr["rows"]))) + extra)
 
     add(f"s{n + 2}-friday", BEAT, friday_html, friday_js, fr["cap"], fr["say"])
 

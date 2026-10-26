@@ -1,0 +1,209 @@
+{
+  "date_pill": "OCT 26 · 2026",
+  "week_label": "Weekly recap · Oct 19–25",
+  "credit": "Facts via MaxPreps · Noozhawk · Lompoc Record · KSBY",
+  "assets": {
+    "ken-adam.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/out/news-recap-2026-10-26/raw/ken-adam.jpg",
+    "eye-on-i.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/out/news-recap-2026-10-26/raw/eye-on-i.jpg",
+    "surf.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/out/news-recap-2026-10-26/raw/surf.jpg",
+    "mission.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/out/news-recap-2026-10-26/raw/mission.jpg"
+  },
+  "hook": [
+    "Braves beat Atascadero",
+    "Space Base gets 2 more years",
+    "Chamber names its 2026 winners",
+    "Two Falcon 9 launches",
+    "Halloween week"
+  ],
+  "results": [
+    {
+      "school": "Lompoc",
+      "nick": "Braves",
+      "badge": "badge-braves.png",
+      "us": 42,
+      "them": 21,
+      "opponent": "Atascadero",
+      "record": "7–2",
+      "venue": "Week 9",
+      "when": "Fri Oct 23",
+      "verdict": "Final",
+      "say": "The Braves beat Atascadero forty-two to twenty-one. They're seven and two.",
+      "cap": "The Braves beat Atascadero 42–21. They're 7–2.",
+      "stats": [
+        [
+          "2–1",
+          "League"
+        ],
+        [
+          "309",
+          "Points for"
+        ],
+        [
+          "3–1",
+          "At home"
+        ]
+      ],
+      "next": "Next: Templeton at Huyck · Fri Oct 30, 7 PM"
+    },
+    {
+      "school": "Cabrillo",
+      "nick": "Conquistadores",
+      "badge": "badge-conqs.png",
+      "us": 21,
+      "them": 49,
+      "opponent": "Pioneer Valley",
+      "record": "3–7",
+      "venue": "Pioneer Valley",
+      "when": "Fri Oct 23",
+      "verdict": "Season final",
+      "say": "Cabreeyo's season ended at Pioneer Valley. They finish three and seven.",
+      "cap": "Cabrillo's season ended at Pioneer Valley, 49–21. They finish 3–7.",
+      "stats": [
+        [
+          "2–2",
+          "League"
+        ],
+        [
+          "50–0",
+          "vs Morro Bay"
+        ],
+        [
+          "56–18",
+          "vs Santa Maria"
+        ]
+      ],
+      "next": "Wins over Hoover, Morro Bay and Santa Maria"
+    }
+  ],
+  "stories": [
+    {
+      "slug": "spacebase",
+      "chip": "City Hall",
+      "photo": "ken-adam.jpg",
+      "position": "50% 50%",
+      "headline": "Space Base gets two more years",
+      "fact": "Council vote 4–1 · $150M space attraction · 82 acres incl. Ken Adam Park",
+      "say": "The council gave Space Base California two more years to find its financing.",
+      "cap": "Space Base California gets two more years to find financing.",
+      "bullets": [
+        "Mayor Jim Mosby proposed the two-year timeline",
+        "$2 million raised so far · aiming for $5 million"
+      ]
+    },
+    {
+      "slug": "chamber",
+      "chip": "Community",
+      "photo": "eye-on-i.jpg",
+      "position": "50% 50%",
+      "headline": "Chamber honors its 2026 winners",
+      "fact": "Man of the Year Christopher Ladwig · Woman of the Year Susan Hott · Small Business Eye on I",
+      "say": "Chamber awards went to Christopher Ladwig, Susan Hott, and Eye on I.",
+      "cap": "Chamber awards: Christopher Ladwig, Susan Hott and Eye on I.",
+      "bullets": [
+        "Ladwig teaches science at Cabrillo High",
+        "Hott fosters pets and organizes Lompoc Pack Walks"
+      ]
+    },
+    {
+      "slug": "surf",
+      "chip": "Coast",
+      "photo": "surf.jpg",
+      "position": "50% 50%",
+      "headline": "Fishing at Surf Beach gets an early OK",
+      "fact": "Half-mile stretch · preliminary state approval · could take years · still no fishing today",
+      "say": "Fishing at Surf Beach got an early OK from the state. It's still years away.",
+      "cap": "Fishing at Surf Beach got an early state OK. It's still years away.",
+      "bullets": [
+        "Shore fishing, hook-and-line only",
+        "Next: environmental review, then state rulemaking"
+      ]
+    }
+  ],
+  "week": {
+    "title": "Halloween week",
+    "photo": "mission.jpg",
+    "position": "50% 50%",
+    "credit": "",
+    "rows": [
+      {
+        "when": "Wed–Sat 1 PM",
+        "what": "Guided tour of La Purísima Mission",
+        "where": "2295 Purisima Rd"
+      },
+      {
+        "when": "Wed 5:30 PM",
+        "what": "Adult Craft Club: Bedazzled Pumpkins",
+        "where": "Lompoc Public Library"
+      },
+      {
+        "when": "Fri & Sat 7 PM",
+        "what": "Lompoc Ghost Hunting Tour",
+        "where": "Old Town, South H St"
+      },
+      {
+        "when": "Sun 10 AM",
+        "what": "Route One Farmers Market",
+        "where": "Vandenberg Village"
+      }
+    ],
+    "say": "This Halloween week: Mission tours, bedazzled pumpkins at the library, and Old Town ghost hunts Friday and Saturday.",
+    "cap": "Mission tours · bedazzled pumpkins Wed · Old Town ghost hunts Fri & Sat"
+  },
+  "launch": {
+    "title": "Falcon 9 · Starlink",
+    "line": "Two launches this week",
+    "note": "Launch times slip — check lompoclocals.com/find/rocket-launch before you go.",
+    "say": "Two Falcon Nines are on the calendar, tonight and Thursday night. Check before you go.",
+    "cap": "Two Falcon 9s on the calendar: tonight and Thursday night. Check before you go.",
+    "rows": [
+      {
+        "when": "Mon Oct 26 · 9:45 PM",
+        "what": "Starlink Group 15-16"
+      },
+      {
+        "when": "Thu Oct 29 · 9:02 PM",
+        "what": "Starlink Group 15-18"
+      }
+    ],
+    "stats": [
+      [
+        "27",
+        "Satellites each"
+      ],
+      [
+        "SLC-4E",
+        "Launch pad"
+      ]
+    ]
+  },
+  "friday": {
+    "label": "Friday night football",
+    "date": "Fri Oct 30",
+    "rows": [
+      {
+        "badge": "badge-braves.png",
+        "line": "Braves host Templeton",
+        "sub": "7:00 PM · Huyck Stadium"
+      }
+    ],
+    "say": "Friday, the Braves host Templeton at Hike Stadium.",
+    "cap": "Friday: the Braves host Templeton, 7 PM at Huyck Stadium.",
+    "photo": "huyck-goalposts.jpg",
+    "stats_label": "Braves this season",
+    "stats": [
+      [
+        "7–2",
+        "Record"
+      ],
+      [
+        "2–1",
+        "League"
+      ],
+      [
+        "34",
+        "Pts per game"
+      ]
+    ],
+    "note": "Last home game of the regular season"
+  }
+}
