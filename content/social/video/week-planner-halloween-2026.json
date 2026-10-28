@@ -1,0 +1,150 @@
+{
+ "slug": "halloween-week-2026",
+ "title": "HALLOWEEN WEEK",
+ "theme": "halloween",
+ "kick": "Halloween week",
+ "assets": {
+  "launch.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/master-ad/public/cast/launch-a-usspaceforce-pd.jpg",
+  "art.jpg": "/home/orchestra/Projects/lompoc-deals/public/event-covers/art.jpg",
+  "artwalk.jpg": "/home/orchestra/Projects/lompoc-deals/public/event-covers/art-walk.jpg",
+  "halloween.jpg": "/home/orchestra/Projects/lompoc-deals/public/event-covers/halloween.jpg",
+  "music.jpg": "/home/orchestra/Projects/lompoc-deals/public/event-covers/music.jpg",
+  "farm.jpg": "/home/orchestra/Projects/lompoc-deals/public/event-covers/farm.jpg",
+  "community.jpg": "/home/orchestra/Projects/lompoc-deals/public/event-covers/community.jpg",
+  "braves.png": "/home/orchestra/Projects/lompoc-deals/content/social/video/_kit/assets/badge-braves.png",
+  "sweet.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/out/day-in-lompoc/raw/479-sweet-baking-co-1.jpg",
+  "tacho.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/out/day-in-lompoc/raw/492-taqueria-don-tacho-0.jpg",
+  "culichi.jpg": "/home/orchestra/Projects/lompoc-deals/content/social/video/out/day-in-lompoc/raw/497-tacos-y-mariscos-el-culichi-1.jpg"
+ },
+ "cover": {
+  "kick": "This week in Lompoc",
+  "title": "Halloween<br><em>week</em>",
+  "sub": "Oct 29 – Nov 1",
+  "say": "It's Halloween week in Lompoc!"
+ },
+ "days": [
+  {
+   "tab": "THU",
+   "num": "29",
+   "name": "Thursday",
+   "date": "Oct 29",
+   "say": "Thursday: a Falcon Nine launch at nine, and holiday art opens at Cypress Gallery.",
+   "events": [
+    {
+     "time": "11 AM",
+     "title": "Island of Misfit Art",
+     "where": "Cypress Gallery",
+     "thumb": "art",
+     "icon": "art"
+    },
+    {
+     "time": "9:02 PM",
+     "title": "Falcon 9 launch",
+     "where": "Vandenberg SFB",
+     "thumb": "launch"
+    }
+   ]
+  },
+  {
+   "tab": "FRI",
+   "num": "30",
+   "name": "Friday",
+   "date": "Oct 30",
+   "say": "Friday: the Braves host Templeton at Huyck Stadium, then ghost hunting in Old Town.",
+   "events": [
+    {
+     "time": "7 PM",
+     "title": "Braves vs Templeton",
+     "where": "Huyck Stadium",
+     "thumb": "braves",
+     "fit": "contain"
+    },
+    {
+     "time": "7 PM",
+     "title": "Ghost Hunting Tour",
+     "where": "Old Town, South H St",
+     "thumb": "halloween",
+     "icon": "ghost"
+    }
+   ]
+  },
+  {
+   "tab": "SAT",
+   "num": "31",
+   "name": "Saturday",
+   "date": "Halloween",
+   "say": "Saturday is Halloween: live music at Savory and Sweet, and a fall festival at Calvary Baptist.",
+   "events": [
+    {
+     "time": "11:30 AM",
+     "title": "Live music + lunch",
+     "where": "Savory &amp; Sweet Eats",
+     "thumb": "music",
+     "icon": "music"
+    },
+    {
+     "time": "6 PM",
+     "title": "Fall Festival",
+     "where": "Calvary Baptist Church",
+     "thumb": "community",
+     "icon": "festival"
+    }
+   ]
+  },
+  {
+   "tab": "SUN",
+   "num": "1",
+   "name": "Sunday",
+   "date": "Nov 1",
+   "say": "Sunday: the farmers market, a tiny art show, and a Falcon Nine at sunset.",
+   "events": [
+    {
+     "time": "9 AM",
+     "title": "Tiny Art Show",
+     "where": "Lompoc Library",
+     "thumb": "artwalk",
+     "icon": "art"
+    },
+    {
+     "time": "10 AM",
+     "title": "Farmers Market",
+     "where": "Route One, Vandenberg Village",
+     "thumb": "farm",
+     "icon": "market"
+    },
+    {
+     "time": "5:56 PM",
+     "title": "Falcon 9 at sunset",
+     "where": "Vandenberg SFB",
+     "thumb": "launch"
+    }
+   ]
+  }
+ ],
+ "places": {
+  "title": "Places<br><em>to go</em>",
+  "say": "Hungry? Halloween treats at Sweet Baking, and dinner at Don Tacho or El Culichi.",
+  "cards": [
+   {
+    "photo": "sweet",
+    "name": "Sweet Baking Co.",
+    "line": "Halloween treats"
+   },
+   {
+    "photo": "tacho",
+    "name": "Taqueria Don Tacho",
+    "line": "Dinner"
+   },
+   {
+    "photo": "culichi",
+    "name": "El Culichi",
+    "line": "Dinner"
+   }
+  ]
+ },
+ "end": {
+  "title": "Every event.<br><em>Every week.</em>",
+  "url": "lompoclocals.com/this-week",
+  "say": "Every event is on lompoclocals.com."
+ }
+}

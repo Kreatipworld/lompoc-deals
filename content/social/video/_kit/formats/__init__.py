@@ -1,4 +1,4 @@
-from . import day_in_lompoc, deal_promo, event_promo, flyer_story, game_night, game_night_card, game_night_town, game_result, master_story, member_fiesta, member_fresh, member_spotlight, monday_paper, news_recap, number_ad, realtor_showcase, results_card, season_recap, sunday_lunch
+from . import day_in_lompoc, deal_promo, event_promo, flyer_story, game_night, game_night_card, game_night_town, game_result, master_story, member_fiesta, member_fresh, member_spotlight, monday_paper, news_recap, number_ad, realtor_showcase, results_card, season_recap, sunday_lunch, week_planner
 
 REGISTRY = {
     "day-in-lompoc": day_in_lompoc,
@@ -20,4 +20,5 @@ REGISTRY = {
     "news-recap": news_recap,
     "season-recap": season_recap,
     "sunday-lunch": sunday_lunch,
+    "week-planner": week_planner,
 }
