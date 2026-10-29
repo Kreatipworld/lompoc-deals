@@ -1,4 +1,4 @@
-from . import day_in_lompoc, deal_promo, event_promo, flyer_story, game_night, game_night_card, game_night_town, game_result, master_story, member_award, member_fiesta, member_fresh, member_spotlight, monday_paper, news_recap, number_ad, realtor_showcase, results_card, season_recap, sunday_lunch, week_planner
+from . import day_in_lompoc, deal_promo, event_promo, flyer_story, game_night, game_night_card, game_night_town, game_result, hometown_pros, master_story, member_award, member_fiesta, member_fresh, member_spotlight, monday_paper, news_recap, number_ad, realtor_showcase, results_card, season_recap, sunday_lunch, week_planner
 
 REGISTRY = {
     "day-in-lompoc": day_in_lompoc,
@@ -9,6 +9,7 @@ REGISTRY = {
     "game-night-town": game_night_town,
     "flyer-story": flyer_story,
     "game-result": game_result,
+    "hometown-pros": hometown_pros,
     "number-ad": number_ad,
     "realtor-showcase": realtor_showcase,
     "results-card": results_card,
