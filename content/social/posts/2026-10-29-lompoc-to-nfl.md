@@ -12,4 +12,4 @@
 - Vai Taua, Cabrillo: signed Bills Jul 27 2011, Seahawks Aug 14 2011. Wikipedia.
 
 ## Status
-- Preview sent to Andres; not posted.
+- Preview sent; Andres: "Run and share it". Posted Oct 30 02:53 UTC via Post Bridge (post abcd086d): IG Reel https://www.instagram.com/reel/DfGji9bowdA/, FB https://facebook.com/1898952607093480/videos/1735032567576408, TikTok @lompoclocals. IG Story 7ee21ef0 (id 18123389473938531), link sticker by phone.
