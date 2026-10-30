@@ -8,4 +8,5 @@
 - Build: out/rock-brothers (launch.json, gen.py). Render with TMPDIR=~/.cache/hf-tmp (/tmp tmpfs too small).
 
 ## Status
-- Preview sent Oct 30; awaiting Andres. Nothing posted.
+- Preview sent; Andres: "Run it and tag them". Posted Oct 30 18:49 UTC via Post Bridge (post 4d8392c5, IG user tag accepted): IG Reel https://www.instagram.com/reel/DfIQ3VIzCYu/, FB https://facebook.com/1898952607093480/videos/1436398861290384, TikTok @lompoclocals. IG Story c40f3b27 (id 18112793429187313), mention sticker by phone.
+- Directory listing still undecided.
