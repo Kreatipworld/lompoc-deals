@@ -10,3 +10,4 @@
 
 ## Status
 - Posted Oct 31 about 22:22 UTC via Post Bridge: feed 4b6ad9be-5600-4c32-b5bf-030b99ad5e77 (IG 106585, TikTok 106584, FB 106000), IG Story 109ca0b6-cfb3-40c0-b39c-2a5f9ddec0d3.
+- Live: IG Reel https://www.instagram.com/reel/DfLOE5Xseqc/, FB https://facebook.com/1898952607093480/videos/2407260673143565, TikTok @lompoclocals, IG Story id 18011741847001088 (link sticker by phone).
