@@ -12,3 +12,4 @@
 ## Status
 - Preview sent, awaiting approval.
 - v2: J's Glass stop swapped to a generated double glass entrance door at Andres's request (gpt_image_2_5, 0.25 cr); generic, not claimed as their job. Total spend 7.88 cr (469.15 to 461.27), against a 2-4 cr quote: price a one-take + 42s bed at about 8 cr.
+- v3 (Nov 2): Eddie's stop now uses their burger + tots photo (211e41b469, framed 82% on the burger; also on the cover grid); J's Glass is a generated craftsman house with lit windows (gpt_image_2_5, 0.25 cr), generic, not claimed as their job. v2 files kept as *-v2. Preview sent, awaiting "post it". Eddie's photos are low-res; dining room (ebf4030811) offered as the fallback.
