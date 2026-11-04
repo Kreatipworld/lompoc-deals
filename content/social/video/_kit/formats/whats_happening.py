@@ -18,6 +18,8 @@ Data contract:
                day?, num?, time?, say}]
              day/num/time render a date block (events); without them it is a news beat.
              icon (no photo) renders a designed brand card instead of a picture.
+             stat {hd?, big?, bigl?, rows:[[name, pct, color]], mark?:[pct, label]} adds an election-style
+             results panel above the chip (bars grow in; mark draws a threshold line on the first bar).
     end      {title, url, say}
 """
 from .. import brand as B
@@ -44,6 +46,19 @@ def _css(cid: str) -> str:
       {s} .brandcard .big-icon {{ position:absolute; left:50%; top:330px; width:520px; height:520px; margin-left:-260px; border-radius:50%;
           background:{B.GOLD}; display:flex; align-items:center; justify-content:center; box-shadow:0 0 120px 30px rgba(239,198,24,0.35); }}
       {s} .brandcard .big-icon svg {{ width:300px; height:300px; }}
+      {s} .stat {{ position:absolute; left:60px; right:60px; top:250px; padding:34px 44px 38px; border-radius:28px; z-index:12;
+          background:rgba(20,10,23,0.84); border:3px solid rgba(239,198,24,0.55); }}
+      {s} .stat .hd {{ color:{B.GOLD}; font-weight:800; font-size:28px; letter-spacing:5px; margin-bottom:18px; }}
+      {s} .stat .row {{ position:relative; margin-top:22px; }}
+      {s} .stat .nm {{ color:#fff; font-weight:800; font-size:46px; }}
+      {s} .stat .pc {{ position:absolute; right:0; top:-10px; color:{B.GOLD}; font-weight:800; font-size:64px; }}
+      {s} .stat .tr {{ position:relative; height:30px; margin-top:12px; border-radius:15px; background:rgba(255,255,255,0.14); }}
+      {s} .stat .fl {{ position:absolute; left:0; top:0; bottom:0; border-radius:15px; transform-origin:0 50%; }}
+      {s} .stat .mk {{ position:absolute; top:-12px; bottom:-12px; width:6px; margin-left:-3px; background:#fff; border-radius:3px; }}
+      {s} .stat .mkl {{ position:absolute; top:44px; transform:translateX(-50%); color:#fff; font-weight:800; font-size:26px; white-space:nowrap; }}
+      {s} .stat .big {{ color:#fff; font-weight:800; font-size:150px; line-height:1; text-align:center; }}
+      {s} .stat .big b {{ color:{B.GOLD}; }}
+      {s} .stat .bigl {{ color:{B.GOLD}; font-weight:800; font-size:40px; letter-spacing:6px; text-align:center; margin-top:6px; }}
       {s} .bug {{ position:absolute; left:60px; top:96px; display:flex; align-items:center; gap:18px; z-index:20; }}
       {s} .bug .live {{ background:#e0263a; color:#fff; font-weight:800; font-size:28px; letter-spacing:4px; padding:10px 18px 10px 44px;
           border-radius:10px; position:relative; }}
@@ -141,6 +156,8 @@ def build(d: dict) -> Video:
             words = "".join(f'<span id="{cid}-w{k}">{w}</span> ' for k, w in enumerate(bt["head"].split(" ")))
             if bt.get("icon"):
                 back = f'<div class="brandcard"><div class="big-icon" id="{cid}-ic">{ICONS[bt["icon"]]}</div></div>'
+            elif not bt.get("photo"):
+                back = '<div class="brandcard"></div>'
             else:
                 back = (f'<div class="bgph"><img id="{cid}-ph" src="{src(bt["photo"])}" '
                         f'style="object-position:{bt.get("pos", "50% 50%")}" /></div><div class="shade"></div>')
@@ -148,7 +165,21 @@ def build(d: dict) -> Video:
             if bt.get("day"):
                 when = (f'<div class="when" id="{cid}-wh" style="top:240px"><div class="d">{bt["day"]}</div>'
                         f'<div class="n">{bt["num"]}</div><div class="t">{bt.get("time", "")}</div></div>')
-            return (back + bug(cid) + when
+            st = ""
+            if bt.get("stat"):
+                sd = bt["stat"]
+                st = f'<div class="stat" id="{cid}-st"><div class="hd">{sd.get("hd", "EARLY RESULTS")}</div>'
+                if sd.get("big"):
+                    st += f'<div class="big" id="{cid}-bg">{sd["big"]}</div><div class="bigl">{sd.get("bigl", "")}</div>'
+                for k, (nm, pc, col) in enumerate(sd.get("rows", [])):
+                    mk = ""
+                    if sd.get("mark") and k == 0:
+                        mk = (f'<div class="mk" style="left:{sd["mark"][0]}%"></div>'
+                              f'<div class="mkl" style="left:{sd["mark"][0]}%">{sd["mark"][1]}</div>')
+                    st += (f'<div class="row"><div class="nm">{nm}</div><div class="pc">{pc:.1f}%</div>'
+                           f'<div class="tr"><div class="fl" id="{cid}-f{k}" style="width:{pc}%; background:{col}"></div>{mk}</div></div>')
+                st += '</div>'
+            return (back + bug(cid) + when + st
                     + f'<div class="chip" id="{cid}-c" style="top:820px; background:{bg}; color:{fg}">{bt["chip"]}</div>'
                     + f'<div class="head" id="{cid}-h" style="top:900px">{words}</div>'
                     + f'<div class="sub" id="{cid}-s" style="top:{900 + 107 * bt.get("lines", 2) + 24}px">{bt["sub"]}</div>'
@@ -158,13 +189,21 @@ def build(d: dict) -> Video:
             if bt.get("icon"):
                 out += (f'tl.fromTo("#{cid}-ic", {{ scale:0.6, rotation:-12 }}, {{ scale:1, rotation:0, duration:0.7, ease:"back.out(1.8)" }}, 0.15);'
                         f'tl.to("#{cid}-ic", {{ y:-24, duration:{dur:.2f}, ease:"sine.inOut" }}, 0.8);')
-            else:
+            elif bt.get("photo"):
                 out += f'tl.fromTo("#{cid}-ph", {{ scale:1.0, x:0 }}, {{ scale:1.16, x:{-40 if i % 2 else 40}, duration:{dur:.2f}, ease:"none" }}, 0);'
             out += f'tl.fromTo("#{cid}-c", {{ autoAlpha:0, x:-120 }}, {{ autoAlpha:1, x:0, duration:0.45, ease:"expo.out" }}, 0.25);'
             for k in range(len(bt["head"].split(" "))):
                 out += (f'tl.fromTo("#{cid}-w{k}", {{ autoAlpha:0, y:70 }}, '
                         f'{{ autoAlpha:1, y:0, duration:0.42, ease:"back.out(1.6)" }}, {0.4 + 0.09 * k:.2f});')
             out += S.rise(cid, "s", 0.9, dy=30, dur=0.45)
+            if bt.get("stat"):
+                out += f'tl.fromTo("#{cid}-st", {{ autoAlpha:0, y:-40 }}, {{ autoAlpha:1, y:0, duration:0.5, ease:"expo.out" }}, 0.1);'
+                if bt["stat"].get("big"):
+                    out += (f'tl.fromTo("#{cid}-bg", {{ scale:0.4, autoAlpha:0 }}, '
+                            f'{{ scale:1, autoAlpha:1, duration:0.7, ease:"back.out(2.2)" }}, 0.35);')
+                for k in range(len(bt["stat"].get("rows", []))):
+                    out += (f'tl.fromTo("#{cid}-f{k}", {{ scaleX:0 }}, '
+                            f'{{ scaleX:1, duration:1.3, ease:"power3.out" }}, {0.5 + 0.25 * k:.2f});')
             if bt.get("day"):
                 out += (f'tl.fromTo("#{cid}-wh", {{ autoAlpha:0, scale:0.5, rotation:8 }}, '
                         f'{{ autoAlpha:1, scale:1, rotation:-3, duration:0.6, ease:"back.out(2)" }}, 0.3);')
