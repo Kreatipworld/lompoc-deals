@@ -34,6 +34,9 @@ ICONS = {
     "art": f'<svg viewBox="0 0 64 64"><path {_I} d="M32 8a24 24 0 1 0 0 48c4 0 5-3 3-6s0-7 4-7h6a11 11 0 0 0 11-11C56 18 45 8 32 8z"/><circle cx="20" cy="30" r="3.5" fill="#241629"/><circle cx="28" cy="19" r="3.5" fill="#241629"/><circle cx="40" cy="19" r="3.5" fill="#241629"/></svg>',
     "market": f'<svg viewBox="0 0 64 64"><path {_I} d="M10 26h44l-5 26H15z"/><path {_I} d="M22 26l8-14M42 26l-8-14"/><path {_I} d="M26 36v8M38 36v8"/></svg>',
     "festival": f'<svg viewBox="0 0 64 64"><path {_I} d="M32 10c-12 0-20 9-20 22s8 22 20 22 20-9 20-22-8-22-20-22z"/><path {_I} d="M32 10c-3-4-1-7 3-8"/><path {_I} d="M24 30l4 4 4-4 4 4 4-4M24 42h16"/></svg>',
+    "vote": f'<svg viewBox="0 0 64 64"><path {_I} d="M10 34h44v22H10z"/><path {_I} d="M20 34l10-24 16 7-7 17"/><path {_I} d="M24 46h16"/></svg>',
+    "shield": f'<svg viewBox="0 0 64 64"><path {_I} d="M32 6l20 8v16c0 13-9 22-20 28C21 52 12 43 12 30V14z"/><path {_I} d="M24 31l6 6 11-12"/></svg>',
+    "skate": f'<svg viewBox="0 0 64 64"><path {_I} d="M6 30c4 6 8 8 14 8h24c6 0 10-2 14-8"/><circle {_I} cx="20" cy="48" r="5"/><circle {_I} cx="44" cy="48" r="5"/></svg>',
 }
 
 
@@ -82,6 +85,18 @@ def _css(cid: str, theme: str) -> str:
       {s} .polar i {{ display:block; margin:6px 8px 0; font-style:normal; font-size:26px; white-space:nowrap; color:{B.PURPLE}; font-weight:700; }}
       {s} .big {{ position:absolute; left:80px; right:80px; color:#fff; font-weight:800; letter-spacing:-8px; line-height:0.86; }}
       {s} .big em {{ font-style:normal; color:{B.GOLD}; }}
+      {s} .hero {{ position:absolute; left:60px; right:60px; border-radius:34px; overflow:hidden;
+                   box-shadow:0 26px 60px rgba(0,0,0,0.45); border:6px solid rgba(255,255,255,0.9); }}
+      {s} .hero img {{ width:100%; height:100%; object-fit:cover; display:block; }}
+      {s} .news {{ position:absolute; left:60px; right:60px; height:300px; border-radius:34px; background:#fff; overflow:hidden;
+                   box-shadow:0 26px 60px rgba(0,0,0,0.45); display:flex; }}
+      {s} .news .ph {{ width:300px; height:100%; flex:none; background:{B.GOLD}; display:flex; align-items:center; justify-content:center; }}
+      {s} .news .ph img {{ width:100%; height:100%; object-fit:cover; display:block; }}
+      {s} .news .ph svg {{ width:130px; height:130px; }}
+      {s} .news .tx {{ flex:1; padding:30px 34px; min-width:0; display:flex; flex-direction:column; justify-content:center; }}
+      {s} .news .tag {{ font-size:26px; letter-spacing:5px; font-weight:800; color:{B.PURPLE}; text-transform:uppercase; }}
+      {s} .news h3 {{ margin:10px 0 0; font-size:46px; line-height:1.06; font-weight:800; color:{B.INK}; letter-spacing:-1px; }}
+      {s} .news p {{ margin:12px 0 0; font-size:30px; line-height:1.2; font-weight:700; color:#7a6880; }}
       {s} .datepill {{ position:absolute; left:84px; display:inline-block; background:{ORANGE}; color:#fff; font-weight:800;
                        font-size:44px; padding:16px 34px; border-radius:999px; }}
     """
@@ -141,6 +156,27 @@ def build(d: dict) -> Video:
         return out + f'tl.to("#{cid}-b", {{ scale:1.03, transformOrigin:"0% 50%", duration:{dur:.2f}, ease:"none" }}, 0);'
     add("s0-cover", 3.0, cover_html, cover_js, c.get("say", ""))
 
+    nw = d.get("news")
+    if nw:
+        def news_html(cid, dur, size):
+            cards = ""
+            for k, it in enumerate(nw["items"]):
+                ph = (f'<div class="ph">{ICONS[it["icon"]]}</div>' if it.get("icon")
+                      else f'<div class="ph"><img src="{src(it["photo"])}" style="object-position:{it.get("pos", "50% 50%")}" /></div>')
+                cards += (f'<div class="news" id="{cid}-n{k}" style="top:{560 + k * 340}px; opacity:0">{ph}'
+                          f'<div class="tx"><div class="tag">{it["tag"]}</div><h3>{it["head"]}</h3><p>{it["sub"]}</p></div></div>')
+            return (base.format(cid=cid) + f'<div class="kick">{d.get("kick", "This week in Lompoc")}</div>'
+                    + f'<div class="big" id="{cid}-h" style="top:300px; font-size:150px">{nw["title"]}</div>' + cards)
+        def news_js(cid, dur, size=None):
+            out = S.rise(cid, "h", 0.05, dy=30, dur=0.5)
+            n = len(nw["items"])
+            for k in range(n):
+                at = 0.35 + k * max(0.6, (dur - 1.6) / n)
+                out += (f'tl.fromTo("#{cid}-n{k}", {{ autoAlpha:0, x:-700 }}, '
+                        f'{{ autoAlpha:1, x:0, duration:0.6, ease:"back.out(1.3)" }}, {at:.2f});')
+            return out
+        add("s0b-news", 6.0, news_html, news_js, nw["say"])
+
     for i, dd in enumerate(days):
         evs = dd["events"]
         def day_html(cid, dur, size, dd=dd, i=i, evs=evs):
@@ -157,13 +193,18 @@ def build(d: dict) -> Video:
                           f'<div class="time"><b>{t}</b><i>{ap}</i></div>'
                           f'<div class="body"><h3>{e["title"]}</h3><p>{e["where"]}</p></div>'
                           f'{thumb}</div>')
+            hero = ""
+            if dd.get("photo"):
+                htop = top + (len(evs) - 1) * step + ch + 44
+                hero = (f'<div class="hero" id="{cid}-h" style="top:{htop}px; height:{max(300, 1640 - htop)}px; opacity:0">'
+                        f'<img id="{cid}-hi" src="{src(dd["photo"])}" style="object-position:{dd.get("pos", "50% 50%")}" /></div>')
             return (base.format(cid=cid)
                     + f'<div class="ghost" id="{cid}-g">{dd["name"].upper()} {dd["name"].upper()}</div>'
                     + f'<div class="kick">{d.get("kick", "This week in Lompoc")}</div>'
                     + tabs(cid, on=i)
                     + f'<div class="day" id="{cid}-dn">{dd["name"]}<small>{dd.get("date", "")}</small></div>'
-                    + cards)
-        def day_js(cid, dur, size=None, i=i, evs=evs):
+                    + cards + hero)
+        def day_js(cid, dur, size=None, i=i, evs=evs, dd=dd):
             frm = tab_x(max(0, i - 1)) - TAB_LEFT
             to = tab_x(i) - TAB_LEFT
             out = (f'tl.fromTo("#{cid}-ind", {{ x:{frm} }}, {{ x:{to}, duration:0.55, ease:"back.out(1.6)" }}, 0);'
@@ -177,6 +218,9 @@ def build(d: dict) -> Video:
                 rot = -4 if k % 2 == 0 else 4
                 out += (f'tl.fromTo("#{cid}-c{k}", {{ autoAlpha:0, x:700, rotation:{rot} }}, '
                         f'{{ autoAlpha:1, x:0, rotation:0, duration:0.6, ease:"back.out(1.4)" }}, {at:.2f});')
+            if dd.get("photo"):
+                out += (f'tl.fromTo("#{cid}-h", {{ autoAlpha:0, y:120 }}, {{ autoAlpha:1, y:0, duration:0.6, ease:"expo.out" }}, 0.3);'
+                        f'tl.fromTo("#{cid}-hi", {{ scale:1.0 }}, {{ scale:1.12, duration:{dur:.2f}, ease:"none" }}, 0);')
             return out
         add(f"s{i + 1}-{dd['tab'].lower()}", 3.6, day_html, day_js, dd["say"])
 
