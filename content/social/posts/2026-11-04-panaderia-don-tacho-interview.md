@@ -35,3 +35,6 @@ Andres: "Create introduction video" → "mastering his answer only" → "Use his
 
 ## v9 (Nov 5): door only + reported speech
 Andres: "Just keep the opening door and mention what he told us." Israel appears only in the door shot (3165 0–3.3). Maeve r1–r5 + m6 (r1 0.4, r2 11.5, r3 21.8, r4 34.0, r5 41.2, m6 47.6), ~2.5 credits after his yes. renders/v9.mp4, preview-v9.mp4 sent. Awaiting "post it".
+
+## v10 (Nov 5): tighter opening
+Andres: "The first shots are too small" + "learn this". edl.py ZOOM push-in on title/greet/greet2/a1 (1.45/1.45/1.3/1.25x). renders/v10.mp4, preview-v10.mp4 sent. Awaiting "post it".
