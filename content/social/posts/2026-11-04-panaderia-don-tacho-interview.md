@@ -38,3 +38,6 @@ Andres: "Just keep the opening door and mention what he told us." Israel appears
 
 ## v10 (Nov 5): tighter opening
 Andres: "The first shots are too small" + "learn this". edl.py ZOOM push-in on title/greet/greet2/a1 (1.45/1.45/1.3/1.25x). renders/v10.mp4, preview-v10.mp4 sent. Awaiting "post it".
+
+## Posted (Nov 5, ~12:55 PM PT)
+Andres: "Run it" / "Post it". Post Bridge post d0882926 (IG 106585 Reel w/ cover, FB 106000, TikTok 106584 AIGC label) + IG Story b110dac9 (story-v10.mp4, "Now open / Free coffee with your pan" band). Andres adds the link sticker.
