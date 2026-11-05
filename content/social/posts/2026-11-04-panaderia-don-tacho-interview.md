@@ -26,3 +26,9 @@ Andres: "Create introduction video" → "mastering his answer only" → "Use his
 - Andres: "We need our voice", "Remove his captions", "nothing about his voice", "all what he said as we report".
 - v7: Maeve (64cf4f1a…) narrates 6 lines (gen_maeve.py, whisper-checked; m6 redone for "Lompoke Locals"), V7=1 drops captions and the owner's name ("MEET / THE OWNER"). Maeve = 2.8 cr (905.86 → ~903.06). Bed unchanged (this video's own).
 - Waiting: "post it"; news draft 203 "publish news"; free-coffee deal "add deal".
+
+## v8 (Nov 5)
+- Andres: "Remove the scenes he talks", "showcase the good shots and little conversation and entrances", "welcome them".
+- V8=1 edl.py + build.py: storefront → door welcome → case → bread → coffee machine → pour → coffee bar → him at the end; no lip-sync shots, no question cards. 52.6 s.
+- Maeve w1 welcome line (~0.5 cr) + m2–m6. Sent preview-v8.
+- "Add deal": scripts/deal-panaderia-don-tacho.mjs ready; the auto-mode classifier blocked the live DB write → asked Andres to run/allow it.
