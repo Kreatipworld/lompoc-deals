@@ -20,3 +20,9 @@ Andres: "Create introduction video" → "mastering his answer only" → "Use his
 - build.py: scrolling ticker and blinking "NOW OPEN" removed; bug stays static.
 - Lip sync: no GPU here; Higgsfield offers dubbing (real footage, own voice copy) or Wan 2.7 (AI from a still + our audio). Neither has a price preflight → 5 s test offered, waiting on his pick.
 - Render once failed on low disk (1 GB); cleared hf extract cache + duplicate v1/nobed renders.
+
+## v5–v7 (Nov 4–5, night)
+- v5: Andres "without his voice" → music only + captions (NOVOICE=1). v6: + his real closing line (audio swap only, no render).
+- Andres: "We need our voice", "Remove his captions", "nothing about his voice", "all what he said as we report".
+- v7: Maeve (64cf4f1a…) narrates 6 lines (gen_maeve.py, whisper-checked; m6 redone for "Lompoke Locals"), V7=1 drops captions and the owner's name ("MEET / THE OWNER"). Maeve = 2.8 cr (905.86 → ~903.06). Bed unchanged (this video's own).
+- Waiting: "post it"; news draft 203 "publish news"; free-coffee deal "add deal".
