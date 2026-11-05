@@ -11,3 +11,4 @@ Andres: "Create introduction video" → "mastering his answer only" → "Use his
 - Captions: his words (whisper medium + checked), EN white + ES gold.
 - Bed: new sonilo_music, light cumbia/nylon guitar, 66 s → 64.8 s. Credits 952.84 → 948.71 = 4.13 (quoted ~2).
 - v1: 64.8 s, -14.5 LUFS preview sent ~6:16 PM PT. Awaiting the original files (4K) + "post it".
+- v2 (~6:47 PM PT): Andres said "remove the background noise", "clear the voice", "use Higgsfield". Higgsfield has no denoise or isolation model (voice_change would replace his voice), so I used RNNoise (arnndn sh.rnnn) + afftdn + a soft gate + presence EQ + de-esser (clean-af.txt). Door-opener sound cut by ending the greet at 5.65 s. 64.47 s. Preview sent.
