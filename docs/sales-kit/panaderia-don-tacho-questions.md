@@ -36,3 +36,8 @@ Claim link: https://www.lompoclocals.com/signup?claim=panaderia-don-tacho&plan=s
 - Ask him to answer in full sentences ("Don Tacho is my...") so each answer works on its own.
 - B-roll, 5–10 s each: bread coming out of the oven, the case full of pan dulce, hands shaping conchas, the sign with Tachito, a customer's bag being filled.
 - Pick 3–4 answers for the video; the rest go on the page and in captions.
+
+## The video plan (Andres, Nov 4: "mastering his answer only")
+The introduction video is built from his real answers only: the questions are cut out, a question card goes
+on screen before each answer, and English + Spanish captions run under it. Visit b-roll fills the gaps,
+then the end card (Tachito logo, address, phone). No voiceover, so the only credits are a new bed (~2 cr).
