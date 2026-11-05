@@ -32,3 +32,6 @@ Andres: "Create introduction video" → "mastering his answer only" → "Use his
 - V8=1 edl.py + build.py: storefront → door welcome → case → bread → coffee machine → pour → coffee bar → him at the end; no lip-sync shots, no question cards. 52.6 s.
 - Maeve w1 welcome line (~0.5 cr) + m2–m6. Sent preview-v8.
 - "Add deal": scripts/deal-panaderia-don-tacho.mjs ready; the auto-mode classifier blocked the live DB write → asked Andres to run/allow it.
+
+## v9 (Nov 5): door only + reported speech
+Andres: "Just keep the opening door and mention what he told us." Israel appears only in the door shot (3165 0–3.3). Maeve r1–r5 + m6 (r1 0.4, r2 11.5, r3 21.8, r4 34.0, r5 41.2, m6 47.6), ~2.5 credits after his yes. renders/v9.mp4, preview-v9.mp4 sent. Awaiting "post it".
