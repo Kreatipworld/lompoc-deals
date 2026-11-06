@@ -6,3 +6,6 @@ Andres sent the venue's IG post + flyer Nov 6 ("Anniversary of hangar 7", "just 
 - Maeve v1–v4 + new sonilo rock bed (25 s, atempo 0.9085 to fit) ≈ 2 cr after Andres's yes (balance 900.76 before).
 - v1 end card name overlapped → v2 fixed. preview-v2.mp4 + caption sent; plan 6 PM PT all four surfaces. Awaiting "post it".
 - v3 (Nov 6 ~11 AM PT): Andres sent their reel (IMG_3218, 720x1280) → 10 reel shots (crowd, lounge, patio band, guitar, DJ, party, raffle, bites, buffet, all ages), 1.42x top-anchored zoom crops their burned captions; drink + owner-talking shots left out. preview-v3 sent.
+
+## v4 (Nov 6): Dylan voice
+Andres: "Men's same pronunciation", "Young man", "35". Re-voiced with Dylan (b847bc29), same 4 lines; v2 retaken (first take said "bed"). Whisper-checked. Placement v1 0.25 / v2 6.75 / v3 15.0 / v4 20.6. preview-v4 sent.
