@@ -9,3 +9,6 @@ Andres sent the venue's IG post + flyer Nov 6 ("Anniversary of hangar 7", "just 
 
 ## v4 (Nov 6): Dylan voice
 Andres: "Men's same pronunciation", "Young man", "35". Re-voiced with Dylan (b847bc29), same 4 lines; v2 retaken (first take said "bed"). Whisper-checked. Placement v1 0.25 / v2 6.75 / v3 15.0 / v4 20.6. preview-v4 sent.
+
+## v5 (Nov 6): Holden voice
+Andres: "Find a better voice", "More local", "More California", "Men's voice like the girl we have". Auditioned Grady/Holden/Benji on v1; he picked Holden (3c9d6053, elevenlabs). Audition reused as v1; v2-v4 recorded. Whisper-checked. preview-v5 sent.
