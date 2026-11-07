@@ -32,3 +32,10 @@ Hangar 7 Social House turns one! 🎉 The owner invites all of Lompoc to the One
 Congrats on year one, @hangar7socialhouse! More Lompoc events on Lompoc Locals, link in bio.
 
 #Lompoc #LompocLocals #LompocEvents #CentralCoast #SupportLocal
+
+## Posted (Nov 6, ~6:02 PM PT): v8
+Andres: "Run it and tag them". Post Bridge d3ea0a6c (IG tag user_tags hangar7socialhouse + caption mention, cover frame 0, TikTok is_aigc). All 3 succeeded.
+- IG Reel https://www.instagram.com/reel/DfbD86HI-E7/
+- FB https://facebook.com/1898952607093480/videos/28565848186430754
+- TikTok @lompoclocals (video 7705243873223658765)
+- IG Story cf52af29 succeeded (purple band "HANGAR 7 TURNS ONE · SAT 7–11 PM"); Andres adds the link sticker.
