@@ -15,3 +15,20 @@ Andres: "Find a better voice", "More local", "More California", "Men's voice lik
 
 ## v8 (Nov 6): owner's original invitation
 Andres: "If you can keep the voice of the owner and the original sound for that clip", "Just so we can have the original invitation", "It's ok as long we are tagging it" (their reel's music). 46 s: Holden v1 over storefront + lounge, then their reel 3.30-36.80 with its own audio (name line skipped), our stills over the flyer shot and the cocktail shot (no alcohol), owner-shot chyrons moved low off his face, end card + Holden v4. Bed only on intro and end. preview-v8 sent.
+
+### Caption (v8, sent Nov 6)
+Hangar 7 Social House turns one! 🎉 The owner invites all of Lompoc to the One Year Celebration this Saturday.
+
+🎸 Live band On The Flip Side outside
+🎧 Live DJ inside: classic rock, pop and dance
+🌮 Tacos by Chef Conrad on the patio
+🎟️ Raffles, giveaways and free swag
+🍽️ Small bites from 6 to 7 PM
+👨‍👩‍👧 All ages welcome
+
+📅 Sat, Nov 7 · music 7–11 PM
+📍 107 W Ocean Ave, Lompoc
+
+Congrats on year one, @hangar7socialhouse! More Lompoc events on Lompoc Locals, link in bio.
+
+#Lompoc #LompocLocals #LompocEvents #CentralCoast #SupportLocal
