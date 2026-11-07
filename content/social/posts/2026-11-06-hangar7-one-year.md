@@ -12,3 +12,6 @@ Andres: "Men's same pronunciation", "Young man", "35". Re-voiced with Dylan (b84
 
 ## v5 (Nov 6): Holden voice
 Andres: "Find a better voice", "More local", "More California", "Men's voice like the girl we have". Auditioned Grady/Holden/Benji on v1; he picked Holden (3c9d6053, elevenlabs). Audition reused as v1; v2-v4 recorded. Whisper-checked. preview-v5 sent.
+
+## v8 (Nov 6): owner's original invitation
+Andres: "If you can keep the voice of the owner and the original sound for that clip", "Just so we can have the original invitation", "It's ok as long we are tagging it" (their reel's music). 46 s: Holden v1 over storefront + lounge, then their reel 3.30-36.80 with its own audio (name line skipped), our stills over the flyer shot and the cocktail shot (no alcohol), owner-shot chyrons moved low off his face, end card + Holden v4. Bed only on intro and end. preview-v8 sent.
