@@ -33,6 +33,7 @@ ICONS = {
     "music": f'<svg viewBox="0 0 64 64"><path {_I} d="M24 46V14l26-6v32"/><circle {_I} cx="18" cy="46" r="7"/><circle {_I} cx="44" cy="40" r="7"/></svg>',
     "art": f'<svg viewBox="0 0 64 64"><path {_I} d="M32 8a24 24 0 1 0 0 48c4 0 5-3 3-6s0-7 4-7h6a11 11 0 0 0 11-11C56 18 45 8 32 8z"/><circle cx="20" cy="30" r="3.5" fill="#241629"/><circle cx="28" cy="19" r="3.5" fill="#241629"/><circle cx="40" cy="19" r="3.5" fill="#241629"/></svg>',
     "market": f'<svg viewBox="0 0 64 64"><path {_I} d="M10 26h44l-5 26H15z"/><path {_I} d="M22 26l8-14M42 26l-8-14"/><path {_I} d="M26 36v8M38 36v8"/></svg>',
+    "tree": f'<svg viewBox="0 0 64 64"><path {_I} d="M32 8l4 6-4-1-4 1z"/><path {_I} d="M32 14L18 32h8L14 48h36L38 32h8z"/><path {_I} d="M28 48v8h8v-8"/></svg>',
     "festival": f'<svg viewBox="0 0 64 64"><path {_I} d="M32 10c-12 0-20 9-20 22s8 22 20 22 20-9 20-22-8-22-20-22z"/><path {_I} d="M32 10c-3-4-1-7 3-8"/><path {_I} d="M24 30l4 4 4-4 4 4 4-4M24 42h16"/></svg>',
     "vote": f'<svg viewBox="0 0 64 64"><path {_I} d="M10 34h44v22H10z"/><path {_I} d="M20 34l10-24 16 7-7 17"/><path {_I} d="M24 46h16"/></svg>',
     "shield": f'<svg viewBox="0 0 64 64"><path {_I} d="M32 6l20 8v16c0 13-9 22-20 28C21 52 12 43 12 30V14z"/><path {_I} d="M24 31l6 6 11-12"/></svg>',
