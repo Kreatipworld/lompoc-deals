@@ -23,3 +23,10 @@ Every taco spot in town is on Lompoc Locals, link in bio.
 Map © Mapbox © OpenStreetMap © Maxar
 
 ## v1 preview sent Nov 10 ~12:40 PM PT (38.2 s). Sound checked on preview-v1.mp4 (volumedetect mean -19.8, whisper full script). Awaiting "post it".
+
+## Posted (Nov 10, ~1:05 PM PT): v1
+Andres: "Post it now". Post Bridge 6fb50bca (IG user_tags all 6 handles + caption mentions, cover frame 0, FB thumbnail, TikTok is_aigc). All 3 succeeded.
+- IG Reel https://www.instagram.com/reel/Dfk1O0fzeIs/
+- FB https://facebook.com/1898952607093480/videos/1844376843542678
+- TikTok https://www.tiktok.com/@lompoclocals/video/7706651693668175118
+- IG Story 97b09367 succeeded (purple band "TACO TUESDAY ROUTE · TAP THE LINK"); Andres adds the link sticker → /find/tacos.
