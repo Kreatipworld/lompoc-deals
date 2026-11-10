@@ -55,6 +55,10 @@
     {
       "path": "/api/cron/gsc-pull",
       "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/cron/member-report",
+      "schedule": "0 17 1 * *"
     }
   ],
   "ignoreCommand": "bash scripts/vercel-ignore.sh"

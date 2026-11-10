@@ -666,6 +666,69 @@ export async function sendReengagementEmail(email: string, name: string, busines
   }
 }
 
+/**
+ * Monthly "your numbers" report for a paying member (cron/member-report). Shows only the
+ * numbers that are above zero (member surfaces never showcase gaps) — the caller skips a
+ * member whose month had no views at all. `toOverride` sends a [PREVIEW] copy elsewhere.
+ */
+export function renderMemberReportHtml(opts: {
+  name: string
+  businessName: string
+  slug: string
+  monthLabel: string
+  stats: { views: number; calls: number; directions: number; website: number; dealViews: number; dealClaims: number; prevViews: number }
+  hasActiveDeal: boolean
+}): string {
+  // Kept to ONE number on purpose (owner, Oct 20 2026: "we don't want to send too much data"
+  // while the platform is still small). Calls/directions/website are single digits for most
+  // members — they stay in the stats for later, not in the email.
+  const s = opts.stats
+  const grew = s.prevViews > 0 && s.views > s.prevViews
+  const statHtml = `<div style="background:#F7F3E9; border-radius:12px; padding:18px 20px; margin:0 0 16px; text-align:center;">
+      <div style="font-size:40px; font-weight:800; color:${BRAND_PURPLE}; line-height:1;">${s.views.toLocaleString("en-US")}</div>
+      <div style="font-size:14px; color:#444; margin-top:8px;">${s.views === 1 ? "neighbor visited your page" : "neighbor visits to your page"}</div>
+      ${grew ? `<div style="font-size:13px; color:#0B992F; font-weight:600; margin-top:6px;">Up from ${s.prevViews.toLocaleString("en-US")} the month before</div>` : ""}
+    </div>`
+  const tip = opts.hasActiveDeal
+    ? "Keep your deal fresh — a new offer every few weeks keeps your page at the top of the feed."
+    : "Post a deal this month — deals are what locals open most, and they put your page in the weekly digest."
+  return welcomeHtml({
+    heading: `${escapeHtml(opts.businessName)} in ${opts.monthLabel}`,
+    intro: greetName(opts.name) + `here's how many Lompoc neighbors found your page on Lompoc Locals last month (real visitors only, no bots).`,
+    bulletsTitle: "",
+    bullets: [],
+    ctaLabel: opts.hasActiveDeal ? "See your page" : "Post a deal",
+    ctaUrl: opts.hasActiveDeal ? siteUrl(`/en/biz/${opts.slug}`) : siteUrl(`/en/dashboard/deals/new`),
+    closing: tip,
+    signoff: "— The Lompoc Locals team",
+    extraHtml: "",
+  }).replace(
+    // the number sits right under the intro paragraph
+    /(<p style="color:#444; line-height:1.6; margin:0 0 16px;">[\s\S]*?<\/p>)/,
+    `$1${statHtml}`
+  )
+}
+
+export async function sendMemberReportEmail(opts: {
+  email: string
+  toOverride?: string
+} & Parameters<typeof renderMemberReportHtml>[0]): Promise<string | null> {
+  const resend = getResend()
+  if (!resend) return null
+  const html = renderMemberReportHtml(opts)
+  const to = opts.toOverride ?? opts.email
+  const subject = `${opts.toOverride ? "[PREVIEW] " : ""}${opts.businessName}: your ${opts.monthLabel.split(" ")[0]} on Lompoc Locals`
+  const { data, error } = await resend.emails.send({
+    from: FROM_ADDRESS,
+    to,
+    subject,
+    html,
+    headers: oneClickUnsubHeaders(opts.email),
+  })
+  if (error) throw new Error(`resend: ${error.message}`)
+  return data?.id ?? null
+}
+
 export async function sendDealUpdateEmail(
   email: string,
   deal: DealNotificationData,
