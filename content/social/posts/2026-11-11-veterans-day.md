@@ -9,3 +9,10 @@ Andres: "Veterans Day for Lompoc", "Video saying thank you", "And connect Lompoc
 ### Caption
 Thank you, veterans. 🇺🇸 Lompoc has honored its veterans for generations: the Veterans Memorial Building went up in 1936 and still stands. Camp Cooke opened next door in 1941, and in 1958 it became Vandenberg. To every veteran who calls this valley home: thank you for your service. Happy Veterans Day.
 #Lompoc #VeteransDay #Vandenberg #LompocLocals #CentralCoast
+
+## Posted (Nov 11, ~2:10 PM PT): v1
+Andres: "Run it" / "Post it". Post Bridge e2298430 (cover frame 0, FB thumbnail, TikTok is_aigc). All 3 succeeded.
+- IG Reel https://www.instagram.com/reel/Dfnhb56K9MQ/
+- FB https://facebook.com/1898952607093480/videos/29609706788615303
+- TikTok https://www.tiktok.com/@lompoclocals/video/7707039622643174687
+- IG Story df39c32a succeeded (purple band "THANK YOU, VETERANS · HAPPY VETERANS DAY").
