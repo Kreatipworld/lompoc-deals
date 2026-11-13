@@ -14,3 +14,10 @@ The Gilded Lily, a 1920s murder mystery at @southsidecoffeeco_lompoc with The Ce
 ⏳ Ticket sales end Nov 20
 Tickets: lompocmurdermystery.com
 #Lompoc #MurderMystery #LompocEvents #1920s #LompocLocals
+
+## Posted (Nov 13, ~7:47 AM PT): v1
+Andres: "Post it and tag South Side Coffee". Post Bridge 197b4253 (IG user_tags southsidecoffeeco_lompoc, cover = 15 s end card since frame 0 is black, FB thumbnail, TikTok cover 15 s + is_aigc). All 3 succeeded.
+- IG Reel https://www.instagram.com/reel/Dfr_HHfq3aW/
+- FB https://facebook.com/1898952607093480/videos/1057692364005583
+- TikTok @lompoclocals (v_pub_file~v2-1.7707682651293124622)
+- IG Story ab82fce8 succeeded (full video; link sticker by phone).
