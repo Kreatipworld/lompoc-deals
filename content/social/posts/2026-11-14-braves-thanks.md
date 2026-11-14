@@ -15,3 +15,10 @@ Thank you for every Friday night under the lights. Lompoc is proud of you.
 Every score from the season: lompoclocals.com/football
 #Lompoc #LompocBraves #LompocHigh #FridayNightLights #LompocLocals
 - Preview sent ~12:20 PM PT; sound checked (mean -19 dB, whisper full script), framecheck clean. Awaiting "post it".
+
+## Posted (Nov 14, ~12:22 PM PT)
+Andres: "Run it / Post it / Everywhere". Post Bridge 61eba72e (IG cover = designed frame 0, FB thumbnail, TikTok is_aigc), Story 5cad19f6. All succeeded.
+- IG Reel https://www.instagram.com/reel/DfvDRVLMi9B/
+- FB https://facebook.com/1898952607093480/videos/2377798019723463
+- TikTok 7708124536494918925
+- IG Story posted (link sticker by phone).
