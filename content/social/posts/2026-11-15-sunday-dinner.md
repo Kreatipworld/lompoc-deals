@@ -19,3 +19,10 @@ Every dinner spot in town is on Lompoc Locals, link in bio.
 #Lompoc #SundayDinner #LompocLocals #LompocEats #CentralCoast #SupportLocal
 
 ## v1 preview sent Nov 15 ~4:22 PM PT (24.7 s). Sound checked (mean -15.5 dB, whisper: all 5 lines). Awaiting "post it".
+
+## Posted (Nov 15, ~4:53 PM PT): v1
+Andres: "Post it and tag them". Post Bridge 09d3d431 (IG user_tags eddiesgrill/taqueriadontacho/torolocolompoc + caption mentions, cover frame 0, FB thumbnail), Story 4829888a. All succeeded.
+- IG Reel https://www.instagram.com/reel/DfyHJICOtLO/
+- FB https://facebook.com/1898952607093480/videos/1016932074017622
+- TikTok https://www.tiktok.com/@lompoclocals/video/7708565746472750350
+- IG Story posted; Andres adds the link sticker → /find/dinner.
