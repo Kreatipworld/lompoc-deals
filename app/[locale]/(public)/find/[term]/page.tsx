@@ -8,6 +8,8 @@ import { db } from "@/db/client"
 import { events } from "@/db/schema"
 import { FIND_TERMS, findTermBySlug } from "@/lib/find-terms"
 import { searchAll, businessesBySlugs } from "@/lib/search"
+import { routeStopDetails } from "@/lib/find-route"
+import { RouteStops } from "@/components/route-stops"
 import { memberTiers } from "@/lib/member-tier"
 import { getActiveDeals } from "@/lib/queries"
 import { ANON_VIEWER } from "@/lib/viewer"
@@ -118,11 +120,17 @@ export default async function FindTermPage({ params }: { params: Params }) {
     )
   }
 
-  const [results, picked] = await Promise.all([searchAll(t.query, l), businessesBySlugs(t.include ?? [], l)])
+  // A Route lists only its stops (exclusive include), so the word matcher is skipped.
+  const [results, picked, stopDetails] = await Promise.all([
+    t.route ? null : searchAll(t.query, l),
+    businessesBySlugs(t.include ?? [], l),
+    t.route ? routeStopDetails(t.route.stops) : new Map(),
+  ])
   const excluded = new Set(t.exclude ?? [])
-  const merged = (t.exclusive ? picked : [...picked, ...results.businesses.filter((b) => !picked.some((p) => p.id === b.id))]).filter((b) => !excluded.has(b.slug))
+  const merged = (t.exclusive ? picked : [...picked, ...(results?.businesses ?? []).filter((b) => !picked.some((p) => p.id === b.id))]).filter((b) => !excluded.has(b.slug))
   const tiers = await memberTiers(merged.map((b) => b.id))
-  const businesses = [...merged].sort((a, b) => (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0))
+  // A Route keeps its driving order; every other page puts members first.
+  const businesses = t.route ? merged : [...merged].sort((a, b) => (tiers.get(b.id) ?? 0) - (tiers.get(a.id) ?? 0))
   const ids = new Set(businesses.map((b) => b.id))
   const deals = (await getActiveDeals(200, l)).filter((d) => ids.has(d.business.id)).slice(0, 6)
 
@@ -155,6 +163,22 @@ export default async function FindTermPage({ params }: { params: Params }) {
         )}
       </p>
 
+      {t.route ? (
+        <RouteStops
+          items={businesses.map((b) => ({ id: b.id, name: b.name, slug: b.slug, logoUrl: b.logoUrl, description: b.description, member: (tiers.get(b.id) ?? 0) > 0, details: stopDetails.get(b.id) }))}
+          labels={{
+            stops: tf("routeStops", { count: businesses.length }),
+            mapAlt: tf("routeMapAlt", { title: t.title[l] }),
+            mapCredit: tf("routeMapCredit"),
+            today: (hours) => tf("routeToday", { hours }),
+            closedToday: tf("routeClosedToday"),
+            hoursUnknown: tf("routeHoursUnknown"),
+            memberBadge: tf("memberBadge"),
+            questionHeading: t.route.question[l],
+            questionBody: tf("routeQuestionBody"),
+          }}
+        />
+      ) : (
       <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {businesses.map((b) => {
           const member = (tiers.get(b.id) ?? 0) > 0
@@ -189,6 +213,7 @@ export default async function FindTermPage({ params }: { params: Params }) {
         })}
         {businesses.length === 0 && <li className="text-sm text-muted-foreground">{tf("noResults")}</li>}
       </ul>
+      )}
 
       {deals.length > 0 && (
         <section className="mt-10">

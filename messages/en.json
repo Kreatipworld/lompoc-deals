@@ -3352,7 +3352,14 @@
     "faqMembersQ": "Which {noun} are Lompoc Locals members?",
     "faqMembersA": "{names}. Members are local businesses that keep their page, photos and deals up to date with us.",
     "faqDealsQ": "Which {noun} have deals right now?",
-    "faqDealsA": "Right now: {names}. Deals change every week, so check back."
+    "faqDealsA": "Right now: {names}. Deals change every week, so check back.",
+    "routeStops": "{count} stops, in driving order. Tap a stop for its page, phone and directions.",
+    "routeMapAlt": "Map of the {title}: numbered pins, one per stop",
+    "routeMapCredit": "Map © Mapbox © OpenStreetMap",
+    "routeToday": "Today {hours}",
+    "routeClosedToday": "Closed today",
+    "routeHoursUnknown": "Call for hours",
+    "routeQuestionBody": "Tell us in the comments on Instagram, Facebook or TikTok @lompoclocals. Every stop is a Lompoc business."
   },
   "football": {
     "metaTitle": "Lompoc Football Scores Tonight — Braves & Conqs",

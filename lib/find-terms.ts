@@ -40,6 +40,16 @@ export type FindTerm = {
    * places with deals) — true by construction, with FAQPage JSON-LD (Oct 17 2026).
    */
   noun?: { en: string; es: string }
+  /**
+   * A Route (Nov 17 2026): the page behind a Route video. `stops` are business slugs in
+   * driving order and the page keeps that order (no members-first sort); each stop shows
+   * today's hours and a numbered pin. Set `include` to the same slugs with `exclusive: true`.
+   */
+  route?: {
+    stops: string[]
+    /** The question the video's caption asks; closes the page too (comments are the engine). */
+    question: { en: string; es: string }
+  }
 }
 
 export const FIND_TERMS: FindTerm[] = [
@@ -455,6 +465,45 @@ export const FIND_TERMS: FindTerm[] = [
       en: "Shopping in Lompoc means local first: a garden shop, a family jeweler, florists, boutiques and thrift stores, plus the everyday stores for the rest. Local members are listed first, each with hours, phone and directions.",
       es: "Comprar en Lompoc es primero lo local: una tienda de jardín, una joyería familiar, florerías, boutiques y tiendas de segunda mano, además de las tiendas de todos los días para lo demás. Los miembros locales aparecen primero, cada uno con horario, teléfono y cómo llegar.",
     },
+  },
+  // Routes — the page behind each Route video. Stops in the order the video drives them.
+  {
+    slug: "taco-tuesday-route",
+    query: "taco tuesday",
+    aliases: ["taco tuesday lompoc", "taco route", "taco tuesday route", "ruta del taco"],
+    kind: "businesses",
+    category: "food-drink",
+    include: ["mr-taco-lompoc", "taqueria-la-mision", "toro-loco", "tacos-el-tizon-1", "taqueria-don-tacho", "tacos-y-mariscos-el-culichi"],
+    exclusive: true,
+    route: {
+      stops: ["mr-taco-lompoc", "taqueria-la-mision", "toro-loco", "tacos-el-tizon-1", "taqueria-don-tacho", "tacos-y-mariscos-el-culichi"],
+      question: { en: "Which stop is yours?", es: "¿Cuál es tu parada?" },
+    },
+    title: { en: "Taco Tuesday Route in Lompoc", es: "La Ruta del Taco Tuesday en Lompoc" },
+    intro: {
+      en: "Six taquerías, one route, from Vandenberg Village down H Street to West Laurel: the Taco Tuesday Route we drove on the map on November 10, 2026. Each stop below shows today's hours straight from its listing, so you know who is open before you go.",
+      es: "Seis taquerías, una ruta, desde Vandenberg Village por la calle H hasta West Laurel: la Ruta del Taco Tuesday que recorrimos en el mapa el 10 de noviembre de 2026. Cada parada muestra el horario de hoy directo de su página, para que sepas quién está abierto antes de salir.",
+    },
+    noun: { en: "taquerías", es: "taquerías" },
+  },
+  {
+    slug: "pan-dulce-route",
+    query: "pan dulce",
+    aliases: ["pan dulce lompoc", "pan dulce route", "conchas", "concha", "ruta del pan dulce", "bakery route", "donuts and coffee"],
+    kind: "businesses",
+    category: "food-drink",
+    include: ["panaderia-don-tacho", "sweet-baking-co", "panader-a-la-victoria", "lompoc-donuts", "foster-s-family-donuts", "south-side-coffee-co"],
+    exclusive: true,
+    route: {
+      stops: ["panaderia-don-tacho", "sweet-baking-co", "panader-a-la-victoria", "lompoc-donuts", "foster-s-family-donuts", "south-side-coffee-co"],
+      question: { en: "Concha or donut?", es: "¿Concha o dona?" },
+    },
+    title: { en: "Pan Dulce & Coffee Route in Lompoc", es: "Ruta del Pan Dulce y Café en Lompoc" },
+    intro: {
+      en: "A Saturday-morning route down H Street: two panaderías with conchas out of the oven before sunrise, two family donut shops that have been frying since 1988 and 1998, a small-batch cupcake shop, and a downtown café to finish. Today's hours are shown on every stop.",
+      es: "Una ruta de sábado por la mañana por la calle H: dos panaderías con conchas saliendo del horno antes del amanecer, dos donerías familiares que fríen desde 1988 y 1998, una pastelería de cupcakes en lotes pequeños y un café en el centro para terminar. Cada parada muestra el horario de hoy.",
+    },
+    noun: { en: "bakeries and cafés", es: "panaderías y cafés" },
   },
 ]
 

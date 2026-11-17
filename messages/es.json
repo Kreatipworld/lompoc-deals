@@ -3352,7 +3352,14 @@
     "faqMembersQ": "¿Qué {noun} son miembros de Lompoc Locals?",
     "faqMembersA": "{names}. Los miembros son negocios locales que mantienen al día su página, fotos y ofertas con nosotros.",
     "faqDealsQ": "¿Qué {noun} tienen ofertas ahora?",
-    "faqDealsA": "Ahora mismo: {names}. Las ofertas cambian cada semana, así que vuelve pronto."
+    "faqDealsA": "Ahora mismo: {names}. Las ofertas cambian cada semana, así que vuelve pronto.",
+    "routeStops": "{count} paradas, en orden de recorrido. Toca una parada para ver su página, teléfono y cómo llegar.",
+    "routeMapAlt": "Mapa de la {title}: pines numerados, uno por parada",
+    "routeMapCredit": "Mapa © Mapbox © OpenStreetMap",
+    "routeToday": "Hoy {hours}",
+    "routeClosedToday": "Cerrado hoy",
+    "routeHoursUnknown": "Llama para el horario",
+    "routeQuestionBody": "Cuéntanos en los comentarios en Instagram, Facebook o TikTok @lompoclocals. Cada parada es un negocio de Lompoc."
   },
   "football": {
     "metaTitle": "Fútbol de Lompoc — Braves y Conqs",
