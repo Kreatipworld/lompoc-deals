@@ -207,6 +207,8 @@ async function road(context, deviceLabel) {
   if ((await cta.count()) === 0) fail(label(), "no List-your-homes CTA on /homes")
 
   // 2. every listing page
+  // The agent behind a live listing: that profile must show listing cards (checked in step 3).
+  let listingAgentHref = null
   for (const href of cardHrefs) {
     const path = href.replace(origin, "")
     current = path
@@ -255,6 +257,7 @@ async function road(context, deviceLabel) {
     // agent card → profile
     const profile = page.locator('a[href*="/biz/"]').first()
     if ((await profile.count()) === 0) fail(label(), "no profile link on listing page")
+    else if (!listingAgentHref) listingAgentHref = (await profile.getAttribute("href").catch(() => null))?.replace(origin, "") ?? null
   }
 
   // 3. agent profile
@@ -271,8 +274,19 @@ async function road(context, deviceLabel) {
       await assertNoBoundary(page, `${label()} contact modal`)
       await page.keyboard.press("Escape").catch(() => {})
     }
+    // Nov 17 2026: the featured agent can legitimately have no live listing (Maressa's expired
+    // Nov 12, the next is pending) — that is data, not a bug. The hard check runs on the agent
+    // behind a live listing from step 2, who must show at least that one.
     const listingLink = page.locator('a[href*="/listings/"]').first()
-    if ((await listingLink.count()) === 0) fail(label(), "profile shows no listing cards")
+    if ((await listingLink.count()) === 0) {
+      if (listingAgentHref && listingAgentHref !== current) warn(label(), "featured agent has no live listing right now")
+      else fail(label(), "profile shows no listing cards")
+    }
+  }
+  if (listingAgentHref && listingAgentHref !== agentHref?.replace(origin, "")) {
+    current = listingAgentHref
+    await goto(page, current, label())
+    if ((await page.locator('a[href*="/listings/"]').count()) === 0) fail(label(), "profile shows no listing cards (agent of a live listing)")
   }
 
   // 4. landing page + guide + signup
